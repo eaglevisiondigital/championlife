@@ -20,3 +20,9 @@ Drag this entire folder into Netlify Drop or connect it to a Git repository. The
 
 ## Notes
 The YouTube embedded live channel iframe is a placeholder because YouTube requires a channel ID rather than the public handle. The visible button links correctly to the Champion Life streams page.
+
+## Dream Team form notification
+The `dream-team-signup` form uses Netlify Forms. After deployment, open Netlify → Forms → Form notifications and send new submission notifications to `office@championlifefwb.com`.
+
+## NFC / DOT URL
+Program the seat-back NFC dots to the final domain path `/dot` (for example, `https://championlifefwb.com/dot`).
