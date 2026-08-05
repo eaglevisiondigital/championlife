@@ -122,3 +122,16 @@
   .subfooter-separator{display:none}
   .subfooter>span{width:100%}
 }
+
+/* Expanded pastor biographies — August 5, 2026 */
+.pastors-intro{padding-bottom:58px}
+.pastor-biographies{padding-top:0}
+.bio-grid{display:grid;grid-template-columns:1fr 1fr;gap:28px;align-items:start}
+.pastor-bio-card{background:#fff;border:1px solid #dedbd4;border-radius:24px;padding:clamp(28px,4vw,46px);box-shadow:0 18px 48px rgba(0,0,0,.08)}
+.bio-heading{padding-bottom:22px;margin-bottom:24px;border-bottom:1px solid #e5e1d9}
+.bio-heading h2{font-size:clamp(2.35rem,4vw,4rem);margin:6px 0 0}
+.bio-copy p{color:#303030;font-size:1.02rem;line-height:1.78;margin-bottom:20px}
+.bio-copy p:last-child{margin-bottom:0}
+.bio-copy em{font-weight:700;color:#161616}
+@media(max-width:900px){.bio-grid{grid-template-columns:1fr}.pastors-intro{padding-bottom:42px}}
+@media(max-width:600px){.pastor-bio-card{border-radius:18px;padding:26px 22px}.bio-copy p{font-size:.98rem;line-height:1.7}}
