@@ -26,3 +26,7 @@ The `dream-team-signup` form uses Netlify Forms. After deployment, open Netlify 
 
 ## NFC / DOT URL
 Program the seat-back NFC dots to the final domain path `/dot` (for example, `https://championlifefwb.com/dot`).
+
+
+## Water Baptism Form Email Notification
+The baptism form is configured as a native Netlify Form named `water-baptism-interest`. After deploying, enable the email notification one time in Netlify: Site configuration → Forms → Form notifications → Add notification → Email notification → `office@championlifefwb.com`. Netlify will then email each new submission to the church office while retaining a secure copy in the Forms dashboard.

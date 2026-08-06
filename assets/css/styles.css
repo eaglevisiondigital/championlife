@@ -212,3 +212,35 @@
     visibility:visible!important;
   }
 }
+
+/* Mobile hero welcome line break — August 6, 2026 */
+.hero-welcome-mobile{display:none}
+@media(max-width:700px){
+  .hero-welcome{display:block!important;text-align:left!important;max-width:100%!important;line-height:1.35!important}
+  .hero-welcome-desktop{display:none!important}
+  .hero-welcome-mobile{display:flex!important;flex-direction:column!important;align-items:flex-start!important;gap:2px!important}
+  .hero-welcome-mobile span{display:block!important;white-space:nowrap!important}
+}
+
+
+/* Water baptism interest form */
+.baptism-form-trigger{border:0;cursor:pointer}
+.baptism-modal{position:fixed;inset:0;z-index:1000;display:none;align-items:center;justify-content:center;padding:24px}
+.baptism-modal.is-open{display:flex}
+.baptism-modal-backdrop{position:absolute;inset:0;background:rgba(0,0,0,.82);backdrop-filter:blur(8px)}
+.baptism-modal-dialog{position:relative;z-index:1;width:min(760px,100%);max-height:calc(100vh - 48px);overflow:auto;background:#101113;color:#fff;border:1px solid rgba(201,164,75,.45);border-radius:24px;padding:clamp(28px,5vw,48px);box-shadow:0 30px 90px rgba(0,0,0,.65)}
+.baptism-modal-dialog h2{font-size:clamp(2.2rem,5vw,4rem);margin:10px 0 14px}
+.baptism-modal-dialog>p{color:#c8c8c8;max-width:650px}
+.baptism-modal-close{position:absolute;right:18px;top:14px;width:44px;height:44px;border-radius:50%;border:1px solid rgba(255,255,255,.2);background:#1b1c1f;color:#fff;font-size:1.8rem;line-height:1;cursor:pointer}
+.baptism-interest-form{margin-top:30px}
+.baptism-form-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.baptism-form-grid>label,.baptism-form-grid fieldset{display:flex;flex-direction:column;gap:8px;margin:0;padding:0;border:0}
+.baptism-form-grid label span,.baptism-form-grid legend{font-weight:800;font-size:.92rem;color:#f1f1f1}
+.baptism-form-grid input[type=text],.baptism-form-grid input[type=email],.baptism-form-grid input[type=tel],.baptism-form-grid textarea{width:100%;border:1px solid #3c3d41;background:#08090a;color:#fff;border-radius:12px;padding:13px 14px;outline:none}
+.baptism-form-grid input:focus,.baptism-form-grid textarea:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(200,165,75,.15)}
+.baptism-form-grid fieldset{grid-column:1/-1;background:#18191c;border:1px solid #303136;border-radius:14px;padding:16px}
+.radio-row{display:flex;flex-wrap:wrap;gap:18px;margin-top:10px}
+.radio-row label{display:inline-flex;align-items:center;gap:8px;font-weight:700}
+.full-width{grid-column:1/-1}.form-honeypot{display:none}.baptism-submit{margin-top:24px;border:0;cursor:pointer}.form-privacy-note{font-size:.82rem;color:#989898;margin-top:14px}
+body.baptism-modal-open{overflow:hidden}
+@media(max-width:650px){.baptism-modal{padding:10px}.baptism-modal-dialog{max-height:calc(100vh - 20px);border-radius:18px;padding:28px 20px}.baptism-form-grid{grid-template-columns:1fr}.baptism-form-grid fieldset,.full-width{grid-column:1}.radio-row{gap:12px 18px}.baptism-submit{width:100%}}
