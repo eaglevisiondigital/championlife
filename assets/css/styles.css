@@ -135,8 +135,8 @@
 .bio-copy p{color:#303030;font-size:1.02rem;line-height:1.78;margin-bottom:20px}
 .bio-copy p:last-child{margin-bottom:0}
 .bio-copy em{font-weight:700;color:#161616}
-.hero-mobile-logo{display:none;position:absolute;left:50%;transform:translateX(-50%);top:104px;z-index:3;pointer-events:none}.hero-mobile-logo img{width:min(210px,46vw);height:auto;opacity:.98;filter:drop-shadow(0 10px 24px rgba(0,0,0,.55))}
+.hero-mobile-logo{display:none;position:absolute;left:50%;transform:translateX(-50%);top:104px;z-index:3;pointer-events:none}.hero-mobile-logo img{width:min(285px,68vw)}
 @media(max-width:900px){.bio-grid{grid-template-columns:1fr}.pastors-intro{padding-bottom:42px}}
 @media(max-width:600px){.pastor-bio-card{border-radius:18px;padding:26px 22px}.bio-copy p{font-size:.98rem;line-height:1.7}}
 
-@media(max-width:700px){.hero-mobile-logo{display:flex;justify-content:center;align-items:center;width:100%;top:96px}.site-header .brand img{width:212px;max-height:54px;object-fit:contain;object-position:left center}.hero-mobile-logo img{width:min(250px,62vw)}}
+@media(max-width:700px){.hero-mobile-logo{display:flex;justify-content:center;align-items:center;width:100%;top:96px}.site-header .brand img{width:212px;max-height:54px;object-fit:contain;object-position:left center}.hero-mobile-logo img{width:min(285px,68vw)}}
