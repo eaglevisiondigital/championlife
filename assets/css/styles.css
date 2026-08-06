@@ -152,3 +152,23 @@
 @media(min-width:701px){.outreach-band-grid{align-items:stretch}.outreach-band-card{height:100%;display:flex;flex-direction:column}.outreach-band-card p{margin-bottom:24px}.outreach-band-card .btn.square{margin-top:auto}}
 @media(max-width:980px){.prayer-feature.official-prayer-art img{min-height:420px}}
 @media(max-width:700px){.prayer-feature.official-prayer-art{height:auto}.prayer-feature.official-prayer-art img{min-height:360px;aspect-ratio:1/1}.outreach-band-card .btn.square{margin-top:0}}
+
+/* Definitive homepage corrections — 2026-08-06 01:21 CT */
+.connect-dashboard > .official-prayer-art{position:relative;display:block!important;align-self:stretch!important;min-height:305px!important;height:auto!important;padding:0!important;background:#090a0c!important;overflow:hidden!important}
+.connect-dashboard > .official-prayer-art::before{display:none!important}
+.connect-dashboard > .official-prayer-art > img{display:block!important;position:absolute!important;inset:0!important;width:100%!important;height:100%!important;min-height:0!important;max-width:none!important;object-fit:cover!important;object-position:center!important;opacity:1!important;visibility:visible!important}
+@media (min-width:701px){
+  .outreach-band-grid{align-items:stretch!important}
+  .outreach-band-card{display:grid!important;grid-template-rows:auto auto 1fr auto!important;align-content:stretch!important;height:100%!important}
+  .outreach-band-card p{margin:0 0 24px!important;min-height:96px!important}
+  .outreach-band-card .btn.square{margin-top:0!important;align-self:end!important}
+}
+@media (max-width:980px){
+  .connect-dashboard > .official-prayer-art{grid-column:1/-1!important;min-height:420px!important}
+}
+@media (max-width:700px){
+  .connect-dashboard > .official-prayer-art{grid-column:auto!important;min-height:0!important;aspect-ratio:1/1!important}
+  .outreach-band-card{display:flex!important;height:auto!important}
+  .outreach-band-card p{min-height:0!important;margin-bottom:24px!important}
+  .outreach-band-card .btn.square{margin-top:0!important}
+}
