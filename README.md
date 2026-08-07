@@ -30,3 +30,22 @@ Program the seat-back NFC dots to the final domain path `/dot` (for example, `ht
 
 ## Water Baptism Form Email Notification
 The baptism form is configured as a native Netlify Form named `water-baptism-interest`. After deploying, enable the email notification one time in Netlify: Site configuration → Forms → Form notifications → Add notification → Email notification → `office@championlifefwb.com`. Netlify will then email each new submission to the church office while retaining a secure copy in the Forms dashboard.
+
+
+August 7, 2026 update:
+- Rebuilt the Next Steps page as a lighter polished pathway grid with 7 cards.
+- Added the Discipleship card for Getting a Grip on the Basics with Beth Jones.
+- Added getting-a-grip.html plus 13 lesson pages mirroring the Dream Track structure.
+- Added full workbook PDF and chapter-specific lesson PDF downloads under assets/downloads/grip/.
+- Video embed placeholders are in place pending the final approved lesson video list.
+
+- Added the 14 supplied Getting a Grip videos: intro on the course page; lessons 1–10 populated; lessons 11–13 remain Coming Soon. Lessons 6, 8, and 9 contain multiple current video parts where supplied.
+
+August 7, 2026 — Consolidated complete build:
+- Includes web-optimized image assets and all prior complete-site pages/content.
+- Includes the rebuilt 7-card Next Steps pathway.
+- Includes Getting a Grip on the Basics with Beth Jones: 13 lesson pages, current 14 video embeds, full workbook, lesson PDFs, and notes areas.
+- Includes final Champion Kids mobile age-group treatment with three clean stacked cards; desktop remains the approved combined card treatment.
+- Includes Dream Team mobile submit button centering.
+- Dream Team form submits through Netlify and redirects directly to /dream-track.html.
+- Includes Dream Track root redirects and all Dream Track lesson pages at the site root.
