@@ -384,3 +384,15 @@ body.baptism-modal-open{overflow:hidden}
   .kids-age-mobile{display:grid;grid-template-columns:1fr;gap:20px;margin-top:28px}
   .kids-age-mobile img{display:block;width:100%;height:auto;border-radius:22px;box-shadow:0 16px 38px rgba(34,28,18,.13)}
 }
+
+/* Corrected Champion Kids mobile age cards — clean individual crops */
+@media(max-width:650px){
+  .kids-age-mobile{display:grid!important;grid-template-columns:1fr!important;gap:24px!important;margin-top:28px!important;width:100%!important;overflow:visible!important}
+  .kids-age-mobile img{display:block!important;width:min(100%,680px)!important;max-width:100%!important;height:auto!important;margin:0 auto!important;border-radius:22px!important;box-shadow:0 16px 38px rgba(34,28,18,.13)!important}
+}
+
+/* Final Champion Kids mobile card alignment */
+@media(max-width:650px){
+  .kids-age-mobile{width:100%!important;max-width:100%!important;margin:28px 0 0!important;padding:0!important;gap:24px!important;overflow:hidden!important}
+  .kids-age-mobile img{width:100%!important;max-width:100%!important;height:auto!important;margin:0!important;padding:0!important;object-fit:contain!important;object-position:center!important;border-radius:22px!important;box-sizing:border-box!important}
+}
