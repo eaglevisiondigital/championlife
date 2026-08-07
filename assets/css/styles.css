@@ -336,3 +336,34 @@ body.baptism-modal-open{overflow:hidden}
   .kids-series-frame{padding:12px}
   .kids-photo-card.large,.kids-photo-card,.kids-mini-card{min-height:280px}
 }
+
+/* Next Steps pathway refresh — August 7, 2026 */
+.next-steps-pathway .container{width:min(1280px,calc(100% - 36px))}
+.next-steps-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:24px;margin-top:34px}
+.next-step-card{display:flex;flex-direction:column;gap:16px;min-height:250px;padding:30px;border-radius:26px;background:#fff;border:1px solid #ddd;box-shadow:0 18px 48px rgba(34,28,18,.08);color:#151515;transition:transform .22s ease,box-shadow .22s ease,border-color .22s ease}
+.next-step-card:hover{transform:translateY(-6px);border-color:#c5a553;box-shadow:0 26px 58px rgba(34,28,18,.14)}
+.next-step-card h3{font-size:clamp(1.45rem,2vw,2rem);margin:0}
+.next-step-card p{margin:0;color:#595959}
+.next-step-icon{width:54px;height:54px;display:grid;place-items:center;border-radius:18px;background:#e8c972;color:#111;font-size:1rem;font-weight:900;letter-spacing:.04em}
+.next-step-link{margin-top:auto;color:#8a6216;font-weight:900;text-transform:uppercase;letter-spacing:.08em;font-size:.84rem}
+.grip-course-list .course-row{background:#fff;color:#151515;border-color:#ddd;box-shadow:0 8px 22px rgba(34,28,18,.05)}
+.grip-course-list .course-row:hover{border-color:#c5a553}
+.grip-video-placeholder{min-height:420px;display:grid;place-items:center;text-align:center;padding:40px;border-radius:24px;background:linear-gradient(135deg,#0b0b0c,#1a1711);border:1px solid rgba(200,165,75,.28)}
+.grip-video-placeholder h2{font-size:clamp(2rem,4vw,3rem);margin:10px 0 14px}
+.grip-video-placeholder .lead{max-width:720px;margin-left:auto;margin-right:auto}
+.grip-download-row{display:flex;flex-wrap:wrap;gap:12px;margin-top:28px}
+@media(max-width:1150px){.next-steps-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:850px){.next-steps-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:650px){.next-steps-grid{grid-template-columns:1fr}.next-step-card{min-height:auto;padding:26px}.grip-video-placeholder{min-height:300px;padding:28px}.grip-download-row{display:grid;grid-template-columns:1fr}.grip-download-row .btn{width:100%}}
+
+/* Getting a Grip video integration — August 7, 2026 */
+.grip-video-stack{display:grid;gap:32px}
+.grip-video-single{margin-top:28px}
+.grip-video-item{display:grid;gap:14px}
+.grip-video-item h3{font-size:clamp(1.25rem,2vw,1.75rem);margin:0;color:#f4f4f4}
+.grip-video-part{display:inline-flex;width:max-content;padding:7px 12px;border-radius:999px;background:rgba(200,165,75,.14);border:1px solid rgba(200,165,75,.34);color:var(--gold2);font-weight:900;font-size:.78rem;text-transform:uppercase;letter-spacing:.09em}
+.grip-notes-wrap{margin-top:36px}
+.grip-notes-wrap h2{font-size:clamp(2rem,4vw,2.75rem)}
+.grip-row.coming-soon{opacity:.82}
+.grip-row.coming-soon small{color:#8b8172}
+@media(max-width:650px){.grip-video-stack{gap:26px}}

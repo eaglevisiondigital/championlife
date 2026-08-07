@@ -1,0 +1,11 @@
+GITHUB BROWSER UPDATE ONLY
+
+This package contains only the files needed for the latest Next Steps + Getting a Grip update.
+Do NOT upload this ZIP itself to GitHub.
+
+1. Unzip this package on your Mac.
+2. Upload the root HTML files to the repository root.
+3. Upload styles.css into assets/css/ and replace the existing styles.css.
+4. Upload all PDFs into assets/downloads/grip/ (create the folders in GitHub if they do not already exist).
+
+This update contains fewer than 100 actual files and is intended for GitHub's normal browser uploader.
