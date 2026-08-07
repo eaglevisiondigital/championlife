@@ -40,12 +40,3 @@ August 7, 2026 update:
 - Video embed placeholders are in place pending the final approved lesson video list.
 
 - Added the 14 supplied Getting a Grip videos: intro on the course page; lessons 1–10 populated; lessons 11–13 remain Coming Soon. Lessons 6, 8, and 9 contain multiple current video parts where supplied.
-
-August 7, 2026 — Consolidated complete build:
-- Includes web-optimized image assets and all prior complete-site pages/content.
-- Includes the rebuilt 7-card Next Steps pathway.
-- Includes Getting a Grip on the Basics with Beth Jones: 13 lesson pages, current 14 video embeds, full workbook, lesson PDFs, and notes areas.
-- Includes final Champion Kids mobile age-group treatment with three clean stacked cards; desktop remains the approved combined card treatment.
-- Includes Dream Team mobile submit button centering.
-- Dream Team form submits through Netlify and redirects directly to /dream-track.html.
-- Includes Dream Track root redirects and all Dream Track lesson pages at the site root.
