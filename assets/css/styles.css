@@ -376,3 +376,11 @@ body.baptism-modal-open{overflow:hidden}
 .dream-team-next-step h2{font-size:clamp(1.8rem,3vw,2.8rem);margin-bottom:12px}
 .dream-team-next-step p{max-width:760px;color:#ddd}
 @media(max-width:650px){.dream-team-submit-wrap{justify-content:center}.dream-team-submit-wrap .form-submit{margin-left:auto;margin-right:auto}.dream-team-thankyou-hero{min-height:auto}.dream-team-next-step{padding:24px}.dream-team-next-step .actions{display:grid;grid-template-columns:1fr}.dream-team-next-step .btn{width:100%}}
+
+/* Champion Kids age cards — mobile stacked treatment */
+.kids-age-mobile{display:none}
+@media(max-width:650px){
+  .kids-age-desktop{display:none}
+  .kids-age-mobile{display:grid;grid-template-columns:1fr;gap:20px;margin-top:28px}
+  .kids-age-mobile img{display:block;width:100%;height:auto;border-radius:22px;box-shadow:0 16px 38px rgba(34,28,18,.13)}
+}
