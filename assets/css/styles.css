@@ -367,3 +367,12 @@ body.baptism-modal-open{overflow:hidden}
 .grip-row.coming-soon{opacity:.82}
 .grip-row.coming-soon small{color:#8b8172}
 @media(max-width:650px){.grip-video-stack{gap:26px}}
+
+/* Dream Team submission flow — August 7, 2026 */
+.dream-team-submit-wrap{display:flex;justify-content:flex-start}
+.dream-team-thankyou-hero{min-height:72vh;display:flex;align-items:center}
+.dream-team-thankyou-hero .container{max-width:980px}
+.dream-team-next-step{margin-top:34px;padding:30px;border:1px solid rgba(200,165,75,.35);border-radius:22px;background:rgba(200,165,75,.08)}
+.dream-team-next-step h2{font-size:clamp(1.8rem,3vw,2.8rem);margin-bottom:12px}
+.dream-team-next-step p{max-width:760px;color:#ddd}
+@media(max-width:650px){.dream-team-submit-wrap{justify-content:center}.dream-team-submit-wrap .form-submit{margin-left:auto;margin-right:auto}.dream-team-thankyou-hero{min-height:auto}.dream-team-next-step{padding:24px}.dream-team-next-step .actions{display:grid;grid-template-columns:1fr}.dream-team-next-step .btn{width:100%}}
