@@ -244,3 +244,10 @@
 .full-width{grid-column:1/-1}.form-honeypot{display:none}.baptism-submit{margin-top:24px;border:0;cursor:pointer}.form-privacy-note{font-size:.82rem;color:#989898;margin-top:14px}
 body.baptism-modal-open{overflow:hidden}
 @media(max-width:650px){.baptism-modal{padding:10px}.baptism-modal-dialog{max-height:calc(100vh - 20px);border-radius:18px;padding:28px 20px}.baptism-form-grid{grid-template-columns:1fr}.baptism-form-grid fieldset,.full-width{grid-column:1}.radio-row{gap:12px 18px}.baptism-submit{width:100%}}
+
+/* Dedicated Water Baptism form page */
+.baptism-page-form-shell{max-width:900px;margin:0 auto;background:#fff;color:#111;border:1px solid #ddd;box-shadow:0 22px 60px rgba(0,0,0,.1)}
+.baptism-page-form-shell .baptism-form-grid label span,.baptism-page-form-shell .baptism-form-grid legend{color:#171717}
+.baptism-page-form-shell .baptism-form-grid input[type=text],.baptism-page-form-shell .baptism-form-grid input[type=email],.baptism-page-form-shell .baptism-form-grid input[type=tel],.baptism-page-form-shell .baptism-form-grid textarea{background:#fff;color:#111;border-color:#c9c9c9}
+.baptism-page-form-shell .baptism-form-grid fieldset{background:#f5f3ee;border-color:#ddd}
+.baptism-page-form-shell .form-privacy-note{color:#666}
