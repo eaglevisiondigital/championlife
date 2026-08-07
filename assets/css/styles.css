@@ -262,3 +262,23 @@ body.baptism-modal-open{overflow:hidden}
 @media (hover:hover) and (pointer:fine){.ministry-art-card:hover{transform:translateY(-7px);border-color:rgba(226,188,91,.8);box-shadow:0 28px 66px rgba(0,0,0,.52)}.ministry-art-card:hover img{transform:scale(1.025);filter:brightness(1.04)}}
 @media(max-width:1100px){.ministries-feature-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:700px){.ministries-gallery-section{padding-top:52px;padding-bottom:70px}.ministries-feature-grid{grid-template-columns:1fr;gap:22px}.ministry-art-card{border-radius:18px}.ministry-art-card img{width:100%;aspect-ratio:4/3;object-fit:cover}}
+
+/* Outreach page refresh */
+.hero.outreach-hero:before{background:linear-gradient(90deg,rgba(0,0,0,.78) 0%,rgba(0,0,0,.48) 44%,rgba(0,0,0,.18) 76%),linear-gradient(to top,rgba(0,0,0,.55),transparent 58%)}
+.outreach-story-section{padding-top:85px;padding-bottom:85px}
+.outreach-story-grid{display:grid;grid-template-columns:1.08fr .92fr;gap:28px;align-items:stretch}
+.outreach-feature-image,.outreach-story-copy,.outreach-info-card{background:#fff;border:1px solid rgba(17,17,17,.08);border-radius:28px;box-shadow:0 22px 60px rgba(0,0,0,.08);overflow:hidden}
+.outreach-feature-image img{width:100%;height:100%;min-height:320px;object-fit:cover}
+.outreach-story-copy{padding:38px 40px;color:#161616;display:flex;flex-direction:column;justify-content:center}
+.outreach-story-copy p{color:#353535;font-size:1.02rem}
+.outreach-story-copy h2{font-size:clamp(2.4rem,5vw,4.25rem);max-width:12ch}
+.outreach-info-card{display:grid;grid-template-columns:1.08fr .92fr;min-height:320px}
+.outreach-card-media img{width:100%;height:100%;object-fit:cover}
+.outreach-card-copy{padding:34px 32px;display:flex;flex-direction:column;justify-content:center;color:#161616}
+.outreach-card-copy h3{margin-bottom:14px;font-size:clamp(1.55rem,2vw,2.2rem)}
+.outreach-card-copy p{color:#444;margin-bottom:18px}
+.outreach-icon{display:inline-flex;align-items:center;justify-content:center;width:52px;height:52px;border-radius:999px;border:1px solid rgba(191,155,69,.45);background:rgba(191,155,69,.09);color:#bf9b45;font-size:1.45rem;margin-bottom:18px}
+.outreach-inline-link{display:inline-flex;align-items:center;gap:10px;color:#a88022;font-weight:800}
+.outreach-inline-link:hover{gap:14px}
+@media(max-width:980px){.outreach-story-grid{grid-template-columns:1fr}.outreach-info-card{grid-template-columns:1fr}.outreach-card-media img,.outreach-feature-image img{min-height:280px}.outreach-story-copy h2{max-width:none}}
+@media(max-width:650px){.outreach-story-copy,.outreach-card-copy{padding:28px 24px}.outreach-card-media img,.outreach-feature-image img{min-height:220px}.outreach-story-section{padding-top:65px;padding-bottom:65px}}
