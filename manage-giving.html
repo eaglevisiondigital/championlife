@@ -211,49 +211,101 @@ body.giving-dashboard-mode .dashboard-sidebar-cover{
     height:50px;
   }
 }
+
+.dashboard-fallback{
+  display:flex;
+  justify-content:center;
+  margin:14px auto 0;
+}
+.dashboard-fallback button{
+  appearance:none;
+  border:0;
+  border-radius:999px;
+  background:transparent;
+  color:#555;
+  font:700 13px/1.2 inherit;
+  text-decoration:underline;
+  text-underline-offset:3px;
+  cursor:pointer;
+  padding:8px 12px;
+}
+body.giving-dashboard-mode .dashboard-fallback{display:none !important}
+@media(max-width:700px){
+  .dashboard-fallback{margin-top:10px}
+  .dashboard-fallback button{font-size:12px}
+}
+
 </style></head><body><header class="site-header"><div class="container nav"><a class="brand" href="index.html"><img alt="Champion Life Church" src="assets/images/manage-giving-logo.png"/></a><button aria-label="Open menu" class="menu-btn">☰</button><nav class="nav-links"><a href="index.html">Home</a><a href="about.html">About</a><a href="watch.html">Watch</a><a href="ministries.html">Ministries</a><a href="outreach.html">Outreach</a><a href="events.html">Events</a><a href="next-steps.html">Next Steps</a><a href="give.html">Give</a></nav></div></header><main><section class="manage-login-page"><div class="manage-login-shell"><div class="manage-brand"><img src="assets/images/manage-giving-logo.png" alt="Champion Life Church"><h1>Giving Login</h1><p>Sign in securely to view and manage your giving account.</p></div><div class="login-panel"><div class="login-crop"><div class="dashboard-brandbar">
   <div class="dashboard-brand-left"><img src="assets/images/manage-giving-logo.png" alt="Champion Life"></div>
   <div class="dashboard-brand-main"><div class="dashboard-brand-title">Giving Dashboard</div></div>
   <a class="dashboard-back-link" href="index.html">Church Website</a>
-</div><div class="dashboard-sidebar-cover" aria-hidden="true"></div><div class="login-mask" aria-hidden="true"></div><iframe src="https://www.community.givehub.com/login" title="Champion Life Giving Login" loading="eager" scrolling="no" referrerpolicy="strict-origin-when-cross-origin" allow="payment *; clipboard-write *"></iframe></div></div></div></section></main><footer class="footer"><div class="container footer-container"><div class="footer-grid"><div class="footer-brand-panel"><img alt="Champion Life Church — Raise, Reign, Reach" class="footer-vision-image" src="assets/images/footer-raise-reign-reach.png"/></div><div class="footer-column"><h4>Explore</h4><a href="about.html">About</a><a href="watch.html">Watch</a><a href="ministries.html">Ministries</a><a href="outreach.html">Outreach</a></div><div class="footer-column"><h4>Connect</h4><a href="plan-your-visit.html">Plan Your Visit</a><a href="next-steps.html">Next Steps</a><a href="prayer.html">Prayer</a><a href="contact.html">Contact</a></div><div class="footer-column footer-contact"><h4>Champion Life Church</h4><address>650 Denton Blvd NW<br/>Fort Walton Beach, FL 32547</address><a class="footer-phone" href="tel:+18507785322">(850) 778-5322</a><div class="footer-social"><a href="https://www.facebook.com/ChampionLifeFWB" rel="noopener" target="_blank">Facebook</a><a href="https://www.instagram.com/_championlife_/" rel="noopener" target="_blank">Instagram</a><a href="https://www.youtube.com/@ChampionLifeFWB" rel="noopener" target="_blank">YouTube</a></div></div></div><div class="subfooter"><span>© 2026 Champion Life Church</span><span class="subfooter-separator">•</span><span>Legal name: Living Faith</span><nav aria-label="Legal" class="footer-legal"><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a></nav></div></div></footer><script src="assets/js/site.js"></script>
+</div><div class="dashboard-sidebar-cover" aria-hidden="true"></div><div class="login-mask" aria-hidden="true"></div><iframe src="https://www.community.givehub.com/login" title="Champion Life Giving Login" loading="eager" scrolling="no" referrerpolicy="strict-origin-when-cross-origin" allow="payment *; clipboard-write *"></iframe></div><div class="dashboard-fallback"><button type="button" id="openDashboardFallback">Already signed in? Open full dashboard</button></div></div></div></section></main><footer class="footer"><div class="container footer-container"><div class="footer-grid"><div class="footer-brand-panel"><img alt="Champion Life Church — Raise, Reign, Reach" class="footer-vision-image" src="assets/images/footer-raise-reign-reach.png"/></div><div class="footer-column"><h4>Explore</h4><a href="about.html">About</a><a href="watch.html">Watch</a><a href="ministries.html">Ministries</a><a href="outreach.html">Outreach</a></div><div class="footer-column"><h4>Connect</h4><a href="plan-your-visit.html">Plan Your Visit</a><a href="next-steps.html">Next Steps</a><a href="prayer.html">Prayer</a><a href="contact.html">Contact</a></div><div class="footer-column footer-contact"><h4>Champion Life Church</h4><address>650 Denton Blvd NW<br/>Fort Walton Beach, FL 32547</address><a class="footer-phone" href="tel:+18507785322">(850) 778-5322</a><div class="footer-social"><a href="https://www.facebook.com/ChampionLifeFWB" rel="noopener" target="_blank">Facebook</a><a href="https://www.instagram.com/_championlife_/" rel="noopener" target="_blank">Instagram</a><a href="https://www.youtube.com/@ChampionLifeFWB" rel="noopener" target="_blank">YouTube</a></div></div></div><div class="subfooter"><span>© 2026 Champion Life Church</span><span class="subfooter-separator">•</span><span>Legal name: Living Faith</span><nav aria-label="Legal" class="footer-legal"><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a></nav></div></div></footer><script src="assets/js/site.js"></script>
 <script>
 (function(){
   const frame = document.querySelector('.login-crop iframe');
+  const fallback = document.getElementById('openDashboardFallback');
   if (!frame) return;
 
   let loadCount = 0;
   let armed = false;
+  let iframeWasFocused = false;
   const dashboardKey = 'championLifeGiveHubDashboard';
+
+  function rememberDashboard(){
+    try { localStorage.setItem(dashboardKey, '1'); } catch(e) {}
+  }
 
   function enterDashboardMode(){
     document.body.classList.add('giving-dashboard-mode');
-    try { sessionStorage.setItem(dashboardKey, '1'); } catch(e) {}
+    rememberDashboard();
     frame.setAttribute('scrolling','yes');
     frame.title = 'Champion Life Giving Dashboard';
   }
 
-  // If this browser session has already authenticated, keep the full dashboard
-  // treatment on refresh/navigation.
+  // Persist dashboard mode across tabs/reloads once this browser has successfully
+  // entered the authenticated GiveHub area.
   try {
-    if (sessionStorage.getItem(dashboardKey) === '1') {
+    if (localStorage.getItem(dashboardKey) === '1') {
       enterDashboardMode();
     }
   } catch(e) {}
 
+  // Cross-origin-safe interaction signal: when focus moves into the iframe,
+  // document.activeElement becomes the iframe element.
+  window.addEventListener('blur', function(){
+    setTimeout(function(){
+      if (document.activeElement === frame) {
+        iframeWasFocused = true;
+      }
+    }, 0);
+  });
+
   frame.addEventListener('load', function(){
     loadCount++;
 
-    // First load is the login page. A later top-level iframe navigation is the
-    // only cross-origin-safe signal available to the parent page after sign-in.
+    if (document.body.classList.contains('giving-dashboard-mode')) return;
+
     if (loadCount === 1) {
-      // Avoid treating redirects that occur immediately during initial boot as login.
-      setTimeout(function(){ armed = true; }, 1800);
+      // First load is normally the login screen. Arm subsequent navigations.
+      setTimeout(function(){ armed = true; }, 1200);
       return;
     }
 
-    if (armed && !document.body.classList.contains('giving-dashboard-mode')) {
+    // A navigation after interacting with the login iframe is the strongest
+    // cross-origin-safe signal available that authentication has completed.
+    if ((armed || iframeWasFocused) && !document.body.classList.contains('giving-dashboard-mode')) {
       enterDashboardMode();
     }
   });
+
+  // GiveHub may already have an authenticated cookie before this wrapper loads.
+  // In that case its dashboard can be the iframe's *first* load, which the parent
+  // cannot inspect because of browser cross-origin security. This explicit fallback
+  // expands that already-authenticated dashboard without exposing credentials.
+  if (fallback) {
+    fallback.addEventListener('click', function(){
+      enterDashboardMode();
+    });
+  }
 })();
 </script></body></html>
