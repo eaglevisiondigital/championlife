@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Dream Track Access | Champion Life Church</title>
+  <meta name="description" content="Secure access to Champion Life Dream Track.">
+  <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container nav">
+      <a class="brand" href="index.html"><img src="assets/images/logo-gold.webp" alt="Champion Life Church"></a>
+      <button class="menu-btn" aria-label="Open menu">☰</button>
+      <nav class="nav-links"><a href="index.html">Home</a><a href="about.html">About</a><a href="watch.html">Watch</a><a href="ministries.html">Ministries</a><a href="outreach.html">Outreach</a><a href="events.html">Events</a><a href="next-steps.html">Next Steps</a><a href="give.html">Give</a></nav>
+    </div>
+  </header>
+  <main>
+    <section class="page-hero dream-access-hero">
+      <div class="container dream-access-wrap">
+        <span class="eyebrow">Dream Track</span>
+        <h1>Access Dream Track</h1>
+        <p class="lead">Dream Track is provided for those who have been invited to complete the Champion Life serving process. Enter the access code provided by Champion Life to continue.</p>
+        <div class="dream-access-card">
+          <form method="POST" action="/.netlify/functions/dream-track-auth" class="dream-access-form">
+            <input type="hidden" name="return_to" id="dream-return-to" value="/dream-track.html">
+            <label for="dream-access-code">Access Code</label>
+            <input id="dream-access-code" name="access_code" type="password" required autocomplete="current-password" inputmode="text" placeholder="Enter access code">
+            <p class="dream-access-error" id="dream-access-error" hidden>The access code you entered is not correct. Please try again.</p>
+            <button class="btn gold" type="submit">Enter Dream Track</button>
+          </form>
+          <p class="dream-access-help">Need an access code? Contact a Champion Life Dream Team leader.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+  <footer class="footer">
+    <div class="container footer-container">
+      <div class="footer-grid">
+        <div class="footer-brand-panel"><img class="footer-vision-image" src="assets/images/footer-raise-reign-reach.webp" alt="Champion Life Church — Raise, Reign, Reach"></div>
+        <div class="footer-column"><h4>Explore</h4><a href="about.html">About</a><a href="watch.html">Watch</a><a href="ministries.html">Ministries</a><a href="outreach.html">Outreach</a></div>
+        <div class="footer-column"><h4>Connect</h4><a href="plan-your-visit.html">Plan Your Visit</a><a href="next-steps.html">Next Steps</a><a href="prayer.html">Prayer</a><a href="contact.html">Contact</a></div>
+        <div class="footer-column footer-contact"><h4>Champion Life Church</h4><address>650 Denton Blvd NW<br>Fort Walton Beach, FL 32547</address><a class="footer-phone" href="tel:+18507785322">(850) 778-5322</a></div>
+      </div>
+      <div class="subfooter"><span>© 2026 Champion Life Church</span><span class="subfooter-separator">•</span><span>Legal name: Living Faith</span></div>
+    </div>
+  </footer>
+  <script src="assets/js/site.js"></script>
+  <script>
+    (function(){
+      const params=new URLSearchParams(window.location.search);
+      const err=document.getElementById('dream-access-error');
+      if(params.get('error')==='1') err.hidden=false;
+      const requested=params.get('return');
+      if(requested && /^\/dream-track(?:\.html|-\d+\.html|\/)?$/.test(requested)) {
+        document.getElementById('dream-return-to').value=requested;
+      }
+    })();
+  </script>
+</body>
+</html>
