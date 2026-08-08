@@ -76,24 +76,27 @@ body.giving-dashboard-mode .login-mask{
   display:none;
 }
 body.giving-dashboard-mode .dashboard-brandbar{
-  display:flex;
+  display:grid;
+  grid-template-columns:316px 1fr;
   position:absolute;
   z-index:6;
   left:0;
   right:0;
   top:0;
   height:98px;
-  align-items:center;
-  justify-content:space-between;
-  padding:0 26px;
-  background:linear-gradient(90deg,#090b10 0,#11141c 28%,#f7f7fb 28%,#f7f7fb 100%);
+  padding:0;
+  background:#f7f7fb;
   border-bottom:1px solid rgba(0,0,0,.08);
   pointer-events:auto;
 }
 .dashboard-brand-left{
-  width:250px;
+  width:316px;
+  height:98px;
   display:flex;
   align-items:center;
+  padding:0 26px;
+  background:linear-gradient(180deg,#090b10 0%,#11141c 100%);
+  box-sizing:border-box;
 }
 .dashboard-brand-left img{
   display:block;
@@ -103,12 +106,14 @@ body.giving-dashboard-mode .dashboard-brandbar{
   object-position:left center;
 }
 .dashboard-brand-main{
-  display:flex;
-  flex:1;
   min-width:0;
+  height:98px;
+  display:flex;
   align-items:center;
   justify-content:space-between;
-  padding-left:34px;
+  padding:0 26px 0 34px;
+  box-sizing:border-box;
+  background:#f7f7fb;
 }
 .dashboard-brand-title{
   font-size:22px;
@@ -146,17 +151,23 @@ body.giving-dashboard-mode .dashboard-brandbar{
   .manage-brand > p{display:none !important}
 
   body.giving-dashboard-mode .dashboard-brandbar{
+    grid-template-columns:44% 56%;
+    height:74px;
+    padding:0;
+    background:#f7f7fb;
+  }
+  body.giving-dashboard-mode .dashboard-brand-left{
+    width:100%;
     height:74px;
     padding:0 14px;
-    background:linear-gradient(90deg,#090b10 0,#11141c 44%,#f7f7fb 44%,#f7f7fb 100%);
   }
-  body.giving-dashboard-mode .dashboard-brand-left{width:42%}
   body.giving-dashboard-mode .dashboard-brand-left img{
     width:min(190px,38vw);
     max-height:54px;
   }
   body.giving-dashboard-mode .dashboard-brand-main{
-    padding-left:14px;
+    height:74px;
+    padding:0 12px 0 14px;
     gap:10px;
   }
   body.giving-dashboard-mode .dashboard-brand-title{
