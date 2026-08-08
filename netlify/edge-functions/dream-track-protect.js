@@ -1,5 +1,6 @@
 const COOKIE_NAME = "clc_dream_track";
 const TOKEN_PAYLOAD = "champion-life-dream-track-v1";
+const DEFAULT_ACCESS_CODE = "DT26CL";
 
 function readCookie(request, name) {
   const raw = request.headers.get("cookie") || "";
@@ -31,13 +32,7 @@ export default async (request, context) => {
     return context.next();
   }
 
-  const secret = Netlify.env.get("DREAM_TRACK_ACCESS_CODE");
-  if (!secret) {
-    return new Response("Dream Track access is not configured yet.", {
-      status: 503,
-      headers: { "content-type": "text/plain; charset=utf-8" }
-    });
-  }
+  const secret = Netlify.env.get("DREAM_TRACK_ACCESS_CODE") || DEFAULT_ACCESS_CODE;
 
   const expected = await sign(secret);
   const actual = readCookie(request, COOKIE_NAME);

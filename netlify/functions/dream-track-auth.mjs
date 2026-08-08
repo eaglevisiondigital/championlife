@@ -2,6 +2,7 @@ import crypto from "node:crypto";
 
 const COOKIE_NAME = "clc_dream_track";
 const TOKEN_PAYLOAD = "champion-life-dream-track-v1";
+const DEFAULT_ACCESS_CODE = "DT26CL";
 
 function sign(secret) {
   return crypto.createHmac("sha256", secret).update(TOKEN_PAYLOAD).digest("hex");
@@ -17,10 +18,7 @@ export default async (req) => {
     return new Response("Method Not Allowed", { status: 405, headers: { Allow: "POST" } });
   }
 
-  const secret = process.env.DREAM_TRACK_ACCESS_CODE;
-  if (!secret) {
-    return new Response("Dream Track access is not configured yet.", { status: 503 });
-  }
+  const secret = process.env.DREAM_TRACK_ACCESS_CODE || DEFAULT_ACCESS_CODE;
 
   const form = await req.formData();
   const code = String(form.get("access_code") || "").trim();
