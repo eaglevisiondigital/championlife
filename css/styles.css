@@ -367,3 +367,15 @@ body.baptism-modal-open{overflow:hidden}
 .grip-row.coming-soon{opacity:.82}
 .grip-row.coming-soon small{color:#8b8172}
 @media(max-width:650px){.grip-video-stack{gap:26px}}
+
+
+/* Later approved partial updates — merged onto the original working full build */
+.dream-team-submit-wrap{display:flex;justify-content:flex-start}
+.kids-age-mobile{display:none}
+@media(max-width:650px){
+  .dream-team-submit-wrap{justify-content:center}
+  .dream-team-submit-wrap .form-submit{margin-left:auto;margin-right:auto}
+  .kids-age-desktop{display:none}
+  .kids-age-mobile{display:grid!important;grid-template-columns:1fr!important;gap:24px!important;margin:28px 0 0!important;width:100%!important;max-width:100%!important;padding:0!important;overflow:hidden!important}
+  .kids-age-mobile img{display:block!important;width:100%!important;max-width:100%!important;height:auto!important;margin:0!important;padding:0!important;object-fit:contain!important;object-position:center!important;border-radius:22px!important;box-shadow:0 16px 38px rgba(34,28,18,.13)!important;box-sizing:border-box!important}
+}
