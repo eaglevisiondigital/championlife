@@ -1,4 +1,21 @@
 <!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Manage Giving | Champion Life Church</title><meta name="description" content="View and manage your existing GiveHub giving account without losing the Champion Life navigation."><link rel="stylesheet" href="assets/css/styles.css"><style>
+
+/* Manage Giving uses its own lighter Champion Life header treatment only on this page */
+.site-header{
+  background:#f4f1eb !important;
+  border-bottom:1px solid rgba(0,0,0,.10) !important;
+  box-shadow:0 8px 24px rgba(0,0,0,.08) !important;
+}
+.site-header .nav-links a{color:#111 !important}
+.site-header .menu-btn{color:#111 !important}
+.site-header .brand img{
+  width:min(330px,44vw);
+  height:auto;
+  max-height:64px;
+  object-fit:contain;
+  object-position:left center;
+}
+
 .manage-login-page{background:#f4f1eb;padding:126px 0 58px;min-height:760px}
 .manage-login-shell{max-width:760px;margin:0 auto;padding:0 24px}
 .manage-brand{text-align:center;margin:0 auto 24px}
@@ -77,77 +94,74 @@ body.giving-dashboard-mode .login-mask{
   display:none;
 }
 body.giving-dashboard-mode .dashboard-brandbar{
-  display:grid;
-  grid-template-columns:316px 1fr auto;
+  display:flex;
   position:absolute;
   z-index:8;
   left:0;
   right:0;
   top:0;
-  height:98px;
-  padding:0;
-  background:linear-gradient(180deg,#090b10 0%,#11141c 100%);
-  border-bottom:1px solid rgba(255,255,255,.08);
-  box-shadow:0 8px 24px rgba(0,0,0,.18);
+  height:100px;
+  align-items:center;
+  gap:28px;
+  padding:0 30px;
+  background:#f4f1eb;
+  border-bottom:1px solid rgba(0,0,0,.10);
+  box-shadow:0 8px 24px rgba(0,0,0,.10);
+  box-sizing:border-box;
   pointer-events:auto;
 }
 .dashboard-brand-left{
-  width:316px;
-  height:98px;
+  flex:0 0 auto;
+  width:clamp(280px,19vw,390px);
   display:flex;
   align-items:center;
-  padding:0 26px;
-  box-sizing:border-box;
 }
 .dashboard-brand-left img{
   display:block;
-  width:210px;
-  max-height:70px;
+  width:min(335px,100%);
+  height:auto;
+  max-height:68px;
   object-fit:contain;
   object-position:left center;
 }
 .dashboard-brand-main{
+  flex:1 1 auto;
   min-width:0;
-  height:98px;
+  height:100%;
   display:flex;
   align-items:center;
-  justify-content:flex-start;
-  padding:0 28px;
-  box-sizing:border-box;
-  background:transparent;
 }
 .dashboard-brand-title{
-  font-size:24px;
+  font-size:26px;
   line-height:1;
-  font-weight:800;
-  color:#fff;
-  letter-spacing:-.02em;
+  font-weight:850;
+  color:#111;
+  letter-spacing:-.025em;
 }
 .dashboard-back-link{
+  flex:0 0 auto;
   display:inline-flex;
-  align-self:center;
   align-items:center;
   justify-content:center;
-  min-height:44px;
-  margin-right:26px;
-  padding:0 20px;
+  min-height:46px;
+  padding:0 22px;
   border-radius:999px;
-  background:#d3ad4f;
-  color:#111 !important;
+  background:#111;
+  color:#fff !important;
   text-decoration:none;
   font-size:14px;
-  font-weight:900;
+  font-weight:850;
   white-space:nowrap;
-  box-shadow:0 6px 18px rgba(0,0,0,.18);
+  box-shadow:0 6px 18px rgba(0,0,0,.14);
 }
 body.giving-dashboard-mode .dashboard-sidebar-cover{
   display:block;
   position:absolute;
   z-index:7;
   left:0;
-  top:98px;
-  width:316px;
-  height:58px;
+  top:100px;
+  width:clamp(300px,19.3vw,395px);
+  height:56px;
   background:linear-gradient(180deg,#11141c 0%,#15192a 100%);
   pointer-events:none;
 }
@@ -166,47 +180,41 @@ body.giving-dashboard-mode .dashboard-sidebar-cover{
   .manage-brand > p{display:none !important}
 
   body.giving-dashboard-mode .dashboard-brandbar{
-    grid-template-columns:minmax(150px,42%) 1fr auto;
-    height:74px;
-    padding:0;
-    background:linear-gradient(180deg,#090b10 0%,#11141c 100%);
+    height:76px;
+    gap:8px;
+    padding:0 12px;
+    background:#f4f1eb;
   }
   body.giving-dashboard-mode .dashboard-brand-left{
-    width:100%;
-    height:74px;
-    padding:0 12px;
+    width:min(180px,40vw);
   }
   body.giving-dashboard-mode .dashboard-brand-left img{
-    width:min(180px,38vw);
-    max-height:52px;
+    width:100%;
+    max-height:50px;
   }
   body.giving-dashboard-mode .dashboard-brand-main{
-    height:74px;
-    padding:0 10px;
+    min-width:0;
   }
   body.giving-dashboard-mode .dashboard-brand-title{
     font-size:14px;
-    color:#fff;
+    white-space:nowrap;
   }
   body.giving-dashboard-mode .dashboard-back-link{
     min-height:34px;
-    margin-right:10px;
     padding:0 10px;
     font-size:11px;
   }
   body.giving-dashboard-mode .dashboard-sidebar-cover{
-    top:74px;
+    top:76px;
     width:44%;
-    max-width:316px;
-    height:52px;
+    max-width:300px;
+    height:50px;
   }
 }
-</style></head><body><header class="site-header"><div class="container nav"><a class="brand" href="index.html"><img alt="Champion Life Church" src="assets/images/logo-gold.png"/></a><button aria-label="Open menu" class="menu-btn">☰</button><nav class="nav-links"><a href="index.html">Home</a><a href="about.html">About</a><a href="watch.html">Watch</a><a href="ministries.html">Ministries</a><a href="outreach.html">Outreach</a><a href="events.html">Events</a><a href="next-steps.html">Next Steps</a><a href="give.html">Give</a></nav></div></header><main><section class="manage-login-page"><div class="manage-login-shell"><div class="manage-brand"><img src="assets/images/logo-gold.png" alt="Champion Life Church"><h1>Giving Login</h1><p>Sign in securely to view and manage your giving account.</p></div><div class="login-panel"><div class="login-crop"><div class="dashboard-brandbar" aria-hidden="true">
-  <div class="dashboard-brand-left"><img src="assets/images/logo-gold.png" alt="Champion Life Church"></div>
-  <div class="dashboard-brand-main">
-    <div class="dashboard-brand-title">Giving Dashboard</div>
-    <a class="dashboard-back-link" href="index.html">Church Website</a>
-  </div>
+</style></head><body><header class="site-header"><div class="container nav"><a class="brand" href="index.html"><img alt="Champion Life Church" src="assets/images/manage-giving-logo.png"/></a><button aria-label="Open menu" class="menu-btn">☰</button><nav class="nav-links"><a href="index.html">Home</a><a href="about.html">About</a><a href="watch.html">Watch</a><a href="ministries.html">Ministries</a><a href="outreach.html">Outreach</a><a href="events.html">Events</a><a href="next-steps.html">Next Steps</a><a href="give.html">Give</a></nav></div></header><main><section class="manage-login-page"><div class="manage-login-shell"><div class="manage-brand"><img src="assets/images/manage-giving-logo.png" alt="Champion Life Church"><h1>Giving Login</h1><p>Sign in securely to view and manage your giving account.</p></div><div class="login-panel"><div class="login-crop"><div class="dashboard-brandbar">
+  <div class="dashboard-brand-left"><img src="assets/images/manage-giving-logo.png" alt="Champion Life"></div>
+  <div class="dashboard-brand-main"><div class="dashboard-brand-title">Giving Dashboard</div></div>
+  <a class="dashboard-back-link" href="index.html">Church Website</a>
 </div><div class="dashboard-sidebar-cover" aria-hidden="true"></div><div class="login-mask" aria-hidden="true"></div><iframe src="https://www.community.givehub.com/login" title="Champion Life Giving Login" loading="eager" scrolling="no" referrerpolicy="strict-origin-when-cross-origin" allow="payment *; clipboard-write *"></iframe></div></div></div></section></main><footer class="footer"><div class="container footer-container"><div class="footer-grid"><div class="footer-brand-panel"><img alt="Champion Life Church — Raise, Reign, Reach" class="footer-vision-image" src="assets/images/footer-raise-reign-reach.png"/></div><div class="footer-column"><h4>Explore</h4><a href="about.html">About</a><a href="watch.html">Watch</a><a href="ministries.html">Ministries</a><a href="outreach.html">Outreach</a></div><div class="footer-column"><h4>Connect</h4><a href="plan-your-visit.html">Plan Your Visit</a><a href="next-steps.html">Next Steps</a><a href="prayer.html">Prayer</a><a href="contact.html">Contact</a></div><div class="footer-column footer-contact"><h4>Champion Life Church</h4><address>650 Denton Blvd NW<br/>Fort Walton Beach, FL 32547</address><a class="footer-phone" href="tel:+18507785322">(850) 778-5322</a><div class="footer-social"><a href="https://www.facebook.com/ChampionLifeFWB" rel="noopener" target="_blank">Facebook</a><a href="https://www.instagram.com/_championlife_/" rel="noopener" target="_blank">Instagram</a><a href="https://www.youtube.com/@ChampionLifeFWB" rel="noopener" target="_blank">YouTube</a></div></div></div><div class="subfooter"><span>© 2026 Champion Life Church</span><span class="subfooter-separator">•</span><span>Legal name: Living Faith</span><nav aria-label="Legal" class="footer-legal"><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a></nav></div></div></footer><script src="assets/js/site.js"></script>
 <script>
 (function(){
