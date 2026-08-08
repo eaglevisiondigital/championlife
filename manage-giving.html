@@ -16,6 +16,7 @@
    After the iframe navigates away from the initial login document, the wrapper
    expands it to a full-screen dashboard and masks GiveHub's top branding area. */
 .dashboard-brandbar{display:none}
+.dashboard-sidebar-cover{display:none}
 
 body.giving-dashboard-mode{
   overflow:hidden;
@@ -77,16 +78,17 @@ body.giving-dashboard-mode .login-mask{
 }
 body.giving-dashboard-mode .dashboard-brandbar{
   display:grid;
-  grid-template-columns:316px 1fr;
+  grid-template-columns:316px 1fr auto;
   position:absolute;
-  z-index:6;
+  z-index:8;
   left:0;
   right:0;
   top:0;
   height:98px;
   padding:0;
-  background:#f7f7fb;
-  border-bottom:1px solid rgba(0,0,0,.08);
+  background:linear-gradient(180deg,#090b10 0%,#11141c 100%);
+  border-bottom:1px solid rgba(255,255,255,.08);
+  box-shadow:0 8px 24px rgba(0,0,0,.18);
   pointer-events:auto;
 }
 .dashboard-brand-left{
@@ -95,7 +97,6 @@ body.giving-dashboard-mode .dashboard-brandbar{
   display:flex;
   align-items:center;
   padding:0 26px;
-  background:linear-gradient(180deg,#090b10 0%,#11141c 100%);
   box-sizing:border-box;
 }
 .dashboard-brand-left img{
@@ -110,31 +111,45 @@ body.giving-dashboard-mode .dashboard-brandbar{
   height:98px;
   display:flex;
   align-items:center;
-  justify-content:space-between;
-  padding:0 26px 0 34px;
+  justify-content:flex-start;
+  padding:0 28px;
   box-sizing:border-box;
-  background:#f7f7fb;
+  background:transparent;
 }
 .dashboard-brand-title{
-  font-size:22px;
+  font-size:24px;
   line-height:1;
   font-weight:800;
-  color:#111;
+  color:#fff;
   letter-spacing:-.02em;
 }
 .dashboard-back-link{
   display:inline-flex;
+  align-self:center;
   align-items:center;
   justify-content:center;
-  min-height:42px;
-  padding:0 18px;
+  min-height:44px;
+  margin-right:26px;
+  padding:0 20px;
   border-radius:999px;
-  background:#111;
-  color:#fff !important;
+  background:#d3ad4f;
+  color:#111 !important;
   text-decoration:none;
   font-size:14px;
-  font-weight:800;
+  font-weight:900;
   white-space:nowrap;
+  box-shadow:0 6px 18px rgba(0,0,0,.18);
+}
+body.giving-dashboard-mode .dashboard-sidebar-cover{
+  display:block;
+  position:absolute;
+  z-index:7;
+  left:0;
+  top:98px;
+  width:316px;
+  height:58px;
+  background:linear-gradient(180deg,#11141c 0%,#15192a 100%);
+  pointer-events:none;
 }
 
 @media(max-width:700px){
@@ -151,32 +166,39 @@ body.giving-dashboard-mode .dashboard-brandbar{
   .manage-brand > p{display:none !important}
 
   body.giving-dashboard-mode .dashboard-brandbar{
-    grid-template-columns:44% 56%;
+    grid-template-columns:minmax(150px,42%) 1fr auto;
     height:74px;
     padding:0;
-    background:#f7f7fb;
+    background:linear-gradient(180deg,#090b10 0%,#11141c 100%);
   }
   body.giving-dashboard-mode .dashboard-brand-left{
     width:100%;
     height:74px;
-    padding:0 14px;
+    padding:0 12px;
   }
   body.giving-dashboard-mode .dashboard-brand-left img{
-    width:min(190px,38vw);
-    max-height:54px;
+    width:min(180px,38vw);
+    max-height:52px;
   }
   body.giving-dashboard-mode .dashboard-brand-main{
     height:74px;
-    padding:0 12px 0 14px;
-    gap:10px;
+    padding:0 10px;
   }
   body.giving-dashboard-mode .dashboard-brand-title{
-    font-size:16px;
+    font-size:14px;
+    color:#fff;
   }
   body.giving-dashboard-mode .dashboard-back-link{
-    min-height:36px;
-    padding:0 12px;
-    font-size:12px;
+    min-height:34px;
+    margin-right:10px;
+    padding:0 10px;
+    font-size:11px;
+  }
+  body.giving-dashboard-mode .dashboard-sidebar-cover{
+    top:74px;
+    width:44%;
+    max-width:316px;
+    height:52px;
   }
 }
 </style></head><body><header class="site-header"><div class="container nav"><a class="brand" href="index.html"><img alt="Champion Life Church" src="assets/images/logo-gold.png"/></a><button aria-label="Open menu" class="menu-btn">☰</button><nav class="nav-links"><a href="index.html">Home</a><a href="about.html">About</a><a href="watch.html">Watch</a><a href="ministries.html">Ministries</a><a href="outreach.html">Outreach</a><a href="events.html">Events</a><a href="next-steps.html">Next Steps</a><a href="give.html">Give</a></nav></div></header><main><section class="manage-login-page"><div class="manage-login-shell"><div class="manage-brand"><img src="assets/images/logo-gold.png" alt="Champion Life Church"><h1>Giving Login</h1><p>Sign in securely to view and manage your giving account.</p></div><div class="login-panel"><div class="login-crop"><div class="dashboard-brandbar" aria-hidden="true">
@@ -185,7 +207,7 @@ body.giving-dashboard-mode .dashboard-brandbar{
     <div class="dashboard-brand-title">Giving Dashboard</div>
     <a class="dashboard-back-link" href="index.html">Church Website</a>
   </div>
-</div><div class="login-mask" aria-hidden="true"></div><iframe src="https://www.community.givehub.com/login" title="Champion Life Giving Login" loading="eager" scrolling="no" referrerpolicy="strict-origin-when-cross-origin" allow="payment *; clipboard-write *"></iframe></div></div></div></section></main><footer class="footer"><div class="container footer-container"><div class="footer-grid"><div class="footer-brand-panel"><img alt="Champion Life Church — Raise, Reign, Reach" class="footer-vision-image" src="assets/images/footer-raise-reign-reach.png"/></div><div class="footer-column"><h4>Explore</h4><a href="about.html">About</a><a href="watch.html">Watch</a><a href="ministries.html">Ministries</a><a href="outreach.html">Outreach</a></div><div class="footer-column"><h4>Connect</h4><a href="plan-your-visit.html">Plan Your Visit</a><a href="next-steps.html">Next Steps</a><a href="prayer.html">Prayer</a><a href="contact.html">Contact</a></div><div class="footer-column footer-contact"><h4>Champion Life Church</h4><address>650 Denton Blvd NW<br/>Fort Walton Beach, FL 32547</address><a class="footer-phone" href="tel:+18507785322">(850) 778-5322</a><div class="footer-social"><a href="https://www.facebook.com/ChampionLifeFWB" rel="noopener" target="_blank">Facebook</a><a href="https://www.instagram.com/_championlife_/" rel="noopener" target="_blank">Instagram</a><a href="https://www.youtube.com/@ChampionLifeFWB" rel="noopener" target="_blank">YouTube</a></div></div></div><div class="subfooter"><span>© 2026 Champion Life Church</span><span class="subfooter-separator">•</span><span>Legal name: Living Faith</span><nav aria-label="Legal" class="footer-legal"><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a></nav></div></div></footer><script src="assets/js/site.js"></script>
+</div><div class="dashboard-sidebar-cover" aria-hidden="true"></div><div class="login-mask" aria-hidden="true"></div><iframe src="https://www.community.givehub.com/login" title="Champion Life Giving Login" loading="eager" scrolling="no" referrerpolicy="strict-origin-when-cross-origin" allow="payment *; clipboard-write *"></iframe></div></div></div></section></main><footer class="footer"><div class="container footer-container"><div class="footer-grid"><div class="footer-brand-panel"><img alt="Champion Life Church — Raise, Reign, Reach" class="footer-vision-image" src="assets/images/footer-raise-reign-reach.png"/></div><div class="footer-column"><h4>Explore</h4><a href="about.html">About</a><a href="watch.html">Watch</a><a href="ministries.html">Ministries</a><a href="outreach.html">Outreach</a></div><div class="footer-column"><h4>Connect</h4><a href="plan-your-visit.html">Plan Your Visit</a><a href="next-steps.html">Next Steps</a><a href="prayer.html">Prayer</a><a href="contact.html">Contact</a></div><div class="footer-column footer-contact"><h4>Champion Life Church</h4><address>650 Denton Blvd NW<br/>Fort Walton Beach, FL 32547</address><a class="footer-phone" href="tel:+18507785322">(850) 778-5322</a><div class="footer-social"><a href="https://www.facebook.com/ChampionLifeFWB" rel="noopener" target="_blank">Facebook</a><a href="https://www.instagram.com/_championlife_/" rel="noopener" target="_blank">Instagram</a><a href="https://www.youtube.com/@ChampionLifeFWB" rel="noopener" target="_blank">YouTube</a></div></div></div><div class="subfooter"><span>© 2026 Champion Life Church</span><span class="subfooter-separator">•</span><span>Legal name: Living Faith</span><nav aria-label="Legal" class="footer-legal"><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a></nav></div></div></footer><script src="assets/js/site.js"></script>
 <script>
 (function(){
   const frame = document.querySelector('.login-crop iframe');
