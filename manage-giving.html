@@ -73,6 +73,7 @@ body.giving-dashboard-mode .login-panel{
 }
 body.giving-dashboard-mode .login-crop{
   position:fixed;
+  z-index:1;
   inset:0;
   width:100vw;
   height:100vh;
@@ -81,11 +82,12 @@ body.giving-dashboard-mode .login-crop{
 }
 body.giving-dashboard-mode .login-crop iframe{
   position:absolute;
+  inset:0;
   left:0;
-  top:112px;
+  top:0;
   transform:none;
   width:100vw;
-  height:calc(100vh - 112px);
+  height:100vh;
   border:0;
   background:#fff;
 }
@@ -96,7 +98,7 @@ body.giving-dashboard-mode .dashboard-brandbar{
   display:grid;
   grid-template-columns:1fr auto 1fr;
   position:fixed;
-  z-index:10000;
+  z-index:2147483000;
   left:0;
   right:0;
   top:0;
@@ -230,11 +232,6 @@ body.giving-dashboard-mode .dashboard-sidebar-cover{display:none !important;}
     font-size:10px;
     box-shadow:none;
   }
-  
-  body.giving-dashboard-mode .login-crop iframe{
-    top:76px;
-    height:calc(100vh - 76px);
-  }
     body.giving-dashboard-mode .dashboard-sidebar-cover{display:none !important;}
 }
 
@@ -257,20 +254,61 @@ body.giving-dashboard-mode .dashboard-sidebar-cover{display:none !important;}
   let loadCount = 0;
   let armed = false;
   let iframeWasFocused = false;
+  let dashboardSettled = false;
+  let suppressNextLoad = false;
   const dashboardKey = 'championLifeGiveHubDashboard';
 
   function rememberDashboard(){
     try { localStorage.setItem(dashboardKey, '1'); } catch(e) {}
   }
 
+  function clearDashboardMemory(){
+    try {
+      localStorage.removeItem(dashboardKey);
+      sessionStorage.removeItem(dashboardKey);
+    } catch(e) {}
+  }
+
   function enterDashboardMode(){
     document.body.classList.add('giving-dashboard-mode');
     rememberDashboard();
     frame.setAttribute('scrolling','yes');
-    frame.title = 'Champion Life Giving Dashboard';
+    frame.title = 'Champion Life Dashboard';
+    iframeWasFocused = false;
+    dashboardSettled = false;
+
+    // Give the authenticated GiveHub dashboard time to finish its initial boot.
+    // After that, a new full iframe load following direct user interaction is
+    // treated as GiveHub's native logout navigation back to its login page.
+    setTimeout(function(){
+      dashboardSettled = true;
+    }, 2200);
   }
 
-  // Persist dashboard mode across tabs/reloads once this browser has successfully
+  function restoreChampionLogin(navigateToLogin){
+    clearDashboardMemory();
+    document.body.classList.remove('giving-dashboard-mode');
+    iframeWasFocused = false;
+    dashboardSettled = false;
+    loadCount = 0;
+    armed = false;
+    frame.setAttribute('scrolling','no');
+    frame.title = 'Champion Life Dashboard Login';
+    window.scrollTo(0,0);
+
+    if (navigateToLogin) {
+      // Our gold Log Out button sends GiveHub to its secure login route.
+      suppressNextLoad = true;
+      frame.src = 'https://www.community.givehub.com/login';
+    }
+
+    setTimeout(function(){
+      armed = true;
+      suppressNextLoad = false;
+    }, 1400);
+  }
+
+  // Persist dashboard mode across reloads once this browser has successfully
   // entered the authenticated GiveHub area.
   try {
     if (localStorage.getItem(dashboardKey) === '1') {
@@ -291,44 +329,44 @@ body.giving-dashboard-mode .dashboard-sidebar-cover{display:none !important;}
   frame.addEventListener('load', function(){
     loadCount++;
 
-    if (document.body.classList.contains('giving-dashboard-mode')) return;
+    if (suppressNextLoad) {
+      suppressNextLoad = false;
+      return;
+    }
 
+    // POST-LOGIN:
+    // GiveHub is cross-origin, so the parent cannot read its current URL.
+    // Its app normally handles dashboard navigation client-side. The native
+    // Logout action, however, causes a new top-level iframe document load.
+    // If that load follows direct interaction in the iframe after the dashboard
+    // has settled, restore our branded Dashboard Login around GiveHub's login.
+    if (document.body.classList.contains('giving-dashboard-mode')) {
+      if (dashboardSettled && iframeWasFocused) {
+        restoreChampionLogin(false);
+      } else {
+        iframeWasFocused = false;
+      }
+      return;
+    }
+
+    // PRE-LOGIN:
     if (loadCount === 1) {
-      // First load is normally the login screen. Arm subsequent navigations.
       setTimeout(function(){ armed = true; }, 1200);
       return;
     }
 
     // A navigation after interacting with the login iframe is the strongest
     // cross-origin-safe signal available that authentication has completed.
-    if ((armed || iframeWasFocused) && !document.body.classList.contains('giving-dashboard-mode')) {
+    if (armed || iframeWasFocused) {
       enterDashboardMode();
     }
   });
 
-
-  function restoreChampionLogin(){
-    try {
-      localStorage.removeItem(dashboardKey);
-      sessionStorage.removeItem(dashboardKey);
-    } catch(e) {}
-
-    document.body.classList.remove('giving-dashboard-mode');
-    iframeWasFocused = false;
-    loadCount = 0;
-    armed = false;
-    frame.setAttribute('scrolling','no');
-    frame.title = 'Champion Life Dashboard Login';
-
-    // Send the secure GiveHub iframe to its login route while immediately
-    // restoring the Champion Life branded/cropped login treatment.
-    frame.src = 'https://www.community.givehub.com/login';
-    window.scrollTo(0,0);
-    setTimeout(function(){ armed = true; }, 1400);
-  }
-
+  // Our branded logout always returns directly to the Champion Life login state.
   if (logoutBtn) {
-    logoutBtn.addEventListener('click', restoreChampionLogin);
+    logoutBtn.addEventListener('click', function(){
+      restoreChampionLogin(true);
+    });
   }
 })();
 </script></body></html>
