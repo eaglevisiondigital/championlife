@@ -1,1 +1,253 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Watch | Champion Life Church</title><meta name="description" content="Champion Life Church in Fort Walton Beach, Florida."><link rel="stylesheet" href="assets/css/styles.css"></head><body><header class="site-header"><div class="container nav"><a class="brand" href="index.html"><img src="assets/images/logo-gold.png" alt="Champion Life Church"></a><button class="menu-btn" aria-label="Open menu">☰</button><nav class="nav-links"><a href="index.html">Home</a><a href="about.html">About</a><a href="watch.html">Watch</a><a href="ministries.html">Ministries</a><a href="outreach.html">Outreach</a><a href="events.html">Events</a><a href="next-steps.html">Next Steps</a><a href="give.html">Give</a></nav></div></header><main><section class="page-hero"><div class="container"><span class="eyebrow">Watch</span><h1>Faith comes by hearing.</h1><p class="lead">Join Champion Life live or explore messages designed to build faith and help you live victoriously.</p></div></section><section class="section"><div class="container"><div class="video"><iframe src="https://www.youtube.com/embed/live_stream?channel=UCG7j8eiL-qW8nzr2Sg7o2oA&autoplay=1&mute=1&playsinline=1&rel=0" title="Champion Life Live" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div><div class="actions"><a class="btn gold" target="_blank" href="https://www.youtube.com/@ChampionLifeFWB/streams">Open Live & Recent Streams</a><a class="btn outline" target="_blank" href="https://www.youtube.com/@ChampionLifeFWB">YouTube Channel</a></div></div></section><section class="section light"><div class="container"><span class="eyebrow">Browse</span><h2>Messages, prayer and daily faith.</h2><div class="grid three"><a class="card" href="https://www.youtube.com/@ChampionLifeFWB/streams"><img src="assets/images/roddy-bible.jpg"><div class="card-body"><h3>Sunday Messages</h3><p>Watch the latest services and message archive.</p></div></a><a class="card" href="prayer.html"><img src="assets/images/prayer-psalm91.jpg"><div class="card-body"><h3>6 AM Prayer</h3><p>Prayer, confessions and faith-building resources.</p></div></a><a class="card" href="https://www.inrevival.com/daily-supplements"><img src="assets/images/worship-girl.jpg"><div class="card-body"><h3>Daily Supplements</h3><p>Daily spiritual nutrition for victorious Christian living.</p></div></a></div></div></section></main><footer class="footer"><div class="container footer-container"><div class="footer-grid"><div class="footer-brand-panel"><img class="footer-vision-image" src="assets/images/footer-raise-reign-reach.png" alt="Champion Life Church — Raise, Reign, Reach"></div><div class="footer-column"><h4>Explore</h4><a href="about.html">About</a><a href="watch.html">Watch</a><a href="ministries.html">Ministries</a><a href="outreach.html">Outreach</a></div><div class="footer-column"><h4>Connect</h4><a href="plan-your-visit.html">Plan Your Visit</a><a href="next-steps.html">Next Steps</a><a href="prayer.html">Prayer</a><a href="contact.html">Contact</a></div><div class="footer-column footer-contact"><h4>Champion Life Church</h4><address>650 Denton Blvd NW<br>Fort Walton Beach, FL 32547</address><a class="footer-phone" href="tel:+18507785322">(850) 778-5322</a><div class="footer-social"><a href="https://www.facebook.com/ChampionLifeFWB" target="_blank" rel="noopener">Facebook</a><a href="https://www.instagram.com/_championlife_/" target="_blank" rel="noopener">Instagram</a><a href="https://www.youtube.com/@ChampionLifeFWB" target="_blank" rel="noopener">YouTube</a></div></div></div><div class="subfooter"><span>© 2026 Champion Life Church</span><span class="subfooter-separator">•</span><span>Legal name: Living Faith</span><nav class="footer-legal" aria-label="Legal"><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a></nav></div></div></footer><script src="assets/js/site.js"></script></body></html>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Watch | Champion Life Church</title><meta name="description" content="Champion Life Church in Fort Walton Beach, Florida."><link rel="stylesheet" href="assets/css/styles.css">
+<style>
+.watch-live-section{padding-top:28px}
+.watch-status{display:flex;align-items:center;gap:10px;margin:0 0 14px;font-weight:800;letter-spacing:.02em}
+.watch-status-dot{width:10px;height:10px;border-radius:50%;background:#d3ad4f;box-shadow:0 0 0 5px rgba(211,173,79,.12)}
+.watch-status.is-live .watch-status-dot{background:#e63946;box-shadow:0 0 0 5px rgba(230,57,70,.13)}
+.watch-live-layout{display:grid;grid-template-columns:minmax(0,1fr);gap:18px;align-items:stretch}
+.watch-live-layout.has-chat{grid-template-columns:minmax(0,1.78fr) minmax(300px,.72fr)}
+.watch-player-shell{position:relative;width:100%;aspect-ratio:16/9;overflow:hidden;border-radius:24px;background:#080808;box-shadow:0 24px 55px rgba(0,0,0,.22)}
+.watch-placeholder,.watch-live-player{position:absolute;inset:0;width:100%;height:100%;border:0}
+.watch-placeholder{display:block;object-fit:cover;z-index:2}
+.watch-live-player{display:none;z-index:3;background:#000}
+.watch-player-shell.is-live .watch-placeholder{display:none}
+.watch-player-shell.is-live .watch-live-player{display:block}
+.watch-chat-panel{display:none;min-height:100%;border-radius:24px;overflow:hidden;background:#fff;border:1px solid rgba(0,0,0,.08);box-shadow:0 24px 55px rgba(0,0,0,.12)}
+.watch-live-layout.has-chat .watch-chat-panel{display:flex;flex-direction:column}
+.watch-chat-heading{padding:16px 18px;border-bottom:1px solid rgba(0,0,0,.08);display:flex;flex-direction:column;gap:3px}
+.watch-chat-heading strong{font-size:18px}
+.watch-chat-heading span{font-size:13px;color:#666}
+.watch-live-chat{flex:1;width:100%;min-height:480px;border:0;background:#fff}
+.watch-mobile-chat{display:none;margin-top:14px}
+.watch-give-card{margin-top:26px;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:30px;align-items:center;padding:28px 32px;border-radius:24px;background:linear-gradient(135deg,#0b0b0c,#171717);color:#fff;box-shadow:0 20px 45px rgba(0,0,0,.16)}
+.watch-give-card h2{margin:7px 0 8px;color:#fff}
+.watch-give-card p{margin:0;max-width:850px;color:rgba(255,255,255,.78);line-height:1.7}
+.watch-give-card .eyebrow{color:#d3ad4f}
+.watch-give-button{white-space:nowrap;min-width:150px;text-align:center}
+.watch-secondary-actions{margin-top:18px}
+@media (max-width: 980px){
+  .watch-live-layout.has-chat{grid-template-columns:1fr}
+  .watch-chat-panel{display:none!important}
+  .watch-mobile-chat.is-live{display:block}
+}
+@media (max-width: 700px){
+  .watch-live-section{padding-top:18px}
+  .watch-player-shell{border-radius:16px}
+  .watch-give-card{grid-template-columns:1fr;padding:24px 20px;gap:18px;border-radius:18px}
+  .watch-give-button{width:100%}
+}
+</style>
+</head><body><header class="site-header"><div class="container nav"><a class="brand" href="index.html"><img src="assets/images/logo-gold.png" alt="Champion Life Church"></a><button class="menu-btn" aria-label="Open menu">☰</button><nav class="nav-links"><a href="index.html">Home</a><a href="about.html">About</a><a href="watch.html">Watch</a><a href="ministries.html">Ministries</a><a href="outreach.html">Outreach</a><a href="events.html">Events</a><a href="next-steps.html">Next Steps</a><a href="give.html">Give</a></nav></div></header><main><section class="page-hero"><div class="container"><span class="eyebrow">Watch</span><h1>Faith comes by hearing.</h1><p class="lead">Join Champion Life live or explore messages designed to build faith and help you live victoriously.</p></div></section>
+<section class="section watch-live-section">
+  <div class="container">
+    <div class="watch-status" id="watchStatus" aria-live="polite">
+      <span class="watch-status-dot"></span>
+      <span id="watchStatusText">Champion Life Online</span>
+    </div>
+
+    <div class="watch-live-layout" id="watchLiveLayout">
+      <div class="watch-player-shell" id="watchPlayerShell">
+        <img
+          id="watchPlaceholder"
+          class="watch-placeholder"
+          src="assets/images/watch-join-us-approved.png"
+          alt="Champion Life Church — join us for our live broadcast"
+        >
+        <iframe
+          id="watchLivePlayer"
+          class="watch-live-player"
+          src="about:blank"
+          title="Champion Life Live"
+          allow="autoplay; encrypted-media; picture-in-picture; fullscreen"
+          referrerpolicy="strict-origin-when-cross-origin"
+          allowfullscreen
+        ></iframe>
+      </div>
+
+      <aside class="watch-chat-panel" id="watchChatPanel" aria-label="YouTube Live Chat">
+        <div class="watch-chat-heading">
+          <strong>Live Chat</strong>
+          <span>Join the conversation during service.</span>
+        </div>
+        <iframe
+          id="watchLiveChat"
+          class="watch-live-chat"
+          src="about:blank"
+          title="Champion Life YouTube Live Chat"
+        ></iframe>
+      </aside>
+    </div>
+
+    <div class="watch-mobile-chat" id="watchMobileChat">
+      <a class="btn outline" id="watchMobileChatLink" href="https://www.youtube.com/@ChampionLifeFWB/streams" target="_blank" rel="noopener">
+        Join the Live Chat on YouTube
+      </a>
+    </div>
+
+    <div class="watch-give-card">
+      <div>
+        <span class="eyebrow">Worship Through Giving</span>
+        <h2>Participate in this opportunity to sow.</h2>
+        <p>Even when you’re joining us online, you can participate in this moment of worship and sow into what God is doing through Champion Life Church. Thank you for your faithfulness and generosity.</p>
+      </div>
+      <a class="btn gold watch-give-button" href="giving-portal.html">Give Now</a>
+    </div>
+
+    <div class="actions watch-secondary-actions">
+      <a class="btn outline" target="_blank" rel="noopener" href="https://www.youtube.com/@ChampionLifeFWB/streams">Live & Recent Streams</a>
+      <a class="btn outline" target="_blank" rel="noopener" href="https://www.youtube.com/@ChampionLifeFWB">YouTube Channel</a>
+    </div>
+  </div>
+</section>
+<section class="section light"><div class="container"><span class="eyebrow">Browse</span><h2>Messages, prayer and daily faith.</h2><div class="grid three"><a class="card" href="https://www.youtube.com/@ChampionLifeFWB/streams"><img src="assets/images/roddy-bible.jpg"><div class="card-body"><h3>Sunday Messages</h3><p>Watch the latest services and message archive.</p></div></a><a class="card" href="prayer.html"><img src="assets/images/prayer-psalm91.jpg"><div class="card-body"><h3>6 AM Prayer</h3><p>Prayer, confessions and faith-building resources.</p></div></a><a class="card" href="https://www.inrevival.com/daily-supplements"><img src="assets/images/worship-girl.jpg"><div class="card-body"><h3>Daily Supplements</h3><p>Daily spiritual nutrition for victorious Christian living.</p></div></a></div></div></section></main><footer class="footer"><div class="container footer-container"><div class="footer-grid"><div class="footer-brand-panel"><img class="footer-vision-image" src="assets/images/footer-raise-reign-reach.png" alt="Champion Life Church — Raise, Reign, Reach"></div><div class="footer-column"><h4>Explore</h4><a href="about.html">About</a><a href="watch.html">Watch</a><a href="ministries.html">Ministries</a><a href="outreach.html">Outreach</a></div><div class="footer-column"><h4>Connect</h4><a href="plan-your-visit.html">Plan Your Visit</a><a href="next-steps.html">Next Steps</a><a href="prayer.html">Prayer</a><a href="contact.html">Contact</a></div><div class="footer-column footer-contact"><h4>Champion Life Church</h4><address>650 Denton Blvd NW<br>Fort Walton Beach, FL 32547</address><a class="footer-phone" href="tel:+18507785322">(850) 778-5322</a><div class="footer-social"><a href="https://www.facebook.com/ChampionLifeFWB" target="_blank" rel="noopener">Facebook</a><a href="https://www.instagram.com/_championlife_/" target="_blank" rel="noopener">Instagram</a><a href="https://www.youtube.com/@ChampionLifeFWB" target="_blank" rel="noopener">YouTube</a></div></div></div><div class="subfooter"><span>© 2026 Champion Life Church</span><span class="subfooter-separator">•</span><span>Legal name: Living Faith</span><nav class="footer-legal" aria-label="Legal"><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a></nav></div></div></footer><script src="assets/js/site.js"></script>
+<script>
+(function(){
+  const CHANNEL_ID = 'UCG7j8eiL-qW8nzr2Sg7o2oA';
+  const CHANNEL_STREAMS = 'https://www.youtube.com/@ChampionLifeFWB/streams';
+  const LIVE_EMBED = 'https://www.youtube.com/embed/live_stream?channel=' + CHANNEL_ID + '&autoplay=1&mute=1&playsinline=1&rel=0';
+  const LIVE_STATUS_ENDPOINT = '/.netlify/functions/youtube-live';
+
+  const placeholder = document.getElementById('watchPlaceholder');
+  const playerShell = document.getElementById('watchPlayerShell');
+  const player = document.getElementById('watchLivePlayer');
+  const layout = document.getElementById('watchLiveLayout');
+  const chat = document.getElementById('watchLiveChat');
+  const mobileChat = document.getElementById('watchMobileChat');
+  const mobileChatLink = document.getElementById('watchMobileChatLink');
+  const status = document.getElementById('watchStatus');
+  const statusText = document.getElementById('watchStatusText');
+
+  let lastLiveVideoId = null;
+  let lastState = '';
+
+  function chicagoParts(){
+    const parts = new Intl.DateTimeFormat('en-US',{
+      timeZone:'America/Chicago',
+      weekday:'short',hour:'2-digit',minute:'2-digit',hour12:false
+    }).formatToParts(new Date());
+    const result = {};
+    parts.forEach(p => result[p.type] = p.value);
+    return result;
+  }
+
+  function isStartingSoon(){
+    const p = chicagoParts();
+    const mins = Number(p.hour) * 60 + Number(p.minute);
+    if (p.weekday === 'Sun') return mins >= (10*60+25) && mins < (10*60+30);
+    if (p.weekday === 'Wed') return mins >= (18*60+25) && mins < (18*60+30);
+    return false;
+  }
+
+  function setOfflineState(){
+    if (lastState === 'offline') return;
+    lastState = 'offline';
+    lastLiveVideoId = null;
+    playerShell.classList.remove('is-live');
+    layout.classList.remove('has-chat');
+    mobileChat.classList.remove('is-live');
+    chat.src = 'about:blank';
+    player.src = 'about:blank';
+    placeholder.src = isStartingSoon()
+      ? 'assets/images/watch-starts-shortly-approved.png'
+      : 'assets/images/watch-join-us-approved.png';
+    status.classList.remove('is-live');
+    statusText.textContent = isStartingSoon() ? 'Service Starts Shortly' : 'Champion Life Online';
+  }
+
+  function setStartingSoonState(){
+    if (playerShell.classList.contains('is-live')) return;
+    placeholder.src = 'assets/images/watch-starts-shortly-approved.png';
+    status.classList.remove('is-live');
+    statusText.textContent = 'Service Starts Shortly';
+    lastState = 'starting-soon';
+  }
+
+  function setLiveState(videoId){
+    if (!videoId) return;
+    const sameVideo = lastLiveVideoId === videoId && playerShell.classList.contains('is-live');
+    lastLiveVideoId = videoId;
+    lastState = 'live';
+
+    if (!sameVideo) {
+      player.src = 'https://www.youtube.com/embed/' + encodeURIComponent(videoId) + '?autoplay=1&mute=1&playsinline=1&rel=0';
+      const domain = window.location.hostname;
+      chat.src = 'https://www.youtube.com/live_chat?v=' + encodeURIComponent(videoId) + '&embed_domain=' + encodeURIComponent(domain);
+      mobileChatLink.href = 'https://www.youtube.com/watch?v=' + encodeURIComponent(videoId);
+    }
+
+    playerShell.classList.add('is-live');
+    status.classList.add('is-live');
+    statusText.textContent = 'Live Now';
+
+    if (window.matchMedia('(min-width:981px)').matches) {
+      layout.classList.add('has-chat');
+      mobileChat.classList.remove('is-live');
+    } else {
+      layout.classList.remove('has-chat');
+      mobileChat.classList.add('is-live');
+    }
+  }
+
+  async function checkLive(){
+    try {
+      const response = await fetch(LIVE_STATUS_ENDPOINT + '?t=' + Date.now(), {cache:'no-store'});
+      if (!response.ok) throw new Error('live status unavailable');
+      const data = await response.json();
+      if (data.live && data.videoId) {
+        setLiveState(data.videoId);
+      } else {
+        if (isStartingSoon()) setStartingSoonState();
+        else setOfflineState();
+      }
+    } catch (err) {
+      // Safe fallback: preserve the approved scheduled graphics. During the usual
+      // service window, load YouTube's channel-based live player even if status
+      // detection is temporarily unavailable.
+      const p = chicagoParts();
+      const mins = Number(p.hour) * 60 + Number(p.minute);
+      const inServiceWindow =
+        (p.weekday === 'Sun' && mins >= 10*60+30 && mins <= 13*60) ||
+        (p.weekday === 'Wed' && mins >= 18*60+30 && mins <= 21*60);
+
+      if (inServiceWindow) {
+        lastState = 'live-fallback';
+        player.src = LIVE_EMBED;
+        playerShell.classList.add('is-live');
+        status.classList.add('is-live');
+        statusText.textContent = 'Live Broadcast';
+        layout.classList.remove('has-chat');
+        mobileChat.classList.add('is-live');
+        mobileChatLink.href = CHANNEL_STREAMS;
+      } else if (isStartingSoon()) {
+        setStartingSoonState();
+      } else {
+        setOfflineState();
+      }
+    }
+  }
+
+  function refreshScheduledGraphic(){
+    if (!playerShell.classList.contains('is-live')) {
+      if (isStartingSoon()) setStartingSoonState();
+      else if (lastState === 'starting-soon') setOfflineState();
+    }
+  }
+
+  window.addEventListener('resize', function(){
+    if (!playerShell.classList.contains('is-live') || !lastLiveVideoId) return;
+    if (window.matchMedia('(min-width:981px)').matches) {
+      layout.classList.add('has-chat');
+      mobileChat.classList.remove('is-live');
+    } else {
+      layout.classList.remove('has-chat');
+      mobileChat.classList.add('is-live');
+    }
+  });
+
+  setOfflineState();
+  checkLive();
+  setInterval(checkLive, 60000);
+  setInterval(refreshScheduledGraphic, 15000);
+})();
+</script>
+</body></html>
