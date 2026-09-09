@@ -9,12 +9,18 @@
 <link rel="canonical" href="https://championlifefwb.com/tap/">
 <link rel="stylesheet" href="../assets/css/styles.css?v=202608061549">
 <style>
-:root{--tap-gold:#d3ad4f;--tap-gold2:#efcf76;--tap-ink:#08090b;--tap-panel:#111318;--tap-line:rgba(255,255,255,.11);--tap-muted:#aaaeb7}
+:root{--tap-gold:#d3ad4f;--tap-gold2:#efcf76;--tap-ink:#08090b;--tap-panel:#141414;--tap-line:rgba(255,255,255,.11);--tap-muted:#aaaeb7}
 *{box-sizing:border-box}
-body{background:#07080a;color:#fff}
-.tap-page{min-height:100vh;background:
- radial-gradient(circle at 50% -6%,rgba(211,173,79,.22),transparent 31rem),
- linear-gradient(180deg,#0b0d11 0,#07080a 38%,#0a0b0d 100%)}
+body{background:#080808;color:#fff}
+/* Keep the header in document flow so the full crown clears it at every size. */
+.site-header{position:sticky;top:0;background:#080808;backdrop-filter:none}
+.site-header .nav{height:auto;min-height:84px;padding:12px 0;position:relative}
+.site-header .brand{min-width:0;flex-shrink:1}
+.site-header .brand img{height:auto;object-fit:contain}
+.site-header .menu-btn{flex:0 0 44px;min-height:44px;padding:0}
+@media(max-width:980px){.site-header .nav-links{position:absolute;top:100%;max-height:70vh;overflow-y:auto}}
+@media(max-width:650px){.site-header .nav{min-height:74px;width:calc(100% - 32px);gap:16px}}
+.tap-page{min-height:100vh;background:#080808}
 .tap-hero{padding:54px 0 26px;text-align:center;position:relative;overflow:hidden}
 .tap-hero:after{content:"";position:absolute;left:50%;bottom:0;width:min(780px,86%);height:1px;transform:translateX(-50%);background:linear-gradient(90deg,transparent,var(--tap-gold),transparent)}
 .tap-mark{width:min(360px,72vw);height:auto;margin:0 auto 22px;display:block}
@@ -25,10 +31,10 @@ body{background:#07080a;color:#fff}
 .tap-main{padding:30px 0 70px}
 .tap-container{width:min(980px,calc(100% - 34px));margin:auto}
 .tap-featured{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-bottom:32px}
-.tap-feature{position:relative;display:flex;align-items:center;gap:17px;min-height:112px;padding:22px;border:1px solid rgba(211,173,79,.34);border-radius:21px;background:linear-gradient(135deg,rgba(211,173,79,.18),rgba(255,255,255,.025));color:#fff;text-decoration:none;box-shadow:0 18px 45px rgba(0,0,0,.2);transition:.2s ease;overflow:hidden}
+.tap-feature{position:relative;display:flex;align-items:center;gap:17px;min-height:112px;padding:22px;border:1px solid rgba(255,255,255,.18);border-radius:21px;background:#141414;color:#fff;text-decoration:none;box-shadow:0 18px 45px rgba(0,0,0,.2);transition:.2s ease;overflow:hidden}
 .tap-feature:before{content:"";position:absolute;inset:0;background:linear-gradient(100deg,transparent,rgba(255,255,255,.05),transparent);transform:translateX(-100%);transition:.4s ease}
 .tap-feature:hover{transform:translateY(-2px);border-color:rgba(239,207,118,.65)}.tap-feature:hover:before{transform:translateX(100%)}
-.tap-icon{width:54px;height:54px;flex:0 0 54px;border-radius:16px;display:grid;place-items:center;background:var(--tap-gold);color:#111}
+.tap-icon{width:54px;height:54px;flex:0 0 54px;border-radius:16px;display:grid;place-items:center;background:#080808;color:var(--tap-gold2);border:1px solid rgba(255,255,255,.16)}
 .tap-icon svg{width:25px;height:25px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 .tap-feature strong{display:block;font-size:19px;line-height:1.15;margin-bottom:6px}.tap-feature small{display:block;color:#c9c9cd;font-size:13px;line-height:1.35}
 .tap-arrow{margin-left:auto;color:var(--tap-gold2);font-size:24px;font-weight:800}
@@ -37,22 +43,46 @@ body{background:#07080a;color:#fff}
 .tap-section-head h2{font-size:19px;margin:0}.tap-section-head span{color:#7d8088;font-size:12px;text-transform:uppercase;letter-spacing:.15em;font-weight:800}
 .tap-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
 .tap-link{display:flex;align-items:center;gap:13px;min-height:72px;padding:15px 17px;border-radius:16px;background:var(--tap-panel);border:1px solid var(--tap-line);color:#fff;text-decoration:none;transition:.2s ease}
-.tap-link:hover{border-color:rgba(211,173,79,.5);background:#15171c;transform:translateY(-1px)}
-.tap-mini-icon{width:38px;height:38px;flex:0 0 38px;border-radius:11px;display:grid;place-items:center;background:#0a0b0d;border:1px solid rgba(211,173,79,.28);color:var(--tap-gold2)}
+.tap-link:hover{border-color:rgba(211,173,79,.5);background:#1c1c1c;transform:translateY(-1px)}
+.tap-mini-icon{width:38px;height:38px;flex:0 0 38px;border-radius:11px;display:grid;place-items:center;background:#080808;border:1px solid rgba(255,255,255,.16);color:var(--tap-gold2)}
 .tap-mini-icon svg{width:19px;height:19px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 .tap-link strong{font-size:14.5px;line-height:1.25}.tap-link small{display:block;color:#8f939c;font-size:11.5px;margin-top:3px}.tap-link .tap-arrow{font-size:18px}
-.tap-home{margin-top:32px;display:flex;align-items:center;justify-content:space-between;gap:20px;padding:22px;border-radius:18px;background:#f2eee5;color:#111;text-decoration:none;box-shadow:0 16px 38px rgba(0,0,0,.2)}
-.tap-home strong{display:block;font-size:19px}.tap-home span{display:block;color:#656057;font-size:13px;margin-top:3px}.tap-home b{color:#8d6919;font-size:24px}
+.tap-home{margin-top:32px;display:flex;align-items:center;justify-content:space-between;gap:20px;padding:22px;border-radius:18px;background:#fff;color:#111;text-decoration:none;box-shadow:0 16px 38px rgba(0,0,0,.2)}
+.tap-home strong{display:block;font-size:19px}.tap-home span{display:block;color:#444;font-size:13px;margin-top:3px}.tap-home strong{color:#111}.tap-home b{color:#111;font-size:24px}
 .tap-footer-note{text-align:center;margin:25px auto 0;color:#6f7279;font-size:12px;line-height:1.5}
 .tap-footer-note strong{color:#aaaeb7}
 @media(max-width:680px){
-  .site-header .nav-links{display:none}.site-header .menu-btn{display:block}
+  .site-header .nav-links{display:none}.site-header .nav-links.open{display:flex}.site-header .menu-btn{display:block}
   .tap-hero{padding:37px 0 22px}.tap-mark{width:min(290px,72vw);margin-bottom:18px}
   .tap-main{padding-top:24px}.tap-container{width:min(100% - 24px,620px)}
   .tap-featured{grid-template-columns:1fr;gap:10px}.tap-feature{min-height:88px;padding:16px 15px;border-radius:17px}.tap-icon{width:47px;height:47px;flex-basis:47px;border-radius:14px}.tap-feature strong{font-size:17px}.tap-feature small{font-size:12px}
   .tap-list{grid-template-columns:1fr;gap:8px}.tap-link{min-height:66px;padding:13px 14px}.tap-section{margin-top:24px}.tap-section-head{margin-bottom:10px}.tap-home{margin-top:27px;padding:18px 17px}
 }
 @media(max-width:390px){.tap-container{width:calc(100% - 18px)}.tap-feature{padding:14px 12px}.tap-link{padding:12px}.tap-feature strong{font-size:16px}.tap-section-head span{display:none}}
+
+/* Flexible text columns and compact, readable mobile spacing. */
+.tap-feature>span:nth-child(2),.tap-link>span:nth-child(2),.tap-home>span{min-width:0;flex:1;overflow-wrap:anywhere}
+.tap-arrow{flex:0 0 auto;color:#fff}
+.tap-feature small,.tap-link small{font-size:.875rem;line-height:1.45;color:#b8b8b8}
+.tap-link strong{display:block;font-size:1rem}
+.tap-section-head{flex-wrap:wrap;align-items:center;gap:6px 18px}
+.tap-section-head h2{line-height:1.2}
+.tap-section-head span{color:#aaa}
+.tap-home span{font-size:1rem}
+.tap-footer-note{font-size:.875rem;color:#aaa}
+.tap-feature:focus-visible,.tap-link:focus-visible,.tap-home:focus-visible,.menu-btn:focus-visible{outline:2px solid var(--tap-gold2);outline-offset:4px}
+@media(max-width:680px){
+  .tap-container{width:calc(100% - 32px)}
+  .tap-hero{padding:28px 0 24px}
+  .tap-hero h1{font-size:clamp(1.875rem,7.5vw,3rem);line-height:1.08}
+  .tap-mark{width:min(290px,80%);object-fit:contain}
+  .tap-feature,.tap-link{gap:12px}
+  .tap-feature strong{line-height:1.3}
+  .tap-section-head{flex-direction:column;align-items:flex-start}
+  .tap-section-head span{font-size:.75rem;letter-spacing:.1em}
+  .tap-main{padding-bottom:calc(40px + env(safe-area-inset-bottom,0px))}
+}
+@media(prefers-reduced-motion:reduce){.tap-feature,.tap-feature:before,.tap-link{transition:none}}
 </style>
 </head>
 <body>
