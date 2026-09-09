@@ -1,6 +1,6 @@
 <!doctype html>
 
-<html data-tap-version="2" lang="en">
+<html data-tap-version="3" lang="en">
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width,initial-scale=1,viewport-fit=cover" name="viewport"/>
@@ -101,7 +101,8 @@ a:focus-visible, button:focus-visible {outline: 2px solid #fff; outline-offset: 
  .tap-brand {flex-basis: 235px; max-width: calc(100% - 60px);}
  .tap-container {width: min(560px, calc(100% - 32px));}
  .tap-hero {padding: 24px 0 24px;}
- .tap-mark {width: min(250px, 82%); margin-bottom: 18px;}
+ /* TAP V3: keep the header logo; hide the duplicate hero logo on phones only. */
+ .tap-mark {display: none;}
  .tap-hero h1 {font-size: clamp(1.75rem, 7.5vw, 2.2rem); margin-top: 10px; margin-bottom: 12px;}
  .tap-hero p {font-size: .9375rem; line-height: 1.6; max-width: 460px;}
  .tap-featured, .tap-list {grid-template-columns: minmax(0, 1fr); gap: 9px;}
@@ -143,16 +144,16 @@ a:focus-visible, button:focus-visible {outline: 2px solid #fff; outline-offset: 
 <a class="tap-feature" href="https://www.community.givehub.com/forms/connection"><span aria-hidden="true" class="tap-icon"><svg aria-hidden="true" focusable="false" viewbox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M19 8v6M22 11h-6"></path></svg></span><span class="tap-card-copy"><strong>I'm New / Connect</strong><small>Tell us you're here and get connected</small></span><span aria-hidden="true" class="tap-arrow">→</span></a>
 <a class="tap-feature" href="https://www.community.givehub.com/forms/prayerrequest"><span aria-hidden="true" class="tap-icon"><svg aria-hidden="true" focusable="false" viewbox="0 0 24 24"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z"></path></svg></span><span class="tap-card-copy"><strong>Prayer Request</strong><small>Let us agree with you in prayer</small></span><span aria-hidden="true" class="tap-arrow">→</span></a>
 </div>
+<section aria-labelledby="tap-section-2" class="tap-section"><div class="tap-section-head"><h2 id="tap-section-2">Give &amp; Reach</h2><span>Make an impact</span></div><div class="tap-list tap-list--giving">
+<a class="tap-link" href="https://championlifefwb.com/give"><span aria-hidden="true" class="tap-mini-icon"><svg aria-hidden="true" focusable="false" viewbox="0 0 24 24"><path d="M12 1v22M17 5H9.5a3.5 3.5 0 0 0 0 7H14a3.5 3.5 0 0 1 0 7H6"></path></svg></span><span class="tap-card-copy"><strong>Give Online</strong><small>Give securely online</small></span><span aria-hidden="true" class="tap-arrow">→</span></a>
+<a class="tap-link" href="https://cash.app/$championlifefwb"><span aria-hidden="true" class="tap-mini-icon"><svg aria-hidden="true" focusable="false" viewbox="0 0 24 24"><rect height="14" rx="2" width="18" x="3" y="5"></rect><path d="M7 15h4M15 9h2"></path></svg></span><span class="tap-card-copy"><strong>Give with Cash App</strong><small>$championlifefwb</small></span><span aria-hidden="true" class="tap-arrow">→</span></a>
+<a class="tap-link" href="https://championlifefwb.com/outreach"><span aria-hidden="true" class="tap-mini-icon"><svg aria-hidden="true" focusable="false" viewbox="0 0 24 24"><circle cx="12" cy="12" r="9"></circle><path d="M3 12h18M12 3a15 15 0 0 1 0 18M12 3a15 15 0 0 0 0 18"></path></svg></span><span class="tap-card-copy"><strong>Partner with Outreach</strong><small>Help us reach our community</small></span><span aria-hidden="true" class="tap-arrow">→</span></a>
+</div></section>
 <section aria-labelledby="tap-section-1" class="tap-section"><div class="tap-section-head"><h2 id="tap-section-1">Connect &amp; Grow</h2><span>Your next step</span></div><div class="tap-list">
 <a class="tap-link" href="https://championlifefwb.com/next-steps"><span aria-hidden="true" class="tap-mini-icon"><svg aria-hidden="true" focusable="false" viewbox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></span><span class="tap-card-copy"><strong>Next Steps</strong><small>Grow, serve and belong</small></span><span aria-hidden="true" class="tap-arrow">→</span></a>
 <a class="tap-link" href="https://championlifefwb.com/dream-track"><span aria-hidden="true" class="tap-mini-icon"><svg aria-hidden="true" focusable="false" viewbox="0 0 24 24"><path d="M12 2v20M2 12h20"></path></svg></span><span class="tap-card-copy"><strong>Sign Up for Dream Team</strong><small>Start with Dream Track</small></span><span aria-hidden="true" class="tap-arrow">→</span></a>
 <a class="tap-link" href="https://championlifefwb.com/baptism-interest"><span aria-hidden="true" class="tap-mini-icon"><svg aria-hidden="true" focusable="false" viewbox="0 0 24 24"><path d="M12 2s6 6.5 6 12a6 6 0 0 1-12 0c0-5.5 6-12 6-12z"></path></svg></span><span class="tap-card-copy"><strong>Water Baptism</strong><small>Take your public next step</small></span><span aria-hidden="true" class="tap-arrow">→</span></a>
 <a class="tap-link" href="https://championlifefwb.com/prayer-confessions"><span aria-hidden="true" class="tap-mini-icon"><svg aria-hidden="true" focusable="false" viewbox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg></span><span class="tap-card-copy"><strong>6AM Prayer Confessions</strong><small>Pray the Word with us</small></span><span aria-hidden="true" class="tap-arrow">→</span></a>
-</div></section>
-<section aria-labelledby="tap-section-2" class="tap-section"><div class="tap-section-head"><h2 id="tap-section-2">Give &amp; Reach</h2><span>Make an impact</span></div><div class="tap-list tap-list--giving">
-<a class="tap-link" href="https://championlifefwb.com/give"><span aria-hidden="true" class="tap-mini-icon"><svg aria-hidden="true" focusable="false" viewbox="0 0 24 24"><path d="M12 1v22M17 5H9.5a3.5 3.5 0 0 0 0 7H14a3.5 3.5 0 0 1 0 7H6"></path></svg></span><span class="tap-card-copy"><strong>Give Online</strong><small>Give securely online</small></span><span aria-hidden="true" class="tap-arrow">→</span></a>
-<a class="tap-link" href="https://cash.app/$championlifefwb"><span aria-hidden="true" class="tap-mini-icon"><svg aria-hidden="true" focusable="false" viewbox="0 0 24 24"><rect height="14" rx="2" width="18" x="3" y="5"></rect><path d="M7 15h4M15 9h2"></path></svg></span><span class="tap-card-copy"><strong>Give with Cash App</strong><small>$championlifefwb</small></span><span aria-hidden="true" class="tap-arrow">→</span></a>
-<a class="tap-link" href="https://championlifefwb.com/outreach"><span aria-hidden="true" class="tap-mini-icon"><svg aria-hidden="true" focusable="false" viewbox="0 0 24 24"><circle cx="12" cy="12" r="9"></circle><path d="M3 12h18M12 3a15 15 0 0 1 0 18M12 3a15 15 0 0 0 0 18"></path></svg></span><span class="tap-card-copy"><strong>Partner with Outreach</strong><small>Help us reach our community</small></span><span aria-hidden="true" class="tap-arrow">→</span></a>
 </div></section>
 <section aria-labelledby="tap-section-3" class="tap-section"><div class="tap-section-head"><h2 id="tap-section-3">Stay Connected</h2><span>Champion Life online</span></div><div class="tap-list">
 <a class="tap-link" href="https://www.youtube.com/@ChampionLifeFWB"><span aria-hidden="true" class="tap-mini-icon"><svg aria-hidden="true" focusable="false" viewbox="0 0 24 24"><path d="M22 12s0-4-1-6c-.5-1-1.5-1.5-2.5-1.7C16.5 4 12 4 12 4s-4.5 0-6.5.3C4.5 4.5 3.5 5 3 6c-1 2-1 6-1 6s0 4 1 6c.5 1 1.5 1.5 2.5 1.7C7.5 20 12 20 12 20s4.5 0 6.5-.3c1-.2 2-.7 2.5-1.7 1-2 1-6 1-6z"></path><path d="m10 9 5 3-5 3z"></path></svg></span><span class="tap-card-copy"><strong>Subscribe to YouTube</strong><small>Messages, services and ministry</small></span><span aria-hidden="true" class="tap-arrow">→</span></a>
