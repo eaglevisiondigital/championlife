@@ -1,99 +1,200 @@
 <!doctype html>
-<html lang="en">
+
+<html data-tap-version="2" lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Tap | Champion Life Church</title>
-<meta name="description" content="Quick access to Champion Life Church sermon notes, giving, prayer, next steps, Dream Team, baptism, outreach and more.">
-<meta name="robots" content="index,follow">
-<link rel="canonical" href="https://championlifefwb.com/tap/">
-<link rel="stylesheet" href="../assets/css/styles.css?v=202608061549">
-<style>
-:root{--tap-gold:#d3ad4f;--tap-gold2:#efcf76;--tap-ink:#08090b;--tap-panel:#111318;--tap-line:rgba(255,255,255,.11);--tap-muted:#aaaeb7}
-*{box-sizing:border-box}
-body{background:#07080a;color:#fff}
-.tap-page{min-height:100vh;background:
- radial-gradient(circle at 50% -6%,rgba(211,173,79,.22),transparent 31rem),
- linear-gradient(180deg,#0b0d11 0,#07080a 38%,#0a0b0d 100%)}
-.tap-hero{padding:54px 0 26px;text-align:center;position:relative;overflow:hidden}
-.tap-hero:after{content:"";position:absolute;left:50%;bottom:0;width:min(780px,86%);height:1px;transform:translateX(-50%);background:linear-gradient(90deg,transparent,var(--tap-gold),transparent)}
-.tap-mark{width:min(360px,72vw);height:auto;margin:0 auto 22px;display:block}
-.tap-eyebrow{display:inline-flex;align-items:center;gap:9px;color:var(--tap-gold2);font-size:12px;font-weight:900;letter-spacing:.18em;text-transform:uppercase}
-.tap-eyebrow:before,.tap-eyebrow:after{content:"";width:25px;height:1px;background:currentColor;opacity:.75}
-.tap-hero h1{margin:11px 0 11px;font-size:clamp(39px,7vw,72px);line-height:.98;letter-spacing:-.045em}
-.tap-hero p{max-width:650px;margin:0 auto;color:#c3c4c8;font-size:clamp(16px,2vw,20px);line-height:1.6}
-.tap-main{padding:30px 0 70px}
-.tap-container{width:min(980px,calc(100% - 34px));margin:auto}
-.tap-featured{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-bottom:32px}
-.tap-feature{position:relative;display:flex;align-items:center;gap:17px;min-height:112px;padding:22px;border:1px solid rgba(211,173,79,.34);border-radius:21px;background:linear-gradient(135deg,rgba(211,173,79,.18),rgba(255,255,255,.025));color:#fff;text-decoration:none;box-shadow:0 18px 45px rgba(0,0,0,.2);transition:.2s ease;overflow:hidden}
-.tap-feature:before{content:"";position:absolute;inset:0;background:linear-gradient(100deg,transparent,rgba(255,255,255,.05),transparent);transform:translateX(-100%);transition:.4s ease}
-.tap-feature:hover{transform:translateY(-2px);border-color:rgba(239,207,118,.65)}.tap-feature:hover:before{transform:translateX(100%)}
-.tap-icon{width:54px;height:54px;flex:0 0 54px;border-radius:16px;display:grid;place-items:center;background:var(--tap-gold);color:#111}
-.tap-icon svg{width:25px;height:25px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
-.tap-feature strong{display:block;font-size:19px;line-height:1.15;margin-bottom:6px}.tap-feature small{display:block;color:#c9c9cd;font-size:13px;line-height:1.35}
-.tap-arrow{margin-left:auto;color:var(--tap-gold2);font-size:24px;font-weight:800}
-.tap-section{margin-top:28px}
-.tap-section-head{display:flex;align-items:end;justify-content:space-between;gap:18px;margin:0 4px 12px}
-.tap-section-head h2{font-size:19px;margin:0}.tap-section-head span{color:#7d8088;font-size:12px;text-transform:uppercase;letter-spacing:.15em;font-weight:800}
-.tap-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
-.tap-link{display:flex;align-items:center;gap:13px;min-height:72px;padding:15px 17px;border-radius:16px;background:var(--tap-panel);border:1px solid var(--tap-line);color:#fff;text-decoration:none;transition:.2s ease}
-.tap-link:hover{border-color:rgba(211,173,79,.5);background:#15171c;transform:translateY(-1px)}
-.tap-mini-icon{width:38px;height:38px;flex:0 0 38px;border-radius:11px;display:grid;place-items:center;background:#0a0b0d;border:1px solid rgba(211,173,79,.28);color:var(--tap-gold2)}
-.tap-mini-icon svg{width:19px;height:19px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
-.tap-link strong{font-size:14.5px;line-height:1.25}.tap-link small{display:block;color:#8f939c;font-size:11.5px;margin-top:3px}.tap-link .tap-arrow{font-size:18px}
-.tap-home{margin-top:32px;display:flex;align-items:center;justify-content:space-between;gap:20px;padding:22px;border-radius:18px;background:#f2eee5;color:#111;text-decoration:none;box-shadow:0 16px 38px rgba(0,0,0,.2)}
-.tap-home strong{display:block;font-size:19px}.tap-home span{display:block;color:#656057;font-size:13px;margin-top:3px}.tap-home b{color:#8d6919;font-size:24px}
-.tap-footer-note{text-align:center;margin:25px auto 0;color:#6f7279;font-size:12px;line-height:1.5}
-.tap-footer-note strong{color:#aaaeb7}
-@media(max-width:680px){
-  .site-header .nav-links{display:none}.site-header .menu-btn{display:block}
-  .tap-hero{padding:37px 0 22px}.tap-mark{width:min(290px,72vw);margin-bottom:18px}
-  .tap-main{padding-top:24px}.tap-container{width:min(100% - 24px,620px)}
-  .tap-featured{grid-template-columns:1fr;gap:10px}.tap-feature{min-height:88px;padding:16px 15px;border-radius:17px}.tap-icon{width:47px;height:47px;flex-basis:47px;border-radius:14px}.tap-feature strong{font-size:17px}.tap-feature small{font-size:12px}
-  .tap-list{grid-template-columns:1fr;gap:8px}.tap-link{min-height:66px;padding:13px 14px}.tap-section{margin-top:24px}.tap-section-head{margin-bottom:10px}.tap-home{margin-top:27px;padding:18px 17px}
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1,viewport-fit=cover" name="viewport"/>
+<title>Quick Access | Champion Life Church</title>
+<meta content="Quick access to Champion Life Church sermon notes, giving, prayer, next steps, Dream Team, baptism, outreach and more." name="description"/>
+<meta content="index,follow" name="robots"/>
+<link href="https://championlifefwb.com/tap/" rel="canonical"/>
+
+<style id="tap-page-v2-styles">
+/* TAP V2 — isolated black / white styles; gold is restricted to small accents.
+   Sticky header stays in document flow. No fixed overlay, spacer guesswork or cropping. */
+:root {
+  color-scheme: dark;
+  --tap-black: #080808;
+  --tap-panel: #111111;
+  --tap-panel-hover: #191919;
+  --tap-line: #303030;
+  --tap-white: #ffffff;
+  --tap-muted: #b8b8b8;
+  --tap-gold: #c9a35a;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  background: var(--tap-black);
+  color: var(--tap-white);
 }
-@media(max-width:390px){.tap-container{width:calc(100% - 18px)}.tap-feature{padding:14px 12px}.tap-link{padding:12px}.tap-feature strong{font-size:16px}.tap-section-head span{display:none}}
+*, *::before, *::after {box-sizing: border-box;}
+html {margin: 0; scroll-padding-top: 7rem; -webkit-text-size-adjust: 100%; text-size-adjust: 100%;}
+body.tap-body {margin: 0; padding: 0; min-width: 0; background: var(--tap-black); color: var(--tap-white);}
+button, input {font: inherit;}
+button, a {-webkit-tap-highlight-color: transparent; touch-action: manipulation;}
+a {color: inherit; text-decoration: none;}
+button {cursor: pointer;}
+[hidden] {display: none !important;}
+a:focus-visible, button:focus-visible {outline: 2px solid #fff; outline-offset: 4px;}
+.tap-skip {position: absolute; top: -12rem; left: 1rem; z-index: 101; padding: .75rem 1rem; border-radius: .5rem; background: #fff; color: #000; font-weight: 700;}
+.tap-skip:focus {top: 1rem;}
+/* The actual header height sets the starting position of the hero on every device. */
+.tap-header {position: sticky; top: 0; z-index: 100; margin: 0; padding: 0; background: #080808; border-bottom: 1px solid #292929;}
+.tap-header-row {max-width: 1320px; margin: 0 auto; display: flex; align-items: center; flex-wrap: wrap; justify-content: space-between; gap: 12px 24px; padding: 18px max(24px, env(safe-area-inset-right)) 18px max(24px, env(safe-area-inset-left));}
+.tap-brand {display: flex; align-items: center; flex: 0 1 290px; min-width: 0; min-height: 44px;}
+.tap-brand img {display: block; width: 100%; height: auto; object-fit: contain; object-position: left center;}
+.tap-nav {display: flex; flex-wrap: wrap; align-items: center; justify-content: flex-end; gap: 2px; margin-left: auto;}
+.tap-nav a {display: flex; align-items: center; min-height: 44px; padding: 11px 10px; border-radius: 8px; color: #fff; font-size: .9375rem; line-height: 1.35; font-weight: 650;}
+.tap-menu-button {display: flex; align-items: center; justify-content: center; flex: 0 0 44px; width: 44px; height: 44px; padding: 10px; border: 1px solid #333; border-radius: 10px; color: #fff; background: #111;}
+.tap-menu-button svg {width: 22px; height: 22px; stroke: currentColor; stroke-width: 2; stroke-linecap: round; fill: none;}
+.tap-menu-button .tap-menu-close {display: none;}
+.tap-menu-button[aria-expanded="true"] .tap-menu-lines {display: none;}
+.tap-menu-button[aria-expanded="true"] .tap-menu-close {display: block;}
+.tap-page {margin: 0; padding: 0; background: #080808;}
+.tap-container {width: min(1040px, calc(100% - 48px)); margin: 0 auto;}
+.tap-hero {position: relative; margin: 0; padding: 36px 0 28px; text-align: center; background: #080808;}
+.tap-mark {display: block; width: min(300px, 80%); height: auto; object-fit: contain; margin: 0 auto 22px;}
+.tap-eyebrow {display: inline-flex; align-items: center; justify-content: center; gap: 12px; color: #bfbfbf; font-size: .6875rem; line-height: 1.5; letter-spacing: .18em; font-weight: 700; text-transform: uppercase;}
+.tap-eyebrow::before, .tap-eyebrow::after {content: ""; width: 24px; height: 1px; background: var(--tap-gold);}
+.tap-hero h1 {margin: 12px 0 14px; color: #fff; font-size: clamp(1.75rem, 4.5vw, 3.4rem); line-height: 1.09; letter-spacing: -.045em; font-weight: 800;}
+.tap-hero p {max-width: 570px; margin: 0 auto; color: var(--tap-muted); font-size: 1rem; line-height: 1.6;}
+.tap-main {padding: 0 0 calc(28px + env(safe-area-inset-bottom));}
+.tap-featured {display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin: 0;}
+.tap-feature, .tap-link {display: grid; grid-template-columns: 44px minmax(0, 1fr) 18px; gap: 14px; align-items: center; position: relative; min-width: 0; padding: 18px; min-height: 100px; border: 1px solid var(--tap-line); border-radius: 16px; background: var(--tap-panel); color: #fff; transition: border-color 150ms ease, background-color 150ms ease;}
+.tap-feature {border-color: #414141;}
+.tap-card-copy {min-width: 0; overflow-wrap: anywhere;}
+.tap-feature strong, .tap-link strong {display: block; margin: 0; color: #fff; font-size: 1.0625rem; font-weight: 700; line-height: 1.3; letter-spacing: -.015em;}
+.tap-feature small, .tap-link small {display: block; margin: 5px 0 0; color: var(--tap-muted); font-size: .875rem; line-height: 1.45; font-weight: 400;}
+.tap-icon, .tap-mini-icon {display: grid; place-items: center; width: 44px; height: 44px; border-radius: 12px; background: #080808; border: 1px solid #3b3b3b; color: #fff;}
+.tap-icon svg, .tap-mini-icon svg {display: block; width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round;}
+.tap-arrow {justify-self: end; color: var(--tap-gold); font-size: 1.25rem; line-height: 1; font-weight: 650;}
+.tap-section {margin: 28px 0 0;}
+.tap-section-head {display: flex; align-items: baseline; justify-content: space-between; flex-wrap: wrap; gap: 6px 16px; margin: 0 2px 12px;}
+.tap-section-head h2 {color: #fff; margin: 0; font-size: 1.1875rem; line-height: 1.3; font-weight: 750; letter-spacing: -.025em;}
+.tap-section-head > span {color: #adadad; font-size: .625rem; line-height: 1.5; letter-spacing: .12em; font-weight: 650; text-transform: uppercase;}
+.tap-list {display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px;}
+.tap-link {min-height: 88px; padding: 16px; grid-template-columns: 40px minmax(0, 1fr) 16px; gap: 12px;}
+.tap-link strong {font-size: .96875rem;}
+.tap-mini-icon {width: 40px; height: 40px; border-radius: 11px;}
+.tap-mini-icon svg {width: 20px; height: 20px;}
+.tap-home {display: grid; grid-template-columns: minmax(0, 1fr) 20px; gap: 16px; align-items: center; min-height: 88px; margin: 28px 0 0; padding: 18px 20px; border-radius: 16px; border: 1px solid #fff; background: #fff; color: #000;}
+.tap-home > span {min-width: 0; overflow-wrap: anywhere;}
+.tap-home strong {display: block; color: #000; font-size: 1.0625rem; line-height: 1.35; font-weight: 750;}
+.tap-home span span {display: block; margin-top: 4px; color: #454545; font-size: .875rem; line-height: 1.45;}
+.tap-home b {font-size: 1.5rem; color: #000; font-weight: 650;}
+.tap-footer-note {margin: 24px 0 0; color: #aaa; font-size: .8125rem; line-height: 1.65; text-align: center; overflow-wrap: anywhere;}
+.tap-footer-note strong {font-weight: 650; color: #d4d4d4;}
+@media (hover: hover) and (pointer: fine) {
+ .tap-feature:hover, .tap-link:hover {background: var(--tap-panel-hover); border-color: #737373;}
+ .tap-home:hover {background: #ededed; border-color: #ededed;}
+ .tap-nav a:hover {background: #1b1b1b;}
+}
+@media (min-width: 900px) {.tap-list--giving {grid-template-columns: repeat(3, minmax(0, 1fr));}}
+@media (max-width: 1199px) {
+ .tap-header-row {padding-top: 14px; padding-bottom: 14px; column-gap: 16px;}
+ .tap-brand {flex-basis: 260px;}
+ .tap-nav {flex: 0 0 100%; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 4px; padding: 10px 0 2px; margin: 0; border-top: 1px solid #303030; max-height: 65vh; max-height: 65dvh; overflow-y: auto; overscroll-behavior-y: contain;}
+ .tap-nav a {padding: 13px; background: #111; font-size: 1rem; min-width: 0; overflow-wrap: anywhere;}
+}
+@media (max-width: 639px) {
+ .tap-header-row {padding: 12px max(16px, env(safe-area-inset-right)) 12px max(16px, env(safe-area-inset-left)); gap: 12px;}
+ .tap-brand {flex-basis: 235px; max-width: calc(100% - 60px);}
+ .tap-container {width: min(560px, calc(100% - 32px));}
+ .tap-hero {padding: 24px 0 24px;}
+ .tap-mark {width: min(250px, 82%); margin-bottom: 18px;}
+ .tap-hero h1 {font-size: clamp(1.75rem, 7.5vw, 2.2rem); margin-top: 10px; margin-bottom: 12px;}
+ .tap-hero p {font-size: .9375rem; line-height: 1.6; max-width: 460px;}
+ .tap-featured, .tap-list {grid-template-columns: minmax(0, 1fr); gap: 9px;}
+ .tap-feature, .tap-link {grid-template-columns: 40px minmax(0, 1fr) 16px; gap: 12px; min-height: 86px; padding: 16px 14px; border-radius: 15px;}
+ .tap-icon, .tap-mini-icon {width: 40px; height: 40px; border-radius: 11px;}
+ .tap-feature strong, .tap-link strong {font-size: 1rem; line-height: 1.35;}
+ .tap-feature small, .tap-link small {margin-top: 4px; font-size: .875rem;}
+ .tap-section {margin-top: 24px;}
+ .tap-section-head {margin-bottom: 10px;}
+ .tap-section-head > span {display: none;}
+ .tap-home {padding: 17px 18px; min-height: 88px; margin-top: 24px;}
+}
+@media (max-width: 359px) {
+ .tap-header-row {padding-left: 14px; padding-right: 14px;}
+ .tap-brand {flex-basis: 208px;}
+ .tap-container {width: calc(100% - 28px);}
+ .tap-feature, .tap-link {grid-template-columns: 36px minmax(0, 1fr) 14px; padding: 14px 12px; gap: 10px;}
+ .tap-icon, .tap-mini-icon {width: 36px; height: 36px; border-radius: 10px;}
+ .tap-feature strong, .tap-link strong {font-size: .96875rem;}
+}
+@media (prefers-reduced-motion: reduce) {
+ *, *::before, *::after {animation: none !important; transition: none !important; scroll-behavior: auto !important;}
+}
 </style>
-</head>
-<body>
-<header class="site-header"><div class="container nav"><a class="brand" href="../index.html"><img src="../assets/images/logo-gold.png" alt="Champion Life Church"></a><button class="menu-btn" aria-label="Open menu">☰</button><nav class="nav-links"><a href="../index.html">Home</a><a href="../about.html">About</a><a href="../watch.html">Watch</a><a href="../ministries.html">Ministries</a><a href="../outreach.html">Outreach</a><a href="../events.html">Events</a><a href="../next-steps.html">Next Steps</a><a href="../give.html">Give</a></nav></div></header>
-<main class="tap-page">
+<meta content="#080808" name="theme-color"/><meta content="tap-mobile-brand-v2-20260909" name="champion-life-build"/></head>
+<body class="tap-body"><a class="tap-skip" href="#main-content">Skip to quick links</a>
+<header class="tap-header"><div class="tap-header-row"><a aria-label="Champion Life Church home" class="tap-brand" href="../index.html"><img alt="Champion Life Church" decoding="async" fetchpriority="high" height="400" src="/tap/assets/champion-life-logo.png" width="2049"/></a><button aria-controls="tap-navigation" aria-expanded="false" aria-label="Open navigation menu" class="tap-menu-button" hidden="" type="button"><svg aria-hidden="true" focusable="false" viewbox="0 0 24 24"><g class="tap-menu-lines"><path d="M4 6h16M4 12h16M4 18h16"></path></g><g class="tap-menu-close"><path d="m6 6 12 12M18 6 6 18"></path></g></svg></button><nav aria-label="Main navigation" class="tap-nav" id="tap-navigation"><a href="../index.html">Home</a><a href="../about.html">About</a><a href="../watch.html">Watch</a><a href="../ministries.html">Ministries</a><a href="../outreach.html">Outreach</a><a href="../events.html">Events</a><a href="../next-steps.html">Next Steps</a><a href="../give.html">Give</a></nav></div></header>
+<main class="tap-page" id="main-content">
 <section class="tap-hero"><div class="tap-container">
-  <img class="tap-mark" src="../assets/images/logo-gold.png" alt="Champion Life Church">
-  <span class="tap-eyebrow">Quick Access</span>
-  <h1>Everything you need.<br>One tap away.</h1>
-  <p>Follow along with service, connect, take your next step, give, pray, and stay connected with Champion Life.</p>
+<img alt="Champion Life Church" class="tap-mark" decoding="async" height="400" src="/tap/assets/champion-life-logo.png" width="2049"/>
+<span class="tap-eyebrow">Quick Access</span>
+<h1>Everything you need.<br/>One tap away.</h1>
+<p>Follow along with service, connect, take your next step, give, pray, and stay connected with Champion Life.</p>
 </div></section>
 <section class="tap-main"><div class="tap-container">
-
-<div class="tap-featured">
-  <a class="tap-feature" href="https://championlifefwb.com/sermon-notes.html#sermon-notes-frame"><span class="tap-icon"><svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/><path d="M8 7h8M8 11h6"/></svg></span><span><strong>Today's Sermon Notes</strong><small>Follow along with today's message</small></span><span class="tap-arrow">→</span></a>
-  <a class="tap-feature" href="https://championlifefwb.com/watch"><span class="tap-icon"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m10 9 5 3-5 3z"/></svg></span><span><strong>Watch Live</strong><small>Join the current or latest service</small></span><span class="tap-arrow">→</span></a>
-  <a class="tap-feature" href="https://www.community.givehub.com/forms/connection"><span class="tap-icon"><svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M19 8v6M22 11h-6"/></svg></span><span><strong>I'm New / Connect</strong><small>Tell us you're here and get connected</small></span><span class="tap-arrow">→</span></a>
-  <a class="tap-feature" href="https://www.community.givehub.com/forms/prayerrequest"><span class="tap-icon"><svg viewBox="0 0 24 24"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z"/></svg></span><span><strong>Prayer Request</strong><small>Let us agree with you in prayer</small></span><span class="tap-arrow">→</span></a>
+<div aria-label="Featured quick links" class="tap-featured" role="navigation">
+<a class="tap-feature" href="https://championlifefwb.com/sermon-notes.html#sermon-notes-frame"><span aria-hidden="true" class="tap-icon"><svg aria-hidden="true" focusable="false" viewbox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path><path d="M8 7h8M8 11h6"></path></svg></span><span class="tap-card-copy"><strong>Today's Sermon Notes</strong><small>Follow along with today's message</small></span><span aria-hidden="true" class="tap-arrow">→</span></a>
+<a class="tap-feature" href="https://championlifefwb.com/watch"><span aria-hidden="true" class="tap-icon"><svg aria-hidden="true" focusable="false" viewbox="0 0 24 24"><rect height="14" rx="2" width="18" x="3" y="5"></rect><path d="m10 9 5 3-5 3z"></path></svg></span><span class="tap-card-copy"><strong>Watch Live</strong><small>Join the current or latest service</small></span><span aria-hidden="true" class="tap-arrow">→</span></a>
+<a class="tap-feature" href="https://www.community.givehub.com/forms/connection"><span aria-hidden="true" class="tap-icon"><svg aria-hidden="true" focusable="false" viewbox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M19 8v6M22 11h-6"></path></svg></span><span class="tap-card-copy"><strong>I'm New / Connect</strong><small>Tell us you're here and get connected</small></span><span aria-hidden="true" class="tap-arrow">→</span></a>
+<a class="tap-feature" href="https://www.community.givehub.com/forms/prayerrequest"><span aria-hidden="true" class="tap-icon"><svg aria-hidden="true" focusable="false" viewbox="0 0 24 24"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z"></path></svg></span><span class="tap-card-copy"><strong>Prayer Request</strong><small>Let us agree with you in prayer</small></span><span aria-hidden="true" class="tap-arrow">→</span></a>
 </div>
-
-<section class="tap-section"><div class="tap-section-head"><h2>Connect & Grow</h2><span>Your next step</span></div><div class="tap-list">
-  <a class="tap-link" href="https://championlifefwb.com/next-steps"><span class="tap-mini-icon"><svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span><span><strong>Next Steps</strong><small>Grow, serve and belong</small></span><span class="tap-arrow">→</span></a>
-  <a class="tap-link" href="https://championlifefwb.com/dream-track"><span class="tap-mini-icon"><svg viewBox="0 0 24 24"><path d="M12 2v20M2 12h20"/></svg></span><span><strong>Sign Up for Dream Team</strong><small>Start with Dream Track</small></span><span class="tap-arrow">→</span></a>
-  <a class="tap-link" href="https://championlifefwb.com/baptism-interest"><span class="tap-mini-icon"><svg viewBox="0 0 24 24"><path d="M12 2s6 6.5 6 12a6 6 0 0 1-12 0c0-5.5 6-12 6-12z"/></svg></span><span><strong>Water Baptism</strong><small>Take your public next step</small></span><span class="tap-arrow">→</span></a>
-  <a class="tap-link" href="https://championlifefwb.com/prayer-confessions"><span class="tap-mini-icon"><svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></span><span><strong>6AM Prayer Confessions</strong><small>Pray the Word with us</small></span><span class="tap-arrow">→</span></a>
+<section aria-labelledby="tap-section-1" class="tap-section"><div class="tap-section-head"><h2 id="tap-section-1">Connect &amp; Grow</h2><span>Your next step</span></div><div class="tap-list">
+<a class="tap-link" href="https://championlifefwb.com/next-steps"><span aria-hidden="true" class="tap-mini-icon"><svg aria-hidden="true" focusable="false" viewbox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></span><span class="tap-card-copy"><strong>Next Steps</strong><small>Grow, serve and belong</small></span><span aria-hidden="true" class="tap-arrow">→</span></a>
+<a class="tap-link" href="https://championlifefwb.com/dream-track"><span aria-hidden="true" class="tap-mini-icon"><svg aria-hidden="true" focusable="false" viewbox="0 0 24 24"><path d="M12 2v20M2 12h20"></path></svg></span><span class="tap-card-copy"><strong>Sign Up for Dream Team</strong><small>Start with Dream Track</small></span><span aria-hidden="true" class="tap-arrow">→</span></a>
+<a class="tap-link" href="https://championlifefwb.com/baptism-interest"><span aria-hidden="true" class="tap-mini-icon"><svg aria-hidden="true" focusable="false" viewbox="0 0 24 24"><path d="M12 2s6 6.5 6 12a6 6 0 0 1-12 0c0-5.5 6-12 6-12z"></path></svg></span><span class="tap-card-copy"><strong>Water Baptism</strong><small>Take your public next step</small></span><span aria-hidden="true" class="tap-arrow">→</span></a>
+<a class="tap-link" href="https://championlifefwb.com/prayer-confessions"><span aria-hidden="true" class="tap-mini-icon"><svg aria-hidden="true" focusable="false" viewbox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg></span><span class="tap-card-copy"><strong>6AM Prayer Confessions</strong><small>Pray the Word with us</small></span><span aria-hidden="true" class="tap-arrow">→</span></a>
 </div></section>
-
-<section class="tap-section"><div class="tap-section-head"><h2>Give & Reach</h2><span>Make an impact</span></div><div class="tap-list">
-  <a class="tap-link" href="https://championlifefwb.com/give"><span class="tap-mini-icon"><svg viewBox="0 0 24 24"><path d="M12 1v22M17 5H9.5a3.5 3.5 0 0 0 0 7H14a3.5 3.5 0 0 1 0 7H6"/></svg></span><span><strong>Give Online</strong><small>Give securely online</small></span><span class="tap-arrow">→</span></a>
-  <a class="tap-link" href="https://cash.app/$championlifefwb"><span class="tap-mini-icon"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M7 15h4M15 9h2"/></svg></span><span><strong>Give with Cash App</strong><small>$championlifefwb</small></span><span class="tap-arrow">→</span></a>
-  <a class="tap-link" href="https://championlifefwb.com/outreach"><span class="tap-mini-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a15 15 0 0 1 0 18M12 3a15 15 0 0 0 0 18"/></svg></span><span><strong>Partner with Outreach</strong><small>Help us reach our community</small></span><span class="tap-arrow">→</span></a>
+<section aria-labelledby="tap-section-2" class="tap-section"><div class="tap-section-head"><h2 id="tap-section-2">Give &amp; Reach</h2><span>Make an impact</span></div><div class="tap-list tap-list--giving">
+<a class="tap-link" href="https://championlifefwb.com/give"><span aria-hidden="true" class="tap-mini-icon"><svg aria-hidden="true" focusable="false" viewbox="0 0 24 24"><path d="M12 1v22M17 5H9.5a3.5 3.5 0 0 0 0 7H14a3.5 3.5 0 0 1 0 7H6"></path></svg></span><span class="tap-card-copy"><strong>Give Online</strong><small>Give securely online</small></span><span aria-hidden="true" class="tap-arrow">→</span></a>
+<a class="tap-link" href="https://cash.app/$championlifefwb"><span aria-hidden="true" class="tap-mini-icon"><svg aria-hidden="true" focusable="false" viewbox="0 0 24 24"><rect height="14" rx="2" width="18" x="3" y="5"></rect><path d="M7 15h4M15 9h2"></path></svg></span><span class="tap-card-copy"><strong>Give with Cash App</strong><small>$championlifefwb</small></span><span aria-hidden="true" class="tap-arrow">→</span></a>
+<a class="tap-link" href="https://championlifefwb.com/outreach"><span aria-hidden="true" class="tap-mini-icon"><svg aria-hidden="true" focusable="false" viewbox="0 0 24 24"><circle cx="12" cy="12" r="9"></circle><path d="M3 12h18M12 3a15 15 0 0 1 0 18M12 3a15 15 0 0 0 0 18"></path></svg></span><span class="tap-card-copy"><strong>Partner with Outreach</strong><small>Help us reach our community</small></span><span aria-hidden="true" class="tap-arrow">→</span></a>
 </div></section>
-
-<section class="tap-section"><div class="tap-section-head"><h2>Stay Connected</h2><span>Champion Life online</span></div><div class="tap-list">
-  <a class="tap-link" href="https://www.youtube.com/@ChampionLifeFWB"><span class="tap-mini-icon"><svg viewBox="0 0 24 24"><path d="M22 12s0-4-1-6c-.5-1-1.5-1.5-2.5-1.7C16.5 4 12 4 12 4s-4.5 0-6.5.3C4.5 4.5 3.5 5 3 6c-1 2-1 6-1 6s0 4 1 6c.5 1 1.5 1.5 2.5 1.7C7.5 20 12 20 12 20s4.5 0 6.5-.3c1-.2 2-.7 2.5-1.7 1-2 1-6 1-6z"/><path d="m10 9 5 3-5 3z"/></svg></span><span><strong>Subscribe to YouTube</strong><small>Messages, services and ministry</small></span><span class="tap-arrow">→</span></a>
-  <a class="tap-link" href="https://www.facebook.com/ChampionLifeFWB"><span class="tap-mini-icon"><svg viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg></span><span><strong>Like Our Facebook</strong><small>Stay connected throughout the week</small></span><span class="tap-arrow">→</span></a>
+<section aria-labelledby="tap-section-3" class="tap-section"><div class="tap-section-head"><h2 id="tap-section-3">Stay Connected</h2><span>Champion Life online</span></div><div class="tap-list">
+<a class="tap-link" href="https://www.youtube.com/@ChampionLifeFWB"><span aria-hidden="true" class="tap-mini-icon"><svg aria-hidden="true" focusable="false" viewbox="0 0 24 24"><path d="M22 12s0-4-1-6c-.5-1-1.5-1.5-2.5-1.7C16.5 4 12 4 12 4s-4.5 0-6.5.3C4.5 4.5 3.5 5 3 6c-1 2-1 6-1 6s0 4 1 6c.5 1 1.5 1.5 2.5 1.7C7.5 20 12 20 12 20s4.5 0 6.5-.3c1-.2 2-.7 2.5-1.7 1-2 1-6 1-6z"></path><path d="m10 9 5 3-5 3z"></path></svg></span><span class="tap-card-copy"><strong>Subscribe to YouTube</strong><small>Messages, services and ministry</small></span><span aria-hidden="true" class="tap-arrow">→</span></a>
+<a class="tap-link" href="https://www.facebook.com/ChampionLifeFWB"><span aria-hidden="true" class="tap-mini-icon"><svg aria-hidden="true" focusable="false" viewbox="0 0 24 24"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg></span><span class="tap-card-copy"><strong>Like Our Facebook</strong><small>Stay connected throughout the week</small></span><span aria-hidden="true" class="tap-arrow">→</span></a>
 </div></section>
-
-<a class="tap-home" href="https://championlifefwb.com"><span><strong>Visit Our Website</strong><span>Explore everything happening at Champion Life</span></span><b>→</b></a>
-<p class="tap-footer-note"><strong>Champion Life Church</strong><br>650 Denton Blvd NW · Fort Walton Beach, FL 32547</p>
+<a class="tap-home" href="https://championlifefwb.com"><span><strong>Visit Our Website</strong><span>Explore everything happening at Champion Life</span></span><b aria-hidden="true">→</b></a>
+<p class="tap-footer-note"><strong>Champion Life Church</strong><br/>650 Denton Blvd NW · Fort Walton Beach, FL 32547</p>
 </div></section>
 </main>
-<script src="../assets/js/site.js"></script>
-</body></html>
+
+<script id="tap-navigation-v2">
+(() => {
+  'use strict';
+  const header = document.querySelector('.tap-header');
+  const button = document.querySelector('.tap-menu-button');
+  const nav = document.getElementById('tap-navigation');
+  if (!header || !button || !nav) return;
+  const compact = window.matchMedia('(max-width: 1199px)');
+  let expanded = false;
+  const render = () => {
+    button.hidden = !compact.matches;
+    nav.hidden = compact.matches && !expanded;
+    button.setAttribute('aria-expanded', String(compact.matches && expanded));
+    button.setAttribute('aria-label', expanded ? 'Close navigation menu' : 'Open navigation menu');
+  };
+  const close = (restoreFocus = false) => {
+    expanded = false;
+    render();
+    if (restoreFocus && compact.matches) button.focus();
+  };
+  button.addEventListener('click', () => {expanded = !expanded; render();});
+  nav.addEventListener('click', event => {if (event.target.closest('a')) close();});
+  document.addEventListener('keydown', event => {
+    if (event.key === 'Escape' && expanded) close(true);
+  });
+  document.addEventListener('click', event => {
+    if (expanded && !header.contains(event.target)) close();
+  });
+  const reset = () => close();
+  if (compact.addEventListener) compact.addEventListener('change', reset);
+  else compact.addListener(reset);
+  window.addEventListener('pageshow', reset);
+  render();
+})();
+</script></body></html>
