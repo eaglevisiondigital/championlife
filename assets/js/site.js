@@ -53,6 +53,7 @@ const io=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecti
   const path = (window.location.pathname || '/').toLowerCase();
   const isHome = path === '/' || path.endsWith('/index.html');
   const isWatch = path.endsWith('/watch') || path.endsWith('/watch.html');
+  const isSermonNotes = path.endsWith('/sermon-notes') || path.endsWith('/sermon-notes.html');
 
   // Permanent homepage quick access, separate from the existing 4-card quick grid.
   if (isHome && !document.querySelector('.sermon-home-strip')) {
@@ -118,6 +119,10 @@ const io=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecti
 
   const updateFloatingShortcut = () => {
     let button = document.querySelector('.sermon-service-float');
+    if (isSermonNotes || isWatch) {
+      if (button) button.remove();
+      return;
+    }
     if (duringServiceWindow()) {
       if (!button) {
         button = document.createElement('a');
