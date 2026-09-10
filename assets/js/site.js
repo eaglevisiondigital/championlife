@@ -30,18 +30,11 @@ const io=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecti
     .sermon-home-copy b{display:block;color:#fff;font-size:18px;margin-bottom:2px}
     .sermon-home-copy small{display:block;color:rgba(255,255,255,.68);font-size:13px}
     .sermon-home-link{display:inline-flex;align-items:center;gap:9px;padding:13px 18px;border-radius:999px;background:#d3ad4f;color:#111;font-weight:850;white-space:nowrap}
-    .watch-sermon-card{margin-top:22px;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:28px;align-items:center;padding:24px 30px;border-radius:22px;background:#f4f0e8;border:1px solid rgba(157,118,28,.24);box-shadow:0 14px 34px rgba(0,0,0,.09)}
-    .watch-sermon-card .eyebrow{color:#9d761c;margin-bottom:5px}
-    .watch-sermon-card h2{margin:0 0 7px;color:#111;font-size:clamp(24px,3vw,34px)}
-    .watch-sermon-card p{margin:0;color:#605d56;line-height:1.55;max-width:760px}
-    .watch-sermon-card .btn{white-space:nowrap}
     .sermon-service-float{position:fixed;z-index:9999;right:20px;bottom:20px;display:flex;align-items:center;gap:10px;padding:14px 18px;border-radius:999px;background:#d3ad4f;color:#111!important;text-decoration:none;font-weight:900;box-shadow:0 14px 40px rgba(0,0,0,.28);border:1px solid rgba(0,0,0,.1)}
     .sermon-service-float:before{content:"📝";font-size:18px}
     @media(max-width:760px){
       .sermon-home-inner{align-items:stretch;flex-direction:column;gap:14px;padding:18px 0}
       .sermon-home-link{justify-content:center;width:100%}
-      .watch-sermon-card{grid-template-columns:1fr;padding:22px 20px}
-      .watch-sermon-card .btn{width:100%}
       .sermon-service-float{left:16px;right:16px;bottom:16px;justify-content:center;padding:14px 16px}
     }
   `;
@@ -71,26 +64,6 @@ const io=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecti
           <a class="sermon-home-link" href="${SERMON_URL}">Sermon Notes <span>→</span></a>
         </div>`;
       quickbar.insertAdjacentElement('afterend', strip);
-    }
-  }
-
-  // Watch page: place Sermon Notes immediately beneath the player/chat area and before giving.
-  if (isWatch && !document.querySelector('.watch-sermon-card')) {
-    const giveCard = document.querySelector('.watch-give-card');
-    const playerArea = document.querySelector('.watch-live-layout');
-    const anchor = giveCard || playerArea;
-    if (anchor) {
-      const card = document.createElement('div');
-      card.className = 'watch-sermon-card';
-      card.innerHTML = `
-        <div>
-          <span class="eyebrow">Follow Along</span>
-          <h2>Today’s Sermon Notes</h2>
-          <p>Keep the message in front of you while you watch, then come back anytime during the week to review what was taught.</p>
-        </div>
-        <a class="btn gold" href="${SERMON_URL}">Open Sermon Notes</a>`;
-      if (giveCard) giveCard.insertAdjacentElement('beforebegin', card);
-      else playerArea.insertAdjacentElement('afterend', card);
     }
   }
 
