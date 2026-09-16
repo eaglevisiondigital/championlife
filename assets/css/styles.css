@@ -28,3 +28,12 @@
 .outreach-schedule-grid > .outreach-event:nth-child(3) .outreach-fundraising-meta span:last-child{font-size:0!important}
 .outreach-schedule-grid > .outreach-event:nth-child(2) .outreach-fundraising-meta span:last-child::after,
 .outreach-schedule-grid > .outreach-event:nth-child(3) .outreach-fundraising-meta span:last-child::after{content:"$7,000 GOAL";font-size:11px!important;letter-spacing:.07em;font-weight:900}
+
+/* St. Lucia received-to-date update: $6,400 of $10,000 = 64% funded, $3,600 remaining. */
+.outreach-schedule-grid > .outreach-event:nth-child(1) .outreach-fundraising-meta span:last-child{font-size:0!important}
+.outreach-schedule-grid > .outreach-event:nth-child(1) .outreach-fundraising-meta span:last-child::after{content:"$6,400 of $10,000";font-size:11px!important;letter-spacing:.07em;font-weight:900}
+.outreach-schedule-grid > .outreach-event:nth-child(1) .outreach-thermometer-fill{width:64%!important}
+.outreach-schedule-grid > .outreach-event:nth-child(1) .outreach-goal-detail span:first-child strong{font-size:0!important}
+.outreach-schedule-grid > .outreach-event:nth-child(1) .outreach-goal-detail span:first-child strong::after{content:"64% funded";font-size:12px!important}
+.outreach-schedule-grid > .outreach-event:nth-child(1) .outreach-goal-detail span:last-child{font-size:0!important}
+.outreach-schedule-grid > .outreach-event:nth-child(1) .outreach-goal-detail span:last-child::after{content:"$3,600 remaining";font-size:12px!important}
