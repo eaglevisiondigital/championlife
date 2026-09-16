@@ -22,3 +22,9 @@
 .outreach-schedule-grid > .outreach-event:nth-child(13) .outreach-event-actions a.btn.outline:visited{color:#111!important}
 .outreach-schedule-grid > .outreach-event:nth-child(13) .outreach-event-actions a.btn.outline:hover,
 .outreach-schedule-grid > .outreach-event:nth-child(13) .outreach-event-actions a.btn.outline:focus{background:#111!important;color:#fff!important;border-color:#111!important}
+
+/* Bessemer and Huntsville outreach goals */
+.outreach-schedule-grid > .outreach-event:nth-child(2) .outreach-fundraising-meta span:last-child,
+.outreach-schedule-grid > .outreach-event:nth-child(3) .outreach-fundraising-meta span:last-child{font-size:0!important}
+.outreach-schedule-grid > .outreach-event:nth-child(2) .outreach-fundraising-meta span:last-child::after,
+.outreach-schedule-grid > .outreach-event:nth-child(3) .outreach-fundraising-meta span:last-child::after{content:"$7,000 GOAL";font-size:11px!important;letter-spacing:.07em;font-weight:900}
