@@ -23,30 +23,75 @@
 .outreach-campaign-total span{display:block;color:#b7b8bd;font-size:12px;margin-top:7px;text-transform:uppercase;letter-spacing:.1em}
 .outreach-schedule-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
 .outreach-event{
-  display:flex;flex-direction:column;min-height:220px;padding:22px;border-radius:20px;background:#fff;
+  display:flex;flex-direction:column;min-height:300px;padding:22px;border-radius:20px;background:#fff;
   border:1px solid rgba(0,0,0,.09);box-shadow:0 14px 34px rgba(0,0,0,.07)
 }
 .outreach-event-date{display:inline-flex;align-self:flex-start;padding:7px 10px;border-radius:999px;background:#111;color:#fff;font-size:11px;font-weight:900;letter-spacing:.08em;text-transform:uppercase;margin-bottom:17px}
 .outreach-event h3{margin:0 0 5px;font-size:24px;line-height:1.08}
 .outreach-event .outreach-country{color:#8c6918;font-weight:800;font-size:13px;margin-bottom:13px}
 .outreach-event p{margin:0;color:#666;line-height:1.55;font-size:14px}
-.outreach-event-status{margin-top:auto;padding-top:20px;color:#8c6918;font-size:12px;font-weight:900;text-transform:uppercase;letter-spacing:.08em}
 .outreach-event.featured{background:#0b0c0e;color:#fff;border-color:rgba(211,173,79,.34)}
 .outreach-event.featured p{color:#b7b8bd}.outreach-event.featured h3{color:#fff}
 .outreach-event.tba{border-style:dashed}
 .outreach-schedule-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:30px}
+
+.outreach-event-fundraising{margin-top:auto;padding-top:18px;border-top:1px solid rgba(0,0,0,.09)}
+.outreach-event.featured .outreach-event-fundraising{border-top-color:rgba(255,255,255,.12)}
+.outreach-fundraising-meta{display:flex;justify-content:space-between;align-items:flex-end;gap:12px;margin-bottom:12px;font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:.07em;color:#777}
+.outreach-fundraising-meta span:last-child{text-align:right}
+.outreach-event.featured .outreach-fundraising-meta{color:#aeb0b6}
+
+/* Thermometer-style outreach goal */
+.outreach-thermometer{position:relative;display:flex;align-items:center;width:100%;padding-left:2px;margin:2px 0 8px}
+.outreach-thermometer-bulb{position:relative;z-index:2;flex:0 0 34px;width:34px;height:34px;border-radius:50%;background:#d3ad4f;box-shadow:inset 0 0 0 5px rgba(255,255,255,.28),0 3px 10px rgba(0,0,0,.12)}
+.outreach-thermometer-tube{position:relative;flex:1;height:18px;margin-left:-5px;border-radius:0 999px 999px 0;background:#e2dfd7;overflow:hidden;box-shadow:inset 0 0 0 1px rgba(0,0,0,.04)}
+.outreach-event.featured .outreach-thermometer-tube{background:#292c31}
+.outreach-thermometer-fill{position:absolute;inset:0 auto 0 0;background:#d3ad4f;border-radius:inherit}
+.outreach-thermometer-fill::after{content:"";position:absolute;inset:3px 5px auto 4px;height:4px;border-radius:999px;background:rgba(255,255,255,.28)}
+.outreach-thermometer.empty .outreach-thermometer-bulb{background:#c8c5bd;box-shadow:inset 0 0 0 5px rgba(255,255,255,.3)}
+.outreach-event.featured .outreach-thermometer.empty .outreach-thermometer-bulb{background:#4a4d53}
+.outreach-goal-detail{display:flex;justify-content:space-between;gap:12px;margin-top:5px;color:#777;font-size:12px;font-weight:700}
+.outreach-event.featured .outreach-goal-detail{color:#aeb0b6}
+.outreach-goal-detail strong{color:#8c6918}
+.outreach-event.featured .outreach-goal-detail strong{color:#d3ad4f}
+
+.outreach-event-actions{display:grid;grid-template-columns:1fr;gap:9px;margin-top:14px}
+.outreach-event-actions .btn{width:100%;justify-content:center;text-align:center}
+.outreach-event-actions button.btn{border:0;cursor:pointer;font:inherit}
+.outreach-coming-soon{display:flex;align-items:center;justify-content:center;min-height:44px;padding:8px 14px;border-radius:999px;border:1px solid #ccc;color:#777;font-weight:800;font-size:13px;line-height:1.25;text-align:center;background:#f7f7f7}
+.outreach-event.featured .outreach-coming-soon{background:#17191d;border-color:#34373d;color:#aaa}
+.outreach-coming-soon.closed{color:#6f6f6f;background:#eee;border-color:#d1d1d1}
+.outreach-event.featured .outreach-coming-soon.closed{background:#202227;border-color:#3b3e44;color:#c1c2c5}
+
+/* Responsive in-site JotForm modal */
+.outreach-modal[hidden]{display:none}
+.outreach-modal{position:fixed;inset:0;z-index:10000;display:flex;align-items:center;justify-content:center;padding:24px}
+.outreach-modal-backdrop{position:absolute;inset:0;background:rgba(0,0,0,.72);backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px)}
+.outreach-modal-dialog{position:relative;z-index:1;width:min(900px,100%);height:min(820px,90vh);background:#fff;border-radius:22px;overflow:hidden;box-shadow:0 30px 90px rgba(0,0,0,.42);display:grid;grid-template-rows:auto 1fr}
+.outreach-modal-header{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:14px 16px 14px 20px;border-bottom:1px solid #ececec;background:#fff}
+.outreach-modal-title{font-size:17px;font-weight:900;color:#111;line-height:1.2}
+.outreach-modal-tools{display:flex;align-items:center;gap:10px}
+.outreach-modal-newtab{color:#8c6918;font-size:12px;font-weight:800;text-decoration:none;white-space:nowrap}
+.outreach-modal-close{display:grid;place-items:center;width:38px;height:38px;border:0;border-radius:50%;background:#111;color:#fff;font-size:24px;line-height:1;cursor:pointer}
+.outreach-modal-frame{display:block;width:100%;height:100%;min-height:0;border:0;background:#fff}
+body.outreach-modal-open{overflow:hidden}
+
 @media(max-width:980px){.outreach-schedule-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:680px){
  .outreach-campaign-summary{grid-template-columns:1fr;padding:22px 19px}
  .outreach-campaign-total{text-align:left}
  .outreach-schedule-grid{grid-template-columns:1fr;gap:11px}
  .outreach-event{min-height:0;padding:19px}
- .outreach-event-status{margin-top:18px}
  .outreach-schedule-actions{display:grid;grid-template-columns:1fr}
  .outreach-schedule-actions .btn{width:100%}
+ .outreach-modal{padding:0}
+ .outreach-modal-dialog{width:100%;height:100dvh;max-height:none;border-radius:0}
+ .outreach-modal-header{padding:12px 12px 12px 15px}
+ .outreach-modal-title{font-size:14px}
+ .outreach-modal-newtab{display:none}
 }
 </style>
-<style>.outreach-event-fundraising{margin-top:18px;padding-top:15px;border-top:1px solid rgba(0,0,0,.09)}.outreach-event.featured .outreach-event-fundraising{border-top-color:rgba(255,255,255,.12)}.outreach-fundraising-meta{display:flex;justify-content:space-between;gap:12px;margin-bottom:8px;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:#777}.outreach-event.featured .outreach-fundraising-meta{color:#aeb0b6}.outreach-progress{height:8px;border-radius:999px;background:#e7e3da;overflow:hidden}.outreach-event.featured .outreach-progress{background:#24262b}.outreach-progress>span{display:block;height:100%;width:0;background:#d3ad4f;border-radius:inherit}.outreach-event-actions{display:grid;grid-template-columns:1fr;gap:9px;margin-top:14px}.outreach-event-actions .btn{width:100%;justify-content:center;text-align:center}.outreach-coming-soon{display:flex;align-items:center;justify-content:center;min-height:44px;border-radius:999px;border:1px solid #ccc;color:#777;font-weight:800;font-size:13px;background:#f7f7f7}.outreach-event.featured .outreach-coming-soon{background:#17191d;border-color:#34373d;color:#aaa}</style></head>
+</head>
 <body>
   <header class="site-header">
     <div class="container nav">
@@ -134,7 +179,6 @@
       </div>
     </section>
 
-    
     <section class="section soft" id="upcoming">
       <div class="container">
         <div class="outreach-schedule-intro">
@@ -155,14 +199,208 @@
           </div>
         </div>
 
-        <div class="outreach-schedule-grid"><article class="outreach-event featured"><span class="outreach-event-date">SEPT 22–25, 2026</span><h3>St. Lucia</h3><div class="outreach-country">International Outreach</div><p>More information coming soon.</p><div class="outreach-event-fundraising"><div class="outreach-fundraising-meta"><span>Outreach Giving</span><span>Goal coming soon</span></div><div class="outreach-progress"><span></span></div><div class="outreach-event-actions"><span class="outreach-coming-soon">Sign Up Coming Soon</span><a class="btn outline" href="outreach-giving.html">Give to This Outreach</a></div></div></article><article class="outreach-event"><span class="outreach-event-date">OCT 10, 2026</span><h3>Bessemer, Alabama</h3><div class="outreach-country">United States</div><p>More information coming soon.</p><div class="outreach-event-fundraising"><div class="outreach-fundraising-meta"><span>Outreach Giving</span><span>Goal coming soon</span></div><div class="outreach-progress"><span></span></div><div class="outreach-event-actions"><span class="outreach-coming-soon">Sign Up Coming Soon</span><a class="btn outline" href="outreach-giving.html">Give to This Outreach</a></div></div></article><article class="outreach-event"><span class="outreach-event-date">OCT 24, 2026</span><h3>Huntsville, Alabama</h3><div class="outreach-country">United States</div><p>Team sign-up is available now.</p><div class="outreach-event-fundraising"><div class="outreach-fundraising-meta"><span>Outreach Giving</span><span>Goal coming soon</span></div><div class="outreach-progress"><span></span></div><div class="outreach-event-actions"><a class="btn gold" href="https://form.jotform.com/241095919780163" target="_blank" rel="noopener">Team Sign Up</a><a class="btn outline" href="outreach-giving.html">Give to This Outreach</a></div></div></article><article class="outreach-event"><span class="outreach-event-date">NOV 21, 2026</span><h3>Phoenix City, Alabama</h3><div class="outreach-country">United States</div><p>More information coming soon.</p><div class="outreach-event-fundraising"><div class="outreach-fundraising-meta"><span>Outreach Giving</span><span>Goal coming soon</span></div><div class="outreach-progress"><span></span></div><div class="outreach-event-actions"><span class="outreach-coming-soon">Sign Up Coming Soon</span><a class="btn outline" href="outreach-giving.html">Give to This Outreach</a></div></div></article><article class="outreach-event"><span class="outreach-event-date">DEC 18, 2026</span><h3>Natchitoches, Louisiana</h3><div class="outreach-country">United States</div><p>More information coming soon.</p><div class="outreach-event-fundraising"><div class="outreach-fundraising-meta"><span>Outreach Giving</span><span>Goal coming soon</span></div><div class="outreach-progress"><span></span></div><div class="outreach-event-actions"><span class="outreach-coming-soon">Sign Up Coming Soon</span><a class="btn outline" href="outreach-giving.html">Give to This Outreach</a></div></div></article><article class="outreach-event"><span class="outreach-event-date">DEC 19, 2026</span><h3>Minden, Louisiana</h3><div class="outreach-country">United States</div><p>More information coming soon.</p><div class="outreach-event-fundraising"><div class="outreach-fundraising-meta"><span>Outreach Giving</span><span>Goal coming soon</span></div><div class="outreach-progress"><span></span></div><div class="outreach-event-actions"><span class="outreach-coming-soon">Sign Up Coming Soon</span><a class="btn outline" href="outreach-giving.html">Give to This Outreach</a></div></div></article><article class="outreach-event"><span class="outreach-event-date">JAN 9, 2027</span><h3>Montgomery, Alabama</h3><div class="outreach-country">United States</div><p>More information coming soon.</p><div class="outreach-event-fundraising"><div class="outreach-fundraising-meta"><span>Outreach Giving</span><span>Goal coming soon</span></div><div class="outreach-progress"><span></span></div><div class="outreach-event-actions"><span class="outreach-coming-soon">Sign Up Coming Soon</span><a class="btn outline" href="outreach-giving.html">Give to This Outreach</a></div></div></article><article class="outreach-event featured"><span class="outreach-event-date">JAN 13–31, 2027</span><h3>Greece &amp; Lebanon</h3><div class="outreach-country">International Outreach</div><p>More information coming soon.</p><div class="outreach-event-fundraising"><div class="outreach-fundraising-meta"><span>Outreach Giving</span><span>Goal coming soon</span></div><div class="outreach-progress"><span></span></div><div class="outreach-event-actions"><span class="outreach-coming-soon">Sign Up Coming Soon</span><a class="btn outline" href="outreach-giving.html">Give to This Outreach</a></div></div></article><article class="outreach-event"><span class="outreach-event-date">FEB 20, 2027</span><h3>Live Oak</h3><div class="outreach-country">United States</div><p>More information coming soon.</p><div class="outreach-event-fundraising"><div class="outreach-fundraising-meta"><span>Outreach Giving</span><span>Goal coming soon</span></div><div class="outreach-progress"><span></span></div><div class="outreach-event-actions"><span class="outreach-coming-soon">Sign Up Coming Soon</span><a class="btn outline" href="outreach-giving.html">Give to This Outreach</a></div></div></article><article class="outreach-event"><span class="outreach-event-date">MAR 6, 2027</span><h3>Andalusia, Alabama</h3><div class="outreach-country">United States</div><p>More information coming soon.</p><div class="outreach-event-fundraising"><div class="outreach-fundraising-meta"><span>Outreach Giving</span><span>Goal coming soon</span></div><div class="outreach-progress"><span></span></div><div class="outreach-event-actions"><span class="outreach-coming-soon">Sign Up Coming Soon</span><a class="btn outline" href="outreach-giving.html">Give to This Outreach</a></div></div></article><article class="outreach-event"><span class="outreach-event-date">MAR 20, 2027</span><h3>Linden, Alabama</h3><div class="outreach-country">United States</div><p>More information coming soon.</p><div class="outreach-event-fundraising"><div class="outreach-fundraising-meta"><span>Outreach Giving</span><span>Goal coming soon</span></div><div class="outreach-progress"><span></span></div><div class="outreach-event-actions"><span class="outreach-coming-soon">Sign Up Coming Soon</span><a class="btn outline" href="outreach-giving.html">Give to This Outreach</a></div></div></article><article class="outreach-event"><span class="outreach-event-date">APR 10, 2027</span><h3>Valdosta, Georgia</h3><div class="outreach-country">United States</div><p>More information coming soon.</p><div class="outreach-event-fundraising"><div class="outreach-fundraising-meta"><span>Outreach Giving</span><span>Goal coming soon</span></div><div class="outreach-progress"><span></span></div><div class="outreach-event-actions"><span class="outreach-coming-soon">Sign Up Coming Soon</span><a class="btn outline" href="outreach-giving.html">Give to This Outreach</a></div></div></article><article class="outreach-event featured"><span class="outreach-event-date">MAY 8, 2027</span><h3>Fort Walton Beach, Florida</h3><div class="outreach-country">Home Outreach</div><p>More information coming soon.</p><div class="outreach-event-fundraising"><div class="outreach-fundraising-meta"><span>Outreach Giving</span><span>Goal coming soon</span></div><div class="outreach-progress"><span></span></div><div class="outreach-event-actions"><span class="outreach-coming-soon">Sign Up Coming Soon</span><a class="btn outline" href="outreach-giving.html">Give to This Outreach</a></div></div></article><article class="outreach-event featured"><span class="outreach-event-date">MAY 24–31, 2027</span><h3>Scotland</h3><div class="outreach-country">International Outreach</div><p>More information coming soon.</p><div class="outreach-event-fundraising"><div class="outreach-fundraising-meta"><span>Outreach Giving</span><span>Goal coming soon</span></div><div class="outreach-progress"><span></span></div><div class="outreach-event-actions"><span class="outreach-coming-soon">Sign Up Coming Soon</span><a class="btn outline" href="outreach-giving.html">Give to This Outreach</a></div></div></article><article class="outreach-event featured tba"><span class="outreach-event-date">TBA</span><h3>Jamaica</h3><div class="outreach-country">International Outreach</div><p>More information coming soon.</p><div class="outreach-event-fundraising"><div class="outreach-fundraising-meta"><span>Outreach Giving</span><span>Goal coming soon</span></div><div class="outreach-progress"><span></span></div><div class="outreach-event-actions"><span class="outreach-coming-soon">Sign Up Coming Soon</span><a class="btn outline" href="outreach-giving.html">Give to This Outreach</a></div></div></article></div><div class="outreach-schedule-actions">
+        <div class="outreach-schedule-grid">
+          <article class="outreach-event featured">
+            <span class="outreach-event-date">SEPT 22–25, 2026</span>
+            <h3>St. Lucia</h3>
+            <div class="outreach-country">International Outreach</div>
+            <p>Help us finish strong as we prepare to carry the Gospel to St. Lucia.</p>
+            <div class="outreach-event-fundraising">
+              <div class="outreach-fundraising-meta"><span>Fund Outreach Goal</span><span>$8,400 of $10,000</span></div>
+              <div class="outreach-thermometer" aria-label="St. Lucia outreach is 84 percent funded">
+                <span class="outreach-thermometer-bulb" aria-hidden="true"></span>
+                <span class="outreach-thermometer-tube" aria-hidden="true"><span class="outreach-thermometer-fill" style="width:84%"></span></span>
+              </div>
+              <div class="outreach-goal-detail"><span><strong>84% funded</strong></span><span>$1,600 remaining</span></div>
+              <div class="outreach-event-actions">
+                <span class="outreach-coming-soon closed">Signup - Closed</span>
+                <a class="btn outline" href="outreach-giving.html">Give to This Outreach</a>
+              </div>
+            </div>
+          </article>
+
+          <article class="outreach-event">
+            <span class="outreach-event-date">OCT 10, 2026</span>
+            <h3>Bessemer, Alabama</h3>
+            <div class="outreach-country">United States</div>
+            <p>Team sign-up is available now.</p>
+            <div class="outreach-event-fundraising">
+              <div class="outreach-fundraising-meta"><span>Fund Outreach Goal</span><span>Goal Coming Soon</span></div>
+              <div class="outreach-thermometer empty" aria-label="Fund outreach goal coming soon"><span class="outreach-thermometer-bulb" aria-hidden="true"></span><span class="outreach-thermometer-tube" aria-hidden="true"></span></div>
+              <div class="outreach-event-actions">
+                <button class="btn gold" type="button" data-jotform-url="https://form.jotform.com/262035501051138" data-jotform-title="OUTREACH Team Sign Up - BESSEMER AL">Team Sign Up</button>
+                <a class="btn outline" href="outreach-giving.html">Give to This Outreach</a>
+              </div>
+            </div>
+          </article>
+
+          <article class="outreach-event">
+            <span class="outreach-event-date">OCT 24, 2026</span>
+            <h3>Huntsville, Alabama</h3>
+            <div class="outreach-country">United States</div>
+            <p>Team sign-up is available now.</p>
+            <div class="outreach-event-fundraising">
+              <div class="outreach-fundraising-meta"><span>Fund Outreach Goal</span><span>Goal Coming Soon</span></div>
+              <div class="outreach-thermometer empty" aria-label="Fund outreach goal coming soon"><span class="outreach-thermometer-bulb" aria-hidden="true"></span><span class="outreach-thermometer-tube" aria-hidden="true"></span></div>
+              <div class="outreach-event-actions">
+                <button class="btn gold" type="button" data-jotform-url="https://form.jotform.com/241095919780163" data-jotform-title="OUTREACH Team Sign Up - HUNTSVILLE AL">Team Sign Up</button>
+                <a class="btn outline" href="outreach-giving.html">Give to This Outreach</a>
+              </div>
+            </div>
+          </article>
+
+          <article class="outreach-event">
+            <span class="outreach-event-date">NOV 21, 2026</span>
+            <h3>Phenix City, Alabama</h3>
+            <div class="outreach-country">United States</div>
+            <p>More information coming soon.</p>
+            <div class="outreach-event-fundraising">
+              <div class="outreach-fundraising-meta"><span>Fund Outreach Goal</span><span>Goal Coming Soon</span></div>
+              <div class="outreach-thermometer empty" aria-label="Fund outreach goal coming soon"><span class="outreach-thermometer-bulb" aria-hidden="true"></span><span class="outreach-thermometer-tube" aria-hidden="true"></span></div>
+              <div class="outreach-event-actions"><span class="outreach-coming-soon">Team Signup Live 60 Days Prior to Outreach</span><a class="btn outline" href="outreach-giving.html">Give to This Outreach</a></div>
+            </div>
+          </article>
+
+          <article class="outreach-event">
+            <span class="outreach-event-date">DEC 18, 2026</span>
+            <h3>Natchitoches, Louisiana</h3>
+            <div class="outreach-country">United States</div>
+            <p>More information coming soon.</p>
+            <div class="outreach-event-fundraising">
+              <div class="outreach-fundraising-meta"><span>Fund Outreach Goal</span><span>Goal Coming Soon</span></div>
+              <div class="outreach-thermometer empty" aria-label="Fund outreach goal coming soon"><span class="outreach-thermometer-bulb" aria-hidden="true"></span><span class="outreach-thermometer-tube" aria-hidden="true"></span></div>
+              <div class="outreach-event-actions"><span class="outreach-coming-soon">Team Signup Live 60 Days Prior to Outreach</span><a class="btn outline" href="outreach-giving.html">Give to This Outreach</a></div>
+            </div>
+          </article>
+
+          <article class="outreach-event">
+            <span class="outreach-event-date">DEC 19, 2026</span>
+            <h3>Minden, Louisiana</h3>
+            <div class="outreach-country">United States</div>
+            <p>More information coming soon.</p>
+            <div class="outreach-event-fundraising">
+              <div class="outreach-fundraising-meta"><span>Fund Outreach Goal</span><span>Goal Coming Soon</span></div>
+              <div class="outreach-thermometer empty" aria-label="Fund outreach goal coming soon"><span class="outreach-thermometer-bulb" aria-hidden="true"></span><span class="outreach-thermometer-tube" aria-hidden="true"></span></div>
+              <div class="outreach-event-actions"><span class="outreach-coming-soon">Team Signup Live 60 Days Prior to Outreach</span><a class="btn outline" href="outreach-giving.html">Give to This Outreach</a></div>
+            </div>
+          </article>
+
+          <article class="outreach-event">
+            <span class="outreach-event-date">JAN 9, 2027</span>
+            <h3>Montgomery, Alabama</h3>
+            <div class="outreach-country">United States</div>
+            <p>More information coming soon.</p>
+            <div class="outreach-event-fundraising">
+              <div class="outreach-fundraising-meta"><span>Fund Outreach Goal</span><span>Goal Coming Soon</span></div>
+              <div class="outreach-thermometer empty" aria-label="Fund outreach goal coming soon"><span class="outreach-thermometer-bulb" aria-hidden="true"></span><span class="outreach-thermometer-tube" aria-hidden="true"></span></div>
+              <div class="outreach-event-actions"><span class="outreach-coming-soon">Team Signup Live 60 Days Prior to Outreach</span><a class="btn outline" href="outreach-giving.html">Give to This Outreach</a></div>
+            </div>
+          </article>
+
+          <article class="outreach-event featured">
+            <span class="outreach-event-date">JAN 13–31, 2027</span>
+            <h3>Greece &amp; Lebanon</h3>
+            <div class="outreach-country">International Outreach</div>
+            <p>More information coming soon.</p>
+            <div class="outreach-event-fundraising">
+              <div class="outreach-fundraising-meta"><span>Fund Outreach Goal</span><span>Goal Coming Soon</span></div>
+              <div class="outreach-thermometer empty" aria-label="Fund outreach goal coming soon"><span class="outreach-thermometer-bulb" aria-hidden="true"></span><span class="outreach-thermometer-tube" aria-hidden="true"></span></div>
+              <div class="outreach-event-actions"><span class="outreach-coming-soon">Team Signup Live 60 Days Prior to Outreach</span><a class="btn outline" href="outreach-giving.html">Give to This Outreach</a></div>
+            </div>
+          </article>
+
+          <article class="outreach-event">
+            <span class="outreach-event-date">FEB 20, 2027</span>
+            <h3>Live Oak, Florida</h3>
+            <div class="outreach-country">United States</div>
+            <p>More information coming soon.</p>
+            <div class="outreach-event-fundraising">
+              <div class="outreach-fundraising-meta"><span>Fund Outreach Goal</span><span>Goal Coming Soon</span></div>
+              <div class="outreach-thermometer empty" aria-label="Fund outreach goal coming soon"><span class="outreach-thermometer-bulb" aria-hidden="true"></span><span class="outreach-thermometer-tube" aria-hidden="true"></span></div>
+              <div class="outreach-event-actions"><span class="outreach-coming-soon">Team Signup Live 60 Days Prior to Outreach</span><a class="btn outline" href="outreach-giving.html">Give to This Outreach</a></div>
+            </div>
+          </article>
+
+          <article class="outreach-event">
+            <span class="outreach-event-date">MAR 6, 2027</span>
+            <h3>Andalusia, Alabama</h3>
+            <div class="outreach-country">United States</div>
+            <p>More information coming soon.</p>
+            <div class="outreach-event-fundraising">
+              <div class="outreach-fundraising-meta"><span>Fund Outreach Goal</span><span>Goal Coming Soon</span></div>
+              <div class="outreach-thermometer empty" aria-label="Fund outreach goal coming soon"><span class="outreach-thermometer-bulb" aria-hidden="true"></span><span class="outreach-thermometer-tube" aria-hidden="true"></span></div>
+              <div class="outreach-event-actions"><span class="outreach-coming-soon">Team Signup Live 60 Days Prior to Outreach</span><a class="btn outline" href="outreach-giving.html">Give to This Outreach</a></div>
+            </div>
+          </article>
+
+          <article class="outreach-event">
+            <span class="outreach-event-date">MAR 20, 2027</span>
+            <h3>Linden, Alabama</h3>
+            <div class="outreach-country">United States</div>
+            <p>More information coming soon.</p>
+            <div class="outreach-event-fundraising">
+              <div class="outreach-fundraising-meta"><span>Fund Outreach Goal</span><span>Goal Coming Soon</span></div>
+              <div class="outreach-thermometer empty" aria-label="Fund outreach goal coming soon"><span class="outreach-thermometer-bulb" aria-hidden="true"></span><span class="outreach-thermometer-tube" aria-hidden="true"></span></div>
+              <div class="outreach-event-actions"><span class="outreach-coming-soon">Team Signup Live 60 Days Prior to Outreach</span><a class="btn outline" href="outreach-giving.html">Give to This Outreach</a></div>
+            </div>
+          </article>
+
+          <article class="outreach-event">
+            <span class="outreach-event-date">APR 10, 2027</span>
+            <h3>Valdosta, Georgia</h3>
+            <div class="outreach-country">United States</div>
+            <p>More information coming soon.</p>
+            <div class="outreach-event-fundraising">
+              <div class="outreach-fundraising-meta"><span>Fund Outreach Goal</span><span>Goal Coming Soon</span></div>
+              <div class="outreach-thermometer empty" aria-label="Fund outreach goal coming soon"><span class="outreach-thermometer-bulb" aria-hidden="true"></span><span class="outreach-thermometer-tube" aria-hidden="true"></span></div>
+              <div class="outreach-event-actions"><span class="outreach-coming-soon">Team Signup Live 60 Days Prior to Outreach</span><a class="btn outline" href="outreach-giving.html">Give to This Outreach</a></div>
+            </div>
+          </article>
+
+          <article class="outreach-event featured">
+            <span class="outreach-event-date">MAY 8, 2027</span>
+            <h3>Fort Walton Beach, Florida</h3>
+            <div class="outreach-country">Home Outreach</div>
+            <p>More information coming soon.</p>
+            <div class="outreach-event-fundraising">
+              <div class="outreach-fundraising-meta"><span>Fund Outreach Goal</span><span>Goal Coming Soon</span></div>
+              <div class="outreach-thermometer empty" aria-label="Fund outreach goal coming soon"><span class="outreach-thermometer-bulb" aria-hidden="true"></span><span class="outreach-thermometer-tube" aria-hidden="true"></span></div>
+              <div class="outreach-event-actions"><span class="outreach-coming-soon">Team Signup Live 60 Days Prior to Outreach</span><a class="btn outline" href="outreach-giving.html">Give to This Outreach</a></div>
+            </div>
+          </article>
+
+          <article class="outreach-event featured">
+            <span class="outreach-event-date">MAY 24–31, 2027</span>
+            <h3>Scotland</h3>
+            <div class="outreach-country">International Outreach</div>
+            <p>More information coming soon.</p>
+            <div class="outreach-event-fundraising">
+              <div class="outreach-fundraising-meta"><span>Fund Outreach Goal</span><span>Goal Coming Soon</span></div>
+              <div class="outreach-thermometer empty" aria-label="Fund outreach goal coming soon"><span class="outreach-thermometer-bulb" aria-hidden="true"></span><span class="outreach-thermometer-tube" aria-hidden="true"></span></div>
+              <div class="outreach-event-actions"><span class="outreach-coming-soon">Team Signup Live 60 Days Prior to Outreach</span><a class="btn outline" href="outreach-giving.html">Give to This Outreach</a></div>
+            </div>
+          </article>
+
+          <article class="outreach-event featured tba">
+            <span class="outreach-event-date">TBA</span>
+            <h3>Jamaica</h3>
+            <div class="outreach-country">International Outreach</div>
+            <p>More information coming soon.</p>
+            <div class="outreach-event-fundraising">
+              <div class="outreach-fundraising-meta"><span>Fund Outreach Goal</span><span>Goal Coming Soon</span></div>
+              <div class="outreach-thermometer empty" aria-label="Fund outreach goal coming soon"><span class="outreach-thermometer-bulb" aria-hidden="true"></span><span class="outreach-thermometer-tube" aria-hidden="true"></span></div>
+              <div class="outreach-event-actions"><span class="outreach-coming-soon">Team Signup Live 60 Days Prior to Outreach</span><a class="btn outline" href="outreach-giving.html">Give to This Outreach</a></div>
+            </div>
+          </article>
+        </div>
+
+        <div class="outreach-schedule-actions">
           <a class="btn gold" href="https://form.jotform.com/ChampionLife/outreach-partnership">Become an Outreach Partner</a>
           <a class="btn outline" href="outreach-giving.html">Support Outreach</a>
           <a class="btn outline" href="https://youtu.be/QEldFFYmJW8">Watch Outreach Promo</a>
         </div>
       </div>
     </section>
-
   </main>
 
   <footer class="footer">
@@ -177,6 +415,60 @@
     </div>
   </footer>
 
+  <div class="outreach-modal" id="outreachSignupModal" hidden aria-hidden="true">
+    <div class="outreach-modal-backdrop" data-outreach-modal-close></div>
+    <div class="outreach-modal-dialog" role="dialog" aria-modal="true" aria-labelledby="outreachSignupModalTitle">
+      <div class="outreach-modal-header">
+        <div class="outreach-modal-title" id="outreachSignupModalTitle">Outreach Team Sign Up</div>
+        <div class="outreach-modal-tools">
+          <a class="outreach-modal-newtab" id="outreachSignupNewTab" href="#" target="_blank" rel="noopener">Open in new tab</a>
+          <button class="outreach-modal-close" type="button" aria-label="Close team signup" data-outreach-modal-close>×</button>
+        </div>
+      </div>
+      <iframe id="outreachSignupFrame" class="outreach-modal-frame" title="Outreach Team Sign Up" allow="geolocation; microphone; camera; fullscreen; payment" scrolling="yes"></iframe>
+    </div>
+  </div>
+
   <script src="assets/js/site.js"></script>
+  <script>
+  (function(){
+    const modal=document.getElementById('outreachSignupModal');
+    const frame=document.getElementById('outreachSignupFrame');
+    const title=document.getElementById('outreachSignupModalTitle');
+    const newTab=document.getElementById('outreachSignupNewTab');
+    let lastTrigger=null;
+
+    function openModal(trigger){
+      const url=trigger.getAttribute('data-jotform-url');
+      if(!url)return;
+      lastTrigger=trigger;
+      title.textContent=trigger.getAttribute('data-jotform-title')||'Outreach Team Sign Up';
+      frame.src=url;
+      newTab.href=url;
+      modal.hidden=false;
+      modal.setAttribute('aria-hidden','false');
+      document.body.classList.add('outreach-modal-open');
+      setTimeout(()=>modal.querySelector('.outreach-modal-close').focus(),0);
+    }
+
+    function closeModal(){
+      modal.hidden=true;
+      modal.setAttribute('aria-hidden','true');
+      frame.src='about:blank';
+      document.body.classList.remove('outreach-modal-open');
+      if(lastTrigger)lastTrigger.focus();
+    }
+
+    document.addEventListener('click',function(e){
+      const trigger=e.target.closest('[data-jotform-url]');
+      if(trigger){e.preventDefault();openModal(trigger);return;}
+      if(e.target.closest('[data-outreach-modal-close]')){e.preventDefault();closeModal();}
+    });
+
+    document.addEventListener('keydown',function(e){
+      if(e.key==='Escape'&&!modal.hidden)closeModal();
+    });
+  })();
+  </script>
 </body>
 </html>
