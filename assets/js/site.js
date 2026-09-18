@@ -132,3 +132,24 @@ const io=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecti
   document.querySelectorAll('a').forEach(link=>{const text=(link.textContent||'').trim().toLowerCase();const onOutreach=/\/outreach(?:\.html)?$/.test(window.location.pathname.toLowerCase());if(/support outreach|give to outreach|outreach giving|donate to outreach/.test(text)||(onOutreach&&/^donate$/.test(text))){link.setAttribute('href',OUTREACH_GIVING_URL);link.removeAttribute('target')}});
   form.addEventListener('submit',async e=>{e.preventDefault();if(!form.reportValidity())return;submit.disabled=true;submit.textContent='Submitting…';status.className='outreach-form-status is-working';status.textContent='Saving your partnership information…';try{const body=new URLSearchParams(new FormData(form)).toString();const response=await fetch('/',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body});if(!response.ok)throw new Error('Could not submit');status.textContent='Thank you! Taking you to the secure outreach giving page…';setTimeout(()=>{window.location.href=OUTREACH_GIVING_URL},500)}catch(err){status.className='outreach-form-status is-error';status.textContent='We could not submit the form. Please check your connection and try again.';submit.disabled=false;submit.textContent='Submit & Continue to Give'}});
 })();
+
+// Champion Life Daily Supplements global navigation
+(() => {
+  const href='daily-supplements.html';
+  const nav=document.querySelector('.nav-links');
+  if(nav && !nav.querySelector('a[href*="daily-supplements"]')){
+    const link=document.createElement('a');link.href=href;link.textContent='Supplements';link.className='supplements-global-link';
+    const watch=[...nav.querySelectorAll('a')].find(a=>(a.textContent||'').trim()==='Watch');
+    watch ? watch.insertAdjacentElement('afterend',link) : nav.appendChild(link);
+  }
+  const footerCols=[...document.querySelectorAll('.footer-column')];
+  const explore=footerCols.find(col=>((col.querySelector('h4')?.textContent)||'').trim()==='Explore');
+  if(explore && !explore.querySelector('a[href*="daily-supplements"]')){
+    const link=document.createElement('a');link.href=href;link.textContent='Daily Supplements';
+    const ministries=[...explore.querySelectorAll('a')].find(a=>(a.textContent||'').trim()==='Ministries');
+    ministries ? ministries.insertAdjacentElement('afterend',link) : explore.appendChild(link);
+  }
+  if(!document.getElementById('supplements-global-nav-style')){
+    const s=document.createElement('style');s.id='supplements-global-nav-style';s.textContent='@media (min-width:981px) and (max-width:1180px){.supplements-global-link{display:none!important}}';document.head.appendChild(s);
+  }
+})();
