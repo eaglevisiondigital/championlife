@@ -68,8 +68,26 @@
     .food-value h3{margin-bottom:8px}
     .food-value p{color:#666;margin:0}
     .food-honeypot{position:absolute!important;clip:rect(0 0 0 0)!important;width:1px!important;height:1px!important;overflow:hidden!important}
-    @media(max-width:900px){.food-top-grid{grid-template-columns:1fr}.food-values{grid-template-columns:1fr}.food-detail-grid{grid-template-columns:1fr 1fr}}
-    @media(max-width:650px){.food-hero{min-height:760px;padding-bottom:58px;background-position:62% center}.food-form-grid,.food-detail-grid{grid-template-columns:1fr}.food-field.full{grid-column:auto}.food-info-card,.food-alert-card{padding:24px}.food-checks{display:grid;gap:10px}.food-main.section{padding-top:58px;padding-bottom:58px}}
+    .food-visit{margin-top:72px;display:grid;grid-template-columns:1.05fr .95fr;border-radius:28px;overflow:hidden;background:#0b0c0e;color:#fff;border:1px solid rgba(211,173,79,.28);box-shadow:0 24px 65px rgba(0,0,0,.16)}
+    .food-visit-media{min-height:520px;background:#111}
+    .food-visit-media img{width:100%;height:100%;object-fit:cover}
+    .food-visit-copy{padding:38px;display:flex;flex-direction:column;justify-content:center}
+    .food-visit-copy .eyebrow{color:#e6cb78}
+    .food-visit-copy h2{font-size:clamp(2.4rem,5vw,4.4rem);margin:8px 0 14px}
+    .food-visit-copy>p{color:#c7c9cf;line-height:1.7}
+    .food-address-card{margin:18px 0 24px;padding:18px 20px;border-radius:16px;background:#17191d;border:1px solid rgba(255,255,255,.08)}
+    .food-address-card small{display:block;color:#d3ad4f;font-size:11px;font-weight:900;letter-spacing:.12em;text-transform:uppercase;margin-bottom:6px}
+    .food-address-card strong{font-size:1.08rem;line-height:1.5}
+    .food-service-grid{display:grid;gap:12px;margin:4px 0 24px}
+    .food-service-row{padding:17px 18px;border-radius:16px;background:#14161a;border:1px solid rgba(255,255,255,.08)}
+    .food-service-row small{display:block;color:#d3ad4f;font-weight:900;letter-spacing:.08em;text-transform:uppercase;margin-bottom:5px}
+    .food-service-row strong{display:block;font-size:1.04rem;margin-bottom:3px}
+    .food-service-row span{color:#b9bbc1;font-size:.94rem;line-height:1.55}
+    .food-visit-actions{display:flex;flex-wrap:wrap;gap:10px}
+    .food-visit-actions .btn.outline{border-color:rgba(255,255,255,.4)}
+
+    @media(max-width:900px){.food-top-grid{grid-template-columns:1fr}.food-values{grid-template-columns:1fr}.food-detail-grid{grid-template-columns:1fr 1fr}.food-visit{grid-template-columns:1fr}.food-visit-media{min-height:360px}}
+    @media(max-width:650px){.food-hero{min-height:760px;padding-bottom:58px;background-position:62% center}.food-form-grid,.food-detail-grid{grid-template-columns:1fr}.food-field.full{grid-column:auto}.food-info-card,.food-alert-card{padding:24px}.food-checks{display:grid;gap:10px}.food-main.section{padding-top:58px;padding-bottom:58px}.food-visit{margin-top:56px}.food-visit-media{min-height:280px}.food-visit-copy{padding:26px}.food-visit-actions{display:grid;grid-template-columns:1fr}.food-visit-actions .btn{width:100%}}
   </style>
 </head>
 <body>
@@ -177,6 +195,45 @@
           <article class="food-value"><b>01</b><h3>Serve with dignity</h3><p>We want every family who comes through our doors to be treated with kindness, honor and respect.</p></article>
           <article class="food-value"><b>02</b><h3>Meet practical needs</h3><p>When resources are available, we want them moving into the hands of families who can use them.</p></article>
           <article class="food-value"><b>03</b><h3>Build real connection</h3><p>If you want prayer, encouragement or a church family, Champion Life is here for you beyond distribution day.</p></article>
+        </div>
+      </section>
+
+      <section class="food-visit" aria-labelledby="food-visit-title">
+        <div class="food-visit-media">
+          <img src="assets/images/building.jpg" alt="Champion Life Church building in Fort Walton Beach, Florida">
+        </div>
+        <div class="food-visit-copy">
+          <span class="eyebrow">You’re always welcome</span>
+          <h2 id="food-visit-title">Come see us at Champion Life.</h2>
+          <p>If you’re coming for food outreach, prayer, or simply looking for a church family, we want it to be easy to find us and know when to come.</p>
+
+          <div class="food-address-card">
+            <small>Champion Life Church</small>
+            <strong>650 Denton Blvd NW<br>Fort Walton Beach, FL 32547</strong>
+          </div>
+
+          <div class="food-service-grid">
+            <div class="food-service-row">
+              <small>Sunday</small>
+              <strong>Worship Service · 10:30 AM</strong>
+              <span>Champion Kids classes are available for ages 0 through 5th grade.</span>
+            </div>
+            <div class="food-service-row">
+              <small>Wednesday</small>
+              <strong>Free Meal · 6:00 PM</strong>
+              <span>Free meal for those attending Wednesday service.</span>
+            </div>
+            <div class="food-service-row">
+              <small>Wednesday</small>
+              <strong>Services · 6:30 PM</strong>
+              <span>Separate services for kids, youth and adults every Wednesday.</span>
+            </div>
+          </div>
+
+          <div class="food-visit-actions">
+            <a class="btn gold" href="plan-your-visit.html">Plan Your Visit</a>
+            <a class="btn outline" href="contact.html">Directions & Church Info</a>
+          </div>
         </div>
       </section>
     </div>
