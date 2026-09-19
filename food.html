@@ -273,6 +273,30 @@
 
 <script src="assets/js/site.js"></script>
 <script>
+(async()=>{
+  try{
+    const files=[
+      'assets/images/food-outreach-hero.part1.txt',
+      'assets/images/food-outreach-hero.part2.txt',
+      'assets/images/food-outreach-hero.part3.txt',
+      'assets/images/food-outreach-hero.part4.txt'
+    ];
+    const chunks=await Promise.all(files.map(async path=>{
+      const response=await fetch(path,{cache:'force-cache'});
+      if(!response.ok) throw new Error('hero-image');
+      return response.text();
+    }));
+    const hero=document.querySelector('.food-hero');
+    if(hero){
+      hero.style.backgroundImage='url("data:image/jpeg;base64,'+chunks.join('').trim()+'")';
+      hero.style.backgroundPosition='center center';
+    }
+  }catch(err){
+    // Keep the existing outreach image as a safe fallback.
+  }
+})();
+</script>
+<script>
 (() => {
   // Every-other-Saturday food distribution schedule anchored to Sept. 19, 2026.
   const anchor = new Date(Date.UTC(2026, 8, 19));
