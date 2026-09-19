@@ -7,7 +7,7 @@
   <meta name="description" content="Champion Life Church Food Outreach in Fort Walton Beach. See food availability and sign up to be notified when food is available.">
   <link rel="stylesheet" href="assets/css/styles.css?v=20260919">
   <style>
-    .food-hero{min-height:72vh;display:flex;align-items:flex-end;position:relative;background:url('assets/images/outreach-community-20260807.jpg') center/cover;padding:150px 0 76px}
+    .food-hero{min-height:72vh;display:flex;align-items:flex-end;position:relative;background:url('assets/images/food-outreach-hero-20260919.jpg') center/cover;padding:150px 0 76px}
     .food-hero:before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(0,0,0,.95) 0%,rgba(0,0,0,.76) 46%,rgba(0,0,0,.34) 76%),linear-gradient(to top,rgba(0,0,0,.9),transparent 68%)}
     .food-hero .container{position:relative;z-index:1}
     .food-hero-copy{max-width:850px}
@@ -272,30 +272,6 @@
 </footer>
 
 <script src="assets/js/site.js"></script>
-<script>
-(async()=>{
-  try{
-    const files=[
-      'assets/images/food-outreach-hero.part1.txt',
-      'assets/images/food-outreach-hero.part2.txt',
-      'assets/images/food-outreach-hero.part3.txt',
-      'assets/images/food-outreach-hero.part4.txt'
-    ];
-    const chunks=await Promise.all(files.map(async path=>{
-      const response=await fetch(path,{cache:'force-cache'});
-      if(!response.ok) throw new Error('hero-image');
-      return response.text();
-    }));
-    const hero=document.querySelector('.food-hero');
-    if(hero){
-      hero.style.backgroundImage='url("data:image/jpeg;base64,'+chunks.join('').trim()+'")';
-      hero.style.backgroundPosition='center center';
-    }
-  }catch(err){
-    // Keep the existing outreach image as a safe fallback.
-  }
-})();
-</script>
 <script>
 (() => {
   // Every-other-Saturday food distribution schedule anchored to Sept. 19, 2026.
