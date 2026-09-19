@@ -31,6 +31,19 @@
     .food-detail small{display:block;color:#d3ad4f;font-weight:900;letter-spacing:.09em;text-transform:uppercase;margin-bottom:5px}
     .food-detail strong{display:block;color:#fff;font-size:1.05rem;line-height:1.35}
     .food-no-registration{margin-top:18px;padding:15px 17px;border-radius:14px;background:rgba(211,173,79,.1);border-left:4px solid #d3ad4f;color:#e8e8e8!important}
+    .food-calendar{margin-top:20px;padding-top:18px;border-top:1px solid rgba(255,255,255,.1)}
+    .food-calendar h3{margin:0 0 6px;font-size:1.15rem;color:#fff;letter-spacing:0}
+    .food-calendar>p{margin:0 0 14px;color:#aeb0b6;font-size:.9rem}
+    .food-calendar-list{display:grid;gap:9px}
+    .food-calendar-row{display:grid;grid-template-columns:86px 1fr auto;align-items:center;gap:13px;padding:12px 13px;border-radius:14px;background:#191b20;border:1px solid rgba(255,255,255,.07)}
+    .food-calendar-row.is-today{background:rgba(211,173,79,.12);border-color:rgba(211,173,79,.38)}
+    .food-calendar-date{display:grid;place-items:center;width:72px;height:58px;border-radius:12px;background:#0e0f12;border:1px solid rgba(255,255,255,.08)}
+    .food-calendar-date small{color:#d3ad4f;font-weight:900;font-size:10px;letter-spacing:.09em;text-transform:uppercase;line-height:1}
+    .food-calendar-date strong{font-size:1.35rem;line-height:1;color:#fff;margin-top:4px}
+    .food-calendar-copy strong{display:block;color:#fff;font-size:.98rem}
+    .food-calendar-copy span{display:block;color:#aeb0b6;font-size:.86rem;margin-top:2px}
+    .food-calendar-badge{font-size:10px;font-weight:900;letter-spacing:.08em;text-transform:uppercase;color:#111;background:#d3ad4f;padding:6px 8px;border-radius:999px;white-space:nowrap}
+
     .food-alert-card{background:#fff;padding:34px;border:1px solid #ded9cf}
     .food-alert-card h2{font-size:clamp(2rem,4vw,3.2rem);margin:7px 0 9px}
     .food-alert-card>p{color:#666;line-height:1.65;margin-bottom:22px}
@@ -87,7 +100,7 @@
     .food-visit-actions .btn.outline{border-color:rgba(255,255,255,.4)}
 
     @media(max-width:900px){.food-top-grid{grid-template-columns:1fr}.food-values{grid-template-columns:1fr}.food-detail-grid{grid-template-columns:1fr 1fr}.food-visit{grid-template-columns:1fr}.food-visit-media{min-height:360px}}
-    @media(max-width:650px){.food-hero{min-height:760px;padding-bottom:58px;background-position:62% center}.food-form-grid,.food-detail-grid{grid-template-columns:1fr}.food-field.full{grid-column:auto}.food-info-card,.food-alert-card{padding:24px}.food-checks{display:grid;gap:10px}.food-main.section{padding-top:58px;padding-bottom:58px}.food-visit{margin-top:56px}.food-visit-media{min-height:280px}.food-visit-copy{padding:26px}.food-visit-actions{display:grid;grid-template-columns:1fr}.food-visit-actions .btn{width:100%}}
+    @media(max-width:650px){.food-hero{min-height:760px;padding-bottom:58px;background-position:62% center}.food-form-grid,.food-detail-grid{grid-template-columns:1fr}.food-field.full{grid-column:auto}.food-info-card,.food-alert-card{padding:24px}.food-checks{display:grid;gap:10px}.food-main.section{padding-top:58px;padding-bottom:58px}.food-calendar-row{grid-template-columns:68px 1fr}.food-calendar-date{width:60px;height:54px}.food-calendar-badge{grid-column:2;justify-self:start;margin-top:-4px}.food-visit{margin-top:56px}.food-visit-media{min-height:280px}.food-visit-copy{padding:26px}.food-visit-actions{display:grid;grid-template-columns:1fr}.food-visit-actions .btn{width:100%}}
   </style>
 </head>
 <body>
@@ -142,6 +155,12 @@
             <div class="food-detail"><small>Typical Capacity</small><strong>Approximately 20–25 families</strong></div>
           </div>
           <p class="food-no-registration"><strong>No registration is required to receive food.</strong> The form on this page is only for families who would like us to notify them when food is available again.</p>
+
+          <div class="food-calendar">
+            <h3>Upcoming Food Distribution Dates</h3>
+            <p>Every other Saturday from 1:00–3:00 PM. Past dates automatically drop off this list.</p>
+            <div class="food-calendar-list" id="foodCalendarList" aria-live="polite"></div>
+          </div>
         </article>
 
         <article class="food-alert-card" id="alerts">
@@ -255,47 +274,100 @@
 <script src="assets/js/site.js"></script>
 <script>
 (() => {
+  // Every-other-Saturday food distribution schedule anchored to Sept. 19, 2026.
   const anchor = new Date(Date.UTC(2026, 8, 19));
   const MS_DAY = 86400000;
-  const fmt = new Intl.DateTimeFormat('en-US',{timeZone:'America/Chicago',year:'numeric',month:'2-digit',day:'2-digit',weekday:'short',hour:'2-digit',minute:'2-digit',hour12:false});
-  const parts = Object.fromEntries(fmt.formatToParts(new Date()).filter(p=>p.type!=='literal').map(p=>[p.type,p.value]));
-  const nowDate = new Date(Date.UTC(Number(parts.year),Number(parts.month)-1,Number(parts.day)));
-  const daysSince = Math.floor((nowDate-anchor)/MS_DAY);
-  const onCycle = daysSince >= 0 && daysSince % 14 === 0;
-  const mins = Number(parts.hour)*60 + Number(parts.minute);
+  const DISTRIBUTION_START = 13 * 60; // 1:00 PM Central
+  const DISTRIBUTION_END = 15 * 60;   // 3:00 PM Central
+  const fmt = new Intl.DateTimeFormat('en-US',{
+    timeZone:'America/Chicago',
+    year:'numeric',month:'2-digit',day:'2-digit',weekday:'short',
+    hour:'2-digit',minute:'2-digit',hour12:false
+  });
+  const parts = Object.fromEntries(
+    fmt.formatToParts(new Date()).filter(p=>p.type!=='literal').map(p=>[p.type,p.value])
+  );
+  const today = new Date(Date.UTC(Number(parts.year),Number(parts.month)-1,Number(parts.day)));
+  const minutesNow = Number(parts.hour)*60 + Number(parts.minute);
+  const daysSinceAnchor = Math.floor((today-anchor)/MS_DAY);
+  const isDistributionDate = daysSinceAnchor >= 0 && daysSinceAnchor % 14 === 0;
+  const distributionIsActive = isDistributionDate && minutesNow < DISTRIBUTION_END;
+
   const status = document.getElementById('foodStatus');
   const title = document.getElementById('foodInfoTitle');
   const copy = document.getElementById('foodInfoCopy');
   const detail = document.getElementById('foodTimeDetail');
+  const calendarList = document.getElementById('foodCalendarList');
 
-  function nextDistribution(fromDate){
-    let d = new Date(fromDate);
-    let diff = Math.floor((d-anchor)/MS_DAY);
-    if(diff < 0) return new Date(anchor);
-    let rem = ((diff % 14)+14)%14;
-    let add = rem === 0 ? 0 : 14-rem;
-    if(add === 0 && onCycle && mins >= 15*60) add = 14;
+  function distributionOnOrAfter(fromDate){
+    const diff = Math.floor((fromDate-anchor)/MS_DAY);
+    if(diff <= 0) return new Date(anchor);
+    const rem = ((diff % 14)+14)%14;
+    const add = rem === 0 ? 0 : 14-rem;
+    const d = new Date(fromDate);
     d.setUTCDate(d.getUTCDate()+add);
     return d;
   }
-  function pretty(d){
-    return new Intl.DateTimeFormat('en-US',{timeZone:'UTC',weekday:'long',month:'long',day:'numeric',year:'numeric'}).format(d);
+
+  function nextUpcomingDistribution(){
+    let next = distributionOnOrAfter(today);
+    // Once a distribution day has ended, automatically remove it and move to the next one.
+    if(isDistributionDate && minutesNow >= DISTRIBUTION_END){
+      next = new Date(today);
+      next.setUTCDate(next.getUTCDate()+14);
+    }
+    return next;
   }
 
-  if(onCycle && mins < 15*60){
+  function pretty(d){
+    return new Intl.DateTimeFormat('en-US',{
+      timeZone:'UTC',weekday:'long',month:'long',day:'numeric',year:'numeric'
+    }).format(d);
+  }
+
+  function calendarParts(d){
+    const month = new Intl.DateTimeFormat('en-US',{timeZone:'UTC',month:'short'}).format(d);
+    const day = new Intl.DateTimeFormat('en-US',{timeZone:'UTC',day:'numeric'}).format(d);
+    const weekday = new Intl.DateTimeFormat('en-US',{timeZone:'UTC',weekday:'long'}).format(d);
+    return {month,day,weekday};
+  }
+
+  function renderCalendar(){
+    if(!calendarList) return;
+    const first = nextUpcomingDistribution();
+    const rows = [];
+    for(let i=0;i<5;i++){
+      const d = new Date(first);
+      d.setUTCDate(first.getUTCDate() + (i*14));
+      const cp = calendarParts(d);
+      const isTodayRow = d.getTime() === today.getTime() && distributionIsActive;
+      rows.push(
+        '<div class="food-calendar-row'+(isTodayRow?' is-today':'')+'">'+
+          '<div class="food-calendar-date"><small>'+cp.month+'</small><strong>'+cp.day+'</strong></div>'+
+          '<div class="food-calendar-copy"><strong>'+cp.weekday+', '+pretty(d)+'</strong><span>1:00–3:00 PM • While supplies last</span></div>'+
+          (isTodayRow?'<span class="food-calendar-badge">Today</span>':'')+
+        '</div>'
+      );
+    }
+    calendarList.innerHTML = rows.join('');
+  }
+
+  if(distributionIsActive){
     status.textContent = 'Food Available Today • 1–3 PM';
     status.classList.remove('off');
     title.textContent = 'Food is available today.';
     copy.textContent = 'If your family could use some help, you are welcome to come by Champion Life today between 1:00 and 3:00 PM. We typically have enough food for approximately 20–25 families, while supplies last.';
     detail.textContent = 'Today • 1:00–3:00 PM';
   } else {
-    const next = nextDistribution(nowDate);
+    const next = nextUpcomingDistribution();
     status.textContent = 'Next Distribution • ' + pretty(next);
     status.classList.add('off');
-    title.textContent = onCycle ? 'Today’s distribution has ended.' : 'Next food distribution.';
-    copy.textContent = 'Our small food distribution is scheduled approximately every other Saturday. Join the notification list so we can let you know when food is available and if a schedule changes.';
+    title.textContent = isDistributionDate && minutesNow >= DISTRIBUTION_END ? 'Today’s distribution has ended.' : 'Next food distribution.';
+    copy.textContent = 'Food distribution is scheduled every other Saturday from 1:00 to 3:00 PM, beginning September 19, 2026. The schedule below automatically removes dates after they have passed.';
     detail.textContent = pretty(next) + ' • 1:00–3:00 PM';
   }
+
+  renderCalendar();
 
   const form = document.getElementById('foodAlertForm');
   const card = document.getElementById('alerts');
@@ -318,7 +390,11 @@
     formStatus.textContent='Adding you to the food availability list…';
     try{
       const body = new URLSearchParams(new FormData(form)).toString();
-      const response = await fetch('/',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body});
+      const response = await fetch('/',{
+        method:'POST',
+        headers:{'Content-Type':'application/x-www-form-urlencoded'},
+        body
+      });
       if(!response.ok) throw new Error('submit');
       card.classList.add('success');
       card.scrollIntoView({behavior:'smooth',block:'center'});
