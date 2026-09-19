@@ -1,0 +1,278 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Food Outreach | Champion Life Church</title>
+  <meta name="description" content="Champion Life Church Food Outreach in Fort Walton Beach. See food availability and sign up to be notified when food is available.">
+  <link rel="stylesheet" href="assets/css/styles.css?v=20260919">
+  <style>
+    .food-hero{min-height:72vh;display:flex;align-items:flex-end;position:relative;background:url('assets/images/outreach-community-20260807.jpg') center/cover;padding:150px 0 76px}
+    .food-hero:before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(0,0,0,.95) 0%,rgba(0,0,0,.76) 46%,rgba(0,0,0,.34) 76%),linear-gradient(to top,rgba(0,0,0,.9),transparent 68%)}
+    .food-hero .container{position:relative;z-index:1}
+    .food-hero-copy{max-width:850px}
+    .food-hero h1{font-size:clamp(3.4rem,7.5vw,7.2rem);margin:8px 0 18px}
+    .food-hero .lead{color:#eee;max-width:720px}
+    .food-status-wrap{margin-top:28px;display:flex;flex-wrap:wrap;gap:12px}
+    .food-status{display:inline-flex;align-items:center;gap:9px;padding:12px 16px;border-radius:999px;background:#d3ad4f;color:#111;font-weight:900}
+    .food-status:before{content:"";width:9px;height:9px;border-radius:50%;background:#111;box-shadow:0 0 0 4px rgba(0,0,0,.1)}
+    .food-status.off{background:#fff;color:#111}
+    .food-status.off:before{background:#777}
+    .food-capacity{display:inline-flex;align-items:center;padding:12px 16px;border-radius:999px;border:1px solid rgba(255,255,255,.35);color:#fff;font-weight:800;background:rgba(0,0,0,.22)}
+    .food-main{background:#f4f2ed;color:#111}
+    .food-top-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:30px;align-items:start}
+    .food-info-card,.food-alert-card{border-radius:26px;overflow:hidden;box-shadow:0 20px 55px rgba(0,0,0,.1)}
+    .food-info-card{background:#111214;color:#fff;padding:34px}
+    .food-info-card .eyebrow{color:#e6cb78}
+    .food-info-card h2{font-size:clamp(2.2rem,4vw,3.8rem);margin:8px 0 14px}
+    .food-info-card p{color:#c8cad0;line-height:1.75}
+    .food-detail-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px;margin-top:24px}
+    .food-detail{padding:17px;border-radius:16px;background:#191b20;border:1px solid rgba(255,255,255,.08)}
+    .food-detail small{display:block;color:#d3ad4f;font-weight:900;letter-spacing:.09em;text-transform:uppercase;margin-bottom:5px}
+    .food-detail strong{display:block;color:#fff;font-size:1.05rem;line-height:1.35}
+    .food-no-registration{margin-top:18px;padding:15px 17px;border-radius:14px;background:rgba(211,173,79,.1);border-left:4px solid #d3ad4f;color:#e8e8e8!important}
+    .food-alert-card{background:#fff;padding:34px;border:1px solid #ded9cf}
+    .food-alert-card h2{font-size:clamp(2rem,4vw,3.2rem);margin:7px 0 9px}
+    .food-alert-card>p{color:#666;line-height:1.65;margin-bottom:22px}
+    .food-form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+    .food-field{display:grid;gap:7px}
+    .food-field.full{grid-column:1/-1}
+    .food-field span{font-size:13px;font-weight:850;color:#242424}
+    .food-field input{width:100%;height:50px;padding:0 13px;border-radius:11px;border:1px solid #cfcfcf;background:#fff;color:#111;outline:none}
+    .food-field input:focus{border-color:#b78d2d;box-shadow:0 0 0 3px rgba(211,173,79,.16)}
+    .food-pref{margin-top:18px;padding:17px;border-radius:16px;background:#f7f4ed;border:1px solid #e4dccb}
+    .food-pref-title{display:block;font-size:13px;font-weight:900;margin-bottom:10px}
+    .food-checks{display:flex;flex-wrap:wrap;gap:16px}
+    .food-check{display:flex;align-items:center;gap:8px;font-weight:750;color:#444}
+    .food-check input{width:18px;height:18px}
+    .food-consent{font-size:12px;color:#777;line-height:1.55;margin:13px 0 0}
+    .food-submit{width:100%;border:0;cursor:pointer;margin-top:18px}
+    .food-form-status{display:none;margin-top:14px;padding:13px 14px;border-radius:11px;font-size:14px}
+    .food-form-status.working{display:block;background:#f5f2eb;color:#66531f;border:1px solid #e5d59f}
+    .food-form-status.error{display:block;background:#fff0f0;color:#7c1d1d;border:1px solid #efc4c4}
+    .food-success{display:none}
+    .food-alert-card.success .food-form{display:none}
+    .food-alert-card.success .food-success{display:block}
+    .food-success-icon{width:54px;height:54px;border-radius:50%;display:grid;place-items:center;background:#d3ad4f;color:#111;font-size:25px;font-weight:900;margin-bottom:16px}
+    .food-success h3{font-size:2rem;margin-bottom:9px}
+    .food-success p{color:#666;line-height:1.65}
+    .food-success-links{display:grid;gap:10px;margin-top:20px}
+    .food-success-links a{display:flex;justify-content:space-between;align-items:center;padding:15px 17px;border-radius:14px;background:#111214;color:#fff;font-weight:850}
+    .food-success-links a span{color:#d3ad4f}
+    .food-why{padding-top:72px}
+    .food-why-head{max-width:800px;margin-bottom:28px}
+    .food-why-head h2{font-size:clamp(2.4rem,5vw,4.4rem)}
+    .food-values{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+    .food-value{background:#fff;border:1px solid #ddd7cc;border-radius:20px;padding:25px}
+    .food-value b{display:inline-grid;place-items:center;width:42px;height:42px;border-radius:50%;background:#111;color:#e6cb78;margin-bottom:15px}
+    .food-value h3{margin-bottom:8px}
+    .food-value p{color:#666;margin:0}
+    .food-honeypot{position:absolute!important;clip:rect(0 0 0 0)!important;width:1px!important;height:1px!important;overflow:hidden!important}
+    @media(max-width:900px){.food-top-grid{grid-template-columns:1fr}.food-values{grid-template-columns:1fr}.food-detail-grid{grid-template-columns:1fr 1fr}}
+    @media(max-width:650px){.food-hero{min-height:760px;padding-bottom:58px;background-position:62% center}.food-form-grid,.food-detail-grid{grid-template-columns:1fr}.food-field.full{grid-column:auto}.food-info-card,.food-alert-card{padding:24px}.food-checks{display:grid;gap:10px}.food-main.section{padding-top:58px;padding-bottom:58px}}
+  </style>
+</head>
+<body>
+<header class="site-header">
+  <div class="container nav">
+    <a class="brand" href="index.html"><img src="assets/images/logo-gold.png" alt="Champion Life Church"></a>
+    <button class="menu-btn" aria-label="Open menu">☰</button>
+    <nav class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="watch.html">Watch</a>
+      <a href="daily-supplements.html">Supplements</a>
+      <a href="ministries.html">Ministries</a>
+      <a href="outreach.html">Outreach</a>
+      <a href="events.html">Events</a>
+      <a href="next-steps.html">Next Steps</a>
+      <a href="give.html">Give</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="food-hero">
+    <div class="container">
+      <div class="food-hero-copy">
+        <span class="eyebrow">Champion Life Community Outreach</span>
+        <h1>Food for families.<br>Hope for our community.</h1>
+        <p class="lead">When food is available, Champion Life is honored to share it with local families. No purchase. No obligation. Just an opportunity to be a blessing.</p>
+        <div class="food-status-wrap">
+          <span class="food-status" id="foodStatus">Checking availability…</span>
+          <span class="food-capacity">Typically serves about 20–25 families</span>
+        </div>
+        <div class="actions">
+          <a class="btn gold" href="#alerts">Get Food Availability Alerts</a>
+          <a class="btn outline" href="plan-your-visit.html">Learn About Champion Life</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section food-main">
+    <div class="container">
+      <div class="food-top-grid">
+        <article class="food-info-card">
+          <span class="eyebrow">Food Outreach</span>
+          <h2 id="foodInfoTitle">Food availability</h2>
+          <p id="foodInfoCopy">Champion Life has a small food distribution approximately every other Saturday. Quantities vary, and food is available while supplies last.</p>
+          <div class="food-detail-grid">
+            <div class="food-detail"><small>Location</small><strong>Champion Life Church<br>650 Denton Blvd NW<br>Fort Walton Beach, FL 32547</strong></div>
+            <div class="food-detail"><small>Distribution Time</small><strong id="foodTimeDetail">1:00–3:00 PM on distribution Saturdays</strong></div>
+            <div class="food-detail"><small>Availability</small><strong>First come, while supplies last</strong></div>
+            <div class="food-detail"><small>Typical Capacity</small><strong>Approximately 20–25 families</strong></div>
+          </div>
+          <p class="food-no-registration"><strong>No registration is required to receive food.</strong> The form on this page is only for families who would like us to notify them when food is available again.</p>
+        </article>
+
+        <article class="food-alert-card" id="alerts">
+          <div class="food-form">
+            <span class="eyebrow">Stay informed</span>
+            <h2>Get food availability alerts.</h2>
+            <p>Join the notification list and we’ll let you know when Champion Life has food available for local families.</p>
+            <form id="foodAlertForm" name="food-outreach-alerts" method="POST" data-netlify="true" netlify-honeypot="bot-field">
+              <input type="hidden" name="form-name" value="food-outreach-alerts">
+              <input type="hidden" name="source-page" id="foodSourcePage" value="">
+              <p class="food-honeypot"><label>Do not fill this out: <input name="bot-field"></label></p>
+              <div class="food-form-grid">
+                <label class="food-field"><span>First Name *</span><input type="text" name="first-name" autocomplete="given-name" required></label>
+                <label class="food-field"><span>Last Name *</span><input type="text" name="last-name" autocomplete="family-name" required></label>
+                <label class="food-field full"><span>Mobile Number *</span><input type="tel" name="phone" autocomplete="tel" required></label>
+                <label class="food-field full"><span>Email Address *</span><input type="email" name="email" autocomplete="email" required></label>
+              </div>
+              <div class="food-pref">
+                <span class="food-pref-title">How would you like to be notified? *</span>
+                <div class="food-checks">
+                  <label class="food-check"><input type="checkbox" name="notify-by" value="Text Message"> Text message</label>
+                  <label class="food-check"><input type="checkbox" name="notify-by" value="Email"> Email</label>
+                </div>
+                <p class="food-consent">We’ll use this information for Champion Life food-outreach availability and related community-resource updates you request. Message/data rates may apply for text messages. You can ask us to stop at any time.</p>
+              </div>
+              <button class="btn gold food-submit" type="submit" id="foodSubmit">Notify Me When Food Is Available</button>
+              <div class="food-form-status" id="foodFormStatus" role="status" aria-live="polite"></div>
+            </form>
+          </div>
+          <div class="food-success">
+            <div class="food-success-icon">✓</div>
+            <h3>You’re on the list.</h3>
+            <p>Thank you. We’ll use the preferences you selected to let you know when Champion Life has food available again.</p>
+            <p>While you’re here, we’d love for you to know more about the church family behind this outreach.</p>
+            <div class="food-success-links">
+              <a href="plan-your-visit.html">Plan Your Visit <span>→</span></a>
+              <a href="https://www.community.givehub.com/forms/prayerrequest">Request Prayer <span>→</span></a>
+              <a href="about.html">Learn About Champion Life <span>→</span></a>
+            </div>
+          </div>
+        </article>
+      </div>
+
+      <section class="food-why">
+        <div class="food-why-head">
+          <span class="eyebrow">Why we do it</span>
+          <h2>Because people matter to God.</h2>
+          <p class="lead">Food outreach is one simple way Champion Life can serve our neighbors, care for families and demonstrate the love of Jesus in a practical way.</p>
+        </div>
+        <div class="food-values">
+          <article class="food-value"><b>01</b><h3>Serve with dignity</h3><p>We want every family who comes through our doors to be treated with kindness, honor and respect.</p></article>
+          <article class="food-value"><b>02</b><h3>Meet practical needs</h3><p>When resources are available, we want them moving into the hands of families who can use them.</p></article>
+          <article class="food-value"><b>03</b><h3>Build real connection</h3><p>If you want prayer, encouragement or a church family, Champion Life is here for you beyond distribution day.</p></article>
+        </div>
+      </section>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="container footer-container">
+    <div class="footer-grid">
+      <div class="footer-brand-panel"><img class="footer-vision-image" src="assets/images/footer-raise-reign-reach.png" alt="Champion Life Church — Raise, Reign, Reach"></div>
+      <div class="footer-column"><h4>Explore</h4><a href="about.html">About</a><a href="watch.html">Watch</a><a href="daily-supplements.html">Daily Supplements</a><a href="ministries.html">Ministries</a><a href="outreach.html">Outreach</a></div>
+      <div class="footer-column"><h4>Connect</h4><a href="plan-your-visit.html">Plan Your Visit</a><a href="next-steps.html">Next Steps</a><a href="prayer.html">Prayer</a><a href="contact.html">Contact</a></div>
+      <div class="footer-column footer-contact"><h4>Champion Life Church</h4><address>650 Denton Blvd NW<br>Fort Walton Beach, FL 32547</address><a class="footer-phone" href="tel:+18507785322">(850) 778-5322</a><div class="footer-social"><a href="https://www.facebook.com/ChampionLifeFWB" target="_blank" rel="noopener">Facebook</a><a href="https://www.instagram.com/_championlife_/" target="_blank" rel="noopener">Instagram</a><a href="https://www.youtube.com/@ChampionLifeFWB" target="_blank" rel="noopener">YouTube</a></div></div>
+    </div>
+    <div class="subfooter"><span>© 2026 Champion Life Church</span><span class="subfooter-separator">•</span><span>Legal name: Living Faith</span><nav class="footer-legal" aria-label="Legal"><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a></nav></div>
+  </div>
+</footer>
+
+<script src="assets/js/site.js"></script>
+<script>
+(() => {
+  const anchor = new Date(Date.UTC(2026, 8, 19));
+  const MS_DAY = 86400000;
+  const fmt = new Intl.DateTimeFormat('en-US',{timeZone:'America/Chicago',year:'numeric',month:'2-digit',day:'2-digit',weekday:'short',hour:'2-digit',minute:'2-digit',hour12:false});
+  const parts = Object.fromEntries(fmt.formatToParts(new Date()).filter(p=>p.type!=='literal').map(p=>[p.type,p.value]));
+  const nowDate = new Date(Date.UTC(Number(parts.year),Number(parts.month)-1,Number(parts.day)));
+  const daysSince = Math.floor((nowDate-anchor)/MS_DAY);
+  const onCycle = daysSince >= 0 && daysSince % 14 === 0;
+  const mins = Number(parts.hour)*60 + Number(parts.minute);
+  const status = document.getElementById('foodStatus');
+  const title = document.getElementById('foodInfoTitle');
+  const copy = document.getElementById('foodInfoCopy');
+  const detail = document.getElementById('foodTimeDetail');
+
+  function nextDistribution(fromDate){
+    let d = new Date(fromDate);
+    let diff = Math.floor((d-anchor)/MS_DAY);
+    if(diff < 0) return new Date(anchor);
+    let rem = ((diff % 14)+14)%14;
+    let add = rem === 0 ? 0 : 14-rem;
+    if(add === 0 && onCycle && mins >= 15*60) add = 14;
+    d.setUTCDate(d.getUTCDate()+add);
+    return d;
+  }
+  function pretty(d){
+    return new Intl.DateTimeFormat('en-US',{timeZone:'UTC',weekday:'long',month:'long',day:'numeric',year:'numeric'}).format(d);
+  }
+
+  if(onCycle && mins < 15*60){
+    status.textContent = 'Food Available Today • 1–3 PM';
+    status.classList.remove('off');
+    title.textContent = 'Food is available today.';
+    copy.textContent = 'If your family could use some help, you are welcome to come by Champion Life today between 1:00 and 3:00 PM. We typically have enough food for approximately 20–25 families, while supplies last.';
+    detail.textContent = 'Today • 1:00–3:00 PM';
+  } else {
+    const next = nextDistribution(nowDate);
+    status.textContent = 'Next Distribution • ' + pretty(next);
+    status.classList.add('off');
+    title.textContent = onCycle ? 'Today’s distribution has ended.' : 'Next food distribution.';
+    copy.textContent = 'Our small food distribution is scheduled approximately every other Saturday. Join the notification list so we can let you know when food is available and if a schedule changes.';
+    detail.textContent = pretty(next) + ' • 1:00–3:00 PM';
+  }
+
+  const form = document.getElementById('foodAlertForm');
+  const card = document.getElementById('alerts');
+  const submit = document.getElementById('foodSubmit');
+  const formStatus = document.getElementById('foodFormStatus');
+  document.getElementById('foodSourcePage').value = window.location.href;
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const prefs = form.querySelectorAll('input[name="notify-by"]:checked');
+    if(!form.reportValidity()) return;
+    if(!prefs.length){
+      formStatus.className='food-form-status error';
+      formStatus.textContent='Please choose text message, email, or both.';
+      return;
+    }
+    submit.disabled = true;
+    submit.textContent = 'Submitting…';
+    formStatus.className='food-form-status working';
+    formStatus.textContent='Adding you to the food availability list…';
+    try{
+      const body = new URLSearchParams(new FormData(form)).toString();
+      const response = await fetch('/',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body});
+      if(!response.ok) throw new Error('submit');
+      card.classList.add('success');
+      card.scrollIntoView({behavior:'smooth',block:'center'});
+    }catch(err){
+      formStatus.className='food-form-status error';
+      formStatus.textContent='We could not submit your information. Please check your connection and try again.';
+      submit.disabled=false;
+      submit.textContent='Notify Me When Food Is Available';
+    }
+  });
+})();
+</script>
+</body>
+</html>
