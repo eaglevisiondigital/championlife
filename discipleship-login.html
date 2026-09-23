@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Discipleship Login | Champion Life Church</title>
+<meta name="description" content="Sign in to Champion Life Discipleship to save course progress and continue across devices.">
+<link rel="stylesheet" href="assets/css/styles.css">
+<style>
+.auth-page{min-height:100vh;padding:138px 18px 78px;background:radial-gradient(circle at 50% 0,rgba(200,165,75,.16),transparent 34%),#090a0c}
+.auth-wrap{width:min(620px,100%);margin:0 auto}
+.auth-card{background:#fff;color:#111;border-radius:26px;overflow:hidden;box-shadow:0 28px 80px rgba(0,0,0,.35)}
+.auth-head{padding:34px 34px 26px;background:#111214;color:#fff}
+.auth-head .eyebrow{color:#e5c768}.auth-head h1{font-size:clamp(2.5rem,6vw,4.5rem);margin:8px 0 12px;line-height:1}
+.auth-head p{color:#c7cad0;line-height:1.65;margin:0}
+.auth-body{padding:30px 34px 34px}
+.auth-step{display:none}.auth-step.active{display:block}
+.auth-field{display:grid;gap:8px;margin:0 0 18px}.auth-field span{font-weight:850;font-size:.86rem;color:#222}
+.auth-field input{width:100%;height:54px;border:1px solid #ccc5b7;border-radius:12px;padding:0 14px;font:inherit;outline:none}
+.auth-field input:focus{border-color:#b68c2e;box-shadow:0 0 0 3px rgba(200,165,75,.16)}
+.auth-code{font-size:1.6rem!important;letter-spacing:.3em;text-align:center;font-weight:800}
+.auth-body .btn{width:100%;justify-content:center;border:0;cursor:pointer}
+.auth-secondary{margin-top:12px;background:transparent!important;color:#444!important;border:1px solid #ccc!important}
+.auth-note{font-size:.8rem;color:#6a6a6a;line-height:1.55;margin:16px 0 0}
+.auth-message{display:none;margin-top:14px;padding:12px 14px;border-radius:10px;font-size:.88rem}
+.auth-message.show{display:block}.auth-message.error{background:#fff0f0;color:#7d2020;border:1px solid #efc2c2}.auth-message.success{background:#eff8ed;color:#275d23;border:1px solid #c4dfbf}
+.auth-links{margin-top:20px;text-align:center;font-size:.86rem}.auth-links a{color:#7c6427;text-decoration:underline}
+@media(max-width:650px){.auth-page{padding-top:104px}.auth-head,.auth-body{padding-left:22px;padding-right:22px}}
+</style>
+</head>
+<body>
+<header class="site-header"><div class="container nav"><a class="brand" href="index.html"><img src="assets/images/logo-gold.png" alt="Champion Life Church"></a><button class="menu-btn" aria-label="Open menu">☰</button><nav class="nav-links"><a href="index.html">Home</a><a href="about.html">About</a><a href="watch.html">Watch</a><a href="ministries.html">Ministries</a><a href="outreach.html">Outreach</a><a href="events.html">Events</a><a href="next-steps.html">Next Steps</a><a href="give.html">Give</a></nav></div></header>
+<main class="auth-page">
+<div class="auth-wrap">
+  <div class="auth-card">
+    <div class="auth-head">
+      <span class="eyebrow">Champion Life Discipleship</span>
+      <h1>Pick up where you left off.</h1>
+      <p>Sign in with your email so your Getting a Grip progress and answers can follow you across your phone, tablet and computer.</p>
+    </div>
+    <div class="auth-body">
+      <div class="auth-step active" id="emailStep">
+        <label class="auth-field"><span>Email Address</span><input id="loginEmail" type="email" autocomplete="email" placeholder="you@example.com"></label>
+        <button class="btn gold" id="sendCodeBtn" type="button">Send My Sign-In Code</button>
+        <p class="auth-note">We’ll send a one-time sign-in email. Depending on the current email template, it may contain a 6-digit code or a secure sign-in link.</p>
+      </div>
+      <div class="auth-step" id="codeStep">
+        <label class="auth-field"><span>6-Digit Code</span><input id="loginCode" class="auth-code" type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="6" placeholder="000000"></label>
+        <button class="btn gold" id="verifyCodeBtn" type="button">Sign In</button>
+        <button class="btn auth-secondary" id="backBtn" type="button">Use a Different Email</button>
+        <p class="auth-note">If your email contains a secure sign-in link instead of a code, tap that link. You’ll come back here already signed in.</p>
+      </div>
+      <div class="auth-message" id="authMessage" role="status" aria-live="polite"></div>
+      <div class="auth-links"><a href="getting-a-grip.html">← Back to Getting a Grip</a></div>
+    </div>
+  </div>
+</div>
+</main>
+<script src="assets/js/site.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="assets/js/supabase-config.js?v=20260923"></script>
+<script src="assets/js/champion-life-auth.js?v=20260923"></script>
+<script>
+(() => {
+  const auth = window.ChampionLifeAuth;
+  const emailStep = document.getElementById('emailStep');
+  const codeStep = document.getElementById('codeStep');
+  const emailInput = document.getElementById('loginEmail');
+  const codeInput = document.getElementById('loginCode');
+  const sendBtn = document.getElementById('sendCodeBtn');
+  const verifyBtn = document.getElementById('verifyCodeBtn');
+  const backBtn = document.getElementById('backBtn');
+  const msg = document.getElementById('authMessage');
+  const params = new URLSearchParams(location.search);
+  const next = params.get('next') || 'my-discipleship.html';
+  let email = '';
+
+  function showMessage(type,text){msg.className='auth-message show '+type;msg.textContent=text}
+  function clearMessage(){msg.className='auth-message';msg.textContent=''}
+  function goNext(){location.href = next.startsWith('/') ? next : next}
+
+  async function existingSession(){
+    try{
+      const session=await auth?.getSession();
+      if(session) goNext();
+    }catch(e){}
+  }
+
+  sendBtn.addEventListener('click', async () => {
+    clearMessage();
+    email=emailInput.value.trim().toLowerCase();
+    if(!email || !emailInput.checkValidity()){showMessage('error','Enter a valid email address.');return}
+    sendBtn.disabled=true;sendBtn.textContent='Sending...';
+    try{
+      const redirect = location.origin + '/discipleship-login.html?next=' + encodeURIComponent(next);
+      const {error}=await auth.client.auth.signInWithOtp({
+        email,
+        options:{shouldCreateUser:true,emailRedirectTo:redirect}
+      });
+      if(error) throw error;
+      emailStep.classList.remove('active');codeStep.classList.add('active');codeInput.focus();
+      showMessage('success','Check your email for your Champion Life sign-in code or secure sign-in link.');
+    }catch(e){showMessage('error',e.message || 'We could not send the sign-in email. Please try again.')}
+    finally{sendBtn.disabled=false;sendBtn.textContent='Send My Sign-In Code'}
+  });
+
+  verifyBtn.addEventListener('click', async () => {
+    clearMessage();
+    const token=codeInput.value.trim();
+    if(!email){email=emailInput.value.trim().toLowerCase()}
+    if(!/^[0-9]{6}$/.test(token)){showMessage('error','Enter the 6-digit code from your email.');return}
+    verifyBtn.disabled=true;verifyBtn.textContent='Signing in...';
+    try{
+      const {data,error}=await auth.client.auth.verifyOtp({email,token,type:'email'});
+      if(error) throw error;
+      if(!data.session) throw new Error('We could not create your session.');
+      goNext();
+    }catch(e){showMessage('error',e.message || 'That code could not be verified.')}
+    finally{verifyBtn.disabled=false;verifyBtn.textContent='Sign In'}
+  });
+
+  backBtn.addEventListener('click',()=>{codeStep.classList.remove('active');emailStep.classList.add('active');codeInput.value='';clearMessage()});
+  codeInput.addEventListener('keydown',e=>{if(e.key==='Enter') verifyBtn.click()});
+  emailInput.addEventListener('keydown',e=>{if(e.key==='Enter') sendBtn.click()});
+
+  auth?.client.auth.onAuthStateChange((_event,session)=>{if(session) setTimeout(goNext,50)});
+  existingSession();
+})();
+</script>
+</body>
+</html>
