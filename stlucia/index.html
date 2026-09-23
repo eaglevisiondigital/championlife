@@ -99,24 +99,31 @@
     .slu-section-head .eyebrow{color:#9a6f14}
     .slu-section-head h2{font-size:clamp(2.5rem,5vw,4.8rem);margin:9px 0 15px}
     .slu-section-head p{color:#53595c;font-size:1.08rem;line-height:1.75}
-    .slu-benefits{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+    .slu-benefits{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;align-items:stretch}
     .slu-benefit{
       position:relative;
-      min-height:360px;
-      padding:30px;
+      min-height:520px;
+      padding:34px;
       border-radius:24px;
       background:#fff;
       border:1px solid #ded5c5;
       box-shadow:0 18px 45px rgba(25,34,35,.08);
       overflow:hidden;
+      display:flex;
+      flex-direction:column;
     }
     .slu-benefit:before{content:"";position:absolute;right:-50px;top:-50px;width:150px;height:150px;border-radius:50%;background:rgba(99,199,232,.12)}
-    .slu-benefit-number{display:grid;place-items:center;width:48px;height:48px;border-radius:50%;background:#0a1b20;color:var(--gold2);font-weight:950;margin-bottom:48px}
+    .slu-benefit-number{display:grid;place-items:center;width:48px;height:48px;border-radius:50%;background:#0a1b20;color:var(--gold2);font-weight:950;margin-bottom:48px;flex:0 0 auto}
+    .slu-benefit-body{display:flex;flex-direction:column;flex:1;min-height:0}
     .slu-benefit .slu-card-kicker{color:#8b6517;font-size:.72rem;font-weight:900;letter-spacing:.12em;text-transform:uppercase}
-    .slu-benefit h3{font-size:clamp(1.65rem,2.5vw,2.35rem);margin:9px 0 13px;color:#111}
-    .slu-benefit p{color:#62686a;line-height:1.7;margin:0}
-    .slu-benefit .slu-status{display:inline-flex;margin-top:18px;padding:7px 10px;border-radius:999px;background:#edf8fb;color:#08718f;font-size:.72rem;font-weight:900;text-transform:uppercase;letter-spacing:.08em}
+    .slu-benefit h3{font-size:clamp(1.65rem,2.5vw,2.35rem);margin:9px 0 16px;color:#111;min-height:2.1em}
+    .slu-benefit p{color:#62686a;line-height:1.68;margin:0 0 24px}
+    .slu-benefit .slu-status{display:inline-flex;align-self:flex-start;margin-top:auto;padding:7px 10px;border-radius:999px;background:#edf8fb;color:#08718f;font-size:.72rem;font-weight:900;text-transform:uppercase;letter-spacing:.08em}
     .slu-benefit .slu-status.gold{background:#f5ecd3;color:#806019}
+    .slu-book-layout{display:grid;grid-template-columns:minmax(0,1fr) 108px;gap:18px;align-items:start;margin-bottom:24px}
+    .slu-book-layout p{margin:0}
+    .slu-book-cover{margin:0;position:relative;z-index:1}
+    .slu-book-cover img{display:block;width:100%;height:auto;border-radius:3px;box-shadow:0 16px 30px rgba(0,0,0,.24);transform:rotate(1.5deg);transform-origin:center}
 
     .slu-register{
       position:relative;
@@ -194,6 +201,7 @@
       .slu-benefits{grid-template-columns:1fr}
       .slu-benefit{min-height:0}
       .slu-benefit-number{margin-bottom:26px}
+      .slu-benefit h3{min-height:0}
       .slu-register-copy{position:static}
     }
     @media(max-width:700px){
@@ -207,6 +215,7 @@
       .slu-proof{padding:21px}
       .slu-why,.slu-register,.slu-after,.slu-final{padding:62px 0}
       .slu-benefit{padding:25px}
+      .slu-book-layout{grid-template-columns:minmax(0,1fr) 92px;gap:15px}
       .slu-form-card{border-radius:18px}
       .slu-form-head{padding:22px 20px}
       .slu-form-frame-wrap,.slu-form-frame{min-height:1080px}
@@ -279,26 +288,35 @@
       <div class="slu-benefits">
         <article class="slu-benefit">
           <div class="slu-benefit-number">01</div>
-          <span class="slu-card-kicker">Free Discipleship</span>
-          <h3>Get A Grip On The Basics</h3>
-          <p>Start a practical discipleship journey designed to help you understand your new life in Christ, strengthen your faith, and build biblical foundations you can live from every day.</p>
-          <span class="slu-status">Included with registration</span>
+          <div class="slu-benefit-body">
+            <span class="slu-card-kicker">Free Discipleship</span>
+            <h3>Get A Grip On The Basics</h3>
+            <p>Start a practical discipleship journey designed to help you understand your new life in Christ, strengthen your faith, and build biblical foundations you can live from every day.</p>
+            <span class="slu-status">Included with registration</span>
+          </div>
         </article>
 
         <article class="slu-benefit">
           <div class="slu-benefit-number">02</div>
-          <span class="slu-card-kicker">Pray With Us</span>
-          <h3>Join 6 AM Prayer</h3>
-          <p>Connect with Champion Life Tuesday through Friday at 6:00 AM Central Time for prayer, Scripture, confessions, and faith-filled agreement.</p>
-          <span class="slu-status">Live + replay access</span>
+          <div class="slu-benefit-body">
+            <span class="slu-card-kicker">Pray With Us</span>
+            <h3>Join 6 AM Prayer</h3>
+            <p>Connect with Champion Life Tuesday through Friday at 6:00 AM Central Time for prayer, Scripture, confessions, and faith-filled agreement.</p>
+            <span class="slu-status">Live + replay access</span>
+          </div>
         </article>
 
         <article class="slu-benefit">
           <div class="slu-benefit-number">03</div>
-          <span class="slu-card-kicker">A Gift From Pastor Roddy</span>
-          <h3>King Kind Digital Book</h3>
-          <p>When the digital edition is available, registered St. Lucia participants can receive Pastor Roddy's book <em>King Kind</em> as a complimentary resource.</p>
-          <span class="slu-status gold">Digital gift • Coming soon</span>
+          <div class="slu-benefit-body">
+            <span class="slu-card-kicker">A Gift From Pastor Roddy</span>
+            <h3>King Kind Digital Book</h3>
+            <div class="slu-book-layout">
+              <p>Pastor Roddy's <em>King Kind</em> deals with mankind's identity: Who are we? What are we? Why are we? It reveals the kind of person God designed us to be so we can truly walk in His purpose. Jesus came to do more than give us hope of heaven. More than born again, saved, or forgiven. He came to make us King Kind!</p>
+              <figure class="slu-book-cover"><img src="/assets/images/king-kind-cover.svg?v=20260922" alt="Pastor Roddy Shaffer's book The King Kind"></figure>
+            </div>
+            <span class="slu-status gold">Digital gift • Coming soon</span>
+          </div>
         </article>
       </div>
     </div>
