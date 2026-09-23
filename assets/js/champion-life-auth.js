@@ -161,9 +161,20 @@
     return { user, course, answers:answers || [], progress:progress || null, profile:profile || null };
   }
 
+  async function claimStLuciaRegistration() {
+    const user = await getUser();
+    if (!user) return false;
+    const { data, error } = await client.rpc('claim_st_lucia_registration');
+    if (error) throw error;
+    return data === true;
+  }
+
   async function getOutreachRegistration(source='st_lucia_2026') {
     const user = await getUser();
     if (!user) return null;
+    if (source === 'st_lucia_2026') {
+      try { await claimStLuciaRegistration(); } catch (_e) {}
+    }
     const { data, error } = await client
       .from('outreach_registrations')
       .select('id,source,decision,prayer_request,created_at')
@@ -211,6 +222,7 @@
     saveLesson,
     loadLesson,
     getDashboard,
+    claimStLuciaRegistration,
     getOutreachRegistration,
     signOut
   };
