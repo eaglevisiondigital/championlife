@@ -201,7 +201,7 @@
       updateCourseProgress();
       saveDraft();
       if (card) card.classList.add('completed');
-      setMessage('success', 'Lesson 1 has been submitted to Champion Life and marked complete on this device.');
+      setMessage('success', 'Lesson ' + lesson + ' has been submitted to Champion Life and marked complete on this device.');
       document.querySelector('.grip-complete')?.scrollIntoView({behavior:'smooth', block:'center'});
     } catch (err) {
       setMessage('error', 'We could not submit the lesson right now. Your answers are still saved on this device. Please try again.');
