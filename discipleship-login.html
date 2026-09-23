@@ -72,12 +72,14 @@
   const backBtn = document.getElementById('backBtn');
   const msg = document.getElementById('authMessage');
   const params = new URLSearchParams(location.search);
-  const next = params.get('next') || 'my-discipleship.html';
+  const requestedNext = params.get('next');
+  if (requestedNext) sessionStorage.setItem('championlife-auth-next', requestedNext);
+  const next = requestedNext || sessionStorage.getItem('championlife-auth-next') || 'my-discipleship.html';
   let email = '';
 
   function showMessage(type,text){msg.className='auth-message show '+type;msg.textContent=text}
   function clearMessage(){msg.className='auth-message';msg.textContent=''}
-  function goNext(){location.href = next.startsWith('/') ? next : next}
+  function goNext(){sessionStorage.removeItem('championlife-auth-next');location.href = next.startsWith('/') ? next : next}
 
   async function existingSession(){
     try{
@@ -92,7 +94,7 @@
     if(!email || !emailInput.checkValidity()){showMessage('error','Enter a valid email address.');return}
     sendBtn.disabled=true;sendBtn.textContent='Sending...';
     try{
-      const redirect = location.origin + '/discipleship-login.html?next=' + encodeURIComponent(next);
+      const redirect = location.origin + '/discipleship-login.html';
       const {error}=await auth.client.auth.signInWithOtp({
         email,
         options:{shouldCreateUser:true,emailRedirectTo:redirect}
