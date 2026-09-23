@@ -42,12 +42,18 @@
   async function ensureProfile(values = {}) {
     const user = await getUser();
     if (!user) return null;
+    const { data:existing } = await client
+      .from('profiles')
+      .select('first_name,last_name,email,phone,givehub_contact_id')
+      .eq('user_id',user.id)
+      .maybeSingle();
     const row = {
       user_id: user.id,
-      email: user.email || values.email || null,
-      first_name: values.firstName || null,
-      last_name: values.lastName || null,
-      phone: values.phone || null,
+      email: user.email || values.email || existing?.email || null,
+      first_name: values.firstName || existing?.first_name || null,
+      last_name: values.lastName || existing?.last_name || null,
+      phone: values.phone || existing?.phone || null,
+      givehub_contact_id: existing?.givehub_contact_id || null,
       updated_at: new Date().toISOString()
     };
     const { data, error } = await client
@@ -66,7 +72,7 @@
     const { data, error } = await client
       .from('course_enrollments')
       .upsert(
-        { user_id:user.id, course_id:course.id, started_at:new Date().toISOString() },
+        { user_id:user.id, course_id:course.id },
         { onConflict:'user_id,course_id' }
       )
       .select()
@@ -101,14 +107,22 @@
       if (answerError) throw answerError;
     }
 
+    const { data:existingProgress } = await client
+      .from('lesson_progress')
+      .select('started_at,completed_at,status')
+      .eq('user_id',user.id)
+      .eq('course_id',course.id)
+      .eq('lesson_number',Number(lessonNumber))
+      .maybeSingle();
+    const now = new Date().toISOString();
     const progressRow = {
       user_id:user.id,
       course_id:course.id,
       lesson_number:Number(lessonNumber),
-      status: completed ? 'completed' : status,
-      started_at:new Date().toISOString(),
-      updated_at:new Date().toISOString(),
-      completed_at: completed ? new Date().toISOString() : null
+      status: completed ? 'completed' : (existingProgress?.status === 'completed' ? 'completed' : status),
+      started_at:existingProgress?.started_at || now,
+      updated_at:now,
+      completed_at: completed ? (existingProgress?.completed_at || now) : (existingProgress?.completed_at || null)
     };
     const { error:progressError } = await client
       .from('lesson_progress')
