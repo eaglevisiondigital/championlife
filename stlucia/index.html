@@ -161,11 +161,37 @@
     .slu-form-head small{display:block;color:#8c681c;font-size:.72rem;font-weight:900;letter-spacing:.12em;text-transform:uppercase;margin-bottom:5px}
     .slu-form-head h3{font-size:clamp(1.8rem,3vw,2.6rem);margin:0 0 7px;color:#111}
     .slu-form-head p{color:#656565;margin:0}
-    .slu-form-frame-wrap{position:relative;min-height:930px;background:#fff}
-    .slu-form-frame{display:block;width:100%;min-height:930px;border:0;background:#fff}
-    .slu-form-fallback{padding:18px 22px 24px;text-align:center;background:#f7f4ee;border-top:1px solid #e1dbcf}
-    .slu-form-fallback p{color:#666;font-size:.86rem;margin:0 0 12px}
-    .slu-form-fallback .btn{border-radius:12px}
+    .slu-form-body{padding:28px 30px 32px}
+    .slu-form-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+    .slu-field{display:grid;gap:7px}
+    .slu-field.full{grid-column:1/-1}
+    .slu-field span{font-size:.8rem;font-weight:900;color:#222}
+    .slu-field input,.slu-field select,.slu-field textarea{width:100%;border:1px solid #cfc7b8;border-radius:12px;background:#fff;color:#111;padding:14px;font:inherit;outline:none}
+    .slu-field input,.slu-field select{height:52px}
+    .slu-field textarea{min-height:120px;resize:vertical}
+    .slu-field input:focus,.slu-field select:focus,.slu-field textarea:focus{border-color:#9d7b2d;box-shadow:0 0 0 3px rgba(211,173,79,.15)}
+    .slu-check{display:flex;align-items:flex-start;gap:10px;margin-top:18px;color:#555;font-size:.82rem;line-height:1.55}
+    .slu-check input{width:18px;height:18px;margin-top:2px;flex:0 0 auto}
+    .slu-form-submit{width:100%;margin-top:20px;border:0;cursor:pointer}
+    .slu-form-msg{display:none;margin-top:14px;padding:12px 14px;border-radius:11px;font-size:.87rem}
+    .slu-form-msg.show{display:block}
+    .slu-form-msg.error{background:#fff0f0;color:#7b2020;border:1px solid #efc5c5}
+    .slu-form-msg.success{background:#eef8ec;color:#285f25;border:1px solid #c5e2c1}
+    .slu-registration-success{display:none;padding:30px;background:#fff}
+    .slu-form-card.registered .slu-form-head,.slu-form-card.registered .slu-form-body{display:none}
+    .slu-form-card.registered .slu-registration-success{display:block}
+    .slu-success-icon{width:56px;height:56px;border-radius:50%;display:grid;place-items:center;background:#0d1113;color:var(--gold2);font-size:1.35rem;font-weight:950;margin-bottom:16px}
+    .slu-registration-success h3{font-size:clamp(2rem,4vw,3.2rem);margin:0 0 10px}
+    .slu-registration-success>p{color:#62676a;line-height:1.7}
+    .slu-account-note{padding:15px 16px;border-radius:14px;background:#eef8fb;border:1px solid #c8e7ef;color:#285a68!important;margin-top:18px!important}
+    .slu-resource-grid{display:grid;gap:12px;margin-top:22px}
+    .slu-resource{display:grid;grid-template-columns:50px 1fr auto;gap:14px;align-items:center;padding:16px;border-radius:16px;background:#0d1113;color:#fff}
+    .slu-resource-icon{width:50px;height:50px;border-radius:14px;display:grid;place-items:center;background:rgba(99,199,232,.14);color:var(--slu-blue);font-weight:950}
+    .slu-resource b{display:block;margin-bottom:3px}
+    .slu-resource small{display:block;color:#aebdc1;line-height:1.45}
+    .slu-resource a,.slu-resource .slu-resource-disabled{display:inline-flex;align-items:center;justify-content:center;min-height:40px;padding:9px 12px;border-radius:999px;background:var(--gold2);color:#111;font-size:.76rem;font-weight:950;white-space:nowrap}
+    .slu-resource .slu-resource-disabled{background:#2a2d31;color:#aeb3b8}
+    .slu-form-fineprint{margin-top:14px;color:#777;font-size:.75rem;line-height:1.5}
 
     .slu-after{background:#f5f2ec;color:#111;padding:84px 0}
     .slu-after-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:28px;align-items:stretch}
@@ -223,7 +249,12 @@
       .slu-book-layout{grid-template-columns:minmax(0,1fr) 88px;gap:14px}
       .slu-form-card{border-radius:18px}
       .slu-form-head{padding:22px 20px}
-      .slu-form-frame-wrap,.slu-form-frame{min-height:1080px}
+      .slu-form-body,.slu-registration-success{padding:22px 20px 26px}
+      .slu-form-grid{grid-template-columns:1fr}
+      .slu-field.full{grid-column:auto}
+      .slu-resource{grid-template-columns:44px 1fr}
+      .slu-resource-icon{width:44px;height:44px}
+      .slu-resource a,.slu-resource .slu-resource-disabled{grid-column:2;justify-self:start}
       .slu-share{grid-template-columns:1fr;text-align:center}
       .slu-qr{width:170px;margin:0 auto}
       .slu-after-copy,.slu-share{padding:26px 22px}
@@ -343,24 +374,71 @@
         <p class="slu-consent">By submitting the registration form, you are asking Champion Life Church to follow up with you about your decision, discipleship, prayer, and related ministry resources. Your information may also be shared with the local St. Lucia ministry team for personal ministry follow-up.</p>
       </div>
 
-      <div class="slu-form-card">
+      <div class="slu-form-card" id="stLuciaFormCard">
         <div class="slu-form-head">
           <small>Champion Life • St. Lucia</small>
           <h3>Register your decision</h3>
-          <p>Complete the form below. If it does not display on your device, use the button underneath it.</p>
+          <p>Register once and we’ll connect you directly to your free discipleship, prayer, and next-step resources.</p>
         </div>
-        <div class="slu-form-frame-wrap">
-          <iframe
-            class="slu-form-frame"
-            src="https://www.community.givehub.com/forms/stlucia"
-            title="Champion Life St. Lucia Decision Registration"
-            loading="eager"
-            allow="clipboard-write"
-          ></iframe>
+
+        <div class="slu-form-body">
+          <form id="stLuciaRegistrationForm">
+            <div class="slu-form-grid">
+              <label class="slu-field"><span>First Name *</span><input type="text" name="first-name" autocomplete="given-name" required></label>
+              <label class="slu-field"><span>Last Name *</span><input type="text" name="last-name" autocomplete="family-name" required></label>
+              <label class="slu-field full"><span>Email Address *</span><input type="email" name="email" autocomplete="email" required></label>
+              <label class="slu-field full"><span>Mobile / WhatsApp Number *</span><input type="tel" name="phone" autocomplete="tel" required></label>
+              <label class="slu-field full"><span>Today I am... *</span>
+                <select name="decision" required>
+                  <option value="">Choose one</option>
+                  <option value="salvation">Giving my life to Jesus</option>
+                  <option value="rededication">Rededicating my life to Jesus</option>
+                  <option value="learn_more">Wanting to know more about following Jesus</option>
+                  <option value="prayer_followup">Requesting prayer or ministry follow-up</option>
+                </select>
+              </label>
+              <label class="slu-field full"><span>Prayer Request or Anything You Want Us to Know <small style="font-weight:600;color:#777">(optional)</small></span><textarea name="prayer-request" placeholder="How can we pray for you or help you take your next step?"></textarea></label>
+            </div>
+
+            <label class="slu-check">
+              <input type="checkbox" name="consent" value="yes" required>
+              <span>I’m asking Champion Life Church to follow up with me about my decision, discipleship, prayer, and related ministry resources. My information may also be shared with the local St. Lucia ministry team for personal ministry follow-up.</span>
+            </label>
+
+            <button class="btn slu-btn-aqua slu-form-submit" id="stLuciaSubmit" type="submit">Register &amp; Get My Resources</button>
+            <div class="slu-form-msg" id="stLuciaFormMsg" role="status" aria-live="polite"></div>
+            <p class="slu-form-fineprint">The email address you enter will also become the email used for your free Champion Life discipleship account.</p>
+          </form>
         </div>
-        <div class="slu-form-fallback">
-          <p>Having trouble seeing the form?</p>
-          <a class="btn dark" href="https://www.community.givehub.com/forms/stlucia" target="_blank" rel="noopener">Open Registration Form</a>
+
+        <div class="slu-registration-success">
+          <div class="slu-success-icon">✓</div>
+          <span class="eyebrow">You’re registered</span>
+          <h3>Your next steps are ready.</h3>
+          <p>Thank you for letting us know about your decision. Start growing right now with the resources below.</p>
+          <p class="slu-account-note" id="stLuciaAccountNote">We’re also sending a secure Champion Life sign-in email so your discipleship progress can follow you across devices.</p>
+
+          <div class="slu-resource-grid">
+            <div class="slu-resource">
+              <div class="slu-resource-icon">01</div>
+              <div><b>Getting a Grip on the Basics</b><small>Start Lesson 1 now. Sign in from the email we send you to save progress across devices.</small></div>
+              <a href="/getting-a-grip-1.html">Start Course</a>
+            </div>
+            <div class="slu-resource">
+              <div class="slu-resource-icon">02</div>
+              <div><b>King Kind Digital Book</b><small>Your digital gift from Pastor Roddy. The downloadable book file will appear here as soon as it is added.</small></div>
+              <span class="slu-resource-disabled">Coming Soon</span>
+            </div>
+            <div class="slu-resource">
+              <div class="slu-resource-icon">03</div>
+              <div><b>Champion Life Morning Prayer</b><small>Join Champion Life for 6 AM Prayer and continue building your faith.</small></div>
+              <a href="/prayer.html">Join Prayer</a>
+            </div>
+          </div>
+
+          <div class="actions" style="margin-top:22px">
+            <a class="btn dark" href="/my-discipleship.html">My Discipleship</a>
+          </div>
         </div>
       </div>
     </div>
@@ -374,8 +452,8 @@
         <p>We want to help you move from a moment of decision into a growing relationship with Jesus. Watch for your follow-up information and take the next step that is right in front of you.</p>
         <div class="slu-next-list">
           <a class="slu-next-item" href="/prayer.html"><b>Join Champion Life 6 AM Prayer</b><span>Open →</span></a>
-          <div class="slu-next-item"><b>Get A Grip On The Basics</b><span>Access after registration</span></div>
-          <div class="slu-next-item"><b>King Kind Digital Book</b><span>Sent when available</span></div>
+          <a class="slu-next-item" href="/getting-a-grip-1.html"><b>Get A Grip On The Basics</b><span>Start Course →</span></a>
+          <div class="slu-next-item"><b>King Kind Digital Book</b><span>Digital gift • Coming soon</span></div>
         </div>
       </article>
 
@@ -419,5 +497,78 @@
 </footer>
 
 <script src="/assets/js/site.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="/assets/js/supabase-config.js?v=20260923"></script>
+<script src="/assets/js/champion-life-auth.js?v=20260923b"></script>
+<script>
+(() => {
+  const form=document.getElementById('stLuciaRegistrationForm');
+  const card=document.getElementById('stLuciaFormCard');
+  const submit=document.getElementById('stLuciaSubmit');
+  const msg=document.getElementById('stLuciaFormMsg');
+  const accountNote=document.getElementById('stLuciaAccountNote');
+  const auth=window.ChampionLifeAuth;
+
+  function showMessage(type,text){
+    msg.className='slu-form-msg show '+type;
+    msg.textContent=text;
+  }
+
+  form?.addEventListener('submit',async(e)=>{
+    e.preventDefault();
+    if(!form.reportValidity()) return;
+    submit.disabled=true;
+    submit.textContent='Registering...';
+    msg.className='slu-form-msg';
+
+    const fd=new FormData(form);
+    const email=String(fd.get('email')||'').trim().toLowerCase();
+    const payload={
+      source:'st_lucia_2026',
+      first_name:String(fd.get('first-name')||'').trim(),
+      last_name:String(fd.get('last-name')||'').trim(),
+      email,
+      phone:String(fd.get('phone')||'').trim(),
+      decision:String(fd.get('decision')||''),
+      prayer_request:String(fd.get('prayer-request')||'').trim() || null,
+      consent:true
+    };
+
+    try{
+      const {error:registrationError}=await auth.client
+        .from('outreach_registrations')
+        .insert(payload);
+      if(registrationError) throw registrationError;
+
+      let signInSent=true;
+      try{
+        const {error:authError}=await auth.client.auth.signInWithOtp({
+          email,
+          options:{
+            shouldCreateUser:true,
+            emailRedirectTo:location.origin+'/discipleship-login.html'
+          }
+        });
+        if(authError) signInSent=false;
+      }catch(_e){signInSent=false}
+
+      localStorage.setItem('championlife-stlucia-registered','yes');
+      localStorage.setItem('championlife-stlucia-email',email);
+      if(accountNote){
+        accountNote.textContent=signInSent
+          ? 'We also sent a secure Champion Life sign-in email to '+email+'. Use it to activate cloud progress so your discipleship follows you across devices.'
+          : 'Your registration is complete. You can start the course now. If you do not receive a sign-in email, use the My Discipleship button to request one.';
+      }
+      card.classList.add('registered');
+      card.scrollIntoView({behavior:'smooth',block:'center'});
+    }catch(err){
+      showMessage('error','We could not complete your registration right now. Please check your information and try again.');
+    }finally{
+      submit.disabled=false;
+      submit.textContent='Register & Get My Resources';
+    }
+  });
+})();
+</script>
 </body>
 </html>
