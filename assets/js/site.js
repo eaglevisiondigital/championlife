@@ -153,3 +153,60 @@ const io=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecti
     const s=document.createElement('style');s.id='supplements-global-nav-style';s.textContent='@media (min-width:981px) and (max-width:1180px){.supplements-global-link{display:none!important}}';document.head.appendChild(s);
   }
 })();
+
+// Lockliel discipleship attribution
+(() => {
+  const path = (location.pathname || '').toLowerCase();
+  const isDiscipleship =
+    path.includes('getting-a-grip') ||
+    path.includes('discipleship-login') ||
+    path.includes('my-discipleship') ||
+    path.includes('/stlucia');
+
+  if (!isDiscipleship || document.querySelector('.lockliel-powered')) return;
+
+  const footer = document.querySelector('.footer');
+  if (!footer) return;
+
+  const wrap = document.createElement('section');
+  wrap.className = 'lockliel-powered';
+  wrap.setAttribute('aria-label','Discipleship powered by Lockliel');
+  wrap.innerHTML = `
+    <a class="lockliel-powered-link" href="https://www.lockliel.com" target="_blank" rel="noopener">
+      <span class="lockliel-powered-ghost" aria-hidden="true">LOCKLIEL</span>
+      <img class="lockliel-powered-logo" src="/assets/images/lockliel-powered-logo.webp" alt="Lockliel">
+      <span class="lockliel-powered-copy">
+        <small>Discipleship powered by</small>
+        <strong>Lockliel</strong>
+        <em>Reach. Teach. Train. Disciple.</em>
+      </span>
+      <span class="lockliel-powered-arrow" aria-hidden="true">↗</span>
+    </a>
+  `;
+
+  const style = document.createElement('style');
+  style.id = 'lockliel-powered-style';
+  style.textContent = `
+    .lockliel-powered{position:relative;overflow:hidden;background:#080a0d;border-top:1px solid rgba(255,255,255,.06)}
+    .lockliel-powered-link{position:relative;display:flex;align-items:center;justify-content:center;gap:14px;min-height:104px;padding:20px 24px;color:#fff;text-decoration:none;isolation:isolate}
+    .lockliel-powered-link:hover .lockliel-powered-logo{transform:translateY(-1px) scale(1.03)}
+    .lockliel-powered-link:hover .lockliel-powered-arrow{transform:translate(2px,-2px)}
+    .lockliel-powered-ghost{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);z-index:-1;font-size:clamp(4rem,11vw,8rem);font-weight:950;letter-spacing:.05em;color:#fff;opacity:.025;white-space:nowrap;pointer-events:none}
+    .lockliel-powered-logo{width:52px;height:52px;object-fit:cover;border-radius:13px;box-shadow:0 10px 28px rgba(0,0,0,.28);transition:.2s ease}
+    .lockliel-powered-copy{display:grid;line-height:1.05}
+    .lockliel-powered-copy small{font-size:.67rem;letter-spacing:.12em;text-transform:uppercase;color:#9ea5ad;font-weight:850;margin-bottom:4px}
+    .lockliel-powered-copy strong{font-size:1.08rem;color:#fff}
+    .lockliel-powered-copy em{font-style:normal;font-size:.72rem;color:#62c7e8;margin-top:5px;letter-spacing:.03em}
+    .lockliel-powered-arrow{font-size:1rem;color:#62c7e8;transition:.2s ease;margin-left:2px}
+    @media(max-width:650px){
+      .lockliel-powered-link{min-height:92px;padding:17px 18px;gap:11px}
+      .lockliel-powered-logo{width:46px;height:46px;border-radius:12px}
+      .lockliel-powered-copy strong{font-size:1rem}
+      .lockliel-powered-copy em{font-size:.68rem}
+      .lockliel-powered-ghost{font-size:4.4rem}
+    }
+  `;
+  if (!document.getElementById(style.id)) document.head.appendChild(style);
+
+  footer.parentNode.insertBefore(wrap, footer);
+})();
