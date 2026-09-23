@@ -1,0 +1,108 @@
+
+/* Getting a Grip interactive course workspace */
+.grip-interactive{background:#f4f2ed;color:#111;padding:54px 0 88px}
+.grip-interactive .container{max-width:1460px}
+.grip-workspace{display:grid;grid-template-columns:minmax(340px,.84fr) minmax(0,1.16fr);gap:28px;align-items:start}
+.grip-video-panel{position:sticky;top:104px;z-index:20;background:#0d0f12;border:1px solid rgba(211,173,79,.25);border-radius:24px;overflow:hidden;box-shadow:0 22px 58px rgba(0,0,0,.18)}
+.grip-video-panel.not-sticky{position:relative;top:auto}
+.grip-video-shell{position:relative;aspect-ratio:16/9;background:#000}
+.grip-video-shell iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.grip-video-meta{padding:20px 20px 0;color:#fff}
+.grip-video-meta .eyebrow{color:#e2be5a}
+.grip-video-meta h2{font-size:clamp(1.45rem,2.4vw,2.15rem);margin:6px 0 8px;line-height:1.12}
+.grip-video-meta p{color:#bfc2c8;line-height:1.55;margin:0}
+.grip-video-tools{display:grid;grid-template-columns:1fr 1fr;gap:9px;padding:18px 20px 20px}
+.grip-video-tools .btn{font-size:.8rem;padding:11px 12px;justify-content:center;text-align:center;cursor:pointer}
+.grip-video-tools button.btn{border:1px solid rgba(255,255,255,.32);background:#16191e;color:#fff}
+.grip-video-tools .grip-tv{grid-column:1/-1}
+.grip-form-card{background:#fff;border:1px solid #ddd6c8;border-radius:24px;box-shadow:0 18px 48px rgba(0,0,0,.08);overflow:hidden}
+.grip-form-head{padding:28px 30px 24px;border-bottom:1px solid #ece7dd;background:linear-gradient(180deg,#fff,#fbfaf6)}
+.grip-form-head-row{display:flex;align-items:flex-start;justify-content:space-between;gap:18px}
+.grip-form-head h2{font-size:clamp(2rem,4vw,3.4rem);margin:5px 0 8px;line-height:1.05}
+.grip-form-head p{color:#676767;max-width:800px;line-height:1.65;margin:0}
+.grip-save-status{flex:0 0 auto;display:inline-flex;align-items:center;gap:8px;padding:9px 12px;border-radius:999px;background:#f3efe4;color:#735a18;font-size:.76rem;font-weight:850;white-space:nowrap}
+.grip-save-status:before{content:"";width:8px;height:8px;border-radius:50%;background:#c8a543}
+.grip-progress-wrap{margin-top:20px}
+.grip-progress-meta{display:flex;justify-content:space-between;gap:10px;font-size:.78rem;font-weight:800;color:#555;margin-bottom:7px}
+.grip-progress-track{height:8px;background:#ece8df;border-radius:999px;overflow:hidden}
+.grip-progress-fill{height:100%;width:0;background:#c9a74b;border-radius:inherit;transition:width .25s}
+.grip-profile{padding:24px 30px;border-bottom:1px solid #ece7dd;background:#111214;color:#fff}
+.grip-profile h3{margin:0 0 7px;font-size:1.2rem}
+.grip-profile>p{color:#b9bbc1;font-size:.9rem;margin:0 0 16px;line-height:1.55}
+.grip-profile-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.grip-field{display:grid;gap:6px}
+.grip-field.full{grid-column:1/-1}
+.grip-field span{font-size:.77rem;font-weight:850;color:#dedede}
+.grip-field input,.grip-field textarea{width:100%;border:1px solid #d5d0c6;border-radius:11px;padding:13px 14px;background:#fff;color:#111;font:inherit;outline:none}
+.grip-field input:focus,.grip-field textarea:focus{border-color:#b79031;box-shadow:0 0 0 3px rgba(201,167,75,.16)}
+.grip-profile .grip-field input{border-color:#343840;background:#17191d;color:#fff}
+.grip-profile .grip-field input:focus{border-color:#c9a74b}
+.grip-device-note{margin:13px 0 0!important;font-size:.78rem!important;color:#9fa2a9!important}
+.grip-questions{padding:26px 30px 10px;display:grid;gap:14px}
+.grip-question{display:grid;grid-template-columns:42px 1fr;gap:14px;padding:18px;border:1px solid #e2ddd3;border-radius:16px;background:#fcfbf8}
+.grip-question-number{display:grid;place-items:center;width:42px;height:42px;border-radius:50%;background:#111;color:#e2be5a;font-size:.82rem;font-weight:900}
+.grip-question label{font-weight:760;line-height:1.55;color:#222}
+.grip-question input{width:100%;margin-top:10px;border:1px solid #cfc8ba;border-radius:10px;padding:12px 13px;background:#fff;color:#111;font:inherit;outline:none}
+.grip-question input:focus{border-color:#b79031;box-shadow:0 0 0 3px rgba(201,167,75,.16)}
+.grip-notes-block{padding:8px 30px 26px}
+.grip-notes-block h3{margin-bottom:8px}
+.grip-notes-block p{color:#666;font-size:.9rem;margin:0 0 10px}
+.grip-notes-block textarea{width:100%;min-height:150px;border:1px solid #cfc8ba;border-radius:12px;padding:14px;font:inherit;resize:vertical}
+.grip-submit-zone{padding:24px 30px 30px;background:#f7f4ed;border-top:1px solid #e7e0d2}
+.grip-submit-zone .grip-consent{font-size:.78rem;color:#6d6d6d;line-height:1.55;margin:0 0 15px}
+.grip-submit-actions{display:flex;gap:10px;flex-wrap:wrap}
+.grip-submit-actions .btn{cursor:pointer;border:0}
+.grip-clear{background:transparent!important;color:#555!important;border:1px solid #bbb!important}
+.grip-form-message{display:none;margin-top:13px;padding:12px 14px;border-radius:10px;font-size:.88rem}
+.grip-form-message.show{display:block}
+.grip-form-message.error{background:#fff0f0;color:#7d2020;border:1px solid #efc2c2}
+.grip-form-message.success{background:#eff8ed;color:#275d23;border:1px solid #c4dfbf}
+.grip-complete{display:none;padding:30px;background:#0d0f12;color:#fff}
+.grip-form-card.completed .grip-complete{display:block}
+.grip-form-card.completed .grip-submit-zone{display:none}
+.grip-complete-icon{width:52px;height:52px;border-radius:50%;display:grid;place-items:center;background:#c9a74b;color:#111;font-weight:900;font-size:1.35rem;margin-bottom:15px}
+.grip-complete h3{font-size:2rem;margin:0 0 8px}
+.grip-complete p{color:#c7c9ce;line-height:1.6}
+.grip-complete-actions{display:flex;flex-wrap:wrap;gap:9px;margin-top:18px}
+.grip-complete-actions .btn{cursor:pointer}
+.grip-download-row.grip-download-row-new{margin-top:22px;display:flex;flex-wrap:wrap;gap:10px}
+.grip-hidden{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important}
+
+@media(max-width:980px){
+  .grip-workspace{grid-template-columns:1fr}
+  .grip-video-panel{top:92px}
+  .grip-video-panel.is-mini{width:min(52vw,290px);margin-left:auto;border-radius:16px}
+  .grip-video-panel.is-mini .grip-video-meta{display:none}
+  .grip-video-panel.is-mini .grip-video-tools{grid-template-columns:1fr;padding:8px}
+  .grip-video-panel.is-mini .grip-video-tools .grip-sticky-toggle,
+  .grip-video-panel.is-mini .grip-video-tools .grip-tv{display:none}
+  .grip-video-panel.is-mini .grip-video-tools .btn{padding:8px;font-size:.7rem}
+}
+@media(max-width:650px){
+  .grip-interactive{padding:34px 0 60px}
+  .grip-video-panel{top:74px;border-radius:16px}
+  .grip-video-meta{padding:15px 15px 0}
+  .grip-video-tools{padding:13px 15px 15px}
+  .grip-form-head,.grip-profile,.grip-questions,.grip-notes-block,.grip-submit-zone,.grip-complete{padding-left:18px;padding-right:18px}
+  .grip-form-head-row{display:block}
+  .grip-save-status{margin-top:12px}
+  .grip-profile-grid{grid-template-columns:1fr}
+  .grip-field.full{grid-column:auto}
+  .grip-question{grid-template-columns:34px 1fr;padding:14px;gap:11px}
+  .grip-question-number{width:34px;height:34px}
+  .grip-submit-actions,.grip-complete-actions,.grip-download-row.grip-download-row-new{display:grid;grid-template-columns:1fr}
+  .grip-submit-actions .btn,.grip-complete-actions .btn,.grip-download-row.grip-download-row-new .btn{width:100%;justify-content:center}
+  .grip-video-panel.is-mini{width:58vw;max-width:230px}
+}
+@media print{
+  .site-header,.page-hero,.grip-video-panel,.grip-submit-zone,.grip-download-row-new,.lesson-nav,.footer{display:none!important}
+  body{background:#fff!important}
+  .grip-interactive{padding:0!important;background:#fff!important}
+  .grip-workspace{display:block!important}
+  .grip-form-card{box-shadow:none!important;border:0!important}
+  .grip-profile{background:#fff!important;color:#111!important;border-bottom:1px solid #ddd!important}
+  .grip-profile>p,.grip-device-note{color:#555!important}
+  .grip-profile .grip-field input{background:#fff!important;color:#111!important;border-color:#ccc!important}
+  .grip-question{break-inside:avoid}
+  .grip-complete{display:none!important}
+}
