@@ -20,7 +20,18 @@
 .dash-progress-meta{display:flex;justify-content:space-between;gap:10px;margin-top:20px;font-size:.82rem;font-weight:850;color:#555}.dash-progress{height:10px;background:#e9e4da;border-radius:999px;overflow:hidden;margin-top:7px}.dash-progress span{display:block;height:100%;width:0;background:#c9a74b}
 .dash-lessons{padding:18px;display:grid;gap:10px}.dash-lesson{display:grid;grid-template-columns:46px 1fr auto;gap:14px;align-items:center;padding:16px;border:1px solid #e3ded4;border-radius:16px;background:#fcfbf8;color:#111}.dash-lesson:hover{transform:translateY(-1px);border-color:#c9a74b}
 .dash-num{width:46px;height:46px;border-radius:50%;display:grid;place-items:center;background:#111;color:#e2be5a;font-weight:900}.dash-lesson strong{display:block}.dash-lesson small{display:block;color:#777;margin-top:3px}.dash-status{font-size:.73rem;font-weight:900;letter-spacing:.06em;text-transform:uppercase;padding:7px 9px;border-radius:999px;white-space:nowrap;background:#efede7;color:#666}.dash-status.complete{background:#e9f6e5;color:#2b6827}.dash-status.progress{background:#fff3cf;color:#795d10}.dash-loading{padding:34px;text-align:center;color:#666}
-@media(max-width:900px){.dash-grid{grid-template-columns:1fr}.dash-side{position:relative;top:auto}.dash-lesson{grid-template-columns:42px 1fr}.dash-status{grid-column:2;justify-self:start}.dash-num{width:42px;height:42px}}
+.dash-outreach{display:none;margin-bottom:24px;background:linear-gradient(135deg,#071418,#0a4657);color:#fff;border-radius:24px;padding:26px;box-shadow:0 18px 48px rgba(0,0,0,.12)}
+.dash-outreach.show{display:block}
+.dash-outreach .eyebrow{color:#7bded2}
+.dash-outreach h2{font-size:clamp(2rem,4vw,3.3rem);margin:6px 0 10px}
+.dash-outreach>p{color:#c2d7dc;line-height:1.6;margin:0 0 18px}
+.dash-resource-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.dash-resource{padding:16px;border-radius:16px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1)}
+.dash-resource strong{display:block;margin-bottom:5px}.dash-resource small{display:block;color:#bed0d5;line-height:1.45;min-height:3.2em}
+.dash-resource a,.dash-resource span{display:inline-flex;margin-top:12px;padding:8px 10px;border-radius:999px;background:#d3ad4f;color:#111;font-size:.74rem;font-weight:900}
+.dash-resource span{background:rgba(255,255,255,.1);color:#cbd7da}
+
+@media(max-width:900px){.dash-grid{grid-template-columns:1fr}.dash-side{position:relative;top:auto}.dash-resource-grid{grid-template-columns:1fr}.dash-lesson{grid-template-columns:42px 1fr}.dash-status{grid-column:2;justify-self:start}.dash-num{width:42px;height:42px}}
 @media(max-width:650px){.dash-main{padding-top:38px}.dash-course-head{padding:22px}.dash-lessons{padding:12px}.dash-lesson{padding:14px}}
 </style>
 </head>
@@ -38,6 +49,18 @@
     <button class="btn dash-signout" id="signOutBtn" type="button">Sign Out</button>
   </aside>
 
+  <div>
+    <section class="dash-outreach" id="stLuciaResources">
+      <span class="eyebrow">St. Lucia Outreach</span>
+      <h2>Your Next-Step Resources</h2>
+      <p>Your St. Lucia registration is connected to this Champion Life account. These resources are here whenever you come back.</p>
+      <div class="dash-resource-grid">
+        <div class="dash-resource"><strong>Getting a Grip on the Basics</strong><small>Continue your discipleship course and keep your progress synced across devices.</small><a href="getting-a-grip-1.html">Open Course</a></div>
+        <div class="dash-resource"><strong>King Kind Digital Book</strong><small>Your digital gift from Pastor Roddy. The downloadable book will appear here when the file is added.</small><span>Coming Soon</span></div>
+        <div class="dash-resource"><strong>Morning Prayer</strong><small>Join Champion Life for 6 AM Prayer and continue building your faith.</small><a href="prayer.html">Join Prayer</a></div>
+      </div>
+    </section>
+
   <section class="dash-course">
     <div class="dash-course-head">
       <span class="eyebrow">Current Course</span>
@@ -49,6 +72,7 @@
     <div class="dash-loading" id="dashLoading">Loading your course progress...</div>
     <div class="dash-lessons" id="dashLessons" hidden></div>
   </section>
+  </div>
 </div>
 </div></section>
 </main>
@@ -81,8 +105,12 @@
   ];
 
   try{
-    const data=await auth.getDashboard();
+    const [data,outreach]=await Promise.all([
+      auth.getDashboard(),
+      auth.getOutreachRegistration ? auth.getOutreachRegistration('st_lucia_2026') : Promise.resolve(null)
+    ]);
     const profile=data?.profile||{};
+    if(outreach) document.getElementById('stLuciaResources')?.classList.add('show');
     const name=((profile.first_name||'')+' '+(profile.last_name||'')).trim() || 'Champion Life Learner';
     document.getElementById('dashName').textContent=name;
     document.getElementById('dashEmail').textContent=data.user.email||'';
