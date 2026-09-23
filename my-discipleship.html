@@ -80,7 +80,7 @@
 <script src="assets/js/site.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="assets/js/supabase-config.js?v=20260923"></script>
-<script src="assets/js/champion-life-auth.js?v=20260923"></script>
+<script src="assets/js/champion-life-auth.js?v=20260923d"></script>
 <script>
 (async () => {
   const auth=window.ChampionLifeAuth;
@@ -105,10 +105,8 @@
   ];
 
   try{
-    const [data,outreach]=await Promise.all([
-      auth.getDashboard(),
-      auth.getOutreachRegistration ? auth.getOutreachRegistration('st_lucia_2026') : Promise.resolve(null)
-    ]);
+    const outreach=auth.getOutreachRegistration ? await auth.getOutreachRegistration('st_lucia_2026') : null;
+    const data=await auth.getDashboard();
     const profile=data?.profile||{};
     if(outreach) document.getElementById('stLuciaResources')?.classList.add('show');
     const name=((profile.first_name||'')+' '+(profile.last_name||'')).trim() || 'Champion Life Learner';
