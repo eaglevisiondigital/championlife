@@ -114,11 +114,11 @@
     }
     .slu-benefit:before{content:"";position:absolute;right:-50px;top:-50px;width:150px;height:150px;border-radius:50%;background:rgba(99,199,232,.12)}
     .slu-benefit-number{display:grid;place-items:center;width:48px;height:48px;border-radius:50%;background:#0a1b20;color:var(--gold2);font-weight:950;margin-bottom:48px;flex:0 0 auto}
-    .slu-benefit-body{display:flex;flex-direction:column;flex:1;min-height:0}
+    .slu-benefit-body{display:grid;grid-template-rows:auto auto 1fr auto;min-height:0}
     .slu-benefit .slu-card-kicker{color:#8b6517;font-size:.72rem;font-weight:900;letter-spacing:.12em;text-transform:uppercase}
-    .slu-benefit h3{font-size:clamp(1.65rem,2.5vw,2.35rem);margin:9px 0 16px;color:#111;min-height:2.1em}
+    .slu-benefit h3{font-size:clamp(1.65rem,2.5vw,2.35rem);margin:9px 0 16px;color:#111;min-height:2.15em}
     .slu-benefit p{color:#62686a;line-height:1.68;margin:0}
-    .slu-benefit .slu-status{display:inline-flex;align-self:flex-start;margin-top:22px;padding:7px 10px;border-radius:999px;background:#edf8fb;color:#08718f;font-size:.72rem;font-weight:900;text-transform:uppercase;letter-spacing:.08em}
+    .slu-benefit .slu-status{display:inline-flex;align-self:end;justify-self:start;margin-top:20px;padding:7px 10px;border-radius:999px;background:#edf8fb;color:#08718f;font-size:.72rem;font-weight:900;text-transform:uppercase;letter-spacing:.08em}
     .slu-benefit .slu-status.gold{background:#f5ecd3;color:#806019}
     .slu-book-layout{display:grid;grid-template-columns:minmax(0,1fr) 98px;gap:16px;align-items:start;margin-bottom:0}
     .slu-book-layout p{margin:0}
@@ -199,9 +199,13 @@
       .slu-hero:after{right:-10vw;top:175px;width:56vw;opacity:.33}
       .slu-proof{max-width:720px}
       .slu-benefits{grid-template-columns:1fr}
-      .slu-benefit{min-height:0}
+      .slu-benefits{align-items:start}
+      .slu-benefit{min-height:0!important;height:auto!important;align-self:start;padding-bottom:26px}
+      .slu-benefit-body{display:block}
       .slu-benefit-number{margin-bottom:26px}
-      .slu-benefit h3{min-height:0}
+      .slu-benefit h3{min-height:0;margin-bottom:14px}
+      .slu-benefit p{margin-bottom:0}
+      .slu-benefit .slu-status{margin-top:18px}
       .slu-register-copy{position:static}
     }
     @media(max-width:700px){
@@ -214,7 +218,8 @@
       .slu-hero .btn{width:100%}
       .slu-proof{padding:21px}
       .slu-why,.slu-register,.slu-after,.slu-final{padding:62px 0}
-      .slu-benefit{padding:25px}
+      .slu-benefit{padding:25px 25px 22px}
+      .slu-benefit-number{margin-bottom:22px}
       .slu-book-layout{grid-template-columns:minmax(0,1fr) 88px;gap:14px}
       .slu-form-card{border-radius:18px}
       .slu-form-head{padding:22px 20px}
