@@ -207,6 +207,43 @@
     .slu-qr{background:#fff;padding:11px;border-radius:15px}
     .slu-qr img{width:100%;height:auto}
     .slu-url{display:inline-block;margin-top:16px;color:var(--slu-blue);font-weight:900}
+    .slu-lockliel-inline{display:flex;justify-content:center;margin-top:28px}
+    .slu-lockliel-inline a{
+      position:relative;
+      display:inline-flex;
+      align-items:center;
+      gap:12px;
+      min-width:min(100%,420px);
+      justify-content:center;
+      padding:14px 18px;
+      border-radius:18px;
+      background:#0b1014;
+      color:#fff;
+      text-decoration:none;
+      border:1px solid rgba(11,100,121,.18);
+      box-shadow:0 14px 34px rgba(0,0,0,.08);
+      overflow:hidden;
+      isolation:isolate;
+    }
+    .slu-lockliel-inline a:before{
+      content:"LOCKLIEL";
+      position:absolute;
+      inset:50% auto auto 50%;
+      transform:translate(-50%,-50%);
+      z-index:-1;
+      font-size:clamp(2.7rem,7vw,4.8rem);
+      font-weight:950;
+      letter-spacing:.08em;
+      color:#fff;
+      opacity:.025;
+      white-space:nowrap;
+    }
+    .slu-lockliel-inline img{width:44px;height:44px;border-radius:11px;object-fit:cover;flex:0 0 auto}
+    .slu-lockliel-inline-copy{display:grid;line-height:1.05;text-align:left}
+    .slu-lockliel-inline-copy small{font-size:.63rem;letter-spacing:.12em;text-transform:uppercase;color:#9ea7ad;font-weight:850;margin-bottom:4px}
+    .slu-lockliel-inline-copy strong{font-size:1rem;color:#fff}
+    .slu-lockliel-inline-copy em{font-style:normal;font-size:.7rem;color:var(--slu-blue);margin-top:4px}
+    .slu-lockliel-inline-arrow{color:var(--slu-blue);font-weight:900;margin-left:2px}
 
     .slu-final{
       padding:80px 0;
@@ -468,6 +505,18 @@
           <img src="/assets/images/stlucia-qr.svg" alt="QR code for championlifefwb.com/stlucia">
         </div>
       </aside>
+    </div>
+
+    <div class="slu-lockliel-inline">
+      <a href="https://www.lockliel.com" target="_blank" rel="noopener" aria-label="Visit Lockliel">
+        <img src="/assets/images/lockliel-powered-logo.webp" alt="Lockliel">
+        <span class="slu-lockliel-inline-copy">
+          <small>Discipleship powered by</small>
+          <strong>Lockliel</strong>
+          <em>Reach. Teach. Train. Disciple.</em>
+        </span>
+        <span class="slu-lockliel-inline-arrow" aria-hidden="true">↗</span>
+      </a>
     </div>
   </section>
 
