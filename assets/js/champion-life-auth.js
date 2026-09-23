@@ -161,6 +161,21 @@
     return { user, course, answers:answers || [], progress:progress || null, profile:profile || null };
   }
 
+  async function getOutreachRegistration(source='st_lucia_2026') {
+    const user = await getUser();
+    if (!user) return null;
+    const { data, error } = await client
+      .from('outreach_registrations')
+      .select('id,source,decision,prayer_request,created_at')
+      .eq('user_id',user.id)
+      .eq('source',source)
+      .order('created_at',{ascending:false})
+      .limit(1)
+      .maybeSingle();
+    if (error) throw error;
+    return data || null;
+  }
+
   async function getDashboard() {
     const user = await getUser();
     if (!user) return null;
@@ -196,6 +211,7 @@
     saveLesson,
     loadLesson,
     getDashboard,
+    getOutreachRegistration,
     signOut
   };
 })();
