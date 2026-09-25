@@ -64,3 +64,13 @@ Implemented on `champion-sowgo-backend-v1`:
 Validation: 27 existing database checks, 11 redirect cases, mocked auth persistence tests, simulated form/storage lifecycle tests, additive notes/RLS tests, and JS syntax checks. These do not replace an authenticated browser acceptance test. Staff provisioning, person creation, bulk import/export, audited staff management, and department-defined outreach coordination remain unimplemented.
 
 Frontend release gate: test email login, lessons on two accounts/devices, and staff permissions with designated test accounts before merging this branch to main. No real identities or permission grants were created by this continuation.
+
+## Staff workspace navigation continuation
+
+The existing staff route now opens a focused Overview with a persistent desktop sidebar and compact mobile navigation. People retains organization-scoped reads and optimistic contact updates, and adds server-side first-name, last-name or email search with literal wildcard escaping. Switching organizations clears displayed contacts and resets search; switching accounts hides the private workspace. A module directory explicitly labels future capabilities and the Lockliel / Kingdom Propel attribution. It does not simulate transactions or claim unfinished modules are functional.
+
+Theme tokens preserve the current workspace palette pending approved final church branding. No new auth grants, production database changes, or main-branch publication are part of this UI slice. Initial staff identities and live email acceptance testing remain pending. The optional Playwright check uses synthetic API responses and does not replace live Supabase acceptance testing.
+
+Verification for this slice: the complete existing Node/PGlite suite and JavaScript syntax checks pass. Playwright could not launch because Chromium is absent and its download returned a corrupted archive; desktop/mobile visual acceptance is still pending. Do not mark the browser acceptance gate complete from these checks.
+
+A jsdom 26.1.0 interaction test passed for view switching, literal search escaping, editor opening, organization switching, read-only controls, attribution labels and account-change clearing. Run with jsdom installed: `node tools/backend-tests/staff-workspace.dom.cjs`. This uses mocked API data, not live identities.

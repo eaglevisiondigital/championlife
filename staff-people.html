@@ -2,26 +2,51 @@
 <html lang="en">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="robots" content="noindex,nofollow"><title>People | Champion Life & SowGo</title>
+<meta name="robots" content="noindex,nofollow"><title>Staff workspace | Champion Life & SowGo</title>
 <link rel="stylesheet" href="assets/css/staff-people.css">
 </head>
 <body>
 <header><a href="index.html" class="brand">Champion Life <span>& SowGo</span></a><nav aria-label="Account"><a href="my-discipleship.html">My Discipleship</a><button id="sign-out" hidden>Sign out</button></nav></header>
-<main>
-<p class="eyebrow">Ministry workspace</p><h1>People and connection.</h1>
-<p class="intro">Care for the people connected to your church and ministry.</p>
+<div class="app-layout">
+<aside class="sidebar" aria-label="Ministry navigation">
+<p class="eyebrow">Staff workspace</p>
+<nav aria-label="Workspace sections">
+<button type="button" data-view="overview" aria-current="page">Overview</button>
+<button type="button" data-view="people">People</button>
+<button type="button" data-view="modules">Platform modules</button>
+</nav>
+<div class="sidebar-note">One connected ministry.<br>Focused tools for your team.</div>
+</aside>
+<main id="main-content">
+<p class="eyebrow" id="workspace-name">Ministry workspace</p><h1 id="view-title" tabindex="-1">Your ministry workspace.</h1>
+<p class="intro" id="view-description">Choose your next step and stay connected to your people.</p>
 <p id="status" role="status" aria-live="polite">Loading your workspace...</p>
 <a id="sign-in" href="discipleship-login.html?next=staff-people.html" hidden>Sign in to your workspace</a>
 <section id="workspace" hidden aria-label="People workspace">
 <div class="toolbar"><label>Organization<select id="organization"></select></label><button id="refresh">Refresh people</button></div>
+<div id="view-overview" class="view-panel">
+<div class="section-heading"><h2>Start here</h2><span class="badge">Staff access</span></div>
+<div class="quick-grid">
+<button class="quick-card" type="button" data-view="people"><span class="eyebrow">People</span><strong>Care for your community</strong><span>Open contacts and make permitted updates.</span><span aria-hidden="true">Open people →</span></button>
+<button class="quick-card" type="button" data-view="modules"><span class="eyebrow">Your platform</span><strong>See what is taking shape</strong><span>Explore the church and ministry tools in the build plan.</span><span aria-hidden="true">View modules →</span></button>
+</div>
+<div class="access-card"><h2>Your access</h2><p id="access-summary"></p><p>Choose an organization above to work with its records.</p></div>
+</div>
+<div id="view-modules" class="view-panel" hidden>
+<h2>A connected church and ministry platform</h2><p>These modules are planned. Only People is currently available in this development workspace.</p>
+<div id="module-grid" class="module-grid"></div>
+</div>
+<div id="view-people" class="view-panel" hidden>
 <p id="access"></p>
+<form id="search-form" class="search-bar" role="search"><label>Search by<select id="search-field"><option value="last_name">Last name</option><option value="first_name">First name</option><option value="email">Email</option></select></label><label class="search-input">Find a person<input id="search-query" type="search" maxlength="100" placeholder="Enter a name or email"></label><button type="submit">Search</button><button type="button" id="clear-search">Clear</button></form>
 <div class="table-wrap"><table><caption class="sr-only">People in the selected organization</caption><thead><tr><th scope="col">Name</th><th scope="col">Email</th><th scope="col">Phone</th><th scope="col">Action</th></tr></thead><tbody id="people"></tbody></table></div>
 <div class="pagination"><button id="previous" disabled>Previous</button><span id="page"></span><button id="next" disabled>Next</button></div>
+</div>
 </section>
 <dialog id="editor"><form id="person-form"><h2>Edit contact details</h2><p>Changes apply to the selected organization.</p><label>First name<input name="first_name" required maxlength="100" autocomplete="given-name"></label><label>Last name<input name="last_name" required maxlength="100" autocomplete="family-name"></label><label>Email<input name="email" type="email" maxlength="320" autocomplete="email"></label><label>Phone<input name="phone" type="tel" maxlength="40" autocomplete="tel"></label><p id="edit-status" role="status"></p><div class="actions"><button type="button" id="cancel">Cancel</button><button type="submit" id="save">Save changes</button></div></form></dialog>
-</main><footer>Powered by Kingdom Propel</footer>
+</main></div><footer>Powered by Kingdom Propel</footer>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="assets/js/supabase-config.js?v=20260923"></script>
 <script src="assets/js/champion-life-auth.js?v=20260925"></script>
-<script src="assets/js/staff-people.js?v=20260925"></script>
+<script src="assets/js/staff-people.js?v=20260925-shell"></script>
 </body></html>
