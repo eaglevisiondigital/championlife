@@ -74,12 +74,20 @@
   const params = new URLSearchParams(location.search);
   const requestedNext = params.get('next');
   if (requestedNext) sessionStorage.setItem('championlife-auth-next', requestedNext);
-  const next = requestedNext || sessionStorage.getItem('championlife-auth-next') || 'my-discipleship.html';
+  function safeNext(value) {
+    try {
+      const url = new URL(value || '/my-discipleship.html', location.origin);
+      if (url.origin !== location.origin) return '/my-discipleship.html';
+      if (!/^\/(?:my-discipleship|getting-a-grip(?:-(?:[1-9]|1[0-3]))?)\.html$/.test(url.pathname)) return '/my-discipleship.html';
+      return url.pathname;
+    } catch (_) { return '/my-discipleship.html'; }
+  }
+  const next = safeNext(requestedNext || sessionStorage.getItem('championlife-auth-next'));
   let email = '';
 
   function showMessage(type,text){msg.className='auth-message show '+type;msg.textContent=text}
   function clearMessage(){msg.className='auth-message';msg.textContent=''}
-  function goNext(){sessionStorage.removeItem('championlife-auth-next');location.href = next.startsWith('/') ? next : next}
+  function goNext(){sessionStorage.removeItem('championlife-auth-next');location.href = next}
 
   async function existingSession(){
     try{
