@@ -31,3 +31,7 @@ Next slice: isolate browser lesson drafts per account and fix answer clearing/no
 Development source: account-scoped drafts, serialized lesson saves, explicit empty-answer writes, notes storage, and a permissioned staff people page with organization selection and contact edits. Additive migration: `lesson_notes`. Source saved before live database application. Production frontend remains unchanged; migration application and verification will be recorded below after completion.
 
 Tests: existing organization/claim suite (27), redirect cases (11), auth persistence scenarios (6), simulated draft lifecycle scenarios, and private notes persistence/RLS. Browser acceptance, real email delivery, and initial staff provisioning are pending.
+
+Deployment verified: `20260925202633_lesson_notes` applied to `exdocjbmylgxssanymjk`. Notes default to an empty string, are non-null, and remain covered by existing owner-only RLS. Existing lesson progress count remains 1; staff grant count remains 0. Main still points to `66591f22d5315d093091b99152c18d43bfcb3893`. Source implementation commit: `7e1053e4829c76bb8cb11f01133caa39311f2bfa`.
+
+The local notes test initially selected an empty scratch migration left by a delayed CLI invocation. Its selection now ignores empty files. The duplicate was never committed or applied. Notes persistence/RLS checks then passed. Migration filename now matches the verified remote version.
