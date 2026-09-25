@@ -25,3 +25,9 @@ Verification:
 Limits: no real email sent; no full browser registration/login/cross-device round trip performed. Redirect fix remains development-branch only. Account-scoped local drafts, blank-answer sync, cloud notes, staff management UI/API, staff assignment and full member/partner portals remain pending.
 
 Next slice: isolate browser lesson drafts per account and fix answer clearing/notes persistence, then build permissioned staff onboarding and people workspace. Preserve the existing production project, St. Lucia route, and passwordless discipleship login.
+
+## September 25, 2026: lesson persistence and first people workspace
+
+Development source: account-scoped drafts, serialized lesson saves, explicit empty-answer writes, notes storage, and a permissioned staff people page with organization selection and contact edits. Additive migration: `lesson_notes`. Source saved before live database application. Production frontend remains unchanged; migration application and verification will be recorded below after completion.
+
+Tests: existing organization/claim suite (27), redirect cases (11), auth persistence scenarios (6), simulated draft lifecycle scenarios, and private notes persistence/RLS. Browser acceptance, real email delivery, and initial staff provisioning are pending.

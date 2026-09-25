@@ -78,7 +78,7 @@
     try {
       const url = new URL(value || '/my-discipleship.html', location.origin);
       if (url.origin !== location.origin) return '/my-discipleship.html';
-      if (!/^\/(?:my-discipleship|getting-a-grip(?:-(?:[1-9]|1[0-3]))?)\.html$/.test(url.pathname)) return '/my-discipleship.html';
+      if (!/^\/(?:staff-people|my-discipleship|getting-a-grip(?:-(?:[1-9]|1[0-3]))?)\.html$/.test(url.pathname)) return '/my-discipleship.html';
       return url.pathname;
     } catch (_) { return '/my-discipleship.html'; }
   }

@@ -4,6 +4,6 @@
   },
   "private": true,
   "scripts": {
-    "test": "node foundation.test.mjs && node redirect.test.mjs"
+    "test": "node foundation.test.mjs && node redirect.test.mjs && node lesson.test.mjs && node drafts.test.mjs && node notes.test.mjs"
   }
 }

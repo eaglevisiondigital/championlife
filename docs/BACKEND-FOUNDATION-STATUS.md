@@ -50,3 +50,17 @@ Host church coordination remains deferred pending the department's real 10-15 st
 New organization tables do not change existing public routes or learner data. If the new module has a defect, disable its frontend entry points and fix forward; do not drop tables after real data is added. Registration hardening intentionally restricts only unsafe ownership/claim paths. Do not restore the insecure public ownership policy as a routine rollback.
 
 Frontend edits on this branch are not published to main automatically by this task. Live database application and post-deployment checks are recorded in RELEASE-LOG.md once performed.
+
+## September 25 continuation: lesson persistence and people workspace
+
+Implemented on `champion-sowgo-backend-v1`:
+- Lesson draft and progress storage keys include the account ID, with a separate guest namespace. Unattributed v1 drafts are not automatically imported into any account. Unsynced account drafts preserve intentional blank answers; synchronized drafts defer to fresh cloud content.
+- Account changes clear the visible lesson, cancel pending timers, ignore late responses, and require reload. Save operations retain one user ID through every async write; database RLS remains the authorization boundary.
+- Blank answers now overwrite old answers. Notes can be saved and cleared on `lesson_progress`; older clients that omit notes preserve them. Completed status remains completed on subsequent autosaves.
+- Lesson saves run in order in one page. Failed cloud saves are reported without claiming account sync succeeded. Cross-tab/device concurrent editing still uses last-write-wins.
+- `staff-people.html` provides organization selection, paginated people records, view-only/edit states, contact editing with optimistic timestamp checks, sign-out, and no-access states. It uses existing RLS. No staff grants are seeded, and no public navigation entry is added yet.
+- Staff workspace footer uses Powered by Kingdom Propel. Existing discipleship branding rollout is separate and still pending.
+
+Validation: 27 existing database checks, 11 redirect cases, mocked auth persistence tests, simulated form/storage lifecycle tests, additive notes/RLS tests, and JS syntax checks. These do not replace an authenticated browser acceptance test. Staff provisioning, person creation, bulk import/export, audited staff management, and department-defined outreach coordination remain unimplemented.
+
+Frontend release gate: test email login, lessons on two accounts/devices, and staff permissions with designated test accounts before merging this branch to main. No real identities or permission grants were created by this continuation.

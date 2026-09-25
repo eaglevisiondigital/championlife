@@ -1,0 +1,13 @@
+import {PGlite} from '@electric-sql/pglite';
+import {readFileSync,readdirSync} from 'node:fs';
+import assert from 'node:assert/strict';
+const db=new PGlite();
+await db.exec(`create role authenticated; create table lesson_progress(user_id text primary key,status text); alter table lesson_progress enable row level security; create policy own on lesson_progress to authenticated using(user_id=current_setting('test.identity')) with check(user_id=current_setting('test.identity')); grant select,insert,update on lesson_progress to authenticated; insert into lesson_progress values('alice','completed');`);
+const dir=new URL('../../supabase/migrations/',import.meta.url);
+await db.exec(readFileSync(new URL(readdirSync(dir).find(x=>x.endsWith('_lesson_notes.sql')),dir),'utf8'));
+await db.exec(`set role authenticated; set test.identity='alice'; update lesson_progress set notes='Private notes' where user_id='alice'; update lesson_progress set status='completed' where user_id='alice';`);
+assert.equal((await db.query('select notes from lesson_progress')).rows[0].notes,'Private notes');
+await db.exec(`set test.identity='bob';`);assert.equal((await db.query('select notes from lesson_progress')).rows.length,0);
+await assert.rejects(db.exec(`insert into lesson_progress(user_id,notes) values('alice','Forged') on conflict(user_id) do update set notes=excluded.notes;`));
+await db.exec(`set test.identity='alice'; update lesson_progress set notes='';`);assert.equal((await db.query('select notes from lesson_progress')).rows[0].notes,'');
+await db.close();console.log('PASS notes persist with old-client updates, notes are owner-only, other-user writes denied, notes can be cleared');

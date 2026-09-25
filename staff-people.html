@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow"><title>People | Champion Life & SowGo</title>
+<link rel="stylesheet" href="assets/css/staff-people.css">
+</head>
+<body>
+<header><a href="index.html" class="brand">Champion Life <span>& SowGo</span></a><nav aria-label="Account"><a href="my-discipleship.html">My Discipleship</a><button id="sign-out" hidden>Sign out</button></nav></header>
+<main>
+<p class="eyebrow">Ministry workspace</p><h1>People and connection.</h1>
+<p class="intro">Care for the people connected to your church and ministry.</p>
+<p id="status" role="status" aria-live="polite">Loading your workspace...</p>
+<a id="sign-in" href="discipleship-login.html?next=staff-people.html" hidden>Sign in to your workspace</a>
+<section id="workspace" hidden aria-label="People workspace">
+<div class="toolbar"><label>Organization<select id="organization"></select></label><button id="refresh">Refresh people</button></div>
+<p id="access"></p>
+<div class="table-wrap"><table><caption class="sr-only">People in the selected organization</caption><thead><tr><th scope="col">Name</th><th scope="col">Email</th><th scope="col">Phone</th><th scope="col">Action</th></tr></thead><tbody id="people"></tbody></table></div>
+<div class="pagination"><button id="previous" disabled>Previous</button><span id="page"></span><button id="next" disabled>Next</button></div>
+</section>
+<dialog id="editor"><form id="person-form"><h2>Edit contact details</h2><p>Changes apply to the selected organization.</p><label>First name<input name="first_name" required maxlength="100" autocomplete="given-name"></label><label>Last name<input name="last_name" required maxlength="100" autocomplete="family-name"></label><label>Email<input name="email" type="email" maxlength="320" autocomplete="email"></label><label>Phone<input name="phone" type="tel" maxlength="40" autocomplete="tel"></label><p id="edit-status" role="status"></p><div class="actions"><button type="button" id="cancel">Cancel</button><button type="submit" id="save">Save changes</button></div></form></dialog>
+</main><footer>Powered by Kingdom Propel</footer>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="assets/js/supabase-config.js?v=20260923"></script>
+<script src="assets/js/champion-life-auth.js?v=20260925"></script>
+<script src="assets/js/staff-people.js?v=20260925"></script>
+</body></html>

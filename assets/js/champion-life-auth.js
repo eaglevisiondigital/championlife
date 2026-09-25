@@ -39,14 +39,15 @@
     return data;
   }
 
-  async function ensureProfile(values = {}) {
-    const user = await getUser();
+  async function ensureProfile(values = {}, expectedUser = null) {
+    const user = expectedUser || await getUser();
     if (!user) return null;
-    const { data:existing } = await client
+    const { data:existing, error:existingError } = await client
       .from('profiles')
       .select('first_name,last_name,email,phone,givehub_contact_id')
       .eq('user_id',user.id)
       .maybeSingle();
+    if (existingError) throw existingError;
     const row = {
       user_id: user.id,
       email: user.email || values.email || existing?.email || null,
@@ -65,8 +66,8 @@
     return data;
   }
 
-  async function ensureEnrollment() {
-    const user = await getUser();
+  async function ensureEnrollment(expectedUser = null) {
+    const user = expectedUser || await getUser();
     if (!user) return null;
     const course = await getGripCourse();
     const { data, error } = await client
@@ -81,22 +82,21 @@
     return data;
   }
 
-  async function saveLesson({ lessonNumber, answers, status='in_progress', completed=false, profile={} }) {
+  async function saveLesson({ lessonNumber, answers, status='in_progress', completed=false, profile={}, notes, expectedUserId }) {
     const user = await getUser();
-    if (!user) return { skipped:true };
+    if (!user || (expectedUserId && user.id !== expectedUserId)) throw new Error('Your account changed. Reload before saving.');
     const course = await getGripCourse();
 
-    await ensureProfile(profile);
-    await ensureEnrollment();
+    await ensureProfile(profile, user);
+    await ensureEnrollment(user);
 
     const rows = Object.entries(answers || {})
-      .filter(([,value]) => String(value ?? '').trim().length)
       .map(([questionNumber, answer]) => ({
         user_id:user.id,
         course_id:course.id,
         lesson_number:Number(lessonNumber),
         question_number:Number(questionNumber),
-        answer:String(answer),
+        answer:String(answer ?? ''),
         updated_at:new Date().toISOString()
       }));
 
@@ -107,13 +107,14 @@
       if (answerError) throw answerError;
     }
 
-    const { data:existingProgress } = await client
+    const { data:existingProgress, error:existingProgressError } = await client
       .from('lesson_progress')
       .select('started_at,completed_at,status')
       .eq('user_id',user.id)
       .eq('course_id',course.id)
       .eq('lesson_number',Number(lessonNumber))
       .maybeSingle();
+    if (existingProgressError) throw existingProgressError;
     const now = new Date().toISOString();
     const progressRow = {
       user_id:user.id,
@@ -124,6 +125,7 @@
       updated_at:now,
       completed_at: completed ? (existingProgress?.completed_at || now) : (existingProgress?.completed_at || null)
     };
+    if (notes !== undefined) progressRow.notes = String(notes);
     const { error:progressError } = await client
       .from('lesson_progress')
       .upsert(progressRow, { onConflict:'user_id,course_id,lesson_number' });
@@ -145,7 +147,7 @@
         .eq('lesson_number',Number(lessonNumber))
         .order('question_number'),
       client.from('lesson_progress')
-        .select('status,started_at,completed_at,updated_at')
+        .select('status,started_at,completed_at,updated_at,notes')
         .eq('user_id',user.id)
         .eq('course_id',course.id)
         .eq('lesson_number',Number(lessonNumber))
@@ -227,3 +229,4 @@
     signOut
   };
 })();
+
