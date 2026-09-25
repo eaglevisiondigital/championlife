@@ -26,7 +26,7 @@ insert into public.courses(slug) values('getting-a-grip-on-the-basics');
 grant all on all tables in schema public,auth to service_role;
 grant all on all sequences in schema public to service_role;
 `);
-for(const path of ['20260925195758_organization_foundation.sql','20260925195814_harden_outreach_claim.sql']) await db.exec(readFileSync(new URL('../../supabase/migrations/'+path,import.meta.url),'utf8'));
+for(const path of ['20260925200310_organization_foundation.sql','20260925200318_harden_outreach_claim.sql']) await db.exec(readFileSync(new URL('../../supabase/migrations/'+path,import.meta.url),'utf8'));
 const user=(n)=>`00000000-0000-4000-8000-${String(n).padStart(12,'0')}`;
 const cl=await scalar("select id as value from organizations where slug='champion-life'");
 const sg=await scalar("select id as value from organizations where slug='sowgo'");
