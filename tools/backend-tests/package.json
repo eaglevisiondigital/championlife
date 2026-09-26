@@ -5,6 +5,6 @@
   },
   "private": true,
   "scripts": {
-    "test": "node foundation.test.mjs && node redirect.test.mjs && node lesson.test.mjs && node drafts.test.mjs && node notes.test.mjs && node followup.test.mjs && node staff-workspace.dom.cjs && node followup-ui.dom.cjs"
+    "test": "node foundation.test.mjs && node redirect.test.mjs && node lesson.test.mjs && node drafts.test.mjs && node notes.test.mjs && node followup.test.mjs && node staff-workspace.dom.cjs && node followup-ui.dom.cjs && node staff-access.test.mjs && node staff-admin.dom.cjs"
   }
 }

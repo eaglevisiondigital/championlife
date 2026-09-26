@@ -4,10 +4,12 @@
   const status = $('status'), select = $('organization'), body = $('people');
   let user, permissions = [], rows = [], page = 0, request = 0, editing = null, invalid = false;
   const size = 25;
+  let staffAdmin = null, personEditToken = 0;
   let taskPage = 0, taskRequest = 0, taskEditing = null, taskEditToken = 0, historyRequest = 0;
   let currentView = 'overview', searchText = '', searchField = 'last_name';
   const views = {
     overview: ['Your ministry workspace.', 'Choose your next step and stay connected to your people.'],
+    staff: ['Your team. The right access.', 'Give each staff member the tools their work requires.'],
     followup: ['Every next step matters.', 'Keep follow-up clear, timely and connected to the right organization.'],
     people: ['People and connection.', 'Care for the people connected to your church and ministry.'],
     modules: ['Room for every next step.', 'The full platform is taking shape around your ministry.']
@@ -45,20 +47,22 @@
     $('refresh').hidden = view !== 'people';
     if (focus) $('view-title').focus();
     if (!invalid && permissions.length && view === 'people') loadPeople();
+    else if (!invalid && permissions.length && view === 'staff') { request++; staffAdmin?.load(); }
     else if (!invalid && permissions.length && view === 'followup') { request++; loadTasks(); }
     else if (permissions.length && !invalid) { request++; status.textContent = 'Workspace ready.'; }
   }
   document.querySelectorAll('[data-view]').forEach(button => button.addEventListener('click', () => showView(button.dataset.view)));
   function updateOrganization() {
     $('workspace-name').textContent = select.selectedOptions[0]?.textContent || 'Ministry workspace';
-    $('access-summary').textContent = can('people.update') ? 'You can view people and edit contact details in this organization.' : 'You have view-only access to people in this organization.';
+    $('person-add').hidden = !can('people.create') || !can('people.read');
+    $('access-summary').textContent = !can('people.read') ? 'You have staff administration access. Contact access has not been assigned.' : can('people.update') ? 'You can view people and edit contact details in this organization.' : 'You have view-only access to people in this organization.';
   }
   showView('overview', false);
   function can(permission, org = select.value) {
     return permissions.some(p => p.organization_id === org && p.permission === permission);
   }
   function clearPrivateView() {
-    invalid = true; clearTasks(); request++; rows = []; permissions = []; editing = null;
+    invalid = true; personEditToken++; staffAdmin?.clear(); clearTasks(); request++; rows = []; permissions = []; editing = null;
     body.replaceChildren(); select.replaceChildren(); $('workspace').hidden = true;
     $('editor').close(); $('person-form').reset(); $('access-summary').textContent = ''; $('workspace-name').textContent = 'Ministry workspace';
     status.textContent = 'Your account changed. Reload this page to continue.';
@@ -93,7 +97,7 @@
         const button = document.createElement('button'); button.textContent = 'Edit';
         button.setAttribute('aria-label', 'Edit ' + person.first_name + ' ' + person.last_name);
         button.addEventListener('click', () => {
-          editing = {...person};
+          personEditToken++; $('save').disabled=false; editing = {...person}; $('person-editor-title').textContent = 'Edit contact details';
           for (const name of ['first_name','last_name','email','phone']) $('person-form').elements.namedItem(name).value = person[name] || '';
           $('edit-status').textContent = ''; $('editor').showModal();
         }); action.append(button);
@@ -108,27 +112,35 @@
   }
   $('person-form').addEventListener('submit', async event => {
     event.preventDefault();
-    if (invalid || !editing || !can('people.update', editing.organization_id)) return;
-    const person = {...editing}, values = {};
+    if (invalid || $('save').disabled || !editing || !can(editing.id ? 'people.update' : 'people.create', editing.organization_id)) return;
+    const person = {...editing}, editToken = personEditToken, values = {};
     for (const name of ['first_name','last_name','email','phone']) values[name] = $('person-form').elements.namedItem(name).value.trim() || null;
     if (!values.first_name || !values.last_name) { $('edit-status').textContent = 'First and last name are required.'; return; }
     $('save').disabled = true;
     try {
       if ((await auth.getUser())?.id !== user.id) { clearPrivateView(); return; }
-      const {data, error} = await auth.client.from('organization_people')
-        .update({...values, updated_at:new Date().toISOString()})
-        .eq('id', person.id).eq('organization_id', person.organization_id).eq('updated_at', person.updated_at)
-        .select('id').maybeSingle();
-      if (invalid) return;
+      if (invalid || editToken !== personEditToken) return;
+      const query = person.id ? auth.client.from('organization_people')
+        .update(values).eq('id', person.id).eq('organization_id', person.organization_id).eq('updated_at', person.updated_at)
+        : auth.client.from('organization_people').insert({...values,organization_id:person.organization_id});
+      const {data, error} = await query.select('id').maybeSingle();
+      if (invalid || editToken !== personEditToken) return;
       if (error || !data) { $('edit-status').textContent = 'Changes were not saved. Access may have changed or another person updated this record. Close and refresh before retrying.'; return; }
       $('editor').close(); editing = null; await loadPeople();
-      if (!invalid) status.textContent = 'Contact details saved.';
-    } catch (_) { if (!invalid) $('edit-status').textContent = 'Changes were not saved. Please try again.'; }
-    finally { $('save').disabled = false; }
+      if (!invalid && editToken === personEditToken) status.textContent = person.id ? 'Contact details saved.' : 'Person added to this organization.';
+    } catch (_) { if (!invalid && editToken === personEditToken) $('edit-status').textContent = 'Changes were not saved. Please try again.'; }
+    finally { if (editToken === personEditToken) $('save').disabled = false; }
   });
-  $('cancel').addEventListener('click', () => { $('editor').close(); editing = null; });
+  $('person-add').addEventListener('click', () => {
+    if (invalid || !can('people.read') || !can('people.create')) return;
+    personEditToken++; $('save').disabled=false; editing = {organization_id:select.value}; $('person-form').reset();
+    $('person-editor-title').textContent = 'Add person'; $('edit-status').textContent = '';
+    $('editor').showModal();
+  });
+  $('cancel').addEventListener('click', () => { personEditToken++; $('editor').close(); editing = null; });
+  $('editor').addEventListener('cancel', () => {personEditToken++;editing=null;});
   select.addEventListener('change', () => {
-    clearTasks(); taskPage = 0; request++; page = 0; rows = []; body.replaceChildren(); editing = null;
+    personEditToken++; staffAdmin?.clear(); clearTasks(); taskPage = 0; request++; page = 0; rows = []; body.replaceChildren(); editing = null;
     $('editor').close(); $('person-form').reset(); searchText = ''; $('search-query').value = '';
     updateOrganization(); showView(currentView, false);
   });
@@ -159,7 +171,7 @@
       if (invalid) return;
       if (grants.error || orgs.error) throw new Error('Workspace unavailable');
       permissions = grants.data || [];
-      const available = (orgs.data || []).filter(org => can('people.read',org.id));
+      const available = (orgs.data || []).filter(org => can('people.read',org.id) || can('staff.manage',org.id));
       if (!available.length) { status.textContent = 'No staff workspace is assigned to this account yet. Ask your ministry administrator for access.'; return; }
       for (const org of available) { const option = document.createElement('option'); option.value = org.id; option.textContent = org.name; select.append(option); }
       $('workspace').hidden = false; updateOrganization(); showView(currentView, false);
@@ -169,7 +181,7 @@
     taskRequest++; taskEditToken++; historyRequest++; taskEditing = null;
     $('task-list').replaceChildren(); $('task-events').replaceChildren();
     $('task-editor').close(); $('task-history').close(); $('task-form').reset();
-    $('task-person').textContent = ''; $('task-save-status').textContent = ''; $('task-assignee').replaceChildren();
+    $('task-assignee-status').textContent = ''; $('task-person').textContent = ''; $('task-save-status').textContent = ''; $('task-assignee').replaceChildren();
     $('task-status').textContent = ''; $('task-page').textContent = '';
   }
   function taskAccess() { return !invalid && can('people.read') && can('followup.read'); }
@@ -187,6 +199,24 @@
     for (const [value,label] of options) { const option = document.createElement('option'); option.value=value; option.textContent=label; $('task-assignee').append(option); }
     $('task-assignee').value = task?.assigned_user_id || '';
     $('task-save-status').textContent = ''; $('task-save').disabled = false; $('task-editor').showModal();
+    populateAssignees(taskEditToken, select.value, task?.assigned_user_id || '');
+  }
+  async function populateAssignees(token, org, current) {
+    $('task-assignee-status').textContent = 'Loading eligible staff...';
+    try {
+      const {data,error} = await auth.client.rpc('list_staff_directory',{p_org:org,p_for_assignment:true});
+      if (invalid || token !== taskEditToken) return;
+      if (error) throw error;
+      // Preserve any selection made while the directory request was pending.
+      const selected = $('task-assignee').value;
+      const known = new Set(Array.from($('task-assignee').options, option => option.value));
+      for (const member of data || []) {
+        if (known.has(member.user_id)) continue;
+        const option=document.createElement('option');option.value=member.user_id;option.textContent=member.display_name;$('task-assignee').append(option);known.add(member.user_id);
+      }
+      $('task-assignee').value=selected;
+      $('task-assignee-status').textContent='Only staff with access to this organization are listed.';
+    } catch (_) { if (!invalid && token===taskEditToken) $('task-assignee-status').textContent='Team list could not load. You can still leave this unassigned or assign yourself.'; }
   }
   async function loadTasks() {
     const token = ++taskRequest, org = select.value;
@@ -230,7 +260,7 @@
     } catch (_) { if (!invalid && token===historyRequest) $('task-history-status').textContent='Activity could not be loaded.'; }
   }
   $('task-form').addEventListener('submit',async event=>{
-    event.preventDefault(); if (!taskEditing || !taskAccess() || !can('followup.manage')) return;
+    event.preventDefault(); if ($('task-save').disabled || !taskEditing || !taskAccess() || !can('followup.manage')) return;
     const task={...taskEditing}, token=taskEditToken, title=$('task-title').value.trim();
     if (!title) { $('task-save-status').textContent='Enter a next step.'; return; }
     const values={title,due_on:$('task-due').value || null,assigned_user_id:$('task-assignee').value || null};
@@ -256,5 +286,6 @@
   $('task-previous').addEventListener('click',()=>{if(taskPage>0)taskPage--;loadTasks();});
   $('task-next').addEventListener('click',()=>{taskPage++;loadTasks();});
 
+  staffAdmin = window.ChampionStaffAdmin?.({auth,onAccountChange:clearPrivateView,getContext:()=>({user,organizationId:select.value,can,invalid})});
   start();
 })();
