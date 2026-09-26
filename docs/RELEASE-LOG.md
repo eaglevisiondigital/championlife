@@ -162,3 +162,9 @@ Continued from 9cd2ab1d3686fe9b824ea4b263d8b9a061b309b0. Extended protected acti
 Expanded portal DOM tests pass for tag-rule/account-link event scopes, minimal selected fields, enabling/disabling and revocation/restoration labels, administrator UI gating and preservation of unsaved account-link review text. Existing resource history, publishing, access setup, conflict and cleanup cases continue passing. JavaScript syntax passes. No database migration or real record change; browser and real-account acceptance remain pending.
 
 Saved only to champion-sowgo-backend-v1. Existing giving links remain untouched.
+
+## Independent resource draft copies, September 26, 2026
+
+Continued from cfa11552c8e87a86ae5f15c13db7ed308381a4f9. Added Copy as draft to resource cards, fresh source reads, editable copied content and a destination-area selector restricted to the current organization. Saves insert a new draft under the existing server guard and show the destination list. Source identity, revision and publication status are not copied; originals remain unchanged.
+
+Expanded portal DOM suite and JavaScript syntax checks pass. Tests cover invalid destinations, independent insertion, no source update, omission of source identifiers/publication status, destination navigation, canceled copies and editor cleanup, alongside existing publishing/access/history checks. No schema or real records changed. Real-account/browser acceptance remains pending. Saved only to champion-sowgo-backend-v1; giving links remain untouched.

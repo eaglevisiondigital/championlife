@@ -93,3 +93,9 @@ Administrators can open Activity from access-tag cards and Account link activity
 Access history requests project only revision and active/enabled JSON fields, event identifier, actor identifier and timestamp. They do not request full before/after snapshots or verification notes. Queries retain the current organization, exact subject and event-kind filters. Access history controls require staff.manage in addition to portal authority; existing database audit RLS is unchanged and continues to allow authorized portal staff audit reads. This UI restriction is not a new database security boundary.
 
 This is configuration history, not a computed timeline of every person's effective access. A person's tags, department status and other rules can independently affect eligibility. No changes to grants, tags, account links or consent occur by viewing activity.
+
+## Reusing a resource as a new draft
+
+Staff resource cards now offer Copy as draft. The source is freshly loaded under current staff authority before the editor becomes available. Staff can edit the copied title, summary and text and choose an area from the current organization's configured areas. The destination is validated against those loaded areas; existing server organization/area constraints and portal permissions still govern the insertion.
+
+Saving inserts an independent resource without carrying over the source identifier, revision or publication status. The existing database guard initializes every new resource as draft. The source is never updated and later edits do not synchronize between copies. Saving opens the destination's unfiltered resource list. Canceling performs no write. Cross-organization copying, bulk publication and automatic synchronization are not included. Review each destination's audience before separately publishing its draft.
