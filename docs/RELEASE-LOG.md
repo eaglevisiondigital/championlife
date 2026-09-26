@@ -73,3 +73,17 @@ Verification: both new tables enforce RLS. Anonymous table reads, browser househ
 The entire local suite passed, including 25 new household PostgreSQL checks and synthetic household workflow/person-record tests. Main remains unpublished. Real-account sign-in and desktop/mobile visual acceptance are still required. Family self-service and guardian/check-in authorization are not implemented by this release.
 
 No new advisor findings. Prior intentional RPC-only staff directory INFO and disabled leaked-password protection warning remain documented above, with remediation links. No existing learning, auth, payment or outreach records were changed.
+
+## Department and tag foundation, September 26 UTC / September 25 Chicago
+
+Source implementation saved before live application in commit `e8fe14690f683434c768d9c59f68a43c32bb3f2c` on `champion-sowgo-backend-v1`. Applied migration `department_tags` to the original project `exdocjbmylgxssanymjk`; remote version `20260926032026`. Source filename aligned to that remote version afterward.
+
+Added protected departments, tag configuration, person assignments and immutable assignment/configuration events. Staff screens support paginated configuration and assignments, leader selection, search, archive/restore, optimistic revisions and account/organization isolation. Staff access now includes explicit tag permissions and clearer restricted giving wording. User's giving-access requirement is recorded in the operations and identity specifications.
+
+Validation: full existing suite passed plus 32 PostgreSQL tag/finance-permission checks and synthetic tag UI workflows. A module-card count assertion was updated for the additional module; tag dialog test now waits for the actual asynchronous department lookup before submitting. Actual browser visual and real-account acceptance remain outstanding.
+
+Post-deployment: all four new tables have RLS. Anonymous tag reads, authenticated audit inserts and direct private guard execution are denied. New tables have zero records and existing staff grants remain zero. Profile count remains one. No real department leader, person tag, task or notification was created. Main remains `66591f22d5315d093091b99152c18d43bfcb3893`; no frontend publication.
+
+Security advisor results unchanged: intentional RPC-only staff directory INFO and previously known leaked-password protection WARN. Remediation references: https://supabase.com/docs/guides/database/database-linter?lint=0008_rls_enabled_no_policy and https://supabase.com/docs/guides/auth/password-security#password-strength-and-leaked-password-protection . No new security findings from this migration.
+
+Tag events are a foundation only. Automatic tasks/email, routing exceptions and workflow activation are not implemented. Do not replay historical assignment events automatically when a worker is added. Guest giving and statement modules remain pending the giving ledger and identity-claim work.
