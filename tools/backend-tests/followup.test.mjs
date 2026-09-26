@@ -1,0 +1,40 @@
+import {PGlite} from '@electric-sql/pglite';
+import {readFileSync,readdirSync} from 'node:fs';
+import assert from 'node:assert/strict';
+const db=new PGlite();let checks=0;
+const ok=(v,label)=>{assert.ok(v,label);checks++;console.log('PASS '+label)};
+const uid=n=>`00000000-0000-4000-8000-${String(n).padStart(12,'0')}`;
+await db.exec(`create role anon;create role authenticated;create role service_role bypassrls;create schema auth;create table auth.users(id uuid primary key,email_confirmed_at timestamptz,is_anonymous boolean default false);create function auth.uid() returns uuid language sql stable as $$select nullif(current_setting('request.jwt.claim.sub',true),'')::uuid$$;grant usage on schema auth,public to anon,authenticated,service_role;grant execute on function auth.uid() to anon,authenticated,service_role;`);
+const dir=new URL('../../supabase/migrations/',import.meta.url);
+await db.exec(readFileSync(new URL('20260925200310_organization_foundation.sql',dir),'utf8'));
+await db.exec(readFileSync(new URL(readdirSync(dir).find(n=>n.endsWith('_followup_tasks.sql')),dir),'utf8'));
+const orgs=(await db.query('select id,slug from organizations')).rows;const church=orgs.find(o=>o.slug==='champion-life').id,outreach=orgs.find(o=>o.slug==='sowgo').id;
+await db.exec(`insert into auth.users values('${uid(1)}',now(),false),('${uid(2)}',now(),false),('${uid(3)}',now(),false),('${uid(4)}',null,false);insert into organization_people(id,organization_id,first_name,last_name) values('${uid(10)}','${church}','Test','Church'),('${uid(11)}','${outreach}','Test','Outreach');`);
+async function grant(org,user,perms){for(const p of perms)await db.query('insert into organization_staff_permissions(organization_id,user_id,permission) values($1,$2,$3)',[org,user,p]);}
+await grant(church,uid(1),['people.read','followup.read','followup.manage']);await grant(church,uid(2),['people.read','followup.read']);await grant(outreach,uid(3),['people.read','followup.read','followup.manage']);await grant(church,uid(4),['people.read','followup.read','followup.manage']);
+async function as(id,role='authenticated'){await db.exec('reset role');await db.query("select set_config('request.jwt.claim.sub',$1,false)",[id]);await db.exec('set role '+role);}
+async function reject(sql,label){let failed=false;try{await db.exec(sql)}catch{failed=true}ok(failed,label)}
+const insert=(org,person,extra='',val='')=>`insert into followup_tasks(organization_id,person_id,title${extra}) values('${org}','${person}','Welcome call'${val}) returning id,revision`;
+await as(uid(1));const task=(await db.query(insert(church,uid(10),',assigned_user_id',`, '${uid(1)}'`))).rows[0];ok(task.revision===1,'manager creates self-assigned task');
+ok((await db.query('select * from followup_task_events')).rows.length===1,'creation audit event recorded');
+await reject(insert(church,uid(11)),'cross-organization person rejected');await reject(insert(outreach,uid(11)),'cross-organization task rejected');
+await reject(`update followup_tasks set assigned_user_id='${uid(3)}'`,'cross-organization assignee rejected');
+await reject(`update followup_tasks set organization_id='${outreach}'`,'task organization cannot be reassigned');
+await reject(`update followup_tasks set created_by='${uid(2)}'`,'actor cannot be forged');
+await reject(`update followup_tasks set revision=100`,'revision cannot be forged');
+await reject('delete from followup_tasks','task deletion denied');await reject('delete from followup_task_events','audit deletion denied');
+await reject(`insert into followup_task_events(organization_id,task_id,actor_user_id,action,after_state) values('${church}','${task.id}','${uid(1)}','created','{}')`,'audit event forgery denied');
+let row=(await db.query(`update followup_tasks set status='completed' where id='${task.id}' and revision=1 returning revision`)).rows[0];ok(row.revision===2,'completion advances server revision');
+ok((await db.query(`update followup_tasks set status='canceled' where id='${task.id}' and revision=1 returning id`)).rows.length===0,'stale update does not overwrite newer work');
+const events=(await db.query('select * from followup_task_events order by occurred_at')).rows;ok(events.length===2 && events[1].before_state.status==='open' && events[1].after_state.status==='completed','audit preserves transition');
+await db.exec(`update followup_tasks set assigned_user_id='${uid(2)}',due_on='2026-10-01' where id='${task.id}'`);ok(true,'eligible same-organization assignee accepted');
+await as(uid(2));ok((await db.query('select * from followup_tasks')).rows.length===1,'reader sees organization tasks');ok((await db.query("update followup_tasks set status='open' returning id")).rows.length===0,'reader cannot change status');await reject(insert(church,uid(10)),'reader cannot create task');
+await as(uid(3));ok((await db.query('select * from followup_tasks')).rows.length===0,'other organization sees no tasks');ok((await db.query('select * from followup_task_events')).rows.length===0,'other organization sees no audit events');
+await as(uid(4));await reject(insert(church,uid(10)),'unverified identity cannot create even with grants');
+await as('','anon');await reject('select * from followup_tasks','anonymous task access denied');
+await db.exec('reset role');await db.exec(`update organization_staff_permissions set revoked_at=now() where user_id='${uid(2)}' and permission='followup.read'`);
+await as(uid(2));ok((await db.query('select * from followup_tasks')).rows.length===0,'revoked assigned reader immediately loses access');
+await as(uid(1));await db.exec(`update followup_tasks set assigned_user_id=null`);await reject(`update followup_tasks set assigned_user_id='${uid(2)}'`,'revoked assignee cannot be reassigned');
+await db.exec('reset role');await db.exec(`update organization_staff_permissions set revoked_at=now() where user_id='${uid(1)}' and permission='followup.manage'`);
+await as(uid(1));ok((await db.query("update followup_tasks set status='open' returning id")).rows.length===0,'revoked manager cannot edit with stale session');
+await db.close();console.log(`${checks} follow-up checks passed`);

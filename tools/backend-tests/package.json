@@ -1,9 +1,10 @@
 {
   "devDependencies": {
-    "@electric-sql/pglite": "0.5.8"
+    "@electric-sql/pglite": "0.5.8",
+    "jsdom": "26.1.0"
   },
   "private": true,
   "scripts": {
-    "test": "node foundation.test.mjs && node redirect.test.mjs && node lesson.test.mjs && node drafts.test.mjs && node notes.test.mjs"
+    "test": "node foundation.test.mjs && node redirect.test.mjs && node lesson.test.mjs && node drafts.test.mjs && node notes.test.mjs && node followup.test.mjs && node staff-workspace.dom.cjs && node followup-ui.dom.cjs"
   }
 }

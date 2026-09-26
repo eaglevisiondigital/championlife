@@ -74,3 +74,15 @@ Theme tokens preserve the current workspace palette pending approved final churc
 Verification for this slice: the complete existing Node/PGlite suite and JavaScript syntax checks pass. Playwright could not launch because Chromium is absent and its download returned a corrupted archive; desktop/mobile visual acceptance is still pending. Do not mark the browser acceptance gate complete from these checks.
 
 A jsdom 26.1.0 interaction test passed for view switching, literal search escaping, editor opening, organization switching, read-only controls, attribution labels and account-change clearing. Run with jsdom installed: `node tools/backend-tests/staff-workspace.dom.cjs`. This uses mocked API data, not live identities.
+
+## Operational follow-up implementation
+
+Follow-up tasks attach to an organization-specific person using a composite foreign key. Separate `followup.read` and `followup.manage` permissions are additive; both require `people.read`. No existing grants are changed and no staff is auto-provisioned. Affiliation alone gives no task access.
+
+Authorized managers create next-step tasks from People, set a due date, leave tasks unassigned or assign themselves, and update open/completed/canceled status. Database validation also permits another explicitly authorized same-organization assignee; the team-assignee picker is deferred until staff management is built. Revocation removes visibility immediately at the next database request. Existing assignments to revoked staff can be cleared or updated but do not confer access.
+
+The new Follow-up view supports status/assignment filters, pagination, contact names, and recent task activity. Updates use a server-maintained revision so stale edits cannot silently overwrite someone else's work. Creation and updates append actor-attributed before/after audit events, inaccessible across organizations and not editable by browser clients. No task deletion is exposed. Operational titles must not contain private care notes; restricted care remains separate. Nothing sends email/SMS or implements the deferred host church process.
+
+Two private trigger functions validate staff identity, scope and assignee eligibility and record history. They have fixed empty search paths and no public/anon/authenticated EXECUTE grants. Normal writes still use table RLS; no service key is used in the browser. Account and organization changes close task dialogs, clear private content and ignore late responses.
+
+Validation: 25 isolated PostgreSQL follow-up checks and synthetic DOM create/update/conflict/history/access checks, plus the existing foundation and lesson suites. jsdom is pinned as a test dependency. Live email and visual browser acceptance remain required before frontend publication. Staff management/provisioning UI, consent-aware outreach-to-CRM linking, people creation/import and real staff assignments remain pending. Do not infer follow-up consent from the existence of a task.

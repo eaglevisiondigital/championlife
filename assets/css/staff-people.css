@@ -9,3 +9,5 @@ main{width:100%;max-width:1250px;margin:0 auto;padding:2.5rem clamp(1rem,3vw,3re
 @media(max-width:1000px){.module-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:900px){.app-layout{grid-template-columns:1fr}.sidebar{padding:.7rem 1rem}.sidebar>.eyebrow,.sidebar-note{display:none}.sidebar nav{display:flex;margin:0;flex-direction:row;justify-content:flex-start;overflow:auto}.sidebar button{white-space:nowrap}.sidebar button[aria-current]{box-shadow:inset 0 -3px #b9d7b5}main{margin:0;padding:1.5rem 1rem}}
 @media(max-width:600px){.quick-grid,.module-grid{grid-template-columns:1fr}.search-bar{align-items:stretch}.search-bar label{width:100%}.quick-card{padding:1.1rem}#workspace{padding:1rem}}
+
+.task-list{display:grid;gap:.8rem}.task-card{border:1px solid var(--staff-border);border-radius:.75rem;padding:1rem}.task-card h3{margin:.3rem 0 .7rem}.task-card p{font-size:.9rem;color:#53665d}.task-card .actions{justify-content:flex-start;margin-top:.6rem;flex-wrap:wrap}#people td:last-child button+button{margin-left:.4rem}#task-events{padding-left:1.2rem}#task-events li{margin:1rem 0;font-size:.9rem;line-height:1.6}

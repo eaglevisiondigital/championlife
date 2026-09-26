@@ -4,9 +4,11 @@
   const status = $('status'), select = $('organization'), body = $('people');
   let user, permissions = [], rows = [], page = 0, request = 0, editing = null, invalid = false;
   const size = 25;
+  let taskPage = 0, taskRequest = 0, taskEditing = null, taskEditToken = 0, historyRequest = 0;
   let currentView = 'overview', searchText = '', searchField = 'last_name';
   const views = {
     overview: ['Your ministry workspace.', 'Choose your next step and stay connected to your people.'],
+    followup: ['Every next step matters.', 'Keep follow-up clear, timely and connected to the right organization.'],
     people: ['People and connection.', 'Care for the people connected to your church and ministry.'],
     modules: ['Room for every next step.', 'The full platform is taking shape around your ministry.']
   };
@@ -16,7 +18,7 @@
     ['Giving & partners', 'Funds, manual gifts, statements, partnerships and DAF support.', 'Planned', 'Kingdom Propel'],
     ['Forms', 'Drag-and-drop forms with desktop/mobile editing and payments.', 'Planned', 'Kingdom Propel'],
     ['Serving, groups & events', 'Volunteer schedules, groups, events and check-in.', 'Planned', 'Kingdom Propel'],
-    ['Follow-up & care', 'Next steps, assignments and restricted pastoral care.', 'Planned', 'Kingdom Propel'],
+    ['Follow-up & care', 'Operational tasks, due dates and self-assignment are available. Restricted pastoral care is planned.', 'Follow-up available', 'Kingdom Propel'],
     ['Discipleship', 'Shared courses, lessons and learner progress. Learner portal exists; staff tools are planned.', 'Staff tools planned', 'Lockliel'],
     ['Evangelism & sharing', 'Approved invitations and shareable evangelistic resources.', 'Planned', 'Lockliel'],
     ['Communications & reports', 'Segmented messaging, preferences and ministry reporting.', 'Planned', 'Kingdom Propel'],
@@ -33,6 +35,7 @@
   function showView(view, focus = true) {
     if (!views[view]) return;
     currentView = view;
+    taskRequest++; $('task-list').replaceChildren();
     for (const name of Object.keys(views)) $('view-' + name).hidden = name !== view;
     document.querySelectorAll('.sidebar [data-view]').forEach(button => {
       if (button.dataset.view === view) button.setAttribute('aria-current', 'page');
@@ -42,6 +45,7 @@
     $('refresh').hidden = view !== 'people';
     if (focus) $('view-title').focus();
     if (!invalid && permissions.length && view === 'people') loadPeople();
+    else if (!invalid && permissions.length && view === 'followup') { request++; loadTasks(); }
     else if (permissions.length && !invalid) { request++; status.textContent = 'Workspace ready.'; }
   }
   document.querySelectorAll('[data-view]').forEach(button => button.addEventListener('click', () => showView(button.dataset.view)));
@@ -54,7 +58,7 @@
     return permissions.some(p => p.organization_id === org && p.permission === permission);
   }
   function clearPrivateView() {
-    invalid = true; request++; rows = []; permissions = []; editing = null;
+    invalid = true; clearTasks(); request++; rows = []; permissions = []; editing = null;
     body.replaceChildren(); select.replaceChildren(); $('workspace').hidden = true;
     $('editor').close(); $('person-form').reset(); $('access-summary').textContent = ''; $('workspace-name').textContent = 'Ministry workspace';
     status.textContent = 'Your account changed. Reload this page to continue.';
@@ -94,6 +98,11 @@
           $('edit-status').textContent = ''; $('editor').showModal();
         }); action.append(button);
       } else action.textContent = 'View only';
+      if (can('followup.read') && can('followup.manage')) {
+        const button = document.createElement('button'); button.textContent = 'Follow up';
+        button.setAttribute('aria-label', 'Follow up with ' + person.first_name + ' ' + person.last_name);
+        button.addEventListener('click', () => openTask(null, person)); action.append(button);
+      }
       tr.append(action); body.append(tr);
     }
   }
@@ -119,7 +128,7 @@
   });
   $('cancel').addEventListener('click', () => { $('editor').close(); editing = null; });
   select.addEventListener('change', () => {
-    request++; page = 0; rows = []; body.replaceChildren(); editing = null;
+    clearTasks(); taskPage = 0; request++; page = 0; rows = []; body.replaceChildren(); editing = null;
     $('editor').close(); $('person-form').reset(); searchText = ''; $('search-query').value = '';
     updateOrganization(); showView(currentView, false);
   });
@@ -156,5 +165,96 @@
       $('workspace').hidden = false; updateOrganization(); showView(currentView, false);
     } catch (_) { status.textContent = 'Your workspace could not be loaded. Reload to try again.'; }
   }
+  function clearTasks() {
+    taskRequest++; taskEditToken++; historyRequest++; taskEditing = null;
+    $('task-list').replaceChildren(); $('task-events').replaceChildren();
+    $('task-editor').close(); $('task-history').close(); $('task-form').reset();
+    $('task-person').textContent = ''; $('task-save-status').textContent = ''; $('task-assignee').replaceChildren();
+    $('task-status').textContent = ''; $('task-page').textContent = '';
+  }
+  function taskAccess() { return !invalid && can('people.read') && can('followup.read'); }
+  function openTask(task, person) {
+    if (!taskAccess() || !can('followup.manage')) return;
+    taskEditToken++; taskEditing = task ? {...task} : {organization_id:select.value,person_id:person.id};
+    $('task-editor-title').textContent = task ? 'Update follow-up' : 'Create follow-up';
+    const contact = person || task.person;
+    $('task-person').textContent = contact ? [contact.first_name,contact.last_name].join(' ') : 'Organization contact';
+    $('task-title').value = task?.title || ''; $('task-due').value = task?.due_on || '';
+    $('task-state').value = task?.status || 'open'; $('task-state-label').hidden = !task;
+    $('task-assignee').replaceChildren();
+    const options = [['','Unassigned'],[user.id,'Me']];
+    if (task?.assigned_user_id && task.assigned_user_id !== user.id) options.push([task.assigned_user_id,'Keep current staff assignment']);
+    for (const [value,label] of options) { const option = document.createElement('option'); option.value=value; option.textContent=label; $('task-assignee').append(option); }
+    $('task-assignee').value = task?.assigned_user_id || '';
+    $('task-save-status').textContent = ''; $('task-save').disabled = false; $('task-editor').showModal();
+  }
+  async function loadTasks() {
+    const token = ++taskRequest, org = select.value;
+    $('task-list').replaceChildren(); $('task-previous').disabled = true; $('task-next').disabled = true;
+    if (!taskAccess()) { $('task-status').textContent = 'Follow-up access has not been assigned for this organization.'; return; }
+    $('task-status').textContent = 'Loading follow-up...';
+    try {
+      let query = auth.client.from('followup_tasks').select('id,organization_id,person_id,title,status,due_on,assigned_user_id,revision,person:organization_people(first_name,last_name)').eq('organization_id',org);
+      const filter = $('task-filter').value;
+      if (['open','completed','canceled'].includes(filter)) query=query.eq('status',filter);
+      if ($('task-assignment-filter').value === 'mine') query=query.eq('assigned_user_id',user.id);
+      if ($('task-assignment-filter').value === 'unassigned') query=query.is('assigned_user_id',null);
+      const {data,error} = await query.order('due_on',{ascending:true,nullsFirst:false}).order('id').range(taskPage*size,taskPage*size+size);
+      if (invalid || token !== taskRequest) return;
+      if (error) throw error;
+      const tasks=(data || []).slice(0,size);
+      $('task-previous').disabled=taskPage===0; $('task-next').disabled=(data || []).length<=size;
+      $('task-page').textContent='Page '+(taskPage+1); $('task-status').textContent=tasks.length ? tasks.length+' tasks shown.' : 'No follow-up tasks match these filters.';
+      for (const task of tasks) {
+        const card=document.createElement('article'); card.className='task-card';
+        const title=document.createElement('h3'); title.textContent=task.title;
+        const detail=document.createElement('p');
+        const name=task.person ? [task.person.first_name,task.person.last_name].join(' ') : 'Organization contact';
+        const assignment=!task.assigned_user_id ? 'Unassigned' : task.assigned_user_id===user.id ? 'Assigned to me' : 'Assigned to staff';
+        detail.textContent=[name,task.status,task.due_on ? 'Due '+task.due_on : 'No due date',assignment].join(' · ');
+        const actions=document.createElement('div');actions.className='actions';
+        if (can('followup.manage')) { const edit=document.createElement('button');edit.textContent='Update task';edit.addEventListener('click',()=>openTask(task));actions.append(edit); }
+        const history=document.createElement('button');history.textContent='Activity';history.addEventListener('click',()=>loadHistory(task));actions.append(history);
+        card.append(title,detail,actions);$('task-list').append(card);
+      }
+    } catch (_) { if (!invalid && token===taskRequest) $('task-status').textContent='Follow-up could not be loaded. Refresh to try again.'; }
+  }
+  async function loadHistory(task) {
+    const token=++historyRequest; $('task-events').replaceChildren(); $('task-history-status').textContent='Loading activity...'; $('task-history').showModal();
+    try {
+      const {data,error}=await auth.client.from('followup_task_events').select('action,occurred_at,actor_user_id,before_state,after_state').eq('organization_id',select.value).eq('task_id',task.id).order('occurred_at',{ascending:false}).limit(30);
+      if (invalid || token!==historyRequest) return;
+      if (error) throw error;
+      $('task-history-status').textContent=(data || []).length ? 'Most recent activity (up to 30 changes).' : 'No activity is available.';
+      for (const event of data || []) { const li=document.createElement('li');li.textContent=[new Date(event.occurred_at).toLocaleString(),event.actor_user_id===user.id?'You':'Authorized staff',event.action,event.after_state.title,'Status: '+event.after_state.status,'Due: '+(event.after_state.due_on || 'none')].join(' · ');$('task-events').append(li); }
+    } catch (_) { if (!invalid && token===historyRequest) $('task-history-status').textContent='Activity could not be loaded.'; }
+  }
+  $('task-form').addEventListener('submit',async event=>{
+    event.preventDefault(); if (!taskEditing || !taskAccess() || !can('followup.manage')) return;
+    const task={...taskEditing}, token=taskEditToken, title=$('task-title').value.trim();
+    if (!title) { $('task-save-status').textContent='Enter a next step.'; return; }
+    const values={title,due_on:$('task-due').value || null,assigned_user_id:$('task-assignee').value || null};
+    if (task.id) values.status=$('task-state').value;
+    $('task-save').disabled=true; $('task-save-status').textContent='Saving...';
+    try {
+      if ((await auth.getUser())?.id!==user.id) { clearPrivateView(); return; }
+      if (invalid || token!==taskEditToken) return;
+      const query=task.id ? auth.client.from('followup_tasks').update(values).eq('id',task.id).eq('organization_id',task.organization_id).eq('revision',task.revision) : auth.client.from('followup_tasks').insert({...values,organization_id:task.organization_id,person_id:task.person_id});
+      const {data,error}=await query.select('id').maybeSingle();
+      if (invalid || token!==taskEditToken) return;
+      if (error || !data) { $('task-save-status').textContent='Task was not saved. Access may have changed or someone updated it. Close and refresh before retrying.'; return; }
+      $('task-editor').close(); taskEditing=null; taskPage=0; showView('followup');
+    } catch (_) { if (!invalid && token===taskEditToken) $('task-save-status').textContent='Task was not saved. Check your connection and try again.'; }
+    finally { if(token===taskEditToken) $('task-save').disabled=false; }
+  });
+  $('task-cancel').addEventListener('click',()=>{taskEditToken++;taskEditing=null;$('task-editor').close();});
+  $('task-editor').addEventListener('cancel',()=>{taskEditToken++;taskEditing=null;});
+  $('task-history-close').addEventListener('click',()=>{historyRequest++;$('task-history').close();$('task-events').replaceChildren();});
+  $('task-history').addEventListener('cancel',()=>{historyRequest++;$('task-events').replaceChildren();});
+  for (const id of ['task-filter','task-assignment-filter']) $(id).addEventListener('change',()=>{taskPage=0;loadTasks();});
+  $('task-refresh').addEventListener('click',()=>loadTasks());
+  $('task-previous').addEventListener('click',()=>{if(taskPage>0)taskPage--;loadTasks();});
+  $('task-next').addEventListener('click',()=>{taskPage++;loadTasks();});
+
   start();
 })();
