@@ -63,3 +63,13 @@ Initial administrators must be explicitly designated and provisioned through the
 Development-only UI expansion: individual contact/history/follow-up dialog and live, permissioned daily overview counts with five assigned tasks. Existing database schema and permissions are reused. No live records or Supabase settings were changed. Source is saved to champion-sowgo-backend-v1; main remains the production baseline.
 
 Validation includes the person/overview DOM suite for organization/person filters, own-assignment count filters, safe text rendering and canceled late responses. Browser visual acceptance and designated real staff accounts remain pending.
+
+## September 25, 2026: household records and relationship management
+
+Source commit `ca2f6fe6a8bf0637e468cccf10b139e995dc61ef` saved before applying `20260926024742_household_records` to the original `exdocjbmylgxssanymjk` project. Source filename reconciled to the remote migration version. Household staff screens, member search/add/change/remove/restore, household archive/restore, person-record relationships, scoped role delegation and audit history are implemented on the development branch.
+
+Verification: both new tables enforce RLS. Anonymous table reads, browser household deletion and direct trigger execution are denied. Existing counts remain profiles 1, enrollment 1, progress 1, organization people 0, staff grants 0; new households/members are 0. No real people, relationships or access grants were seeded.
+
+The entire local suite passed, including 25 new household PostgreSQL checks and synthetic household workflow/person-record tests. Main remains unpublished. Real-account sign-in and desktop/mobile visual acceptance are still required. Family self-service and guardian/check-in authorization are not implemented by this release.
+
+No new advisor findings. Prior intentional RPC-only staff directory INFO and disabled leaked-password protection warning remain documented above, with remediation links. No existing learning, auth, payment or outreach records were changed.
