@@ -115,3 +115,17 @@ Full regression suite passed, including 33 new database checks and synthetic fun
 Security advisor findings unchanged: intentional RPC-only staff-directory INFO and known leaked-password protection WARN. References: https://supabase.com/docs/guides/database/database-linter?lint=0008_rls_enabled_no_policy and https://supabase.com/docs/guides/auth/password-security#password-strength-and-leaked-password-protection . No new security findings.
 
 Main remains `66591f22d5315d093091b99152c18d43bfcb3893`; staff UI remains on the development branch. Payment integration, merchant association verification, real-account/browser acceptance and explicit go-live approval remain required. See GIVING-ROUTING-AND-ROLLOUT.md.
+
+## Partner and church participant portals, September 26 UTC
+
+Recorded independent SowGo partner, Champion Life church member and Dream Team areas. One verified login can access all applicable areas across both organizations. Source saved before deployment in commit `551539d6ee610d2b249b7620d9554b6975587e8f` on `champion-sowgo-backend-v1`. Applied `participant_portals` to `exdocjbmylgxssanymjk`; remote version `20260926040812`. Source filename aligned afterward.
+
+Added reviewed portal-only account links, administrator-approved tag mappings, protected resources with draft/published/archived states, and administration audits. Added portal.manage with required people.read and tags.read. Mapped access tags and their activation paths require portal authority; tags never grant staff or finance permissions. Staff resource/configuration screens and the participant My ministry areas screen remain on development. Account linking does not claim gifts or modify CRM account ownership.
+
+Full regression suite passed, including 32 portal database checks, participant/staff DOM checks and 12 safe-redirect cases. Coverage includes overlapping organization access, independent revocation, unpublished resource isolation, unauthorized access/configuration denial, protected tag mutation and fixed existing account-link identity. Actual browser visual and real-account acceptance remain pending.
+
+Live verification: all five portal tables have RLS. Three area definitions seeded; account links, tag rules, resources, portal audits, organization contacts and staff grants remain zero. Profiles, course enrollments and lesson progress remain one each. Anonymous resource reads and account-link RPC execution, direct authenticated account-link insertion and rule updates are denied. No real participant access or messages were created.
+
+Security advisor findings unchanged: intentional RPC-only staff-directory INFO and known leaked-password protection WARN. References: https://supabase.com/docs/guides/database/database-linter?lint=0008_rls_enabled_no_policy and https://supabase.com/docs/guides/auth/password-security#password-strength-and-leaked-password-protection . No new security findings.
+
+Main remains `66591f22d5315d093091b99152c18d43bfcb3893`. Existing giving links remain unchanged. Broader partnership benefits, media/files, events, messaging and self-service identity claims are future work. See PARTNER-AND-CHURCH-PORTALS.md for access semantics and acceptance steps.
