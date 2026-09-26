@@ -1,0 +1,36 @@
+# Current build state
+
+Verified September 26, 2026. This file summarizes current state; dated sections in docs/ are historical and may describe later-resolved gaps.
+
+## Targets and hold
+
+- Repository: eaglevisiondigital/championlife; development: champion-sowgo-backend-v1.
+- Hardening starting HEAD: 63a775fb66e9c721691eace0121e81ce5572f385 (26 ahead / 0 behind main).
+- Production main: 66591f22d5315d093091b99152c18d43bfcb3893; unchanged by hardening.
+- Supabase: Champion Life Platform, exdocjbmylgxssanymjk, ACTIVE_HEALTHY, PostgreSQL 17.6.1.166, us-west-2.
+- Exact read-only counts reconfirmed: zero active staff permission grants; zero total portal account links.
+- Frontend development has not been approved for release. Current giving links/operations stay until explicit switch authorization, even after tests pass.
+
+## Implemented
+
+Email OTP auth, learner profiles, 13-lesson course/enrollment/progress framework, lessons 1–4 interactive worksheets, cloud answers/notes, account-isolated drafts and St. Lucia verified-email registration claiming. Cloud concurrency remains last-write-wins across devices.
+
+Organization-scoped people/affiliations, explicit staff permissions, focused staff workspace, contact creation/edit/history, follow-up tasks/history, households, departments/tags, held tag workflow notifications, draft fund/form routing and participant portal access/resources. Staff access management already exists; initial administrator provisioning is separate and remains unperformed. Portal resource publishing review, search, links, histories and independent draft copies exist on development.
+
+Detailed contracts: docs/BACKEND-FOUNDATION-STATUS.md, STAFF-ACCESS-OPERATIONS.md, TAG-WORKFLOW-OPERATIONS.md, GIVING-ROUTING-AND-ROLLOUT.md and PARTNER-AND-CHURCH-PORTALS.md.
+
+## Reproducibility and validation
+
+All 17 applied migrations now exist under their original versions/names. Seven historical files were recovered from read-only history; the ten existing files were unchanged. Full local replay verifies 32 public RLS tables, 60 policies and 35 function definitions, plus key access restrictions. No migration was applied remotely.
+
+`npm test --prefix tools/backend-tests` runs the prior 22 scripts plus full-chain and syntax checks. Eight existing database suites report 254 checks; redirects report 16 cases. DOM/persistence checks also run. Counts from individual log lines are not a universal assertion total. See the hardening report/release log for the final run result. CI has the same credential-free command; a local pass is not a hosted CI run.
+
+Unverified: real email sign-in/SMTP/callbacks, designated staff accounts, browser/mobile acceptance, deployed revision, Data API private-schema exclusion, backup restoration and rollback exercise. PGlite is not a complete Supabase stack.
+
+## Pending scope and next package
+
+Ledger/payments/manual gifts/receipts/statements/DAF/Kingdom Raise, general forms, events/calendar, Family Hub, serving/check-in/groups, full partner benefits and actual notifications are unfinished. Event requirements include card listings, alternate calendars, ministry filters, embeds and recurrence; no event module was built here.
+
+Security/release findings and the exact dependency pin candidate are in SECURITY_MODEL.md. No cross-product Global Propel runtime decision is implemented.
+
+Next recommendation: review this hardening package in Champion Life Chat, then assign isolated preview and configuration/browser acceptance. Do not start that package until the report is reviewed. No admins, payments or production rollout are authorized by this hardening assignment.

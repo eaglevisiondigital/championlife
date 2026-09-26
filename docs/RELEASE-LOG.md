@@ -168,3 +168,15 @@ Saved only to champion-sowgo-backend-v1. Existing giving links remain untouched.
 Continued from cfa11552c8e87a86ae5f15c13db7ed308381a4f9. Added Copy as draft to resource cards, fresh source reads, editable copied content and a destination-area selector restricted to the current organization. Saves insert a new draft under the existing server guard and show the destination list. Source identity, revision and publication status are not copied; originals remain unchanged.
 
 Expanded portal DOM suite and JavaScript syntax checks pass. Tests cover invalid destinations, independent insertion, no source update, omission of source identifiers/publication status, destination navigation, canceled copies and editor cleanup, alongside existing publishing/access/history checks. No schema or real records changed. Real-account/browser acceptance remains pending. Saved only to champion-sowgo-backend-v1; giving links remain untouched.
+
+## Repository hardening, September 26, 2026 — local only
+
+Started from 63a775fb66e9c721691eace0121e81ce5572f385 on champion-sowgo-backend-v1 in a real Git checkout. Reconfirmed main at 66591f22d5315d093091b99152c18d43bfcb3893 and protected=false; governance was not changed.
+
+Recovered seven historical migrations under original identities after re-reading all 17 remote history entries. Ten existing migrations are unchanged. Added credential-free full-chain PGlite reconstruction, immutable migration hashes, table/RLS/policy/function comparisons and RPC/directory checks. Added syntax validation, read-only CI configuration and technical continuity documents. No audit transcripts/customer data were copied into the repository.
+
+Validation passed: npm ci --ignore-scripts with existing lockfile (zero reported vulnerabilities); full npm test (24 scripts including the prior 22); eight existing database suites totaling 254 checks; 16 redirect cases; notes/persistence/DOM checks; 17-migration reconstruction with 32 RLS tables, 60 policies, 35 functions; syntax on 16 application JS files. Two deliberate temporary negative fixtures confirmed hash/inventory failures, then were removed/restored. Hosted CI has not run.
+
+Private Data API schema exclusion remains UNVERIFIED. Browser Supabase remains @2; exact candidate 2.117.2 and real-library/browser acceptance plan are documented. Index review does not justify immediate schema changes. main protection and live Auth/SMTP/browser/backup acceptance remain release gates.
+
+No new unapplied migration, production history repair, schema/data/config change, admin provisioning, payment/event feature, application runtime edit or deployment. Current giving links remain unchanged. This package stops for Champion Life Chat review before further implementation.

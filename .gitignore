@@ -1,0 +1,9 @@
+**/node_modules/
+.DS_Store
+.env
+.env.*
+!.env.example
+supabase/.temp/
+audit/
+playwright-report/
+test-results/
