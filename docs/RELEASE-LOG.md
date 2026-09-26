@@ -87,3 +87,17 @@ Post-deployment: all four new tables have RLS. Anonymous tag reads, authenticate
 Security advisor results unchanged: intentional RPC-only staff directory INFO and previously known leaked-password protection WARN. Remediation references: https://supabase.com/docs/guides/database/database-linter?lint=0008_rls_enabled_no_policy and https://supabase.com/docs/guides/auth/password-security#password-strength-and-leaked-password-protection . No new security findings from this migration.
 
 Tag events are a foundation only. Automatic tasks/email, routing exceptions and workflow activation are not implemented. Do not replay historical assignment events automatically when a worker is added. Guest giving and statement modules remain pending the giving ledger and identity-claim work.
+
+## Reviewed tag workflows, September 26 UTC / September 25 Chicago
+
+Source saved before deployment in commit `64ec801999e198490249ebda31a84aaaa72e712d` on `champion-sowgo-backend-v1`. Applied `tag_workflows` to the original project `exdocjbmylgxssanymjk`; remote migration version `20260926034222`. Renamed the migration source to match after application.
+
+Completed per-tag administrator activation, rule snapshots and timezone due dates, automatic task creation, repeat-assignment controls, held email requests, retry/dismiss/cancel operations, workflow action history, task navigation and the protected Workflows screen. Existing manual task permissions remain intact. Only matching server-created in-transaction runs authorize the automated task insertion path. Task status/assignee changes cancel stale held notifications.
+
+Full suite passed, including 50 new workflow database checks and synthetic workflow UI checks. Failure injection confirmed that a notification-storage error rolls back task and task audit before leaving a needs-review run; retry creates one complete task/notification pair. Tests also cover removed/superseded assignments, revoked leaders, replacement leaders, duplicate suppression, stale revisions, no historical backfill, cross-organization denial, activation authority and manual-task compatibility.
+
+Post-deployment verified RLS on all three workflow tables. Anonymous reads/configuration, direct authenticated run/notification writes and authenticated access to the private executor are denied. Profiles, course enrollments and lesson progress remain one each; organization contacts, staff grants, tasks, runs, held notifications and enabled rules remain zero. No actual leader/recipient has been provisioned, no message was sent, and no sender, worker or schedule is enabled.
+
+Security advisor findings unchanged: intentional RPC-only staff-directory INFO and known disabled leaked-password protection WARN. References: https://supabase.com/docs/guides/database/database-linter?lint=0008_rls_enabled_no_policy and https://supabase.com/docs/guides/auth/password-security#password-strength-and-leaked-password-protection . No new security findings.
+
+Main remains `66591f22d5315d093091b99152c18d43bfcb3893`. Frontend publication, actual browser visual acceptance, real-account acceptance and email delivery testing are still pending. See TAG-WORKFLOW-OPERATIONS.md for activation, recovery semantics and the remaining delivery work.
