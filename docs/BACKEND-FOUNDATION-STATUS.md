@@ -1,5 +1,9 @@
 # Champion Life / SowGo backend foundation
 
+## Latest approved requirement: guest identity and department workflows
+
+See [GUEST-IDENTITY-AND-TAG-FOLLOWUP.md](GUEST-IDENTITY-AND-TAG-FOLLOWUP.md) for the September 25 guest-giving, verified history connection, overlapping donor/member/partner/Dream Team relationships, and tag-triggered department task/email requirements. This is the implementation contract for the next connected modules. Guest identity linking, tags, giving and notification automation are specified but not yet deployed.
+
 ## Active target
 
 - Existing production Supabase: `exdocjbmylgxssanymjk`.
