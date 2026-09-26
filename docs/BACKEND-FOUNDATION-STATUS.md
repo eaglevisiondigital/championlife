@@ -98,3 +98,11 @@ People now supports Add person for `people.create` plus `people.read`. New conta
 The follow-up editor fetches eligible staff from the selected organization's directory. Existing inactive assignments can be cleared without conferring access. Browser dialogs ignore late responses after cancel, organization change or account change; duplicate in-flight submits are disabled. No invitations, email/SMS, contact imports or host-church workflow automation are sent/started.
 
 Validation includes 30 new PostgreSQL access/contact checks and an integrated synthetic UI flow covering delegation, contact creation, team assignment, revocation, revision and account clearing. Existing tests remain release gates. Named initial administrators, actual email login and desktop/mobile visual acceptance are still pending. No real access is assigned by the migration.
+
+## Person record and daily overview
+
+Click a person's name to open a focused record dialog. Contact details are reloaded from the server; tabs provide the last 30 contact audit events and paginated person-specific follow-up. Each query includes organization and person filters, and existing RLS is retained. History deliberately excludes staff-access events. Values render as text, including before/after contact changes. Permissioned edit/create/update actions reuse the established forms, and a saved change refreshes the open person record. Record dialogs and pending responses are cleared on organization/account change.
+
+The Overview now requests exact permitted people counts, the current user's open/overdue task counts, and up to five assigned open tasks ordered by due date. It does not invent counts when a query fails. Overdue uses the device's local calendar date, shown alongside the result. Updating a task from Overview refreshes that view. No new tables, grants, production migrations, messages or deployments are required by this slice.
+
+New synthetic DOM tests cover record/history/task scope, safe text rendering, callbacks, denied task access, late response isolation, count queries and account clearing. Existing database and UI suites remain in place. These tests do not replace real email sign-in or desktop/mobile browser acceptance.

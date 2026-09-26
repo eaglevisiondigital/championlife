@@ -57,3 +57,9 @@ Pre/post counts match: profiles 1, enrollments 1, lesson progress 1, answers 0, 
 Advisors: existing leaked-password-protection warning remains (https://supabase.com/docs/guides/auth/password-security#password-strength-and-leaked-password-protection). New INFO `rls_enabled_no_policy` for `organization_staff_directory` is intentional: RLS denies all direct access, authenticated table grants are revoked, and scoped private functions return only authorized directory fields. Do not add a permissive policy to silence this notice. Explanation: https://supabase.com/docs/guides/database/database-linter?lint=0008_rls_enabled_no_policy
 
 Initial administrators must be explicitly designated and provisioned through the trusted workflow in STAFF-ACCESS-OPERATIONS.md. No invitation emails, messages, real contact imports or consent changes were performed.
+
+## September 25, 2026: person record and daily overview
+
+Development-only UI expansion: individual contact/history/follow-up dialog and live, permissioned daily overview counts with five assigned tasks. Existing database schema and permissions are reused. No live records or Supabase settings were changed. Source is saved to champion-sowgo-backend-v1; main remains the production baseline.
+
+Validation includes the person/overview DOM suite for organization/person filters, own-assignment count filters, safe text rendering and canceled late responses. Browser visual acceptance and designated real staff accounts remain pending.

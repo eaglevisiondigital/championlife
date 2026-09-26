@@ -4,7 +4,7 @@
   const status = $('status'), select = $('organization'), body = $('people');
   let user, permissions = [], rows = [], page = 0, request = 0, editing = null, invalid = false;
   const size = 25;
-  let staffAdmin = null, personEditToken = 0;
+  let overview = null, personDetail = null, staffAdmin = null, personEditToken = 0;
   let taskPage = 0, taskRequest = 0, taskEditing = null, taskEditToken = 0, historyRequest = 0;
   let currentView = 'overview', searchText = '', searchField = 'last_name';
   const views = {
@@ -37,6 +37,7 @@
   function showView(view, focus = true) {
     if (!views[view]) return;
     currentView = view;
+    if(view!=='overview')overview?.clear();
     taskRequest++; $('task-list').replaceChildren();
     for (const name of Object.keys(views)) $('view-' + name).hidden = name !== view;
     document.querySelectorAll('.sidebar [data-view]').forEach(button => {
@@ -46,7 +47,8 @@
     $('view-title').textContent = views[view][0]; $('view-description').textContent = views[view][1];
     $('refresh').hidden = view !== 'people';
     if (focus) $('view-title').focus();
-    if (!invalid && permissions.length && view === 'people') loadPeople();
+    if (!invalid && permissions.length && view === 'overview') {request++;overview?.load();}
+    else if (!invalid && permissions.length && view === 'people') loadPeople();
     else if (!invalid && permissions.length && view === 'staff') { request++; staffAdmin?.load(); }
     else if (!invalid && permissions.length && view === 'followup') { request++; loadTasks(); }
     else if (permissions.length && !invalid) { request++; status.textContent = 'Workspace ready.'; }
@@ -62,7 +64,7 @@
     return permissions.some(p => p.organization_id === org && p.permission === permission);
   }
   function clearPrivateView() {
-    invalid = true; personEditToken++; staffAdmin?.clear(); clearTasks(); request++; rows = []; permissions = []; editing = null;
+    invalid = true; overview?.clear(); personDetail?.clear(); personEditToken++; staffAdmin?.clear(); clearTasks(); request++; rows = []; permissions = []; editing = null;
     body.replaceChildren(); select.replaceChildren(); $('workspace').hidden = true;
     $('editor').close(); $('person-form').reset(); $('access-summary').textContent = ''; $('workspace-name').textContent = 'Ministry workspace';
     status.textContent = 'Your account changed. Reload this page to continue.';
@@ -92,14 +94,16 @@
       for (const value of [(person.first_name + ' ' + person.last_name).trim(), person.email || 'Not provided', person.phone || 'Not provided']) {
         const td = document.createElement('td'); td.textContent = value; tr.append(td);
       }
+      const nameCell=tr.firstElementChild, link=document.createElement('a');
+      link.href='#person';link.textContent=nameCell.textContent;
+      link.addEventListener('click',event=>{event.preventDefault();personDetail?.open(person);});
+      nameCell.replaceChildren(link);
       const action = document.createElement('td');
       if (can('people.update')) {
         const button = document.createElement('button'); button.textContent = 'Edit';
         button.setAttribute('aria-label', 'Edit ' + person.first_name + ' ' + person.last_name);
         button.addEventListener('click', () => {
-          personEditToken++; $('save').disabled=false; editing = {...person}; $('person-editor-title').textContent = 'Edit contact details';
-          for (const name of ['first_name','last_name','email','phone']) $('person-form').elements.namedItem(name).value = person[name] || '';
-          $('edit-status').textContent = ''; $('editor').showModal();
+          editPerson(person);
         }); action.append(button);
       } else action.textContent = 'View only';
       if (can('followup.read') && can('followup.manage')) {
@@ -109,6 +113,12 @@
       }
       tr.append(action); body.append(tr);
     }
+  }
+  function editPerson(person) {
+    if(invalid || !can('people.update',person.organization_id))return;
+    personEditToken++;$('save').disabled=false;editing={...person};$('person-editor-title').textContent='Edit contact details';
+    for(const name of ['first_name','last_name','email','phone'])$('person-form').elements.namedItem(name).value=person[name]||'';
+    $('edit-status').textContent='';$('editor').showModal();
   }
   $('person-form').addEventListener('submit', async event => {
     event.preventDefault();
@@ -127,6 +137,7 @@
       if (invalid || editToken !== personEditToken) return;
       if (error || !data) { $('edit-status').textContent = 'Changes were not saved. Access may have changed or another person updated this record. Close and refresh before retrying.'; return; }
       $('editor').close(); editing = null; await loadPeople();
+      if(!invalid && editToken===personEditToken && personDetail?.isOpen()) personDetail.refresh();
       if (!invalid && editToken === personEditToken) status.textContent = person.id ? 'Contact details saved.' : 'Person added to this organization.';
     } catch (_) { if (!invalid && editToken === personEditToken) $('edit-status').textContent = 'Changes were not saved. Please try again.'; }
     finally { if (editToken === personEditToken) $('save').disabled = false; }
@@ -140,7 +151,7 @@
   $('cancel').addEventListener('click', () => { personEditToken++; $('editor').close(); editing = null; });
   $('editor').addEventListener('cancel', () => {personEditToken++;editing=null;});
   select.addEventListener('change', () => {
-    personEditToken++; staffAdmin?.clear(); clearTasks(); taskPage = 0; request++; page = 0; rows = []; body.replaceChildren(); editing = null;
+    overview?.clear(); personDetail?.clear(); personEditToken++; staffAdmin?.clear(); clearTasks(); taskPage = 0; request++; page = 0; rows = []; body.replaceChildren(); editing = null;
     $('editor').close(); $('person-form').reset(); searchText = ''; $('search-query').value = '';
     updateOrganization(); showView(currentView, false);
   });
@@ -273,7 +284,8 @@
       const {data,error}=await query.select('id').maybeSingle();
       if (invalid || token!==taskEditToken) return;
       if (error || !data) { $('task-save-status').textContent='Task was not saved. Access may have changed or someone updated it. Close and refresh before retrying.'; return; }
-      $('task-editor').close(); taskEditing=null; taskPage=0; showView('followup');
+      $('task-editor').close(); taskEditing=null; taskPage=0;
+      if(personDetail?.isOpen())personDetail.refresh();else if(currentView==='overview')overview?.load();else showView('followup');
     } catch (_) { if (!invalid && token===taskEditToken) $('task-save-status').textContent='Task was not saved. Check your connection and try again.'; }
     finally { if(token===taskEditToken) $('task-save').disabled=false; }
   });
@@ -286,6 +298,8 @@
   $('task-previous').addEventListener('click',()=>{if(taskPage>0)taskPage--;loadTasks();});
   $('task-next').addEventListener('click',()=>{taskPage++;loadTasks();});
 
+  overview=window.ChampionStaffOverview?.({auth,getContext:()=>({user,organizationId:select.value,can,invalid}),onTask:task=>openTask(task)});
+  personDetail=window.ChampionPersonDetail?.({auth,getContext:()=>({user,organizationId:select.value,can,invalid}),onEdit:editPerson,onFollowup:person=>openTask(null,person),onUpdateTask:task=>openTask(task)});
   staffAdmin = window.ChampionStaffAdmin?.({auth,onAccountChange:clearPrivateView,getContext:()=>({user,organizationId:select.value,can,invalid})});
   start();
 })();
