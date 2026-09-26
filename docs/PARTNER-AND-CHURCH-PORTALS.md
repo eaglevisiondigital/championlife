@@ -68,3 +68,12 @@ Pending list, detail and clipboard UI results are invalidated on relevant naviga
 Acceptance: test a copied link while signed out, verify sign-in returns to the resource, then repeat with an ineligible account and after revocation. Check clipboard fallback, search pagination, area switching, keyboard dialog use and mobile presentation. Synthetic tests cover these state transitions; actual browser/account acceptance remains pending.
 
 Dave reconfirmed that existing giving links must remain in place through testing. Switching checkout remains a final, separately approved release step.
+
+
+## Staff publishing review
+
+Staff resource lists now support title search and draft/published/archived filters within the selected organization and area. Changing area or management mode clears those filters. Access-tag lists remain separate.
+
+Resource editors include a plain-text preview of the current form values. Preview does not save or publish. Text changes clear the preview and publication confirmation, so staff can review the latest content. Saving a new publication or editing an already published resource requires an explicit review checkbox in the UI. This is an editorial safeguard, not an additional database authorization rule: existing portal permissions and server revision checks continue to govern writes.
+
+Saving, canceling, account clearing and detected loss of portal authority clear editor/preview text. Pending editor responses cannot restore content after authority loss. Browser and real-account acceptance should include mobile preview, keyboard controls, filtered resource navigation and publication review. No actual resource has been published by this development work.

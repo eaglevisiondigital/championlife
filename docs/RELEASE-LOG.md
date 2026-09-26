@@ -137,3 +137,12 @@ Continued on champion-sowgo-backend-v1 from portal release ccf0153df1284d7fb7cf6
 Full npm regression suite passed, including the existing 32 portal database checks, expanded 16 redirect cases and new discovery DOM coverage for scoped search, paging, deep links, unavailable access, clipboard fallback, late list/detail responses and failed sign-out clearing. These are synthetic tests; real-account and browser visual acceptance remain pending.
 
 No database migration or live records were changed. Main verified unchanged at 66591f22d5315d093091b99152c18d43bfcb3893. Current giving links remain in place until final testing and explicit switch approval. Screens remain on development.
+
+
+## Staff resource publishing review, September 26, 2026
+
+Continued from development commit c59e7e3f64517b0304f89d1011de761cc837dd06. Recovered source from GitHub after local workspace maintenance. Added organization/area-scoped resource title and publication-status filters, a safe current-text preview, and explicit UI review confirmation for new publication and changes to published resources. Text edits invalidate preview and confirmation. Editor close/save and detected authority loss clear private text and invalidate pending editor responses.
+
+Expanded participant/staff portal DOM suite passes, including preview escaping, published-save review, filter scope/reset, editor cleanup, revision conflicts and delayed resource responses after permission loss. JavaScript syntax check passes. No schema changes; database tests were not rerun for this UI-only phase. Browser visual and real-account acceptance remain pending.
+
+All changes saved only to champion-sowgo-backend-v1. No public checkout/giving links, real staff grants, partner/member links or live content were changed. Existing giving links remain until final testing and explicit switch approval.
