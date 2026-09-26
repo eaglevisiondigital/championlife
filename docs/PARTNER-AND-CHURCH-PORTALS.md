@@ -77,3 +77,11 @@ Staff resource lists now support title search and draft/published/archived filte
 Resource editors include a plain-text preview of the current form values. Preview does not save or publish. Text changes clear the preview and publication confirmation, so staff can review the latest content. Saving a new publication or editing an already published resource requires an explicit review checkbox in the UI. This is an editorial safeguard, not an additional database authorization rule: existing portal permissions and server revision checks continue to govern writes.
 
 Saving, canceling, account clearing and detected loss of portal authority clear editor/preview text. Pending editor responses cannot restore content after authority loss. Browser and real-account acceptance should include mobile preview, keyboard controls, filtered resource navigation and publication review. No actual resource has been published by this development work.
+
+## Resource activity history
+
+Each staff resource card has an Activity action. Authorized portal staff can review the existing resource audit records, newest first, in pages of 20. The view shows creation, publication-status transitions, current and previous titles when changed, recorded revisions, device-local timestamps and the responsible staff account identifier (or “you”). It does not resolve account identifiers to names, email addresses or contact records.
+
+Queries require the current organization, resource subject and resource event kind. Existing portal-staff RLS remains authoritative. The dialog clears on close, account/organization clearing and detected loss of portal authority; late responses cannot repopulate a closed or invalidated history view. Refresh starts again from the newest page and failures expose a retry action.
+
+This is an audit timeline, not full content versioning or rollback. Previous resource bodies were not stored by the existing resource audit and cannot be restored through this view. No schema or audit-retention changes were introduced.

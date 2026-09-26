@@ -146,3 +146,11 @@ Continued from development commit c59e7e3f64517b0304f89d1011de761cc837dd06. Reco
 Expanded participant/staff portal DOM suite passes, including preview escaping, published-save review, filter scope/reset, editor cleanup, revision conflicts and delayed resource responses after permission loss. JavaScript syntax check passes. No schema changes; database tests were not rerun for this UI-only phase. Browser visual and real-account acceptance remain pending.
 
 All changes saved only to champion-sowgo-backend-v1. No public checkout/giving links, real staff grants, partner/member links or live content were changed. Existing giving links remain until final testing and explicit switch approval.
+
+## Staff resource activity history, September 26, 2026
+
+Continued from 216f61c36289367edd4c04f762b51acfdf0154bf. Added a resource-specific Activity dialog using existing portal_admin_events records, with fixed organization/kind/subject filters, bounded pagination, creation/status/title/revision display, staff account attribution and local timestamps. Added close/authority cleanup, stale-response rejection and error recovery. No full body history or rollback is implied.
+
+JavaScript syntax and expanded participant/staff portal DOM tests passed. Coverage includes audit query scoping, 20-row pagination, escaped titles, failure/refresh recovery, late responses after closing and permission-loss clearing, plus existing resource publishing, account-link and access-rule flows. No schema changes or real audit records were created. Database suite was not rerun for this read-only UI phase. Browser and real-account acceptance remain pending.
+
+Saved to champion-sowgo-backend-v1 only. Existing giving links remain untouched until final testing and explicit switch approval.
