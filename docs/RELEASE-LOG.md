@@ -101,3 +101,17 @@ Post-deployment verified RLS on all three workflow tables. Anonymous reads/confi
 Security advisor findings unchanged: intentional RPC-only staff-directory INFO and known disabled leaked-password protection WARN. References: https://supabase.com/docs/guides/database/database-linter?lint=0008_rls_enabled_no_policy and https://supabase.com/docs/guides/auth/password-security#password-strength-and-leaked-password-protection . No new security findings.
 
 Main remains `66591f22d5315d093091b99152c18d43bfcb3893`. Frontend publication, actual browser visual acceptance, real-account acceptance and email delivery testing are still pending. See TAG-WORKFLOW-OPERATIONS.md for activation, recovery semantics and the remaining delivery work.
+
+## Draft giving destination configuration, September 26 UTC / September 25 Chicago
+
+Dave confirmed separate Authorize.Net/gateway merchant destinations: outreach to SowGo checkout and SowGo merchant account; church giving to Champion Life online checkout and Champion Life Church merchant account. Existing giving links remain untouched until tested replacement checkout receives explicit approval.
+
+Source saved before deployment in commit `87546ff42abbf4f0e674b4c870956f44c363a541` on `champion-sowgo-backend-v1`. Applied `giving_configuration` to `exdocjbmylgxssanymjk`; remote version `20260926035410`. Source filename aligned afterward.
+
+Added two non-secret draft destination plans plus protected fund/form-route setup and finance configuration audits. Added finance.configure permission dependent on finance.read; actual configuration also requires verified staff.manage authority. The staff Giving setup screen supports scoped configuration, routing preview, search, revisions and archival. Composite keys reject cross-organization/cross-destination fund routing. No public giving page/link/checkout URL was edited, and no payment endpoint, credentials, webhook or merchant integration was introduced.
+
+Full regression suite passed, including 33 new database checks and synthetic fund/route/preview UI checks. Live verification confirms four new tables have RLS; anonymous destination reads, authenticated destination updates and audit inserts are denied. Two destination rows are draft plans only. Funds, routes, finance audit events and staff grants remain zero. Profiles, course enrollments and lesson progress remain one each.
+
+Security advisor findings unchanged: intentional RPC-only staff-directory INFO and known leaked-password protection WARN. References: https://supabase.com/docs/guides/database/database-linter?lint=0008_rls_enabled_no_policy and https://supabase.com/docs/guides/auth/password-security#password-strength-and-leaked-password-protection . No new security findings.
+
+Main remains `66591f22d5315d093091b99152c18d43bfcb3893`; staff UI remains on the development branch. Payment integration, merchant association verification, real-account/browser acceptance and explicit go-live approval remain required. See GIVING-ROUTING-AND-ROLLOUT.md.
