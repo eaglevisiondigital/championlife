@@ -57,6 +57,10 @@ An unmapped tag or missing/ineligible leader must produce a visible routing exce
 8. Missing/revoked leaders, delivery failures, removed/re-added tags and bulk imports have visible, testable outcomes.
 9. A department leader sees only authorized contact/task information; unrelated financial and restricted records remain inaccessible.
 
+## Giving access confirmation
+
+Dave confirmed on September 25 that staff may view giving only through explicit permissions granted by an administrator. Department leadership and all tags/relationships are insufficient. Keep financial details out of general contact/tag audits and notifications; enforce finance authority on future ledger, reporting, export and statement endpoints. Donor self-service remains limited to their own verified records.
+
 ## Build order and open configuration
 
 Implement the organization contact identity/claim model and tag/department configuration, then durable workflow actions integrated with follow-up tasks. Build giving claims and statements on the approved ledger and selected payment provider. Add actual email delivery after notification configuration and recipient review.

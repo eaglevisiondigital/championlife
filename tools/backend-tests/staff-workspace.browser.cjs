@@ -34,7 +34,7 @@ const root=path.resolve(__dirname,'../..');
  assert.equal(await page.getByRole('button',{name:'Edit Sam Example',exact:true}).count(),0);
  assert.equal(await page.getByText('Jane Example',{exact:true}).count(),0);
  await page.locator('.sidebar [data-view="modules"]').click();
- assert.equal(await page.locator('.module-card').count(),11);
+ assert.equal(await page.locator('.module-card').count(),12);
  await page.locator('.sidebar [data-view="overview"]').click();
  await page.screenshot({path:'/tmp/champion-staff-desktop.png'});
  await page.setViewportSize({width:390,height:844});

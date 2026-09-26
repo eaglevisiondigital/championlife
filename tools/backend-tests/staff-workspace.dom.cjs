@@ -18,7 +18,7 @@ const click=selector=>d.querySelector(selector).click();
  click('#people button');assert.equal(d.getElementById('editor').open,true);click('#cancel');
  const org=d.getElementById('organization');org.value='outreach';org.dispatchEvent(new w.Event('change'));await wait();
  assert.match(d.getElementById('people').textContent,/Sam Example/);assert.doesNotMatch(d.getElementById('people').textContent,/Jane Example/);assert.equal(d.querySelectorAll('#people button').length,0);
- click('.sidebar [data-view="modules"]');assert.equal(d.querySelectorAll('.module-card').length,11);assert.equal(d.getElementById('view-people').hidden,true);
+ click('.sidebar [data-view="modules"]');assert.equal(d.querySelectorAll('.module-card').length,12);assert.equal(d.getElementById('view-people').hidden,true);
  assert.match(d.getElementById('module-grid').textContent,/Powered by Lockliel/);
  w.changeAccount('SIGNED_OUT',null);assert.equal(d.getElementById('workspace').hidden,true);assert.equal(d.getElementById('people').textContent,'');
  console.log('PASS simulated DOM: view switching, literal search, editor opening, organization isolation in UI, read-only controls, module labels, account-change clearing');

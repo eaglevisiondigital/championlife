@@ -34,3 +34,11 @@ Migrations in this repository are incremental; the original remote migration bas
 Grant households.read together with people.read for household viewing. Add households.manage for creation, renaming, membership edits and archival. Administrators may delegate these permissions only when they hold them. People access by itself does not expose household relationships or their audit history.
 
 Use Households to create a named record and add existing contacts. Search by last name; up to 20 matches are shown. Removed members remain visible with Restore available. An archived household must be restored before membership changes. A relationship label is descriptive only and must never be treated as a verified guardian or authorized pickup record.
+
+## Tags, departments and giving access
+
+Use tags.read with people.read to view departments and tags; add tags.manage to edit configuration and person assignments. The leader picker also requires followup.read and lists eligible existing staff. Department leadership requires a verified account with people.read and followup.read, but does not grant those permissions. Provision them explicitly first. A department can remain unassigned while routing is being configured.
+
+On People, use Tags to add an active tag or remove/restore a prior assignment. Tags in an archived department cannot be newly assigned or restored. No notifications or automatic tasks are sent by this phase. Future follow-up instructions and due days are configuration only until a reviewed workflow engine is activated.
+
+Giving data is restricted to staff with explicit organization finance.read access granted by an authorized administrator. staff.manage does not itself confer financial visibility, and an administrator cannot delegate finance.read unless they hold it. Tags, donor/member/partner/Dream Team relationships and department leadership do not grant finance access. Future giving totals, exports, statements, search results and notifications must enforce this boundary server-side. Donors' access to their own verified giving history is separate from staff authority.
