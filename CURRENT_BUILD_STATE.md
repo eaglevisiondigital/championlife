@@ -1,5 +1,15 @@
 # Current build state
 
+## Preview readiness — September 26, 2026
+
+The authorized follow-up adds a 372-file explicit public artifact, excludes administrative/development files, and generates isolated preview Supabase configuration with a visible no-client state when absent or invalid. Production/local defaults and callback UX remain unchanged. All 24 existing scripts passed; the new site-build suite covers deployment isolation and artifact safety. Hosted CI and draft PR results are reported separately after push. See docs/PREVIEW-ACCEPTANCE.md for exact variable names and gated Work assignment. No backend provisioning, production release or giving changes are authorized here.
+
+## Publish update — September 26, 2026
+
+Reviewed hardening commit 3fd026acd27940e9b5e9c2d09e136a27bd55200a is now pushed to champion-sowgo-backend-v1; remote HEAD matches exactly. Main remains 66591f22d5315d093091b99152c18d43bfcb3893. Hosted [Backend validation / synthetic-regression](https://github.com/eaglevisiondigital/championlife/actions/runs/36276319163) passed all 24 scripts; no steps skipped.
+
+Live Netlify settings verified: production main, branch deploys disabled, PR previews enabled, no project environment variables or build hooks listed, publish root with no build command. After push, production still shows the September 24 main deployment. No preview exists for this commit; enabling a preview remains a separate approval/configuration gate. Auth allowlist and Data API exposure remain unverified. Preview source would still use live Supabase, so test accounts/data authorization is required before acceptance. No production/backend/giving changes occurred. Next is gated Work acceptance, not feature implementation. That result refers to the earlier reviewed commit; the accurate continuity notes are incorporated in the preview-readiness package.
+
 Verified September 26, 2026. This file summarizes current state; dated sections in docs/ are historical and may describe later-resolved gaps.
 
 ## Targets and hold
@@ -33,4 +43,4 @@ Ledger/payments/manual gifts/receipts/statements/DAF/Kingdom Raise, general form
 
 Security/release findings and the exact dependency pin candidate are in SECURITY_MODEL.md. No cross-product Global Propel runtime decision is implemented.
 
-Next recommendation: review this hardening package in Champion Life Chat, then assign isolated preview and configuration/browser acceptance. Do not start that package until the report is reviewed. No admins, payments or production rollout are authorized by this hardening assignment.
+Next recommendation: Work isolated preview/backend configuration and browser acceptance after the preview-readiness package; no new feature build. No admins, payments or production rollout are authorized by this hardening assignment.

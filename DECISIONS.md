@@ -1,5 +1,7 @@
 # Durable decisions
 
+- September 26 resume authorization completed the exact reviewed development push and hosted CI. No preview configuration or PR publication was performed: branch deploys are disabled and previews are public. Next gate is Work preview/configuration and authorized-account browser acceptance, not a new feature package. Main and production remain held.
+
 - main is production-controlled. Development occurs on champion-sowgo-backend-v1; passing tests is not release permission.
 - Extend working course/outreach/auth/staff/portal systems instead of recreating them.
 - Champion Life is the church-facing brand; SowGo is its outreach arm. Preserve separate organization and financial boundaries. One participant may qualify for both portals without broader staff access.
@@ -10,3 +12,5 @@
 - Browser Supabase pinning is deferred to actual-library/browser acceptance; exact candidate 2.117.2 and test plan are in SECURITY_MODEL.md.
 - Events/calendar, payments, administrators, new auth architecture, shared payment engine and app integrations are outside this hardening package. Documented future scope is not permission to activate it.
 - Review the hardening report in Champion Life Chat before starting the next package.
+
+- The subsequent explicit preview-readiness assignment authorizes safe artifact/config changes, development push and a draft development-to-main PR solely for Netlify acceptance preview generation. Missing backend config must block preview access. No merge, production release, production Auth change or backend provisioning is implied.

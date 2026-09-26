@@ -1,5 +1,7 @@
 # Security model and release gates
 
+September 26 publish follow-up: hosted synthetic-regression passed on 3fd026acd27940e9b5e9c2d09e136a27bd55200a. Auth URL allowlist and private Data API exclusion remain unverified. Netlify previews are public; branch deploys currently disabled. Frontend preview hosting would not isolate the configured live Supabase backend. Approve test accounts/data scope before login or mutation acceptance. Root publishing requires artifact review before preview exposure. Existing Dream Track functions contain a fallback access code; review that protection without changing production in this package. No Netlify/Auth/grant/schema settings were changed.
+
 Updated September 26, 2026. Scoped engineering findings, not a security certification.
 
 ## Enforced application boundaries
@@ -30,3 +32,7 @@ Nine HTML entry points use https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.
 Pin plan: in a separate authorized development package, pin all nine references consistently, verify the downloaded UMD bundle/version and createClient API, run this regression suite, then test email OTP, callback/session restoration, sign-out, claim/progress/notes, RPC/RLS failures and both portals with approved test identities on an isolated preview. Record bundle integrity if adopting SRI. Merge only after browser acceptance; preserve giving links. No unrelated dependency upgrade is needed.
 
 Test packages remain pinned to PGlite 0.5.8 and jsdom 26.1.0 with their existing lockfile. CI actions are pinned to immutable revisions. The latest official changelog was reviewed; current PostgreSQL minor-upgrade/extension advisories require a separate planned upgrade assessment, not a database upgrade in this assignment.
+
+## Preview-readiness follow-up
+
+The explicit public manifest and dist/ output now exclude source docs, migrations, tests, tooling and server source. Preview builds reject the production URL/key, require canonical non-production Supabase URLs and modern publishable keys, and visibly block the client otherwise. This prevents fallback; Work must still verify key/project identity and provision only approved isolated fixtures. Production Auth, data/schema and deployment settings remain unchanged. See docs/PREVIEW-ACCEPTANCE.md.

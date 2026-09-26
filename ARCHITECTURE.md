@@ -1,6 +1,6 @@
 # Implemented architecture
 
-Static HTML/CSS/JavaScript is served through GitHub/Netlify. netlify.toml publishes the repository root and configures existing Dream Track edge protection; existing Netlify helpers also support media. Browser clients use a publishable Supabase key and authenticated sessions. Never put privileged credentials in frontend code.
+Static HTML/CSS/JavaScript is served through GitHub/Netlify. netlify.toml builds an explicit public-file manifest into dist/ and configures existing Dream Track edge protection; existing Netlify helpers also support media. Browser clients use a publishable Supabase key and authenticated sessions. Never put privileged credentials in frontend code.
 
 Supabase owns Auth, PostgreSQL application records, RLS and RPCs. The audited project has 32 public tables, 60 policies and 35 public/private functions; no Edge Functions or storage buckets were present in the onboarding audit. This is not a claim that all platform configuration is validated.
 
@@ -23,3 +23,7 @@ Public application RPC wrappers are invokers. Privileged implementations and aut
 Broadly reusable church/ministry capabilities should be designed so Champion Life can consume Global Propel platform capabilities rather than permanently hardcoding Champion Life-specific logic when practical. This does not select a shared runtime or authorize migrating to the historical Global Propel .NET repository. Product data/IP, organization identity, merchant accounts and deployment boundaries remain separate until an explicit architecture decision defines integration contracts.
 
 Historical migration recovery and the synthetic platform prerequisites are documented in docs/MIGRATION-BASELINE.md. Module documents remain the detailed source of implementation contracts.
+
+## Preview environment separation
+
+See docs/PREVIEW-ACCEPTANCE.md. Production browser defaults remain unchanged. Deploy previews/branch deploys generate a separate public config from two preview-scoped variables; missing/invalid/production-target values produce a visible blocked state with no Supabase client. Only the static artifact is published; source docs, migrations, tests and server-function source are excluded. No preview backend is provisioned by the build.

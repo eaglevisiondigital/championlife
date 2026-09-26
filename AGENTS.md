@@ -10,6 +10,6 @@ Migrations live in supabase/migrations. All 17 historical files through 20260926
 
 Run `npm ci --ignore-scripts --prefix tools/backend-tests`, then `npm test --prefix tools/backend-tests`. This includes full migration replay, existing database/redirect/persistence/DOM checks and application JS syntax. Tests use synthetic local data and need no production credentials. Add meaningful tests for permission/migration changes; retain all existing checks. Browser/Auth/SMTP/real-account acceptance is a separate release gate.
 
-Never put credentials, raw audit evidence, private transcripts or customer records in this repository. Netlify publishes the repository root; documentation and test fixtures must be safe to disclose. Keep local environment files and node_modules ignored. Do not change deployment behavior as part of documentation work.
+Never put credentials, raw audit evidence, private transcripts or customer records in this repository. Netlify publishes the explicit dist/ artifact; maintain tools/site-build/public-files.json and never add private/admin files to it. Keep local environment files and node_modules ignored. Do not change deployment behavior as part of documentation work.
 
 After meaningful work, update current state and relevant contracts, record tests and unverified items, and provide the requested handoff report. Chat decides/coordinates; Work researches and validates external behavior; Codex implements/tests. Stop at an explicit review gate before starting the next package.

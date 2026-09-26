@@ -180,3 +180,9 @@ Validation passed: npm ci --ignore-scripts with existing lockfile (zero reported
 Private Data API schema exclusion remains UNVERIFIED. Browser Supabase remains @2; exact candidate 2.117.2 and real-library/browser acceptance plan are documented. Index review does not justify immediate schema changes. main protection and live Auth/SMTP/browser/backup acceptance remain release gates.
 
 No new unapplied migration, production history repair, schema/data/config change, admin provisioning, payment/event feature, application runtime edit or deployment. Current giving links remain unchanged. This package stops for Champion Life Chat review before further implementation.
+
+## September 26, 2026 — acceptance preview readiness (development only)
+
+Adds manifest-based dist/ publishing (372 public files), excludes administrative source artifacts, and generates isolated Supabase browser configuration for Netlify preview contexts. Absent/invalid/production-target config renders an error and initializes no client. Existing production/local defaults, callback logic and giving pages are preserved byte-for-byte. Includes prior accurate continuity updates and docs/PREVIEW-ACCEPTANCE.md.
+
+Validation: all 24 prior scripts plus the new site-build suite pass locally; production artifact equality, preview no-fallback/no-client behavior, callback origin, key/URL rejection and manifest/path safety tested. No production migration, staff grant, Auth configuration or live deployment performed. Draft PR/hosted CI/deployed preview details are recorded in the private completion handoff after publication; not release authorization.
