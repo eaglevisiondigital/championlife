@@ -154,3 +154,11 @@ Continued from 216f61c36289367edd4c04f762b51acfdf0154bf. Added a resource-specif
 JavaScript syntax and expanded participant/staff portal DOM tests passed. Coverage includes audit query scoping, 20-row pagination, escaped titles, failure/refresh recovery, late responses after closing and permission-loss clearing, plus existing resource publishing, account-link and access-rule flows. No schema changes or real audit records were created. Database suite was not rerun for this read-only UI phase. Browser and real-account acceptance remain pending.
 
 Saved to champion-sowgo-backend-v1 only. Existing giving links remain untouched until final testing and explicit switch approval.
+
+## Portal access configuration history, September 26, 2026
+
+Continued from 9cd2ab1d3686fe9b824ea4b263d8b9a061b309b0. Extended protected activity viewing to access-tag rules and reviewed account links, with status/revision transitions and staff attribution. Access-event queries use documented JSON-field projections instead of fetching full audit snapshots, excluding verification notes from these responses. Existing database permissions remain unchanged.
+
+Expanded portal DOM tests pass for tag-rule/account-link event scopes, minimal selected fields, enabling/disabling and revocation/restoration labels, administrator UI gating and preservation of unsaved account-link review text. Existing resource history, publishing, access setup, conflict and cleanup cases continue passing. JavaScript syntax passes. No database migration or real record change; browser and real-account acceptance remain pending.
+
+Saved only to champion-sowgo-backend-v1. Existing giving links remain untouched.

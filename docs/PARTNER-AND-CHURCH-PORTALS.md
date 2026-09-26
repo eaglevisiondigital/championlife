@@ -85,3 +85,11 @@ Each staff resource card has an Activity action. Authorized portal staff can rev
 Queries require the current organization, resource subject and resource event kind. Existing portal-staff RLS remains authoritative. The dialog clears on close, account/organization clearing and detected loss of portal authority; late responses cannot repopulate a closed or invalidated history view. Refresh starts again from the newest page and failures expose a retry action.
 
 This is an audit timeline, not full content versioning or rollback. Previous resource bodies were not stored by the existing resource audit and cannot be restored through this view. No schema or audit-retention changes were introduced.
+
+## Access configuration activity
+
+Administrators can open Activity from access-tag cards and Account link activity from an existing reviewed account link. The same paginated timeline identifies creation, enabling/disabling, revocation/restoration and review updates with revision, timestamp and responsible staff account. Opening and closing link activity preserves unsaved values in the underlying account-link form. New, unsaved account links have no history action.
+
+Access history requests project only revision and active/enabled JSON fields, event identifier, actor identifier and timestamp. They do not request full before/after snapshots or verification notes. Queries retain the current organization, exact subject and event-kind filters. Access history controls require staff.manage in addition to portal authority; existing database audit RLS is unchanged and continues to allow authorized portal staff audit reads. This UI restriction is not a new database security boundary.
+
+This is configuration history, not a computed timeline of every person's effective access. A person's tags, department status and other rules can independently affect eligibility. No changes to grants, tags, account links or consent occur by viewing activity.
