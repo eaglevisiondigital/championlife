@@ -7,6 +7,7 @@ const task={id:'task',organization_id:'church',person_id:'person',title:'Welcome
 const auth={client:{from(table){let fields,options,single=false;const filters={},q={select(f,o){fields=f;options=o;return q},eq(k,v){filters[k]=v;return q},in(k,v){filters[k]=v;return q},lt(k,v){filters['lt:'+k]=v;return q},order(){return q},range(){return q},limit(){return q},maybeSingle(){single=true;return q},then(resolve){calls.push({table,filters:{...filters},options,fields});let result;
 if(options?.head)result={count:table==='organization_people'?7:filters['lt:due_on']?2:4,error:null};
 else if(table==='organization_people')result={data:single?person:[person],error:null};
+else if(table==='household_members')result={data:[{id:'membership',relationship:'adult',active:true,household:{name:'Example family',status:'active'}}],error:null};
 else if(table==='followup_tasks')result={data:[task],error:null};
 else result={data:[{id:'event',kind:'person_updated',actor_user_id:'staff',created_at:'2026-09-26T00:00:00Z',before_state:{email:'old@example.test'},after_state:{email:'<img src=x onerror=alert(1)>'}}],error:null};
 if(table==='organization_admin_events'&&deferHistory)return new Promise(r=>{releaseHistory=()=>r(result)}).then(resolve);
@@ -17,6 +18,7 @@ const detail=w.ChampionPersonDetail({auth,getContext:context,onEdit:()=>edits++,
 const wait=()=>new Promise(r=>setTimeout(r,0)),click=s=>d.querySelector(s).click();
 (async()=>{
  detail.open(person);await wait();assert.match(d.getElementById('detail-contact').textContent,/jane@example.test/);click('#detail-edit');click('#detail-followup');assert.equal(edits,1);assert.equal(newTasks,1);
+ click('[data-person-tab="households"]');await wait();assert.match(d.getElementById('detail-households').textContent,/Example family/);
  click('[data-person-tab="history"]');await wait();assert.match(d.getElementById('detail-history').textContent,/old@example.test/);assert.equal(d.querySelector('#detail-history img'),null);const historyCall=calls.find(c=>c.table==='organization_admin_events');assert.equal(historyCall.filters.organization_id,'church');assert.equal(historyCall.filters.subject_id,'person');assert.deepEqual(Array.from(historyCall.filters.kind),['person_created','person_updated']);
  click('[data-person-tab="tasks"]');await wait();assert.match(d.getElementById('detail-tasks').textContent,/Welcome call/);click('#detail-tasks button');assert.equal(updated,1);assert.equal(calls.find(c=>c.table==='followup_tasks').filters.person_id,'person');
  allowTasks=false;click('[data-person-tab="tasks"]');await wait();assert.match(d.getElementById('detail-status').textContent,/not been assigned/);allowTasks=true;

@@ -28,3 +28,9 @@ Create follow-up from a contact row. Choose unassigned, yourself or an eligible 
 Complete real email sign-in, expired-link, account-switch and permission-revocation acceptance with explicitly designated test accounts. Review desktop/mobile layout in an actual browser. The existing password-protection warning needs review before password-based staff login: https://supabase.com/docs/guides/auth/password-security#password-strength-and-leaked-password-protection
 
 Migrations in this repository are incremental; the original remote migration baseline is not yet reconciled. Do not run automated db reset or db push against production. Use reviewed additive changes and retain audits. Keep main unchanged until frontend acceptance and publication approval.
+
+## Household staff permissions
+
+Grant households.read together with people.read for household viewing. Add households.manage for creation, renaming, membership edits and archival. Administrators may delegate these permissions only when they hold them. People access by itself does not expose household relationships or their audit history.
+
+Use Households to create a named record and add existing contacts. Search by last name; up to 20 matches are shown. Removed members remain visible with Restore available. An archived household must be restored before membership changes. A relationship label is descriptive only and must never be treated as a verified guardian or authorized pickup record.

@@ -1,7 +1,7 @@
 (() => {
   window.ChampionStaffAdmin = ({auth,getContext,onAccountChange}) => {
     const $=id=>document.getElementById(id);
-    const labels={'people.read':'View people','people.create':'Add people','people.update':'Edit people','people.export':'Export people (future tool)','followup.read':'View follow-up','followup.manage':'Manage follow-up','discipleship.read':'View discipleship (future staff tool)','finance.read':'View finance (future tool)','care.read':'View restricted care (future tool)'};
+    const labels={'households.read':'View households','households.manage':'Manage households','people.read':'View people','people.create':'Add people','people.update':'Edit people','people.export':'Export people (future tool)','followup.read':'View follow-up','followup.manage':'Manage follow-up','discipleship.read':'View discipleship (future staff tool)','finance.read':'View finance (future tool)','care.read':'View restricted care (future tool)'};
     let generation=0,editToken=0,editing=null;
     function clear(){generation++;editToken++;editing=null;$('staff-list').replaceChildren();$('staff-events').replaceChildren();$('staff-editor').close();$('staff-form').reset();$('staff-permissions').replaceChildren();$('staff-status').textContent='';$('staff-save-status').textContent='';}
     function open(member=null){
@@ -48,7 +48,8 @@
     $('staff-form').addEventListener('submit',async event=>{
       event.preventDefault();const c=getContext();if(!editing||c.invalid||!c.can('staff.manage')||$('staff-save').disabled)return;
       const snapshot=editing,token=editToken;const permissions=Array.from($('staff-permissions').querySelectorAll('input:checked'),input=>input.value);
-      if(permissions.some(p=>['people.create','people.update','people.export','followup.read','followup.manage'].includes(p))&&!permissions.includes('people.read')){$('staff-save-status').textContent='Select View people for these permissions.';return;}
+      if(permissions.some(p=>['people.create','people.update','people.export','followup.read','followup.manage','households.read','households.manage'].includes(p))&&!permissions.includes('people.read')){$('staff-save-status').textContent='Select View people for these permissions.';return;}
+      if(permissions.includes('households.manage')&&!permissions.includes('households.read')){$('staff-save-status').textContent='Select View households to manage households.';return;}
       if(permissions.includes('followup.manage')&&!permissions.includes('followup.read')){$('staff-save-status').textContent='Select View follow-up to manage follow-up.';return;}
       const args={p_org:snapshot.organizationId,p_target:snapshot.member?.user_id||null,p_email:snapshot.member?null:$('staff-email').value.trim(),p_name:$('staff-name').value.trim(),p_permissions:permissions,p_revision:snapshot.member?.revision||0};
       $('staff-save').disabled=true;$('staff-save-status').textContent='Saving access...';

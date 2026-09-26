@@ -2,12 +2,12 @@
   window.ChampionPersonDetail = ({auth,getContext,onEdit,onFollowup,onUpdateTask}) => {
     const $=id=>document.getElementById(id);
     let selected=null,tab='contact',generation=0,taskPage=0;
-    function clear(){generation++;selected=null;taskPage=0;$('person-detail').close();$('detail-name').textContent='Person';$('detail-contact').replaceChildren();$('detail-history').replaceChildren();$('detail-tasks').replaceChildren();$('detail-status').textContent='';}
+    function clear(){generation++;selected=null;taskPage=0;$('person-detail').close();$('detail-name').textContent='Person';$('detail-contact').replaceChildren();$('detail-history').replaceChildren();$('detail-tasks').replaceChildren();$('detail-households').replaceChildren();$('detail-status').textContent='';}
     function current(token,org){const c=getContext();return token===generation&&!c.invalid&&c.organizationId===org&&$('person-detail').open;}
-    function setTab(name){if(!['contact','history','tasks'].includes(name))return;tab=name;document.querySelectorAll('[data-person-tab]').forEach(button=>{button.setAttribute('aria-pressed',String(button.dataset.personTab===tab));});for(const name of ['contact','history','tasks'])$('detail-'+name+'-panel').hidden=name!==tab;load();}
+    function setTab(name){if(!['contact','history','tasks','households'].includes(name))return;tab=name;document.querySelectorAll('[data-person-tab]').forEach(button=>{button.setAttribute('aria-pressed',String(button.dataset.personTab===tab));});for(const name of ['contact','history','tasks','households'])$('detail-'+name+'-panel').hidden=name!==tab;load();}
     async function load(){
       const c=getContext(),token=++generation,org=c.organizationId;
-      $('detail-contact').replaceChildren();$('detail-history').replaceChildren();$('detail-tasks').replaceChildren();$('detail-task-previous').disabled=true;$('detail-task-next').disabled=true;
+      $('detail-contact').replaceChildren();$('detail-history').replaceChildren();$('detail-tasks').replaceChildren();$('detail-households').replaceChildren();$('detail-task-previous').disabled=true;$('detail-task-next').disabled=true;
       $('detail-edit').hidden=true;$('detail-followup').hidden=true;
       if(!selected||c.invalid||!c.can('people.read')){$('detail-status').textContent='Contact access is unavailable.';return;}
       $('detail-status').textContent='Loading record...';
@@ -29,6 +29,12 @@
               const change=document.createElement('p');change.textContent=label+': '+(before||'Not provided')+' → '+(after||'Not provided');li.append(change);
             }$('detail-history').append(li);
           }
+        }else if(tab==='households'){
+          if(!c.can('households.read')){$('detail-status').textContent='Household access has not been assigned.';return;}
+          const {data,error}=await auth.client.from('household_members').select('id,relationship,active,household:households(name,status)').eq('organization_id',org).eq('person_id',person.id).order('created_at',{ascending:false}).limit(30);
+          if(!current(token,org))return;if(error)throw error;
+          $('detail-status').textContent=data?.length?'Household relationships (up to 30). These do not grant account or pickup access.':'No household relationships are recorded.';
+          for(const member of data||[]){const li=document.createElement('li');li.textContent=[member.household?.name||'Household unavailable',member.relationship,member.active?'Active relationship':'Removed relationship',member.household?.status||''].join(' · ');$('detail-households').append(li);}
         }else{
           if(!c.can('followup.read')){$('detail-status').textContent='Follow-up access has not been assigned.';return;}
           const {data,error}=await auth.client.from('followup_tasks').select('id,organization_id,person_id,title,status,due_on,assigned_user_id,revision').eq('organization_id',org).eq('person_id',person.id).order('created_at',{ascending:false}).order('id').range(taskPage*25,taskPage*25+25);
