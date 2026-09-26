@@ -4,11 +4,12 @@
   const status = $('status'), select = $('organization'), body = $('people');
   let user, permissions = [], rows = [], page = 0, request = 0, editing = null, invalid = false;
   const size = 25;
-  let giving = null, workflows = null, tags = null, households = null, overview = null, personDetail = null, staffAdmin = null, personEditToken = 0;
+  let portals = null, giving = null, workflows = null, tags = null, households = null, overview = null, personDetail = null, staffAdmin = null, personEditToken = 0;
   let taskPage = 0, taskRequest = 0, taskEditing = null, taskEditToken = 0, historyRequest = 0;
   let currentView = 'overview', searchText = '', searchField = 'last_name';
   const views = {
     overview: ['Your ministry workspace.', 'Choose your next step and stay connected to your people.'],
+    portals: ['The right space for every connection.', 'Manage participant resources, access tags and overlapping ministry areas.'],
     giving: ['Giving, carefully connected.', 'Separate ministry destinations, funds and draft routing.'],
     workflows: ['Follow-up that keeps moving.', 'Review automated tasks, held notifications and routing exceptions.'],
     tags: ['Connections and next steps.', 'Organize tags and their responsible departments.'],
@@ -54,6 +55,7 @@
     if (focus) $('view-title').focus();
     if (!invalid && permissions.length && view === 'overview') {request++;overview?.load();}
     else if (!invalid && permissions.length && view === 'people') loadPeople();
+    else if (!invalid && permissions.length && view === 'portals') {request++;portals?.load();}
     else if (!invalid && permissions.length && view === 'giving') {request++;giving?.load();}
     else if (!invalid && permissions.length && view === 'workflows') {request++;workflows?.load();}
     else if (!invalid && permissions.length && view === 'tags') {request++;tags?.load();}
@@ -73,7 +75,7 @@
     return permissions.some(p => p.organization_id === org && p.permission === permission);
   }
   function clearPrivateView() {
-    invalid = true; giving?.clear(); workflows?.clear(); tags?.clear(); households?.clear(); overview?.clear(); personDetail?.clear(); personEditToken++; staffAdmin?.clear(); clearTasks(); request++; rows = []; permissions = []; editing = null;
+    invalid = true; portals?.clear(); giving?.clear(); workflows?.clear(); tags?.clear(); households?.clear(); overview?.clear(); personDetail?.clear(); personEditToken++; staffAdmin?.clear(); clearTasks(); request++; rows = []; permissions = []; editing = null;
     body.replaceChildren(); select.replaceChildren(); $('workspace').hidden = true;
     $('editor').close(); $('person-form').reset(); $('access-summary').textContent = ''; $('workspace-name').textContent = 'Ministry workspace';
     status.textContent = 'Your account changed. Reload this page to continue.';
@@ -121,6 +123,7 @@
         button.addEventListener('click', () => openTask(null, person)); action.append(button);
       }
       if(can('tags.read')){const button=document.createElement('button');button.textContent='Tags';button.addEventListener('click',()=>tags?.openPerson(person));action.append(button);}
+      if(can('portal.manage')&&can('staff.manage')){const button=document.createElement('button');button.textContent='Portal account';button.addEventListener('click',()=>portals?.openLink(person));action.append(button);}
       tr.append(action); body.append(tr);
     }
   }
@@ -161,7 +164,7 @@
   $('cancel').addEventListener('click', () => { personEditToken++; $('editor').close(); editing = null; });
   $('editor').addEventListener('cancel', () => {personEditToken++;editing=null;});
   select.addEventListener('change', () => {
-    giving?.clear(); workflows?.clear(); tags?.clear(); households?.clear(); overview?.clear(); personDetail?.clear(); personEditToken++; staffAdmin?.clear(); clearTasks(); taskPage = 0; request++; page = 0; rows = []; body.replaceChildren(); editing = null;
+    portals?.clear(); giving?.clear(); workflows?.clear(); tags?.clear(); households?.clear(); overview?.clear(); personDetail?.clear(); personEditToken++; staffAdmin?.clear(); clearTasks(); taskPage = 0; request++; page = 0; rows = []; body.replaceChildren(); editing = null;
     $('editor').close(); $('person-form').reset(); searchText = ''; $('search-query').value = '';
     updateOrganization(); showView(currentView, false);
   });
@@ -308,6 +311,7 @@
   $('task-previous').addEventListener('click',()=>{if(taskPage>0)taskPage--;loadTasks();});
   $('task-next').addEventListener('click',()=>{taskPage++;loadTasks();});
 
+  portals=window.ChampionStaffPortals?.({auth,getContext:()=>({user,organizationId:select.value,can,invalid}),onAccountChange:clearPrivateView});
   giving=window.ChampionGivingSetup?.({auth,getContext:()=>({user,organizationId:select.value,can,invalid}),onAccountChange:clearPrivateView});
   workflows=window.ChampionWorkflows?.({auth,getContext:()=>({user,organizationId:select.value,can,invalid}),onAccountChange:clearPrivateView,onTask:task=>openTask(task)});
   tags=window.ChampionTags?.({auth,onConfigure:row=>workflows?.openRule(row),getContext:()=>({user,organizationId:select.value,can,invalid}),onAccountChange:clearPrivateView});

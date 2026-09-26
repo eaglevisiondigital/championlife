@@ -1,7 +1,7 @@
 (() => {
   window.ChampionStaffAdmin = ({auth,getContext,onAccountChange}) => {
     const $=id=>document.getElementById(id);
-    const labels={'tags.read':'View tags and departments','tags.manage':'Manage tags and departments','households.read':'View households','households.manage':'Manage households','people.read':'View people','people.create':'Add people','people.update':'Edit people','people.export':'Export people (future tool)','followup.read':'View follow-up','followup.manage':'Manage follow-up','discipleship.read':'View discipleship (future staff tool)','finance.read':'View giving and finance (restricted)','finance.configure':'Configure giving setup (administrator only)','care.read':'View restricted care (future tool)'};
+    const labels={'portal.manage':'Manage participant portal content and access tags','tags.read':'View tags and departments','tags.manage':'Manage tags and departments','households.read':'View households','households.manage':'Manage households','people.read':'View people','people.create':'Add people','people.update':'Edit people','people.export':'Export people (future tool)','followup.read':'View follow-up','followup.manage':'Manage follow-up','discipleship.read':'View discipleship (future staff tool)','finance.read':'View giving and finance (restricted)','finance.configure':'Configure giving setup (administrator only)','care.read':'View restricted care (future tool)'};
     let generation=0,editToken=0,editing=null;
     function clear(){generation++;editToken++;editing=null;$('staff-list').replaceChildren();$('staff-events').replaceChildren();$('staff-editor').close();$('staff-form').reset();$('staff-permissions').replaceChildren();$('staff-status').textContent='';$('staff-save-status').textContent='';}
     function open(member=null){
@@ -48,7 +48,8 @@
     $('staff-form').addEventListener('submit',async event=>{
       event.preventDefault();const c=getContext();if(!editing||c.invalid||!c.can('staff.manage')||$('staff-save').disabled)return;
       const snapshot=editing,token=editToken;const permissions=Array.from($('staff-permissions').querySelectorAll('input:checked'),input=>input.value);
-      if(permissions.some(p=>['people.create','people.update','people.export','followup.read','followup.manage','households.read','households.manage','tags.read','tags.manage'].includes(p))&&!permissions.includes('people.read')){$('staff-save-status').textContent='Select View people for these permissions.';return;}
+      if(permissions.some(p=>['people.create','people.update','people.export','followup.read','followup.manage','households.read','households.manage','tags.read','tags.manage','portal.manage'].includes(p))&&!permissions.includes('people.read')){$('staff-save-status').textContent='Select View people for these permissions.';return;}
+      if(permissions.includes('portal.manage')&&!permissions.includes('tags.read')){$('staff-save-status').textContent='Select View tags and departments for portal management.';return;}
       if(permissions.includes('finance.configure')&&!permissions.includes('finance.read')){$('staff-save-status').textContent='Select View giving and finance to configure giving.';return;}
       if(permissions.includes('tags.manage')&&!permissions.includes('tags.read')){$('staff-save-status').textContent='Select View tags and departments to manage tags.';return;}
       if(permissions.includes('households.manage')&&!permissions.includes('households.read')){$('staff-save-status').textContent='Select View households to manage households.';return;}

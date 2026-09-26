@@ -156,3 +156,15 @@ Added draft-only giving destination plans, funds and form-route configuration wi
 No public giving link, checkout URL or giving page was changed. There are no provider credentials, connected merchants, payment calls or charge endpoint in this phase. Destination state is restricted to draft, and form routes only support draft/archived. See GIVING-ROUTING-AND-ROLLOUT.md for the permanent two-account boundary and launch gates.
 
 Validation includes 33 new PostgreSQL checks covering church/outreach separation, immutable merchant ownership, blocked live activation, scoped finance permissions, revoked/unverified access, stale edits, archival and audits, plus synthetic fund/route/preview UI checks. The existing suite remains required. Payment-provider integration, ledger, guest identity claims, statements, live-account acceptance and browser visual QA are still pending.
+
+## SowGo partner, church member and Dream Team portal foundation
+
+Recorded Dave's requirement for overlapping participant access: one login can access SowGo partner areas and independently assigned church member/Dream Team areas. Added organization-owned portal areas, administrator-configured access-tag rules, reviewed portal-only account links, protected plain-text resources and portal audit events. Tags grant participant content only through explicit mappings; they still grant no staff or financial permissions.
+
+portal.manage requires people.read and tags.read. Resource management uses those permissions; access rules and reviewed links also require staff.manage. Enabled access-tag assignments and access-changing tag/department updates require portal management in addition to ordinary tag permissions. This closes alternate tag-restoration paths into protected content.
+
+The staff Participant portals screen manages resources and access mappings. People provides Portal account for verified, reviewed account links with reasons and revisions. Existing account identities cannot be silently transferred. These links do not change contact user_id ownership or connect giving history. The new my-ministry.html route displays all permitted organization areas for one account, paginates published resources and rechecks authorization when opening content. Sign-in redirect allowlisting includes only this additional local route.
+
+Three area definitions are seeded, but no real accounts, access rules, participant links, content or staff permissions are seeded. The broader partner and Dream Team platform remains planned around this foundation. See PARTNER-AND-CHURCH-PORTALS.md for scope, setup and remaining work. Giving links and gateway destinations remain unchanged.
+
+Validation adds 32 PostgreSQL portal checks, participant/staff DOM workflows and a twelfth redirect case. Existing regression suites remain required. Real identity review, actual sign-in and desktop/mobile visual acceptance remain outstanding before publication.

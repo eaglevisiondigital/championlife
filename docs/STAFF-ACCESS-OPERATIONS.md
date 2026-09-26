@@ -62,3 +62,13 @@ Grant finance.read explicitly for giving setup visibility. To edit setup, an alr
 The Giving setup screen separates the two destination plans. Create a fund under the correct organization, then create a draft form route under that same destination and choose its fund. Permanent codes, form keys, organization and destination cannot be moved through the editor. Archive unused records; restore a fund before restoring a dependent route. Preview shows the intended checkout/merchant labels and always says processing is disabled.
 
 Current giving links stay unchanged. These draft settings cannot connect a gateway account or process a payment. Do not enter credentials in fund descriptions, labels, task titles or audit notes. Follow GIVING-ROUTING-AND-ROLLOUT.md before any payment rollout.
+
+## Participant portals
+
+Grant portal.manage with people.read and tags.read for portal content management. Access-rule and portal-account-link administration also requires staff.manage; ordinary tag assignment still requires tags.manage. A protected access tag or its department cannot have its access state changed by an ordinary tag manager without portal authority.
+
+Open Participant portals for the selected organization. Create a resource as draft, then edit it to publish after review. Choose Access tags to configure which tags grant the selected area. Enabling a mapping applies to existing eligible tag assignments as well as future ones. Use explicit separate mappings if Dream Team should also include church member resources.
+
+On a People row, Portal account opens the portal-only identity-link editor. Verify the contact and login belong to the same person, record the reason, confirm the review and save. Existing links can be revoked/restored; changing the account identity is not exposed. No invitation or message is sent. This action grants no staff, household or donor-history ownership.
+
+See PARTNER-AND-CHURCH-PORTALS.md. One account can hold separate church and SowGo links and access both areas. Removing one organization's eligibility leaves the other intact.

@@ -70,3 +70,7 @@ Still needed at the relevant implementation stage: organization payment provider
 ## Confirmed payment destinations and rollout hold
 
 September 25 update: Authorize.Net is the requested integration for both giving destinations, using separate gateway and merchant accounts. Outreach giving routes to SowGo checkout and SowGo's merchant account. Other church giving routes to Champion Life online checkout and Champion Life Church's merchant account. Existing giving links must remain unchanged until testing and explicit rollout approval. See GIVING-ROUTING-AND-ROLLOUT.md. Actual account IDs, secure credentials and gateway/merchant association verification are still required later; do not request or store secrets in chat or source code.
+
+## Overlapping participant platform requirement
+
+September 25 update: SowGo partners need their own partner platform and special resources/benefits. Church members and Dream Team participants need separate church areas based on approved access tags. A person who qualifies in both organizations must receive both from one verified login. Participant access is independent from staff/giving permissions and must not force a single exclusive membership category. PARTNER-AND-CHURCH-PORTALS.md records the initial access/resource implementation and remaining partner-platform scope.

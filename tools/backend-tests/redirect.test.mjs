@@ -10,6 +10,7 @@ for(const [input,expected] of [
  ['getting-a-grip-1.html','/getting-a-grip-1.html'],
  ['/getting-a-grip-13.html','/getting-a-grip-13.html'],
  ['/staff-people.html','/staff-people.html'],
+ ['/my-ministry.html','/my-ministry.html'],
  ['/my-discipleship.html','/my-discipleship.html'],
  ['https://evil.example','/my-discipleship.html'],
  ['//evil.example','/my-discipleship.html'],
@@ -19,4 +20,4 @@ for(const [input,expected] of [
  ['/getting-a-grip-2.html?next=//evil.example#token','/getting-a-grip-2.html'],
  ['\\\\evil.example','/my-discipleship.html']
 ]) assert.equal(context.safeNext(input),expected,input);
-console.log('11 redirect cases passed; inline scripts parse');
+console.log('12 redirect cases passed; inline scripts parse');
