@@ -42,3 +42,15 @@ Use tags.read with people.read to view departments and tags; add tags.manage to 
 On People, use Tags to add an active tag or remove/restore a prior assignment. Tags in an archived department cannot be newly assigned or restored. No notifications or automatic tasks are sent by this phase. Future follow-up instructions and due days are configuration only until a reviewed workflow engine is activated.
 
 Giving data is restricted to staff with explicit organization finance.read access granted by an authorized administrator. staff.manage does not itself confer financial visibility, and an administrator cannot delegate finance.read unless they hold it. Tags, donor/member/partner/Dream Team relationships and department leadership do not grant finance access. Future giving totals, exports, statements, search results and notifications must enforce this boundary server-side. Donors' access to their own verified giving history is separate from staff authority.
+
+## Activating a tag workflow
+
+1. Configure the department and an eligible verified leader, then create the tag with a task instruction of at most 180 characters and optional due-day offset.
+2. Open Workflow settings on the tag. This control requires staff.manage plus people.read, tags.read, tags.manage, followup.read and followup.manage.
+3. Review the displayed department, leader presence, instruction and due offset. Choose the correct IANA timezone, such as America/Chicago, and whether a removed/re-added tag should create another task. Default behavior skips repeat follow-up after a prior successful run.
+4. Enable task creation and save. Only future tag assignments trigger this rule. No historical data is replayed. Email requests are held and are not sent.
+5. Use Workflows to review exceptions. Fix the leader or paused configuration, then retry with the current run revision. Original instructions and due date remain tied to the event; current eligible department leader is used at retry. Dismiss obsolete exceptions, or cancel held emails that are no longer needed.
+
+Editing the tag's department, instructions or due offset pauses it for another administrator review. A tag removal does not cancel an already-created task; authorized staff can decide how to close that task. Failed runs for removed or superseded assignments are skipped when retried. Changing/completing/canceling an existing generated task cancels its held email request so it cannot later describe the old assignment.
+
+Do not release the notification queue by updating its rows or replaying old runs. Delivery is not implemented. Its next phase must configure an approved sender/provider, recheck the current verified recipient and task authorization at send time, track provider outcomes, and handle ambiguous delivery without creating duplicate tasks. Do not put giving amounts or restricted care details in operational tag/task titles.

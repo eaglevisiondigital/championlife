@@ -1,6 +1,6 @@
 # Guest identity, giving and department follow-up
 
-Approved product requirements from Dave, September 25, 2026 (America/Chicago). This specification extends the build plan. It is not a claim that giving, tags or automated email are deployed.
+Approved product requirements from Dave, September 25, 2026 (America/Chicago). This specification extends the build plan. Current department/tag/task implementation is tracked in BACKEND-FOUNDATION-STATUS.md. Giving and actual email delivery remain pending.
 
 ## One person across entry points
 

@@ -1,5 +1,5 @@
 (() => {
-  window.ChampionTags=({auth,getContext,onAccountChange})=>{
+  window.ChampionTags=({auth,getContext,onAccountChange,onConfigure})=>{
     const $=id=>document.getElementById(id),size=25;
     let generation=0,editToken=0,lookupToken=0,personToken=0,searchToken=0,page=0,personPage=0,editing=null,person=null,busy=false;
     const permitted=c=>!c.invalid&&c.can('people.read')&&c.can('tags.read');
@@ -20,7 +20,9 @@
         $('tags-prev').disabled=page===0;$('tags-next').disabled=(data||[]).length<=size;$('tags-status').textContent=`Page ${page+1}. ${(data||[]).slice(0,size).length} records shown.`;
         for(const row of (data||[]).slice(0,size)){const card=document.createElement('article');card.className='task-card';const title=document.createElement('h3');title.textContent=row.name;card.append(title);
           const text=document.createElement('p');text.textContent=table()==='organization_tags'?row.task_title:(row.leader_user_id?'Leader assigned':'Leader not assigned');card.append(text);
-          if(manage(c)){const b=document.createElement('button');b.textContent='Edit';b.addEventListener('click',()=>open(row));card.append(b);}$('tags-list').append(card);}
+          if(manage(c)){const b=document.createElement('button');b.textContent='Edit';b.addEventListener('click',()=>open(row));card.append(b);}
+          if(table()==='organization_tags'){const state=document.createElement('p');state.textContent=row.workflow_enabled?'Automatic tasks enabled; email held':'Automatic tasks paused';card.append(state);if(manage(c)&&c.can('staff.manage')&&c.can('followup.read')&&c.can('followup.manage')){const b=document.createElement('button');b.textContent='Workflow settings';b.addEventListener('click',()=>onConfigure?.(row));card.append(b);}}
+          $('tags-list').append(card);}
       }catch(_){if(token===generation&&!getContext().invalid)$('tags-status').textContent='Records could not load. Refresh to try again.';}
     }
     async function departments(){const c=getContext(),token=++lookupToken,edit=editToken;if(!editing)return;$('tag-department').replaceChildren();$('tag-department-status').textContent='Loading departments...';
@@ -62,7 +64,7 @@
     async function loadPerson(){const c=getContext(),token=++personToken;if(!person||!permitted(c))return;$('person-tags-list').replaceChildren();$('person-tags-prev').disabled=true;$('person-tags-next').disabled=true;$('person-tag-form').hidden=!manage(c);$('person-tag-add').disabled=busy;$('person-tags-status').textContent='Loading tags...';
       try{const {data,error}=await auth.client.from('organization_person_tags').select('id,tag_id,active,revision,tag:organization_tags(name)').eq('organization_id',c.organizationId).eq('person_id',person.id).order('created_at').order('id').range(personPage*size,personPage*size+size);
         if(token!==personToken||getContext().invalid)return;if(error)throw error;$('person-tags-prev').disabled=personPage===0;$('person-tags-next').disabled=(data||[]).length<=size;
-        $('person-tags-status').textContent=`Page ${personPage+1}. Removed tags remain in history. Automatic follow-up is not active yet.`;
+        $('person-tags-status').textContent=`Page ${personPage+1}. Removed tags remain in history. Enabled tag rules may create follow-up tasks. Email requests remain held.`;
         for(const row of (data||[]).slice(0,size)){const div=document.createElement('div');div.className='task-card';const text=document.createElement('p');text.textContent=(row.tag?.name||'Tag')+(row.active?'':' (removed)');div.append(text);
           if(manage(c)){const b=document.createElement('button');b.textContent=row.active?'Remove':'Restore';b.disabled=busy;b.addEventListener('click',()=>saveAssignment(row));div.append(b);}$('person-tags-list').append(div);}
       }catch(_){if(token===personToken&&!getContext().invalid)$('person-tags-status').textContent='Person tags could not load. Close and reopen to retry.';}
@@ -81,6 +83,7 @@
       }catch(_){if(token===personToken&&!getContext().invalid)$('person-tags-status').textContent='Tag not saved. It may already be assigned, archived, changed, or outside your access. Close and reopen before retrying.';}
       finally{if(token===personToken){busy=false;$('person-tag-add').disabled=false;$('person-tags-list').querySelectorAll('button').forEach(b=>b.disabled=false);}}
     }
+    document.addEventListener('champion-workflow-rule-saved',load);
     const closeEditor=()=>{editToken++;lookupToken++;editing=null;$('tag-editor').close();};
     const closePerson=()=>{personToken++;searchToken++;person=null;busy=false;$('person-tags-dialog').close();$('person-tags-list').replaceChildren();$('person-tag-choice').replaceChildren();};
     $('tag-cancel').addEventListener('click',closeEditor);$('tag-editor').addEventListener('cancel',closeEditor);$('person-tags-close').addEventListener('click',closePerson);$('person-tags-dialog').addEventListener('cancel',closePerson);
