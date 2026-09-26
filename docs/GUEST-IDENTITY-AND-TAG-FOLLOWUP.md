@@ -66,3 +66,7 @@ Dave confirmed on September 25 that staff may view giving only through explicit 
 Implement the organization contact identity/claim model and tag/department configuration, then durable workflow actions integrated with follow-up tasks. Build giving claims and statements on the approved ledger and selected payment provider. Add actual email delivery after notification configuration and recipient review.
 
 Still needed at the relevant implementation stage: organization payment provider, phone verification service if phone claims are enabled, department/tag mappings, designated leaders/fallbacks, task wording and timing, and email sender/template configuration. These choices do not block the model or workflow engine work.
+
+## Confirmed payment destinations and rollout hold
+
+September 25 update: Authorize.Net is the requested integration for both giving destinations, using separate gateway and merchant accounts. Outreach giving routes to SowGo checkout and SowGo's merchant account. Other church giving routes to Champion Life online checkout and Champion Life Church's merchant account. Existing giving links must remain unchanged until testing and explicit rollout approval. See GIVING-ROUTING-AND-ROLLOUT.md. Actual account IDs, secure credentials and gateway/merchant association verification are still required later; do not request or store secrets in chat or source code.

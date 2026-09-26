@@ -4,11 +4,12 @@
   const status = $('status'), select = $('organization'), body = $('people');
   let user, permissions = [], rows = [], page = 0, request = 0, editing = null, invalid = false;
   const size = 25;
-  let workflows = null, tags = null, households = null, overview = null, personDetail = null, staffAdmin = null, personEditToken = 0;
+  let giving = null, workflows = null, tags = null, households = null, overview = null, personDetail = null, staffAdmin = null, personEditToken = 0;
   let taskPage = 0, taskRequest = 0, taskEditing = null, taskEditToken = 0, historyRequest = 0;
   let currentView = 'overview', searchText = '', searchField = 'last_name';
   const views = {
     overview: ['Your ministry workspace.', 'Choose your next step and stay connected to your people.'],
+    giving: ['Giving, carefully connected.', 'Separate ministry destinations, funds and draft routing.'],
     workflows: ['Follow-up that keeps moving.', 'Review automated tasks, held notifications and routing exceptions.'],
     tags: ['Connections and next steps.', 'Organize tags and their responsible departments.'],
     households: ['People connected as family.', 'Organize household relationships within your ministry.'],
@@ -21,7 +22,7 @@
     ['People', 'Organization contacts and permitted contact editing.', 'Available', 'Kingdom Propel'],
     ['Households & Family Hub', 'Household records and relationships are available. Family portal, calendars and registrations are planned.', 'Households available', 'Kingdom Propel'],
     ['Tags & departments', 'Department ownership, person tags and reviewed task automation are available. Email delivery is pending.', 'Tags available', 'Kingdom Propel'],
-    ['Giving & partners', 'Funds, manual gifts, statements, partnerships and DAF support.', 'Planned', 'Kingdom Propel'],
+    ['Giving & partners', 'Funds and draft checkout routing are available. Payments, gifts, statements and partnerships are planned.', 'Draft setup available', 'Kingdom Propel'],
     ['Forms', 'Drag-and-drop forms with desktop/mobile editing and payments.', 'Planned', 'Kingdom Propel'],
     ['Serving, groups & events', 'Volunteer schedules, groups, events and check-in.', 'Planned', 'Kingdom Propel'],
     ['Follow-up & care', 'Operational tasks, due dates and self-assignment are available. Restricted pastoral care is planned.', 'Follow-up available', 'Kingdom Propel'],
@@ -53,6 +54,7 @@
     if (focus) $('view-title').focus();
     if (!invalid && permissions.length && view === 'overview') {request++;overview?.load();}
     else if (!invalid && permissions.length && view === 'people') loadPeople();
+    else if (!invalid && permissions.length && view === 'giving') {request++;giving?.load();}
     else if (!invalid && permissions.length && view === 'workflows') {request++;workflows?.load();}
     else if (!invalid && permissions.length && view === 'tags') {request++;tags?.load();}
     else if (!invalid && permissions.length && view === 'households') {request++;households?.load();}
@@ -64,14 +66,14 @@
   function updateOrganization() {
     $('workspace-name').textContent = select.selectedOptions[0]?.textContent || 'Ministry workspace';
     $('person-add').hidden = !can('people.create') || !can('people.read');
-    $('access-summary').textContent = !can('people.read') ? 'You have staff administration access. Contact access has not been assigned.' : can('people.update') ? 'You can view people and edit contact details in this organization.' : 'You have view-only access to people in this organization.';
+    $('access-summary').textContent = !can('people.read') ? 'Contact access has not been assigned. Other assigned tools remain available.' : can('people.update') ? 'You can view people and edit contact details in this organization.' : 'You have view-only access to people in this organization.';
   }
   showView('overview', false);
   function can(permission, org = select.value) {
     return permissions.some(p => p.organization_id === org && p.permission === permission);
   }
   function clearPrivateView() {
-    invalid = true; workflows?.clear(); tags?.clear(); households?.clear(); overview?.clear(); personDetail?.clear(); personEditToken++; staffAdmin?.clear(); clearTasks(); request++; rows = []; permissions = []; editing = null;
+    invalid = true; giving?.clear(); workflows?.clear(); tags?.clear(); households?.clear(); overview?.clear(); personDetail?.clear(); personEditToken++; staffAdmin?.clear(); clearTasks(); request++; rows = []; permissions = []; editing = null;
     body.replaceChildren(); select.replaceChildren(); $('workspace').hidden = true;
     $('editor').close(); $('person-form').reset(); $('access-summary').textContent = ''; $('workspace-name').textContent = 'Ministry workspace';
     status.textContent = 'Your account changed. Reload this page to continue.';
@@ -159,7 +161,7 @@
   $('cancel').addEventListener('click', () => { personEditToken++; $('editor').close(); editing = null; });
   $('editor').addEventListener('cancel', () => {personEditToken++;editing=null;});
   select.addEventListener('change', () => {
-    workflows?.clear(); tags?.clear(); households?.clear(); overview?.clear(); personDetail?.clear(); personEditToken++; staffAdmin?.clear(); clearTasks(); taskPage = 0; request++; page = 0; rows = []; body.replaceChildren(); editing = null;
+    giving?.clear(); workflows?.clear(); tags?.clear(); households?.clear(); overview?.clear(); personDetail?.clear(); personEditToken++; staffAdmin?.clear(); clearTasks(); taskPage = 0; request++; page = 0; rows = []; body.replaceChildren(); editing = null;
     $('editor').close(); $('person-form').reset(); searchText = ''; $('search-query').value = '';
     updateOrganization(); showView(currentView, false);
   });
@@ -190,7 +192,7 @@
       if (invalid) return;
       if (grants.error || orgs.error) throw new Error('Workspace unavailable');
       permissions = grants.data || [];
-      const available = (orgs.data || []).filter(org => can('people.read',org.id) || can('staff.manage',org.id));
+      const available = (orgs.data || []).filter(org => can('people.read',org.id) || can('staff.manage',org.id) || can('finance.read',org.id));
       if (!available.length) { status.textContent = 'No staff workspace is assigned to this account yet. Ask your ministry administrator for access.'; return; }
       for (const org of available) { const option = document.createElement('option'); option.value = org.id; option.textContent = org.name; select.append(option); }
       $('workspace').hidden = false; updateOrganization(); showView(currentView, false);
@@ -306,6 +308,7 @@
   $('task-previous').addEventListener('click',()=>{if(taskPage>0)taskPage--;loadTasks();});
   $('task-next').addEventListener('click',()=>{taskPage++;loadTasks();});
 
+  giving=window.ChampionGivingSetup?.({auth,getContext:()=>({user,organizationId:select.value,can,invalid}),onAccountChange:clearPrivateView});
   workflows=window.ChampionWorkflows?.({auth,getContext:()=>({user,organizationId:select.value,can,invalid}),onAccountChange:clearPrivateView,onTask:task=>openTask(task)});
   tags=window.ChampionTags?.({auth,onConfigure:row=>workflows?.openRule(row),getContext:()=>({user,organizationId:select.value,can,invalid}),onAccountChange:clearPrivateView});
   households=window.ChampionHouseholds?.({auth,getContext:()=>({user,organizationId:select.value,can,invalid}),onAccountChange:clearPrivateView});

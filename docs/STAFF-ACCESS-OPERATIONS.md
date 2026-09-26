@@ -54,3 +54,11 @@ Giving data is restricted to staff with explicit organization finance.read acces
 Editing the tag's department, instructions or due offset pauses it for another administrator review. A tag removal does not cancel an already-created task; authorized staff can decide how to close that task. Failed runs for removed or superseded assignments are skipped when retried. Changing/completing/canceling an existing generated task cancels its held email request so it cannot later describe the old assignment.
 
 Do not release the notification queue by updating its rows or replaying old runs. Delivery is not implemented. Its next phase must configure an approved sender/provider, recheck the current verified recipient and task authorization at send time, track provider outcomes, and handle ambiguous delivery without creating duplicate tasks. Do not put giving amounts or restricted care details in operational tag/task titles.
+
+## Draft giving configuration
+
+Grant finance.read explicitly for giving setup visibility. To edit setup, an already-approved administrator additionally needs finance.configure and staff.manage. The ordinary delegation screen can grant finance.read/configure only within the actor's authority; it cannot grant staff.manage or edit another active administrator. Use trusted reviewed provisioning for an administrator's own new configuration permission. No initial real finance staff were added by this migration.
+
+The Giving setup screen separates the two destination plans. Create a fund under the correct organization, then create a draft form route under that same destination and choose its fund. Permanent codes, form keys, organization and destination cannot be moved through the editor. Archive unused records; restore a fund before restoring a dependent route. Preview shows the intended checkout/merchant labels and always says processing is disabled.
+
+Current giving links stay unchanged. These draft settings cannot connect a gateway account or process a payment. Do not enter credentials in fund descriptions, labels, task titles or audit notes. Follow GIVING-ROUTING-AND-ROLLOUT.md before any payment rollout.
