@@ -47,3 +47,13 @@ Complete local suite passed: 27 foundation checks, 25 follow-up database checks,
 Security advisors report no new findings. The existing disabled leaked-password protection warning remains; review before introducing password-based staff login: https://supabase.com/docs/guides/auth/password-security#password-strength-and-leaked-password-protection
 
 Recovery: disable new frontend entry points if necessary and fix forward. Do not remove task/event tables after operational data has been created. The migration is additive to learner/outreach tables and does not change their ownership or policies.
+
+## September 25, 2026: staff access, person creation and team assignment
+
+Implementation commit `d176e8917bf18611abb7661072adb066bb80215a` saved to the development branch before applying `20260926022613_staff_access_and_people` to `exdocjbmylgxssanymjk`. Source migration filename reconciled to the returned remote version. New staff directory and administration event tables both have RLS. Anonymous staff-management RPC execution, direct browser directory access and direct audit inserts are denied. No real staff grants were added.
+
+Pre/post counts match: profiles 1, enrollments 1, lesson progress 1, answers 0, registrations 0, organization people 0, staff grants 0, tasks 0. New directory/event counts are zero. Full local suite passes, including 30 new PostgreSQL staff/contact checks and integrated UI grant/create/assign/revoke checks. Main/frontend is unchanged. Visual browser and real-account acceptance remain open.
+
+Advisors: existing leaked-password-protection warning remains (https://supabase.com/docs/guides/auth/password-security#password-strength-and-leaked-password-protection). New INFO `rls_enabled_no_policy` for `organization_staff_directory` is intentional: RLS denies all direct access, authenticated table grants are revoked, and scoped private functions return only authorized directory fields. Do not add a permissive policy to silence this notice. Explanation: https://supabase.com/docs/guides/database/database-linter?lint=0008_rls_enabled_no_policy
+
+Initial administrators must be explicitly designated and provisioned through the trusted workflow in STAFF-ACCESS-OPERATIONS.md. No invitation emails, messages, real contact imports or consent changes were performed.
