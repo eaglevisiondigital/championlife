@@ -168,3 +168,7 @@ The staff Participant portals screen manages resources and access mappings. Peop
 Three area definitions are seeded, but no real accounts, access rules, participant links, content or staff permissions are seeded. The broader partner and Dream Team platform remains planned around this foundation. See PARTNER-AND-CHURCH-PORTALS.md for scope, setup and remaining work. Giving links and gateway destinations remain unchanged.
 
 Validation adds 32 PostgreSQL portal checks, participant/staff DOM workflows and a twelfth redirect case. Existing regression suites remain required. Real identity review, actual sign-in and desktop/mobile visual acceptance remain outstanding before publication.
+
+### Participant resource discovery
+
+Development now includes area-scoped title search, bounded pagination, protected resource links with safe sign-in return, clipboard fallback and immediate content clearing on attempted sign-out. Existing portal RLS is reused; no schema, participant records, staff grants, public giving links or checkout changes were made. See PARTNER-AND-CHURCH-PORTALS.md for acceptance steps.

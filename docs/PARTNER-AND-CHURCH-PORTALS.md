@@ -56,3 +56,15 @@ Current giving links remain unchanged. SowGo giving uses its future separate gat
 Run `npm test --prefix tools/backend-tests`. Database checks cover dual access, independent revocation, hidden drafts, organization isolation, self-upgrade denial, protected access tags and departments, account-link identity, finance separation, unverified/anonymous access and audit restrictions. DOM checks cover participant area switching, safe content rendering, account clearing and staff resource/rule/link operations. Login redirect tests include the new route while retaining external redirect rejection.
 
 No real links, access rules, content or staff grants are provisioned by this migration. Actual sign-in, identity-review acceptance, desktop/mobile browser visual checks and publication approval remain required. Main stays unchanged until the approved release.
+
+## Resource discovery and protected links
+
+Participants can search published resource titles within the selected area. Search resets pagination; switching areas clears the search. The search is a case-insensitive phrase match, limited to 100 characters, with wildcard characters treated as spaces. Results are bounded to 12 cards per page and remain subject to database RLS. Empty and failed results provide a recovery path.
+
+A successfully opened resource has a Copy resource link action, with a selected text fallback when clipboard permission is unavailable. Links contain only the area and resource identifiers, never content or account credentials. The login return allowlist preserves only a valid UUID area/resource pair on the local my-ministry route, dropping all unrelated query parameters and fragments. Opening a link still requires a fresh published-resource query scoped to the authorized organization and area. A link does not grant access.
+
+Pending list, detail and clipboard UI results are invalidated on relevant navigation or account changes. Sign-out immediately clears displayed resources even if the network request fails; failed sign-out still requires retrying or reloading to finish ending the session. No browser storage of private resource content was added.
+
+Acceptance: test a copied link while signed out, verify sign-in returns to the resource, then repeat with an ineligible account and after revocation. Check clipboard fallback, search pagination, area switching, keyboard dialog use and mobile presentation. Synthetic tests cover these state transitions; actual browser/account acceptance remains pending.
+
+Dave reconfirmed that existing giving links must remain in place through testing. Switching checkout remains a final, separately approved release step.

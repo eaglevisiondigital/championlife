@@ -12,6 +12,10 @@ for(const [input,expected] of [
  ['/staff-people.html','/staff-people.html'],
  ['/my-ministry.html','/my-ministry.html'],
  ['/my-discipleship.html','/my-discipleship.html'],
+ ['/my-ministry.html?area=11111111-1111-4111-8111-111111111111&resource=22222222-2222-4222-8222-222222222222&next=//evil.example#token','/my-ministry.html?area=11111111-1111-4111-8111-111111111111&resource=22222222-2222-4222-8222-222222222222'],
+ ['/my-ministry.html?area=bad&resource=22222222-2222-4222-8222-222222222222','/my-ministry.html'],
+ ['/my-ministry.html?area=11111111-1111-4111-8111-111111111111','/my-ministry.html'],
+ ['https://evil.example/my-ministry.html?area=11111111-1111-4111-8111-111111111111&resource=22222222-2222-4222-8222-222222222222','/my-discipleship.html'],
  ['https://evil.example','/my-discipleship.html'],
  ['//evil.example','/my-discipleship.html'],
  ['javascript:alert(1)','/my-discipleship.html'],
@@ -20,4 +24,4 @@ for(const [input,expected] of [
  ['/getting-a-grip-2.html?next=//evil.example#token','/getting-a-grip-2.html'],
  ['\\\\evil.example','/my-discipleship.html']
 ]) assert.equal(context.safeNext(input),expected,input);
-console.log('12 redirect cases passed; inline scripts parse');
+console.log('16 redirect cases passed; inline scripts parse');

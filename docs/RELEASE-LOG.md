@@ -129,3 +129,11 @@ Live verification: all five portal tables have RLS. Three area definitions seede
 Security advisor findings unchanged: intentional RPC-only staff-directory INFO and known leaked-password protection WARN. References: https://supabase.com/docs/guides/database/database-linter?lint=0008_rls_enabled_no_policy and https://supabase.com/docs/guides/auth/password-security#password-strength-and-leaked-password-protection . No new security findings.
 
 Main remains `66591f22d5315d093091b99152c18d43bfcb3893`. Existing giving links remain unchanged. Broader partnership benefits, media/files, events, messaging and self-service identity claims are future work. See PARTNER-AND-CHURCH-PORTALS.md for access semantics and acceptance steps.
+
+## Participant resource discovery, September 26 UTC / September 25 Chicago
+
+Continued on champion-sowgo-backend-v1 from portal release ccf0153df1284d7fb7cf67d34c699e09922c0d8d. Added area-scoped title search, pagination recovery, copyable protected resource links with clipboard fallback, and UUID-only local sign-in return parameters. Links recheck current published-resource access and never grant access by possession. Sign-out attempts immediately clear displayed protected content, including network failure.
+
+Full npm regression suite passed, including the existing 32 portal database checks, expanded 16 redirect cases and new discovery DOM coverage for scoped search, paging, deep links, unavailable access, clipboard fallback, late list/detail responses and failed sign-out clearing. These are synthetic tests; real-account and browser visual acceptance remain pending.
+
+No database migration or live records were changed. Main verified unchanged at 66591f22d5315d093091b99152c18d43bfcb3893. Current giving links remain in place until final testing and explicit switch approval. Screens remain on development.
