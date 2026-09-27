@@ -19,10 +19,37 @@ for (const m of expected.migrations) {
   assert.match(m.file, /^\d{14}_[a-z0-9_]+\.sql$/);
   assert.equal(hash(readFileSync(new URL(m.file, directory))), m.sha256, `Applied historical migration changed: ${m.file}`);
 }
-const db = new PGlite();
-try {
+const bootstrap = readFileSync(new URL('../../supabase/bootstrap/automatic-rls.sql', import.meta.url), 'utf8');
+// These are managed-platform assumptions, not application objects. The public
+// defaults mirror the read-only acceptance catalog (automatic exposure disabled).
+const managedDefaults = `
+ alter default privileges in schema public grant truncate, references, trigger, maintain on tables to anon, authenticated, service_role;
+ alter default privileges in schema public revoke execute on functions from public, anon, authenticated, service_role;
+ create schema supabase_migrations;
+ create table supabase_migrations.schema_migrations(version text primary key);
+`;
+for (const mode of ['fresh-explicit-rls', 'managed-failed-prefix']) {
+ const db = new PGlite();
+ try {
   await db.exec(fixture('supabase-test-bootstrap.sql'));
-  for (const file of files) {
+  await db.exec(managedDefaults);
+  assert.equal((await db.query("select to_regprocedure('public.rls_auto_enable()') as helper")).rows[0].helper, null);
+  if (mode === 'managed-failed-prefix') {
+    await db.exec(readFileSync(new URL(files[0], directory), 'utf8'));
+    await db.exec(`insert into supabase_migrations.schema_migrations values ('20260923114743')`);
+    await assert.rejects(db.exec(readFileSync(new URL(files[1], directory), 'utf8')), e => e.code === '42883' && e.message.includes('rls_auto_enable'));
+  }
+  await db.exec(bootstrap);
+  await db.exec(bootstrap); // Safe repeat before migration; no duplicate objects.
+  for (const role of ['anon', 'authenticated', 'service_role']) {
+    assert.equal((await db.query(`select has_function_privilege('${role}','public.rls_auto_enable()','EXECUTE') as allowed`)).rows[0].allowed, false);
+  }
+  await db.exec('create table public.bootstrap_probe(id integer)');
+  assert.equal((await db.query("select relrowsecurity from pg_class where oid='public.bootstrap_probe'::regclass")).rows[0].relrowsecurity, true);
+  await db.exec('drop table public.bootstrap_probe');
+  // Keep independent proof that every application migration explicitly enables RLS.
+  if (mode === 'fresh-explicit-rls') await db.exec('drop event trigger ensure_rls');
+  for (const file of (mode === 'managed-failed-prefix' ? files.slice(1) : files)) {
     try { await db.exec(readFileSync(new URL(file, directory), 'utf8')); }
     catch (error) { throw new Error(`Migration replay failed: ${file}`, { cause: error }); }
   }
@@ -38,7 +65,29 @@ try {
   assert.equal(await scalar("select has_table_privilege('authenticated','public.organization_staff_directory','SELECT') as value"), false, 'No direct directory grant');
   assert.equal(await scalar("select count(*)::int as value from pg_proc p join pg_namespace n on n.oid=p.pronamespace where n.nspname='private' and has_function_privilege('anon',p.oid,'EXECUTE')"), 0, 'No anonymous private-function execution');
   assert.equal(await scalar("select count(*)::int as value from pg_proc p join pg_namespace n on n.oid=p.pronamespace where n.nspname='public' and p.prosecdef and (has_function_privilege('anon',p.oid,'EXECUTE') or has_function_privilege('authenticated',p.oid,'EXECUTE'))"), 0, 'No client-callable public SECURITY DEFINER functions');
-  console.log(`PASS full migration chain: ${files.length} migrations, ${tables.length} RLS tables, ${policies.length} policies, ${functions.length} function definitions; directory/RPC grants verified`);
-} finally {
+  console.log(`PASS ${mode} full migration chain: ${files.length} migrations, ${tables.length} RLS tables, ${policies.length} policies, ${functions.length} function definitions; directory/RPC grants verified`);
+  // A deployed database is not eligible for this provisioning operation.
+  await assert.rejects(db.exec(bootstrap), /refuses initialized application databases/);
+  await db.exec('rollback');
+ } finally {
   await db.close();
+ }
 }
+// Refuse unexpected definitions and populated Auth; leave failed transactions clean.
+for (const scenario of ['wrong-helper', 'auth-users', 'later-history', 'wrong-trigger']) {
+ const db = new PGlite();
+ try {
+  await db.exec(fixture('supabase-test-bootstrap.sql'));
+  await db.exec(managedDefaults);
+  if (scenario === 'wrong-helper') await db.exec("create function public.rls_auto_enable() returns event_trigger language plpgsql as $$begin return; end$$");
+  if (scenario === 'auth-users') await db.exec("insert into auth.users(id) values ('11111111-1111-4111-8111-111111111111')");
+  if (scenario === 'later-history') await db.exec("insert into supabase_migrations.schema_migrations values ('20260923114822')");
+  if (scenario === 'wrong-trigger') {
+    await db.exec(bootstrap);
+    await db.exec('alter event trigger ensure_rls disable');
+  }
+  await assert.rejects(db.exec(bootstrap), /Unexpected|refuses/);
+  await db.exec('rollback');
+ } finally { await db.close(); }
+}
+console.log('PASS bootstrap guards: Auth data, initialized history, helper drift and trigger drift rejected');

@@ -16,7 +16,7 @@ Staff workflows use RLS, composite organization foreign keys, database revisions
 
 ## RPC pattern
 
-Public application RPC wrappers are invokers. Privileged implementations and authorization helpers live in private with fixed search paths, explicit identity/permission checks and restricted EXECUTE grants. The platform rls_auto_enable helper is the public SECURITY DEFINER exception and is not executable by browser roles. Private must remain outside Data API exposed schemas; configuration verification is still open. Directory reads are scoped RPC-only.
+Public application RPC wrappers are invokers. Privileged implementations and authorization helpers live in private with fixed search paths, explicit identity/permission checks and restricted EXECUTE grants. The optional project-bootstrap rls_auto_enable helper is the public SECURITY DEFINER exception and is not executable by browser roles. Private must remain outside Data API exposed schemas; configuration verification is still open. Directory reads are scoped RPC-only.
 
 ## Reuse boundary
 
@@ -27,3 +27,5 @@ Historical migration recovery and the synthetic platform prerequisites are docum
 ## Preview environment separation
 
 See docs/PREVIEW-ACCEPTANCE.md. Production browser defaults remain unchanged. Deploy previews/branch deploys generate a separate public config from two preview-scoped variables; missing/invalid/production-target values produce a visible blocked state with no Supabase client. Only the static artifact is published; source docs, migrations, tests and server-function source are excluded. No preview backend is provisioned by the build.
+
+The optional automatic-RLS project creation setting is not inherited as migration SQL by fresh branches. Isolated provisioning must run supabase/bootstrap/automatic-rls.sql before resuming the unchanged historical chain. See docs/MIGRATION-BASELINE.md; this is a separate guarded provisioning stage, not an eighteenth historical migration.

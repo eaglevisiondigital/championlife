@@ -36,3 +36,7 @@ Test packages remain pinned to PGlite 0.5.8 and jsdom 26.1.0 with their existing
 ## Preview-readiness follow-up
 
 The explicit public manifest and dist/ output now exclude source docs, migrations, tests, tooling and server source. Preview builds reject the production URL/key, require canonical non-production Supabase URLs and modern publishable keys, and visibly block the client otherwise. This prevents fallback; Work must still verify key/project identity and provision only approved isolated fixtures. Production Auth, data/schema and deployment settings remain unchanged. See docs/PREVIEW-ACCEPTANCE.md.
+
+## September 27 bootstrap correction
+
+Historical migration recovery alone did not prove fresh managed initialization: the synthetic fixture silently provided the optional automatic-RLS helper. Tests now start without it, execute the checked-in bootstrap, reproduce/recover SQLSTATE 42883, and verify exact function/policy parity under managed-like defaults. Bootstrap revokes all client/PUBLIC/service-role execution immediately, keeps the captured fixed search path, rejects drift and populated/initialized targets, and changes no production history. A separate replay without the event trigger proves explicit application RLS. See docs/MIGRATION-BASELINE.md for provenance, operational guards and hosted verification requirements.

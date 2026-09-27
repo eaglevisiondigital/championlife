@@ -1,5 +1,9 @@
 # Current build state
 
+## Acceptance initialization repair — September 27, 2026
+
+Fresh branching exposed an omitted project-creation prerequisite: automatic-RLS helper/trigger setup was outside the 17-migration history. The repository now has a guarded, separately version-controlled provisioning script; the test-only helper injection was removed. Clean and failed-prefix replay both verify 17 unchanged migrations, 32 RLS tables, 60 policies and 35 identical function definitions. See docs/MIGRATION-BASELINE.md for provenance and the bootstrap → supported branch rebase procedure. Remote repair/CI results are recorded separately after execution; browser acceptance remains with Work. No production change is part of this package.
+
 ## Preview readiness — September 26, 2026
 
 The authorized follow-up adds a 372-file explicit public artifact, excludes administrative/development files, and generates isolated preview Supabase configuration with a visible no-client state when absent or invalid. Production/local defaults and callback UX remain unchanged. All 24 existing scripts passed; the new site-build suite covers deployment isolation and artifact safety. Hosted CI and draft PR results are reported separately after push. See docs/PREVIEW-ACCEPTANCE.md for exact variable names and gated Work assignment. No backend provisioning, production release or giving changes are authorized here.
