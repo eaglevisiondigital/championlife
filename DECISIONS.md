@@ -1,5 +1,16 @@
 # Durable decisions
 
+## People/Staff v1 decisions — September 28, 2026
+
+- The explicit user assignment authorizes this forward People/Staff package, isolated acceptance migration/testing, development commit/push and CI observation. Earlier feature holds do not block it. Production, merge and real staff provisioning remain prohibited; Chat review precedes Events/Calendar.
+- Reuse tenant contacts, Auth profiles, reviewed portal links, organizations, departments, directory, grant key and admin audit; add only minimal human anchors, accountless dated relationships, affiliations and role templates. Do not guess cross-tenant identity from email.
+- Preserve stored naming: people.read/update, discipleship.read and finance.read/configure map the requested view/edit/course/finance concepts. Future module and restricted-note keys are reserved capabilities, not claims that those modules exist.
+- Scope is null for organization-wide or a nonempty department UUID set. No explicit-deny hierarchy in v1: missing, inactive, revoked, future or expired authority denies. Legacy modules only accept organization-wide effective grants until resource-specific scope support is implemented.
+- Templates are explicit materialized bundles. One grant row per capability means later explicit/template application replaces scope, dates and provenance; removing a template revokes only grants still attributed to it. Template edits never silently change current authority. Finance must be expressly selected and owned by the grantor.
+- Keep staff.manage trusted-provisioned and non-delegable. New staff assignments require reviewed verified account links. Retain compatibility assignments for pre-existing explicitly authorized staff; never infer authority from membership, ministry, course or outreach records. No real/default grants are seeded.
+- Record new migration under the acceptance tool's assigned version `20260928172557`, matching local SQL exactly. Preserve all 17 historical migration identities/hashes; do not rewrite history or reset the branch.
+
+
 - September 26 resume authorization completed the exact reviewed development push and hosted CI. No preview configuration or PR publication was performed: branch deploys are disabled and previews are public. Next gate is Work preview/configuration and authorized-account browser acceptance, not a new feature package. Main and production remain held.
 
 - main is production-controlled. Development occurs on champion-sowgo-backend-v1; passing tests is not release permission.

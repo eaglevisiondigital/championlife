@@ -64,12 +64,12 @@
 <div class="actions"><button type="button" id="staff-add">Add staff access</button><button type="button" id="staff-refresh">Refresh team</button></div>
 <p id="staff-status" role="status"></p><div id="staff-list" class="task-list"></div><h3>Recent access changes</h3><ol id="staff-events"></ol>
 </div>
-<div id="view-people" class="view-panel" hidden>
-<p id="access"></p><button type="button" id="person-add" hidden>Add person</button>
+<div id="view-people" class="view-panel" hidden><button type="button" id="person-add" hidden>Add person</button><div id="people-v1" hidden></div><div id="people-legacy">
+<p id="access"></p>
 <form id="search-form" class="search-bar" role="search"><label>Search by<select id="search-field"><option value="last_name">Last name</option><option value="first_name">First name</option><option value="email">Email</option></select></label><label class="search-input">Find a person<input id="search-query" type="search" maxlength="100" placeholder="Enter a name or email"></label><button type="submit">Search</button><button type="button" id="clear-search">Clear</button></form>
 <div class="table-wrap"><table><caption class="sr-only">People in the selected organization</caption><thead><tr><th scope="col">Name</th><th scope="col">Email</th><th scope="col">Phone</th><th scope="col">Action</th></tr></thead><tbody id="people"></tbody></table></div>
 <div class="pagination"><button id="previous" disabled>Previous</button><span id="page"></span><button id="next" disabled>Next</button></div>
-</div>
+</div></div>
 </section>
 <dialog id="editor"><form id="person-form"><h2 id="person-editor-title">Edit contact details</h2><p>Changes apply to the selected organization.</p><label>First name<input name="first_name" required maxlength="100" autocomplete="given-name"></label><label>Last name<input name="last_name" required maxlength="100" autocomplete="family-name"></label><label>Email<input name="email" type="email" maxlength="320" autocomplete="email"></label><label>Phone<input name="phone" type="tel" maxlength="40" autocomplete="tel"></label><p id="edit-status" role="status"></p><div class="actions"><button type="button" id="cancel">Cancel</button><button type="submit" id="save">Save changes</button></div></form></dialog>
 <dialog id="task-editor"><form id="task-form"><h2 id="task-editor-title">Create follow-up</h2><p id="task-person"></p><label>Next step<input id="task-title" required maxlength="180" placeholder="For example: Schedule a welcome call"></label><label>Due date<input id="task-due" type="date"></label><label>Assigned to<select id="task-assignee"></select></label><p id="task-assignee-status" role="status"></p><label id="task-state-label">Status<select id="task-state"><option value="open">Open</option><option value="completed">Completed</option><option value="canceled">Canceled</option></select></label><p id="task-save-status" role="status"></p><div class="actions"><button type="button" id="task-cancel">Cancel</button><button type="submit" id="task-save">Save task</button></div></form></dialog>
@@ -101,6 +101,8 @@
 <script src="assets/js/staff-overview.js?v=20260926"></script>
 <script src="assets/js/staff-person-detail.js?v=20260926"></script>
 <script src="assets/js/staff-admin.js?v=20260926"></script>
+<dialog id="people-v1-detail" aria-label="Person details"></dialog>
+<script src="assets/js/staff-people-v1.js"></script>
 <script src="assets/js/staff-people.js?v=20260926-households"></script>
 </body></html>
 

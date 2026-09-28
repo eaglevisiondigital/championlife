@@ -1,5 +1,16 @@
 # Implemented architecture
 
+## People/Staff v1 extension — September 28, 2026
+
+Current development/acceptance inventory is 35 public RLS tables, 60 policies and 44 functions, plus private.people with RLS; older counts below describe the earlier baseline. See [People/Staff v1](docs/PEOPLE-STAFF-V1.md) for the audited reuse mapping and RPC contract.
+
+`private.people` supplies a permanent minimal identity anchor; `organization_people` remains the tenant contact projection. Existing contacts receive independent anchors, never inferred email matches. New dated contact relationships and department affiliations work without Auth accounts; existing Auth-bound affiliations remain intact. Staff assignment extends organization_staff_directory and grants extend organization_staff_permissions. Reviewed portal links bind new assignments to verified accounts. Financial permissions are explicit and independent of titles/membership.
+
+Public invoker RPCs delegate to guarded private implementations. Organization-wide grants or active permitted department affiliations govern contact access. Historical modules read an internal effective organization-wide grant projection, preventing scope/expiry/assignment bypass through old helpers. Role templates materialize explicit grants with provenance; one row per capability preserves the existing key. There is no role inheritance or automatic propagation after template edits. Staff mutation revisions, serialization and before/after audit record changes.
+
+These are reusable organization-neutral capabilities in the current Supabase runtime. Champion Life/SowGo organizations, labels, branding and later approved assignments are configuration; no product database consolidation or .NET runtime migration occurs.
+
+
 Static HTML/CSS/JavaScript is served through GitHub/Netlify. netlify.toml builds an explicit public-file manifest into dist/ and configures existing Dream Track edge protection; existing Netlify helpers also support media. Browser clients use a publishable Supabase key and authenticated sessions. Never put privileged credentials in frontend code.
 
 Supabase owns Auth, PostgreSQL application records, RLS and RPCs. The audited project has 32 public tables, 60 policies and 35 public/private functions; no Edge Functions or storage buckets were present in the onboarding audit. This is not a claim that all platform configuration is validated.

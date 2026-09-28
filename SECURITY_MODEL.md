@@ -1,5 +1,16 @@
 # Security model and release gates
 
+## People/Staff v1 security — September 28, 2026
+
+The new accepted development scope uses active verified staff assignments plus explicit current grants, with organization/department checks in RLS and guarded RPCs. Ordinary relationships, ministry participation, registrations, course enrollment and portal links never grant authority. Staff/finance defaults remain deny. `staff.manage` remains non-delegable; neither actor access nor administrator targets can be changed through the UI. Delegation is bounded by the grantor's owned capability, scope and expiry. Assignment disable revokes grants; re-enable does not resurrect them. Reviewed account-link revocation stops person-bound authority.
+
+New RPC-only relationship/affiliation/template tables and private human anchors have RLS with no client policies or direct table access. Historical direct reads and privileged helpers now require effective organization-wide grants, so department grants cannot escape via older modules. Scoped audit/details redact unrelated grants and internal reasons. Audit writes are immutable to clients. No learner notes/answers are added to staff summaries.
+
+The isolated acceptance migration and 20 rollback-only SQL checks passed. Local tests add 56 focused authorization cases, full historical regression and DOM clearing/isolation tests. Verified 35 public RLS tables, private.people RLS, 60 policies, 44 functions, zero anon private execution and fixed private definer search paths. No test staff/grants remain. [Contract and evidence](docs/PEOPLE-STAFF-V1.md).
+
+Advisor results: five intentional INFO notices for RLS-enabled RPC-only/private tables; existing leaked-password-protection WARN remains. [Notice explanation](https://supabase.com/docs/guides/database/database-linter?lint=0008_rls_enabled_no_policy). Auth settings were not changed. Local browser validation used synthetic mocked data; authenticated hosted People UI acceptance and production release remain separate. Earlier security findings below retain their historical dates and are not new work authorizations.
+
+
 September 26 publish follow-up: hosted synthetic-regression passed on 3fd026acd27940e9b5e9c2d09e136a27bd55200a. Auth URL allowlist and private Data API exclusion remain unverified. Netlify previews are public; branch deploys currently disabled. Frontend preview hosting would not isolate the configured live Supabase backend. Approve test accounts/data scope before login or mutation acceptance. Root publishing requires artifact review before preview exposure. Existing Dream Track functions contain a fallback access code; review that protection without changing production in this package. No Netlify/Auth/grant/schema settings were changed.
 
 Updated September 26, 2026. Scoped engineering findings, not a security certification.

@@ -4,7 +4,7 @@
   const status = $('status'), select = $('organization'), body = $('people');
   let user, permissions = [], rows = [], page = 0, request = 0, editing = null, invalid = false;
   const size = 25;
-  let portals = null, giving = null, workflows = null, tags = null, households = null, overview = null, personDetail = null, staffAdmin = null, personEditToken = 0;
+  let peopleV1 = null, portals = null, giving = null, workflows = null, tags = null, households = null, overview = null, personDetail = null, staffAdmin = null, personEditToken = 0;
   let taskPage = 0, taskRequest = 0, taskEditing = null, taskEditToken = 0, historyRequest = 0;
   let currentView = 'overview', searchText = '', searchField = 'last_name';
   const views = {
@@ -42,6 +42,7 @@
   }
   function showView(view, focus = true) {
     if (!views[view]) return;
+    if (peopleV1 && view === 'staff') view = 'people';
     currentView = view;
     if(view!=='overview')overview?.clear();
     taskRequest++; $('task-list').replaceChildren();
@@ -72,15 +73,16 @@
   }
   showView('overview', false);
   function can(permission, org = select.value) {
-    return permissions.some(p => p.organization_id === org && p.permission === permission);
+    return permissions.some(p => p.organization_id === org && p.permission === permission && !p.department_ids);
   }
   function clearPrivateView() {
-    invalid = true; portals?.clear(); giving?.clear(); workflows?.clear(); tags?.clear(); households?.clear(); overview?.clear(); personDetail?.clear(); personEditToken++; staffAdmin?.clear(); clearTasks(); request++; rows = []; permissions = []; editing = null;
+    invalid = true; peopleV1?.clear(); portals?.clear(); giving?.clear(); workflows?.clear(); tags?.clear(); households?.clear(); overview?.clear(); personDetail?.clear(); personEditToken++; staffAdmin?.clear(); clearTasks(); request++; rows = []; permissions = []; editing = null;
     body.replaceChildren(); select.replaceChildren(); $('workspace').hidden = true;
     $('editor').close(); $('person-form').reset(); $('access-summary').textContent = ''; $('workspace-name').textContent = 'Ministry workspace';
     status.textContent = 'Your account changed. Reload this page to continue.';
   }
   async function loadPeople() {
+    if (peopleV1) { status.textContent = ''; await peopleV1.load(); return; }
     const token = ++request, org = select.value;
     rows = []; body.replaceChildren(); $('previous').disabled = true; $('next').disabled = true;
     if (invalid || !can('people.read', org)) return;
@@ -164,7 +166,7 @@
   $('cancel').addEventListener('click', () => { personEditToken++; $('editor').close(); editing = null; });
   $('editor').addEventListener('cancel', () => {personEditToken++;editing=null;});
   select.addEventListener('change', () => {
-    portals?.clear(); giving?.clear(); workflows?.clear(); tags?.clear(); households?.clear(); overview?.clear(); personDetail?.clear(); personEditToken++; staffAdmin?.clear(); clearTasks(); taskPage = 0; request++; page = 0; rows = []; body.replaceChildren(); editing = null;
+    peopleV1?.clear(); portals?.clear(); giving?.clear(); workflows?.clear(); tags?.clear(); households?.clear(); overview?.clear(); personDetail?.clear(); personEditToken++; staffAdmin?.clear(); clearTasks(); taskPage = 0; request++; page = 0; rows = []; body.replaceChildren(); editing = null;
     $('editor').close(); $('person-form').reset(); searchText = ''; $('search-query').value = '';
     updateOrganization(); showView(currentView, false);
   });
@@ -188,14 +190,21 @@
       if (!user) { status.textContent = 'Sign in to access your ministry workspace.'; $('sign-in').hidden = false; return; }
       $('sign-out').hidden = false;
       auth.client.auth.onAuthStateChange((_event, session) => { if (session?.user?.id !== user.id) clearPrivateView(); });
-      const [grants, orgs] = await Promise.all([
+      let grants, orgs;
+      if (peopleV1) {
+        const response = await auth.client.rpc('staff_workspace_context');
+        if (response.error) throw response.error;
+        grants = {data:response.data.grants}; orgs = {data:response.data.organizations};
+      } else {
+      [grants, orgs] = await Promise.all([
         auth.client.from('organization_staff_permissions').select('organization_id,permission').eq('user_id',user.id).is('revoked_at',null),
         auth.client.from('organizations').select('id,name').order('name')
       ]);
+      }
       if (invalid) return;
       if (grants.error || orgs.error) throw new Error('Workspace unavailable');
       permissions = grants.data || [];
-      const available = (orgs.data || []).filter(org => can('people.read',org.id) || can('staff.manage',org.id) || can('finance.read',org.id));
+      const available = (orgs.data || []).filter(org => (peopleV1 && permissions.some(p=>p.organization_id===org.id)) || can('people.read',org.id) || can('staff.manage',org.id) || can('finance.read',org.id));
       if (!available.length) { status.textContent = 'No staff workspace is assigned to this account yet. Ask your ministry administrator for access.'; return; }
       for (const org of available) { const option = document.createElement('option'); option.value = org.id; option.textContent = org.name; select.append(option); }
       $('workspace').hidden = false; updateOrganization(); showView(currentView, false);
@@ -318,6 +327,8 @@
   households=window.ChampionHouseholds?.({auth,getContext:()=>({user,organizationId:select.value,can,invalid}),onAccountChange:clearPrivateView});
   overview=window.ChampionStaffOverview?.({auth,getContext:()=>({user,organizationId:select.value,can,invalid}),onTask:task=>openTask(task)});
   personDetail=window.ChampionPersonDetail?.({auth,getContext:()=>({user,organizationId:select.value,can,invalid}),onEdit:editPerson,onFollowup:person=>openTask(null,person),onUpdateTask:task=>openTask(task)});
+  peopleV1 = window.ChampionPeopleV1?.({auth,getContext:()=>({user,organizationId:select.value,can,invalid}),onAccountChange:clearPrivateView,onPortal:person=>portals?.openLink(person),onRelated:person=>personDetail?.open(person)});
+  if (peopleV1) { document.getElementById('people-v1').hidden=false; document.getElementById('people-legacy').hidden=true; }
   staffAdmin = window.ChampionStaffAdmin?.({auth,onAccountChange:clearPrivateView,getContext:()=>({user,organizationId:select.value,can,invalid})});
   start();
 })();

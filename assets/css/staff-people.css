@@ -7,7 +7,7 @@
 main{width:100%;max-width:1250px;margin:0 auto;padding:2.5rem clamp(1rem,3vw,3rem)}h1{font-size:clamp(2rem,3vw,2.8rem)}h2{font-size:1.15rem;letter-spacing:-.02em}h3{font-size:1rem}.intro{margin-bottom:1rem}#workspace{padding:1.5rem}.toolbar{padding-bottom:1.3rem;border-bottom:1px solid var(--staff-border)}.view-panel{padding-top:1rem}.section-heading{display:flex;align-items:center;justify-content:space-between}.badge,.module-card>span{font-size:.72rem;border-radius:2rem;background:#edf3ec;color:#245c4a;padding:.35rem .65rem;display:inline-block}.quick-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1rem}.quick-card{display:grid;gap:1rem;text-align:left;padding:1.5rem;border-color:var(--staff-border)}.quick-card strong{font-size:1.25rem}.quick-card>span:not(.eyebrow){font-size:.9rem;line-height:1.5}.access-card{margin-top:1.5rem;padding:1rem 1.4rem;background:#f6f7f3;border-radius:.75rem}.access-card p{font-size:.9rem;color:#53665d}.module-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1rem}.module-card{border:1px solid var(--staff-border);padding:1rem;border-radius:.75rem}.module-card p{font-size:.85rem;line-height:1.6;color:#53665d}.module-card small{font-size:.72rem;color:#53665d}.search-bar{display:flex;align-items:end;gap:.7rem;flex-wrap:wrap;margin-bottom:1rem}.search-input{flex:1;min-width:180px}#view-title:focus{outline:none}footer{padding:1rem}
 @media(min-width:901px){.sidebar{position:sticky;top:0;align-self:start;min-height:calc(100vh - 85px)}}
 @media(max-width:1000px){.module-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media(max-width:900px){.app-layout{grid-template-columns:1fr}.sidebar{padding:.7rem 1rem}.sidebar>.eyebrow,.sidebar-note{display:none}.sidebar nav{display:flex;margin:0;flex-direction:row;justify-content:flex-start;overflow:auto}.sidebar button{white-space:nowrap}.sidebar button[aria-current]{box-shadow:inset 0 -3px #b9d7b5}main{margin:0;padding:1.5rem 1rem}}
+@media(max-width:900px){.app-layout{grid-template-columns:minmax(0,1fr)}.sidebar,main{min-width:0}.sidebar{padding:.7rem 1rem}.sidebar>.eyebrow,.sidebar-note{display:none}.sidebar nav{display:flex;margin:0;flex-direction:row;justify-content:flex-start;overflow:auto}.sidebar button{white-space:nowrap}.sidebar button[aria-current]{box-shadow:inset 0 -3px #b9d7b5}main{margin:0;padding:1.5rem 1rem}}
 @media(max-width:600px){.quick-grid,.module-grid{grid-template-columns:1fr}.search-bar{align-items:stretch}.search-bar label{width:100%}.quick-card{padding:1.1rem}#workspace{padding:1rem}}
 
 .task-list{display:grid;gap:.8rem}.task-card{border:1px solid var(--staff-border);border-radius:.75rem;padding:1rem}.task-card h3{margin:.3rem 0 .7rem}.task-card p{font-size:.9rem;color:#53665d}.task-card .actions{justify-content:flex-start;margin-top:.6rem;flex-wrap:wrap}#people td:last-child button+button{margin-left:.4rem}#task-events{padding-left:1.2rem}#task-events li{margin:1rem 0;font-size:.9rem;line-height:1.6}
@@ -17,3 +17,19 @@ main{width:100%;max-width:1250px;margin:0 auto;padding:2.5rem clamp(1rem,3vw,3re
 #house-detail{margin-top:1.5rem}#house-member-form{display:grid;gap:.8rem;padding:1rem;background:#f6f7f3;border-radius:.7rem;margin:1rem 0}#house-members button,#house-members select{margin:.3rem .4rem .3rem 0}#house-history{font-size:.85rem;line-height:1.7;padding-left:1.2rem}
 
 textarea{font:inherit;color:inherit;border:1px solid #aebeb3;border-radius:.5rem;padding:.7rem .9rem;max-width:100%;resize:vertical}textarea:focus-visible{outline:3px solid #357f61;outline-offset:3px}
+
+/* People v1 extends the existing workspace palette and layout. */
+#people-v1-detail{width:min(900px,94vw);max-height:90vh;overflow:auto}
+#people-v1-detail nav{display:flex;flex-wrap:wrap;gap:.5rem;margin:1rem 0}
+#people-v1-detail nav [aria-pressed=true]{background:#183c3b;color:white}
+.people-form{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1rem;margin:1.25rem 0;padding:1rem;border:1px solid #d9e3df;border-radius:12px}
+.people-form h3,.people-form p,.people-form fieldset{grid-column:1/-1}
+.people-form label{display:flex;flex-direction:column;gap:.4rem}
+.people-form input,.people-form select{max-width:100%;box-sizing:border-box;min-height:42px}
+.people-form select[multiple]{min-height:110px}
+.financial-access{border:2px solid #98743b;border-radius:12px;padding:1rem;margin:1rem 0;background:#fffbf2}
+.person-name{font-size:1.12rem;font-weight:700;text-align:left}
+@media(max-width:600px){#people-v1-detail{padding:1rem}.people-form{grid-template-columns:1fr}#people-v1 .search-bar{display:grid;grid-template-columns:1fr}}
+
+.people-form>button{align-self:end;min-height:44px}.people-form>*{min-width:0}
+@media(max-width:600px){#people-v1-detail nav{flex-direction:row;align-items:center}#people-v1 .search-bar>*{min-width:0}#people-v1 .search-bar input,#people-v1 .search-bar select{width:100%}.toolbar select{min-width:0;max-width:100%}}
