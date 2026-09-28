@@ -1,5 +1,17 @@
 # Durable decisions
 
+## Events/Calendar v1 decisions — September 28, 2026
+
+- Explicit assignment authorizes Events/Calendar implementation, isolated acceptance forward migration/testing, development commit/push and CI. The earlier People/Staff next-package hold is superseded only for this module. Production and Registration + Check-in remain held.
+- Reuse current tenant/department/verified-staff grants and account-link architecture. Champion Life is the first tenant with America/Chicago default; other tenant defaults are configurable, initially UTC. No real events, ministry labels or staff grants are seeded.
+- Persist series, stable local-date occurrences and separate overrides. Bounded, demand-driven UTC materialization preserves local time across DST and independent cancellations. Missing month dates are skipped. Explicit whole-series and one-occurrence editing only; proper series splitting is deferred.
+- events.manage controls create/edit/approve/publish within explicit scope. Optional approval validates workflow and unchanged approved content, but is not two-person separation of duties. No inferred title/member/finance authority or new approval keys.
+- Use conservative member/hidden handling: reviewed verified linked current members can see published member events; hidden events remain authorized-event-staff-only even by UUID. Public unlisted-link access is deferred rather than silently treating a URL as authorization.
+- Public tables remain RLS-enabled RPC-only. events_catalog is the exact sole anonymous private safe-projection exception behind an invoker wrapper; private helpers and all raw event tables remain denied. Tests explicitly enumerate this exception instead of weakening general access checks.
+- Location overlaps are warnings over effective materialized occurrence times; setup/cleanup buffers, full booking and custom-text matching are deferred. Native registration/check-in/payment settings are honest future hooks only.
+- New migration takes the acceptance tool's assigned version 20260928183137, byte-identical locally/remotely. Preserve all 18 prior versions/hashes, existing acceptance users/state and production boundaries. Review [Events contract](docs/EVENTS-CALENDAR-V1.md) before expanding v1 bounds or starting the next package.
+
+
 ## People/Staff v1 decisions — September 28, 2026
 
 - The explicit user assignment authorizes this forward People/Staff package, isolated acceptance migration/testing, development commit/push and CI observation. Earlier feature holds do not block it. Production, merge and real staff provisioning remain prohibited; Chat review precedes Events/Calendar.

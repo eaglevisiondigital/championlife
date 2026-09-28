@@ -1,5 +1,14 @@
 # Implemented architecture
 
+## Events/Calendar v1 extension — September 28, 2026
+
+Current development/acceptance inventory: 42 public RLS tables, 60 policies and 52 functions, plus private.people and private.event_schedule. [Events contract](docs/EVENTS-CALENDAR-V1.md) defines the eight added functions and seven tables. Existing organizations, departments, People/Staff grants, reviewed account links, Auth and public build are reused unchanged.
+
+Series store local calendar rules and event timezone. Persisted occurrences use UTC instants and a stable series/local-date key; separate exceptions survive regeneration. Owner-only bounded expansion supports daily/weekly/selected-weekday/monthly-date/ordinal-weekday/yearly schedules, inclusive end/count limits and multi-day spans. Demand-driven materialization serializes per organization and preserves overridden removed dates. Native list/month/detail pages and the staff editor share the same guarded data source. Original layouts extend existing Champion Life/Propel styling.
+
+Public invoker RPCs delegate to fixed-path private functions. events_catalog is the sole intentionally anonymous safe-projection private implementation; all administrative tables and other private helpers remain inaccessible to anon. events_workspace enforces existing organization/department grant semantics, revisions and audited lifecycle/exception writes. No permanent provider iframe, second static event model, new runtime, payment processing or product database merge is introduced.
+
+
 ## People/Staff v1 extension — September 28, 2026
 
 Current development/acceptance inventory is 35 public RLS tables, 60 policies and 44 functions, plus private.people with RLS; older counts below describe the earlier baseline. See [People/Staff v1](docs/PEOPLE-STAFF-V1.md) for the audited reuse mapping and RPC contract.

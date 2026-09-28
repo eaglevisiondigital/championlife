@@ -33,3 +33,5 @@ textarea{font:inherit;color:inherit;border:1px solid #aebeb3;border-radius:.5rem
 
 .people-form>button{align-self:end;min-height:44px}.people-form>*{min-width:0}
 @media(max-width:600px){#people-v1-detail nav{flex-direction:row;align-items:center}#people-v1 .search-bar>*{min-width:0}#people-v1 .search-bar input,#people-v1 .search-bar select{width:100%}.toolbar select{min-width:0;max-width:100%}}
+
+.sidebar a[href="staff-events.html"]{display:block;color:#dfebe4;padding:.9rem 1rem;text-decoration:none;border-radius:.5rem}.sidebar a[href="staff-events.html"]:hover{background:#ffffff1c;color:white}

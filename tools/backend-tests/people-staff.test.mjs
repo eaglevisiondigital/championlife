@@ -100,8 +100,8 @@ ok((await call('list',{department_id:id(202)})).length===1,'server filters depar
 ok((await call('list',{relationship:'member'})).some(p=>p.id===id(106)),'server filters relationships');
 ok(!(await call('list',{portal:'active'})).some(p=>p.id===id(103)),'server filters reviewed portal status');
 await owner();
-const noAnon=(await q("select count(*)::int as n from pg_proc p join pg_namespace n on n.oid=p.pronamespace where n.nspname='private' and has_function_privilege('anon',p.oid,'execute')")).rows[0].n;
-ok(noAnon===0,'no anonymous execution on any private helper');
+const noAnon=(await q("select count(*)::int as n from pg_proc p join pg_namespace n on n.oid=p.pronamespace where n.nspname='private' and p.oid<>'private.events_catalog(text,date,date,jsonb)'::regprocedure and has_function_privilege('anon',p.oid,'execute')")).rows[0].n;
+ok(noAnon===0,'no anonymous execution on private helpers other than the safe Events catalog');
 const safePaths=(await q("select count(*)::int as n from pg_proc p join pg_namespace n on n.oid=p.pronamespace where n.nspname='private' and p.prosecdef and not ('search_path=\"\"'=any(p.proconfig))")).rows[0].n;
 ok(safePaths===0,'every private definer has fixed empty search_path');
 await db.exec(readFileSync(new URL('people-staff.acceptance.sql',import.meta.url),'utf8'));

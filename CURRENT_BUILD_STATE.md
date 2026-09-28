@@ -1,5 +1,16 @@
 # Current build state
 
+## Events + Calendar v1 — September 28, 2026
+
+The explicit Events assignment supersedes the earlier next-package hold for this package only. Starting HEAD: `b04a3de8bfcf44c709e556247e485bf6b12b04c1`. Implemented a reusable organization-scoped series/occurrence/exception model, bounded timezone-aware recurrence, tenant locations/audiences/types, scoped event staff editor, native public list/calendar/detail, optional approval, private audit and honest registration hooks. No native registration/check-in or real events were created.
+
+Acceptance received only `20260928183137_events_calendar_v1`; SQL matches local bytes and all 18 prior migrations are unchanged. Inventory: 19 migrations, 42 public RLS tables, 60 policies, 52 functions plus private.people and the private effective-schedule view. Seven new tables are RPC-only with no client grants/policies. All 22 hosted rollback assertions passed; two existing Auth users and zero contacts/staff grants remain, and no synthetic event records remain. Only tenant timezone defaults persist.
+
+Validation: 29 local scripts, 74 focused Events checks plus 22 rollback assertions, Events DOM tests and actual desktop/mobile browser interaction against isolated local SQL. See [Events contract](docs/EVENTS-CALENDAR-V1.md) for bounds, visibility, exception preservation, publication authority and advisor findings. This is implemented and acceptance database-validated, not production-released or hosted real-account browser-accepted. Commit/push/CI are reported in the delivery handoff. Main remains `66591f22d5315d093091b99152c18d43bfcb3893`; PR #2 stays open/draft/unmerged. Next gate: Chat reviews Events v1 before any Registration + Check-in implementation.
+
+The dated sections below preserve historical state and superseded package holds.
+
+
 ## People + Staff Access v1 — September 28, 2026
 
 The explicit People/Staff assignment supersedes the earlier next-package hold for this package only. Starting development HEAD: `5eb3d4576109b47a913a0f8c42fa79fca3f58acc`. Existing contact/account/organization/staff/department/audit groundwork is extended; completed modules and giving destinations are preserved.

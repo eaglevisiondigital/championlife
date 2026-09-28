@@ -73,6 +73,10 @@
     {
       "file": "20260928172557_people_staff_v1.sql",
       "sha256": "0c00fe4f50f2bc92f1d9a4896125f9143a56e7ea37e3317540954cdb52cadc07"
+    },
+    {
+      "file": "20260928183137_events_calendar_v1.sql",
+      "sha256": "42af6e032d0a78c5b7b22d128ecb8a7240070abbf7d7bb8a0218e36e040d3f99"
     }
   ],
   "tables": [
@@ -82,6 +86,34 @@
     },
     {
       "relname": "courses",
+      "relrowsecurity": true
+    },
+    {
+      "relname": "event_audit",
+      "relrowsecurity": true
+    },
+    {
+      "relname": "event_exceptions",
+      "relrowsecurity": true
+    },
+    {
+      "relname": "event_labels",
+      "relrowsecurity": true
+    },
+    {
+      "relname": "event_locations",
+      "relrowsecurity": true
+    },
+    {
+      "relname": "event_occurrences",
+      "relrowsecurity": true
+    },
+    {
+      "relname": "event_series",
+      "relrowsecurity": true
+    },
+    {
+      "relname": "event_settings",
       "relrowsecurity": true
     },
     {
@@ -1144,6 +1176,54 @@
       "name": "staff_workspace_context",
       "args": "",
       "sha256": "0a26ccc8e5eefc2b18d2651c350d8c58e3c727d1dd0f8d913c679d31892495df"
+    },
+    {
+      "schema": "private",
+      "name": "event_conflicts",
+      "args": "p_series uuid",
+      "sha256": "aaa8877b52561ef387f62a7ab02b8e125a8b7ef412f94b4132839c4ea831d17a"
+    },
+    {
+      "schema": "private",
+      "name": "event_materialize",
+      "args": "p_series uuid, p_from date, p_to date",
+      "sha256": "214ac923a3ba688938d4ad239302bf724af27528b2a27b946c7c4d796a4a945a"
+    },
+    {
+      "schema": "private",
+      "name": "event_member",
+      "args": "p_org uuid",
+      "sha256": "24cfdc602c6ee1b63de70ba753297c884d8ee4b73523a17dd86adbefb08f4fc0"
+    },
+    {
+      "schema": "private",
+      "name": "event_slots",
+      "args": "s event_series, p_from date, p_to date",
+      "sha256": "ede03e240509ac70cb1df14ac7be910aec9871b17b2f3198b649e68dc703f4bd"
+    },
+    {
+      "schema": "private",
+      "name": "events_catalog",
+      "args": "p_slug text, p_from date, p_to date, p_filters jsonb",
+      "sha256": "b417ab6bf7d14f785e1469094e32b89ad735af204b856097ef6f3562d8315504"
+    },
+    {
+      "schema": "private",
+      "name": "events_workspace",
+      "args": "p_org uuid, p_action text, p_data jsonb",
+      "sha256": "5e3629064b5c85829c55b3e944472f67c8a7fcd8bec2aa58fe67c55920a0bcb9"
+    },
+    {
+      "schema": "public",
+      "name": "events_catalog",
+      "args": "p_slug text, p_from date, p_to date, p_filters jsonb",
+      "sha256": "45b26b428c42a7fe40d11472c32135adb3bb7e4f17f0e6862ffa654cd8e9121d"
+    },
+    {
+      "schema": "public",
+      "name": "events_workspace",
+      "args": "p_org uuid, p_action text, p_data jsonb",
+      "sha256": "11bdff58db1ebe626e7e9089f0303da0db5b9a98a5866acb36a795a225adf115"
     }
   ]
 }

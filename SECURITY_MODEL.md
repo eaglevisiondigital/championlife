@@ -1,5 +1,14 @@
 # Security model and release gates
 
+## Events/Calendar v1 security — September 28, 2026
+
+Seven new event tables deny direct anon/authenticated access and have RLS with no client policies. Guarded RPCs enforce active explicit events.view/events.manage and organization/department scope. Shared configuration requires organization-wide management. Composite foreign keys, allowlisted save fields, expected revisions and serialized writes prevent tenant reassignment and stale changes. Administrative history remains private.
+
+Only the explicit events_catalog safe projection is callable anonymously (public invoker plus exact private implementation). The prior blanket anonymous-private-function regression assertion now permits only that signature, continuing to reject every other private helper. Private schema exclusion remains required. Published public fields are constructed explicitly; notes, operations, permissions, private contacts and raw audits are never serialized. Linked member eligibility requires a verified account, active reviewed tenant link and current member relationship. Hidden UUID knowledge does not confer access. Staff scope is enforced independently of visibility.
+
+Acceptance SQL and all 22 rollback checks passed; 42 public RLS tables, 60 policies, 52 functions, fixed definer search paths and table/function ACLs verified. Local full regression, 74 focused Events checks, DOM isolation tests and synthetic browser flows passed. No test events, contacts or grants remain. Advisor shows 12 intentional RPC-only no-policy INFO findings and the unchanged leaked-password WARN; [notice rationale](https://supabase.com/docs/guides/database/database-linter?lint=0008_rls_enabled_no_policy). No Auth changes. See [Events contract](docs/EVENTS-CALENDAR-V1.md). Hosted real-account acceptance and production release remain separate gates.
+
+
 ## People/Staff v1 security — September 28, 2026
 
 The new accepted development scope uses active verified staff assignments plus explicit current grants, with organization/department checks in RLS and guarded RPCs. Ordinary relationships, ministry participation, registrations, course enrollment and portal links never grant authority. Staff/finance defaults remain deny. `staff.manage` remains non-delegable; neither actor access nor administrator targets can be changed through the UI. Delegation is bounded by the grantor's owned capability, scope and expiry. Assignment disable revokes grants; re-enable does not resurrect them. Reviewed account-link revocation stops person-bound authority.
