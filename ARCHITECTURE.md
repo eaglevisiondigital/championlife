@@ -1,5 +1,13 @@
 # Implemented architecture
 
+## Dream Track v1 extension — September 29, 2026
+
+Current acceptance/development inventory is 57 public RLS tables, 60 policies and 73 functions, plus the existing private identity/schedule structures. Eight new course-bound tables extend existing enrollment/progress/answer/account identities; no disconnected LMS or product database merge is introduced. [Dream Track contract](docs/DREAM-TRACK-V1.md) covers the seven existing videos, exact question bank, guarded RPCs, invites, code and final-meeting badge.
+
+Learner mutations serialize on the existing enrollment row. Numeric watched-segment unions, server-time bounds and per-lesson video-session tokens support exact watch thresholds and resume. Mastered answers survive missed-only retries; immutable attempts retain submitted value/version/result/remediation. Staff final-meeting updates additionally check completion revision; one durable badge can be revoked/reactivated with audit. Enrollment/badge never creates staff, member or portal authority.
+
+The existing Grip stylesheet/layout is reused without changing its engine. My Discipleship adds a separate Dream section. Explicit public shell/assets are included in the manifest, while question keys, service code and private artifacts stay excluded. Old Dream cookie gating/fallback is retired in development; authenticated course RPCs provide access authority. The acceptance-only Edge email adapter uses existing Supabase Auth email with exact preview callback and verified-email continuation; no new SMTP provider or production activation is introduced.
+
 ## Registration/Check-in v1 extension — September 29, 2026
 
 Current development/acceptance inventory: 49 public RLS tables, 60 policies and 62 public/private functions, plus existing private people/schedule structures. [Registration contract](docs/REGISTRATION-CHECKIN-V1.md) describes seven added tables and ten added functions. Events, organizations, departments, staff grants, People/account links, payment destination references and the static public build are reused.

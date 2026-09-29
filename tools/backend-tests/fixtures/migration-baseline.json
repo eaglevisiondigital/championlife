@@ -1,6 +1,6 @@
 {
-  "verifiedAt": "2026-09-26",
-  "source": "Read-only Supabase migration history and schema catalog; no application data.",
+  "verifiedAt": "2026-09-29",
+  "source": "Historical Supabase catalog baseline extended by full local replay; Dream Track hosted migration byte parity and ACLs verified. No application data.",
   "migrations": [
     {
       "file": "20260923114743_create_course_progress_schema.sql",
@@ -81,11 +81,47 @@
     {
       "file": "20260929131021_registration_checkin_v1.sql",
       "sha256": "2f1bea89ab63851f226d697319a7b5bddd3e409b255f6286a5e8adfe3fa51224"
+    },
+    {
+      "file": "20260929221116_dream_track_v1.sql",
+      "sha256": "5dde77e16b2eeae07081640ff920d8e440a6b644e593b3889543b65323d0050d"
     }
   ],
   "tables": [
     {
+      "relname": "course_attempts",
+      "relrowsecurity": true
+    },
+    {
+      "relname": "course_audit",
+      "relrowsecurity": true
+    },
+    {
+      "relname": "course_claim_limits",
+      "relrowsecurity": true
+    },
+    {
+      "relname": "course_completions",
+      "relrowsecurity": true
+    },
+    {
       "relname": "course_enrollments",
+      "relrowsecurity": true
+    },
+    {
+      "relname": "course_invites",
+      "relrowsecurity": true
+    },
+    {
+      "relname": "course_lessons",
+      "relrowsecurity": true
+    },
+    {
+      "relname": "course_questions",
+      "relrowsecurity": true
+    },
+    {
+      "relname": "course_settings",
       "relrowsecurity": true
     },
     {
@@ -346,7 +382,7 @@
       ],
       "cmd": "INSERT",
       "qual": null,
-      "with_check": "(( SELECT auth.uid() AS uid) = user_id)"
+      "with_check": "((( SELECT auth.uid() AS uid) = user_id) AND (course_id IN ( SELECT courses.id\n   FROM courses\n  WHERE (courses.slug <> 'dream-track'::text))))"
     },
     {
       "schemaname": "public",
@@ -356,8 +392,8 @@
         "authenticated"
       ],
       "cmd": "UPDATE",
-      "qual": "(( SELECT auth.uid() AS uid) = user_id)",
-      "with_check": "(( SELECT auth.uid() AS uid) = user_id)"
+      "qual": "((( SELECT auth.uid() AS uid) = user_id) AND (course_id IN ( SELECT courses.id\n   FROM courses\n  WHERE (courses.slug <> 'dream-track'::text))))",
+      "with_check": "((( SELECT auth.uid() AS uid) = user_id) AND (course_id IN ( SELECT courses.id\n   FROM courses\n  WHERE (courses.slug <> 'dream-track'::text))))"
     },
     {
       "schemaname": "public",
@@ -379,7 +415,7 @@
       ],
       "cmd": "INSERT",
       "qual": null,
-      "with_check": "(( SELECT auth.uid() AS uid) = user_id)"
+      "with_check": "((( SELECT auth.uid() AS uid) = user_id) AND (course_id IN ( SELECT courses.id\n   FROM courses\n  WHERE (courses.slug <> 'dream-track'::text))))"
     },
     {
       "schemaname": "public",
@@ -400,8 +436,8 @@
         "authenticated"
       ],
       "cmd": "UPDATE",
-      "qual": "(( SELECT auth.uid() AS uid) = user_id)",
-      "with_check": "(( SELECT auth.uid() AS uid) = user_id)"
+      "qual": "((( SELECT auth.uid() AS uid) = user_id) AND (course_id IN ( SELECT courses.id\n   FROM courses\n  WHERE (courses.slug <> 'dream-track'::text))))",
+      "with_check": "((( SELECT auth.uid() AS uid) = user_id) AND (course_id IN ( SELECT courses.id\n   FROM courses\n  WHERE (courses.slug <> 'dream-track'::text))))"
     },
     {
       "schemaname": "public",
@@ -423,7 +459,7 @@
       ],
       "cmd": "INSERT",
       "qual": null,
-      "with_check": "(( SELECT auth.uid() AS uid) = user_id)"
+      "with_check": "((( SELECT auth.uid() AS uid) = user_id) AND (course_id IN ( SELECT courses.id\n   FROM courses\n  WHERE (courses.slug <> 'dream-track'::text))))"
     },
     {
       "schemaname": "public",
@@ -433,8 +469,8 @@
         "authenticated"
       ],
       "cmd": "UPDATE",
-      "qual": "(( SELECT auth.uid() AS uid) = user_id)",
-      "with_check": "(( SELECT auth.uid() AS uid) = user_id)"
+      "qual": "((( SELECT auth.uid() AS uid) = user_id) AND (course_id IN ( SELECT courses.id\n   FROM courses\n  WHERE (courses.slug <> 'dream-track'::text))))",
+      "with_check": "((( SELECT auth.uid() AS uid) = user_id) AND (course_id IN ( SELECT courses.id\n   FROM courses\n  WHERE (courses.slug <> 'dream-track'::text))))"
     },
     {
       "schemaname": "public",
@@ -1316,6 +1352,72 @@
       "name": "registrations_workspace",
       "args": "p_org uuid, p_action text, p_data jsonb",
       "sha256": "afc8e3b4b6ceb94463314ee33956fc4064a9850f389d61c309deca514e5c9ef3"
+    },
+    {
+      "schema": "private",
+      "name": "course_code_hash",
+      "args": "v text, s text",
+      "sha256": "00fc8fcedc110492631b22c2f650c21cd6dffa579c01ac80ebbade68687dd64e"
+    },
+    {
+      "schema": "private",
+      "name": "course_immutable",
+      "args": "",
+      "sha256": "445ccd02783932604a7da0980180b381528a78a7fdbb829dae07cbe7e6e7e697"
+    },
+    {
+      "schema": "private",
+      "name": "course_invite_delivery",
+      "args": "p_id uuid, p_delivery uuid, p_sent boolean",
+      "sha256": "f2a510efc54060187eb64388234d9b8d520d7e70e70010455d801525dee521e8"
+    },
+    {
+      "schema": "private",
+      "name": "course_normalize",
+      "args": "v text",
+      "sha256": "174a7b1d8e608c1b945d2a426e6767d1d1e65b05d7d7e91b9d28f149b3f5d139"
+    },
+    {
+      "schema": "private",
+      "name": "course_recompute",
+      "args": "p_course bigint, p_user uuid, p_lesson integer",
+      "sha256": "7749d2ae3a2e95dbb2a0b5c4e1c6d59c7f3a36fe722dec5742aa3d42011eb58f"
+    },
+    {
+      "schema": "private",
+      "name": "course_snapshot",
+      "args": "p_course bigint, p_user uuid, p_lesson integer",
+      "sha256": "50b95f76ca3bd76c9dda45d42a5162fec3ef27289c79551203036129599abe01"
+    },
+    {
+      "schema": "private",
+      "name": "dream_track",
+      "args": "p_action text, p_data jsonb",
+      "sha256": "51c90913693dc52aa5d6b3d4e349cf40f27f976f5fc4b9aa1494c9ad126a2c34"
+    },
+    {
+      "schema": "private",
+      "name": "dream_track_admin",
+      "args": "p_org uuid, p_action text, p_data jsonb",
+      "sha256": "89bc3e8f61ee37981bbe8d34a4c925023d80cd03295126b1cec380fdcdb18f5c"
+    },
+    {
+      "schema": "public",
+      "name": "course_invite_delivery",
+      "args": "p_id uuid, p_delivery uuid, p_sent boolean",
+      "sha256": "bf7596084db8131ba94326b31bcbefd0a456f1094c068b200889cee462c0f3d4"
+    },
+    {
+      "schema": "public",
+      "name": "dream_track",
+      "args": "p_action text, p_data jsonb",
+      "sha256": "08ad8a000ed43a6b04157bd6ab1f8f2b7656f30343332719b909739b3bed26f5"
+    },
+    {
+      "schema": "public",
+      "name": "dream_track_admin",
+      "args": "p_org uuid, p_action text, p_data jsonb",
+      "sha256": "678fc0162d9b708219b2ab3e35b6de6bef72d5d1ccdf059d089577b8e43c513a"
     }
   ]
 }

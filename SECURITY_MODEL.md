@@ -1,5 +1,15 @@
 # Security model and release gates
 
+## Dream Track v1 security — September 29, 2026
+
+Eight new tables are RLS-enabled RPC-only. Three existing course self-write policy pairs now exclude Dream Track in USING and WITH CHECK, preventing direct enrollment/progress/mastery forgery or moving a Grip row into Dream. Keys and staff-only meeting notes/identity metadata are excluded from learner responses. Fixed search paths and explicit wrapper/helper ACLs were verified on acceptance; direct browser grants on all eight tables are zero. courses.manage is canonical and organization-wide for this course; optional People selection is explicit and same-tenant, never email merging.
+
+Codes are salted/iterated hashes with minimum length and verified-account guessing limits. Random hashed expiring invitation tokens require matching verified email, are single-use/idempotent, and rotate on resend. Only the server service-role receipt RPC can mark provider acceptance. The acceptance Edge adapter has gateway verify_jwt=false because it explicitly validates the bearer through Auth and the canonical guarded manager RPC; requests without authentication returned 401. Exact preview-origin restriction remains, and service credentials never reach browsers. Production deployment/origin and real email acceptance are separately gated.
+
+All 34 regression scripts, 67 Dream backend checks, 17 DOM/auth checks and native independent-session races passed; 16 hosted rollback assertions passed with existing data counts preserved. Current inventory: 57 public RLS tables, 60 policies, 73 functions. No real staff grants/invites or production changes. Actual video playback/casting and hosted real-account login/email/persistence remain unverified; bounded browser telemetry is not proof of human attention.
+
+Advisor: 27 intentional [RLS enabled without policy INFO findings](https://supabase.com/docs/guides/database/database-linter?lint=0008_rls_enabled_no_policy), eight added for RPC-only course tables, and the unchanged [leaked-password-protection WARN](https://supabase.com/docs/guides/auth/password-security#password-strength-and-leaked-password-protection). Preserve deny-by-default policies; this is not a production security certification. See [Dream Track contract](docs/DREAM-TRACK-V1.md).
+
 ## Registration/Check-in v1 security — September 29, 2026
 
 Seven new tables use RLS with no direct browser grants/policies. Acceptance now has 49 public RLS tables, 60 policies and 62 functions. Anon can execute only the existing Events safe endpoint and the new exact registration_public safe endpoint in private; all registration helpers remain owner-only. Public wrappers are invokers and both guarded private implementations have fixed empty search_path. Hosted ACL/search-path checks passed.

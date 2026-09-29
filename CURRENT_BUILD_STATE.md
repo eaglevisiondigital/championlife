@@ -1,5 +1,15 @@
 # Current build state
 
+## Dream Track v1 — September 29, 2026
+
+The explicit Dream Track assignment supersedes the prior next-package hold for this module only. Local and remote starting HEAD were both `1e9a4f610453336f24194f3758ea3b43aefb11b1`, with a clean checkout. Seven existing YouTube IDs are reused; 140 exact approved questions, the Grip workspace layout, server-authoritative 95% watched + 16/20 cumulative mastery, missed-only retries, immutable attempts, enrollment code/invitations, staff reporting and final-meeting-gated durable badge are implemented. Getting a Grip pages, CSS/engine and existing Auth behavior are preserved.
+
+Acceptance received only `20260929221116_dream_track_v1.sql` and the acceptance-only invitation email adapter. Migration MD5 `124443fe7647a40ac739c4354a1e0574` is byte-identical hosted/local; SHA-256 `5dde77e16b2eeae07081640ff920d8e440a6b644e593b3889543b65323d0050d`. All 20 prior migration files are unchanged. Inventory: 21 migrations, 57 public RLS tables, 60 policies, 73 public/private functions, one acceptance Edge Function. All 16 hosted rollback assertions passed. Existing two Auth users, two Grip enrollments and 40 answers remain; contacts/grants and Dream attempts/invites/completions/guess counters are zero. Intentional Dream course/settings/seven lessons/140 questions persist, with no access code configured.
+
+All 34 regression scripts passed, including 67 Dream backend checks, 17 DOM/auth checks and mocked invitation delivery checks. Native PostgreSQL 17 concurrent meeting/claim checks passed. Local SQL-backed desktop/tablet/mobile browser validation passed for grading/retries/unlock, save/refresh, no overflow, staff reports and failed-delivery fallback. In-app-browser YouTube embeds rendered black for both unchanged Grip and Dream Track; actual playback/casting remains unverified, not passed. See [Dream Track contract](docs/DREAM-TRACK-V1.md) for telemetry limits and release gates.
+
+The invitation adapter is ACTIVE only on `bkbmjisprwmkptywtmih`; unauthenticated requests returned 401. It validates Auth identity and courses.manage itself, uses existing Auth email and permits only the exact PR #2 preview origin. No real emails, real grants, SMTP/Auth configuration or production changes occurred. Commit/push/CI are recorded in the private handoff. Next: hosted real-account Dream Track acceptance only; do not start Forms, Communications Core, Giving expansion or Text-to-Give.
+
 ## Registration + Check-in v1 — September 29, 2026
 
 The explicit Registration assignment supersedes the Events next-package hold for this package only. Starting HEAD: `17c646cdcae2d10a47273c6a727d72e4cbbc9603`, including the hosted OTP compatibility fix. Native guest/group registration, optional trusted People/account links, occurrence/series enrollment, attendee capacity, bounded questions, restricted answers, lifecycle, individual/group check-in, reversal, walk-ins and scoped staff screens are implemented. Payment fields are hooks only; payment-required enrollment fails closed.

@@ -1,5 +1,16 @@
 # Durable decisions
 
+## Dream Track v1 decisions — September 29, 2026
+
+- Explicit assignment authorizes this course package, local testing, one forward acceptance migration, acceptance email adapter, development commit/push and CI. Prior module holds are superseded only for Dream Track. Production, merge, real grants/invites and other modules remain held.
+- Reuse seven original video IDs and existing course/enrollment/progress/answers/Auth identity. No eighth Vision video, duplicate upload, LMS, .NET migration or database/IP merger. Fix only the old Lesson 6 label to the approved Abundant Life title.
+- Keep Getting a Grip implementation unchanged. Dream implements WATCH + PASS TO ADVANCE with exact 95% numeric watched intervals and 16/20 cumulative mastery. Current Grip code lacks segment enforcement; do not invent a claim that it was implemented or change Grip in this package.
+- Preserve the exact numbered approved bank, including overlapping/nonchronological review starts, rather than silently renumbering doctrine/questions. Use existing prompt Scripture references; no raw transcript or outside doctrine committed.
+- Keep one inactive/unset access-code seed. Authorized course managers configure a real code later. Invitations are an explicitly approved alternate enrollment path, use verified matching Auth email, and never infer People/portal/member/staff authority. Retire legacy public fallback/cookie authority in development.
+- Reuse existing Auth email with exact acceptance callback; no SMTP/template/redirect reconfiguration. Provider acceptance is distinct from delivery; failure has a one-time copy-link fallback. The acceptance-only adapter performs its own bearer/Auth and guarded course-manager validation. No real invitation is sent by this package.
+- Record a durable final-meeting-gated achievement on the existing enrollment, with optional explicitly reviewed contact association; never merge contacts by email. Reversal preserves audit and revokes the badge, re-completion reactivates the same award. Staff filters live in the integrated course view without expanding generic People data exposure.
+- Acceptance assigned migration version `20260929221116`, byte-identical to local SQL. All 20 prior migrations remain unchanged. Next gate is hosted real-account Dream Track acceptance (including playback/casting and actual Auth email), not another feature package.
+
 ## Registration/Check-in v1 decisions — September 29, 2026
 
 - Explicit assignment authorizes this package and the acceptance-only forward migration. Previous Events hold is superseded for Registration only; production, merge and subsequent modules remain held.

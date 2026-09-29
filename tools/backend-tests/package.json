@@ -5,9 +5,10 @@
   },
   "private": true,
   "scripts": {
-    "test": "node migrations.test.mjs && node foundation.test.mjs && node redirect.test.mjs && node lesson.test.mjs && node drafts.test.mjs && node notes.test.mjs && node followup.test.mjs && node staff-workspace.dom.cjs && node followup-ui.dom.cjs && node staff-access.test.mjs && node staff-admin.dom.cjs && node person-overview.dom.cjs && node households.test.mjs && node households.dom.cjs && node tags.test.mjs && node tags.dom.cjs && node workflows.test.mjs && node workflows.dom.cjs && node giving-config.test.mjs && node giving-config.dom.cjs && node portals.test.mjs && node portals.dom.cjs && node portal-discovery.dom.cjs && node syntax.test.mjs && node site-build.test.mjs && node people-staff.test.mjs && node people-staff.dom.cjs && node events.test.mjs && node events.dom.cjs && node registration.test.mjs && node registration.dom.cjs",
+    "test": "node migrations.test.mjs && node foundation.test.mjs && node redirect.test.mjs && node lesson.test.mjs && node drafts.test.mjs && node notes.test.mjs && node followup.test.mjs && node staff-workspace.dom.cjs && node followup-ui.dom.cjs && node staff-access.test.mjs && node staff-admin.dom.cjs && node person-overview.dom.cjs && node households.test.mjs && node households.dom.cjs && node tags.test.mjs && node tags.dom.cjs && node workflows.test.mjs && node workflows.dom.cjs && node giving-config.test.mjs && node giving-config.dom.cjs && node portals.test.mjs && node portals.dom.cjs && node portal-discovery.dom.cjs && node syntax.test.mjs && node site-build.test.mjs && node people-staff.test.mjs && node people-staff.dom.cjs && node events.test.mjs && node events.dom.cjs && node registration.test.mjs && node registration.dom.cjs && node dream-track.test.mjs && node dream-track.dom.mjs && node dream-track-invite.test.mjs",
     "test:migrations": "node migrations.test.mjs",
     "test:syntax": "node syntax.test.mjs",
-    "test:registration:concurrency": "node registration.concurrent.mjs"
+    "test:registration:concurrency": "node registration.concurrent.mjs",
+    "test:dream:concurrency": "node dream-track.concurrent.mjs"
   }
 }
