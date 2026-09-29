@@ -42,10 +42,10 @@
       <div class="auth-step active" id="emailStep">
         <label class="auth-field"><span>Email Address</span><input id="loginEmail" type="email" autocomplete="email" placeholder="you@example.com"></label>
         <button class="btn gold" id="sendCodeBtn" type="button">Send My Sign-In Code</button>
-        <p class="auth-note">We’ll send a one-time sign-in email. Depending on the current email template, it may contain a 6-digit code or a secure sign-in link.</p>
+        <p class="auth-note">We’ll send a one-time sign-in email. Depending on the current email template, it may contain a one-time code or a secure sign-in link.</p>
       </div>
       <div class="auth-step" id="codeStep">
-        <label class="auth-field"><span>6-Digit Code</span><input id="loginCode" class="auth-code" type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="6" placeholder="000000"></label>
+        <label class="auth-field"><span>Sign-In Code</span><input id="loginCode" class="auth-code" type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="8" placeholder="Enter code"></label>
         <button class="btn gold" id="verifyCodeBtn" type="button">Sign In</button>
         <button class="btn auth-secondary" id="backBtn" type="button">Use a Different Email</button>
         <p class="auth-note">If your email contains a secure sign-in link instead of a code, tap that link. You’ll come back here already signed in.</p>
@@ -124,7 +124,7 @@
     clearMessage();
     const token=codeInput.value.trim();
     if(!email){email=emailInput.value.trim().toLowerCase()}
-    if(!/^[0-9]{6}$/.test(token)){showMessage('error','Enter the 6-digit code from your email.');return}
+    if(!/^(?:[0-9]{6}|[0-9]{8})$/.test(token)){showMessage('error','Enter the 6- or 8-digit code exactly as it appears in your email.');return}
     verifyBtn.disabled=true;verifyBtn.textContent='Signing in...';
     try{
       const {data,error}=await auth.client.auth.verifyOtp({email,token,type:'email'});
