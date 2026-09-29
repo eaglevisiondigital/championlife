@@ -1,5 +1,15 @@
 # Implemented architecture
 
+## Registration/Check-in v1 extension — September 29, 2026
+
+Current development/acceptance inventory: 49 public RLS tables, 60 policies and 62 public/private functions, plus existing private people/schedule structures. [Registration contract](docs/REGISTRATION-CHECKIN-V1.md) describes seven added tables and ten added functions. Events, organizations, departments, staff grants, People/account links, payment destination references and the static public build are reused.
+
+A registration is a registrant contact snapshot and lifecycle; attendees are separate named participants with optional tenant People links. Attendance is a durable attendee/occurrence record, independently reversed and audited. Enrollment scope is selected per event and frozen after its first registration. Occurrence enrollment consumes that date's attendee capacity; series enrollment consumes one shared series bucket and permits separate attendance on each retained date. Pending and confirmed enrollments occupy places. All operations serialize with the existing Events per-organization advisory lock, then use row/revision checks; event edits and registration/check-in mutations share the lock.
+
+Public `registration_public` and staff `registrations_workspace` invoker wrappers delegate to fixed-path guarded private implementations. Alongside existing events_catalog, registration_public is an intentional anonymous private safe-endpoint exception. Other new helpers and raw tables remain inaccessible to browser roles. A UUID request key and payload hash enforce exact submission replay; a random reference is confirmation, not a registration lookup credential. Department grants and separate restricted-answer/override permissions are checked server-side.
+
+Native pages extend existing Champion Life/Kingdom Propel styling and Events navigation. Question controls are bounded reusable primitives, not a general Forms engine. Payment state/destination/intent references remain server-controlled future hooks; no charge or message provider is connected. Champion Life supplies branding/configuration/data; reusable Global Propel concepts stay in this repository without a product database or IP merger.
+
 ## Events/Calendar v1 extension — September 28, 2026
 
 Current development/acceptance inventory: 42 public RLS tables, 60 policies and 52 functions, plus private.people and private.event_schedule. [Events contract](docs/EVENTS-CALENDAR-V1.md) defines the eight added functions and seven tables. Existing organizations, departments, People/Staff grants, reviewed account links, Auth and public build are reused unchanged.

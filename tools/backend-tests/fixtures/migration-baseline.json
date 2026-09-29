@@ -77,6 +77,10 @@
     {
       "file": "20260928183137_events_calendar_v1.sql",
       "sha256": "42af6e032d0a78c5b7b22d128ecb8a7240070abbf7d7bb8a0218e36e040d3f99"
+    },
+    {
+      "file": "20260929131021_registration_checkin_v1.sql",
+      "sha256": "2f1bea89ab63851f226d697319a7b5bddd3e409b255f6286a5e8adfe3fa51224"
     }
   ],
   "tables": [
@@ -86,6 +90,10 @@
     },
     {
       "relname": "courses",
+      "relrowsecurity": true
+    },
+    {
+      "relname": "event_attendance",
       "relrowsecurity": true
     },
     {
@@ -106,6 +114,26 @@
     },
     {
       "relname": "event_occurrences",
+      "relrowsecurity": true
+    },
+    {
+      "relname": "event_registration_answers",
+      "relrowsecurity": true
+    },
+    {
+      "relname": "event_registration_attendees",
+      "relrowsecurity": true
+    },
+    {
+      "relname": "event_registration_questions",
+      "relrowsecurity": true
+    },
+    {
+      "relname": "event_registration_settings",
+      "relrowsecurity": true
+    },
+    {
+      "relname": "event_registrations",
       "relrowsecurity": true
     },
     {
@@ -230,6 +258,10 @@
     },
     {
       "relname": "profiles",
+      "relrowsecurity": true
+    },
+    {
+      "relname": "registration_audit",
       "relrowsecurity": true
     },
     {
@@ -1157,7 +1189,7 @@
       "schema": "private",
       "name": "staff_permission_keys",
       "args": "",
-      "sha256": "28a0c7970c35c3b504481aa3b42b9d0c19fbfe2f46f5432251675ea7ed8da57f"
+      "sha256": "d8291954e2ab89591cdde6d83205d4ca40b7d14bbb6a7c251c1fd061451d0a98"
     },
     {
       "schema": "private",
@@ -1224,6 +1256,66 @@
       "name": "events_workspace",
       "args": "p_org uuid, p_action text, p_data jsonb",
       "sha256": "11bdff58db1ebe626e7e9089f0303da0db5b9a98a5866acb36a795a225adf115"
+    },
+    {
+      "schema": "private",
+      "name": "registration_answer_valid",
+      "args": "q event_registration_questions, v jsonb",
+      "sha256": "1647bc071723756fdf3802a61990c9d61c7fad3884fcec5355f81b94b08bb113"
+    },
+    {
+      "schema": "private",
+      "name": "registration_answers",
+      "args": "p_registration uuid, p_attendee uuid, p_answers jsonb",
+      "sha256": "ab860243fc2462450b6d927355e13bbe6139f1cec65edabc256abaf9b857961b"
+    },
+    {
+      "schema": "private",
+      "name": "registration_confirmation",
+      "args": "r event_registrations",
+      "sha256": "21a7af254b846e953781f1ec71d4f5657595b51570dd6838f6b195bbb38e1476"
+    },
+    {
+      "schema": "private",
+      "name": "registration_permission",
+      "args": "s event_series, k text",
+      "sha256": "8f8d289a4cdfe93263869864f2c2f27d0a90abacc4bfc150b9bc0e33a8a01561"
+    },
+    {
+      "schema": "private",
+      "name": "registration_person",
+      "args": "p_org uuid, p_data jsonb",
+      "sha256": "07217871bd1ec6ef698df4f13a88363e09c93a757d34bb9603de4348b581de57"
+    },
+    {
+      "schema": "private",
+      "name": "registration_public",
+      "args": "p_slug text, p_action text, p_data jsonb",
+      "sha256": "f337e5101d0ce17df56ab4681bd4cb133b245f3cc0eb699785cc1dec01e2b32f"
+    },
+    {
+      "schema": "private",
+      "name": "registration_used",
+      "args": "p_series uuid, p_occurrence uuid, p_scope text",
+      "sha256": "6cb6f3132d0eb0664beb936bdb845ee9f9b0d5b72d23b64493c78f43aa4e9d04"
+    },
+    {
+      "schema": "private",
+      "name": "registrations_workspace",
+      "args": "p_org uuid, p_action text, p_data jsonb",
+      "sha256": "0f6b9029c13b948d7e7b032c151bde1ee21e041c6b489c7948ed622dc4a2150e"
+    },
+    {
+      "schema": "public",
+      "name": "registration_public",
+      "args": "p_slug text, p_action text, p_data jsonb",
+      "sha256": "125cfd3e583c4fbd58fd535a5357ad4c53fe42a7fb47a652f270babeef0b56eb"
+    },
+    {
+      "schema": "public",
+      "name": "registrations_workspace",
+      "args": "p_org uuid, p_action text, p_data jsonb",
+      "sha256": "afc8e3b4b6ceb94463314ee33956fc4064a9850f389d61c309deca514e5c9ef3"
     }
   ]
 }

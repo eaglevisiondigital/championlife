@@ -1,5 +1,17 @@
 # Security model and release gates
 
+## Registration/Check-in v1 security — September 29, 2026
+
+Seven new tables use RLS with no direct browser grants/policies. Acceptance now has 49 public RLS tables, 60 policies and 62 functions. Anon can execute only the existing Events safe endpoint and the new exact registration_public safe endpoint in private; all registration helpers remain owner-only. Public wrappers are invokers and both guarded private implementations have fixed empty search_path. Hosted ACL/search-path checks passed.
+
+Registration permission is explicit and department-scoped. `registrations.view/manage` are reused; `checkin.view/manage`, `registrations.restricted` and `registrations.override` are added to the canonical allowlist without granting them to anyone. Restricted answers require registration read authority plus the separate restricted key; check-in-only staff see no answers. Lists/public confirmations omit answers, internal account links, audit and routing data. Question sensitivity/type/scope/options cannot change after answers exist. Response edits and capacity overrides are audited without raw answer values.
+
+Anonymous submissions cannot select person IDs, grant access, set status/payment/routing or enumerate registrations. Optional verified reviewed portal identity links only the current registrant; matching email/phone alone never establishes identity. Walk-in People creation needs separate organization-wide people.read/create authority and rejects possible name/email/phone duplicates for manual review. Same-tenant FKs, exact input allowlists, bounded payloads, UUID idempotency, shared Events locks and optimistic revisions protect cross-tenant, overbooking, replay and stale edits. Attendance history prevents attendee deletion; cancellation requires active attendance to be reversed first.
+
+All 31 local regression scripts, 74 Registration checks, DOM flows and native PostgreSQL independent-session races passed. All 17 hosted rollback assertions passed; two pre-existing Auth users and zero contacts/grants/events/registrations/attendance remain. Browser verification used isolated local SQL and synthetic identities, not real hosted Auth. No production or Auth settings changed.
+
+Acceptance security advisor: 19 intentional INFO RLS-without-policy notices (seven new RPC-only tables, twelve existing) and the unchanged leaked-password-protection WARN. Keep deny-by-default tables; do not add permissive policies to silence [the no-policy notice](https://supabase.com/docs/guides/database/database-linter?lint=0008_rls_enabled_no_policy). Password rollout remains gated by the existing [password-security finding](https://supabase.com/docs/guides/auth/password-security#password-strength-and-leaked-password-protection). Public launch still requires hosted account/browser acceptance and operational abuse/retention review; this package does not claim a completed production security release.
+
 ## Events/Calendar v1 security — September 28, 2026
 
 Seven new event tables deny direct anon/authenticated access and have RLS with no client policies. Guarded RPCs enforce active explicit events.view/events.manage and organization/department scope. Shared configuration requires organization-wide management. Composite foreign keys, allowlisted save fields, expected revisions and serialized writes prevent tenant reassignment and stale changes. Administrative history remains private.

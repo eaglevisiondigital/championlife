@@ -1,5 +1,17 @@
 # Durable decisions
 
+## Registration/Check-in v1 decisions — September 29, 2026
+
+- Explicit assignment authorizes this package and the acceptance-only forward migration. Previous Events hold is superseded for Registration only; production, merge and subsequent modules remain held.
+- Reuse Events and People/Staff, with guest-origin registration separate from tenant People and optional portal accounts. No automatic email/phone identity merge; staff review or an existing verified reviewed account link establishes linkage.
+- Configure one enrollment scope per event, immutable after the first registration. Count attendees in pending/confirmed registrations. Occurrence scope has one capacity bucket per date; series scope has one shared enrollment bucket. Cancelled/expired records release places. No actual waitlist or expiration worker.
+- Use the Events organization advisory lock for atomic capacity and event/registration consistency, unique request keys/hashes for exact retry, and revisions for staff updates. Authorized override requires its separate key, explicit intent and a meaningful audited reason.
+- Bounded event questions support ten types, registrant/attendee scope and general/restricted classification. Answered definitions cannot change type/scope/sensitivity/options; replace/deactivate instead. No full Forms engine or export is built.
+- Check-in is separate from registration and requires checkin.manage. Undo preserves history. Cancellation is blocked while active attendance exists; remove an attendee only when it has no attendance history and is not the last attendee. Walk-ins create a confirmed enrollment and immediate attendance with separately authorized People linkage/creation.
+- Add checkin.view/manage, registrations.restricted and registrations.override to the existing allowed-permission mechanism. No implicit grants or ministry names; department rules stay consistent with People/Staff. Sensitive-answer authority is separate from check-in authority.
+- Payments remain explicit lifecycle/reference/destination hooks only; both public enrollment and staff enrollment fail closed for payment-required events. No provider return marks paid, no merchant routing inferred from hostnames, no actual messages or Text-to-Give.
+- Acceptance assigned migration version `20260929131021`; local SQL matches exactly. Preserve all 19 prior migrations and existing acceptance users; rollback-only synthetic validation leaves no test records. See [Registration contract](docs/REGISTRATION-CHECKIN-V1.md). Chat reviews before the next module.
+
 ## Events/Calendar v1 decisions — September 28, 2026
 
 - Explicit assignment authorizes Events/Calendar implementation, isolated acceptance forward migration/testing, development commit/push and CI. The earlier People/Staff next-package hold is superseded only for this module. Production and Registration + Check-in remain held.

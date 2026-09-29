@@ -1,5 +1,15 @@
 # Current build state
 
+## Registration + Check-in v1 — September 29, 2026
+
+The explicit Registration assignment supersedes the Events next-package hold for this package only. Starting HEAD: `17c646cdcae2d10a47273c6a727d72e4cbbc9603`, including the hosted OTP compatibility fix. Native guest/group registration, optional trusted People/account links, occurrence/series enrollment, attendee capacity, bounded questions, restricted answers, lifecycle, individual/group check-in, reversal, walk-ins and scoped staff screens are implemented. Payment fields are hooks only; payment-required enrollment fails closed.
+
+Acceptance received only `20260929131021_registration_checkin_v1`. Local SQL is byte-identical to the hosted migration (MD5 `5982c6e0d67725310a72c33e6607ab79`); all 19 prior local migration hashes remain unchanged. Inventory: 20 migrations, 49 public RLS tables, 60 policies, 62 public/private functions, plus the existing private human table/effective-schedule view. The seven new tables have no browser table grants or policies. Hosted fixed search paths, wrapper/implementation permissions and zero direct client table grants were verified. All 17 rollback-only hosted registration assertions passed. The two existing Auth users remain; contacts, staff grants, events, registrations and attendance are zero after rollback.
+
+Validation: all 31 regression scripts passed; 74 focused Registration checks plus 17 rollback assertions; public/staff DOM tests; native PostgreSQL 17 independent-session final-slot, replay and cancellation/check-in races; actual local SQL-backed browser guest family registration, group check-in, reversal and contact-optional walk-in; mobile 390-pixel layout with no overflow and no browser console warnings/errors. Migration parity and DOM checks passed again after aligning the remote-assigned migration filename and correcting the optional-email walk-in label. See [Registration contract](docs/REGISTRATION-CHECKIN-V1.md).
+
+Implemented and acceptance database-validated does not mean production-released or hosted real-account browser-accepted. Commit/push/CI are recorded in the private delivery handoff. Main remains `66591f22d5315d093091b99152c18d43bfcb3893`; PR #2 remains open/draft/unmerged. No production Supabase/Auth, giving, merchant, DNS or staff-grant changes. Chat reviews this package before Communications, Forms or Giving expansion. Historical sections below retain their original counts and then-current holds.
+
 ## Events + Calendar v1 — September 28, 2026
 
 The explicit Events assignment supersedes the earlier next-package hold for this package only. Starting HEAD: `b04a3de8bfcf44c709e556247e485bf6b12b04c1`. Implemented a reusable organization-scoped series/occurrence/exception model, bounded timezone-aware recurrence, tenant locations/audiences/types, scoped event staff editor, native public list/calendar/detail, optional approval, private audit and honest registration hooks. No native registration/check-in or real events were created.

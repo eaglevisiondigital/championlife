@@ -16,11 +16,12 @@
   if(r.frequency==='yearly')text=`Every ${n===1?'year':n+' years'} on ${start.toLocaleDateString('en-US',{timeZone:'UTC',month:'long',day:'numeric'})}`;
   return text+(r.until?` through ${r.until}`:'')+(r.count?` · ${r.count} occurrences`:'');
  }
- function registration(r,now=Date.now()){
+ function registration(r,now=Date.now(),context={}){
   if(!r||r.mode==='none')return el('span',r?.required?'Registration details to follow':'No registration needed');
   if(r.mode==='native_future')return el('span','Registration is not available yet');
   if(r.opens&&Date.parse(r.opens)>now)return el('span','Registration opens '+new Date(r.opens).toLocaleDateString());
   if(r.closes&&Date.parse(r.closes)<=now)return el('span','Registration has closed');
+  if(r.mode==='native')return el('a','Register',{href:'event-register.html?'+new URLSearchParams({org:context.org||'champion-life',id:context.id||'',occurrence:context.occurrence||''}),class:'event-cta'});
   if(!safeURL(r.url))return el('span','Registration details to follow');
   return el('a','Register with event host',{href:r.url,rel:'noopener noreferrer',target:'_blank',class:'event-cta'});
  }
