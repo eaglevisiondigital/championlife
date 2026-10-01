@@ -1,5 +1,10 @@
 # Implemented architecture
 
+## Dream Track invitation UX — October 1, 2026
+
+The existing Auth email adapter now selects an exact invitation-specific login callback. Conditional Auth templates preserve general signup/sign-in content and use the existing Auth secure link/code; no separate invitation sender or identity system is introduced. After Auth, the dedicated invitation page calls existing `claim_pending` (provider-accepted verified-email invitations) or `claim_invite` (copied token), then renders start/resume/completed state from the existing course snapshot. No database or progression change. See [Dream Track](docs/DREAM-TRACK-V1.md).
+
+
 ## Dream Track v1 extension — September 29, 2026
 
 Current acceptance/development inventory is 57 public RLS tables, 60 policies and 73 functions, plus the existing private identity/schedule structures. Eight new course-bound tables extend existing enrollment/progress/answer/account identities; no disconnected LMS or product database merge is introduced. [Dream Track contract](docs/DREAM-TRACK-V1.md) covers the seven existing videos, exact question bank, guarded RPCs, invites, code and final-meeting badge.

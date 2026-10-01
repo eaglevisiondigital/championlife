@@ -1,0 +1,1 @@
+{{ if eq .RedirectTo "https://deploy-preview-2--championlifechurch.netlify.app/discipleship-login.html?next=%2Fdream-track-invite.html" }}Champion Life — You’re invited to Dream Track{{ else }}Confirm your email address{{ end }}

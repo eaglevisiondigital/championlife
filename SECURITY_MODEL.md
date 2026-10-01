@@ -1,5 +1,12 @@
 # Security model and release gates
 
+## Dream Track invitation UX — October 1, 2026
+
+Email context is an exact acceptance callback string, never user metadata or authority. Only that same-origin callback is added to the acceptance allowlist; client `safeNext` remains unchanged and strips unapproved query destinations. The templates use existing Auth `ConfirmationURL`/OTP. Normal Auth messages retain their old branches. Copied-token rejection never falls through to `claim_pending`; verified identity/email/token/org/course checks, idempotence and audit remain server-enforced by unchanged functions. The landing is presentation only and grants no permissions. No production Auth/SMTP or schema changes.
+
+Focused synthetic wrong-account, invalid/expired/cancelled token, unverified-email, repeat-claim, audit, no-grants and redirect tests pass. New/existing email templates are Go-render tested; real delivery is not claimed. Dave's normal Chrome playback confirmation is user-reported evidence, not a change to watch security or the video player.
+
+
 ## Dream Track v1 security — September 29, 2026
 
 Eight new tables are RLS-enabled RPC-only. Three existing course self-write policy pairs now exclude Dream Track in USING and WITH CHECK, preventing direct enrollment/progress/mastery forgery or moving a Grip row into Dream. Keys and staff-only meeting notes/identity metadata are excluded from learner responses. Fixed search paths and explicit wrapper/helper ACLs were verified on acceptance; direct browser grants on all eight tables are zero. courses.manage is canonical and organization-wide for this course; optional People selection is explicit and same-tenant, never email merging.

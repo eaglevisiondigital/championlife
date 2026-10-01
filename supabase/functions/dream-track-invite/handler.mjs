@@ -15,8 +15,9 @@ export function createHandler({url,anonKey,serviceKey,fetcher=fetch,allowedOrigi
    const prep=await fetcher(url+'/rest/v1/rpc/dream_track_admin',{method:'POST',headers:{apikey:anonKey,Authorization:bearer,'Content-Type':'application/json'},body:JSON.stringify({p_org:body.organization_id,p_action:'send',p_data:{invite_id:body.invite_id,token:body.token}})});
    if(!prep.ok)return reply({error:'Invitation not available or delivery already in progress'},403);invite=await prep.json();
    // Reuse configured Supabase Auth mail for both new and existing accounts.
-   // Exact existing callback needs no Auth/SMTP changes; verified-email claim on My Discipleship resumes the invitation.
-   const delivery=await fetcher(url+'/auth/v1/otp?redirect_to='+encodeURIComponent(allowedOrigin+'/discipleship-login.html'),{method:'POST',headers:{apikey:anonKey,'Content-Type':'application/json'},body:JSON.stringify({email:invite.recipient_email,create_user:true})});
+   // Exact invitation callback scopes Auth email copy and the enrollment landing.
+   // No recipient metadata, invitation secret or caller-provided redirect is placed in the email context.
+   const delivery=await fetcher(url+'/auth/v1/otp?redirect_to='+encodeURIComponent(allowedOrigin+'/discipleship-login.html?next=%2Fdream-track-invite.html'),{method:'POST',headers:{apikey:anonKey,'Content-Type':'application/json'},body:JSON.stringify({email:invite.recipient_email,create_user:true})});
    const receipt=await fetcher(url+'/rest/v1/rpc/course_invite_delivery',{method:'POST',headers:{apikey:serviceKey,Authorization:'Bearer '+serviceKey,'Content-Type':'application/json'},body:JSON.stringify({p_id:invite.id,p_delivery:invite.delivery_id,p_sent:delivery.ok})});
    if(!receipt.ok)return reply({error:'Delivery status could not be recorded. Refresh before resending.'},502);
    return delivery.ok?reply({status:'sent',send_status:'provider_accepted'}):reply({error:'Email provider did not accept the invitation. Use the copy-link fallback.',status:'failed'},502);

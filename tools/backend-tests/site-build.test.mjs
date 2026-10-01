@@ -43,7 +43,8 @@ for (const cfg of [null, previewConfiguration(valid, production)]) {
 const login = await readFile(path.join(root, 'discipleship-login.html'), 'utf8');
 const callback = login.match(/const redirect = ([^;]+);/)[1];
 for (const origin of ['https://championlifefwb.com', 'https://deploy-preview-12--championlifechurch.netlify.app']) {
-  assert.equal(vm.runInNewContext(callback, { location: { origin } }), origin + '/discipleship-login.html');
+  assert.equal(vm.runInNewContext(callback, { location: { origin }, next: '/my-discipleship.html' }), origin + '/discipleship-login.html');
+  assert.equal(vm.runInNewContext(callback, { location: { origin }, next: '/dream-track-invite.html' }), origin + '/discipleship-login.html?next=%2Fdream-track-invite.html');
 }
 
 // Real production artifact preserves every explicitly public file byte-for-byte.

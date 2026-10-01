@@ -1,5 +1,12 @@
 # Current build state
 
+## Dream Track invitation UX correction — October 1, 2026
+
+Only the two explicitly authorized hosted UX fixes are implemented from `5e6ecc3bf00de2b5284ff3fc9486e4381599918c`: Dream Track-specific invitation email copy and a direct enrollment/start/resume/completed landing. See [the updated contract](docs/DREAM-TRACK-V1.md). General Auth template fallback content is preserved; only the exact acceptance invitation callback selects the new subject/body. Acceptance-only templates/allowlist and the existing email adapter support this flow. No SMTP, database/migration, grading, 95% watch, player or 140-question-bank changes.
+
+Focused checks passed: 19 claim assertions, 18 invitation/login scenarios, 16 Go template render cases, the email adapter, existing 17 Dream DOM/auth checks, 16 redirect cases, JS syntax and site-build isolation. Visual checks use synthetic local Chrome screens. Inbox delivery/new hosted recipient acceptance remains with Work. Dave reports normal Chrome Lesson 1 playback after approximately 19 seconds of initial loading; the earlier cloud-browser black frame is not a confirmed application defect. No next feature package begins. Push/CI/preview details are recorded in the private completion report; PR #2 must stay open/draft/unmerged and production stays unchanged.
+
+
 ## Dream Track v1 — September 29, 2026
 
 The explicit Dream Track assignment supersedes the prior next-package hold for this module only. Local and remote starting HEAD were both `1e9a4f610453336f24194f3758ea3b43aefb11b1`, with a clean checkout. Seven existing YouTube IDs are reused; 140 exact approved questions, the Grip workspace layout, server-authoritative 95% watched + 16/20 cumulative mastery, missed-only retries, immutable attempts, enrollment code/invitations, staff reporting and final-meeting-gated durable badge are implemented. Getting a Grip pages, CSS/engine and existing Auth behavior are preserved.

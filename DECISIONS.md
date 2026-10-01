@@ -1,5 +1,13 @@
 # Durable decisions
 
+## Dream Track invitation UX — October 1, 2026
+
+- The explicit assignment authorizes only branded invitation email and post-claim confirmation, development push and acceptance validation; no next package or production change.
+- Use the existing Auth delivery mechanism and exact callback-scoped Go template conditionals for both signup and existing-account mail. Preserve original general-email fallback bodies/subjects; no SMTP change or metadata-based authorization.
+- Reuse existing `claim_invite`/`claim_pending`. Choose the direct start/resume action from server course progress; distinguish online-complete/final-meeting-needed from full completion. No database, grading, watch or player change.
+- Dave's normal Chrome playback test passed after roughly 19 seconds of initial loading. Do not reinterpret Work's black frame as a confirmed player defect.
+
+
 ## Dream Track v1 decisions — September 29, 2026
 
 - Explicit assignment authorizes this course package, local testing, one forward acceptance migration, acceptance email adapter, development commit/push and CI. Prior module holds are superseded only for Dream Track. Production, merge, real grants/invites and other modules remain held.

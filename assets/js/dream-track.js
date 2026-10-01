@@ -2,6 +2,7 @@
  'use strict';
  const root=document.getElementById('dream-app'),T=window.DreamTrack,auth=window.ChampionLifeAuth;if(!root||!T)return;
  const{el,button,time}=T,lesson=Number(root.dataset.lesson)||null,isInvite=root.dataset.mode==='invite';
+ let invalidInviteToken=false;
  let generation=0,user=null,state=null,player=null,watchToken=null,watchBusy=false,timer=null,saveTimer=null,queue=Promise.resolve(),dirty=0,fields=new Map(),notes=null,message=null,summary=null,next=null;
  function clear(){generation++;clearInterval(timer);clearTimeout(saveTimer);try{player?.destroy()}catch(_){}player=null;watchToken=null;fields.clear();notes=null;state=null;dirty=0;queue=Promise.resolve();root.replaceChildren();}
  const rpc=(action,data={})=>T.rpc('dream_track',{p_action:action,p_data:data},user.id);
@@ -36,10 +37,18 @@
  function renderDashboard(s){T.courses(root,s);if(!s.enrolled){const f=el('form',null,{class:'dream-code'}),code=el('input',null,{type:'password',maxlength:'128',autocomplete:'off',id:'dream-code',required:''}),b=el('button','Join Dream Track',{type:'submit',class:'btn gold'});message=el('p',null,{role:'status'});f.append(el('label','Dream Track access code',{for:'dream-code'}),code,b,message);f.addEventListener('submit',async e=>{e.preventDefault();b.disabled=true;const g=generation;try{const d=await rpc('claim_code',{code:code.value});if(g===generation)renderDashboard(d);}catch(err){if(g===generation)report(err)}finally{b.disabled=false;code.value=''}});root.append(f);}}
  async function boot(){clear();const g=generation;root.append(el('p','Loading Dream Track…'));try{user=await auth?.getUser();if(g!==generation)return;root.replaceChildren();
    if(!user){root.append(el('p','Sign in to save your Dream Track progress.'),el('a','Sign in',{href:'discipleship-login.html?next='+encodeURIComponent('/'+(isInvite?'dream-track-invite.html':lesson?`dream-track-${lesson}.html`:'dream-track.html')),class:'btn gold'}));return;}
-   if(isInvite){const token=sessionStorage.getItem('championlife-dream-invite');if(!token)throw Error('Open your invitation link to get started.');await rpc('claim_invite',{token});if(g!==generation)return;sessionStorage.removeItem('championlife-dream-invite');root.append(el('h2','You’re enrolled in Dream Track.'),el('a','Start Dream Track',{href:'dream-track.html',class:'btn gold'}));return;}
+   if(isInvite){
+    if(invalidInviteToken)throw Error('This invitation link is invalid. Ask your inviter for a new link.');
+    const token=sessionStorage.getItem('championlife-dream-invite');
+    // Copied links keep token validation; Auth email uses the existing verified-email claim.
+    const claimed=await rpc(token?'claim_invite':'claim_pending',token?{token}:{});
+    if(g!==generation)return;
+    T.invitationLanding(root,claimed);
+    sessionStorage.removeItem('championlife-dream-invite');return;
+   }
    state=await rpc(lesson?'lesson':'dashboard',lesson?{lesson}:{});if(g!==generation)return;if(lesson)renderLesson(state);else renderDashboard(state);
   }catch(e){if(g===generation){root.replaceChildren(el('p',e.message),el('a','Dream Track overview',{href:'dream-track.html'}));}}}
- if(isInvite){const url=new URL(location.href),token=url.searchParams.get('token');if(/^[a-f0-9]{64}$/.test(token||''))sessionStorage.setItem('championlife-dream-invite',token);if(token){url.searchParams.delete('token');history.replaceState(null,'',url.pathname+url.search+url.hash);}}
+ if(isInvite){const url=new URL(location.href),token=url.searchParams.get('token');if(/^[a-f0-9]{64}$/.test(token||''))sessionStorage.setItem('championlife-dream-invite',token);if(token!==null){invalidInviteToken=!/^[a-f0-9]{64}$/.test(token);url.searchParams.delete('token');history.replaceState(null,'',url.pathname+url.search+url.hash);}}
  auth?.client.auth.onAuthStateChange((_event,session)=>{if(session?.user?.id!==user?.id){clear();setTimeout(boot,0);}});
  document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='hidden')save();});boot();
 })();

@@ -14,5 +14,23 @@
    if(l.unlocked)c.append(el('a',l.status==='completed'?'Review lesson':'Continue lesson',{href:`dream-track-${l.number}.html`,class:'btn gold'}));grid.append(c);
   }
  }
- window.DreamTrack={el,button,rpc,time,courses};
+ function invitationLanding(root,state){
+  if(!state.enrolled)throw Error('No active Dream Track invitation was found for this account. Sign in with the invited email address or ask your inviter for a new link.');
+  const card=el('section',null,{class:'dream-card dream-enrollment','aria-labelledby':'dream-enrollment-title'});
+  const completed=state.status==='Dream Track Completed';
+  const onlineComplete=state.status==='ONLINE COURSEWORK COMPLETE – FINAL MEETING REQUIRED';
+  card.append(el('p','DREAM TRACK',{class:'eyebrow'}),el('h2',completed?'Dream Track completed.':onlineComplete?'Your online coursework is complete.':'You’re enrolled in Dream Track.',{id:'dream-enrollment-title'}));
+  if(completed)card.append(el('p','You’ve completed your Dream Track journey and final meeting. Your achievement is saved to your account.'));
+  else if(onlineComplete)card.append(el('p','You’ve finished all seven lessons. Your final meeting is the next step.'));
+  else{
+   const current=[...state.lessons].sort((a,b)=>a.number-b.number).find(l=>l.unlocked&&l.status!=='completed'&&Number.isInteger(l.number)&&l.number>=1&&l.number<=7);
+   if(!current)throw Error('Your next lesson is not available yet. Open Dream Track to check your progress.');
+   const started=current.number>1||current.watched_percent>0||current.mastered>0||current.resume_seconds>0||current.last_activity;
+   card.append(el('p',started?'Your progress is saved. Continue your Dream Track journey.':'Your Dream Track journey is ready to begin.'),el('p',`Lesson ${current.number} — ${current.title}`),el('a',started?'RESUME DREAM TRACK':'START DREAM TRACK',{href:`dream-track-${current.number}.html`,class:'btn gold'}));
+  }
+  if(completed||onlineComplete)card.append(el('a','Review Dream Track',{href:'dream-track.html',class:'btn gold'}));
+  card.append(el('p',null,{class:'dream-enrollment-secondary'}));card.lastChild.append(el('a','Go to My Discipleship',{href:'my-discipleship.html'}));
+  root.replaceChildren(card);
+ }
+ window.DreamTrack={el,button,rpc,time,courses,invitationLanding};
 })();
