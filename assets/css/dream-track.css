@@ -8,4 +8,5 @@
 .dream-enrollment{max-width:760px;margin:0 auto;padding:clamp(22px,4vw,40px)}
 .dream-enrollment h2{font-size:clamp(2rem,4vw,3rem);line-height:1.15;margin:14px 0 20px}
 .dream-enrollment .eyebrow{color:#735a18}.dream-enrollment-secondary{margin:18px 0 0}
-.dream-enrollment-secondary a{text-decoration:underline;text-underline-offset:3px}
+.dream-enrollment-actions{display:grid;width:fit-content;max-width:100%}
+.dream-enrollment-secondary a{box-sizing:border-box;width:100%;justify-content:center;background:#fff;border:1px solid #000;color:#000;text-decoration:none}

@@ -29,7 +29,8 @@
    card.append(el('p',started?'Your progress is saved. Continue your Dream Track journey.':'Your Dream Track journey is ready to begin.'),el('p',`Lesson ${current.number} — ${current.title}`),el('a',started?'RESUME DREAM TRACK':'START DREAM TRACK',{href:`dream-track-${current.number}.html`,class:'btn gold'}));
   }
   if(completed||onlineComplete)card.append(el('a','Review Dream Track',{href:'dream-track.html',class:'btn gold'}));
-  card.append(el('p',null,{class:'dream-enrollment-secondary'}));card.lastChild.append(el('a','Go to My Discipleship',{href:'my-discipleship.html'}));
+  const actions=el('div',null,{class:'dream-enrollment-actions'}),secondary=el('p',null,{class:'dream-enrollment-secondary'});
+  secondary.append(el('a','Go to My Discipleship',{href:'my-discipleship.html',class:'btn'}));actions.append(card.lastElementChild,secondary);card.append(actions);
   root.replaceChildren(card);
  }
  window.DreamTrack={el,button,rpc,time,courses,invitationLanding};

@@ -1,5 +1,13 @@
 # Dream Track v1
 
+## October 1 invitation visual polish
+
+User-reported hosted acceptance passed for the real invitation email and confirmation → Resume Dream Track → Lesson 1 flow at `f43c542bace9041e634ba161db32c653a9131f5c`, including the existing learner note without progress/answer changes.
+
+The two approved cosmetic changes reuse the exact website logo (`assets/images/logo-gold.png`, unchanged) at `https://championlifefwb.com/assets/images/logo-gold.png` in both invitation email bodies, and style Go to My Discipleship as a white button with black border/text below the existing gold action at the same width. The image uses an absolute HTTPS PNG reference, alt text, explicit width and inline responsive styling; no attachment, image generation or new email mechanism. Email copy, secure CTA, subjects, exact callback conditional and ordinary Auth fallbacks remain unchanged. External images remain subject to the recipient email client's image-loading preference.
+
+The current assignment prohibits hosted SMTP/Auth changes, so logo templates are committed and render-verified but not applied to hosted Auth. Applying only these two email bodies to acceptance requires a separate explicit authorization. No authentication/security, enrollment/claim, lesson-selection, final-meeting/completion, grading/watch/player or Getting a Grip behavior changes. Desktop and mobile verification uses synthetic local rendering, not a repeated real-account acceptance suite.
+
 Development/acceptance package, September 29, 2026. Starts at `1e9a4f610453336f24194f3758ea3b43aefb11b1` on `champion-sowgo-backend-v1`. Production release and hosted real-account acceptance are separate gates. PR #2 stays open, draft and unmerged.
 
 ## Existing content and layout

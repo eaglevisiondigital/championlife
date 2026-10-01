@@ -1,5 +1,13 @@
 # Current build state
 
+## Dream Track invitation visual polish — October 1, 2026
+
+The user reports that real invitation email and the hosted confirmation flow passed acceptance at `f43c542bace9041e634ba161db32c653a9131f5c`: Resume Dream Track opened Lesson 1, the existing learner note loaded, and progress/answers were unchanged. This supersedes the earlier open acceptance status for that verified flow.
+
+Only two additional visual changes are implemented: the checked-in Dream Track email bodies reuse the unchanged website `assets/images/logo-gold.png` via its existing public HTTPS URL, and Go to My Discipleship is a white, black-bordered/text secondary button directly beneath and aligned with the unchanged gold action. Focused tests passed: 16 Go email render cases (including the exact logo), 18 invitation UX DOM scenarios, site build, 27 JS syntax checks, 16 redirects and diff check. Chrome desktop/mobile synthetic previews verified logo loading and button styling/equal widths with no overflow. No claim logic changed, so database claim tests were not repeated.
+
+This assignment explicitly prohibits SMTP/Auth changes: the new email bodies are repository-ready only; hosted Auth templates were not changed and sent emails will retain their prior header until a separately authorized template-only application. No subject, callback, adapter, authentication, enrollment, progression, playback, Getting a Grip, question bank, production or giving changes. Development commit/push and hosted checks are recorded in the private completion handoff. Next: review this cosmetic change and authorize acceptance-only email-body application if desired; no new feature package.
+
 ## Dream Track invitation UX correction — October 1, 2026
 
 Only the two explicitly authorized hosted UX fixes are implemented from `5e6ecc3bf00de2b5284ff3fc9486e4381599918c`: Dream Track-specific invitation email copy and a direct enrollment/start/resume/completed landing. See [the updated contract](docs/DREAM-TRACK-V1.md). General Auth template fallback content is preserved; only the exact acceptance invitation callback selects the new subject/body. Acceptance-only templates/allowlist and the existing email adapter support this flow. No SMTP, database/migration, grading, 95% watch, player or 140-question-bank changes.

@@ -28,7 +28,7 @@ func main() {
     if redirect==callback {
      if !strings.Contains(result,"Dream Track")||!strings.Contains(result,"Champion Life") {panic("invitation branding missing")}
      if suffix==".html" {
-      for _,expected:=range []string{"seven-lesson","Accept &amp; start Dream Track","12345678","https://acceptance.example/auth/v1/verify?token=synthetic-only&amp;type=email"} {if !strings.Contains(result,expected) {panic("missing secure invitation content: "+expected)}}
+      for _,expected:=range []string{"seven-lesson","Accept &amp; start Dream Track","12345678","https://acceptance.example/auth/v1/verify?token=synthetic-only&amp;type=email",`<img src="https://championlifefwb.com/assets/images/logo-gold.png" alt="Champion Life Church" width="320"`} {if !strings.Contains(result,expected) {panic("missing secure invitation content or approved logo: "+expected)}}
       if strings.Contains(result,"{{")||strings.Contains(result,"ZgotmplZ") {panic("unrendered or unsafe template")}
       if dir:=os.Getenv("DREAM_EMAIL_PREVIEW_DIR");dir!="" {must(os.WriteFile(dir+"/"+kind+".html",rendered.Bytes(),0600))}
      }
