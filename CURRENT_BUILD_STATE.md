@@ -1,5 +1,13 @@
 # Current build state
 
+## Dream Team Application v1 — October 2, 2026
+
+The explicit assignment resumes this package only from `9be1ce0f87a88770307b43b4b4023d00d5f7ee78`. Native eight-page/52-field source-faithful application, cloud drafts/signature, immutable submission, protected PDF, restricted human review, separate ministry placement, safe events/alerts and Person communication hooks are implemented. See [contract and acceptance handoff](docs/DREAM-TEAM-APPLICATION-V1.md). All four approved source anomalies remain unchanged.
+
+Acceptance received the two forward migrations `20261002063140` and `20261002063751`, private storage, and the two protected worker/document Edge Functions. Previous migrations and production remain untouched. Hosted rollback workflow/security tests passed and left zero applications/submissions/jobs/synthetic users. Full regression and focused Go email tests passed; synthetic browser checks covered all eight pages at 390/768/1440 px with no overflow. Real-account mailbox, eventual PDF delivery and hosted end-to-end acceptance remain pending with Work. Detailed runtime configuration and release gates are recorded in the contract; no claim of production release.
+
+PR #2 must remain open/draft/unmerged. No production Auth/SMTP/DNS/giving/merchant changes or real staff grants. Next: hosted Dream Team acceptance only; no additional feature package.
+
 ## Dream Track invitation visual polish — October 1, 2026
 
 The user reports that real invitation email and the hosted confirmation flow passed acceptance at `f43c542bace9041e634ba161db32c653a9131f5c`: Resume Dream Track opened Lesson 1, the existing learner note loaded, and progress/answers were unchanged. This supersedes the earlier open acceptance status for that verified flow.

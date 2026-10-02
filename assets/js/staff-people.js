@@ -208,6 +208,8 @@
       if (!available.length) { status.textContent = 'No staff workspace is assigned to this account yet. Ask your ministry administrator for access.'; return; }
       for (const org of available) { const option = document.createElement('option'); option.value = org.id; option.textContent = org.name; select.append(option); }
       $('workspace').hidden = false; updateOrganization(); showView(currentView, false);
+      const linkedPerson=new URLSearchParams(location.search).get('person');
+      if(linkedPerson&&/^[a-f0-9-]{36}$/.test(linkedPerson)&&can('people.read'))personDetail?.open({id:linkedPerson});
     } catch (_) { status.textContent = 'Your workspace could not be loaded. Reload to try again.'; }
   }
   function clearTasks() {

@@ -1,5 +1,9 @@
 # Implemented architecture
 
+## Dream Team application boundary — October 2, 2026
+
+[Dream Team v1](docs/DREAM-TEAM-APPLICATION-V1.md) extends existing course/People/portal-link/department/follow-up capabilities. Eight private RPC-only tables separate versioned forms, mutable applications, immutable submissions/audit/events/placements, leased jobs and protected documents. Course completion only emits eligibility/milestones; it does not alter grading or establish staff authority. Separate acceptance-only Edge worker and document streamer handle transactional Auth delivery and server snapshot PDFs. Private Storage has no browser policies. The scheduler holds a dedicated worker secret in Vault, not a service key. Public site artifacts contain UI only, excluding definition JSON/server assets/audit.
+
 ## Dream Track invitation UX — October 1, 2026
 
 The existing Auth email adapter now selects an exact invitation-specific login callback. Conditional Auth templates preserve general signup/sign-in content and use the existing Auth secure link/code; no separate invitation sender or identity system is introduced. After Auth, the dedicated invitation page calls existing `claim_pending` (provider-accepted verified-email invitations) or `claim_invite` (copied token), then renders start/resume/completed state from the existing course snapshot. No database or progression change. See [Dream Track](docs/DREAM-TRACK-V1.md).

@@ -1,5 +1,14 @@
 # Durable decisions
 
+## Dream Team Application v1 — October 2, 2026
+
+- The supplied final source handoff and approved implementation assignment supersede earlier package holds for Dream Team only. Preserve all 52 fields and the four explicitly approved anomalies; do not infer unverified JotForm owner configuration.
+- Online Lesson 7 completion makes the application available immediately, separately from final meeting/badge. Manual enable/send is allowed before course completion without changing course or access state.
+- Use reviewed portal identity links, cloud revisioned drafts and immutable submitted versions. Human review is explicit; approval, placement and staff/finance access remain separate.
+- Reuse existing Auth OTP delivery with exact callback-scoped templates and original fallback branches. Delivery acceptance is not mailbox proof. No SMTP replacement or general Communications provider is added.
+- Introduce only the small private document/job/event foundation required here. Use server snapshot PDFs and guarded private downloads. Unknown delivery/processing outcomes require reconciliation rather than automatic replay.
+- Acceptance-only deployment is authorized after regression; production and PR merge are not. Next gate is hosted real-account Dream Team acceptance, not another package.
+
 ## Dream Track invitation UX — October 1, 2026
 
 - The explicit assignment authorizes only branded invitation email and post-claim confirmation, development push and acceptance validation; no next package or production change.

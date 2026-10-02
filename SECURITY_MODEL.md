@@ -1,5 +1,11 @@
 # Security model and release gates
 
+## Dream Team application protection — October 2, 2026
+
+Full application, signature, private reviewer notes and PDF are HIGHLY RESTRICTED. Eight private RLS tables have no direct browser grants; invoker wrappers call fixed-search-path guarded functions. Verified ownership and reviewed active Person links are distinct from read/manage/restricted/placement authority. Ordinary People/course permissions do not expose answers. Self-review, stale revisions, tenant crossover, replay and hidden-field injection are rejected. Approval/placement creates no staff/finance grants. Safe events exclude restricted payloads; document access is audited and streamed after current authorization with no-store headers. The exact preview/project fence and dedicated worker secret apply to acceptance only.
+
+Full regression and hosted rollback tests passed. The security advisor reports 35 intentional RPC-only no-policy INFO findings and the unchanged leaked-password WARN; see [contract](docs/DREAM-TEAM-APPLICATION-V1.md). Hosted real-account acceptance and operational recovery/retention review remain release gates. Production was not modified.
+
 ## Dream Track invitation UX — October 1, 2026
 
 Email context is an exact acceptance callback string, never user metadata or authority. Only that same-origin callback is added to the acceptance allowlist; client `safeNext` remains unchanged and strips unapproved query destinations. The templates use existing Auth `ConfirmationURL`/OTP. Normal Auth messages retain their old branches. Copied-token rejection never falls through to `claim_pending`; verified identity/email/token/org/course checks, idempotence and audit remain server-enforced by unchanged functions. The landing is presentation only and grants no permissions. No production Auth/SMTP or schema changes.

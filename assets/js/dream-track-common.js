@@ -33,5 +33,12 @@
   secondary.append(el('a','Go to My Discipleship',{href:'my-discipleship.html',class:'btn'}));actions.append(card.lastElementChild,secondary);card.append(actions);
   root.replaceChildren(card);
  }
- window.DreamTrack={el,button,rpc,time,courses,invitationLanding};
+ async function applicationNext(root,userId){
+  const host=el('section',null,{class:'dream-card dream-enrollment'});root.append(host);
+  try{const result=await rpc('dream_team',{p_action:'get',p_data:{}},userId);if(!host.isConnected||(await window.ChampionLifeAuth.getSession())?.user.id!==userId)return;if(!result.available){host.remove();return;}
+   const a=result.application,editable=['available','invited','started','more_info_requested'].includes(a.status);
+   host.append(el('h2','Your next step: Dream Team'),el('p','Your application helps Champion Life learn more about you and prepare for serving.'),el('a',editable?(a.status==='started'?'Resume Dream Team Application':a.status==='more_info_requested'?'Provide requested information':'Start Dream Team Application'):a.status.replaceAll('_',' '),{href:'dream-team-application.html',class:'btn gold'}),el('p',a.email_status==='accepted'?'An application email has been sent.':a.email_status==='queued'||a.email_status==='processing'?'Your application email is being prepared. You can start now.':'You can start now using the button above.'));
+  }catch(_){if(host.isConnected)host.append(el('a','Check your Dream Team application',{href:'dream-team-application.html'}));}
+ }
+ window.DreamTrack={el,button,rpc,time,courses,invitationLanding,applicationNext};
 })();

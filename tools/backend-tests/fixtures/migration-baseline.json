@@ -1,6 +1,4 @@
 {
-  "verifiedAt": "2026-09-29",
-  "source": "Historical Supabase catalog baseline extended by full local replay; Dream Track hosted migration byte parity and ACLs verified. No application data.",
   "migrations": [
     {
       "file": "20260923114743_create_course_progress_schema.sql",
@@ -85,6 +83,14 @@
     {
       "file": "20260929221116_dream_track_v1.sql",
       "sha256": "5dde77e16b2eeae07081640ff920d8e440a6b644e593b3889543b65323d0050d"
+    },
+    {
+      "file": "20261002063140_dream_team_application_v1.sql",
+      "sha256": "f70e27479292c41f2de3a079c8ebc7eedc70c2016ec3486696ebefdf5d8eb395"
+    },
+    {
+      "file": "20261002063751_dream_team_acceptance_scheduler_support.sql",
+      "sha256": "9e329403df5a3265c6056de59fa310325363565d7e07c730b18b52763ac5b285"
     }
   ],
   "tables": [
@@ -375,28 +381,6 @@
     },
     {
       "schemaname": "public",
-      "tablename": "course_enrollments",
-      "policyname": "enrollments_insert_own",
-      "roles": [
-        "authenticated"
-      ],
-      "cmd": "INSERT",
-      "qual": null,
-      "with_check": "((( SELECT auth.uid() AS uid) = user_id) AND (course_id IN ( SELECT courses.id\n   FROM courses\n  WHERE (courses.slug <> 'dream-track'::text))))"
-    },
-    {
-      "schemaname": "public",
-      "tablename": "course_enrollments",
-      "policyname": "enrollments_update_own",
-      "roles": [
-        "authenticated"
-      ],
-      "cmd": "UPDATE",
-      "qual": "((( SELECT auth.uid() AS uid) = user_id) AND (course_id IN ( SELECT courses.id\n   FROM courses\n  WHERE (courses.slug <> 'dream-track'::text))))",
-      "with_check": "((( SELECT auth.uid() AS uid) = user_id) AND (course_id IN ( SELECT courses.id\n   FROM courses\n  WHERE (courses.slug <> 'dream-track'::text))))"
-    },
-    {
-      "schemaname": "public",
       "tablename": "lesson_progress",
       "policyname": "progress_select_own",
       "roles": [
@@ -408,36 +392,14 @@
     },
     {
       "schemaname": "public",
-      "tablename": "lesson_progress",
-      "policyname": "progress_insert_own",
-      "roles": [
-        "authenticated"
-      ],
-      "cmd": "INSERT",
-      "qual": null,
-      "with_check": "((( SELECT auth.uid() AS uid) = user_id) AND (course_id IN ( SELECT courses.id\n   FROM courses\n  WHERE (courses.slug <> 'dream-track'::text))))"
-    },
-    {
-      "schemaname": "public",
-      "tablename": "outreach_registrations",
-      "policyname": "outreach_select_own",
+      "tablename": "portal_resources",
+      "policyname": "portal_resources_read",
       "roles": [
         "authenticated"
       ],
       "cmd": "SELECT",
-      "qual": "(( SELECT auth.uid() AS uid) = user_id)",
+      "qual": "(private.portal_staff(organization_id) OR ((status = 'published'::text) AND private.portal_has_access(organization_id, area_id)))",
       "with_check": null
-    },
-    {
-      "schemaname": "public",
-      "tablename": "lesson_progress",
-      "policyname": "progress_update_own",
-      "roles": [
-        "authenticated"
-      ],
-      "cmd": "UPDATE",
-      "qual": "((( SELECT auth.uid() AS uid) = user_id) AND (course_id IN ( SELECT courses.id\n   FROM courses\n  WHERE (courses.slug <> 'dream-track'::text))))",
-      "with_check": "((( SELECT auth.uid() AS uid) = user_id) AND (course_id IN ( SELECT courses.id\n   FROM courses\n  WHERE (courses.slug <> 'dream-track'::text))))"
     },
     {
       "schemaname": "public",
@@ -452,25 +414,14 @@
     },
     {
       "schemaname": "public",
-      "tablename": "lesson_answers",
-      "policyname": "answers_insert_own",
+      "tablename": "outreach_registrations",
+      "policyname": "outreach_select_own",
       "roles": [
         "authenticated"
       ],
-      "cmd": "INSERT",
-      "qual": null,
-      "with_check": "((( SELECT auth.uid() AS uid) = user_id) AND (course_id IN ( SELECT courses.id\n   FROM courses\n  WHERE (courses.slug <> 'dream-track'::text))))"
-    },
-    {
-      "schemaname": "public",
-      "tablename": "lesson_answers",
-      "policyname": "answers_update_own",
-      "roles": [
-        "authenticated"
-      ],
-      "cmd": "UPDATE",
-      "qual": "((( SELECT auth.uid() AS uid) = user_id) AND (course_id IN ( SELECT courses.id\n   FROM courses\n  WHERE (courses.slug <> 'dream-track'::text))))",
-      "with_check": "((( SELECT auth.uid() AS uid) = user_id) AND (course_id IN ( SELECT courses.id\n   FROM courses\n  WHERE (courses.slug <> 'dream-track'::text))))"
+      "cmd": "SELECT",
+      "qual": "(( SELECT auth.uid() AS uid) = user_id)",
+      "with_check": null
     },
     {
       "schemaname": "public",
@@ -481,17 +432,6 @@
       ],
       "cmd": "SELECT",
       "qual": "(user_id = ( SELECT auth.uid() AS uid))",
-      "with_check": null
-    },
-    {
-      "schemaname": "public",
-      "tablename": "organization_staff_permissions",
-      "policyname": "staff_permissions_read_own",
-      "roles": [
-        "authenticated"
-      ],
-      "cmd": "SELECT",
-      "qual": "((user_id = ( SELECT auth.uid() AS uid)) AND (department_ids IS NULL) AND private.has_staff_permission(organization_id, permission))",
       "with_check": null
     },
     {
@@ -507,36 +447,25 @@
     },
     {
       "schemaname": "public",
-      "tablename": "organization_people",
-      "policyname": "organization_people_read",
+      "tablename": "portal_admin_events",
+      "policyname": "portal_admin_events_read",
       "roles": [
         "authenticated"
       ],
       "cmd": "SELECT",
-      "qual": "((user_id = ( SELECT auth.uid() AS uid)) OR private.person_permission(organization_id, id, 'people.read'::text))",
+      "qual": "private.portal_staff(organization_id)",
       "with_check": null
     },
     {
       "schemaname": "public",
-      "tablename": "giving_funds",
-      "policyname": "giving_funds_read",
+      "tablename": "portal_resources",
+      "policyname": "portal_resources_insert",
       "roles": [
         "authenticated"
       ],
-      "cmd": "SELECT",
-      "qual": "(EXISTS ( SELECT 1\n   FROM organization_staff_permissions p\n  WHERE ((p.organization_id = giving_funds.organization_id) AND (p.user_id = ( SELECT auth.uid() AS uid)) AND (p.revoked_at IS NULL) AND (p.permission = 'finance.read'::text))))",
-      "with_check": null
-    },
-    {
-      "schemaname": "public",
-      "tablename": "organization_people",
-      "policyname": "organization_people_update",
-      "roles": [
-        "authenticated"
-      ],
-      "cmd": "UPDATE",
-      "qual": "(private.person_permission(organization_id, id, 'people.read'::text) AND private.person_permission(organization_id, id, 'people.update'::text))",
-      "with_check": "(private.person_permission(organization_id, id, 'people.read'::text) AND private.person_permission(organization_id, id, 'people.update'::text))"
+      "cmd": "INSERT",
+      "qual": null,
+      "with_check": "private.portal_staff(organization_id)"
     },
     {
       "schemaname": "public",
@@ -850,6 +779,17 @@
     {
       "schemaname": "public",
       "tablename": "giving_funds",
+      "policyname": "giving_funds_read",
+      "roles": [
+        "authenticated"
+      ],
+      "cmd": "SELECT",
+      "qual": "(EXISTS ( SELECT 1\n   FROM organization_staff_permissions p\n  WHERE ((p.organization_id = giving_funds.organization_id) AND (p.user_id = ( SELECT auth.uid() AS uid)) AND (p.revoked_at IS NULL) AND (p.permission = 'finance.read'::text))))",
+      "with_check": null
+    },
+    {
+      "schemaname": "public",
+      "tablename": "giving_funds",
       "policyname": "giving_funds_insert",
       "roles": [
         "authenticated"
@@ -948,62 +888,122 @@
     },
     {
       "schemaname": "public",
-      "tablename": "portal_resources",
-      "policyname": "portal_resources_read",
+      "tablename": "organization_people",
+      "policyname": "organization_people_read",
       "roles": [
         "authenticated"
       ],
       "cmd": "SELECT",
-      "qual": "(private.portal_staff(organization_id) OR ((status = 'published'::text) AND private.portal_has_access(organization_id, area_id)))",
+      "qual": "((user_id = ( SELECT auth.uid() AS uid)) OR private.person_permission(organization_id, id, 'people.read'::text))",
       "with_check": null
     },
     {
       "schemaname": "public",
-      "tablename": "portal_admin_events",
-      "policyname": "portal_admin_events_read",
+      "tablename": "organization_people",
+      "policyname": "organization_people_update",
+      "roles": [
+        "authenticated"
+      ],
+      "cmd": "UPDATE",
+      "qual": "(private.person_permission(organization_id, id, 'people.read'::text) AND private.person_permission(organization_id, id, 'people.update'::text))",
+      "with_check": "(private.person_permission(organization_id, id, 'people.read'::text) AND private.person_permission(organization_id, id, 'people.update'::text))"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "organization_staff_permissions",
+      "policyname": "staff_permissions_read_own",
       "roles": [
         "authenticated"
       ],
       "cmd": "SELECT",
-      "qual": "private.portal_staff(organization_id)",
+      "qual": "((user_id = ( SELECT auth.uid() AS uid)) AND (department_ids IS NULL) AND private.has_staff_permission(organization_id, permission))",
       "with_check": null
     },
     {
       "schemaname": "public",
-      "tablename": "portal_resources",
-      "policyname": "portal_resources_insert",
+      "tablename": "course_enrollments",
+      "policyname": "enrollments_insert_own",
       "roles": [
         "authenticated"
       ],
       "cmd": "INSERT",
       "qual": null,
-      "with_check": "private.portal_staff(organization_id)"
+      "with_check": "((( SELECT auth.uid() AS uid) = user_id) AND (course_id IN ( SELECT courses.id\n   FROM courses\n  WHERE (courses.slug <> 'dream-track'::text))))"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "course_enrollments",
+      "policyname": "enrollments_update_own",
+      "roles": [
+        "authenticated"
+      ],
+      "cmd": "UPDATE",
+      "qual": "((( SELECT auth.uid() AS uid) = user_id) AND (course_id IN ( SELECT courses.id\n   FROM courses\n  WHERE (courses.slug <> 'dream-track'::text))))",
+      "with_check": "((( SELECT auth.uid() AS uid) = user_id) AND (course_id IN ( SELECT courses.id\n   FROM courses\n  WHERE (courses.slug <> 'dream-track'::text))))"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "lesson_progress",
+      "policyname": "progress_insert_own",
+      "roles": [
+        "authenticated"
+      ],
+      "cmd": "INSERT",
+      "qual": null,
+      "with_check": "((( SELECT auth.uid() AS uid) = user_id) AND (course_id IN ( SELECT courses.id\n   FROM courses\n  WHERE (courses.slug <> 'dream-track'::text))))"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "lesson_progress",
+      "policyname": "progress_update_own",
+      "roles": [
+        "authenticated"
+      ],
+      "cmd": "UPDATE",
+      "qual": "((( SELECT auth.uid() AS uid) = user_id) AND (course_id IN ( SELECT courses.id\n   FROM courses\n  WHERE (courses.slug <> 'dream-track'::text))))",
+      "with_check": "((( SELECT auth.uid() AS uid) = user_id) AND (course_id IN ( SELECT courses.id\n   FROM courses\n  WHERE (courses.slug <> 'dream-track'::text))))"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "lesson_answers",
+      "policyname": "answers_insert_own",
+      "roles": [
+        "authenticated"
+      ],
+      "cmd": "INSERT",
+      "qual": null,
+      "with_check": "((( SELECT auth.uid() AS uid) = user_id) AND (course_id IN ( SELECT courses.id\n   FROM courses\n  WHERE (courses.slug <> 'dream-track'::text))))"
+    },
+    {
+      "schemaname": "public",
+      "tablename": "lesson_answers",
+      "policyname": "answers_update_own",
+      "roles": [
+        "authenticated"
+      ],
+      "cmd": "UPDATE",
+      "qual": "((( SELECT auth.uid() AS uid) = user_id) AND (course_id IN ( SELECT courses.id\n   FROM courses\n  WHERE (courses.slug <> 'dream-track'::text))))",
+      "with_check": "((( SELECT auth.uid() AS uid) = user_id) AND (course_id IN ( SELECT courses.id\n   FROM courses\n  WHERE (courses.slug <> 'dream-track'::text))))"
     }
   ],
   "functions": [
     {
       "schema": "private",
-      "name": "audit_followup_task",
+      "name": "guard_person_write",
       "args": "",
-      "sha256": "9dbb695134b0f3f3f6ed70bad691dbbfefd410d922bce6b47446da38c02434ae"
+      "sha256": "0c51edaca502839e565c12e76d031ed89441e6ab936f3f66ab80810f4bad5e57"
     },
     {
       "schema": "private",
-      "name": "audit_giving_configuration",
-      "args": "",
-      "sha256": "9150e711798aef1ab30265364c4262962f4a0305fbdb641f7cfd817e7ce3d938"
+      "name": "people_workspace",
+      "args": "p_org uuid, p_action text, p_payload jsonb",
+      "sha256": "beff321a1c75866c720d43f2bee19a803f1f28bca161f9ed330f0a2aad700f62"
     },
     {
-      "schema": "private",
-      "name": "audit_household_write",
-      "args": "",
-      "sha256": "eef0ab6a32c7e7ee04eb3b34cde8a8590c968d7459898006eca7f4493fe4acee"
-    },
-    {
-      "schema": "private",
-      "name": "audit_person_write",
-      "args": "",
-      "sha256": "b3c6c03bab6580fb24c46112b800e181dcc884ec031a05b250caef87e73fe4bd"
+      "schema": "public",
+      "name": "people_workspace",
+      "args": "p_org uuid, p_action text, p_payload jsonb",
+      "sha256": "add779cbb1b8c86b370e77742d66558082ff49a416a34025e0ebdb8ed0d5f3d6"
     },
     {
       "schema": "private",
@@ -1013,15 +1013,45 @@
     },
     {
       "schema": "private",
-      "name": "audit_tag_write",
+      "name": "guard_portal_access_tag",
       "args": "",
-      "sha256": "83b8d5382aee8a39e696262f1daf37d9d249ce720e16dc2b710d3204027ab6be"
+      "sha256": "67f47dea007098852c2b5a28ff14a5559d066137e2f0cc793f252a4f2c1fd1ca"
+    },
+    {
+      "schema": "public",
+      "name": "rls_auto_enable",
+      "args": "",
+      "sha256": "91cd99af31892f20c02b60880f9a2db65180d8880ad8c0ea8fcc02cfdd1be32b"
     },
     {
       "schema": "private",
-      "name": "cancel_changed_workflow_notification",
+      "name": "guard_portal_access_configuration",
       "args": "",
-      "sha256": "e70a9d10d5c5daecc7c0cb748cac1d9f5a02e637d235c64bef1af12711058ec0"
+      "sha256": "a9c28bbe9fb64560f2aa8f8ff55bfc3a638a52e40fa66316d0d637e8b7c01afe"
+    },
+    {
+      "schema": "private",
+      "name": "person_anchor",
+      "args": "",
+      "sha256": "8d79478061c0372494f431ef2865c8403c6416e493bb149a40b7ad8ef4e093a6"
+    },
+    {
+      "schema": "public",
+      "name": "list_staff_directory",
+      "args": "p_org uuid, p_for_assignment boolean",
+      "sha256": "b40cb084f5534a0465a6ec1c93da7e9d548a19e404eb9ba5ac0bb3708b2c991d"
+    },
+    {
+      "schema": "public",
+      "name": "set_staff_access",
+      "args": "p_org uuid, p_target uuid, p_email text, p_name text, p_permissions text[], p_revision integer",
+      "sha256": "12aaa2648048c3ab28bdbfe781820560d47ae2fd9448628f36642d03eb861150"
+    },
+    {
+      "schema": "private",
+      "name": "list_staff_directory",
+      "args": "p_org uuid, p_for_assignment boolean",
+      "sha256": "c2ac4d27ac2fa7f93d7148cbb435151d0c4f68907530f1dc93141643e42ebf62"
     },
     {
       "schema": "private",
@@ -1030,10 +1060,58 @@
       "sha256": "0be2612b7806a98eb8178e192125b1702fca997d2000d2f06b6fc3bbb0d9fad2"
     },
     {
+      "schema": "public",
+      "name": "claim_st_lucia_registration",
+      "args": "",
+      "sha256": "bcf4904176b173369e29fc7e3986bed20e27b4a8c1d29b2e42f8f9d170f7f53a"
+    },
+    {
       "schema": "private",
-      "name": "configure_tag_workflow",
-      "args": "p_org uuid, p_tag uuid, p_revision integer, p_enabled boolean, p_timezone text, p_reentry text",
-      "sha256": "73903e4030e4c5d134dbec461f46e37403b17ea8e4f141de2458146c47662298"
+      "name": "audit_person_write",
+      "args": "",
+      "sha256": "b3c6c03bab6580fb24c46112b800e181dcc884ec031a05b250caef87e73fe4bd"
+    },
+    {
+      "schema": "private",
+      "name": "audit_household_write",
+      "args": "",
+      "sha256": "eef0ab6a32c7e7ee04eb3b34cde8a8590c968d7459898006eca7f4493fe4acee"
+    },
+    {
+      "schema": "private",
+      "name": "guard_household_write",
+      "args": "",
+      "sha256": "38b0c8eec81d9a14e291318e5eb8e399240dabc4e51f14f5f370cf420ad511e8"
+    },
+    {
+      "schema": "private",
+      "name": "audit_followup_task",
+      "args": "",
+      "sha256": "9dbb695134b0f3f3f6ed70bad691dbbfefd410d922bce6b47446da38c02434ae"
+    },
+    {
+      "schema": "private",
+      "name": "guard_followup_task",
+      "args": "",
+      "sha256": "f4b59ae6857e85343b1cf876fe62d01cd97c6975c73abcc1a7ccebd590aba6ec"
+    },
+    {
+      "schema": "private",
+      "name": "audit_tag_write",
+      "args": "",
+      "sha256": "83b8d5382aee8a39e696262f1daf37d9d249ce720e16dc2b710d3204027ab6be"
+    },
+    {
+      "schema": "private",
+      "name": "pause_changed_tag_workflow",
+      "args": "",
+      "sha256": "c52e514f5c16621d30ce83ab7b7d65f303bf947522976358c2a8a910215558d4"
+    },
+    {
+      "schema": "private",
+      "name": "guard_tag_write",
+      "args": "",
+      "sha256": "88fa0273ed0f13df66872edde2e17e313b2549188b727756f88067ece7af3d91"
     },
     {
       "schema": "private",
@@ -1049,105 +1127,15 @@
     },
     {
       "schema": "private",
-      "name": "guard_followup_task",
+      "name": "staff_workspace_context",
       "args": "",
-      "sha256": "f4b59ae6857e85343b1cf876fe62d01cd97c6975c73abcc1a7ccebd590aba6ec"
-    },
-    {
-      "schema": "private",
-      "name": "guard_giving_configuration",
-      "args": "",
-      "sha256": "598df320e33affab04b4a0c19fd0e2c210d913ff7ab4bf3ca2f25ebc46c20f6c"
-    },
-    {
-      "schema": "private",
-      "name": "guard_household_write",
-      "args": "",
-      "sha256": "38b0c8eec81d9a14e291318e5eb8e399240dabc4e51f14f5f370cf420ad511e8"
-    },
-    {
-      "schema": "private",
-      "name": "guard_person_write",
-      "args": "",
-      "sha256": "0c51edaca502839e565c12e76d031ed89441e6ab936f3f66ab80810f4bad5e57"
-    },
-    {
-      "schema": "private",
-      "name": "guard_portal_access_configuration",
-      "args": "",
-      "sha256": "a9c28bbe9fb64560f2aa8f8ff55bfc3a638a52e40fa66316d0d637e8b7c01afe"
-    },
-    {
-      "schema": "private",
-      "name": "guard_portal_access_tag",
-      "args": "",
-      "sha256": "67f47dea007098852c2b5a28ff14a5559d066137e2f0cc793f252a4f2c1fd1ca"
-    },
-    {
-      "schema": "private",
-      "name": "guard_portal_resource",
-      "args": "",
-      "sha256": "2ee5e9505cdc135cf6f95e568913d0d9144cb129172171215fdc00df72e7de9c"
-    },
-    {
-      "schema": "private",
-      "name": "guard_tag_write",
-      "args": "",
-      "sha256": "88fa0273ed0f13df66872edde2e17e313b2549188b727756f88067ece7af3d91"
-    },
-    {
-      "schema": "private",
-      "name": "list_staff_directory",
-      "args": "p_org uuid, p_for_assignment boolean",
-      "sha256": "c2ac4d27ac2fa7f93d7148cbb435151d0c4f68907530f1dc93141643e42ebf62"
-    },
-    {
-      "schema": "private",
-      "name": "pause_changed_tag_workflow",
-      "args": "",
-      "sha256": "c52e514f5c16621d30ce83ab7b7d65f303bf947522976358c2a8a910215558d4"
-    },
-    {
-      "schema": "private",
-      "name": "portal_has_access",
-      "args": "p_org uuid, p_area uuid",
-      "sha256": "368b365eedf5db25fbc6b958f4afd9638a57252fd422bd85b9905afffe0a7f40"
-    },
-    {
-      "schema": "private",
-      "name": "portal_staff",
-      "args": "p_org uuid",
-      "sha256": "b053a7e5604f9798781ae9abc0e32b976222d864ab9d3f1f0689bc1d300d0dc0"
-    },
-    {
-      "schema": "private",
-      "name": "resolve_tag_workflow",
-      "args": "p_org uuid, p_run uuid, p_revision integer, p_action text",
-      "sha256": "2f234e074f0fdb40faf57e71f4687beeba5f750c02ff5d045f094eab76a658d2"
-    },
-    {
-      "schema": "private",
-      "name": "set_portal_account_link",
-      "args": "p_org uuid, p_person uuid, p_email text, p_active boolean, p_note text, p_revision integer",
-      "sha256": "c9de8992317d39b5eb1b8278018703d9cb028401e2313066554446554e6a3d75"
-    },
-    {
-      "schema": "private",
-      "name": "set_portal_tag_rule",
-      "args": "p_org uuid, p_area uuid, p_tag uuid, p_enabled boolean, p_revision integer",
-      "sha256": "fe54d9c6b91dd939c6008bf5f96452176d3dffbbfd7f6452b407f6e1dcfdf66b"
-    },
-    {
-      "schema": "private",
-      "name": "set_staff_access",
-      "args": "p_org uuid, p_target uuid, p_email text, p_name text, p_permissions text[], p_revision integer",
-      "sha256": "97008baf36e7548f261c93a2752893338302b5e3de761ca49a6763acecaab2d5"
+      "sha256": "a25b467cfea4d4323884e463ac65b85cb8ee80451b4437bc9f00dc68b3735a91"
     },
     {
       "schema": "public",
-      "name": "claim_st_lucia_registration",
+      "name": "staff_workspace_context",
       "args": "",
-      "sha256": "bcf4904176b173369e29fc7e3986bed20e27b4a8c1d29b2e42f8f9d170f7f53a"
+      "sha256": "0a26ccc8e5eefc2b18d2651c350d8c58e3c727d1dd0f8d913c679d31892495df"
     },
     {
       "schema": "public",
@@ -1157,63 +1145,21 @@
     },
     {
       "schema": "public",
-      "name": "list_staff_directory",
-      "args": "p_org uuid, p_for_assignment boolean",
-      "sha256": "b40cb084f5534a0465a6ec1c93da7e9d548a19e404eb9ba5ac0bb3708b2c991d"
-    },
-    {
-      "schema": "public",
       "name": "resolve_tag_workflow",
       "args": "p_org uuid, p_run uuid, p_revision integer, p_action text",
       "sha256": "82196ef67a4ec0be4965143541526f0bf25cd610f6b551d6c42835a61896fc43"
     },
     {
-      "schema": "public",
-      "name": "rls_auto_enable",
+      "schema": "private",
+      "name": "cancel_changed_workflow_notification",
       "args": "",
-      "sha256": "91cd99af31892f20c02b60880f9a2db65180d8880ad8c0ea8fcc02cfdd1be32b"
-    },
-    {
-      "schema": "public",
-      "name": "set_portal_account_link",
-      "args": "p_org uuid, p_person uuid, p_email text, p_active boolean, p_note text, p_revision integer",
-      "sha256": "d949b80ffcb4c8140abbb43802edea8b08e85dbc30ce4cdb007505bf94d64ecf"
-    },
-    {
-      "schema": "public",
-      "name": "set_portal_tag_rule",
-      "args": "p_org uuid, p_area uuid, p_tag uuid, p_enabled boolean, p_revision integer",
-      "sha256": "fe5646e9d90f84eadb6f5e96192c32e7b0b60e6053ed9c75c786265c78eb36c0"
-    },
-    {
-      "schema": "public",
-      "name": "set_staff_access",
-      "args": "p_org uuid, p_target uuid, p_email text, p_name text, p_permissions text[], p_revision integer",
-      "sha256": "12aaa2648048c3ab28bdbfe781820560d47ae2fd9448628f36642d03eb861150"
+      "sha256": "e70a9d10d5c5daecc7c0cb748cac1d9f5a02e637d235c64bef1af12711058ec0"
     },
     {
       "schema": "private",
-      "name": "has_staff_permission",
-      "args": "p_org uuid, p_key text, p_department uuid",
-      "sha256": "ead7af5ee4df73ba89f50809cd059bb4c525c67d57fc77655b9379c205550fca"
-    },
-    {
-      "schema": "private",
-      "name": "people_workspace",
-      "args": "p_org uuid, p_action text, p_payload jsonb",
-      "sha256": "beff321a1c75866c720d43f2bee19a803f1f28bca161f9ed330f0a2aad700f62"
-    },
-    {
-      "schema": "private",
-      "name": "person_anchor",
-      "args": "",
-      "sha256": "8d79478061c0372494f431ef2865c8403c6416e493bb149a40b7ad8ef4e093a6"
-    },
-    {
-      "schema": "private",
-      "name": "person_permission",
-      "args": "p_org uuid, p_person uuid, p_key text",
-      "sha256": "4b64c2c6a4b2173d3274ddb1b00c5ede5bf7e90a4bac5ce367949de12d4851db"
+      "name": "resolve_tag_workflow",
+      "args": "p_org uuid, p_run uuid, p_revision integer, p_action text",
+      "sha256": "2f234e074f0fdb40faf57e71f4687beeba5f750c02ff5d045f094eab76a658d2"
     },
     {
       "schema": "private",
@@ -1223,33 +1169,123 @@
     },
     {
       "schema": "private",
+      "name": "dream_team_summary",
+      "args": "a private.dream_team_applications",
+      "sha256": "12cbd6ac141933118b4913845dec3163bf066f8e1bb1b61c75c402669248bae4"
+    },
+    {
+      "schema": "private",
+      "name": "audit_giving_configuration",
+      "args": "",
+      "sha256": "9150e711798aef1ab30265364c4262962f4a0305fbdb641f7cfd817e7ce3d938"
+    },
+    {
+      "schema": "private",
+      "name": "portal_staff",
+      "args": "p_org uuid",
+      "sha256": "b053a7e5604f9798781ae9abc0e32b976222d864ab9d3f1f0689bc1d300d0dc0"
+    },
+    {
+      "schema": "private",
+      "name": "guard_giving_configuration",
+      "args": "",
+      "sha256": "598df320e33affab04b4a0c19fd0e2c210d913ff7ab4bf3ca2f25ebc46c20f6c"
+    },
+    {
+      "schema": "public",
+      "name": "events_catalog",
+      "args": "p_slug text, p_from date, p_to date, p_filters jsonb",
+      "sha256": "45b26b428c42a7fe40d11472c32135adb3bb7e4f17f0e6862ffa654cd8e9121d"
+    },
+    {
+      "schema": "private",
+      "name": "registration_permission",
+      "args": "s event_series, k text",
+      "sha256": "8f8d289a4cdfe93263869864f2c2f27d0a90abacc4bfc150b9bc0e33a8a01561"
+    },
+    {
+      "schema": "private",
+      "name": "registration_used",
+      "args": "p_series uuid, p_occurrence uuid, p_scope text",
+      "sha256": "6cb6f3132d0eb0664beb936bdb845ee9f9b0d5b72d23b64493c78f43aa4e9d04"
+    },
+    {
+      "schema": "private",
       "name": "staff_permission_keys",
       "args": "",
-      "sha256": "d8291954e2ab89591cdde6d83205d4ca40b7d14bbb6a7c251c1fd061451d0a98"
+      "sha256": "aec30d08d8fd8c073f703c51243c42cd48ac79af26e8005b51bf7dc995c336dd"
     },
     {
       "schema": "private",
-      "name": "staff_workspace_context",
-      "args": "",
-      "sha256": "a25b467cfea4d4323884e463ac65b85cb8ee80451b4437bc9f00dc68b3735a91"
-    },
-    {
-      "schema": "public",
-      "name": "people_workspace",
-      "args": "p_org uuid, p_action text, p_payload jsonb",
-      "sha256": "add779cbb1b8c86b370e77742d66558082ff49a416a34025e0ebdb8ed0d5f3d6"
-    },
-    {
-      "schema": "public",
-      "name": "staff_workspace_context",
-      "args": "",
-      "sha256": "0a26ccc8e5eefc2b18d2651c350d8c58e3c727d1dd0f8d913c679d31892495df"
+      "name": "portal_has_access",
+      "args": "p_org uuid, p_area uuid",
+      "sha256": "368b365eedf5db25fbc6b958f4afd9638a57252fd422bd85b9905afffe0a7f40"
     },
     {
       "schema": "private",
-      "name": "event_conflicts",
-      "args": "p_series uuid",
-      "sha256": "aaa8877b52561ef387f62a7ab02b8e125a8b7ef412f94b4132839c4ea831d17a"
+      "name": "guard_portal_resource",
+      "args": "",
+      "sha256": "2ee5e9505cdc135cf6f95e568913d0d9144cb129172171215fdc00df72e7de9c"
+    },
+    {
+      "schema": "private",
+      "name": "dream_team_immutable",
+      "args": "",
+      "sha256": "74fe6cdcd3eb94059c17c79bc34d222acc5854a23c1c3278fbe1e9cb373082b5"
+    },
+    {
+      "schema": "public",
+      "name": "set_portal_tag_rule",
+      "args": "p_org uuid, p_area uuid, p_tag uuid, p_enabled boolean, p_revision integer",
+      "sha256": "fe5646e9d90f84eadb6f5e96192c32e7b0b60e6053ed9c75c786265c78eb36c0"
+    },
+    {
+      "schema": "public",
+      "name": "set_portal_account_link",
+      "args": "p_org uuid, p_person uuid, p_email text, p_active boolean, p_note text, p_revision integer",
+      "sha256": "d949b80ffcb4c8140abbb43802edea8b08e85dbc30ce4cdb007505bf94d64ecf"
+    },
+    {
+      "schema": "private",
+      "name": "set_portal_tag_rule",
+      "args": "p_org uuid, p_area uuid, p_tag uuid, p_enabled boolean, p_revision integer",
+      "sha256": "fe54d9c6b91dd939c6008bf5f96452176d3dffbbfd7f6452b407f6e1dcfdf66b"
+    },
+    {
+      "schema": "private",
+      "name": "set_portal_account_link",
+      "args": "p_org uuid, p_person uuid, p_email text, p_active boolean, p_note text, p_revision integer",
+      "sha256": "c9de8992317d39b5eb1b8278018703d9cb028401e2313066554446554e6a3d75"
+    },
+    {
+      "schema": "private",
+      "name": "configure_tag_workflow",
+      "args": "p_org uuid, p_tag uuid, p_revision integer, p_enabled boolean, p_timezone text, p_reentry text",
+      "sha256": "73903e4030e4c5d134dbec461f46e37403b17ea8e4f141de2458146c47662298"
+    },
+    {
+      "schema": "private",
+      "name": "has_staff_permission",
+      "args": "p_org uuid, p_key text, p_department uuid",
+      "sha256": "ead7af5ee4df73ba89f50809cd059bb4c525c67d57fc77655b9379c205550fca"
+    },
+    {
+      "schema": "private",
+      "name": "person_permission",
+      "args": "p_org uuid, p_person uuid, p_key text",
+      "sha256": "4b64c2c6a4b2173d3274ddb1b00c5ede5bf7e90a4bac5ce367949de12d4851db"
+    },
+    {
+      "schema": "private",
+      "name": "set_staff_access",
+      "args": "p_org uuid, p_target uuid, p_email text, p_name text, p_permissions text[], p_revision integer",
+      "sha256": "97008baf36e7548f261c93a2752893338302b5e3de761ca49a6763acecaab2d5"
+    },
+    {
+      "schema": "private",
+      "name": "event_slots",
+      "args": "s event_series, p_from date, p_to date",
+      "sha256": "ede03e240509ac70cb1df14ac7be910aec9871b17b2f3198b649e68dc703f4bd"
     },
     {
       "schema": "private",
@@ -1265,15 +1301,9 @@
     },
     {
       "schema": "private",
-      "name": "event_slots",
-      "args": "s event_series, p_from date, p_to date",
-      "sha256": "ede03e240509ac70cb1df14ac7be910aec9871b17b2f3198b649e68dc703f4bd"
-    },
-    {
-      "schema": "private",
-      "name": "events_catalog",
-      "args": "p_slug text, p_from date, p_to date, p_filters jsonb",
-      "sha256": "b417ab6bf7d14f785e1469094e32b89ad735af204b856097ef6f3562d8315504"
+      "name": "event_conflicts",
+      "args": "p_series uuid",
+      "sha256": "aaa8877b52561ef387f62a7ab02b8e125a8b7ef412f94b4132839c4ea831d17a"
     },
     {
       "schema": "private",
@@ -1283,15 +1313,15 @@
     },
     {
       "schema": "public",
-      "name": "events_catalog",
-      "args": "p_slug text, p_from date, p_to date, p_filters jsonb",
-      "sha256": "45b26b428c42a7fe40d11472c32135adb3bb7e4f17f0e6862ffa654cd8e9121d"
-    },
-    {
-      "schema": "public",
       "name": "events_workspace",
       "args": "p_org uuid, p_action text, p_data jsonb",
       "sha256": "11bdff58db1ebe626e7e9089f0303da0db5b9a98a5866acb36a795a225adf115"
+    },
+    {
+      "schema": "private",
+      "name": "events_catalog",
+      "args": "p_slug text, p_from date, p_to date, p_filters jsonb",
+      "sha256": "b417ab6bf7d14f785e1469094e32b89ad735af204b856097ef6f3562d8315504"
     },
     {
       "schema": "private",
@@ -1313,12 +1343,6 @@
     },
     {
       "schema": "private",
-      "name": "registration_permission",
-      "args": "s event_series, k text",
-      "sha256": "8f8d289a4cdfe93263869864f2c2f27d0a90abacc4bfc150b9bc0e33a8a01561"
-    },
-    {
-      "schema": "private",
       "name": "registration_person",
       "args": "p_org uuid, p_data jsonb",
       "sha256": "07217871bd1ec6ef698df4f13a88363e09c93a757d34bb9603de4348b581de57"
@@ -1330,10 +1354,10 @@
       "sha256": "f337e5101d0ce17df56ab4681bd4cb133b245f3cc0eb699785cc1dec01e2b32f"
     },
     {
-      "schema": "private",
-      "name": "registration_used",
-      "args": "p_series uuid, p_occurrence uuid, p_scope text",
-      "sha256": "6cb6f3132d0eb0664beb936bdb845ee9f9b0d5b72d23b64493c78f43aa4e9d04"
+      "schema": "public",
+      "name": "registration_public",
+      "args": "p_slug text, p_action text, p_data jsonb",
+      "sha256": "125cfd3e583c4fbd58fd535a5357ad4c53fe42a7fb47a652f270babeef0b56eb"
     },
     {
       "schema": "private",
@@ -1343,15 +1367,15 @@
     },
     {
       "schema": "public",
-      "name": "registration_public",
-      "args": "p_slug text, p_action text, p_data jsonb",
-      "sha256": "125cfd3e583c4fbd58fd535a5357ad4c53fe42a7fb47a652f270babeef0b56eb"
-    },
-    {
-      "schema": "public",
       "name": "registrations_workspace",
       "args": "p_org uuid, p_action text, p_data jsonb",
       "sha256": "afc8e3b4b6ceb94463314ee33956fc4064a9850f389d61c309deca514e5c9ef3"
+    },
+    {
+      "schema": "private",
+      "name": "course_normalize",
+      "args": "v text",
+      "sha256": "174a7b1d8e608c1b945d2a426e6767d1d1e65b05d7d7e91b9d28f149b3f5d139"
     },
     {
       "schema": "private",
@@ -1367,27 +1391,15 @@
     },
     {
       "schema": "private",
-      "name": "course_invite_delivery",
-      "args": "p_id uuid, p_delivery uuid, p_sent boolean",
-      "sha256": "f2a510efc54060187eb64388234d9b8d520d7e70e70010455d801525dee521e8"
-    },
-    {
-      "schema": "private",
-      "name": "course_normalize",
-      "args": "v text",
-      "sha256": "174a7b1d8e608c1b945d2a426e6767d1d1e65b05d7d7e91b9d28f149b3f5d139"
+      "name": "course_snapshot",
+      "args": "p_course bigint, p_user uuid, p_lesson integer",
+      "sha256": "50b95f76ca3bd76c9dda45d42a5162fec3ef27289c79551203036129599abe01"
     },
     {
       "schema": "private",
       "name": "course_recompute",
       "args": "p_course bigint, p_user uuid, p_lesson integer",
       "sha256": "7749d2ae3a2e95dbb2a0b5c4e1c6d59c7f3a36fe722dec5742aa3d42011eb58f"
-    },
-    {
-      "schema": "private",
-      "name": "course_snapshot",
-      "args": "p_course bigint, p_user uuid, p_lesson integer",
-      "sha256": "50b95f76ca3bd76c9dda45d42a5162fec3ef27289c79551203036129599abe01"
     },
     {
       "schema": "private",
@@ -1403,12 +1415,6 @@
     },
     {
       "schema": "public",
-      "name": "course_invite_delivery",
-      "args": "p_id uuid, p_delivery uuid, p_sent boolean",
-      "sha256": "bf7596084db8131ba94326b31bcbefd0a456f1094c068b200889cee462c0f3d4"
-    },
-    {
-      "schema": "public",
       "name": "dream_track",
       "args": "p_action text, p_data jsonb",
       "sha256": "08ad8a000ed43a6b04157bd6ab1f8f2b7656f30343332719b909739b3bed26f5"
@@ -1418,6 +1424,114 @@
       "name": "dream_track_admin",
       "args": "p_org uuid, p_action text, p_data jsonb",
       "sha256": "678fc0162d9b708219b2ab3e35b6de6bef72d5d1ccdf059d089577b8e43c513a"
+    },
+    {
+      "schema": "private",
+      "name": "course_invite_delivery",
+      "args": "p_id uuid, p_delivery uuid, p_sent boolean",
+      "sha256": "f2a510efc54060187eb64388234d9b8d520d7e70e70010455d801525dee521e8"
+    },
+    {
+      "schema": "public",
+      "name": "course_invite_delivery",
+      "args": "p_id uuid, p_delivery uuid, p_sent boolean",
+      "sha256": "bf7596084db8131ba94326b31bcbefd0a456f1094c068b200889cee462c0f3d4"
+    },
+    {
+      "schema": "private",
+      "name": "dream_team_event",
+      "args": "a private.dream_team_applications, kind text, key text",
+      "sha256": "375eaf56fa6520f328621ba4b4c108726010595e47c5acb5dd67160ef06c8b44"
+    },
+    {
+      "schema": "private",
+      "name": "dream_team_available",
+      "args": "org uuid, usr uuid, reason text",
+      "sha256": "9dd39f60395ee0a8fd76898a58a39b38377cb6ceeca3dc05bb45926afa59c0af"
+    },
+    {
+      "schema": "private",
+      "name": "dream_team_course_hook",
+      "args": "",
+      "sha256": "9a30d0bf1089a0d1a1ec2815cf19cd035f923d0409a6a9ee0af3cd3c213ef314"
+    },
+    {
+      "schema": "private",
+      "name": "dream_team_validate",
+      "args": "def jsonb, answers jsonb, final boolean",
+      "sha256": "87e736010942ff90f1ace22d4ec8f5de08f16cbe2e19bb62fa1624d9607e2ff1"
+    },
+    {
+      "schema": "private",
+      "name": "dream_team",
+      "args": "p_action text, p_data jsonb",
+      "sha256": "9734ba9d878c19ad2e787c70e56344fb6d74952f0ab2973c7b1ec7ba783cd276"
+    },
+    {
+      "schema": "public",
+      "name": "dream_team",
+      "args": "p_action text, p_data jsonb",
+      "sha256": "dddb482ec3d027c5970f4fd315dcfbb745eb3534af8ba30ae9adab3b57d19c50"
+    },
+    {
+      "schema": "private",
+      "name": "dream_team_admin",
+      "args": "p_org uuid, p_action text, p_data jsonb",
+      "sha256": "865b46b07ab9fca7ad7b9253fd00cee9660055c618b7439df312a714876a8e44"
+    },
+    {
+      "schema": "public",
+      "name": "dream_team_admin",
+      "args": "p_org uuid, p_action text, p_data jsonb",
+      "sha256": "a5f785f9c69db4a2c8f685f5bf4aedfafe68fcb5960d7531709530b4ffc16295"
+    },
+    {
+      "schema": "public",
+      "name": "dream_team_person",
+      "args": "p_org uuid, p_person uuid",
+      "sha256": "a8209fdeeb0a53c9b291ee3e00559ec0ef4b7c6cf3b25baade67718d56c93d6d"
+    },
+    {
+      "schema": "private",
+      "name": "dream_team_alerts",
+      "args": "p_org uuid",
+      "sha256": "bdece26bbd84df0fc74039367739243b6f2c87d78b1a455ec718597f18cd089b"
+    },
+    {
+      "schema": "public",
+      "name": "dream_team_document",
+      "args": "p_id uuid",
+      "sha256": "d86e713194639e65c77c3127d4b3e62007da8c9bf954c726fbfed1b79fa271c2"
+    },
+    {
+      "schema": "private",
+      "name": "dream_team_person",
+      "args": "p_org uuid, p_person uuid",
+      "sha256": "9d013f15d24f2c6b57b3bee3d0351570e85f3888204a7fa359e925baaae0df3d"
+    },
+    {
+      "schema": "public",
+      "name": "dream_team_alerts",
+      "args": "p_org uuid",
+      "sha256": "36a7d2d52cc8235cc60b74325c7b57f5180b30f3196d46bad81ceb9085438aa6"
+    },
+    {
+      "schema": "private",
+      "name": "dream_team_document",
+      "args": "p_id uuid",
+      "sha256": "d152eaaa94b02f3991b940675b93638b0191c6ed4ba8e8665f87a79d200b004f"
+    },
+    {
+      "schema": "private",
+      "name": "dream_team_worker",
+      "args": "p_action text, p_data jsonb",
+      "sha256": "09c538854133b719a976d187af61c627ecd5762b801d2956241fb22371816d3c"
+    },
+    {
+      "schema": "public",
+      "name": "dream_team_worker",
+      "args": "p_action text, p_data jsonb",
+      "sha256": "2bd1763f8b2d3a889623c9ccbb5f655cd718e770fd5017d856022e03e2ceb190"
     }
   ]
 }

@@ -2,12 +2,12 @@
   window.ChampionPersonDetail = ({auth,getContext,onEdit,onFollowup,onUpdateTask}) => {
     const $=id=>document.getElementById(id);
     let selected=null,tab='contact',generation=0,taskPage=0;
-    function clear(){generation++;selected=null;taskPage=0;$('person-detail').close();$('detail-name').textContent='Person';$('detail-contact').replaceChildren();$('detail-history').replaceChildren();$('detail-tasks').replaceChildren();$('detail-households').replaceChildren();$('detail-status').textContent='';}
+    function clear(){generation++;selected=null;taskPage=0;$('person-detail').close();$('detail-name').textContent='Person';$('detail-contact-panel').querySelectorAll(':scope > section').forEach(n=>n.remove());$('detail-contact').replaceChildren();$('detail-history').replaceChildren();$('detail-tasks').replaceChildren();$('detail-households').replaceChildren();$('detail-status').textContent='';}
     function current(token,org){const c=getContext();return token===generation&&!c.invalid&&c.organizationId===org&&$('person-detail').open;}
     function setTab(name){if(!['contact','history','tasks','households'].includes(name))return;tab=name;document.querySelectorAll('[data-person-tab]').forEach(button=>{button.setAttribute('aria-pressed',String(button.dataset.personTab===tab));});for(const name of ['contact','history','tasks','households'])$('detail-'+name+'-panel').hidden=name!==tab;load();}
     async function load(){
       const c=getContext(),token=++generation,org=c.organizationId;
-      $('detail-contact').replaceChildren();$('detail-history').replaceChildren();$('detail-tasks').replaceChildren();$('detail-households').replaceChildren();$('detail-task-previous').disabled=true;$('detail-task-next').disabled=true;
+      $('detail-contact-panel').querySelectorAll(':scope > section').forEach(n=>n.remove());$('detail-contact').replaceChildren();$('detail-history').replaceChildren();$('detail-tasks').replaceChildren();$('detail-households').replaceChildren();$('detail-task-previous').disabled=true;$('detail-task-next').disabled=true;
       $('detail-edit').hidden=true;$('detail-followup').hidden=true;
       if(!selected||c.invalid||!c.can('people.read')){$('detail-status').textContent='Contact access is unavailable.';return;}
       $('detail-status').textContent='Loading record...';
@@ -19,6 +19,7 @@
         if(tab==='contact'){
           for(const [label,value] of [['Email',person.email],['Phone',person.phone],['Updated',new Date(person.updated_at).toLocaleString()]]){const dt=document.createElement('dt'),dd=document.createElement('dd');dt.textContent=label;dd.textContent=value||'Not provided';$('detail-contact').append(dt,dd);}
           $('detail-status').textContent='Contact details for the selected organization.';
+          window.ChampionPersonDreamTeam?.({root:$('detail-contact-panel'),person,context:c,auth,current:()=>current(token,org),onFollowup}).catch(()=>{});
         }else if(tab==='history'){
           const {data,error}=await auth.client.from('organization_admin_events').select('id,kind,actor_user_id,before_state,after_state,created_at').eq('organization_id',org).eq('subject_id',person.id).in('kind',['person_created','person_updated']).order('created_at',{ascending:false}).order('id').limit(30);
           if(!current(token,org))return;if(error)throw error;
