@@ -1,5 +1,12 @@
 # Durable decisions
 
+## Dream Team PDF repair — October 3, 2026
+
+- Diagnose the observed 546 from runtime evidence: CPUTime at 2,016 ms with approximately 35 MB memory. Do not blame the 1.14 MB asset module without evidence.
+- Reduce repeated font shaping in text wrapping; retain licensed font, approved logo, exact-answer attachment and all required content/security. Do not raise limits, remove fields or introduce external rendering.
+- Retry only the confirmed failed PDF job after verifying no existing object/document; do not replay accepted email jobs. Preserve the resulting immutable submission/document/audit evidence.
+- Acceptance worker deployment and development push are authorized; production release, permission changes and a next package are not. Report browser acceptance separately from local and hosted generation tests.
+
 ## Dream Team Application v1 — October 2, 2026
 
 - The supplied final source handoff and approved implementation assignment supersede earlier package holds for Dream Team only. Preserve all 52 fields and the four explicitly approved anomalies; do not infer unverified JotForm owner configuration.

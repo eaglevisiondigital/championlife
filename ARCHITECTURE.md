@@ -1,5 +1,9 @@
 # Implemented architecture
 
+## Dream Team PDF resource repair — October 3, 2026
+
+The existing server PDF path now measures word candidates instead of every growing character prefix, with code-point-safe splitting for oversized tokens. Pinned pdf-lib/fontkit, embedded assets, snapshot/attachment format, queue lease/receipt and protected streaming architecture are unchanged. The worker emits only fixed PDF stage names and elapsed milliseconds for resource diagnosis. See the [Dream Team contract](docs/DREAM-TEAM-APPLICATION-V1.md).
+
 ## Dream Team application boundary — October 2, 2026
 
 [Dream Team v1](docs/DREAM-TEAM-APPLICATION-V1.md) extends existing course/People/portal-link/department/follow-up capabilities. Eight private RPC-only tables separate versioned forms, mutable applications, immutable submissions/audit/events/placements, leased jobs and protected documents. Course completion only emits eligibility/milestones; it does not alter grading or establish staff authority. Separate acceptance-only Edge worker and document streamer handle transactional Auth delivery and server snapshot PDFs. Private Storage has no browser policies. The scheduler holds a dedicated worker secret in Vault, not a service key. Public site artifacts contain UI only, excluding definition JSON/server assets/audit.

@@ -1,5 +1,13 @@
 # Current build state
 
+## Dream Team protected PDF repair — October 3, 2026
+
+The focused repair starts from `dc7058451e071c9d8fe4852f4a0c7254dfafcd60`. Hosted acceptance confirmed a CPUTime shutdown at 2,016 ms, not a memory limit. Repeated growing-prefix font shaping during line wrapping was the local CPU hotspot. Word-candidate wrapping with code-point-safe splitting removes redundant measurements; the original logo/font, all visible source content, signature, versions and exact UTF-8 attachment remain intact. Fixed stage/timing telemetry contains no submission data.
+
+Only acceptance `dream-team-worker` was redeployed (version 3). The previously failed synthetic PDF job was requeued after proving that no document/object existed; the scheduler accepted it once. PDF save completed at 488 ms, upload at 687 ms; runtime shutdown recorded 680 ms CPU and 24,615,715 bytes memory. One 121,134-byte private object and a correctly bound protected-document/hash record now exist. Unauthenticated document access returns 401; the public Storage route returns 400 without a PDF. No migration, Auth/SMTP, document endpoint, permissions or production change.
+
+Full 41-script regression passed, including focused layout/content/signature/Unicode/private-upload/hash/replay/download tests. Local generated PDF branding, metadata and signature were visually checked. Hosted authenticated download and visual review remain pending the submitting synthetic learner session; the approved unrelated account was denied by the deployed RPC without grant changes; hosted reviewer/ordinary-staff checks remain pending. No temporary staff grants were created. Preserve immutable submission/document/audit history. Next: complete only remaining PDF/mailbox/mobile/network acceptance; no new package and no PR merge.
+
 ## Dream Team Application v1 — October 2, 2026
 
 The explicit assignment resumes this package only from `9be1ce0f87a88770307b43b4b4023d00d5f7ee78`. Native eight-page/52-field source-faithful application, cloud drafts/signature, immutable submission, protected PDF, restricted human review, separate ministry placement, safe events/alerts and Person communication hooks are implemented. See [contract and acceptance handoff](docs/DREAM-TEAM-APPLICATION-V1.md). All four approved source anomalies remain unchanged.

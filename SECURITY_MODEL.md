@@ -1,5 +1,9 @@
 # Security model and release gates
 
+## Dream Team PDF repair — October 3, 2026
+
+The resource repair changes layout computation only, plus fixed stage/elapsed-time telemetry. Logs exclude answers, signature, names, IDs, tokens, file paths, URLs and credentials. Existing immutable snapshots, UTF-8 attachment, SHA-256 receipt, private no-overwrite upload and current-authority audited downloads remain unchanged. Acceptance alone received the worker update; no migrations, grants, policies, document-handler or authentication changes. Hosted generation/private storage and anonymous denial passed; authenticated browser download/reviewer checks remain a separate acceptance gate.
+
 ## Dream Team application protection — October 2, 2026
 
 Full application, signature, private reviewer notes and PDF are HIGHLY RESTRICTED. Eight private RLS tables have no direct browser grants; invoker wrappers call fixed-search-path guarded functions. Verified ownership and reviewed active Person links are distinct from read/manage/restricted/placement authority. Ordinary People/course permissions do not expose answers. Self-review, stale revisions, tenant crossover, replay and hidden-field injection are rejected. Approval/placement creates no staff/finance grants. Safe events exclude restricted payloads; document access is audited and streamed after current authorization with no-store headers. The exact preview/project fence and dedicated worker secret apply to acceptance only.

@@ -1,16 +1,38 @@
 // Dependencies and assets are injected for deterministic local tests and Edge reuse.
-export async function applicationPdf(snapshot,{PDFDocument,rgb,fontkit,fontBytes,logoBytes}){
+export async function applicationPdf(snapshot,{PDFDocument,rgb,fontkit,fontBytes,logoBytes,onStage=()=>{}}){
  if(!snapshot?.form?.fields||snapshot.form.fields.length!==52)throw Error('Versioned submission required');
- const pdf=await PDFDocument.create();pdf.registerFontkit(fontkit);const font=await pdf.embedFont(fontBytes,{subset:true}),logo=await pdf.embedPng(logoBytes);const supported=new Set(font.getCharacterSet());let page,y,hasUnsupported=false;const width=504,left=54;
+ onStage('pdf_start');
+ const pdf=await PDFDocument.create();pdf.registerFontkit(fontkit);const font=await pdf.embedFont(fontBytes,{subset:true}),logo=await pdf.embedPng(logoBytes);onStage('assets_ready');const supported=new Set(font.getCharacterSet());let page,y,hasUnsupported=false;const width=504,left=54;
  const text=s=>Array.from(String(s)).map(c=>supported.has(c.codePointAt(0))||c==='\n'?c:(hasUnsupported=true,`[U+${c.codePointAt(0).toString(16).toUpperCase()}]`)).join('');
  const add=()=>{page=pdf.addPage([612,792]);page.drawRectangle({x:44,y:716,width:524,height:58,color:rgb(.06,.07,.09)});page.drawImage(logo,{x:54,y:727,width:160,height:160*logo.height/logo.width});page.drawText('CONFIDENTIAL · DREAM TEAM',{x:300,y:743,size:10,font,color:rgb(.85,.72,.43)});y=690;};
  const line=(s,size=10)=>{if(y<66)add();page.drawText(s,{x:left,y,size,font,color:rgb(.08,.09,.1)});y-=size*1.5;};
- const write=(s,size=10)=>{for(const paragraph of text(s).split('\n')){let current='';for(const c of paragraph.trim()){if(font.widthOfTextAtSize(current+c,size)>width){const split=current.lastIndexOf(' ');if(split>0){line(current.slice(0,split),size);current=current.slice(split+1);}else{line(current,size);current='';}}current+=c;}line(current,size);}y-=5;};
+ const write=(s,size=10)=>{for(const paragraph of text(s).split('\n'))for(const wrapped of wrapPdfText(paragraph,part=>font.widthOfTextAtSize(part,size),width))line(wrapped,size);y-=5;};
  add();write('Dream Team Application',21);write('Submitted '+new Date(snapshot.submitted_at).toISOString());write('Form '+snapshot.form.version+' · Ethics '+snapshot.ethics_version);write('Restricted applicant copy. Review and placement decisions are separate from staff authority.');
  for(const section of snapshot.form.pages){if(section.number>1||y<180)add();write('Section '+section.number,14);for(const block of section.blocks)write(block.text);for(const f of snapshot.form.fields.filter(f=>f.page===section.number&&!f.hidden)){if(y<100)add();write(f.label||'Additional agreement',11);const value=snapshot.answers[f.id];if(f.type==='signature'){if(y<180)add();page.drawRectangle({x:left,y:y-140,width:width,height:130,borderWidth:.5,borderColor:rgb(.6,.6,.6)});for(const stroke of value||[])for(let i=1;i<stroke.length;i++)page.drawLine({start:{x:left+stroke[i-1][0]*width,y:y-10-stroke[i-1][1]*130},end:{x:left+stroke[i][0]*width,y:y-10-stroke[i][1]*130},thickness:1.5,color:rgb(.05,.05,.05)});y-=160;write('Signed '+new Date(snapshot.signed_at).toISOString());}else if(Array.isArray(value))write(value.join('; ')||'Not answered');else for(const c of f.controls)write((f.controls.length>1?c.label+': ':'')+(value?.[c.id]||'Not answered'));}}
  if(hasUnsupported)write('Characters marked [U+...] retain their exact original text in the attached submitted-answers.json file.',9);
+ onStage('content_ready');
  const pages=pdf.getPages();pages.forEach((p,i)=>p.drawText(`Champion Life · Private application · ${i+1} / ${pages.length}`,{x:left,y:35,size:9,font}));
  // Preserve every original Unicode answer, including characters unavailable in the embedded font.
  await pdf.attach(new TextEncoder().encode(JSON.stringify({form_version:snapshot.form.version,submitted_at:snapshot.submitted_at,sections:snapshot.form.pages,fields:snapshot.form.fields.filter(f=>!f.hidden).map(f=>({prompt:f.label,answer:snapshot.answers[f.id]}))},null,2)),'submitted-answers.json',{mimeType:'application/json',description:'Exact submitted text and signature; restricted applicant copy'});
- pdf.setTitle('Champion Life Dream Team Application');pdf.setAuthor('Champion Life');return pdf.save();
+ onStage('attachment_ready');
+ pdf.setTitle('Champion Life Dream Team Application');pdf.setAuthor('Champion Life');const bytes=await pdf.save();onStage('pdf_saved');return bytes;
+}
+
+// Measure a word candidate once, rather than shaping every growing character prefix.
+// Oversized unbroken tokens use code-point-safe binary splitting; no content is dropped.
+export function wrapPdfText(paragraph,measure,width){
+ const tokens=String(paragraph).trim().match(/\S+\s*/gu)||[''];const lines=[];let current='';
+ for(const token of tokens){
+  const candidate=current+token;
+  if(measure(candidate)<=width){current=candidate;continue;}
+  if(current){lines.push(current.trimEnd());current='';}
+  let points=Array.from(token);
+  while(points.length&&measure(points.join(''))>width){
+   let low=1,high=points.length;
+   while(low<high){const mid=Math.ceil((low+high)/2);if(measure(points.slice(0,mid).join(''))<=width)low=mid;else high=mid-1;}
+   lines.push(points.slice(0,low).join(''));points=points.slice(low);
+  }
+  current=points.join('');
+ }
+ if(current||!lines.length)lines.push(current.trimEnd());return lines;
 }
