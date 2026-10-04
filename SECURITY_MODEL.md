@@ -1,5 +1,9 @@
 # Security model and release gates
 
+## Outreach denied-access presentation — October 4, 2026
+
+Active staff requests returning HTTP 401/403 discard protected intake DOM, organization/grant context and pagination; generation invalidation prevents pending responses or detached controls from restoring data or reusing actions. 401 offers the unchanged sign-in route; 403 offers only explanatory text and navigation to the existing staff workspace. General failures use fixed nontechnical copy rather than backend response bodies. This is frontend cleanup after server denial, not new authorization or proactive revocation notification. No backend, RLS, grants, session, callback or live configuration is changed. Focused DOM scenarios cover denial, reload, late responses and authorized operation; existing local backend denial regressions remain passing.
+
 ## Outreach intake — October 4, 2026
 
 The exact submit-only private/public RPC pair is a new intentional anonymous execution exception. Raw tables and staff endpoint stay denied to guests. Bounded payload/brand/fields, server-owned SowGo, replay locking/hash, honeypot and hourly quotas protect submission. Explicit verified effective outreach and People/follow-up capabilities govern reviewed links/tasks. No consent, account, staff or financial authority comes from submission. See [contract](docs/OUTREACH-PARTNER-INTAKE-V1.md) for quota limitations and release gates.
