@@ -15,3 +15,10 @@ assert(!/name="outreach-partner"/.test(read('netlify-forms.html')));assert(!read
 assert(read('outreach-giving.html').includes('https://www.community.givehub.com/forms/outreach-main-giving'));
 assert(read('assets/css/outreach-partner.css').includes('#062943'));assert(read('assets/css/outreach-partner.css').includes('#ff4b00'));
 console.log('PASS shared outreach fields, brands, logo, guest submit, double click, retry/back replay, continuation, modal focus and native-only capture');
+
+// Exercise the real global click interceptor, including Netlify pretty URLs.
+const launchDom=new JSDOM('<a href="/outreach-partner?brand=champion-life">Become a Partner</a><a href="/outreach-partner.html?brand=champion-life">Get Connected</a>',{url:'https://preview.example/outreach',runScripts:'outside-only'});
+const lw=launchDom.window;lw.IntersectionObserver=class{observe(){}};let opens=0;lw.OutreachPartner={open(){opens++}};lw.eval(read('assets/js/site.js'));
+for(const link of lw.document.querySelectorAll('a[href*="outreach-partner"]')){const click=new lw.MouseEvent('click',{bubbles:true,cancelable:true});link.dispatchEvent(click);assert(click.defaultPrevented,'partner entry opens modal without navigating');}
+assert.equal(opens,2);launchDom.window.close();
+console.log('PASS real global partner entry interception including pretty URLs');
