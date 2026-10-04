@@ -28,7 +28,7 @@ https://deploy-preview-2--championlifechurch.netlify.app/outreach-partner.html?b
 
 Staff: https://deploy-preview-2--championlifechurch.netlify.app/staff-outreach-partners.html
 
-These are implementation targets until hosted verification is recorded below. No production direct URL is claimed deployed.
+Both public preview routes and the existing outreach modal were browser-verified as recorded below. No production direct URL is claimed deployed.
 
 ## Storage and security
 
@@ -69,3 +69,15 @@ Acceptance-only migration, hosted parity/security/synthetic checks, browser resp
 Acceptance assigned migration version `20261004055336`; the local filename follows that remote identity. SQL MD5 `16ea4420b2986cad1049a3067b6d331b` matches hosted content. All 23 previous migrations are unchanged. Both new tables have RLS and no anon/authenticated read grants. Wrapper/implementation ACLs and empty search paths were read back. Rollback-only hosted assertions passed for guest write/replay, ownership forgery rejection, guest read/admin denial, cross-org rejection, reviewed contact/partner linkage, one follow-up and no additional authority; all disposable synthetic users/grants/intakes rolled back. No existing accounts or permissions were altered.
 
 Full existing regression plus 45 focused backend assertions and public/staff DOM workflows passed locally (44 scripts in the final test command); isolated bootstrap/replay passed for 24 migrations, 58 public RLS tables, 60 policies and 95 functions. Hosted browser/CI results follow after development push.
+
+### Hosted browser and integration acceptance — October 4, 2026
+
+All three guest paths passed against acceptance: Champion Life direct (23.45/Bi-weekly), SowGo direct (12.34/Monthly), and existing Champion Life outreach modal (34.56/Weekly). Read-back confirmed source_site/source_path separately from canonical SowGo ownership, exact commitments, new status and no automatic Person link. Each continued to `/outreach-giving.html`; the existing GiveHub `https://community.givehub.com/forms/outreach-main-giving` rendered unchanged. No payment was initiated. All three synthetic intake rows were removed after verification; transactional backend test users/grants were rolled back.
+
+Both branded direct forms passed visual/overflow checks at 390×844, 768×1024 and 1440×1000. Approved logos loaded. Browser checks caught and corrected a 2px border-box overflow and the global “Become a Partner”/pretty-URL modal interceptor; the latter now has actual global-script regression coverage. The mobile modal has no internal horizontal overflow, retains keyboard focus trapping and submits through the same backend. No console errors were observed in these form/continuation checks. Screenshots remain in the private audit workspace, outside the deployable repository.
+
+SowGo integration is pushed to `codex/shared-outreach-partner`, commit `d40cd52125b3684633d3fc7b1a92b91856969a13`, draft PR https://github.com/eaglevisiondigital/sowgo/pull/1. The Partner CTA at https://deploy-preview-1--sowgosite.netlify.app opened the correct shared SowGo form in a new tab. SowGo.org production is not updated. That PR deliberately targets acceptance and must not merge until coordinated production cutover.
+
+The 44-script hosted synthetic-regression jobs passed for application commit `4ea464af10e6d24852a178f2eab3b89edcbb33b4` (runs 37181808870 and 37181811452). Netlify preview/header/redirect checks passed. Local full regression and focused reruns passed. Authorized staff behavior is verified by DOM tests and hosted rollback SQL, not claimed as real-staff browser acceptance; no real grants were provisioned.
+
+Remaining release gates: product/release approval; production migration/configuration under separate authorization; review of any external Netlify notifications/automation and historical intake handling; named staff access/operational review and abuse-volume limits; verified production direct route and coordinated SowGo CTA release. Existing Dream Team production acceptance gates are unchanged. No further feature package is started.
