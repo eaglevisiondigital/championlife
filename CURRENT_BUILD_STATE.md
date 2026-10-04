@@ -1,5 +1,10 @@
 # Current build state
 
+## Shared Outreach Partner Intake v1 — October 4, 2026
+
+The explicit assignment releases the prior Dream Team development hold for this package only. From `2e9bc50b8a08de2ae0dd61ccd1943bf90dad2ce4`, one server-owned SowGo intake supports the unchanged Champion Life modal plus Champion Life and SowGo direct presentations. Native submit replaces this form's Netlify capture in development. Reviewed People linking, partner relationship and existing follow-up are separately authorized; no identity/consent/payment/access inference. See [contract](docs/OUTREACH-PARTNER-INTAKE-V1.md). Tests and acceptance/CI outcomes are recorded as verification proceeds; production and Dream Team remain unreleased. No next package or PR merge.
+
+
 ## Dream Team protected PDF repair — October 3, 2026
 
 The focused repair starts from `dc7058451e071c9d8fe4852f4a0c7254dfafcd60`. Hosted acceptance confirmed a CPUTime shutdown at 2,016 ms, not a memory limit. Repeated growing-prefix font shaping during line wrapping was the local CPU hotspot. Word-candidate wrapping with code-point-safe splitting removes redundant measurements; the original logo/font, all visible source content, signature, versions and exact UTF-8 attachment remain intact. Fixed stage/timing telemetry contains no submission data.

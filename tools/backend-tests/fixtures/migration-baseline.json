@@ -91,6 +91,10 @@
     {
       "file": "20261002063751_dream_team_acceptance_scheduler_support.sql",
       "sha256": "9e329403df5a3265c6056de59fa310325363565d7e07c730b18b52763ac5b285"
+    },
+    {
+      "file": "20261004055336_outreach_partner_intake_v1.sql",
+      "sha256": "c2feb7c1675b973da4f3e0f5cf3a18aaf97dacdc59aca7a7e01a029d5ca84351"
     }
   ],
   "tables": [
@@ -264,6 +268,10 @@
     },
     {
       "relname": "organizations",
+      "relrowsecurity": true
+    },
+    {
+      "relname": "outreach_partner_intakes",
       "relrowsecurity": true
     },
     {
@@ -988,6 +996,24 @@
   ],
   "functions": [
     {
+      "schema": "public",
+      "name": "outreach_partner_submit",
+      "args": "p_data jsonb",
+      "sha256": "5217833243f04c28cb6baf2e722b8797b6af058bc2098c345b459c1e3ef2a76f"
+    },
+    {
+      "schema": "private",
+      "name": "outreach_partner_workspace",
+      "args": "p_org uuid, p_action text, p_data jsonb",
+      "sha256": "4cfd51c3c569cebb6651048a0f187568b67548f34e5450a3a874980d7c0d3577"
+    },
+    {
+      "schema": "public",
+      "name": "outreach_partner_workspace",
+      "args": "p_org uuid, p_action text, p_data jsonb",
+      "sha256": "52301b6ddb953cb083a09f42f4987a724782d68edcbab809bcd1c40265fae33a"
+    },
+    {
       "schema": "private",
       "name": "guard_person_write",
       "args": "",
@@ -1532,6 +1558,12 @@
       "name": "dream_team_worker",
       "args": "p_action text, p_data jsonb",
       "sha256": "2bd1763f8b2d3a889623c9ccbb5f655cd718e770fd5017d856022e03e2ceb190"
+    },
+    {
+      "schema": "private",
+      "name": "outreach_partner_submit",
+      "args": "p_data jsonb",
+      "sha256": "3085227545d0459daf63881635fd2c1c5ab1380f9ca72518608a33c8f253a332"
     }
   ]
 }

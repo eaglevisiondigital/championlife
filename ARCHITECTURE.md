@@ -1,5 +1,10 @@
 # Implemented architecture
 
+## Shared outreach intake — October 4, 2026
+
+One RLS/RPC-only raw intake owned by server-resolved SowGo separates source brand/path from tenant ownership. Shared public modal/direct rendering uses one submit endpoint; no Netlify dual write. Reviewed linking reuses tenant People relationships/audit and follow-up tasks without Auth identity inference. See [contract](docs/OUTREACH-PARTNER-INTAKE-V1.md).
+
+
 ## Dream Team PDF resource repair — October 3, 2026
 
 The existing server PDF path now measures word candidates instead of every growing character prefix, with code-point-safe splitting for oversized tokens. Pinned pdf-lib/fontkit, embedded assets, snapshot/attachment format, queue lease/receipt and protected streaming architecture are unchanged. The worker emits only fixed PDF stage names and elapsed milliseconds for resource diagnosis. See the [Dream Team contract](docs/DREAM-TEAM-APPLICATION-V1.md).

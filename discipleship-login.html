@@ -78,7 +78,7 @@
     try {
       const url = new URL(value || '/my-discipleship.html', location.origin);
       if (url.origin !== location.origin) return '/my-discipleship.html';
-      if (!/^\/(?:staff-people|staff-dream-track|staff-dream-team|dream-team-application|dream-track(?:-[1-7]|-access|-invite)?|my-ministry|my-discipleship|getting-a-grip(?:-(?:[1-9]|1[0-3]))?)\.html$/.test(url.pathname)) return '/my-discipleship.html';
+      if (!/^\/(?:staff-people|staff-outreach-partners|staff-dream-track|staff-dream-team|dream-team-application|dream-track(?:-[1-7]|-access|-invite)?|my-ministry|my-discipleship|getting-a-grip(?:-(?:[1-9]|1[0-3]))?)\.html$/.test(url.pathname)) return '/my-discipleship.html';
       if (url.pathname === '/my-ministry.html') {
         const uuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
         const area = url.searchParams.get('area'), resource = url.searchParams.get('resource');

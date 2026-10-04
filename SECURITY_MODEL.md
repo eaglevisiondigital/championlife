@@ -1,5 +1,10 @@
 # Security model and release gates
 
+## Outreach intake — October 4, 2026
+
+The exact submit-only private/public RPC pair is a new intentional anonymous execution exception. Raw tables and staff endpoint stay denied to guests. Bounded payload/brand/fields, server-owned SowGo, replay locking/hash, honeypot and hourly quotas protect submission. Explicit verified effective outreach and People/follow-up capabilities govern reviewed links/tasks. No consent, account, staff or financial authority comes from submission. See [contract](docs/OUTREACH-PARTNER-INTAKE-V1.md) for quota limitations and release gates.
+
+
 ## Dream Team PDF repair — October 3, 2026
 
 The resource repair changes layout computation only, plus fixed stage/elapsed-time telemetry. Logs exclude answers, signature, names, IDs, tokens, file paths, URLs and credentials. Existing immutable snapshots, UTF-8 attachment, SHA-256 receipt, private no-overwrite upload and current-authority audited downloads remain unchanged. Acceptance alone received the worker update; no migrations, grants, policies, document-handler or authentication changes. Hosted generation/private storage and anonymous denial passed; authenticated browser download/reviewer checks remain a separate acceptance gate.

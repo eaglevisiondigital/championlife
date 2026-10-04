@@ -1,5 +1,14 @@
 # Durable decisions
 
+## Shared Outreach Partner Intake v1 — October 4, 2026
+
+- The explicit package authorization releases the Dream Team development hold, not production or remaining acceptance gates.
+- Replace new outreach Netlify capture with one native intake; preserve historical production data and other forms. Reconcile unknown external integrations before production cutover.
+- Server-resolved SowGo owns both source brands. A typed email is unverified; establish partner only after explicit contact review/link, with no permission/consent inference.
+- Preserve approved logos, distinct brand language, fields and existing outreach giving. Commitment capture is separate from payment.
+- Accessible SowGo source gets an isolated preview-target integration branch; no main deployment or production URL claim. Embed not yet supported/tested.
+
+
 ## Dream Team PDF repair — October 3, 2026
 
 - Diagnose the observed 546 from runtime evidence: CPUTime at 2,016 ms with approximately 35 MB memory. Do not blame the 1.14 MB asset module without evidence.
