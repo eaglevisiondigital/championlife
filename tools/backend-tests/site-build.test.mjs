@@ -51,7 +51,7 @@ for (const origin of ['https://championlifefwb.com', 'https://deploy-preview-12-
 const manifest = JSON.parse(await readFile(path.join(root, 'tools/site-build/public-files.json')));
 // Released main pages must survive the development branch's explicit publish allowlist.
 for (const file of ['christmas-dinner-2026.html', 'assets/css/christmas-dinner-2026.css',
-  'assets/js/christmas-dinner-2026.js', 'bessemer/index.html']) assert(manifest.includes(file), file);
+  'assets/js/christmas-dinner-2026.js', 'bessemer/index.html', 'assets/images/bessemer-qr.svg']) assert(manifest.includes(file), file);
 const events = new JSDOM(await readFile(path.join(root, 'events.html'), 'utf8'));
 assert.equal(events.window.document.querySelectorAll('#events-app').length, 1);
 assert.equal(events.window.document.querySelectorAll('.christmas-feature').length, 1);
