@@ -4,8 +4,16 @@
   if (!form) return;
 
   const lesson = form.dataset.lesson || '1';
-  const storageKey = 'championlife-grip-lesson-' + lesson + '-draft-v1';
-  const progressKey = 'championlife-grip-progress-v1';
+  let storageKey = null;
+  let progressKey = null;
+  let ready = false;
+  let accountChanged = false;
+  let remoteQueue = Promise.resolve();
+  const storage = {
+    getItem(key) { try { return localStorage.getItem(key); } catch (_) { return null; } },
+    setItem(key, value) { try { localStorage.setItem(key, value); return true; } catch (_) { return false; } },
+    removeItem(key) { try { localStorage.removeItem(key); } catch (_) {} }
+  };
   const learnerKey = 'championlife-grip-learner-id-v1';
 
   const saveStatus = document.querySelector('[data-grip-save-status]');
@@ -28,11 +36,11 @@
   let remoteSaveTimer = null;
 
   function localLearnerId() {
-    let id = localStorage.getItem(learnerKey);
+    let id = storage.getItem(learnerKey);
     if (!id) {
       id = (window.crypto && crypto.randomUUID) ? crypto.randomUUID() :
         'grip-' + Date.now().toString(36) + '-' + Math.random().toString(36).slice(2, 12);
-      localStorage.setItem(learnerKey, id);
+      storage.setItem(learnerKey, id);
     }
     return id;
   }
@@ -97,21 +105,25 @@
   }
 
   function saveDraft() {
+    if (!ready || accountChanged) return;
     const payload = {
       lesson,
+      dirty: true,
       savedAt: new Date().toISOString(),
       values: fieldsToObject()
     };
-    localStorage.setItem(storageKey, JSON.stringify(payload));
+    const stored = storage.setItem(storageKey, JSON.stringify(payload));
+    if (!stored) { if (saveStatus) saveStatus.textContent = "Device storage unavailable"; updateProgress(); return; }
     localSaveLabel(cloudUser ? 'Saved locally' : 'Saved on this device');
     updateProgress();
   }
 
   function restoreDraft() {
     try {
-      const raw = localStorage.getItem(storageKey);
+      const raw = storage.getItem(storageKey);
       if (!raw) return;
       const payload = JSON.parse(raw);
+      if (cloudUser && !payload.dirty) return;
       const values = payload.values || {};
       Object.entries(values).forEach(([name, value]) => {
         const el = form.elements.namedItem(name);
@@ -128,13 +140,13 @@
 
   function updateCourseProgressLocal() {
     let progress = {};
-    try { progress = JSON.parse(localStorage.getItem(progressKey) || '{}'); } catch(e) {}
+    try { progress = JSON.parse(storage.getItem(progressKey) || '{}'); } catch(e) {}
     progress[lesson] = {
       completed: true,
       completedAt: new Date().toISOString(),
       learnerId: cloudUser?.id || localLearnerId()
     };
-    localStorage.setItem(progressKey, JSON.stringify(progress));
+    storage.setItem(progressKey, JSON.stringify(progress));
   }
 
   function cloudStateBox() {
@@ -161,7 +173,7 @@
       const next = encodeURIComponent(location.pathname.split('/').pop() || ('getting-a-grip-' + lesson + '.html'));
       box.className = 'grip-cloud-state';
       box.innerHTML =
-        '<div><strong>Want your progress on every device?</strong><span>Your work is safe on this device now. Sign in to also save it to your Champion Life account.</span></div>' +
+        '<div><strong>Want your progress on every device?</strong><span>Guest drafts stay on this device. Sign in before starting work you want saved to your account.</span></div>' +
         '<a href="discipleship-login.html?next=' + next + '">Sign In / Sync</a>';
     }
   }
@@ -172,24 +184,33 @@
     })[ch]);
   }
 
-  async function syncRemote(completed=false) {
-    if (!auth || !cloudUser) return;
-    try {
-      if (learnerField) learnerField.value = cloudUser.id;
-      await auth.saveLesson({
-        lessonNumber:Number(lesson),
-        answers:answerObject(),
-        status: completed ? 'completed' : 'in_progress',
-        completed,
-        profile:profileObject()
-      });
-      if (saveStatus) {
-        const time = new Date().toLocaleTimeString([], {hour:'numeric', minute:'2-digit'});
-        saveStatus.textContent = completed ? 'Submitted & synced · ' + time : 'Cloud saved · ' + time;
+  function syncRemote(completed=false) {
+    if (!auth || !cloudUser || !ready || accountChanged) return Promise.resolve(false);
+    const draftAtSave = storage.getItem(storageKey);
+    const payload = {
+      expectedUserId: cloudUser.id,
+      lessonNumber:Number(lesson), answers:answerObject(),
+      notes:form.querySelector('[name="notes"]')?.value || '',
+      status:completed ? 'completed' : 'in_progress', completed, profile:profileObject()
+    };
+    const task = remoteQueue.then(async () => {
+      if (accountChanged) return false;
+      try {
+        await auth.saveLesson(payload);
+        if (accountChanged) return false;
+        if (storage.getItem(storageKey) === draftAtSave && draftAtSave) {
+          const draft = JSON.parse(draftAtSave); draft.dirty = false;
+          storage.setItem(storageKey, JSON.stringify(draft));
+        }
+        if (saveStatus) saveStatus.textContent = completed ? 'Submitted & synced' : 'Cloud saved';
+        return true;
+      } catch (_) {
+        if (!accountChanged && saveStatus) saveStatus.textContent = 'Cloud save failed. Keep this page open and try again.';
+        return false;
       }
-    } catch (e) {
-      if (saveStatus) saveStatus.textContent = 'Saved locally · cloud retry needed';
-    }
+    });
+    remoteQueue = task;
+    return task;
   }
 
   function scheduleRemoteSave() {
@@ -200,6 +221,7 @@
 
   let localTimer;
   function scheduleSave() {
+    if (!ready || accountChanged) return;
     clearTimeout(localTimer);
     localTimer = setTimeout(() => {
       saveDraft();
@@ -208,17 +230,25 @@
   }
 
   async function restoreRemote() {
-    if (!auth) {
-      renderCloudState();
-      return;
-    }
     try {
-      cloudUser = await auth.getUser();
+      cloudUser = auth ? await auth.getUser() : null;
+      if (accountChanged) return;
+      const scope = cloudUser ? 'user-' + cloudUser.id : 'guest';
+      storageKey = 'championlife-grip-' + scope + '-lesson-' + lesson + '-draft-v2';
+      progressKey = 'championlife-grip-' + scope + '-progress-v2';
+      restoreDraft();
       renderCloudState();
       if (!cloudUser) return;
 
       if (learnerField) learnerField.value = cloudUser.id;
       const data = await auth.loadLesson(Number(lesson));
+      const currentUser = await auth.getUser();
+      if (accountChanged || currentUser?.id !== cloudUser.id || (data && data.user.id !== cloudUser.id)) {
+        accountChanged = true;
+        form.reset();
+        if (saveStatus) saveStatus.textContent = 'Your account changed. Reload this page to continue.';
+        return;
+      }
       if (!data) return;
 
       const profile = data.profile || {};
@@ -233,20 +263,31 @@
         if (el && !el.value.trim() && value) el.value = value;
       });
 
-      (data.answers || []).forEach(row => {
+      let hasDraft = false;
+      try { hasDraft = !!JSON.parse(storage.getItem(storageKey) || 'null')?.dirty; } catch (_) {}
+      (hasDraft ? [] : data.answers || []).forEach(row => {
         const input = form.querySelector('[name="q' + row.question_number + '"]');
         if (input && !input.value.trim()) input.value = row.answer || '';
       });
+
+      const notes = form.querySelector('[name="notes"]');
+      if (notes && !hasDraft) notes.value = data.progress?.notes || '';
 
       if (data.progress?.status === 'completed' && card) {
         card.classList.add('completed');
       }
 
-      saveDraft();
       updateProgress();
       if (saveStatus) saveStatus.textContent = 'Cloud progress loaded';
     } catch (e) {
-      renderCloudState();
+      if (saveStatus) saveStatus.textContent = 'Could not load cloud progress. Reload to try again.';
+      return;
+    } finally {
+      ready = !!storageKey && !accountChanged;
+      if (ready) {
+        form.inert = false;
+        updateProgress();
+      }
     }
   }
 
@@ -304,6 +345,10 @@
 
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
+    if (!ready || accountChanged) return;
+    clearTimeout(localTimer);
+    clearTimeout(remoteSaveTimer);
+    const submittingUser = cloudUser?.id || null;
     clearMessage();
     if (!form.reportValidity()) {
       setMessage('error', 'Please complete your contact information and all 20 lesson questions before submitting.');
@@ -330,12 +375,13 @@
       });
       if (!res.ok) throw new Error('Submission failed');
 
-      if (cloudUser) await syncRemote(true);
+      if (accountChanged || submittingUser !== (cloudUser?.id || null)) return;
+      const synced = cloudUser ? await syncRemote(true) : false;
+      if (accountChanged) return;
       updateCourseProgressLocal();
-      saveDraft();
       if (card) card.classList.add('completed');
 
-      const where = cloudUser ? 'Champion Life and your discipleship account' : 'Champion Life and this device';
+      const where = cloudUser && synced ? 'Champion Life and your discipleship account' : 'Champion Life';
       setMessage('success', 'Lesson ' + lesson + ' has been submitted and saved to ' + where + '.');
       document.querySelector('.grip-complete')?.scrollIntoView({behavior:'smooth', block:'center'});
     } catch (err) {
@@ -369,7 +415,9 @@
 
   clearBtn?.addEventListener('click', () => {
     if (!confirm('Clear the saved answers for this lesson on this device? Cloud-saved answers will remain in your account.')) return;
-    localStorage.removeItem(storageKey);
+    clearTimeout(localTimer);
+    clearTimeout(remoteSaveTimer);
+    storage.removeItem(storageKey);
     form.reset();
     if (learnerField) learnerField.value = cloudUser?.id || localLearnerId();
     if (card) card.classList.remove('completed');
@@ -382,7 +430,21 @@
   downloadBtn?.addEventListener('click', downloadAnswers);
   emailBtn?.addEventListener('click', emailAnswers);
 
-  restoreDraft();
-  updateProgress();
+  form.inert = true;
+  if (saveStatus) saveStatus.textContent = 'Loading your lesson...';
+  auth?.client.auth.onAuthStateChange((_event, session) => {
+    if (!storageKey || (session?.user?.id || null) === (cloudUser?.id || null)) return;
+    accountChanged = true;
+    ready = false;
+    clearTimeout(localTimer);
+    clearTimeout(remoteSaveTimer);
+    form.reset();
+    form.inert = true;
+    if (card) card.classList.remove('completed');
+    if (saveStatus) saveStatus.textContent = 'Your account changed. Reload this page to continue.';
+    const box = cloudStateBox();
+    if (box) box.textContent = 'Your account changed. Reload this page to load the correct lesson.';
+  });
   restoreRemote();
 })();
+

@@ -42,10 +42,10 @@
       <div class="auth-step active" id="emailStep">
         <label class="auth-field"><span>Email Address</span><input id="loginEmail" type="email" autocomplete="email" placeholder="you@example.com"></label>
         <button class="btn gold" id="sendCodeBtn" type="button">Send My Sign-In Code</button>
-        <p class="auth-note">We’ll send a one-time sign-in email. Depending on the current email template, it may contain a 6-digit code or a secure sign-in link.</p>
+        <p class="auth-note">We’ll send a one-time sign-in email. Depending on the current email template, it may contain a one-time code or a secure sign-in link.</p>
       </div>
       <div class="auth-step" id="codeStep">
-        <label class="auth-field"><span>6-Digit Code</span><input id="loginCode" class="auth-code" type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="6" placeholder="000000"></label>
+        <label class="auth-field"><span>Sign-In Code</span><input id="loginCode" class="auth-code" type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="8" placeholder="Enter code"></label>
         <button class="btn gold" id="verifyCodeBtn" type="button">Sign In</button>
         <button class="btn auth-secondary" id="backBtn" type="button">Use a Different Email</button>
         <p class="auth-note">If your email contains a secure sign-in link instead of a code, tap that link. You’ll come back here already signed in.</p>
@@ -74,12 +74,40 @@
   const params = new URLSearchParams(location.search);
   const requestedNext = params.get('next');
   if (requestedNext) sessionStorage.setItem('championlife-auth-next', requestedNext);
-  const next = requestedNext || sessionStorage.getItem('championlife-auth-next') || 'my-discipleship.html';
+  function safeNext(value) {
+    try {
+      const url = new URL(value || '/my-discipleship.html', location.origin);
+      if (url.origin !== location.origin) return '/my-discipleship.html';
+      if (!/^\/(?:staff-people|staff-dream-track|staff-dream-team|dream-team-application|dream-track(?:-[1-7]|-access|-invite)?|my-ministry|my-discipleship|getting-a-grip(?:-(?:[1-9]|1[0-3]))?)\.html$/.test(url.pathname)) return '/my-discipleship.html';
+      if (url.pathname === '/my-ministry.html') {
+        const uuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+        const area = url.searchParams.get('area'), resource = url.searchParams.get('resource');
+        if (uuid.test(area || '') && uuid.test(resource || ''))
+          return url.pathname + '?area=' + area + '&resource=' + resource;
+      }
+      return url.pathname;
+    } catch (_) { return '/my-discipleship.html'; }
+  }
+  const next = safeNext(requestedNext || sessionStorage.getItem('championlife-auth-next'));
   let email = '';
+  if(next === '/dream-track-invite.html') {
+    document.querySelector('.auth-head h1').textContent = 'Your Dream Track invitation.';
+    document.querySelector('.auth-head p').textContent = 'Sign in with your invited email address to start or resume Dream Track.';
+    const codeButton = document.createElement('button');
+    codeButton.type = 'button'; codeButton.className = 'btn auth-secondary';
+    codeButton.textContent = 'I already have a code';
+    codeButton.addEventListener('click', () => {
+      email = emailInput.value.trim().toLowerCase();
+      if(!email || !emailInput.checkValidity()){showMessage('error','Enter your invited email address.');return}
+      clearMessage();emailStep.classList.remove('active');codeStep.classList.add('active');codeInput.focus();
+    });
+    emailStep.append(codeButton);
+  }
+
 
   function showMessage(type,text){msg.className='auth-message show '+type;msg.textContent=text}
   function clearMessage(){msg.className='auth-message';msg.textContent=''}
-  function goNext(){sessionStorage.removeItem('championlife-auth-next');location.href = next.startsWith('/') ? next : next}
+  function goNext(){sessionStorage.removeItem('championlife-auth-next');location.href = next}
 
   async function existingSession(){
     try{
@@ -94,7 +122,7 @@
     if(!email || !emailInput.checkValidity()){showMessage('error','Enter a valid email address.');return}
     sendBtn.disabled=true;sendBtn.textContent='Sending...';
     try{
-      const redirect = location.origin + '/discipleship-login.html';
+      const redirect = location.origin + '/discipleship-login.html' + (next === '/dream-track-invite.html' ? '?next=%2Fdream-track-invite.html' : '');
       const {error}=await auth.client.auth.signInWithOtp({
         email,
         options:{shouldCreateUser:true,emailRedirectTo:redirect}
@@ -110,7 +138,7 @@
     clearMessage();
     const token=codeInput.value.trim();
     if(!email){email=emailInput.value.trim().toLowerCase()}
-    if(!/^[0-9]{6}$/.test(token)){showMessage('error','Enter the 6-digit code from your email.');return}
+    if(!/^(?:[0-9]{6}|[0-9]{8})$/.test(token)){showMessage('error','Enter the 6- or 8-digit code exactly as it appears in your email.');return}
     verifyBtn.disabled=true;verifyBtn.textContent='Signing in...';
     try{
       const {data,error}=await auth.client.auth.verifyOtp({email,token,type:'email'});

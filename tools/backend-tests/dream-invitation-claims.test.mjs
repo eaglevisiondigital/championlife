@@ -1,0 +1,27 @@
+import {PGlite} from '@electric-sql/pglite';
+import {readFileSync,readdirSync} from 'node:fs';
+import assert from 'node:assert/strict';
+const db=new PGlite(),q=(s,a=[])=>db.query(s,a);let count=0;
+const check=(v,m)=>{assert.ok(v,m);count++;console.log('PASS '+m)},deny=async(f,m)=>{await assert.rejects(f);check(true,m)};
+await db.exec(readFileSync(new URL('fixtures/supabase-test-bootstrap.sql',import.meta.url),'utf8'));
+await db.exec(readFileSync(new URL('../../supabase/bootstrap/automatic-rls.sql',import.meta.url),'utf8'));
+const files=readdirSync(new URL('../../supabase/migrations',import.meta.url)).sort();
+for(const f of files)try{await db.exec(readFileSync(new URL('../../supabase/migrations/'+f,import.meta.url),'utf8'))}catch(e){console.error(f,e.message);process.exit(1)}
+const id=n=>`40000000-0000-4000-8000-${String(n).padStart(12,'0')}`,org=(await q("select id from organizations where slug='champion-life'")).rows[0].id,other=(await q("select id from organizations where slug='sowgo'")).rows[0].id,cid=(await q("select id from courses where slug='dream-track'")).rows[0].id;
+for(let n=1;n<=5;n++)await q('insert into auth.users(id,email,email_confirmed_at)values($1,$2,$3)',[id(n),`dream-${n}@example.test`,n===5?null:new Date()]);
+await q("insert into organization_staff_directory(organization_id,user_id,display_name)values($1,$2,'Synthetic manager')",[org,id(1)]);
+await q("insert into organization_staff_permissions(organization_id,user_id,permission)values($1,$2,'courses.manage')",[org,id(1)]);
+const as=async(n)=>{await db.exec('reset role');await q("select set_config('request.jwt.claim.sub',$1,false)",[n?id(n):'']);await db.exec('set role '+(n?'authenticated':'anon'))};
+const learner=async(a,d={})=>(await q('select dream_track($1,$2) v',[a,JSON.stringify(d)])).rows[0].v;
+const admin=async(a,d={},o=org)=>(await q('select dream_track_admin($1,$2,$3) v',[o,a,JSON.stringify(d)])).rows[0].v;
+let s; await as(1);
+let inv=await admin('invite',{name:'Existing synthetic',email:'dream-4@example.test'});check(inv.token.length===64&&inv.status==='pending','existing account invitation created without duplicate account');await as(2);await deny(()=>learner('claim_invite',{token:inv.token}),'wrong verified account cannot claim');await as(5);await deny(()=>learner('claim_invite',{token:inv.token}),'unverified email denied');await as(4);s=await learner('claim_invite',{token:inv.token});check(s.enrolled,'matching verified invitation recipient enrolls without code');check((await learner('claim_invite',{token:inv.token})).enrollment_id===s.enrollment_id,'same recipient acceptance idempotent');
+await as(1);const make=()=>admin('invite',{email:'dream-3@example.test'});inv=await make();await admin('cancel',{invite_id:inv.id});await as(3);await deny(()=>learner('claim_invite',{token:inv.token}),'cancelled invitation rejected');await as(1);inv=await make();await db.exec('reset role');await q("update course_invites set expires_at=now()-interval '1 second' where id=$1",[inv.id]);await as(3);await deny(()=>learner('claim_invite',{token:inv.token}),'expired invitation rejected');await as(1);inv=await make();await deny(()=>admin('resend',{invite_id:inv.id}),'resend rate bounded');await db.exec('reset role');await q("update course_invites set invited_at=now()-interval '2 minutes' where id=$1",[inv.id]);await as(1);const replacement=await admin('resend',{invite_id:inv.id});await as(3);await deny(()=>learner('claim_invite',{token:inv.token}),'resend invalidates previous token');
+await as(1);await admin('send_unavailable',{invite_id:replacement.id,token:replacement.token});check((await admin('list')).invites.find(x=>x.id===replacement.id).status==='failed','delivery unavailable never falsely sent');await deny(()=>q('select course_invite_delivery($1,$2,true)',[replacement.id,replacement.delivery_id]),'browser cannot forge provider sent receipt');await db.exec('reset role');await db.exec('set role service_role');await q('select course_invite_delivery($1,$2,true)',[replacement.id,replacement.delivery_id]);await as(3);s=await learner('claim_pending');check(s.enrolled,'Auth email verified recipient automatically resumes provider-accepted invite');
+await as(1);inv=await admin('invite',{name:'New synthetic',email:'new-dream@example.test'});await db.exec('reset role');check((await q("select count(*)::int n from auth.users where email='new-dream@example.test'")).rows[0].n===0,'invitation does not create account or silently link contact');check(!(await q('select token_hash from course_invites where id=$1',[inv.id])).rows[0].token_hash.includes(inv.token),'raw token not stored');await q("insert into auth.users(id,email,email_confirmed_at)values($1,'new-dream@example.test',now())",[id(6)]);await as(6);check((await learner('claim_invite',{token:inv.token})).enrolled,'newly authenticated recipient claims');
+
+await as(6);await deny(()=>learner('claim_invite',{token:'f'.repeat(64)}),'unknown token rejected');
+await db.exec('reset role');check((await q('select count(*)::int n from organization_staff_permissions')).rows[0].n===1,'claims grant no staff authority');
+check((await q('select count(*)::int n from portal_account_links')).rows[0].n===0,'claims create no portal links');
+check((await q("select count(*)::int n from course_audit where action in ('invite_accepted','verified_email_invite_accepted')")).rows[0].n>0,'claim audit retained');
+console.log(`${count} focused invitation backend checks passed`);await db.close();

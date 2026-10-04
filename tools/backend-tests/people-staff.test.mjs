@@ -1,0 +1,109 @@
+import {PGlite} from '@electric-sql/pglite';
+import {readFileSync,readdirSync} from 'node:fs';
+import assert from 'node:assert/strict';
+const db=new PGlite();const root=new URL('../../',import.meta.url);let count=0;
+const ok=(v,label)=>{assert.ok(v,label);count++;console.log('PASS '+label)};
+const q=(sql,args=[])=>(db.query(sql,args));
+const id=n=>`10000000-0000-4000-8000-${String(n).padStart(12,'0')}`;
+await db.exec(readFileSync(new URL('fixtures/supabase-test-bootstrap.sql',import.meta.url),'utf8'));
+await db.exec(readFileSync(new URL('supabase/bootstrap/automatic-rls.sql',root),'utf8'));
+for(const f of readdirSync(new URL('supabase/migrations/',root)).filter(f=>f.endsWith('.sql')).sort()){
+ try{await db.exec(readFileSync(new URL('supabase/migrations/'+f,root),'utf8'));}catch(e){console.error(f,e.message);process.exit(1);}
+}
+const org=(await q("select id from organizations where slug='champion-life'")).rows[0].id;
+const other=(await q("select id from organizations where slug='sowgo'")).rows[0].id;
+async function as(n,role='authenticated'){await db.exec('reset role');await q("select set_config('request.jwt.claim.sub',$1,false)",[n?id(n):'']);await db.exec('set role '+role);}
+async function owner(){await db.exec('reset role');}
+const call=async(action,payload={},o=org)=>(await q('select public.people_workspace($1,$2,$3) as value',[o,action,JSON.stringify(payload)])).rows[0].value;
+async function deny(fn,label){await assert.rejects(fn);ok(true,label);}
+// Synthetic contacts bypass only existing contact/portal audit triggers during fixture setup.
+await db.exec('alter table organization_people disable trigger user');
+for(let n=1;n<=8;n++){
+ await q('insert into auth.users(id,email,email_confirmed_at) values($1,$2,now())',[id(n),`synthetic-${n}@example.test`]);
+ await q('insert into private.people(id) values($1)',[id(100+n)]);
+ await q("insert into organization_people(id,organization_id,first_name,last_name,user_id,human_id) values($1,$2,$3,'Example',$4,$5)",[id(100+n),org,`Synthetic ${n}`,id(n),id(100+n)]);
+ await q("insert into portal_account_links(organization_id,person_id,user_id,verification_note) values($1,$2,$3,'Synthetic verified fixture')",[org,id(100+n),id(n)]);
+}
+await db.exec('alter table organization_people enable trigger user');
+await db.exec('alter table organization_departments disable trigger user');
+for(let n=1;n<=2;n++)await q("insert into organization_departments(id,organization_id,name) values($1,$2,$3)",[id(200+n),org,`Synthetic department ${n}`]);
+await db.exec('alter table organization_departments enable trigger user');
+for(const [n,d] of [[2,1],[3,1],[4,2],[5,1],[6,1],[7,1]])await q('insert into person_department_affiliations(organization_id,person_id,department_id) values($1,$2,$3)',[org,id(100+n),id(200+d)]);
+for(const n of [1,2,3,4,6,7])await q("insert into organization_staff_directory(organization_id,user_id,person_id,display_name) values($1,$2,$3,'Synthetic staff')",[org,id(n),id(100+n)]);
+for(const key of ['staff.manage','staff.view','people.read','people.update','people.create','finance.read','finance.configure','discipleship.read'])await q('insert into organization_staff_permissions(organization_id,user_id,permission) values($1,$2,$3)',[org,id(1),key]);
+for(const key of ['staff.manage','staff.view','people.read','people.update'])await q('insert into organization_staff_permissions(organization_id,user_id,permission,department_ids) values($1,$2,$3,$4)',[org,id(2),key,[id(201)]]);
+await q("insert into organization_staff_permissions(organization_id,user_id,permission) values($1,$2,'people.read')",[org,id(7)]);
+await as(0,'anon');await deny(()=>call('list'),'anonymous RPC denied');await deny(()=>q('select * from organization_staff_permissions'),'anonymous permission enumeration denied');
+await as(5);await deny(()=>call('list'),'member with portal link and ministry affiliation has no staff access');
+await as(3);await deny(()=>call('list'),'staff status alone grants no people capability');
+await as(2);let list=await call('list');ok(list.some(x=>x.id===id(103))&&!list.some(x=>x.id===id(104)),'department-scoped list excludes other department');
+await deny(()=>call('detail',{person_id:id(104)}),'cross-department detail denied');await deny(()=>call('list',{},other),'cross-organization RPC denied');
+const direct=(await q('select id from organization_people')).rows;ok(!direct.some(x=>x.id===id(104)),'RLS denies cross-department direct contact read');
+ok((await q('select * from organization_staff_permissions')).rows.length===0,'legacy permissions never expose department grants as global');
+let detail=await call('detail',{person_id:id(103)});
+await call('update',{person_id:id(103),updated_at:detail.person.updated_at,first_name:'Edited',last_name:'Example',email:'safe@example.test',phone:'123'});ok(true,'scoped people editor edits allowed fields');
+await deny(()=>call('update',{person_id:id(103),updated_at:detail.person.updated_at,first_name:'Stale',last_name:'Example'}),'stale contact edit denied');
+await deny(()=>call('update',{person_id:id(103),user_id:id(2)}),'contact edit cannot change identity');
+await deny(()=>call('affiliation',{person_id:id(103),department_id:id(202)}),'scoped editor cannot expand person scope');
+await deny(()=>call('grant',{person_id:id(102),permission:'finance.read',revision:1}),'self-elevation denied');
+await deny(()=>call('grant',{person_id:id(103),permission:'people.read',revision:1}),'scoped manager cannot grant organization-wide');
+await deny(()=>call('grant',{person_id:id(103),permission:'finance.read',department_ids:[id(201)],revision:1}),'finance capability cannot be inferred from staff management');
+await call('grant',{person_id:id(103),permission:'people.read',department_ids:[id(201)],revision:1});ok(true,'scoped manager delegates owned scoped capability');
+await as(3);list=await call('list');ok(list.some(x=>x.id===id(105))&&!list.some(x=>x.id===id(104)),'new staff grant stays in department');
+await deny(()=>call('assignment',{person_id:id(105),active:true,revision:0}),'people.read does not authorize staff writes');
+await as(1);await call('assignment',{person_id:id(105),active:true,revision:0,reason:'Synthetic only'});ok(true,'organization manager enables linked staff without granting permissions');
+await as(5);await deny(()=>call('list'),'enabled staff without explicit grant still denied');
+await as(1);const template=await call('template',{name:'Synthetic reader',permissions:['people.read']});
+await call('role',{person_id:id(105),template_id:template.id,revision:1});
+await as(5);list=await call('list');ok(list.length===8,'materialized role permits scoped organization people read');
+ok(!(await q("select permission from organization_staff_permissions where permission like 'finance.%'")).rows.length,'ordinary role never grants finance');
+await as(1);await call('remove_role',{person_id:id(105),template_id:template.id,revision:2});
+await as(5);await deny(()=>call('list'),'removing role revokes its grants immediately');
+await as(1);await call('grant',{person_id:id(105),permission:'people.read',revision:3});
+await call('assignment',{person_id:id(105),active:false,revision:4});
+await as(5);await deny(()=>call('list'),'disabled assignment denies existing grants');
+await as(1);await call('assignment',{person_id:id(105),active:true,revision:5});
+await as(5);await deny(()=>call('list'),'re-enabling assignment does not restore revoked grants');
+await owner();await q("update organization_staff_permissions set expires_at=now()-interval '1 minute',effective_at=now()-interval '2 minutes' where user_id=$1",[id(7)]);
+await as(7);await deny(()=>call('list'),'expired grants deny access');
+await as(1);await deny(()=>q('update organization_staff_permissions set revoked_at=null'),'raw permission mutation denied');
+await deny(()=>q('update portal_account_links set user_id=$1',[id(8)]),'portal link cannot be hijacked');
+await deny(()=>call('grant',{person_id:id(103),permission:'staff.manage',revision:2}),'staff.manage cannot be delegated');
+await call('relationship',{person_id:id(106),relationship:'member'});await call('relationship',{person_id:id(106),relationship:'outreach_participant'});
+await as(6);await deny(()=>call('list'),'multiple organization/outreach relationships do not grant staff capabilities');
+await as(1);detail=await call('detail',{person_id:id(105)});ok(detail.audit.length>=5&&detail.audit.every(e=>e.actor_user_id===id(1)&&e.after_state),'grant/change/revoke audit has actor and structured state');
+await deny(()=>q('delete from organization_admin_events'),'audit immutable to browser roles');
+await owner();ok((await q('select count(*)::int as n from organization_staff_permissions where permission like \'finance.%\' and user_id<>$1',[id(1)])).rows[0].n===0,'no accidental finance grants');
+// Additional negative and compatibility paths run against the entire new chain.
+await q("insert into organization_staff_permissions(organization_id,user_id,permission) values($1,$2,'people.read'),($1,$2,'people.update')",[org,id(6)]);
+await as(6);await deny(()=>call('grant',{person_id:id(103),permission:'people.read',revision:2}),'people.update does not grant staff authority');
+await deny(()=>call('template',{name:'Escalation',permissions:['staff.manage']}),'ordinary editor cannot create authority templates');
+await as(1);await deny(()=>call('grant',{person_id:id(105),permission:'people.read',department_ids:[id(999)],revision:6}),'unknown department cannot be granted');
+await deny(()=>call('grant',{person_id:id(101),permission:'people.read',revision:1}),'organization administrator cannot modify own access');
+await deny(()=>call('assignment',{person_id:id(102),active:false,revision:1}),'administrator target requires trusted provisioning');
+let financeRole=await call('template',{name:'Explicit synthetic finance',permissions:['finance.read']});
+await call('role',{person_id:id(104),template_id:financeRole.id,revision:1});
+await as(4);ok((await q("select permission from organization_staff_permissions where permission='finance.read'")).rows.length===1,'finance role grants only its explicitly selected financial capability');
+await deny(()=>call('list'),'finance access does not imply people access');
+await as(1);await call('template',{id:financeRole.id,name:financeRole.name,revision:financeRole.revision,permissions:['people.read']});
+await as(4);ok((await q("select permission from organization_staff_permissions where permission='people.read'")).rows.length===0,'editing template never silently changes assigned grants');
+await owner();await q("update organization_staff_directory set expires_at=now()-interval '1 minute',effective_at=now()-interval '2 minutes' where organization_id=$1 and user_id=$2",[org,id(6)]);
+await as(6);await deny(()=>call('list'),'expired assignment denies otherwise valid permissions');
+ok((await q('select * from organization_staff_permissions')).rows.length===0,'legacy raw grant RLS honors assignment expiration');
+await deny(()=>q('select public.list_staff_directory($1,true)',[org]),'legacy privileged directory honors assignment expiration');
+await as(2);await deny(()=>q('select private.list_staff_directory($1,false)',[org]),'direct legacy private helper cannot expand department scope');
+await as(1);await deny(()=>q('select public.set_staff_access($1,$2,null,$3,$4,$5)',[org,id(3),'Synthetic',['people.read'],2]),'legacy grant editor cannot strip existing department scope');
+await owner();await q('update portal_account_links set active=false where organization_id=$1 and user_id=$2',[org,id(3)]);
+await as(3);await deny(()=>call('list'),'revoked reviewed portal link stops person-bound staff access');
+await as(1);ok((await call('list',{search:'Edited'})).length===1,'server searches name');ok((await call('list',{search:'safe@example.test'})).length===1,'server searches email');ok((await call('list',{search:'123'})).length===1,'server searches phone');
+ok((await call('list',{department_id:id(202)})).length===1,'server filters department');
+ok((await call('list',{relationship:'member'})).some(p=>p.id===id(106)),'server filters relationships');
+ok(!(await call('list',{portal:'active'})).some(p=>p.id===id(103)),'server filters reviewed portal status');
+await owner();
+const noAnon=(await q("select count(*)::int as n from pg_proc p join pg_namespace n on n.oid=p.pronamespace where n.nspname='private' and p.oid not in ('private.events_catalog(text,date,date,jsonb)'::regprocedure,'private.registration_public(text,text,jsonb)'::regprocedure) and has_function_privilege('anon',p.oid,'execute')")).rows[0].n;
+ok(noAnon===0,'no anonymous execution on private helpers other than the safe Events catalog');
+const safePaths=(await q("select count(*)::int as n from pg_proc p join pg_namespace n on n.oid=p.pronamespace where n.nspname='private' and p.prosecdef and not ('search_path=\"\"'=any(p.proconfig))")).rows[0].n;
+ok(safePaths===0,'every private definer has fixed empty search_path');
+await db.exec(readFileSync(new URL('people-staff.acceptance.sql',import.meta.url),'utf8'));
+console.log('PASS 20 rollback-only acceptance assertions on local replay');
+await db.close();console.log(`${count} People/Staff authorization checks passed`);

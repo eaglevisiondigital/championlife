@@ -1,0 +1,83 @@
+import {PGlite} from '@electric-sql/pglite';import {readFileSync,readdirSync} from 'node:fs';import assert from 'node:assert/strict';
+const db=new PGlite();let count=0;const ok=(v,n)=>{assert.ok(v,n);count++;console.log('PASS '+n)},id=n=>`00000000-0000-4000-8000-${String(n).padStart(12,'0')}`;
+await db.exec(`create role anon;create role authenticated;create role service_role bypassrls;create schema auth;create table auth.users(id uuid primary key,email text,email_confirmed_at timestamptz,is_anonymous boolean default false);create function auth.uid() returns uuid language sql stable as $$select nullif(current_setting('request.jwt.claim.sub',true),'')::uuid$$;grant usage on schema auth,public to anon,authenticated,service_role;grant execute on function auth.uid() to anon,authenticated,service_role;`);
+const dir=new URL('../../supabase/migrations/',import.meta.url);for(const suffix of ['_organization_foundation.sql','_followup_tasks.sql','_staff_access_and_people.sql','_household_records.sql','_department_tags.sql','_tag_workflows.sql'])await db.exec(readFileSync(new URL(readdirSync(dir).find(n=>n.endsWith(suffix)),dir),'utf8'));
+const orgs=(await db.query('select id,slug from organizations')).rows,cl=orgs.find(x=>x.slug==='champion-life').id,sg=orgs.find(x=>x.slug==='sowgo').id;
+for(let n=1;n<=6;n++)await db.query('insert into auth.users values($1,$2,now(),false)',[id(n),`staff${n}@example.test`]);
+for(const [org,user,perms] of [[cl,id(1),['staff.manage','people.read','people.create','tags.read','tags.manage','followup.read','followup.manage']],[cl,id(2),['people.read','tags.read','tags.manage']],[cl,id(3),['people.read','followup.read']],[sg,id(4),['staff.manage','people.read','tags.read','tags.manage','followup.read','followup.manage']],[cl,id(5),['people.read','tags.read','followup.read']],[cl,id(6),['people.read','tags.read','tags.manage','followup.read','followup.manage']]])for(const permission of perms)await db.query('insert into organization_staff_permissions(organization_id,user_id,permission) values($1,$2,$3)',[org,user,permission]);
+async function as(n,role='authenticated'){await db.exec('reset role');await db.query("select set_config('request.jwt.claim.sub',$1,false)",[n?id(n):'']);await db.exec('set role '+role)}
+async function no(sql,label){let failed=false;try{await db.exec(sql)}catch{failed=true}ok(failed,label)}
+await as(1);const people=[];for(let n=1;n<=7;n++)people.push((await db.query(`insert into organization_people(organization_id,first_name,last_name) values($1,'Person',$2) returning id`,[cl,String(n)])).rows[0].id);
+const d=(await db.query(`insert into organization_departments(organization_id,name,leader_user_id) values($1,'Serving',$2) returning *`,[cl,id(3)])).rows[0];
+let t=(await db.query(`insert into organization_tags(organization_id,department_id,name,task_title,due_after_days) values($1,$2,'Dream Team','Welcome to serving',2) returning *`,[cl,d.id])).rows[0];
+async function tag(person){return (await db.query('insert into organization_person_tags(organization_id,person_id,tag_id) values($1,$2,$3) returning *',[cl,person,t.id])).rows[0]}
+async function config(enabled=true,reentry='once_per_person'){t=(await db.query('select * from organization_tags where id=$1',[t.id])).rows[0];return db.query('select public.configure_tag_workflow($1,$2,$3,$4,$5,$6)',[cl,t.id,t.revision,enabled,'America/Chicago',reentry]);}
+const historical=await tag(people[0]);ok((await db.query('select * from tag_workflow_runs')).rows.length===0,'disabled rule creates no workflow');
+await no(`update organization_tags set workflow_enabled=true`,'direct workflow activation denied');
+await as(6);await no(`select public.configure_tag_workflow('${cl}','${t.id}',1,true,'UTC','once_per_person')`,'non-admin cannot activate');
+await as(1);await no(`select public.configure_tag_workflow('${cl}','${t.id}',1,true,'Invalid/Zone','once_per_person')`,'invalid timezone rejected');
+await config();ok((await db.query('select * from tag_workflow_runs')).rows.length===0,'activation does not replay historical tags');
+await as(2);const assigned=await tag(people[1]);ok(assigned.active,'tag operator without follow-up management can trigger approved rule');
+await no(`insert into followup_tasks(organization_id,person_id,title) values('${cl}','${people[1]}','Unauthorized')`,'tag operator cannot create arbitrary tasks');
+await no(`select private.execute_tag_workflow('${id(99)}','${id(2)}')`,'private workflow executor is not callable');
+await as(1);let run=(await db.query('select * from tag_workflow_runs where person_id=$1',[people[1]])).rows[0];
+ok(run.status==='task_created','approved workflow creates task');const task=(await db.query('select * from followup_tasks where id=$1',[run.task_id])).rows[0];
+ok(task.assigned_user_id===id(3)&&task.created_by===id(2)&&task.title==='Welcome to serving','task has configured leader, title and source actor');
+ok(task.workflow_run_id===run.id,'task retains workflow provenance');
+const expected=(await db.query("select ((created_at at time zone 'America/Chicago')::date+2)::text as due from organization_tag_events where id=$1",[run.event_id])).rows[0].due;
+ok((await db.query('select due_on::text as due from followup_tasks where id=$1',[task.id])).rows[0].due===expected,'due date uses configured timezone and event date');
+ok(run.rule_snapshot.tag_name==='Dream Team'&&run.rule_snapshot.timezone==='America/Chicago','rule snapshot retained');
+let mail=(await db.query('select * from tag_workflow_notifications where run_id=$1',[run.id])).rows[0];ok(mail.status==='held'&&mail.recipient_user_id===id(3),'one leader notification is held without sending');
+await db.query('update organization_person_tags set active=true where id=$1',[assigned.id]);ok((await db.query('select * from tag_workflow_runs')).rows.length===1,'unchanged assignment creates no duplicate workflow');
+await db.query('update organization_person_tags set active=false where id=$1',[assigned.id]);await db.query('update organization_person_tags set active=true where id=$1',[assigned.id]);
+ok((await db.query("select * from tag_workflow_runs where status='skipped' and reason='already_processed'")).rows.length===1,'default re-entry suppresses duplicate follow-up');
+ok((await db.query('select * from followup_tasks')).rows.length===1,'suppressed re-entry does not duplicate task');
+await config(true,'each_assignment');await db.query('update organization_person_tags set active=false where id=$1',[assigned.id]);await db.query('update organization_person_tags set active=true where id=$1',[assigned.id]);ok((await db.query('select * from followup_tasks')).rows.length===2,'explicit each-assignment mode permits new task on restoration');
+await db.exec('reset role');await db.query("update organization_staff_permissions set revoked_at=now() where user_id=$1 and permission='followup.read'",[id(3)]);await as(2);await tag(people[2]);await as(1);
+let failed=(await db.query('select * from tag_workflow_runs where person_id=$1',[people[2]])).rows[0];ok(failed.status==='needs_review'&&failed.reason==='leader_unavailable','revoked leader produces routing exception without blocking tag');
+await as(5);ok((await db.query('select * from tag_workflow_runs')).rows.length>0,'read-only workflow reviewer can see runs');await no(`select public.resolve_tag_workflow('${cl}','${failed.id}',${failed.revision},'retry')`,'read-only reviewer cannot retry');
+await as(4);ok((await db.query('select * from tag_workflow_runs')).rows.length===0,'other organization cannot read runs');await no(`select public.resolve_tag_workflow('${cl}','${failed.id}',${failed.revision},'retry')`,'other organization cannot resolve runs');
+await as(1);await db.query('update organization_departments set leader_user_id=$1 where id=$2',[id(6),d.id]);
+await db.query("select public.resolve_tag_workflow($1,$2,$3,'retry')",[cl,failed.id,failed.revision]);failed=(await db.query('select * from tag_workflow_runs where id=$1',[failed.id])).rows[0];ok(failed.status==='task_created'&&failed.leader_user_id===id(6)&&failed.attempts===2,'retry uses eligible replacement leader and creates one task');
+await no(`select public.resolve_tag_workflow('${cl}','${failed.id}',${failed.revision-1},'retry')`,'stale recovery revision rejected');
+await no(`select public.resolve_tag_workflow('${cl}','${failed.id}',${failed.revision},'retry')`,'completed run cannot be retried');
+await db.query("select public.resolve_tag_workflow($1,$2,$3,'cancel_email')",[cl,failed.id,failed.revision]);ok((await db.query('select status from tag_workflow_notifications where run_id=$1',[failed.id])).rows[0].status==='canceled','held notification can be canceled');
+await db.query("update organization_tags set task_title='New instruction' where id=$1",[t.id]);ok(!(await db.query('select workflow_enabled from organization_tags where id=$1',[t.id])).rows[0].workflow_enabled,'changing task instructions pauses activation for review');
+await tag(people[3]);ok((await db.query('select * from tag_workflow_runs where person_id=$1',[people[3]])).rows.length===0,'paused rules do not create runs');await config();
+await db.query('update organization_departments set leader_user_id=null where id=$1',[d.id]);const missing=await tag(people[4]);let missingRun=(await db.query('select * from tag_workflow_runs where person_id=$1',[people[4]])).rows[0];
+await db.query('update organization_person_tags set active=false where id=$1',[missing.id]);await db.query("select public.resolve_tag_workflow($1,$2,$3,'retry')",[cl,missingRun.id,missingRun.revision]);ok((await db.query('select reason from tag_workflow_runs where id=$1',[missingRun.id])).rows[0].reason==='assignment_removed','retry skips a removed assignment');
+await tag(people[5]);let dismiss=(await db.query('select * from tag_workflow_runs where person_id=$1',[people[5]])).rows[0];await db.query("select public.resolve_tag_workflow($1,$2,$3,'dismiss')",[cl,dismiss.id,dismiss.revision]);ok((await db.query('select status from tag_workflow_runs where id=$1',[dismiss.id])).rows[0].status==='dismissed','staff can dismiss routing exception with history');
+await no('delete from tag_workflow_events','workflow audit cannot be deleted');await no("update tag_workflow_runs set status='task_created'",'run state cannot be forged');await no("update tag_workflow_notifications set status='canceled'",'notification state requires authorized RPC');await no(`insert into followup_tasks(id,organization_id,person_id,title,workflow_run_id) values('${id(99)}','${cl}','${people[6]}','Forged','${run.id}')`,'browser cannot forge workflow task identity');
+// Completing or reassigning tasks cancels stale held notifications.
+await db.query("update followup_tasks set status='completed' where id=$1",[run.task_id]);
+ok((await db.query('select status from tag_workflow_notifications where run_id=$1',[run.id])).rows[0].status==='canceled','completed task cancels held email');
+const openRun=(await db.query("select * from tag_workflow_runs where status='task_created' and id<>$1 and id<>$2",[run.id,failed.id])).rows[0];
+await db.query('update followup_tasks set assigned_user_id=$1 where id=$2',[id(6),openRun.task_id]);
+ok((await db.query('select status from tag_workflow_notifications where run_id=$1',[openRun.id])).rows[0].status==='canceled','reassigned task cancels prior leader notification');
+// Force a real database failure after task insertion. Task and its audit must roll back together.
+await db.query('update organization_departments set leader_user_id=$1 where id=$2',[id(6),d.id]);
+await db.exec('reset role');await db.exec(`create function private.test_notification_failure() returns trigger language plpgsql as $$begin raise exception 'simulated storage failure';end $$;create trigger test_notification_failure before insert on tag_workflow_notifications for each row execute function private.test_notification_failure();`);
+await as(2);const faultAssignment=await tag(people[6]);await as(1);
+let fault=(await db.query('select * from tag_workflow_runs where person_id=$1',[people[6]])).rows[0];
+ok(fault.status==='needs_review'&&fault.reason==='task_creation_failed','downstream failure leaves recoverable workflow');
+ok((await db.query('select * from followup_tasks where person_id=$1',[people[6]])).rows.length===0,'failed notification transaction leaves no orphan task');
+ok((await db.query('select * from followup_task_events where task_id=$1',[fault.reserved_task_id])).rows.length===0,'failed attempt leaves no orphan task audit');
+await db.exec('reset role');await db.exec('drop trigger test_notification_failure on tag_workflow_notifications;drop function private.test_notification_failure();');await as(6);
+await db.query("select public.resolve_tag_workflow($1,$2,$3,'retry')",[cl,fault.id,fault.revision]);
+fault=(await db.query('select * from tag_workflow_runs where id=$1',[fault.id])).rows[0];
+ok(fault.status==='task_created'&&fault.attempts===2,'retry after transient failure creates task and held notification once');
+ok((await db.query('select * from tag_workflow_notifications where run_id=$1',[fault.id])).rows.length===1,'recovered run has one notification');
+// A previous failed activation must not be revived after a new tag-assignment generation.
+await as(1);await config(true,'each_assignment');await db.query('update organization_departments set leader_user_id=null where id=$1',[d.id]);await db.query('update organization_person_tags set active=false where id=$1',[faultAssignment.id]);await db.query('update organization_person_tags set active=true where id=$1',[faultAssignment.id]);
+let oldFailure=(await db.query("select * from tag_workflow_runs where person_id=$1 and status='needs_review' order by created_at desc",[people[6]])).rows[0];
+await db.query('update organization_person_tags set active=false where id=$1',[faultAssignment.id]);await db.query('update organization_person_tags set active=true where id=$1',[faultAssignment.id]);
+await db.query('update organization_departments set leader_user_id=$1 where id=$2',[id(6),d.id]);await db.query("select public.resolve_tag_workflow($1,$2,$3,'retry')",[cl,oldFailure.id,oldFailure.revision]);
+ok((await db.query('select reason from tag_workflow_runs where id=$1',[oldFailure.id])).rows[0].reason==='assignment_superseded','old failed assignment cannot process after remove and restore');
+const manual=(await db.query("insert into followup_tasks(organization_id,person_id,title) values($1,$2,'Manual next step') returning *",[cl,people[0]])).rows[0];ok(manual.workflow_run_id===null,'existing manual task creation remains supported');await db.query("update followup_tasks set status='completed' where id=$1",[manual.id]);ok((await db.query('select revision from followup_tasks where id=$1',[manual.id])).rows[0].revision===2,'existing manual task updates preserve revisions');
+await db.exec('reset role');await db.query('update auth.users set email_confirmed_at=null where id=$1',[id(1)]);await as(1);
+await no(`select public.resolve_tag_workflow('${cl}','${oldFailure.id}',${oldFailure.revision},'retry')`,'unverified administrator cannot recover workflows');
+await no(`select public.configure_tag_workflow('${cl}','${t.id}',1,true,'UTC','each_assignment')`,'unverified administrator cannot enable workflows');
+await as(2);ok((await db.query('select * from tag_workflow_runs')).rows.length===0,'tag access without follow-up cannot read workflow records');
+await no(`select set_config('app.workflow_authorized','true',false);insert into followup_tasks(organization_id,person_id,title) values('${cl}','${people[6]}','Forged flag')`,'client session flag cannot bypass follow-up permissions');
+await as(0,'anon');await no('select * from tag_workflow_notifications','anonymous notification read denied');
+await db.close();console.log(`${count} workflow checks passed`);

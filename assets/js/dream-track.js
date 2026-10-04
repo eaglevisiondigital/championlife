@@ -1,0 +1,54 @@
+(() => {
+ 'use strict';
+ const root=document.getElementById('dream-app'),T=window.DreamTrack,auth=window.ChampionLifeAuth;if(!root||!T)return;
+ const{el,button,time}=T,lesson=Number(root.dataset.lesson)||null,isInvite=root.dataset.mode==='invite';
+ let invalidInviteToken=false;
+ let generation=0,user=null,state=null,player=null,watchToken=null,watchBusy=false,timer=null,saveTimer=null,queue=Promise.resolve(),dirty=0,fields=new Map(),notes=null,message=null,summary=null,next=null;
+ function clear(){generation++;clearInterval(timer);clearTimeout(saveTimer);try{player?.destroy()}catch(_){}player=null;watchToken=null;fields.clear();notes=null;state=null;dirty=0;queue=Promise.resolve();root.replaceChildren();}
+ const rpc=(action,data={})=>T.rpc('dream_track',{p_action:action,p_data:data},user.id);
+ function report(err){if(message)message.textContent=err.message||String(err);}
+ function track(promise){const g=generation;return promise.catch(e=>{if(g===generation)report(e);});}
+ function applyProgress(s){state=s;const l=s.lessons.find(x=>x.number===lesson);if(summary)summary.textContent=`${l.mastered}/20 mastered · ${l.mastered*5}% score · ${Math.floor(l.watched_percent*10)/10}% watched. ${l.status==='completed'?'Passed.':'Watch at least 95% and master 16 answers to advance.'}`;
+  if(next){if(lesson===7&&l.status==='completed'&&next.dataset.applicationUser===user.id)return;next.replaceChildren();const following=s.lessons.find(x=>x.number===lesson+1);if(following?.unlocked)next.append(el('a','Next lesson',{href:`dream-track-${lesson+1}.html`,class:'btn gold'}));else if(lesson===7&&l.status==='completed'){next.dataset.applicationUser=user.id;next.append(el('h2','Congratulations!'),el('p','You’ve completed the online portion of Dream Track.'),el('p',s.status,{class:'dream-state'}));T.applicationNext?.(next,user.id);}}
+ }
+ function worksheet(){return {lesson,answers:Object.fromEntries([...fields].filter(([,v])=>!v.input.disabled).map(([k,v])=>[k,v.input.value])),notes:notes.value};}
+ function save(){if(!notes)return Promise.resolve();const data=worksheet(),v=dirty,g=generation;queue=queue.catch(()=>{}).then(async()=>{if(g!==generation)return;const s=await rpc('save',data);if(g!==generation)return;applyProgress(s);if(v===dirty)message.textContent='Saved to your account.';});return track(queue);}
+ function changed(){dirty++;message.textContent='Saving…';clearTimeout(saveTimer);saveTimer=setTimeout(save,700);}
+ function feedback(q){const v=fields.get(q.number);if(!v)return;v.input.disabled=q.mastered;v.feedback.replaceChildren();if(q.mastered)v.feedback.append(el('span','Mastered — saved.'));else if(q.attempted){v.feedback.append(el('span',`Not quite. Review ${time(q.review_start)}–${time(q.review_end)} in the video, then try this question again.`),button('Review this section',()=>{player?.seekTo(q.review_start,true);player?.playVideo();}));}}
+ async function submit(){clearTimeout(saveTimer);const g=generation,data=worksheet();data.request_id=crypto.randomUUID();root.querySelector('[data-submit]').disabled=true;message.textContent='Checking your answers…';
+  queue=queue.catch(()=>{}).then(async()=>{if(g!==generation)return;const s=await rpc('submit',data);if(g!==generation)return;applyProgress(s);for(const q of s.questions)feedback(q);message.textContent='Answers checked. Mastered answers are kept; retry only the questions still open.';});
+  await track(queue);if(g===generation)root.querySelector('[data-submit]').disabled=false;
+ }
+ async function startWatch(){if(watchBusy||!player||!user)return;const g=generation;watchBusy=true;try{const d=await rpc('watch_start',{lesson,position:Math.min(player.getCurrentTime(),state.lessons[lesson-1].duration)});if(g===generation)watchToken=d.watch_token;}catch(e){if(g===generation)report(e)}finally{watchBusy=false}}
+ async function tick(){if(watchBusy||!watchToken||!player||player.getPlayerState()!==1)return;const g=generation;watchBusy=true;try{const s=await rpc('watch_tick',{lesson,watch_token:watchToken,position:Math.min(player.getCurrentTime(),state.lessons[lesson-1].duration)});if(g===generation)applyProgress(s);}catch(e){if(g===generation){watchToken=null;report(e)}}finally{watchBusy=false}}
+ function setupVideo(l){const g=generation;const ready=()=>{if(g!==generation)return;player=new YT.Player('dream-player',{videoId:l.video_id,playerVars:{playsinline:1,rel:0,start:Math.floor(l.resume_seconds)},events:{onReady:()=>{timer=setInterval(tick,5000)},onStateChange:e=>{if(e.data===1)track(startWatch());},onError:()=>report(Error('Video unavailable. Your answers remain saved. Try refreshing the player.'))}});};
+  if(window.YT?.Player)ready();else{window.onYouTubeIframeAPIReady=ready;let s=document.querySelector('[data-dream-youtube]');if(!s){s=el('script',null,{src:'https://www.youtube.com/iframe_api','data-dream-youtube':''});document.head.append(s);}}
+ }
+ function renderLesson(s){const l=s.lessons.find(x=>x.number===lesson);if(!l?.unlocked){root.append(el('p','This lesson is locked. Complete the previous lesson first.'),el('a','Dream Track overview',{href:'dream-track.html'}));return;}
+  const work=el('div',null,{class:'grip-workspace'}),video=el('aside',null,{class:'grip-video-panel','aria-label':'Lesson video'}),shell=el('div',null,{class:'grip-video-shell'});shell.append(el('div',null,{id:'dream-player'}));video.append(shell);
+  const meta=el('div',null,{class:'grip-video-meta'});meta.append(el('h2','Watch while you work.'),el('p','Your place and watched segments save to your account. Review any section as often as you need.'));video.append(meta);
+  const tools=el('div',null,{class:'grip-video-tools'});tools.append(button('Minimize video',()=>video.classList.toggle('is-mini')),button('Full screen',()=>track(Promise.resolve(shell.requestFullscreen?.()))),el('a','Watch / Cast on TV',{href:'https://www.youtube.com/watch?v='+l.video_id,target:'_blank',rel:'noopener',class:'btn gold grip-tv'}));video.append(tools,el('p','Watch credit is recorded by this embedded player. Playback in a separate app is not synced.',{class:'grip-video-meta'}));
+  const card=el('section',null,{class:'grip-form-card'}),head=el('div',null,{class:'grip-form-head'});summary=el('p',null,{class:'dream-summary','aria-live':'polite'});head.append(el('h2',l.title),summary);card.append(head);
+  const refs=[...new Set(s.questions.map(q=>q.scripture).filter(Boolean))];if(refs.length)card.append(el('p','Scripture references: '+refs.join(' · '),{class:'dream-scriptures'}));
+  const questions=el('div',null,{class:'grip-questions'});for(const q of s.questions){const box=el('div',null,{class:'grip-question'}),body=el('div'),input=el('input',null,{id:'dream-q-'+q.number,maxlength:'500',autocomplete:'off'}),f=el('div',null,{class:'dream-feedback','aria-live':'polite'});input.value=q.answer;input.addEventListener('input',changed);body.append(el('label',q.prompt,{for:input.id}),input,f);box.append(el('span',String(q.number),{class:'grip-question-number'}),body);questions.append(box);fields.set(q.number,{input,feedback:f});feedback(q);}card.append(questions);
+  const block=el('div',null,{class:'grip-notes-block'});notes=el('textarea',null,{id:'dream-notes',maxlength:'10000'});notes.value=s.notes||'';notes.addEventListener('input',changed);block.append(el('label','Your notes',{for:'dream-notes'}),notes);card.append(block);
+  const foot=el('div',null,{class:'grip-submit-zone'}),submitButton=button('Check answers',submit);submitButton.dataset.submit='';message=el('p','Saved to your account.',{role:'status',class:'dream-message'});next=el('div');foot.append(submitButton,button('Save now',save),message,next);card.append(foot);work.append(video,card);root.append(work);applyProgress(s);setupVideo(l);
+ }
+ function renderDashboard(s){T.courses(root,s);if(!s.enrolled){const f=el('form',null,{class:'dream-code'}),code=el('input',null,{type:'password',maxlength:'128',autocomplete:'off',id:'dream-code',required:''}),b=el('button','Join Dream Track',{type:'submit',class:'btn gold'});message=el('p',null,{role:'status'});f.append(el('label','Dream Track access code',{for:'dream-code'}),code,b,message);f.addEventListener('submit',async e=>{e.preventDefault();b.disabled=true;const g=generation;try{const d=await rpc('claim_code',{code:code.value});if(g===generation)renderDashboard(d);}catch(err){if(g===generation)report(err)}finally{b.disabled=false;code.value=''}});root.append(f);}}
+ async function boot(){clear();const g=generation;root.append(el('p','Loading Dream Track…'));try{user=await auth?.getUser();if(g!==generation)return;root.replaceChildren();
+   if(!user){root.append(el('p','Sign in to save your Dream Track progress.'),el('a','Sign in',{href:'discipleship-login.html?next='+encodeURIComponent('/'+(isInvite?'dream-track-invite.html':lesson?`dream-track-${lesson}.html`:'dream-track.html')),class:'btn gold'}));return;}
+   if(isInvite){
+    if(invalidInviteToken)throw Error('This invitation link is invalid. Ask your inviter for a new link.');
+    const token=sessionStorage.getItem('championlife-dream-invite');
+    // Copied links keep token validation; Auth email uses the existing verified-email claim.
+    const claimed=await rpc(token?'claim_invite':'claim_pending',token?{token}:{});
+    if(g!==generation)return;
+    T.invitationLanding(root,claimed);
+    sessionStorage.removeItem('championlife-dream-invite');return;
+   }
+   state=await rpc(lesson?'lesson':'dashboard',lesson?{lesson}:{});if(g!==generation)return;if(lesson)renderLesson(state);else renderDashboard(state);
+  }catch(e){if(g===generation){root.replaceChildren(el('p',e.message),el('a','Dream Track overview',{href:'dream-track.html'}));}}}
+ if(isInvite){const url=new URL(location.href),token=url.searchParams.get('token');if(/^[a-f0-9]{64}$/.test(token||''))sessionStorage.setItem('championlife-dream-invite',token);if(token!==null){invalidInviteToken=!/^[a-f0-9]{64}$/.test(token);url.searchParams.delete('token');history.replaceState(null,'',url.pathname+url.search+url.hash);}}
+ auth?.client.auth.onAuthStateChange((_event,session)=>{if(session?.user?.id!==user?.id){clear();setTimeout(boot,0);}});
+ document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='hidden')save();});boot();
+})();
