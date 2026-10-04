@@ -1,3 +1,5 @@
+HISTORICAL NETLIFY IMPLEMENTATION — superseded in development by docs/OUTREACH-PARTNER-INTAKE-V1.md. Do not use this old upload/notification instruction as a release procedure. Production is unchanged until approved cutover.
+
 CHAMPION LIFE — OUTREACH PARTNER + GIVING UPDATE ONLY
 
 Upload:

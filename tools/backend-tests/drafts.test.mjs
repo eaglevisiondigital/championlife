@@ -1,0 +1,33 @@
+import {readFileSync} from 'node:fs';
+import vm from 'node:vm';
+import assert from 'node:assert/strict';
+const code=readFileSync(new URL('../../assets/js/grip-course.js',import.meta.url),'utf8');
+async function setup({id='alice',drafts={},cloud='Cloud answer',delayed=false}={}) {
+  const fields=Object.fromEntries(['q1','notes','learner-id','first-name','last-name','email','phone'].map(name=>[name,{name,value:'',type:'text'}]));
+  const listeners={}, timers=[],saved=[], labels={textContent:''};
+  let active=id?{id,email:id+'@example.test'}:null,listener,resolveLoad;
+  const form={dataset:{lesson:'1'},elements:{namedItem:n=>fields[n]},querySelectorAll:q=>q==='[data-grip-answer]'?[fields.q1]:Object.values(fields),querySelector:q=>fields[q.match(/name="([^"]+)"/)?.[1]]||null,addEventListener:(e,f)=>listeners[e]=f,reset(){for(const f of Object.values(fields)) f.value='';}};
+  const data=()=>({user:active,profile:{},answers:[{question_number:1,answer:cloud}],progress:{notes:'Cloud notes'}});
+  const auth={getUser:async()=>active,loadLesson:()=>delayed?new Promise(r=>resolveLoad=r):Promise.resolve(data()),saveLesson:async p=>saved.push(p),client:{auth:{onAuthStateChange:f=>listener=f}}};
+  const storage=new Map(Object.entries(drafts));
+  const document={querySelector:q=>q==='.grip-course-form'?form:q==='[data-grip-save-status]'?labels:null};
+  const localStorage={getItem:k=>storage.get(k)||null,setItem:(k,v)=>storage.set(k,v),removeItem:k=>storage.delete(k)};
+  const window={ChampionLifeAuth:auth,crypto:{randomUUID:()=> 'guest-id'}};
+  vm.runInNewContext(code,{window,document,localStorage,crypto:window.crypto,RadioNodeList:class{},console,location:{pathname:'/getting-a-grip-1.html'},setTimeout:f=>{timers.push(f);return timers.length},clearTimeout:n=>{if(n) timers[n-1]=null},confirm:()=>true});
+  await new Promise(r=>setImmediate(r));
+  return {fields,form,storage,listeners,saved,labels,async flush(){for(let i=0;i<timers.length;i++)if(timers[i])await timers[i]();await new Promise(r=>setImmediate(r));},switchUser(id){active={id};listener('SIGNED_IN',{user:active})},resolveLoad};
+}
+const key=id=>'championlife-grip-user-'+id+'-lesson-1-draft-v2';
+const draft=(answer,dirty=true)=>JSON.stringify({dirty,values:{q1:answer},savedAt:'2026-01-01'});
+let x=await setup({drafts:{[key('bob')]:draft('Bob private'),'championlife-grip-lesson-1-draft-v1':draft('Legacy private')}});
+assert.equal(x.fields.q1.value,'Cloud answer');
+x=await setup({drafts:{[key('alice')]:draft('')}});
+assert.equal(x.fields.q1.value,'');
+x.fields.q1.value='Alice private';x.listeners.input();x.switchUser('bob');await x.flush();
+assert.equal(x.fields.q1.value,'');assert.equal(x.form.inert,true);assert.equal(x.saved.length,0);
+assert.equal(x.storage.has(key('bob')),false);
+x=await setup({drafts:{[key('alice')]:draft('Old synced answer',false)}});assert.equal(x.fields.q1.value,'Cloud answer');assert.equal(x.fields.notes.value,'Cloud notes');
+x.fields.q1.value='Newest answer';x.listeners.input();await x.flush();assert.equal(x.saved[0].expectedUserId,'alice');assert.equal(JSON.parse(x.storage.get(key('alice'))).dirty,false);
+x=await setup({delayed:true});x.switchUser('bob');x.resolveLoad({user:{id:'alice'},answers:[{question_number:1,answer:'Private response'}]});await new Promise(r=>setImmediate(r));assert.equal(x.fields.q1.value,'');assert.equal(x.form.inert,true);
+x=await setup({id:null,drafts:{[key('alice')]:draft('Private')}});assert.equal(x.fields.q1.value,'');assert.equal(x.form.inert,false);
+console.log('PASS account-scoped drafts, legacy isolation, blank draft restoration, canceled timers, cleared private form, synced draft freshness, delayed response isolation, guest isolation');

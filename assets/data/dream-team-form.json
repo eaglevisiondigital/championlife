@@ -1,0 +1,2209 @@
+{
+  "version": "dream-team-v1-20261002",
+  "ethicsVersion": "dream-team-ethics-20261001",
+  "sourceSha256": "8620cb3ec7c1bcf061996dddb6e6ac56c221b1368a765e714300b769378b3132",
+  "pages": [
+    {
+      "number": 1,
+      "blocks": [
+        {
+          "id": "cid_10",
+          "text": "Dream Team Application\n            Please complete the form below to be considered for volunteer positions available. Any information provided is kept confidential."
+        }
+      ]
+    },
+    {
+      "number": 2,
+      "blocks": [
+        {
+          "id": "cid_46",
+          "text": "Lifestyle\n            Please note, answering Yes to any of these questions does not necessarily mean you cannot serve on a Team. We believe in God's mercy and the opportunity to grow as we continually seek to be more like Him. Only Senior Pastors can make a decision to Approve or Deny a person to serve on a team."
+        }
+      ]
+    },
+    {
+      "number": 3,
+      "blocks": [
+        {
+          "id": "cid_48",
+          "text": "Medical"
+        }
+      ]
+    },
+    {
+      "number": 4,
+      "blocks": [
+        {
+          "id": "cid_52",
+          "text": "Christian Experience"
+        }
+      ]
+    },
+    {
+      "number": 5,
+      "blocks": [
+        {
+          "id": "cid_63",
+          "text": "Previous Church \n            Please provide where you have attended church in the past 3 years."
+        }
+      ]
+    },
+    {
+      "number": 6,
+      "blocks": [
+        {
+          "id": "cid_78",
+          "text": "DREAM TEAM CODE OF ETHICS\n            Levels 1-2-3"
+        },
+        {
+          "id": "id_76",
+          "text": "General Code of Ethics For Levels 1-2-3 Dream Team Members\n            1. I will conduct myself in a manner that does not bring reproach on the cause of Christ.\n            2. I will not engage in illicit sexual activity or moral impurity including cohabitation, adultery, or improper physical contact with children.\n            3. I will not engage in any homosexual or transgender activity.\n            4. I will abstain from all appearances of evil, in consideration of I Thessalonians 5:22.\n            5. I will subscribe to the doctrinal beliefs of Champion Life, and I will not communicate to my fellow workers/students anything that contradicts the Champion Life doctrinal statement. I Corinthians 1:10\n            6. I will refrain from participation in gossip, murmuring and complaining about church leaders, fellow church members and policies.  I will address my concerns to the appropriate person in charge in a civil and Christ-like manner.  Should I find it impossible to resolve my grievance, I will resign my position in a manner considerate of the on-going program. I Corinthians 1:10, 2 Corinthians 12:20, I Thessalonians 5:12\n            7. I will faithfully serve my team without chronic absenteeism, tardiness or lack of preparation. I will follow the notification process if I am unable to serve in my scheduled area. I will never fail to notify my Department Lead of my absence.  I understand that chronic absenteeism, tardiness and lack of preparedness are grounds for dismissal. Luke 16:12\n            8. I will maintain an appearance that is neat and clean, and is not distracting, provocative or excessively revealing. I will follow directions on dress and appearance as communicated by my Department Lead and Church Leadership.\n            9. I will attend adult services at least once weekly in addition to serving in my area. Hebrews 10:25\n            10. I will maintain a cheerful disposition, work in the spirit of faith and rebuff those who endeavor to introduce negative attitudes.\n            11. I will listen to and/or watch assigned audio and videos including but not limited to live streams from dates I served when I am not able to sit in a corresponding Sunday morning service.\n            12. I will make a 6 month commitment to any area I serve in and will give at least a 30 day notice if I need to step down from that position.\n             \n            Additional Code of Ethics For Level 2 & 3 Dream Team Members\n            13. I will refrain from drinking alcoholic beverages.\n            14. I will refrain from using tobacco products including chewing tobacco, cigars, cigarettes and e-cigarettes.\n            15. I will refrain from using mind altering drugs including marijuana, illegal drugs, or abuse of perscription drugs.\n            16. I will not engage in any form of pornography.\n            17. I have or will complete GET A GRIP ON THE BASICS 13 week discipleship course.\n            18. I have or will complete the Dream Track Videos in the next 3 months.\n            19. I will be a faithful tither and support the church with my offerings. Malachi 3:10"
+        }
+      ]
+    },
+    {
+      "number": 7,
+      "blocks": []
+    },
+    {
+      "number": 8,
+      "blocks": [
+        {
+          "id": "cid_69",
+          "text": "Applicant Signature"
+        }
+      ]
+    }
+  ],
+  "fields": [
+    {
+      "id": "id_11",
+      "order": 1,
+      "page": 1,
+      "label": "Full Name*",
+      "type": "fullname",
+      "required": true,
+      "hidden": false,
+      "sensitivity": "RESTRICTED",
+      "help": [
+        "First Name",
+        "Middle Name",
+        "Last Name"
+      ],
+      "controls": [
+        {
+          "id": "first_11",
+          "label": "First Name",
+          "type": "text",
+          "required": true
+        },
+        {
+          "id": "middle_11",
+          "label": "Middle Name",
+          "type": "text",
+          "required": false
+        },
+        {
+          "id": "last_11",
+          "label": "Last Name",
+          "type": "text",
+          "required": true
+        }
+      ]
+    },
+    {
+      "id": "id_16",
+      "order": 2,
+      "page": 1,
+      "label": "Current Address*",
+      "type": "address",
+      "required": true,
+      "hidden": false,
+      "sensitivity": "RESTRICTED",
+      "help": [
+        "Street Address",
+        "Street Address Line 2",
+        "City",
+        "State / Province",
+        "Postal / Zip Code"
+      ],
+      "controls": [
+        {
+          "id": "input_16_addr_line1",
+          "label": "Street Address",
+          "type": "text",
+          "required": true,
+          "maxLength": 100
+        },
+        {
+          "id": "input_16_addr_line2",
+          "label": "Street Address Line 2",
+          "type": "text",
+          "required": false,
+          "maxLength": 100
+        },
+        {
+          "id": "input_16_city",
+          "label": "City",
+          "type": "text",
+          "required": true,
+          "maxLength": 60
+        },
+        {
+          "id": "input_16_state",
+          "label": "State / Province",
+          "type": "text",
+          "required": true,
+          "maxLength": 60
+        },
+        {
+          "id": "input_16_postal",
+          "label": "Postal / Zip Code",
+          "type": "text",
+          "required": true,
+          "maxLength": 20
+        }
+      ]
+    },
+    {
+      "id": "id_13",
+      "order": 3,
+      "page": 1,
+      "label": "Phone Number*",
+      "type": "phone",
+      "required": true,
+      "hidden": false,
+      "sensitivity": "RESTRICTED",
+      "help": [],
+      "controls": [
+        {
+          "id": "input_13_full",
+          "label": "Phone Number*",
+          "type": "tel",
+          "required": true,
+          "placeholder": "(000) 000-0000"
+        }
+      ]
+    },
+    {
+      "id": "id_12",
+      "order": 4,
+      "page": 1,
+      "label": "Email Address*",
+      "type": "email",
+      "required": true,
+      "hidden": false,
+      "sensitivity": "RESTRICTED",
+      "help": [
+        "example@example.com"
+      ],
+      "controls": [
+        {
+          "id": "input_12",
+          "label": "example@example.com",
+          "type": "email",
+          "required": true,
+          "placeholder": "ex: myname@example.com"
+        }
+      ]
+    },
+    {
+      "id": "id_18",
+      "order": 5,
+      "page": 1,
+      "label": "Birth Date*",
+      "type": "birthdate",
+      "required": true,
+      "hidden": false,
+      "sensitivity": "HIGHLY RESTRICTED",
+      "help": [
+        "Month",
+        "Day",
+        "Year"
+      ],
+      "controls": [
+        {
+          "id": "input_18_month",
+          "label": "Month",
+          "type": "select",
+          "required": true,
+          "options": [
+            {
+              "value": "",
+              "text": "Please select a month"
+            },
+            {
+              "value": "1",
+              "text": "January"
+            },
+            {
+              "value": "2",
+              "text": "February"
+            },
+            {
+              "value": "3",
+              "text": "March"
+            },
+            {
+              "value": "4",
+              "text": "April"
+            },
+            {
+              "value": "5",
+              "text": "May"
+            },
+            {
+              "value": "6",
+              "text": "June"
+            },
+            {
+              "value": "7",
+              "text": "July"
+            },
+            {
+              "value": "8",
+              "text": "August"
+            },
+            {
+              "value": "9",
+              "text": "September"
+            },
+            {
+              "value": "10",
+              "text": "October"
+            },
+            {
+              "value": "11",
+              "text": "November"
+            },
+            {
+              "value": "12",
+              "text": "December"
+            }
+          ]
+        },
+        {
+          "id": "input_18_day",
+          "label": "Day",
+          "type": "select",
+          "required": true,
+          "options": [
+            {
+              "value": "",
+              "text": "Please select a day"
+            },
+            {
+              "value": "1",
+              "text": "1"
+            },
+            {
+              "value": "2",
+              "text": "2"
+            },
+            {
+              "value": "3",
+              "text": "3"
+            },
+            {
+              "value": "4",
+              "text": "4"
+            },
+            {
+              "value": "5",
+              "text": "5"
+            },
+            {
+              "value": "6",
+              "text": "6"
+            },
+            {
+              "value": "7",
+              "text": "7"
+            },
+            {
+              "value": "8",
+              "text": "8"
+            },
+            {
+              "value": "9",
+              "text": "9"
+            },
+            {
+              "value": "10",
+              "text": "10"
+            },
+            {
+              "value": "11",
+              "text": "11"
+            },
+            {
+              "value": "12",
+              "text": "12"
+            },
+            {
+              "value": "13",
+              "text": "13"
+            },
+            {
+              "value": "14",
+              "text": "14"
+            },
+            {
+              "value": "15",
+              "text": "15"
+            },
+            {
+              "value": "16",
+              "text": "16"
+            },
+            {
+              "value": "17",
+              "text": "17"
+            },
+            {
+              "value": "18",
+              "text": "18"
+            },
+            {
+              "value": "19",
+              "text": "19"
+            },
+            {
+              "value": "20",
+              "text": "20"
+            },
+            {
+              "value": "21",
+              "text": "21"
+            },
+            {
+              "value": "22",
+              "text": "22"
+            },
+            {
+              "value": "23",
+              "text": "23"
+            },
+            {
+              "value": "24",
+              "text": "24"
+            },
+            {
+              "value": "25",
+              "text": "25"
+            },
+            {
+              "value": "26",
+              "text": "26"
+            },
+            {
+              "value": "27",
+              "text": "27"
+            },
+            {
+              "value": "28",
+              "text": "28"
+            },
+            {
+              "value": "29",
+              "text": "29"
+            },
+            {
+              "value": "30",
+              "text": "30"
+            },
+            {
+              "value": "31",
+              "text": "31"
+            }
+          ]
+        },
+        {
+          "id": "input_18_year",
+          "label": "Year",
+          "type": "select",
+          "required": true,
+          "options": [
+            {
+              "value": "",
+              "text": "Please select a year"
+            },
+            {
+              "value": "2026",
+              "text": "2026"
+            },
+            {
+              "value": "2025",
+              "text": "2025"
+            },
+            {
+              "value": "2024",
+              "text": "2024"
+            },
+            {
+              "value": "2023",
+              "text": "2023"
+            },
+            {
+              "value": "2022",
+              "text": "2022"
+            },
+            {
+              "value": "2021",
+              "text": "2021"
+            },
+            {
+              "value": "2020",
+              "text": "2020"
+            },
+            {
+              "value": "2019",
+              "text": "2019"
+            },
+            {
+              "value": "2018",
+              "text": "2018"
+            },
+            {
+              "value": "2017",
+              "text": "2017"
+            },
+            {
+              "value": "2016",
+              "text": "2016"
+            },
+            {
+              "value": "2015",
+              "text": "2015"
+            },
+            {
+              "value": "2014",
+              "text": "2014"
+            },
+            {
+              "value": "2013",
+              "text": "2013"
+            },
+            {
+              "value": "2012",
+              "text": "2012"
+            },
+            {
+              "value": "2011",
+              "text": "2011"
+            },
+            {
+              "value": "2010",
+              "text": "2010"
+            },
+            {
+              "value": "2009",
+              "text": "2009"
+            },
+            {
+              "value": "2008",
+              "text": "2008"
+            },
+            {
+              "value": "2007",
+              "text": "2007"
+            },
+            {
+              "value": "2006",
+              "text": "2006"
+            },
+            {
+              "value": "2005",
+              "text": "2005"
+            },
+            {
+              "value": "2004",
+              "text": "2004"
+            },
+            {
+              "value": "2003",
+              "text": "2003"
+            },
+            {
+              "value": "2002",
+              "text": "2002"
+            },
+            {
+              "value": "2001",
+              "text": "2001"
+            },
+            {
+              "value": "2000",
+              "text": "2000"
+            },
+            {
+              "value": "1999",
+              "text": "1999"
+            },
+            {
+              "value": "1998",
+              "text": "1998"
+            },
+            {
+              "value": "1997",
+              "text": "1997"
+            },
+            {
+              "value": "1996",
+              "text": "1996"
+            },
+            {
+              "value": "1995",
+              "text": "1995"
+            },
+            {
+              "value": "1994",
+              "text": "1994"
+            },
+            {
+              "value": "1993",
+              "text": "1993"
+            },
+            {
+              "value": "1992",
+              "text": "1992"
+            },
+            {
+              "value": "1991",
+              "text": "1991"
+            },
+            {
+              "value": "1990",
+              "text": "1990"
+            },
+            {
+              "value": "1989",
+              "text": "1989"
+            },
+            {
+              "value": "1988",
+              "text": "1988"
+            },
+            {
+              "value": "1987",
+              "text": "1987"
+            },
+            {
+              "value": "1986",
+              "text": "1986"
+            },
+            {
+              "value": "1985",
+              "text": "1985"
+            },
+            {
+              "value": "1984",
+              "text": "1984"
+            },
+            {
+              "value": "1983",
+              "text": "1983"
+            },
+            {
+              "value": "1982",
+              "text": "1982"
+            },
+            {
+              "value": "1981",
+              "text": "1981"
+            },
+            {
+              "value": "1980",
+              "text": "1980"
+            },
+            {
+              "value": "1979",
+              "text": "1979"
+            },
+            {
+              "value": "1978",
+              "text": "1978"
+            },
+            {
+              "value": "1977",
+              "text": "1977"
+            },
+            {
+              "value": "1976",
+              "text": "1976"
+            },
+            {
+              "value": "1975",
+              "text": "1975"
+            },
+            {
+              "value": "1974",
+              "text": "1974"
+            },
+            {
+              "value": "1973",
+              "text": "1973"
+            },
+            {
+              "value": "1972",
+              "text": "1972"
+            },
+            {
+              "value": "1971",
+              "text": "1971"
+            },
+            {
+              "value": "1970",
+              "text": "1970"
+            },
+            {
+              "value": "1969",
+              "text": "1969"
+            },
+            {
+              "value": "1968",
+              "text": "1968"
+            },
+            {
+              "value": "1967",
+              "text": "1967"
+            },
+            {
+              "value": "1966",
+              "text": "1966"
+            },
+            {
+              "value": "1965",
+              "text": "1965"
+            },
+            {
+              "value": "1964",
+              "text": "1964"
+            },
+            {
+              "value": "1963",
+              "text": "1963"
+            },
+            {
+              "value": "1962",
+              "text": "1962"
+            },
+            {
+              "value": "1961",
+              "text": "1961"
+            },
+            {
+              "value": "1960",
+              "text": "1960"
+            },
+            {
+              "value": "1959",
+              "text": "1959"
+            },
+            {
+              "value": "1958",
+              "text": "1958"
+            },
+            {
+              "value": "1957",
+              "text": "1957"
+            },
+            {
+              "value": "1956",
+              "text": "1956"
+            },
+            {
+              "value": "1955",
+              "text": "1955"
+            },
+            {
+              "value": "1954",
+              "text": "1954"
+            },
+            {
+              "value": "1953",
+              "text": "1953"
+            },
+            {
+              "value": "1952",
+              "text": "1952"
+            },
+            {
+              "value": "1951",
+              "text": "1951"
+            },
+            {
+              "value": "1950",
+              "text": "1950"
+            },
+            {
+              "value": "1949",
+              "text": "1949"
+            },
+            {
+              "value": "1948",
+              "text": "1948"
+            },
+            {
+              "value": "1947",
+              "text": "1947"
+            },
+            {
+              "value": "1946",
+              "text": "1946"
+            },
+            {
+              "value": "1945",
+              "text": "1945"
+            },
+            {
+              "value": "1944",
+              "text": "1944"
+            },
+            {
+              "value": "1943",
+              "text": "1943"
+            },
+            {
+              "value": "1942",
+              "text": "1942"
+            },
+            {
+              "value": "1941",
+              "text": "1941"
+            },
+            {
+              "value": "1940",
+              "text": "1940"
+            },
+            {
+              "value": "1939",
+              "text": "1939"
+            },
+            {
+              "value": "1938",
+              "text": "1938"
+            },
+            {
+              "value": "1937",
+              "text": "1937"
+            },
+            {
+              "value": "1936",
+              "text": "1936"
+            },
+            {
+              "value": "1935",
+              "text": "1935"
+            },
+            {
+              "value": "1934",
+              "text": "1934"
+            },
+            {
+              "value": "1933",
+              "text": "1933"
+            },
+            {
+              "value": "1932",
+              "text": "1932"
+            },
+            {
+              "value": "1931",
+              "text": "1931"
+            },
+            {
+              "value": "1930",
+              "text": "1930"
+            },
+            {
+              "value": "1929",
+              "text": "1929"
+            },
+            {
+              "value": "1928",
+              "text": "1928"
+            },
+            {
+              "value": "1927",
+              "text": "1927"
+            },
+            {
+              "value": "1926",
+              "text": "1926"
+            },
+            {
+              "value": "1925",
+              "text": "1925"
+            },
+            {
+              "value": "1924",
+              "text": "1924"
+            },
+            {
+              "value": "1923",
+              "text": "1923"
+            },
+            {
+              "value": "1922",
+              "text": "1922"
+            },
+            {
+              "value": "1921",
+              "text": "1921"
+            },
+            {
+              "value": "1920",
+              "text": "1920"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "id_27",
+      "order": 6,
+      "page": 1,
+      "label": "Marital Status*",
+      "type": "dropdown",
+      "required": true,
+      "hidden": false,
+      "sensitivity": "RESTRICTED",
+      "help": [],
+      "controls": [
+        {
+          "id": "input_27",
+          "label": "Marital Status*",
+          "type": "select",
+          "required": true,
+          "options": [
+            {
+              "value": "",
+              "text": "Please Select"
+            },
+            {
+              "value": "Single",
+              "text": "Single"
+            },
+            {
+              "value": "Married",
+              "text": "Married"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "id_29",
+      "order": 7,
+      "page": 1,
+      "label": "Spouse's Name",
+      "type": "fullname",
+      "required": false,
+      "hidden": false,
+      "sensitivity": "RESTRICTED",
+      "help": [
+        "First Name",
+        "Middle Name",
+        "Last Name"
+      ],
+      "controls": [
+        {
+          "id": "first_29",
+          "label": "First Name",
+          "type": "text",
+          "required": false
+        },
+        {
+          "id": "middle_29",
+          "label": "Middle Name",
+          "type": "text",
+          "required": false
+        },
+        {
+          "id": "last_29",
+          "label": "Last Name",
+          "type": "text",
+          "required": false
+        }
+      ]
+    },
+    {
+      "id": "id_26",
+      "order": 8,
+      "page": 1,
+      "label": "Anniversary",
+      "type": "datetime",
+      "required": false,
+      "hidden": false,
+      "sensitivity": "RESTRICTED",
+      "help": [
+        "Month",
+        "Day",
+        "Year",
+        "2 digit month, 2 digit day, 4 digit year",
+        "Date"
+      ],
+      "controls": [
+        {
+          "id": "id_26_date",
+          "label": "Date",
+          "type": "date",
+          "required": false,
+          "defaultToday": false
+        }
+      ]
+    },
+    {
+      "id": "id_23",
+      "order": 9,
+      "page": 1,
+      "label": "Area(s) of Interest - Select up to three options.*",
+      "type": "checkbox",
+      "required": true,
+      "hidden": false,
+      "sensitivity": "GENERAL (operational preference); RESTRICTED when linked to an applicant",
+      "help": [],
+      "controls": [
+        {
+          "id": "input_23_0",
+          "label": "CHILDREN'S* Please choose specific class(es) in next section.",
+          "type": "checkbox",
+          "required": true,
+          "value": "CHILDREN'S* Please choose specific class(es) in next section."
+        },
+        {
+          "id": "input_23_1",
+          "label": "YOUTH",
+          "type": "checkbox",
+          "required": true,
+          "value": "YOUTH"
+        },
+        {
+          "id": "input_23_2",
+          "label": "MUSIC (WORSHIP/BAND)",
+          "type": "checkbox",
+          "required": true,
+          "value": "MUSIC (WORSHIP/BAND)"
+        },
+        {
+          "id": "input_23_3",
+          "label": "SOUND",
+          "type": "checkbox",
+          "required": true,
+          "value": "SOUND"
+        },
+        {
+          "id": "input_23_4",
+          "label": "MEDIA/TECH",
+          "type": "checkbox",
+          "required": true,
+          "value": "MEDIA/TECH"
+        },
+        {
+          "id": "input_23_5",
+          "label": "USHER",
+          "type": "checkbox",
+          "required": true,
+          "value": "USHER"
+        },
+        {
+          "id": "input_23_6",
+          "label": "GREETER",
+          "type": "checkbox",
+          "required": true,
+          "value": "GREETER"
+        },
+        {
+          "id": "input_23_7",
+          "label": "CAFE",
+          "type": "checkbox",
+          "required": true,
+          "value": "CAFE"
+        },
+        {
+          "id": "input_23_8",
+          "label": "PARKING LOT TEAM",
+          "type": "checkbox",
+          "required": true,
+          "value": "PARKING LOT TEAM"
+        },
+        {
+          "id": "input_23_9",
+          "label": "MERCH STORE",
+          "type": "checkbox",
+          "required": true,
+          "value": "MERCH STORE"
+        },
+        {
+          "id": "input_23_10",
+          "label": "WELCOME DESK",
+          "type": "checkbox",
+          "required": true,
+          "value": "WELCOME DESK"
+        },
+        {
+          "id": "input_23_11",
+          "label": "INTERPRETER",
+          "type": "checkbox",
+          "required": true,
+          "value": "INTERPRETER"
+        },
+        {
+          "id": "input_23_12",
+          "label": "HOSPITALITY",
+          "type": "checkbox",
+          "required": true,
+          "value": "HOSPITALITY"
+        },
+        {
+          "id": "input_23_13",
+          "label": "BUILDING MAINTENANCE",
+          "type": "checkbox",
+          "required": true,
+          "value": "BUILDING MAINTENANCE"
+        },
+        {
+          "id": "input_23_14",
+          "label": "AUTO MAINTENANCE",
+          "type": "checkbox",
+          "required": true,
+          "value": "AUTO MAINTENANCE"
+        }
+      ]
+    },
+    {
+      "id": "id_81",
+      "order": 10,
+      "page": 1,
+      "label": "*Children's Classes (Select all that apply)*",
+      "type": "checkbox",
+      "required": true,
+      "hidden": false,
+      "sensitivity": "GENERAL (operational preference); RESTRICTED when linked to an applicant",
+      "help": [],
+      "controls": [
+        {
+          "id": "input_81_0",
+          "label": "N/A",
+          "type": "checkbox",
+          "required": true,
+          "value": "N/A"
+        },
+        {
+          "id": "input_81_1",
+          "label": "NURSERY (6MO-WALKING)",
+          "type": "checkbox",
+          "required": true,
+          "value": "NURSERY (6MO-WALKING)"
+        },
+        {
+          "id": "input_81_2",
+          "label": "TODDLERS (1 TO 2YRS)",
+          "type": "checkbox",
+          "required": true,
+          "value": "TODDLERS (1 TO 2YRS)"
+        },
+        {
+          "id": "input_81_3",
+          "label": "EARLY ELEMENTARY (3YRS TO KINDERGARTEN)",
+          "type": "checkbox",
+          "required": true,
+          "value": "EARLY ELEMENTARY (3YRS TO KINDERGARTEN)"
+        },
+        {
+          "id": "input_81_4",
+          "label": "UPPER ELEMENTARY (1ST-5TH)",
+          "type": "checkbox",
+          "required": true,
+          "value": "UPPER ELEMENTARY (1ST-5TH)"
+        },
+        {
+          "id": "input_81_5",
+          "label": "TEACHER",
+          "type": "checkbox",
+          "required": true,
+          "value": "TEACHER"
+        },
+        {
+          "id": "input_81_6",
+          "label": "ASSISTANT",
+          "type": "checkbox",
+          "required": true,
+          "value": "ASSISTANT"
+        }
+      ]
+    },
+    {
+      "id": "id_25",
+      "order": 11,
+      "page": 1,
+      "label": "Other Area(s) of Interest Not Listed Above",
+      "type": "textbox",
+      "required": false,
+      "hidden": false,
+      "sensitivity": "GENERAL (operational preference); RESTRICTED when linked to an applicant",
+      "help": [],
+      "controls": [
+        {
+          "id": "input_25",
+          "label": "Other Area(s) of Interest Not Listed Above",
+          "type": "text",
+          "required": false
+        }
+      ]
+    },
+    {
+      "id": "id_15",
+      "order": 12,
+      "page": 1,
+      "label": "Available Start Date*",
+      "type": "datetime",
+      "required": true,
+      "hidden": false,
+      "sensitivity": "GENERAL (operational preference); RESTRICTED when linked to an applicant",
+      "help": [
+        "Month",
+        "Day",
+        "Year",
+        "2 digit month, 2 digit day, 4 digit year",
+        "Date"
+      ],
+      "controls": [
+        {
+          "id": "id_15_date",
+          "label": "Date",
+          "type": "date",
+          "required": true,
+          "defaultToday": true
+        }
+      ]
+    },
+    {
+      "id": "id_22",
+      "order": 13,
+      "page": 1,
+      "label": "Experience Related to Area(s) of Interest*",
+      "type": "textarea",
+      "required": true,
+      "hidden": false,
+      "sensitivity": "RESTRICTED",
+      "help": [],
+      "controls": [
+        {
+          "id": "input_22",
+          "label": "Experience Related to Area(s) of Interest*",
+          "type": "textarea",
+          "required": true,
+          "placeholder": "Type here..."
+        }
+      ]
+    },
+    {
+      "id": "id_32",
+      "order": 14,
+      "page": 2,
+      "label": "Do you currently use or consume any of the following? Select all that apply.*",
+      "type": "checkbox",
+      "required": true,
+      "hidden": false,
+      "sensitivity": "HIGHLY RESTRICTED",
+      "help": [],
+      "controls": [
+        {
+          "id": "input_32_0",
+          "label": "TOBACCO",
+          "type": "checkbox",
+          "required": true,
+          "value": "TOBACCO"
+        },
+        {
+          "id": "input_32_1",
+          "label": "E-CIGARETTES",
+          "type": "checkbox",
+          "required": true,
+          "value": "E-CIGARETTES"
+        },
+        {
+          "id": "input_32_2",
+          "label": "ALCOHOL",
+          "type": "checkbox",
+          "required": true,
+          "value": "ALCOHOL"
+        },
+        {
+          "id": "input_32_3",
+          "label": "ILLEGAL DRUGS",
+          "type": "checkbox",
+          "required": true,
+          "value": "ILLEGAL DRUGS"
+        },
+        {
+          "id": "input_32_4",
+          "label": "NONE",
+          "type": "checkbox",
+          "required": true,
+          "value": "NONE"
+        }
+      ]
+    },
+    {
+      "id": "id_34",
+      "order": 15,
+      "page": 2,
+      "label": "Have you used or consumed any of the following in the past? Select all that apply.*",
+      "type": "checkbox",
+      "required": true,
+      "hidden": false,
+      "sensitivity": "HIGHLY RESTRICTED",
+      "help": [],
+      "controls": [
+        {
+          "id": "input_34_0",
+          "label": "TOBACCO",
+          "type": "checkbox",
+          "required": true,
+          "value": "TOBACCO"
+        },
+        {
+          "id": "input_34_1",
+          "label": "E-CIGARETTES",
+          "type": "checkbox",
+          "required": true,
+          "value": "E-CIGARETTES"
+        },
+        {
+          "id": "input_34_2",
+          "label": "ALCOHOL",
+          "type": "checkbox",
+          "required": true,
+          "value": "ALCOHOL"
+        },
+        {
+          "id": "input_34_3",
+          "label": "ILLEGAL DRUGS",
+          "type": "checkbox",
+          "required": true,
+          "value": "ILLEGAL DRUGS"
+        },
+        {
+          "id": "input_34_4",
+          "label": "NONE",
+          "type": "checkbox",
+          "required": true,
+          "value": "NONE"
+        }
+      ]
+    },
+    {
+      "id": "id_93",
+      "order": 16,
+      "page": 2,
+      "label": "Please explain how long ago you quit for each item or type N/A if you selected None.*",
+      "type": "textarea",
+      "required": true,
+      "hidden": false,
+      "sensitivity": "HIGHLY RESTRICTED",
+      "help": [],
+      "controls": [
+        {
+          "id": "input_93",
+          "label": "Please explain how long ago you quit for each item or type N/A if you selected None.*",
+          "type": "textarea",
+          "required": true
+        }
+      ]
+    },
+    {
+      "id": "id_33",
+      "order": 17,
+      "page": 2,
+      "label": "Please explain how long ago you quit for each item or type N/A if you selected None.*",
+      "type": "textbox",
+      "required": true,
+      "hidden": true,
+      "sensitivity": "HIGHLY RESTRICTED",
+      "help": [],
+      "controls": [
+        {
+          "id": "input_33",
+          "label": "Please explain how long ago you quit for each item or type N/A if you selected None.*",
+          "type": "text",
+          "required": true
+        }
+      ]
+    },
+    {
+      "id": "id_82",
+      "order": 18,
+      "page": 2,
+      "label": "Have you ever been prescribed and/or taken any Psychiatric drugs/medications other than anti-depressants/anxiety medications?*",
+      "type": "checkbox",
+      "required": true,
+      "hidden": false,
+      "sensitivity": "HIGHLY RESTRICTED",
+      "help": [],
+      "controls": [
+        {
+          "id": "input_82_0",
+          "label": "YES",
+          "type": "checkbox",
+          "required": true,
+          "value": "YES"
+        },
+        {
+          "id": "input_82_1",
+          "label": "NO",
+          "type": "checkbox",
+          "required": true,
+          "value": "NO"
+        }
+      ]
+    },
+    {
+      "id": "id_83",
+      "order": 19,
+      "page": 2,
+      "label": "Have you ever been a patient (committed or voluntarily) in a mental health facility?*",
+      "type": "checkbox",
+      "required": true,
+      "hidden": false,
+      "sensitivity": "HIGHLY RESTRICTED",
+      "help": [],
+      "controls": [
+        {
+          "id": "input_83_0",
+          "label": "YES",
+          "type": "checkbox",
+          "required": true,
+          "value": "YES"
+        },
+        {
+          "id": "input_83_1",
+          "label": "NO",
+          "type": "checkbox",
+          "required": true,
+          "value": "NO"
+        }
+      ]
+    },
+    {
+      "id": "id_36",
+      "order": 20,
+      "page": 2,
+      "label": "Do you currently view Pornography?*",
+      "type": "radio",
+      "required": true,
+      "hidden": false,
+      "sensitivity": "HIGHLY RESTRICTED",
+      "help": [],
+      "controls": [
+        {
+          "id": "input_36_0",
+          "label": "YES",
+          "type": "radio",
+          "required": true,
+          "value": "YES"
+        },
+        {
+          "id": "input_36_1",
+          "label": "NO",
+          "type": "radio",
+          "required": true,
+          "value": "NO"
+        }
+      ]
+    },
+    {
+      "id": "id_38",
+      "order": 21,
+      "page": 2,
+      "label": "Have you viewed Pornography in the past?*",
+      "type": "radio",
+      "required": true,
+      "hidden": false,
+      "sensitivity": "HIGHLY RESTRICTED",
+      "help": [],
+      "controls": [
+        {
+          "id": "input_38_0",
+          "label": "YES",
+          "type": "radio",
+          "required": true,
+          "value": "YES"
+        },
+        {
+          "id": "input_38_1",
+          "label": "NO",
+          "type": "radio",
+          "required": true,
+          "value": "NO"
+        }
+      ]
+    },
+    {
+      "id": "id_37",
+      "order": 22,
+      "page": 2,
+      "label": "If YES, please explain how long ago you stopped or type N/A if you answered NO.*",
+      "type": "textbox",
+      "required": true,
+      "hidden": false,
+      "sensitivity": "HIGHLY RESTRICTED",
+      "help": [],
+      "controls": [
+        {
+          "id": "input_37",
+          "label": "If YES, please explain how long ago you stopped or type N/A if you answered NO.*",
+          "type": "text",
+          "required": true
+        }
+      ]
+    },
+    {
+      "id": "id_39",
+      "order": 23,
+      "page": 2,
+      "label": "Do you currently engage in Homosexuality or any other lifestyle within the definition of LGBTQ+?*",
+      "type": "radio",
+      "required": true,
+      "hidden": false,
+      "sensitivity": "HIGHLY RESTRICTED",
+      "help": [],
+      "controls": [
+        {
+          "id": "input_39_0",
+          "label": "YES",
+          "type": "radio",
+          "required": true,
+          "value": "YES"
+        },
+        {
+          "id": "input_39_1",
+          "label": "NO",
+          "type": "radio",
+          "required": true,
+          "value": "NO"
+        }
+      ]
+    },
+    {
+      "id": "id_40",
+      "order": 24,
+      "page": 2,
+      "label": "Have you engaged in Homosexuality or any other lifestyle within the definition of LGBTQ+ in the past?*",
+      "type": "radio",
+      "required": true,
+      "hidden": false,
+      "sensitivity": "HIGHLY RESTRICTED",
+      "help": [],
+      "controls": [
+        {
+          "id": "input_40_0",
+          "label": "YES",
+          "type": "radio",
+          "required": true,
+          "value": "YES"
+        },
+        {
+          "id": "input_40_1",
+          "label": "NO",
+          "type": "radio",
+          "required": true,
+          "value": "NO"
+        }
+      ]
+    },
+    {
+      "id": "id_41",
+      "order": 25,
+      "page": 2,
+      "label": "If YES, please explain how long ago it was or type N/A if you answered NO.*",
+      "type": "textbox",
+      "required": true,
+      "hidden": false,
+      "sensitivity": "HIGHLY RESTRICTED",
+      "help": [],
+      "controls": [
+        {
+          "id": "input_41",
+          "label": "If YES, please explain how long ago it was or type N/A if you answered NO.*",
+          "type": "text",
+          "required": true
+        }
+      ]
+    },
+    {
+      "id": "id_43",
+      "order": 26,
+      "page": 2,
+      "label": "Have you ever been accused of and/or convicted of spousal abuse?*",
+      "type": "radio",
+      "required": true,
+      "hidden": false,
+      "sensitivity": "HIGHLY RESTRICTED",
+      "help": [],
+      "controls": [
+        {
+          "id": "input_43_0",
+          "label": "YES",
+          "type": "radio",
+          "required": true,
+          "value": "YES"
+        },
+        {
+          "id": "input_43_1",
+          "label": "NO",
+          "type": "radio",
+          "required": true,
+          "value": "NO"
+        }
+      ]
+    },
+    {
+      "id": "id_45",
+      "order": 27,
+      "page": 2,
+      "label": "If YES, please explain or type N/A if you answered NO.*",
+      "type": "textbox",
+      "required": true,
+      "hidden": false,
+      "sensitivity": "HIGHLY RESTRICTED",
+      "help": [],
+      "controls": [
+        {
+          "id": "input_45",
+          "label": "If YES, please explain or type N/A if you answered NO.*",
+          "type": "text",
+          "required": true
+        }
+      ]
+    },
+    {
+      "id": "id_42",
+      "order": 28,
+      "page": 2,
+      "label": "Have you ever been accused of and/or convicted of child abuse or any crime involving actual or attempted sexual molestation of a minor?*",
+      "type": "radio",
+      "required": true,
+      "hidden": false,
+      "sensitivity": "HIGHLY RESTRICTED",
+      "help": [],
+      "controls": [
+        {
+          "id": "input_42_0",
+          "label": "YES",
+          "type": "radio",
+          "required": true,
+          "value": "YES"
+        },
+        {
+          "id": "input_42_1",
+          "label": "NO",
+          "type": "radio",
+          "required": true,
+          "value": "NO"
+        }
+      ]
+    },
+    {
+      "id": "id_44",
+      "order": 29,
+      "page": 2,
+      "label": "If YES, please explain or type N/A if you answered NO.*",
+      "type": "textbox",
+      "required": true,
+      "hidden": false,
+      "sensitivity": "HIGHLY RESTRICTED",
+      "help": [],
+      "controls": [
+        {
+          "id": "input_44",
+          "label": "If YES, please explain or type N/A if you answered NO.*",
+          "type": "text",
+          "required": true
+        }
+      ]
+    },
+    {
+      "id": "id_49",
+      "order": 30,
+      "page": 3,
+      "label": "Do you have any physical limitations or medical conditions that would prevent you from performing certain duties or activities relating to the area of interest(s) you selected? If Yes, please explain.*",
+      "type": "textbox",
+      "required": true,
+      "hidden": false,
+      "sensitivity": "HIGHLY RESTRICTED",
+      "help": [],
+      "controls": [
+        {
+          "id": "input_49",
+          "label": "Do you have any physical limitations or medical conditions that would prevent you from performing certain duties or activities relating to the area of interest(s) you selected? If Yes, please explain.*",
+          "type": "text",
+          "required": true
+        }
+      ]
+    },
+    {
+      "id": "id_50",
+      "order": 31,
+      "page": 3,
+      "label": "Do you presently have any communicable diseases, such as but not limited to, HIV, AIDS or Hepatitis? If Yes, please explain.*",
+      "type": "textbox",
+      "required": true,
+      "hidden": false,
+      "sensitivity": "HIGHLY RESTRICTED",
+      "help": [],
+      "controls": [
+        {
+          "id": "input_50",
+          "label": "Do you presently have any communicable diseases, such as but not limited to, HIV, AIDS or Hepatitis? If Yes, please explain.*",
+          "type": "text",
+          "required": true
+        }
+      ]
+    },
+    {
+      "id": "id_53",
+      "order": 32,
+      "page": 4,
+      "label": "Do you currently attend services at Champion Life Church?*",
+      "type": "checkbox",
+      "required": true,
+      "hidden": false,
+      "sensitivity": "HIGHLY RESTRICTED",
+      "help": [],
+      "controls": [
+        {
+          "id": "input_53_0",
+          "label": "YES",
+          "type": "checkbox",
+          "required": true,
+          "value": "YES"
+        },
+        {
+          "id": "input_53_1",
+          "label": "NO",
+          "type": "checkbox",
+          "required": true,
+          "value": "NO"
+        }
+      ]
+    },
+    {
+      "id": "id_55",
+      "order": 33,
+      "page": 4,
+      "label": "If Yes, how long have you attended? Type N/A if you answered NO.*",
+      "type": "textbox",
+      "required": true,
+      "hidden": false,
+      "sensitivity": "HIGHLY RESTRICTED",
+      "help": [],
+      "controls": [
+        {
+          "id": "input_55",
+          "label": "If Yes, how long have you attended? Type N/A if you answered NO.*",
+          "type": "text",
+          "required": true
+        }
+      ]
+    },
+    {
+      "id": "id_54",
+      "order": 34,
+      "page": 4,
+      "label": "Are you Born Again?*",
+      "type": "checkbox",
+      "required": true,
+      "hidden": false,
+      "sensitivity": "HIGHLY RESTRICTED",
+      "help": [],
+      "controls": [
+        {
+          "id": "input_54_0",
+          "label": "YES",
+          "type": "checkbox",
+          "required": true,
+          "value": "YES"
+        },
+        {
+          "id": "input_54_1",
+          "label": "NO",
+          "type": "checkbox",
+          "required": true,
+          "value": "NO"
+        }
+      ]
+    },
+    {
+      "id": "id_56",
+      "order": 35,
+      "page": 4,
+      "label": "If Yes, when or how long ago? Type N/A if you answered NO.*",
+      "type": "textbox",
+      "required": true,
+      "hidden": false,
+      "sensitivity": "HIGHLY RESTRICTED",
+      "help": [],
+      "controls": [
+        {
+          "id": "input_56",
+          "label": "If Yes, when or how long ago? Type N/A if you answered NO.*",
+          "type": "text",
+          "required": true
+        }
+      ]
+    },
+    {
+      "id": "id_57",
+      "order": 36,
+      "page": 4,
+      "label": "Have you been Baptized in water since you were Born Again?*",
+      "type": "checkbox",
+      "required": true,
+      "hidden": false,
+      "sensitivity": "HIGHLY RESTRICTED",
+      "help": [],
+      "controls": [
+        {
+          "id": "input_57_0",
+          "label": "YES",
+          "type": "checkbox",
+          "required": true,
+          "value": "YES"
+        },
+        {
+          "id": "input_57_1",
+          "label": "NO",
+          "type": "checkbox",
+          "required": true,
+          "value": "NO"
+        }
+      ]
+    },
+    {
+      "id": "id_60",
+      "order": 37,
+      "page": 4,
+      "label": "If Yes, when or how long ago? Type N/A if you answered NO.",
+      "type": "textbox",
+      "required": false,
+      "hidden": false,
+      "sensitivity": "HIGHLY RESTRICTED",
+      "help": [],
+      "controls": [
+        {
+          "id": "input_60",
+          "label": "If Yes, when or how long ago? Type N/A if you answered NO.",
+          "type": "text",
+          "required": false
+        }
+      ]
+    },
+    {
+      "id": "id_58",
+      "order": 38,
+      "page": 4,
+      "label": "Have you been filled with the Holy Spirit as described in Acts 2:4?*",
+      "type": "checkbox",
+      "required": true,
+      "hidden": false,
+      "sensitivity": "HIGHLY RESTRICTED",
+      "help": [],
+      "controls": [
+        {
+          "id": "input_58_0",
+          "label": "YES",
+          "type": "checkbox",
+          "required": true,
+          "value": "YES"
+        },
+        {
+          "id": "input_58_1",
+          "label": "NO",
+          "type": "checkbox",
+          "required": true,
+          "value": "NO"
+        }
+      ]
+    },
+    {
+      "id": "id_59",
+      "order": 39,
+      "page": 4,
+      "label": "If Yes, when or how long ago? Type N/A if you answered NO.",
+      "type": "textbox",
+      "required": false,
+      "hidden": false,
+      "sensitivity": "HIGHLY RESTRICTED",
+      "help": [],
+      "controls": [
+        {
+          "id": "input_59",
+          "label": "If Yes, when or how long ago? Type N/A if you answered NO.",
+          "type": "text",
+          "required": false
+        }
+      ]
+    },
+    {
+      "id": "id_61",
+      "order": 40,
+      "page": 4,
+      "label": "Do you believe in the following? Select all that apply.*",
+      "type": "checkbox",
+      "required": true,
+      "hidden": false,
+      "sensitivity": "HIGHLY RESTRICTED",
+      "help": [],
+      "controls": [
+        {
+          "id": "input_61_0",
+          "label": "In the Virgin Birth and Deity of our Lord Jesus Christ.",
+          "type": "checkbox",
+          "required": true,
+          "value": "In the Virgin Birth and Deity of our Lord Jesus Christ."
+        },
+        {
+          "id": "input_61_1",
+          "label": "That Jesus is God's Son and only Sacrifice for the remission of sin.",
+          "type": "checkbox",
+          "required": true,
+          "value": "That Jesus is God's Son and only Sacrifice for the remission of sin."
+        },
+        {
+          "id": "input_61_2",
+          "label": "That a man must be born again to receive eternal life.",
+          "type": "checkbox",
+          "required": true,
+          "value": "That a man must be born again to receive eternal life."
+        },
+        {
+          "id": "input_61_3",
+          "label": "In eternal reward for the believer. (Heaven)",
+          "type": "checkbox",
+          "required": true,
+          "value": "In eternal reward for the believer. (Heaven)"
+        },
+        {
+          "id": "input_61_4",
+          "label": "In eternal damnation for the lost. (Hell)",
+          "type": "checkbox",
+          "required": true,
+          "value": "In eternal damnation for the lost. (Hell)"
+        },
+        {
+          "id": "input_61_5",
+          "label": "In the infallibility of the Scriptures.",
+          "type": "checkbox",
+          "required": true,
+          "value": "In the infallibility of the Scriptures."
+        },
+        {
+          "id": "input_61_6",
+          "label": "That Jesus died on the cross for our sins.",
+          "type": "checkbox",
+          "required": true,
+          "value": "That Jesus died on the cross for our sins."
+        },
+        {
+          "id": "input_61_7",
+          "label": "That Jesus rose bodily from the dead.",
+          "type": "checkbox",
+          "required": true,
+          "value": "That Jesus rose bodily from the dead."
+        }
+      ]
+    },
+    {
+      "id": "id_86",
+      "order": 41,
+      "page": 5,
+      "label": "Name of Previous Church (type N/A if none atteneded)*",
+      "type": "textbox",
+      "required": true,
+      "hidden": false,
+      "sensitivity": "HIGHLY RESTRICTED",
+      "help": [],
+      "controls": [
+        {
+          "id": "input_86",
+          "label": "Name of Previous Church (type N/A if none atteneded)*",
+          "type": "text",
+          "required": true
+        }
+      ]
+    },
+    {
+      "id": "id_88",
+      "order": 42,
+      "page": 5,
+      "label": "Name of Previous Pastor (type N/A if none)*",
+      "type": "textbox",
+      "required": true,
+      "hidden": false,
+      "sensitivity": "HIGHLY RESTRICTED",
+      "help": [],
+      "controls": [
+        {
+          "id": "input_88",
+          "label": "Name of Previous Pastor (type N/A if none)*",
+          "type": "text",
+          "required": true
+        }
+      ]
+    },
+    {
+      "id": "id_87",
+      "order": 43,
+      "page": 5,
+      "label": "City & State of Previous Church (type N/A if none)*",
+      "type": "textbox",
+      "required": true,
+      "hidden": false,
+      "sensitivity": "HIGHLY RESTRICTED",
+      "help": [],
+      "controls": [
+        {
+          "id": "input_87",
+          "label": "City & State of Previous Church (type N/A if none)*",
+          "type": "text",
+          "required": true
+        }
+      ]
+    },
+    {
+      "id": "id_89",
+      "order": 44,
+      "page": 5,
+      "label": "Did You Serve In Your Previous Church*",
+      "type": "checkbox",
+      "required": true,
+      "hidden": false,
+      "sensitivity": "HIGHLY RESTRICTED",
+      "help": [],
+      "controls": [
+        {
+          "id": "input_89_0",
+          "label": "Yes",
+          "type": "checkbox",
+          "required": true,
+          "value": "Yes"
+        },
+        {
+          "id": "input_89_1",
+          "label": "No",
+          "type": "checkbox",
+          "required": true,
+          "value": "No"
+        },
+        {
+          "id": "input_89_2",
+          "label": "Not Applicable",
+          "type": "checkbox",
+          "required": true,
+          "value": "Not Applicable"
+        }
+      ]
+    },
+    {
+      "id": "id_92",
+      "order": 45,
+      "page": 5,
+      "label": "Did you leave the church in good standing?*",
+      "type": "checkbox",
+      "required": true,
+      "hidden": false,
+      "sensitivity": "HIGHLY RESTRICTED",
+      "help": [],
+      "controls": [
+        {
+          "id": "input_92_0",
+          "label": "Yes",
+          "type": "checkbox",
+          "required": true,
+          "value": "Yes"
+        },
+        {
+          "id": "input_92_1",
+          "label": "No",
+          "type": "checkbox",
+          "required": true,
+          "value": "No"
+        },
+        {
+          "id": "input_92_2",
+          "label": "Maybe",
+          "type": "checkbox",
+          "required": true,
+          "value": "Maybe"
+        },
+        {
+          "id": "input_92_3",
+          "label": "Not Applicable",
+          "type": "checkbox",
+          "required": true,
+          "value": "Not Applicable"
+        }
+      ]
+    },
+    {
+      "id": "id_91",
+      "order": 46,
+      "page": 5,
+      "label": "What Area(s) Did You Serve In (& any additional info. Type N/A if this does not apply.)*",
+      "type": "textarea",
+      "required": true,
+      "hidden": false,
+      "sensitivity": "HIGHLY RESTRICTED",
+      "help": [],
+      "controls": [
+        {
+          "id": "input_91",
+          "label": "What Area(s) Did You Serve In (& any additional info. Type N/A if this does not apply.)*",
+          "type": "textarea",
+          "required": true
+        }
+      ]
+    },
+    {
+      "id": "id_77",
+      "order": 47,
+      "page": 6,
+      "label": "Only choose the levels of code of ethics you are committing to*",
+      "type": "radio",
+      "required": true,
+      "hidden": false,
+      "sensitivity": "HIGHLY RESTRICTED",
+      "help": [],
+      "controls": [
+        {
+          "id": "input_77_0",
+          "label": "I have read and agree to the General Dream Team Code of Ethics for Levels 1-2-3 Dream Team Members.",
+          "type": "radio",
+          "required": true,
+          "value": "I have read and agree to the General Dream Team Code of Ethics for Levels 1-2-3 Dream Team Members."
+        }
+      ]
+    },
+    {
+      "id": "id_95",
+      "order": 48,
+      "page": 6,
+      "label": "",
+      "type": "radio",
+      "required": false,
+      "hidden": false,
+      "sensitivity": "HIGHLY RESTRICTED",
+      "help": [],
+      "controls": [
+        {
+          "id": "input_95_0",
+          "label": "I have read and agree to the Additional Dream Team Code of Ethics for Level 2 & 3 Dream Team Members.",
+          "type": "radio",
+          "required": false,
+          "value": "I have read and agree to the Additional Dream Team Code of Ethics for Level 2 & 3 Dream Team Members."
+        }
+      ]
+    },
+    {
+      "id": "id_96",
+      "order": 49,
+      "page": 6,
+      "label": "If you are not able to select \"I have read and agree to...\" To one or both of the above , please let us know which numbers you are not able to commit to and a brief explanation.",
+      "type": "textarea",
+      "required": false,
+      "hidden": false,
+      "sensitivity": "HIGHLY RESTRICTED",
+      "help": [],
+      "controls": [
+        {
+          "id": "input_96",
+          "label": "If you are not able to select \"I have read and agree to...\" To one or both of the above , please let us know which numbers you are not able to commit to and a brief explanation.",
+          "type": "textarea",
+          "required": false
+        }
+      ]
+    },
+    {
+      "id": "id_102",
+      "order": 50,
+      "page": 7,
+      "label": "I have completed the following classes, either in person or online:*",
+      "type": "checkbox",
+      "required": true,
+      "hidden": false,
+      "sensitivity": "HIGHLY RESTRICTED",
+      "help": [],
+      "controls": [
+        {
+          "id": "input_102_0",
+          "label": "Growth Track (4 week series)",
+          "type": "checkbox",
+          "required": true,
+          "value": "Growth Track (4 week series)"
+        },
+        {
+          "id": "input_102_1",
+          "label": "Dream Track (6 week series)",
+          "type": "checkbox",
+          "required": true,
+          "value": "Dream Track (6 week series)"
+        },
+        {
+          "id": "input_102_2",
+          "label": "Get a Grip on the Basics (13 week series)",
+          "type": "checkbox",
+          "required": true,
+          "value": "Get a Grip on the Basics (13 week series)"
+        },
+        {
+          "id": "input_102_3",
+          "label": "None of the Above",
+          "type": "checkbox",
+          "required": true,
+          "value": "None of the Above"
+        }
+      ]
+    },
+    {
+      "id": "id_71",
+      "order": 51,
+      "page": 8,
+      "label": "Signature*",
+      "type": "signature",
+      "required": true,
+      "hidden": false,
+      "sensitivity": "HIGHLY RESTRICTED",
+      "help": [],
+      "controls": []
+    },
+    {
+      "id": "id_72",
+      "order": 52,
+      "page": 8,
+      "label": "Date*",
+      "type": "datetime",
+      "required": true,
+      "hidden": false,
+      "sensitivity": "RESTRICTED",
+      "help": [
+        "Month",
+        "Day",
+        "Year",
+        "2 digit month, 2 digit day, 4 digit year",
+        "Date"
+      ],
+      "controls": [
+        {
+          "id": "id_72_date",
+          "label": "Date",
+          "type": "date",
+          "required": true,
+          "defaultToday": false
+        }
+      ]
+    }
+  ]
+}
