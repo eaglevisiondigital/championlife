@@ -1,0 +1,32 @@
+import assert from 'node:assert/strict';
+import {createHandler,fingerprint,networkIdentity} from '../../supabase/functions/outreach-partner-submit/gateway.mjs';
+const config={url:'https://bkbmjisprwmkptywtmih.supabase.co',serviceKey:'synthetic-server-credential',pepper:'synthetic-test-pepper-never-a-deployed-secret',turnstileSecret:'synthetic-challenge-secret',origins:['https://preview.example'],hostnames:['preview.example'],action:'outreach_partner',mode:'acceptance'};
+let calls=[],used=new Set(),answer={accepted:true},challengeOverride;
+const fake=async(url,options)=>{const body=JSON.parse(options.body);calls.push({url,body,options});if(url.includes('siteverify')){const success=!used.has(body.response)&&body.response!=='bad';used.add(body.response);return Response.json(challengeOverride||{success,hostname:'preview.example',action:'outreach_partner'})}return Response.json(answer)};
+const handle=createHandler(config,fake);let checks=0;
+const check=(v,m)=>{assert.ok(v,m);checks++;console.log('PASS '+m)};
+const req=(input={},headers={},method='POST')=>new Request('https://bkbmjisprwmkptywtmih.supabase.co/functions/v1/outreach-partner-submit',{method,headers:{Origin:'https://preview.example','Content-Type':'application/json','cf-connecting-ip':'192.0.2.1',...headers},...(method==='POST'?{body:JSON.stringify({payload:{brand:'sowgo',source_path:'/outreach-partner.html',request_key:crypto.randomUUID(),fields:{}},turnstile_token:crypto.randomUUID(),...input})}:{})});
+check((await handle(req())).status===200,'valid verified challenge invokes bounded database gateway');
+const dbCall=calls.at(-1);check(/^[a-f0-9]{64}$/.test(dbCall.body.p_network)&&!JSON.stringify(dbCall.body).includes('192.0.2.1'),'raw IP never sent to DB');
+check(dbCall.options.headers.Authorization==='Bearer '+config.serviceKey,'server credential used only internally');
+for(const input of [{turnstile_token:''},{turnstile_token:null},{turnstile_token:'bad'},{turnstile_token:'x'.repeat(2049)}]){const n=calls.filter(x=>x.url.includes('/rpc/')).length;check((await handle(req(input))).status===400,'invalid/missing/oversized challenge rejected');assert.equal(calls.filter(x=>x.url.includes('/rpc/')).length,n)}
+const token=crypto.randomUUID();check((await handle(req({turnstile_token:token}))).status===200,'fresh token accepted');check((await handle(req({turnstile_token:token}))).status===400,'provider duplicate response fails closed');
+for(const override of [{success:true,hostname:'attacker.example',action:config.action},{success:true,hostname:'preview.example',action:'other'}]){challengeOverride=override;check((await handle(req())).status===400,'challenge hostname/action mismatch denied')}challengeOverride=null;
+check((await handle(req({}, {Origin:'https://attacker.example'}))).status===403,'explicit origin allowlist');
+check((await handle(req({}, {},'GET'))).status===405,'method restriction');check((await handle(req({}, {'Content-Type':'text/plain'}))).status===415,'JSON content type required');
+check((await handle(req({extra:'x'.repeat(17000)}))).status===400,'bounded stream/body');
+for(const input of [{fingerprint:'fake'},{ip:'192.0.2.3'},{payload:{fields:{},p_network:'f'.repeat(64)}}])check((await handle(req(input))).status===400,'browser network override rejected');
+const h=new Headers({'cf-connecting-ip':'192.0.2.1'}),spoof=new Headers(h);spoof.set('x-forwarded-for','192.0.2.5');spoof.set('true-client-ip','192.0.2.6');spoof.set('x-supabase-client-ip','192.0.2.7');
+assert.equal(await fingerprint(h,config.pepper),await fingerprint(spoof,config.pepper));check(true,'untrusted address headers ignored');
+for(const v of ['', 'bad','192.0.2.1,192.0.2.2','2a06:98c0:3600::103'])check((await handle(req({}, {'cf-connecting-ip':v}))).status===503,'missing/malformed/shared-worker network fails closed');
+assert.equal(networkIdentity(new Headers({'cf-connecting-ip':'::ffff:c000:201'})),'v4:192.0.2.1');assert.equal(networkIdentity(new Headers({'cf-connecting-ip':'2001:db8:1:2::1'})),networkIdentity(new Headers({'cf-connecting-ip':'2001:db8:1:2::abcd'})));check(true,'IP canonicalization and IPv6 prefix prevent representation bypass');
+let n=calls.length;check((await handle(req({payload:{bot_field:'bot'},turnstile_token:''}))).status===200,'honeypot before challenge');check(calls.length===n,'honeypot performs no external call');
+answer={accepted:false,reason:'rate'};let response=await handle(req());check(response.status===429,'rate response safe retry message');check(!(await response.text()).includes('fingerprint'),'no thresholds or fingerprints exposed');
+const broken=createHandler(config,async()=>{throw Error('INTERNAL SECRET '+config.serviceKey)});response=await broken(req());assert(!JSON.stringify(await response.json()).includes(config.serviceKey));check(response.status===503,'provider failure closes safely without reflected secrets');
+response=await createHandler({...config,url:'https://exdocjbmylgxssanymjk.supabase.co',turnstileSecret:'1x0000000000000000000000000000000AA'},fake)(req());check(response.status===503,'documented test secret cannot run against production project');
+console.log(`${checks} gateway HTTP/security checks passed`);
+
+const dummy=createHandler({...config,turnstileSecret:'1x0000000000000000000000000000000AA'},async(url)=>Response.json(url.includes('siteverify')?{success:true,hostname:'example.com',metadata:{result_with_testing_key:true}}:{accepted:true}));
+assert.equal((await dummy(req({turnstile_token:'XXXX.DUMMY.TOKEN.XXXX'}))).status,200);
+assert.equal((await dummy(req())).status,400);
+console.log('PASS acceptance-only live dummy response contract; other tokens still require action/hostname');
