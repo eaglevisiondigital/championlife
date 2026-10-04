@@ -15,6 +15,7 @@
       --bes-red:#bd2b43;
       --bes-cream:#f4ecdc;
       --bes-ink:#16090d;
+      --lockliel-blue:#4773c6;
     }
     body{background:var(--bes-ink)}
     .bes-page{overflow:hidden}
@@ -244,8 +245,8 @@
     .bes-lockliel-inline-copy{display:grid;line-height:1.05;text-align:left}
     .bes-lockliel-inline-copy small{font-size:.63rem;letter-spacing:.12em;text-transform:uppercase;color:#9ea7ad;font-weight:850;margin-bottom:4px}
     .bes-lockliel-inline-copy strong{font-size:1rem;color:#fff}
-    .bes-lockliel-inline-copy em{font-style:normal;font-size:.7rem;color:var(--bes-crimson);margin-top:4px}
-    .bes-lockliel-inline-arrow{color:var(--bes-crimson);font-weight:900;margin-left:2px}
+    .bes-lockliel-inline-copy em{font-style:normal;font-size:.7rem;color:var(--lockliel-blue);margin-top:4px}
+    .bes-lockliel-inline-arrow{color:var(--lockliel-blue);font-weight:900;margin-left:2px}
 
     .bes-final{
       padding:80px 0;
@@ -296,6 +297,10 @@
       .bes-resource a,.bes-resource .bes-resource-disabled{grid-column:2;justify-self:start}
       .bes-share{grid-template-columns:1fr;text-align:center}
       .bes-qr{width:170px;margin:0 auto}
+      .bes-next-list{gap:12px}
+      .bes-next-item{display:grid;grid-template-columns:1fr;gap:10px;align-items:start;padding:18px;border-radius:16px}
+      .bes-next-item b{font-size:1rem;line-height:1.35}
+      .bes-next-item span{display:inline-flex;align-items:center;justify-content:center;justify-self:start;padding:7px 10px;border-radius:999px;background:rgba(230,203,120,.12);font-size:.82rem;line-height:1.2}
       .bes-after-copy,.bes-share{padding:26px 22px}
     }
   </style>
@@ -504,7 +509,7 @@
           <span class="bes-url">championlifefwb.com/bessemer</span>
         </div>
         <div class="bes-qr">
-          <img src="/assets/images/bessemer-qr.svg" alt="QR code for championlifefwb.com/bessemer">
+          <img src="/assets/images/bessemer-qr.svg?v=20261004b" alt="QR code for championlifefwb.com/bessemer">
         </div>
       </aside>
     </div>
