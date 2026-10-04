@@ -49,6 +49,20 @@ for (const origin of ['https://championlifefwb.com', 'https://deploy-preview-12-
 
 // Real production artifact preserves every explicitly public file byte-for-byte.
 const manifest = JSON.parse(await readFile(path.join(root, 'tools/site-build/public-files.json')));
+// Released main pages must survive the development branch's explicit publish allowlist.
+for (const file of ['christmas-dinner-2026.html', 'assets/css/christmas-dinner-2026.css',
+  'assets/js/christmas-dinner-2026.js', 'bessemer/index.html']) assert(manifest.includes(file), file);
+const events = new JSDOM(await readFile(path.join(root, 'events.html'), 'utf8'));
+assert.equal(events.window.document.querySelectorAll('#events-app').length, 1);
+assert.equal(events.window.document.querySelectorAll('.christmas-feature').length, 1);
+assert.equal(events.window.document.querySelector('[data-registration-cta]').getAttribute('href'), '/christmas-dinner-2026.html');
+for (const script of ['site.js', 'christmas-dinner-2026.js', 'events-common.js', 'events-public.js'])
+  assert.equal(events.window.document.querySelectorAll(`script[src="assets/js/${script}"]`).length, 1, script);
+events.window.close();
+const forms = new JSDOM(await readFile(path.join(root, 'netlify-forms.html'), 'utf8'));
+assert.equal(forms.window.document.querySelectorAll('form[name="christmas-dinner-2026"]').length, 1);
+assert.equal(forms.window.document.querySelectorAll('form[name="outreach-partner"]').length, 0, 'No parallel outreach capture');
+forms.window.close();
 await buildSite({ root, env: { CONTEXT: 'production', ...valid } });
 for (const file of manifest) assert.deepEqual(await readFile(path.join(root, 'dist', file)), await readFile(path.join(root, file)), file);
 async function inventory(dir, prefix = '') {
