@@ -1,0 +1,107 @@
+[
+  {
+    "order": 1,
+    "file": "20260923114743_create_course_progress_schema.sql",
+    "sha256": "c42d6a9a7f213558170e389f011e0f0b1972d065efd8fb9dc30644349b901f72"
+  },
+  {
+    "order": 2,
+    "file": "20260923114822_harden_course_security_and_indexes.sql",
+    "sha256": "9becd4c0e52b1787bf7ecf066683359aaced0b27c5b71123da066dd8a09193fb"
+  },
+  {
+    "order": 3,
+    "file": "20260923115114_revoke_public_rls_helper_execution.sql",
+    "sha256": "a8c9d9e0044ea4f8ac6b6bf726b7b28370ddf9ade493eaceaaef319dcf741ee9"
+  },
+  {
+    "order": 4,
+    "file": "20260923115706_grant_authenticated_course_api_access.sql",
+    "sha256": "83998f15a0236a4765dd83803a34166854a278fc2888073d28b4eee5b9a7dd26"
+  },
+  {
+    "order": 5,
+    "file": "20260923115732_restrict_authenticated_course_privileges.sql",
+    "sha256": "5f53a377265a3b68231e32f75b4c99f656bea74900ec4fbdffc346f03473b103"
+  },
+  {
+    "order": 6,
+    "file": "20260923121707_add_st_lucia_registration_and_account_linking.sql",
+    "sha256": "225e352e966e466068649b30885a6003e44964237218f99dcbc678ccfffbcf71"
+  },
+  {
+    "order": 7,
+    "file": "20260923122017_secure_st_lucia_registration_claim_after_login.sql",
+    "sha256": "a0636bf90aacd1eb1c8ac05aed9170527c46aba56b2e4b0c619dd6412702fcde"
+  },
+  {
+    "order": 8,
+    "file": "20260925200310_organization_foundation.sql",
+    "sha256": "3d26adbdb35e0aa657a08af6f175fc108fe9e49bc9ad01117314441b953d0d8c"
+  },
+  {
+    "order": 9,
+    "file": "20260925200318_harden_outreach_claim.sql",
+    "sha256": "55160b1ce86006a8acfcb8608f39689b3916eaaaf905587a7bbeec86dff37a4b"
+  },
+  {
+    "order": 10,
+    "file": "20260925202633_lesson_notes.sql",
+    "sha256": "774a2b1a345ab7efa4952d0aef9ecceda2952b21fdc91c146fde2d110d973d48"
+  },
+  {
+    "order": 11,
+    "file": "20260926000821_followup_tasks.sql",
+    "sha256": "db3fa4c4869fc6efff84133e300ee162697558d2d64c6c37abd68c1ff4748f74"
+  },
+  {
+    "order": 12,
+    "file": "20260926022613_staff_access_and_people.sql",
+    "sha256": "5245c90b63fe289b929f6210c294c36f300deeec3786aa22866c7b59141aca4c"
+  },
+  {
+    "order": 13,
+    "file": "20260926024742_household_records.sql",
+    "sha256": "9da11eb6ff58e3df63e4d5e6ccd961f1a3e14db234e6eeca8c49cb73c66a93e1"
+  },
+  {
+    "order": 14,
+    "file": "20260926032026_department_tags.sql",
+    "sha256": "ca8dbaa58b0a8f7d8e5ac25e221b9fe7b77886befb843c23b8c67440b105bffe"
+  },
+  {
+    "order": 15,
+    "file": "20260926034222_tag_workflows.sql",
+    "sha256": "caa052c1bfc892c93291753afd9435d76e974859147010e955c2752d00dac678"
+  },
+  {
+    "order": 16,
+    "file": "20260926035410_giving_configuration.sql",
+    "sha256": "3fddb322a99c478bf13784bde14deb62ae05257dff1d899a279611edc08ffef4"
+  },
+  {
+    "order": 17,
+    "file": "20260926040812_participant_portals.sql",
+    "sha256": "a9189d02e8723da20ac05acd061f7278d2b4ca4c293b338165f410f272f4f921"
+  },
+  {
+    "order": 18,
+    "file": "20261004154340_allow_bessemer_outreach_registrations.sql",
+    "sha256": "9919250f0df4280a311baf929e8c2eb5d97770285bc3ea93f204752d213a462a"
+  },
+  {
+    "order": 19,
+    "file": "20260928172557_people_staff_v1.sql",
+    "sha256": "0c00fe4f50f2bc92f1d9a4896125f9143a56e7ea37e3317540954cdb52cadc07"
+  },
+  {
+    "order": 20,
+    "file": "20261004055336_outreach_partner_intake_v1.sql",
+    "sha256": "c2feb7c1675b973da4f3e0f5cf3a18aaf97dacdc59aca7a7e01a029d5ca84351"
+  },
+  {
+    "order": 21,
+    "file": "20261004230453_outreach_partner_gateway.sql",
+    "sha256": "25802f89d285d86fc3783b454132e6f0378b93f74c4802435d6bf7369dc29a67"
+  }
+]

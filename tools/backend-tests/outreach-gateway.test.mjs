@@ -1,0 +1,52 @@
+import {PGlite} from '@electric-sql/pglite';
+import {readFileSync} from 'node:fs';
+import {createHash,randomUUID} from 'node:crypto';
+import assert from 'node:assert/strict';
+import {migrationOrder} from './migration-order.mjs';
+const db=new PGlite(),q=(s,a=[])=>db.query(s,a);let checks=0;
+const check=(v,m)=>{assert.ok(v,m);checks++;console.log('PASS '+m)};
+await db.exec(readFileSync(new URL('fixtures/supabase-test-bootstrap.sql',import.meta.url),'utf8'));
+await db.exec(readFileSync(new URL('../../supabase/bootstrap/automatic-rls.sql',import.meta.url),'utf8'));
+for(const f of migrationOrder)await db.exec(readFileSync(new URL('../../supabase/migrations/'+f,import.meta.url),'utf8'));
+const fp=n=>createHash('sha256').update(String(n)).digest('hex');
+const payload=n=>({brand:'sowgo',source_path:'/outreach-partner.html',request_key:randomUUID(),fields:{'first-name':'Synthetic','last-name':'Partner',email:`test-${n}@example.test`,'address-line-1':'1 Example','address-line-2':'',city:'Example','state-province':'FL','postal-code':'32548',phone:String(15550000000+n),'commitment-amount':'25.75','commitment-frequency':'Monthly'}});
+const owner=()=>db.exec('reset role'),server=()=>db.exec('set role service_role');
+const send=(p,n)=>q('select public.outreach_partner_gateway($1,$2) v',[p,fp(n)]).then(r=>r.rows[0].v);
+for(const role of ['anon','authenticated']){
+ await db.exec('set role '+role);
+ for(const sql of ['select public.outreach_partner_gateway($1,$2)','select private.outreach_partner_gateway($1,$2)'])await assert.rejects(()=>q(sql,[payload(0),fp(0)]));
+ await assert.rejects(()=>q('select private.outreach_partner_submit($1)',[payload(0)]));
+ await assert.rejects(()=>q('select * from private.outreach_abuse_windows'));
+ await assert.rejects(()=>q('select * from public.outreach_partner_intakes'));
+ check(true,role+' denied both submit boundaries and private/raw reads');await owner();
+}
+check(!(await q("select has_schema_privilege('anon','private','usage') v")).rows[0].v,'no Events schema usage grant');
+check(!(await q("select to_regprocedure('public.outreach_partner_submit(jsonb)') v")).rows[0].v,'old public submit removed');
+check(!(await q("select to_regclass('public.event_series') v")).rows[0].v,'Events absent');
+await server();let first=payload(1);check((await send(first,1)).accepted,'server bounded canonical submit');check((await send(first,1)).accepted,'exact retry accepted');
+await owner();check((await q('select sum(attempts)::int n from private.outreach_abuse_windows')).rows[0].n===3,'exact retry does not increment counters');await server();
+check((await send({...first,brand:'champion-life'},1)).reason==='invalid','changed request key rejected');
+await owner();check((await q('select sum(attempts)::int n from private.outreach_abuse_windows')).rows[0].n===6,'changed payload rejection counted');
+check((await q('select count(*)::int n from outreach_partner_intakes')).rows[0].n===1,'no fake intake for rejected attempt');
+await db.exec('delete from private.outreach_abuse_windows');await server();
+for(let n=100;n<220;n++)assert((await send(payload(n),100)).accepted);
+check(true,'120 valid attempts accepted in one network window');
+check((await send(payload(220),100)).reason==='rate','attempt 121 with different email and phone rejected');
+const changedEmail=payload(221);changedEmail.fields.phone=payload(100).fields.phone;
+check((await send(changedEmail,100)).reason==='rate','changing only email cannot bypass exhausted network');
+const changedPhone=payload(222);changedPhone.fields.email=payload(100).fields.email;
+check((await send(changedPhone,100)).reason==='rate','changing only phone cannot bypass exhausted network');
+check((await send(first,100)).accepted,'accepted request replay survives blocked network');
+for(let n=800;n<905;n++)assert((await send(payload(n),n)).accepted);
+check(true,'105 independent sources are not blocked by a shared 100 cap');
+for(let n=400;n<405;n++){const p=payload(n);p.fields.email='same@example.test';assert((await send(p,n)).accepted)}
+const email=payload(405);email.fields.email=' SAME@EXAMPLE.TEST ';check((await send(email,405)).reason==='rate','normalized email limit across sources');
+for(let n=500;n<505;n++){const p=payload(n);p.fields.phone='+1 (555) 111-2222';assert((await send(p,n)).accepted)}
+const phone=payload(505);phone.fields.phone='15551112222';check((await send(phone,505)).reason==='rate','normalized phone limit across sources');
+await owner();const before=(await q('select count(*)::int n from outreach_partner_intakes')).rows[0].n;const windows=(await q('select count(*)::int n from private.outreach_abuse_windows')).rows[0].n;await server();
+check((await send({...payload(700),bot_field:'bot'},700)).accepted,'honeypot harmless acknowledgment');await owner();
+check((await q('select count(*)::int n from outreach_partner_intakes')).rows[0].n===before,'honeypot no intake');check((await q('select count(*)::int n from private.outreach_abuse_windows')).rows[0].n===windows,'honeypot no abuse state');
+const cols=(await q("select column_name from information_schema.columns where table_schema='private' and table_name='outreach_abuse_windows'")).rows.map(x=>x.column_name).sort();assert.deepEqual(cols,['attempts','dimension','fingerprint','window_ends_at']);
+check(!(await q("select exists(select 1 from private.outreach_abuse_windows where fingerprint !~ '^[a-f0-9]{64}$') v")).rows[0].v,'only opaque fingerprints and bounded rate metadata stored');
+await q("update private.outreach_abuse_windows set window_ends_at=now()-interval '25 hours'");await q('select private.outreach_abuse_cleanup()');check((await q('select count(*)::int n from private.outreach_abuse_windows')).rows[0].n===0,'bounded retention cleanup removes expired metadata');
+await db.close();console.log(`${checks} isolated gateway database checks passed`);

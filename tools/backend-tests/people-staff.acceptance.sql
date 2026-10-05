@@ -1,0 +1,81 @@
+-- Run only against an authorized isolated acceptance database after all migrations.
+-- Random synthetic identities, no email delivery, no persistent test grants/data.
+begin;
+do $test$
+declare
+ org uuid:=gen_random_uuid(); other_org uuid:=gen_random_uuid(); manager uuid:=gen_random_uuid();
+ scoped uuid:=gen_random_uuid(); member uuid:=gen_random_uuid(); staff_only uuid:=gen_random_uuid();
+ contact uuid; other_contact uuid; manager_contact uuid; dept uuid; other_dept uuid;
+ result jsonb; template jsonb; revision integer; passed integer:=0;
+begin
+ insert into public.organizations(id,slug,name,kind) values
+ (org,'synthetic-'||org,'Synthetic People validation','church'),
+ (other_org,'synthetic-'||other_org,'Synthetic other organization','ministry');
+ insert into auth.users(id,email,email_confirmed_at,is_anonymous) select x,'people-test-'||x||'@example.test',now(),false from unnest(array[manager,scoped,member,staff_only]) x;
+ insert into public.organization_staff_directory(organization_id,user_id,display_name) values(org,manager,'Synthetic manager'),(org,scoped,'Synthetic scoped manager'),(org,staff_only,'Synthetic staff without grants');
+ insert into public.organization_staff_permissions(organization_id,user_id,permission) select org,manager,k from unnest(array['staff.manage','staff.view','people.read','people.create','people.update','tags.read','tags.manage','finance.read']) k;
+ perform set_config('request.jwt.claim.sub',manager::text,true);
+ perform set_config('request.jwt.claims',jsonb_build_object('sub',manager,'role','authenticated')::text,true);
+ insert into public.organization_people(organization_id,first_name,last_name,user_id,email) values(org,'Synthetic','Member',member,'synthetic@example.test') returning id into contact;
+ insert into public.organization_people(organization_id,first_name,last_name,user_id) values(org,'Synthetic','Other',staff_only) returning id into other_contact;
+ insert into public.organization_people(organization_id,first_name,last_name,user_id) values(org,'Synthetic','Manager',manager) returning id into manager_contact;
+ insert into public.portal_account_links(organization_id,person_id,user_id,verification_note) values(org,contact,member,'Synthetic transaction only'),(org,manager_contact,manager,'Synthetic transaction only');
+ insert into public.organization_departments(organization_id,name) values(org,'Synthetic youth') returning id into dept;
+ insert into public.organization_departments(organization_id,name) values(org,'Synthetic other') returning id into other_dept;
+ insert into public.person_department_affiliations(organization_id,person_id,department_id) values(org,contact,dept),(org,other_contact,other_dept);
+ insert into public.person_organization_relationships(organization_id,person_id,relationship) values(org,contact,'member'),(org,contact,'outreach_participant');
+ insert into public.organization_staff_permissions(organization_id,user_id,permission,department_ids) select org,scoped,k,array[dept] from unnest(array['people.read','people.update','staff.manage','staff.view']) k;
+ execute 'set local role anon';
+ begin perform public.people_workspace(org,'list');raise exception 'Anon unexpectedly allowed';exception when insufficient_privilege then passed:=passed+1;end;
+ begin perform 1 from public.organization_staff_permissions;raise exception 'Anon enumeration unexpectedly allowed';exception when insufficient_privilege then passed:=passed+1;end;
+ execute 'reset role';
+ perform set_config('request.jwt.claim.sub',member::text,true);perform set_config('request.jwt.claims',jsonb_build_object('sub',member,'role','authenticated')::text,true);
+ execute 'set local role authenticated';
+ begin perform public.people_workspace(org,'list');raise exception 'Member unexpectedly allowed';exception when insufficient_privilege then passed:=passed+1;end;
+ execute 'reset role';
+ perform set_config('request.jwt.claim.sub',staff_only::text,true);perform set_config('request.jwt.claims',jsonb_build_object('sub',staff_only,'role','authenticated')::text,true);
+ execute 'set local role authenticated';
+ begin perform public.people_workspace(org,'list');raise exception 'Staff without grants unexpectedly allowed';exception when insufficient_privilege then passed:=passed+1;end;
+ execute 'reset role';
+ perform set_config('request.jwt.claim.sub',scoped::text,true);perform set_config('request.jwt.claims',jsonb_build_object('sub',scoped,'role','authenticated')::text,true);
+ execute 'set local role authenticated';
+ result:=public.people_workspace(org,'list');if jsonb_array_length(result)<>1 or result->0->>'id'<>contact::text then raise exception 'Scoped list failed';end if;passed:=passed+1;
+ if exists(select 1 from public.organization_people where id=other_contact) then raise exception 'Direct RLS scope escape';end if;passed:=passed+1;
+ begin perform public.people_workspace(org,'detail',jsonb_build_object('person_id',other_contact));raise exception 'Other department allowed';exception when insufficient_privilege then passed:=passed+1;end;
+ begin perform public.people_workspace(other_org,'list');raise exception 'Other organization allowed';exception when insufficient_privilege then passed:=passed+1;end;
+ result:=public.people_workspace(org,'detail',jsonb_build_object('person_id',contact));
+ perform public.people_workspace(org,'update',jsonb_build_object('person_id',contact,'updated_at',result->'person'->>'updated_at','first_name','Synthetic edited','last_name','Member','email','synthetic@example.test','phone','555-0100'));passed:=passed+1;
+ begin perform public.people_workspace(org,'affiliation',jsonb_build_object('person_id',contact,'department_id',other_dept));raise exception 'Scope affiliation escape allowed';exception when insufficient_privilege then passed:=passed+1;end;
+ begin update public.portal_account_links set user_id=scoped where person_id=contact;raise exception 'Portal hijack allowed';exception when insufficient_privilege then passed:=passed+1;end;
+ execute 'reset role';
+ perform set_config('request.jwt.claim.sub',manager::text,true);perform set_config('request.jwt.claims',jsonb_build_object('sub',manager,'role','authenticated')::text,true);
+ execute 'set local role authenticated';
+ begin perform public.people_workspace(org,'assignment',jsonb_build_object('person_id',manager_contact,'revision',1,'active',false));raise exception 'Self change allowed';exception when insufficient_privilege then passed:=passed+1;end;
+ perform public.people_workspace(org,'assignment',jsonb_build_object('person_id',contact,'revision',0,'active',true,'reason','Synthetic test only'));passed:=passed+1;
+ template:=public.people_workspace(org,'template',jsonb_build_object('name','Synthetic reader','permissions',jsonb_build_array('people.read')));
+ perform public.people_workspace(org,'role',jsonb_build_object('person_id',contact,'revision',1,'template_id',template->>'id','department_ids',jsonb_build_array(dept)));passed:=passed+1;
+ execute 'reset role';
+ perform set_config('request.jwt.claim.sub',member::text,true);perform set_config('request.jwt.claims',jsonb_build_object('sub',member,'role','authenticated')::text,true);
+ execute 'set local role authenticated';
+ if jsonb_array_length(public.people_workspace(org,'list'))<>1 then raise exception 'Role materialization failed';end if;passed:=passed+1;
+ if private.has_staff_permission(org,'finance.read') then raise exception 'Role inferred finance';end if;passed:=passed+1;
+ execute 'reset role';
+ perform set_config('request.jwt.claim.sub',scoped::text,true);perform set_config('request.jwt.claims',jsonb_build_object('sub',scoped,'role','authenticated')::text,true);
+ execute 'set local role authenticated';
+ begin perform public.people_workspace(org,'grant',jsonb_build_object('person_id',contact,'revision',2,'permission','people.read'));raise exception 'Global scope escape allowed';exception when insufficient_privilege then passed:=passed+1;end;
+ begin perform public.people_workspace(org,'grant',jsonb_build_object('person_id',contact,'revision',2,'permission','finance.read','department_ids',jsonb_build_array(dept)));raise exception 'Unowned finance allowed';exception when insufficient_privilege then passed:=passed+1;end;
+ execute 'reset role';
+ perform set_config('request.jwt.claim.sub',manager::text,true);perform set_config('request.jwt.claims',jsonb_build_object('sub',manager,'role','authenticated')::text,true);
+ execute 'set local role authenticated';
+ perform public.people_workspace(org,'assignment',jsonb_build_object('person_id',contact,'revision',2,'active',false));
+ result:=public.people_workspace(org,'detail',jsonb_build_object('person_id',contact));
+ if jsonb_array_length(result->'audit')<>3 or result->'assignment'->>'active'<>'false' then raise exception 'Audit/disable failed';end if;passed:=passed+1;
+ execute 'reset role';
+ perform set_config('request.jwt.claim.sub',member::text,true);perform set_config('request.jwt.claims',jsonb_build_object('sub',member,'role','authenticated')::text,true);
+ execute 'set local role authenticated';
+ begin perform public.people_workspace(org,'list');raise exception 'Disabled staff allowed';exception when insufficient_privilege then passed:=passed+1;end;
+ execute 'reset role';
+ if passed<>20 then raise exception 'Expected 20 assertions, got %',passed;end if;
+end $test$;
+rollback;
+select 'PASS: 20 isolated People/Staff checks; all synthetic changes rolled back' as result;

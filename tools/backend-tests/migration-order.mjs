@@ -1,0 +1,25 @@
+// Replay the already-applied production baseline BEFORE new candidate dependencies.
+export const migrationOrder=[
+  "20260923114743_create_course_progress_schema.sql",
+  "20260923114822_harden_course_security_and_indexes.sql",
+  "20260923115114_revoke_public_rls_helper_execution.sql",
+  "20260923115706_grant_authenticated_course_api_access.sql",
+  "20260923115732_restrict_authenticated_course_privileges.sql",
+  "20260923121707_add_st_lucia_registration_and_account_linking.sql",
+  "20260923122017_secure_st_lucia_registration_claim_after_login.sql",
+  "20260925200310_organization_foundation.sql",
+  "20260925200318_harden_outreach_claim.sql",
+  "20260925202633_lesson_notes.sql",
+  "20260926000821_followup_tasks.sql",
+  "20260926022613_staff_access_and_people.sql",
+  "20260926024742_household_records.sql",
+  "20260926032026_department_tags.sql",
+  "20260926034222_tag_workflows.sql",
+  "20260926035410_giving_configuration.sql",
+  "20260926040812_participant_portals.sql",
+  "20261004154340_allow_bessemer_outreach_registrations.sql",
+  "20260928172557_people_staff_v1.sql",
+  "20261004055336_outreach_partner_intake_v1.sql",
+  "20261004230453_outreach_partner_gateway.sql",
+  "20261005161946_outreach_network_limit_120.sql"
+];
