@@ -2,6 +2,18 @@
 
 Preparation and acceptance only. No production release or authorization to merge. Based on production commit 306d6b62124f51547b9a02171858400b31b9c6cc; selectively reuses approved source 3f2316d4e575a538d7fb5866dc9c0390f66cc471. Does not merge the development branch.
 
+## Acceptance login repair — October 5, 2026
+
+The login accepts exactly six or eight ASCII digits through the existing email `verifyOtp` mechanism. One `sanitizeNext` policy controls storage, callback construction and every successful-session navigation. Paths must begin with exactly one slash, remain on the current HTTP(S) origin after URL normalization, and fit within 2,048 characters. External/scheme-relative URLs, backslashes, whitespace/controls, malformed escapes, encoded slashes/backslashes and nested percent encoding are rejected. Safe query/hash values remain intact. Invalid or missing values fall back to `/my-discipleship.html`; explicit invalid query values cannot inherit a stale stored destination. Storage failure does not prevent sign-in or navigation.
+
+The requested callback is the browser's current origin plus `/discipleship-login.html?next=<encoded-sanitized-path>`. The URL carries the destination across tabs independently of session storage. Existing Supabase `detectSessionInUrl`, session restoration and auth events remain unchanged; no new token parser, identity mechanism or permission grant is introduced.
+
+Read-only acceptance inspection found Site URL `https://deploy-preview-2--championlifechurch.netlify.app` and four PR #2 callbacks, with no PR #4 callback. The dashboard explicitly describes Site URL fallback for disallowed callbacks. Both ordinary confirmation and magic-link templates use `ConfirmationURL`, not a hardcoded PR #2 sign-in destination. The previous PR #4 request omitted `next` and was not permitted by acceptance Auth.
+
+**AUTH CONFIG CHANGE REQUIRED BEFORE HOSTED LINK ACCEPTANCE.** Separately authorize adding only `https://deploy-preview-4--championlifechurch.netlify.app/discipleship-login.html?next=%2Fstaff-outreach-partners.html` to acceptance project `bkbmjisprwmkptywtmih`. Keep Site URL and all existing entries/templates/SMTP unchanged. No configuration was changed by this repair. Other direct login destinations (People or default dashboard) require their own exact callback entries if separately approved; no wildcard is needed for the assigned staff flow. Generic same-origin application routing cannot override the provider's allowlist. Production release also requires a separate callback review before deployment.
+
+Focused local validation: 87 login DOM scenarios, inline JS syntax, existing SDK URL-session options, and site-build/public-artifact isolation tests pass. Real OTP/email-link acceptance remains with Work after the configuration gate. Public Outreach, gateway, staff pages, Christmas Dinner, Bessemer, giving, Supabase schema/functions and production are unchanged by the login repair. The existing ordinary email fallback still describes a six-digit code; its copy is outside this read-only Auth assignment and was left unchanged.
+
 ## Submission boundary
 
 The public form calls only `outreach-partner-submit`, an unauthenticated HTTP Edge Function with custom Turnstile verification. It permits POST/OPTIONS, explicit configured HTTPS origins, JSON, at most 16 KiB, a five-second body read, a four-second Siteverify request and an eight-second database request. No submission data, credentials or raw request errors are logged by the implementation. Origin is defense in depth, not identity proof.
