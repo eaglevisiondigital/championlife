@@ -1,6 +1,6 @@
 (() => {
  'use strict';
- const root=document.getElementById('outreach-intakes'),auth=window.ChampionLifeAuth,{el}=window.OutreachUI;
+ const root=document.getElementById('outreach-intakes'),workspace=document.querySelector('.partner-workspace'),auth=window.ChampionLifeAuth,{el}=window.OutreachUI;
  let user,org,context,generation=0,offset=0,status,content;
  const can=key=>context?.grants.some(g=>g.organization_id===org&&g.permission===key&&!g.department_ids);
  const signIn=()=>el('a','Sign in to your workspace',{href:'discipleship-login.html?next=%2Fstaff-outreach-partners.html'});
@@ -8,10 +8,15 @@
   if(code!==401&&code!==403){status.textContent='Unable to load Outreach Partner Intakes. Please try again.';return;}
   // Drop protected UI/closures and invalidate every pending request after access is denied.
   generation++;context=null;org=null;offset=0;content?.replaceChildren();content=null;
+  workspace?.classList.toggle('is-denied',code===403);
   status=el('p',code===403?'Your access to Outreach Partner Intakes is no longer available.':'Your session has expired. Sign in to continue.',{role:'alert'});
-  root.replaceChildren(status);
-  if(code===403)root.append(el('p','If you believe you should still have access, contact an administrator.'),el('a','Return to Staff Home',{href:'staff-people.html'}));
-  else root.append(signIn());
+  if(code===403){
+   status.className='partner-access-denied__message';
+   const panel=el('section',null,{class:'partner-access-denied','aria-labelledby':'partner-access-denied-title'}),brand=el('div',null,{class:'partner-access-denied__brand'});
+   brand.append(el('img',null,{src:'assets/images/logo-gold.png',alt:'Champion Life'}));
+   panel.append(brand,el('p','Staff Access',{class:'partner-access-denied__eyebrow'}),el('h2','Outreach Partner Access Removed',{id:'partner-access-denied-title'}),status,el('p','If you believe you should still have access, contact an administrator.',{class:'partner-access-denied__help'}),el('a','Return to Staff Home',{href:'staff-people.html',class:'partner-access-denied__cta'}));
+   root.replaceChildren(panel);
+  } else root.replaceChildren(status,signIn());
  }
  async function rpc(name,args){const g=generation;try{
   const session=await auth.getSession();if(g!==generation)throw Error('Workspace changed.');
@@ -42,7 +47,7 @@
  }
  content.append(el('h3','Review history'));for(const h of r.history)content.append(el('p',`${h.action} · ${new Date(h.occurred_at).toLocaleString()}`));
  }
- async function boot(){const g=++generation;root.replaceChildren();content?.replaceChildren();content=null;context=null;org=null;offset=0;const nextUser=await auth?.getUser();if(g!==generation)return;user=nextUser;if(!user){root.append(signIn());return;}
+ async function boot(){const g=++generation;workspace?.classList.remove('is-denied');root.replaceChildren();content?.replaceChildren();content=null;context=null;org=null;offset=0;const nextUser=await auth?.getUser();if(g!==generation)return;user=nextUser;if(!user){root.append(signIn());return;}
  status=el('p',null,{role:'status'});content=el('div');root.append(status);
  try{const nextContext=await rpc('staff_workspace_context',{});if(g!==generation)return;context=nextContext;const orgs=context.organizations.filter(o=>context.grants.some(g=>g.organization_id===o.id&&g.permission==='outreach.view'&&!g.department_ids));if(!orgs.length){failure(403);return;}const select=el('select',null,{'aria-label':'Organization'});for(const o of orgs)select.append(el('option',o.name,{value:o.id}));org=select.value;select.onchange=()=>{org=select.value;offset=0;list().catch(()=>{/* rpc handles the active failure. */})};root.append(select,content);await list();}catch{/* rpc handles the active failure. */}}
  auth?.client.auth.onAuthStateChange((_e,s)=>{if(s?.user?.id!==user?.id){generation++;root.replaceChildren();setTimeout(boot,0)}});boot();
