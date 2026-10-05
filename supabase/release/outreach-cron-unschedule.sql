@@ -11,7 +11,7 @@ begin
  end if;
 end
 $target$;
-lock table cron.job in share row exclusive mode;
+select pg_advisory_xact_lock(hashtextextended('champion-life:outreach-abuse-cleanup:cron',0));
 do $unschedule$
 declare existing cron.job%rowtype; matching_count integer;
 begin

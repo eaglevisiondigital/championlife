@@ -38,13 +38,13 @@ begin
 end
 $preflight$;
 
--- Supabase documented extension location and postgres-only management grants.
+-- Supabase documented extension location. The hosted postgres session can use
+-- the supported cron functions and read its jobs without changing cron-table grants.
 create extension if not exists pg_cron with schema pg_catalog;
-grant usage on schema cron to postgres;
-grant all privileges on all tables in schema cron to postgres;
 
--- Serialize catalog writes, including cron.schedule callers outside this script.
-lock table cron.job in share row exclusive mode;
+-- Serialize this release helper without requiring ownership of Supabase-managed
+-- cron.job (owned by supabase_admin on hosted projects).
+select pg_advisory_xact_lock(hashtextextended('champion-life:outreach-abuse-cleanup:cron',0));
 do $schedule$
 declare existing cron.job%rowtype; matching_count integer; cleanup_job bigint;
 begin

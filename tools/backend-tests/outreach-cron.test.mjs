@@ -13,6 +13,10 @@ schedule=replaceOnce(schedule,/ if to_regnamespace\('cron'\)[\s\S]*?Unexpected e
 schedule=replaceOnce(schedule,/create extension if not exists pg_cron with schema pg_catalog;/,'');
 schedule=replaceOnce(schedule,/ if not exists\(select 1 from pg_extension where extname='pg_cron' and extnamespace=[\s\S]*?Unexpected pg_cron extension schema';\n end if;/,'');
 assert.match(original,/create extension if not exists pg_cron with schema pg_catalog;/);
+assert.match(original,/pg_advisory_xact_lock\(hashtextextended\('champion-life:outreach-abuse-cleanup:cron',0\)\)/);
+assert.match(rollback,/pg_advisory_xact_lock\(hashtextextended\('champion-life:outreach-abuse-cleanup:cron',0\)\)/);
+assert.doesNotMatch(original,/grant all privileges on all tables in schema cron/i);
+assert.doesNotMatch(original+rollback,/lock table cron\.job/i);
 assert.equal((original.match(/cron\.schedule\(/g)||[]).length,1);
 assert(!/\b(drop|truncate)\b/i.test(original+'\n'+rollback));
 const db=new PGlite(),q=(sql,args=[])=>db.query(sql,args);
