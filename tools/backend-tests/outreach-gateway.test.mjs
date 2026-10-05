@@ -29,10 +29,15 @@ check((await send({...first,brand:'champion-life'},1)).reason==='invalid','chang
 await owner();check((await q('select sum(attempts)::int n from private.outreach_abuse_windows')).rows[0].n===6,'changed payload rejection counted');
 check((await q('select count(*)::int n from outreach_partner_intakes')).rows[0].n===1,'no fake intake for rejected attempt');
 await db.exec('delete from private.outreach_abuse_windows');await server();
-for(let n=100;n<130;n++)check((await send(payload(n),100)).accepted,'network accepted attempt '+(n-99));
-check((await send(payload(130),100)).reason==='rate','rotating email and phone cannot bypass network limit');
+for(let n=100;n<220;n++)assert((await send(payload(n),100)).accepted);
+check(true,'120 valid attempts accepted in one network window');
+check((await send(payload(220),100)).reason==='rate','attempt 121 with different email and phone rejected');
+const changedEmail=payload(221);changedEmail.fields.phone=payload(100).fields.phone;
+check((await send(changedEmail,100)).reason==='rate','changing only email cannot bypass exhausted network');
+const changedPhone=payload(222);changedPhone.fields.email=payload(100).fields.email;
+check((await send(changedPhone,100)).reason==='rate','changing only phone cannot bypass exhausted network');
 check((await send(first,100)).accepted,'accepted request replay survives blocked network');
-for(let n=200;n<305;n++)assert((await send(payload(n),n)).accepted);
+for(let n=800;n<905;n++)assert((await send(payload(n),n)).accepted);
 check(true,'105 independent sources are not blocked by a shared 100 cap');
 for(let n=400;n<405;n++){const p=payload(n);p.fields.email='same@example.test';assert((await send(p,n)).accepted)}
 const email=payload(405);email.fields.email=' SAME@EXAMPLE.TEST ';check((await send(email,405)).reason==='rate','normalized email limit across sources');

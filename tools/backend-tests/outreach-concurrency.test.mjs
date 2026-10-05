@@ -22,10 +22,13 @@ try{
  sql(readFileSync(new URL('fixtures/supabase-test-bootstrap.sql',import.meta.url),'utf8'));
  sql(readFileSync(new URL('../../supabase/bootstrap/automatic-rls.sql',import.meta.url),'utf8'));
  for(const name of migrationOrder)sql(readFileSync(new URL('../../supabase/migrations/'+name,import.meta.url),'utf8'));
- let results=await Promise.all(Array.from({length:45},(_,n)=>send(payload(n),'one-network')));
- assert.equal(results.filter(r=>r.accepted).length,30);assert.equal(results.filter(r=>r.reason==='rate').length,15);
- assert.equal(Number(sql("select attempts from private.outreach_abuse_windows where dimension='network'")),45);
- console.log('PASS 45 concurrent changing-email/phone requests: exactly 30 accepted, 15 counted rejections');
+ // Approach the limit, then cross it concurrently without exhausting connection slots.
+ for(let n=0;n<95;n++)assert((await send(payload(n),'one-network')).accepted);
+ let results=await Promise.all(Array.from({length:40},(_,n)=>send(payload(95+n),'one-network')));
+ assert.equal(results.filter(r=>r.accepted).length,25);assert.equal(results.filter(r=>r.reason==='rate').length,15);
+ assert.equal(Number(sql("select attempts from private.outreach_abuse_windows where dimension='network'")),135);
+ assert.equal(Number(sql('select count(*) from outreach_partner_intakes')),120);
+ console.log('PASS 95 accepted + 40 concurrent changing-email/phone requests: exactly 120 total accepted, 15 counted rejections');
  sql('delete from private.outreach_abuse_windows');const same=payload(1000);
  results=await Promise.all(Array.from({length:20},()=>send(same,'replay')));assert(results.every(r=>r.accepted));
  assert.equal(Number(sql(`select count(*) from outreach_partner_intakes where request_key=${quote(same.request_key)}`)),1);

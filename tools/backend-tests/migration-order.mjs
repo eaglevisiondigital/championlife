@@ -20,5 +20,6 @@ export const migrationOrder=[
   "20261004154340_allow_bessemer_outreach_registrations.sql",
   "20260928172557_people_staff_v1.sql",
   "20261004055336_outreach_partner_intake_v1.sql",
-  "20261004230453_outreach_partner_gateway.sql"
+  "20261004230453_outreach_partner_gateway.sql",
+  "20261005161946_outreach_network_limit_120.sql"
 ];
