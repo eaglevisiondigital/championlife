@@ -4,8 +4,13 @@
  let user,org,context,generation=0,offset=0,status,content;
  const can=key=>context?.grants.some(g=>g.organization_id===org&&g.permission===key&&!g.department_ids);
  const signIn=()=>el('a','Sign in to your workspace',{href:'discipleship-login.html?next=%2Fstaff-outreach-partners.html'});
- function failure(code){
-  if(code!==401&&code!==403){status.textContent='Unable to load Outreach Partner Intakes. Please try again.';return;}
+ function failure(code,reason){
+  if(code!==401&&code!==403){
+   status.className=reason==='possible_contact_match'?'partner-workspace-notice':'';
+   status.setAttribute('role','alert');
+   status.textContent=reason==='possible_contact_match'?'Possible existing contact found. Review the matching person and link this intake to the correct existing contact instead of creating a duplicate.':'Unable to load Outreach Partner Intakes. Please try again.';
+   return;
+  }
   // Drop protected UI/closures and invalidate every pending request after access is denied.
   generation++;context=null;org=null;offset=0;content?.replaceChildren();content=null;
   workspace?.classList.toggle('is-denied',code===403);
@@ -23,16 +28,19 @@
   if(!session||session.user.id!==user?.id)throw Object.assign(Error('Session expired.'),{status:401});
   const {data,error,status:code}=await auth.client.rpc(name,args);
   if(g!==generation)throw Error('Workspace changed.');
-  if(error||code===401||code===403)throw Object.assign(Error('Request failed.'),{status:code});
+  if(error||code===401||code===403){
+   const reason=name==='outreach_partner_workspace'&&args?.p_action==='create_contact'&&error?.code==='P0001'&&error?.message==='Possible existing contact; search and review before linking'?'possible_contact_match':null;
+   throw Object.assign(Error('Request failed.'),{status:code,reason});
+  }
   return data;
- }catch(error){if(g===generation)failure(error.status);throw error;}}
+ }catch(error){if(g===generation)failure(error.status,error.reason);throw error;}}
  const intake=(action,data={})=>rpc('outreach_partner_workspace',{p_org:org,p_action:action,p_data:data});
  function button(label,action){const g=generation,b=el('button',label,{type:'button'});b.onclick=async()=>{if(g!==generation)return;b.disabled=true;try{await action()}catch{/* rpc displays errors for the active request, including navigation to a new generation. */}finally{b.disabled=false}};return b;}
  function field(label){const l=el('label',label),i=el('input',null,{type:'search',maxlength:'100'});l.append(i);return {l,i};}
- async function list(){const g=++generation;content.replaceChildren();status.textContent='Loading…';const rows=await intake('list',{offset});if(g!==generation)return;status.textContent=rows.length?'':'No outreach partner intakes.';
+ async function list(){const g=++generation;content.replaceChildren();status.className='';status.setAttribute('role','status');status.textContent='Loading…';const rows=await intake('list',{offset});if(g!==generation)return;status.textContent=rows.length?'':'No outreach partner intakes.';
  for(const r of rows){const card=el('article');card.append(el('h2',r.first_name+' '+r.last_name),el('p',r.email+' · '+r.phone),el('p',`${r.source_site} · ${new Date(r.submitted_at).toLocaleString()} · ${r.status}`),el('p',`Intended commitment: $${r.commitment_amount} · ${r.commitment_frequency}`),el('p','Follow-up: '+(r.followup_status||'Not created or not accessible')),button('Review intake',()=>detail(r.id)));content.append(card);}
  content.append(button('Previous',()=>{offset=Math.max(0,offset-50);return list()}),button('Next',()=>{offset+=50;return list()}));}
- async function detail(id){const g=++generation;content.replaceChildren();status.textContent='Loading…';const r=await intake('detail',{id});if(g!==generation)return;status.textContent='';content.append(button('Back to intakes',list),el('h2','Partner intake · '+r.status));
+ async function detail(id){const g=++generation;content.replaceChildren();status.className='';status.setAttribute('role','status');status.textContent='Loading…';const r=await intake('detail',{id});if(g!==generation)return;status.textContent='';content.append(button('Back to intakes',list),el('h2','Partner intake · '+r.status));
  const labels={'first-name':'First Name','last-name':'Last Name',email:'Email Address','address-line-1':'Street Address','address-line-2':'Street Address Line 2',city:'City','state-province':'State / Province','postal-code':'Postal / ZIP Code',phone:'Phone Number','commitment-amount':'Commitment Amount','commitment-frequency':'Commitment Frequency'};
  for(const[k,label]of Object.entries(labels))content.append(el('p',label+': '+(r.raw_submission[k]||'—')));
  content.append(el('p',`Source: ${r.source_site} · ${r.source_path}`),el('p','This commitment is not payment authorization, verified account ownership or marketing consent.'));
