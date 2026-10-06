@@ -1,0 +1,11 @@
+# Security — Outreach Campaign Core candidate
+
+All new public tables enable RLS and revoke direct PUBLIC/anon/authenticated access. Public RPCs are invokers; guarded private definers have empty search paths and qualified relations. Verified non-anonymous identity, explicit campaign/organization authority and current active/effective/expiry state are checked server-side. Campaign-only leaders receive no org-wide People grant. Organization admin capability additionally requires active existing staff assignment; no live account is seeded or provisioned.
+
+Canonical linking/contact review additionally enforces existing People permission. Progress is limited to Getting a Grip enrollment and lesson status, through active reviewed portal links or the existing verified historical claim. Course answers/private notes/other modules never enter the projection or CSV. Export is scoped, audited and spreadsheet-formula neutralized. UI clears protected content on denial/session change and discards stale asynchronous data.
+
+Documents are always private, including public-designated metadata. Storage INSERT/SELECT checks exact prescribed path/campaign/capability/restricted-admin access. No client overwrite/delete, no public signed URLs, actual metadata required to finalize and immutable replacement paths/history. File limits are 10 MB and approved MIME types. Scope/expiry applies to requested recipients and training/step assignees.
+
+Prize primitives are owner-only, not callable through application roles or public RPC. Explicit draw assignment is required even for administrators. Campaign lock, pending reservation and immutable unique win ledger prevent multi-pool/multiple/concurrent wins. Eligibility changes cannot override a win. Unclaimed is not won; mandatory explicit policy governs later eligibility. Public future reveal projection contains no names/phone.
+
+No provider messages, Auth/SMTP/DNS changes, new callbacks, production/acceptance migrations or production grants occur in this implementation. Preview build retains production-backend blocking/isolated configuration rules. Private audit/source evidence stays outside `dist/`. Remote rollout requires baseline reconciliation, isolated authenticated/Storage acceptance and separately authorized exact grants/callbacks/release.
