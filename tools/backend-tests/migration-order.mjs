@@ -24,5 +24,6 @@ export const migrationOrder=[
   "20261005161946_outreach_network_limit_120.sql",
   "20261006113255_outreach_campaign_core_v1.sql",
   "20261006113311_outreach_campaign_workflow_v1.sql",
-  "20261006113322_outreach_prize_integrity_foundation.sql"
+  "20261006113322_outreach_prize_integrity_foundation.sql",
+  "20261006200021_outreach_phase_b_team_travel.sql"
 ];

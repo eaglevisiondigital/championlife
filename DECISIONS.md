@@ -1,5 +1,11 @@
 # Decisions — Outreach Campaign Core v1
 
+## 2026-10-06 — authorized Phase B candidate
+
+Phase B branches from the exact accepted PR #5 head and targets its branch as a dependent draft PR; PR #5, PR #2, production main and QR work remain untouched. Party intake is not a second Person/household system, preferences are not approval/final roles, service roles are not platform permissions, and a Household label is not guardian authority. Nullable official capacity is a planning target without automatic rejection. Total vehicle seats include drivers; passenger seats exclude them. Family splitting/separate minor supervision requires explicit reviewed operations. Lodging windows cannot change beneath occupancy. New signup defaults disabled, native consent remains Phase C pending, and communications remain held. The additive migration repairs a pre-existing Household audit-kind omission needed for canonical family reuse. Exact Huntsville mapping and isolated hosted acceptance are later gates, with no JotForm replacement, production deployment or Phase C authorization.
+
+## Phase A foundations
+
 - The current assignment authorizes Phase A implementation on an isolated branch. Production deployment/merging and remote configuration/provisioning remain separate gates. PR #2 is not wholesale imported.
 - Bessemer/Huntsville are campaign data owned by existing canonical SowGo, not separate systems. Unknown dates/host facts stay unset. The source bridge never rewrites historical registrations or creates People.
 - Explicit campaign assignments, not tags, grant local-leader authority. Campaign administration is a new explicit owner-reviewed authority plus active staff assignment; existing generic privileges do not automatically establish it.
