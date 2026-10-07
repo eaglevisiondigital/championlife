@@ -1,3 +1,17 @@
+# Current build state — Phase C registration/check-in candidate
+
+Chat explicitly accepted Phase A and Phase B and authorized Phase C build only. This branch, `codex/outreach-phase-c-registration-checkin`, starts at PR #6 exact head `79404bb5648af269bbaea1604aed4891c507e2c3` and targets its branch as a dependent draft PR. No prerequisite merge, production change or Phase D work is authorized.
+
+Implemented: configurable native guest household registration, idempotent individual adults/minors, immutable versioned family waiver/signatures/coverage, separate consent, safe reference, scoped staff lookup/edit/walk-up/per-attendee check-in/reversal, private CSV/print backup and dormant prize/held event hooks. Migration `20261007073021_outreach_phase_c_registration_checkin.sql` is CLI-generated, additive and local-only; no acceptance/production application or Edge deployment. No real campaign is enabled or Huntsville published. Bessemer decisions, JotForms, SowGo /go, Auth/SMTP/DNS, giving/merchants and production remain unchanged.
+
+Local verification: all 19 backend scripts, 92 final Phase C database/security checks, 29 gateway checks, 35 DOM checks and 94 Christmas Dinner checks passed. Five local PostgreSQL race groups each proved 8 independent overlapping workers plus coordinator; final capacity was 1 success / 7 safe denials. All 24 Chrome screen/width combinations at 390/768/1440 passed. Syntax/diff checks and the 396-file allowlist build passed.
+
+Local verification results and the exact source mapping/release gates are recorded in [Phase C contract](docs/OUTREACH-PHASE-C-REGISTRATION-CHECKIN.md). Exact JotForm wording/options and approved real waiver/consent text are pending before campaign activation. Next gate is Chat Phase C build review, then separately authorized isolated hosted acceptance. Phase D remains NOT STARTED.
+
+## Historical Phase B candidate snapshot
+
+The following is retained as build-stage history; its pending Phase B acceptance hold is superseded by Chat's explicit acceptance and Phase C assignment.
+
 # Current build state — Phase B Team & Travel candidate
 
 Phase A is **accepted by Chat** at `098a87b061e7ffad53ae86f76d750a5aacfbc935`; PR #5 remains open/draft/unmerged. The authorized Phase B implementation uses dependent branch `codex/outreach-phase-b-team-travel`, targeting `codex/outreach-campaign-core-v1`, with that exact starting commit. Production main stays `e1f75f917f9a1e6e16e0b8f9bc5d7b52fbf0a424`; PR #2 and the SowGo QR candidate are untouched.
