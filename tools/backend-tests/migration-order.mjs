@@ -28,5 +28,6 @@ export const migrationOrder=[
   "20261006200021_outreach_phase_b_team_travel.sql",
   "20261007073021_outreach_phase_c_registration_checkin.sql",
   "20261007160000_outreach_phase_d_prize_operations.sql",
-  "20261007213000_outreach_phase_e_event_day.sql"
+  "20261007213000_outreach_phase_e_event_day.sql",
+  "20261007221218_outreach_phase_e_template_clone_version.sql"
 ];
