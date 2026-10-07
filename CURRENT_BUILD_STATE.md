@@ -1,3 +1,15 @@
+# Current build state — Phase D prize operations candidate
+
+Chat accepted Phase C at exact PR #7 head 2c57b1ec0e1407d750b052cc22bbe9b4dc86e418 and authorized the dependent Phase D build only. Branch codex/outreach-phase-d-prizes starts at that commit. PRs #7/#6/#5/#2 remain open, draft and unmerged; production main e1f75f917f9a1e6e16e0b8f9bc5d7b52fbf0a424 is unchanged.
+
+Implemented locally: campaign prize configuration; flexible pools/categories/inventory; Phase C attendee reuse; secure campaign-unique six-digit numbers; present-to-win; explicit prize capabilities; pool locks and sessions; server-side committed selection; campaign-wide one-claimed-prize enforcement; claim/unclaimed/redraw history; private operator controls; signed-in household number view; anonymous number-only big-screen display; held reminder/winner hooks; formula-safe private backup; paper/hybrid reference support and emergency procedure.
+
+Migration 20261007160000_outreach_phase_d_prize_operations.sql is additive and local-only. No acceptance/production migration, account/grant, campaign enablement, Bessemer/Huntsville switch, provider, Auth/SMTP/DNS, giving/merchant, PR merge or production deploy occurred. No Phase E work is started.
+
+Final local verification passed all 21 backend/DOM scripts, including 22 Phase D database/security and 19 Phase D DOM checks; all 94 Christmas Dinner checks; a 403-file allowlist build; JavaScript syntax/diff checks; and six real local PostgreSQL race groups with 16-way number assignment plus cross-pool, duplicate-claim, same-final-prize, final-inventory and re-enable safety. Evidence is summarized in [Phase D contract](docs/OUTREACH-PHASE-D-PRIZES.md). Next gate: Chat Phase D build review, then a separately authorized isolated hosted acceptance assignment.
+
+## Historical Phase C candidate snapshot
+
 # Current build state — Phase C registration/check-in candidate
 
 Chat explicitly accepted Phase A and Phase B and authorized Phase C build only. This branch, `codex/outreach-phase-c-registration-checkin`, starts at PR #6 exact head `79404bb5648af269bbaea1604aed4891c507e2c3` and targets its branch as a dependent draft PR. No prerequisite merge, production change or Phase D work is authorized.

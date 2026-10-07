@@ -1,5 +1,7 @@
 # Global Propel Outreach Campaign Core v1
 
+> Phase D extension: the accepted Phase C attendee/check-in model now has a dependent local prize-operations candidate with secure six-digit identities, configurable pools/inventory, explicit prize capabilities, server-side draw/claim serialization, household retrieval, number-only public display, held notification hooks and private backup. See [Outreach Phase D prizes](OUTREACH-PHASE-D-PRIZES.md). No campaign is enabled and no hosted/production change is included.
+
 Status: Phase A implementation candidate, locally tested; not applied to acceptance or production. The isolated branch starts at Champion Life main `e1f75f917f9a1e6e16e0b8f9bc5d7b52fbf0a424`. PR #2 is not a dependency and must not be merged to release this package.
 
 ## Scope and ownership
