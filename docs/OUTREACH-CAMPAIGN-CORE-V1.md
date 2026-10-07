@@ -103,3 +103,7 @@ The manifest adds only the new staff shell/CSS/JS. Docs, migrations, fixtures, s
 Required next gate: Chat reviews Phase A and authorizes a specifically named isolated acceptance database baseline, only the three candidate migrations and exact synthetic campaign assignments. Reconcile that environment's history first; do not replay already-applied historical migrations or apply unrelated PR #2 work. Then Work validates real authenticated campaign access/revocation, document upload/download, Bessemer bridge/progress/CSV, and phone/tablet visuals. Any new exact Auth callback needs separate authorization; no wildcards or production changes. Production deployment/merge/grants require a later explicit release decision.
 
 Recommended next implementation after Phase A acceptance: Phase B native outreach team signup, reviewed official-participant approval, travel/family/vehicles/lodging/manifests. Preserve the distinction between official team/transport approval and independently traveling helpers. Do not start it under this assignment.
+
+## Phase C build extension
+
+Chat accepted Phase A/B and authorized dependent native event registration, household waiver/signature and check-in. Those former roadmap entries now have a local implementation candidate; see [Phase C contract](OUTREACH-PHASE-C-REGISTRATION-CHECKIN.md). Phase D drawing and live rollout remain separate gates. Bessemer decisions and canonical reviewed identity remain existing workflows.

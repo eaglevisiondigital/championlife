@@ -15,3 +15,7 @@ Phase B branches from the exact accepted PR #5 head and targets its branch as a 
 - King Kind remains pending/Coming Soon until the actual approved final PDF arrives. Future household/attendee, travel/official-team and offline drawing policies require their planned phases and review.
 
 See the detailed [module contract](docs/OUTREACH-CAMPAIGN-CORE-V1.md) for implemented, candidate-only and later-phase distinctions.
+
+## 2026-10-07 — authorized Phase C build
+
+Chat accepts Phase B at the exact PR #6 head and authorizes a dependent Phase C build, leaving all prerequisite PRs unmerged. Submitted household identities are event records, not canonical identity merges; minors require explicitly asserted parent/legal guardian coverage. Typed-name signatures are practical acknowledgments, not notarized/verified legal identity. No waiver/consent/source wording is invented: native public configurations default disabled until exact mapping and reviewed text. Scoped registration/check-in permissions are separate from pastor follow-up/travel; public reference is only a staff lookup hint. Stable client keys and server campaign serialization enforce retry integrity; the dormant existing prize identity is reused, with no operational drawing. Print/CSV provide private degraded-connectivity backup; offline synchronization is deferred. Bessemer decision intake and current JotForms remain. Passing local checks authorizes neither hosted application nor production release nor Phase D.

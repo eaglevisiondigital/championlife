@@ -34,3 +34,19 @@ Exact forms to capture through Work before native replacement:
 Capture exact wording/options, requiredness, visible conditional branches, validation, consent/signature details, notifications and supplied sensitivity classifications. A source form's visible instructions do not authorize sending messages, accepting agreements, provisioning access or changing production.
 
 The opportunity UI uses only the 15 concepts explicitly supplied in the assignment: church name, pastor name, city, state/province, country, primary contact, submitter-is-pastor, submitter role, phone, email, website, preferred months, previous experience, prior CL/SowGo outreach and notes. These do not purport to reproduce any uncaptured JotForm.
+
+## HUNTSVILLE / PUBLIC PREREGISTRATION — Phase C native candidate
+
+### A. Confirmed operational requirements
+
+The current Chat assignment explicitly requires primary adult first/last/email/mobile; campaign-required address; distinct adult/spouse/child/dependent attendees with age, relationship, attending state and guardian description; one adult/guardian family signature with selected coverage; separate waiver/follow-up/communications/marketing/media choices; safe household reference; per-attendee event-day check-in; wristband/reference support; campaign-configured prize participation/bike preference/tablet-only; present-to-win requires check-in. These are assignment requirements, **not a transcription of JotForm questions**.
+
+### B. Exact captured JotForm fields
+
+None captured in this build. The source URL `https://form.jotform.com/team/223471619444054/preregistration-form-outreach` was requested through the web tool on 2026-10-07 and was inaccessible. No exact label/options/requiredness/conditional validation/legal text has been invented. Existing operational source documents remain the separately cited sources above.
+
+### C. Inferred concepts and pending exact-source capture
+
+Registration identity/reference, family relation, guardian declaration, prize choices, consent domains and presence are operational concepts derived from the assignment/source intent. UI labels currently describe those native concepts. Pending: exact JotForm wording, requiredness, validation, conditional branches, waiver text/version, consent wording and exact prize guidance/options. Native `extra_fields` supports configured stable IDs, labels, text/boolean/choice types, options and requiredness; campaign prize choices are configuration, not A–H schema. A later mapping can use that configuration plus native household fields without a city schema. Notifications remain held even if source form sends mail.
+
+Work capture must review the public source without submitting real data, preserve exact questions/options/conditions/validation/signature/consent, and classify minors/contact/waiver sensitivity. Chat must approve the resulting real waiver/consent/configuration before activation. Huntsville native architecture is prepared, **not published/replacing JotForm**. Bessemer post-message decision/salvation/follow-up is distinct and unchanged.
