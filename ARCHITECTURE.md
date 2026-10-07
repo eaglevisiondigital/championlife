@@ -1,5 +1,11 @@
 # Architecture — Outreach Campaign Core candidate
 
+## Phase E Event Day extension
+
+Phase E adds a campaign-scoped operations aggregate beneath the existing Global Propel Outreach Campaign. Immutable published area/checklist/inventory/timeline templates instantiate campaign snapshots, so future packet versions never rewrite event history. Area assignments reference Phase B team members and inventory vehicles; summaries project Phase C registration/check-in and Phase D prize readiness without duplicating their ledgers. Issues, timeline actuals, media references, closeout and immutable history remain within the campaign boundary.
+
+One guarded workspace supplies separate capability-filtered projections and serialized mutations to a responsive staff shell. There is no city-specific schema, general project-management subsystem, medical record store, DAM, duplicate follow-up system or offline sync. Print/CSV is the degraded-connectivity fallback. See [Phase E contract](docs/OUTREACH-PHASE-E-EVENT-DAY.md).
+
 ## Phase B Team & Travel extension
 
 Campaign signup/member intake extends existing Outreach Campaigns and references canonical People/Households, reviewed portal identities and existing scoped assignments. Twelve additive RLS tables and narrow workspace/portal RPCs provide approval, roles, travel/lodging and manifests. Campaign row serialization protects both assignments and capacity/status edits. Staff UI and participant own-trip projections use the existing manifest-only site build. See [Phase B contract](docs/OUTREACH-PHASE-B-TEAM-TRAVEL.md).

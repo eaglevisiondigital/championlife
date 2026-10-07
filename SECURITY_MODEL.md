@@ -1,5 +1,11 @@
 # Security — Outreach Campaign Core candidate
 
+## Phase E boundary
+
+Event Day authority is explicit, current and campaign-scoped through `ops.view/manage`, `inventory.view/manage` and `issue.manage`; Phase A-D, pastor, participant and operational lead labels do not imply it. All Phase E relations use RLS and revoke raw browser access. The authenticated invoker workspace rechecks verified identity, effective/revoked assignment and exact capability on every call, then validates campaign ownership of every area, member, vehicle, item, issue and timeline ID. Same-session revocation clears browser state on the next guarded poll/focus check.
+
+The UI omits inventory/vehicle detail without inventory view and never projects lodging, travel manifest, finance or unrelated contact data. Operational lead assignment creates no account, portal link or platform permission. Export requires ops management because it includes assigned-team emergency phone contacts; it is scoped, audited and formula-neutralized. Media hooks accept safe references only. Server constraints reject impossible counts and closeout gaps. Campaign advisory locks, revisions, immutable template/history triggers and true-overlap tests protect duplicate taps and competing devices. See [Phase E contract](docs/OUTREACH-PHASE-E-EVENT-DAY.md).
+
 ## Phase B security boundary
 
 Explicit team.view/team.manage/travel.view/travel.manage are independent from Phase A follow-up and from existing People permissions. Manage requires corresponding view. Team-only users receive no hotel/vehicle/trip-setting records; travel-only users receive no applicant email/private notes or approval authority. Reviewed primary/dependent sharing additionally depends on current canonical membership, active Household and reviewed portal links. Secondary participant accounts receive only their own/reviewed dependent projections. Official travel/lodging requires approval and minor guardian review. All new tables deny raw client access; internal helpers are revoked. Capacity races, scoped CSV, direct-ID denial, revocation and local-pastor privacy are tested. No hosted/production grants or Auth settings are changed. See [Phase B contract](docs/OUTREACH-PHASE-B-TEAM-TRAVEL.md).

@@ -1,3 +1,15 @@
+# Current build state — Phase E Event Day Command Center candidate
+
+Chat accepted Phase D at exact PR #8 head `d899616a81df2a62a2957db074966073310b02c0` and authorized the dependent Phase E build only. Branch `codex/outreach-phase-e-event-day` starts at that commit. PR #10 is a separate parked Bessemer release candidate and is untouched. PRs #8/#7/#6/#5/#2 remain open, draft and unmerged; production main remains unchanged.
+
+Implemented locally: reusable versioned operational templates and campaign snapshots; 13 packet-derived area categories with repeatable/custom area support; required/optional dependent checklists; Phase B lead/backup/volunteer and vehicle reuse; load-in/load-out inventory integrity; issue lifecycle; timeline actuals; safe photo/video reference hooks; Phase C registration/check-in and Phase D prize readiness summaries; live mobile/tablet/desktop command views; guarded polling; closeout gates; immutable audit/history; print and formula-safe scoped CSV fallback.
+
+Migration `20261007213000_outreach_phase_e_event_day.sql` is additive and local-only. It publishes only the reusable standard template (13 areas, 42 checklist definitions, 25 inventory definitions, 11 timeline definitions); it does not instantiate or activate Bessemer or Huntsville. No acceptance/production migration, grant, campaign enablement, provider, Auth/SMTP/DNS, giving/merchant, SowGo `/go`, PR merge or deployment occurred. Phase F is not started.
+
+Focused local verification passes 38 Phase E database/security checks and 17 Event Day DOM/responsive checks. Five true PostgreSQL race groups each use 8 independent overlapping workers plus a separate coordinator and prove canonical checklist/issue transitions, one competing inventory winner with seven safe conflicts, one active volunteer assignment and eight safe denials for impossible inventory. The full regression/build gate is recorded at final handoff. Details: [Phase E contract](docs/OUTREACH-PHASE-E-EVENT-DAY.md).
+
+## Historical Phase D candidate snapshot
+
 # Current build state — Phase D prize operations candidate
 
 Chat accepted Phase C at exact PR #7 head 2c57b1ec0e1407d750b052cc22bbe9b4dc86e418 and authorized the dependent Phase D build only. Branch codex/outreach-phase-d-prizes starts at that commit. PRs #7/#6/#5/#2 remain open, draft and unmerged; production main e1f75f917f9a1e6e16e0b8f9bc5d7b52fbf0a424 is unchanged.
