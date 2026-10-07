@@ -394,5 +394,12 @@
   "assets/css/outreach-registration.css",
   "assets/js/outreach-registration-form.js",
   "assets/js/outreach-registration-public.js",
-  "assets/js/outreach-registration-staff.js"
+  "assets/js/outreach-registration-staff.js",
+  "staff-outreach-prizes.html",
+  "outreach-prize-display.html",
+  "outreach-drawing-numbers.html",
+  "assets/css/outreach-prizes.css",
+  "assets/js/outreach-prizes.js",
+  "assets/js/outreach-prize-display.js",
+  "assets/js/outreach-prize-household.js"
 ]

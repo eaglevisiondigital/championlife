@@ -19,3 +19,9 @@ Detailed relations/API/roadmap and release gate: [Outreach Campaign Core v1](doc
 ## Phase C registration extension
 
 Existing campaign ownership/assignments/audit/held events now host native event household submissions, distinct adult/minor attendees, exact versioned signatures/coverage and individual check-in. Canonical People/Households remain reviewed identities; public intake grants no authority or identity merge. The existing dormant prize participant receives a unique attendee link only at check-in; no second prize identity or drawing operation. New public config is a bounded read-only projection; server-gated guest submission and private staff workspace are separate surfaces. See [Phase C contract](docs/OUTREACH-PHASE-C-REGISTRATION-CHECKIN.md).
+
+## Phase D prize operations extension
+
+Phase D activates the existing owner-only prize integrity ledger through one guarded campaign workspace. Phase C attendee/check-in remains authoritative; the attendee-to-prize participant link is extended with one immutable six-digit identity. Campaign settings, reusable inventory pools, active pool entries, draw sessions and pool locks sit above the original draw/history/win/exclusion tables. Selection and claim serialize on the campaign, the browser never chooses a result, and the campaign-wide win ledger is the permanent one-prize constraint.
+
+Staff, signed-in household and anonymous public display are separate projections. The staff projection carries minimum operational identity/contact; the household projection is limited to the matching verified registration email; the anonymous projection never joins private identity. Held events remain delivery-neutral. See [Phase D contract](docs/OUTREACH-PHASE-D-PRIZES.md).
