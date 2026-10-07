@@ -388,5 +388,11 @@
   "outreach-team.html",
   "assets/js/outreach-team.js",
   "assets/js/outreach-team-portal.js",
-  "assets/css/outreach-team.css"
+  "assets/css/outreach-team.css",
+  "outreach-register.html",
+  "staff-outreach-registration.html",
+  "assets/css/outreach-registration.css",
+  "assets/js/outreach-registration-form.js",
+  "assets/js/outreach-registration-public.js",
+  "assets/js/outreach-registration-staff.js"
 ]
