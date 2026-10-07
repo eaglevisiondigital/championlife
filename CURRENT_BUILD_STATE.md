@@ -1,5 +1,11 @@
 # Current build state — Phase C registration/check-in candidate
 
+## Bessemer production release candidate — October 7, 2026
+
+Isolated branch `codex/bessemer-production-release` starts at production `e1f75f917f9a1e6e16e0b8f9bc5d7b52fbf0a424` and intentionally cherry-picks accepted Phase A/B/C only. Phase D, Phase E, PR #2, acceptance configuration and synthetic fixtures are excluded from release behavior. The accepted Bessemer bridge, scoped dashboard, existing Getting a Grip projection, follow-up, exact ten-column CSV and native contact actions are retained. Release polish surfaces Wants to Know More, registration date, last activity and a detailed Bessemer follow-up/task panel, and adds a Global Propel / Outreach link from Staff People. See [release candidate runbook](docs/BESSEMER-PRODUCTION-RELEASE-CANDIDATE.md).
+
+Read-only production verification found the five A/B/C migration versions absent and preserved a safe baseline of six existing Bessemer rows. No production migration, mapping, account, grant, deployment, Auth, SMTP, DNS, giving, merchant or SowGo change has been made. Exact staff emails and explicit production-write authorization remain required.
+
 Chat explicitly accepted Phase A and Phase B and authorized Phase C build only. This branch, `codex/outreach-phase-c-registration-checkin`, starts at PR #6 exact head `79404bb5648af269bbaea1604aed4891c507e2c3` and targets its branch as a dependent draft PR. No prerequisite merge, production change or Phase D work is authorized.
 
 Implemented: configurable native guest household registration, idempotent individual adults/minors, immutable versioned family waiver/signatures/coverage, separate consent, safe reference, scoped staff lookup/edit/walk-up/per-attendee check-in/reversal, private CSV/print backup and dormant prize/held event hooks. Migration `20261007073021_outreach_phase_c_registration_checkin.sql` is CLI-generated, additive and local-only; no acceptance/production application or Edge deployment. No real campaign is enabled or Huntsville published. Bessemer decisions, JotForms, SowGo /go, Auth/SMTP/DNS, giving/merchants and production remain unchanged.

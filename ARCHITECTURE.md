@@ -1,5 +1,9 @@
 # Architecture — Outreach Campaign Core candidate
 
+## Bessemer production release composition — October 7, 2026
+
+The production candidate composes accepted Outreach Phase A, B and C on the exact production baseline. Bessemer stays a SowGo-owned campaign instance bridged by immutable legacy registration references; it is not rewritten into a second contact store. The staff dashboard reads decisions/contact data through campaign-scoped RPCs and reuses the existing Getting a Grip enrollment/progress projection. Phase B team/travel and Phase C preregistration/check-in ship as dormant reusable infrastructure without Huntsville publication or Bessemer configuration. Phase D operational prize code is absent; its distinct migration and UI are excluded. See [release runbook](docs/BESSEMER-PRODUCTION-RELEASE-CANDIDATE.md).
+
 ## Phase B Team & Travel extension
 
 Campaign signup/member intake extends existing Outreach Campaigns and references canonical People/Households, reviewed portal identities and existing scoped assignments. Twelve additive RLS tables and narrow workspace/portal RPCs provide approval, roles, travel/lodging and manifests. Campaign row serialization protects both assignments and capacity/status edits. Staff UI and participant own-trip projections use the existing manifest-only site build. See [Phase B contract](docs/OUTREACH-PHASE-B-TEAM-TRAVEL.md).

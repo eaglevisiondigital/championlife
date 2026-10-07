@@ -1,5 +1,12 @@
 # Decisions — Outreach Campaign Core v1
 
+## Bessemer production release candidate — October 7, 2026
+
+- Compose accepted Phase A/B/C by ordered cherry-pick on production main; do not merge the dependent PR chain or include Phase D/Phase E/PR #2.
+- Preserve existing Bessemer registrations as authoritative legacy rows and bridge by stable source/row identity. No destructive rewrite, automatic Person merge, Auth account or duplicate course system.
+- Use campaign-only `view`, `export`, `followup`, `decisions` as the minimum leadership/local-pastor review scope. Real accounts wait for exact confirmed emails and explicit grant authorization.
+- Keep Huntsville and all Phase B/C public operations dormant until configured and separately authorized. Production migration, grants and deploy remain a later explicit release action.
+
 ## 2026-10-06 — authorized Phase B candidate
 
 Phase B branches from the exact accepted PR #5 head and targets its branch as a dependent draft PR; PR #5, PR #2, production main and QR work remain untouched. Party intake is not a second Person/household system, preferences are not approval/final roles, service roles are not platform permissions, and a Household label is not guardian authority. Nullable official capacity is a planning target without automatic rejection. Total vehicle seats include drivers; passenger seats exclude them. Family splitting/separate minor supervision requires explicit reviewed operations. Lodging windows cannot change beneath occupancy. New signup defaults disabled, native consent remains Phase C pending, and communications remain held. The additive migration repairs a pre-existing Household audit-kind omission needed for canonical family reuse. Exact Huntsville mapping and isolated hosted acceptance are later gates, with no JotForm replacement, production deployment or Phase C authorization.

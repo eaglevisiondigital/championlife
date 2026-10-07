@@ -1,5 +1,9 @@
 # Security — Outreach Campaign Core candidate
 
+## Bessemer production release gate — October 7, 2026
+
+Campaign assignments remain independent from organization-wide People, staff administration, finance, portals and course answers. The minimum review role is one existing verified account assigned only to `bessemer_al_2026` with `view`, `export`, `followup` and `decisions`; every request rechecks campaign, effective dates and revocation. CSV is generated server-side for that campaign and neutralizes spreadsheet formulas. Contact actions open local handlers only. Registration and Person creation grant no authority. The release gate requires cross-campaign/cross-organization/direct-ID denial, same-session revocation and unchanged legacy Bessemer identity/data proof. No real assignment is authorized until exact emails and scope are approved.
+
 ## Phase B security boundary
 
 Explicit team.view/team.manage/travel.view/travel.manage are independent from Phase A follow-up and from existing People permissions. Manage requires corresponding view. Team-only users receive no hotel/vehicle/trip-setting records; travel-only users receive no applicant email/private notes or approval authority. Reviewed primary/dependent sharing additionally depends on current canonical membership, active Household and reviewed portal links. Secondary participant accounts receive only their own/reviewed dependent projections. Official travel/lodging requires approval and minor guardian review. All new tables deny raw client access; internal helpers are revoked. Capacity races, scoped CSV, direct-ID denial, revocation and local-pastor privacy are tested. No hosted/production grants or Auth settings are changed. See [Phase B contract](docs/OUTREACH-PHASE-B-TEAM-TRAVEL.md).
