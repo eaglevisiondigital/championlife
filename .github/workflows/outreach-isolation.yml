@@ -1,9 +1,9 @@
 name: Isolated Outreach candidate
 on:
   pull_request:
-    branches: [main, codex/outreach-campaign-core-v1, codex/outreach-phase-b-team-travel, codex/outreach-phase-c-registration-checkin]
+    branches: [main, codex/outreach-campaign-core-v1, codex/outreach-phase-b-team-travel, codex/outreach-phase-c-registration-checkin, codex/outreach-phase-d-prizes]
   push:
-    branches: [codex/outreach-partner-production-isolation, codex/outreach-campaign-core-v1, codex/outreach-phase-b-team-travel, codex/outreach-phase-c-registration-checkin]
+    branches: [codex/outreach-partner-production-isolation, codex/outreach-campaign-core-v1, codex/outreach-phase-b-team-travel, codex/outreach-phase-c-registration-checkin, codex/outreach-phase-d-prizes, codex/outreach-phase-e-event-day]
 permissions:
   contents: read
 jobs:
@@ -20,4 +20,6 @@ jobs:
       - run: TEST_POSTGRES_BIN="$(pg_config --bindir)" npm run test:campaign-concurrency --prefix tools/backend-tests
       - run: TEST_POSTGRES_BIN="$(pg_config --bindir)" npm run test:team-concurrency --prefix tools/backend-tests
       - run: TEST_POSTGRES_BIN="$(pg_config --bindir)" npm run test:registration-concurrency --prefix tools/backend-tests
+      - run: TEST_POSTGRES_BIN="$(pg_config --bindir)" npm run test:prize-concurrency --prefix tools/backend-tests
+      - run: TEST_POSTGRES_BIN="$(pg_config --bindir)" npm run test:event-day-concurrency --prefix tools/backend-tests
       - run: git diff --check

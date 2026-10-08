@@ -1,3 +1,17 @@
+# Current build state — Phase E Event Day Command Center candidate
+
+Chat accepted Phase D at exact PR #8 head `d899616a81df2a62a2957db074966073310b02c0` and authorized isolated Phase E hosted acceptance. Branch `codex/outreach-phase-e-event-day` starts at that commit. PR #10 is a separate parked Bessemer release candidate and is untouched. PRs #11/#8/#7/#6/#5/#2 remain open, draft and unmerged; production main remains unchanged.
+
+Implemented locally: reusable versioned operational templates and campaign snapshots; 13 packet-derived area categories with repeatable/custom area support; required/optional dependent checklists; Phase B lead/backup/volunteer and vehicle reuse; load-in/load-out inventory integrity; issue lifecycle; timeline actuals; safe photo/video reference hooks; Phase C registration/check-in and Phase D prize readiness summaries; live mobile/tablet/desktop command views; guarded polling; closeout gates; immutable audit/history; print and formula-safe scoped CSV fallback.
+
+The additive Phase E migrations were applied only to acceptance project `bkbmjisprwmkptywtmih`, recorded as versions `20261007220413` and `20261007221722`. They publish only the reusable standard template (13 areas, 42 checklist definitions, 25 inventory definitions, 11 timeline definitions); they do not instantiate or activate Bessemer or Huntsville. Production migrations, grants, campaigns, Auth/SMTP/DNS, giving/merchant, SowGo `/go` and deployment remain unchanged. Phase F is not started.
+
+Hosted acceptance passed the Event Day command center, every configured area, snapshot/versioning, readiness, staff and local-host isolation, export/print fallback, closeout/history, same-session revocation, multi-tab refresh and responsive checks at 390/768/1440. Five true hosted PostgreSQL race groups proved independent overlapping backends and canonical checklist/issue/volunteer state, one inventory winner with seven safe conflicts, and three simultaneous safe denials for impossible final counts at the verified pool capacity. A discovered 390px clipped-tab defect was corrected with a scoped grid layout and regression assertion. Synthetic authority, active areas, area assignments, issues, team fixtures and vehicles were neutralized after acceptance while immutable history was retained.
+
+Focused verification passes 38 Phase E database/security checks and 21 Event Day DOM/responsive checks; the full standard backend/DOM suite, site build, JavaScript syntax and diff checks pass. The exact nonproduction branch deploy for the candidate is ready with `published_at: null`. Details: [Phase E contract](docs/OUTREACH-PHASE-E-EVENT-DAY.md).
+
+## Historical Phase D candidate snapshot
+
 # Current build state — Phase D prize operations candidate
 
 Chat accepted Phase C at exact PR #7 head 2c57b1ec0e1407d750b052cc22bbe9b4dc86e418 and authorized the dependent Phase D build only. Branch codex/outreach-phase-d-prizes starts at that commit. PRs #7/#6/#5/#2 remain open, draft and unmerged; production main e1f75f917f9a1e6e16e0b8f9bc5d7b52fbf0a424 is unchanged.

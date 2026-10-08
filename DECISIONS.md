@@ -1,5 +1,9 @@
 # Decisions — Outreach Campaign Core v1
 
+## 2026-10-07 — authorized Phase E Event Day candidate
+
+Phase E branches from accepted PR #8 head `d899616a81df2a62a2957db074966073310b02c0`; parked Bessemer PR #10 is excluded. Event Day is one reusable campaign module. Packet content is seeded as a versioned published template and campaign snapshot, not hardcoded city schema. Phase B team/vehicles, Phase C check-in and Phase D prizes stay authoritative. Area duty does not grant system authority. Campaign data defines required readiness; event closeout does not close follow-up or discipleship. Full offline sync is deferred, with print/guarded CSV as fallback. Huntsville is configuration-ready but unpublished; Bessemer stays postponed and inactive. Production, merges and Phase F require later authorization.
+
 ## 2026-10-06 — authorized Phase B candidate
 
 Phase B branches from the exact accepted PR #5 head and targets its branch as a dependent draft PR; PR #5, PR #2, production main and QR work remain untouched. Party intake is not a second Person/household system, preferences are not approval/final roles, service roles are not platform permissions, and a Household label is not guardian authority. Nullable official capacity is a planning target without automatic rejection. Total vehicle seats include drivers; passenger seats exclude them. Family splitting/separate minor supervision requires explicit reviewed operations. Lodging windows cannot change beneath occupancy. New signup defaults disabled, native consent remains Phase C pending, and communications remain held. The additive migration repairs a pre-existing Household audit-kind omission needed for canonical family reuse. Exact Huntsville mapping and isolated hosted acceptance are later gates, with no JotForm replacement, production deployment or Phase C authorization.
