@@ -2,7 +2,7 @@
 
 ## Build boundary
 
-Phase E extends the reusable `Global Propel → Outreach → Campaign` architecture from accepted Phase D head `d899616a81df2a62a2957db074966073310b02c0`. It is campaign-scoped event-day operations, not a project-management product and not a Bessemer- or Huntsville-specific system. The additive migration is a build candidate only: it has not been applied to acceptance or production, and it does not activate either seeded campaign.
+Phase E extends the reusable `Global Propel → Outreach → Campaign` architecture from accepted Phase D head `d899616a81df2a62a2957db074966073310b02c0`. It is campaign-scoped event-day operations, not a project-management product and not a Bessemer- or Huntsville-specific system. The additive migrations were applied only to isolated acceptance project `bkbmjisprwmkptywtmih`; production is unchanged, and neither seeded campaign is activated.
 
 Phase A remains the campaign/decision/follow-up authority; Phase B remains the Person, Household, team, travel, vehicle and lodging authority; Phase C remains the registration, waiver and check-in authority; Phase D remains the drawing-number, selection and claim authority. Phase E references those records and does not copy or replace them.
 
@@ -46,7 +46,7 @@ Registration readiness references Phase C check-in totals. Prize/Bike/Winner's C
 - issue creation/resolution and campaign timeline status;
 - print view and a guarded campaign CSV backup containing timeline, areas, leads/volunteers, emergency phone contacts, checklists, inventory/vehicles and issues.
 
-The client polls through the guarded workspace every 20 seconds while visible and not editing. Returning focus rechecks authority. A 401/403 or session change immediately clears protected content. The browser receives no raw table access.
+The client polls through the guarded workspace every 20 seconds while visible and not editing. Returning focus rechecks authority. A 401/403 or session change immediately clears protected content. The browser receives no raw table access. At 390px the five command sections use a visible multi-row grid; tablet and desktop retain the horizontal tab row.
 
 ## Authorization and privacy
 
@@ -65,5 +65,7 @@ Full offline synchronization is intentionally outside Phase E. The supported deg
 ## Release gate and Phase F boundary
 
 Huntsville can instantiate and customize this template without schema changes, but remains unpublished. Bessemer remains postponed and no operation is instantiated or activated by the migration. No production, Auth, SMTP, DNS, giving, merchant, SowGo `/go` or PR #10 change is part of Phase E.
+
+Isolated hosted acceptance passed against acceptance-only migration ledger versions `20261007220413` and `20261007221722`. It covered the command UI and all configured area categories, local-host privacy, campaign isolation, same-session revocation, scoped formula-safe export/print fallback, closeout/history, multi-tab refresh, 390/768/1440 layouts and five real overlapping-session race groups. The 390px tab clipping found during acceptance was fixed with a mobile-only grid rule and a focused DOM regression. Cleanup restored the operator's prior inactive assignment, removed all active synthetic campaign/area authority, released synthetic area assignments, resolved synthetic issues, inactivated synthetic vehicles/members and retained operational history/checklist/timeline/inventory records.
 
 Phase F is not started. Opportunity/intake, host agreements, pre-checklist/document automation, training assignment, timed communications, final packet automation and campaign communications remain a separately authorized future package.
