@@ -1,5 +1,11 @@
 # Security — Outreach Campaign Core candidate
 
+## Phase F boundary
+
+Pre-event and host view/respond capabilities are explicit and independent from legacy registration/People/travel/admin authority. Inquiry creates no identity or permission; reviewed conversion never silently merges churches/People. Narrow host event responses require approved agreement and cannot change internal readiness/security settings. Native workflow gates also cover legacy entry points. Signed agreements and generated packets remain immutable; document review and all canonical mutations serialize by campaign with revision/idempotency checks.
+
+RPC-only RLS tables and exact-path private Storage recheck active/effective/expiry/revocation on every action. External projections omit internal tasks, reminders, events, lodging, finance, broad People and administration. Gateway origin/Turnstile/HMAC contact/network rate controls are service-only and disabled until separate activation. No new secret/client credential, hosted grant or Auth/provider configuration is added. Six local true-overlap races and scoped denial/revocation tests pass; hosted acceptance is a separate gate. See [Phase F contract](docs/OUTREACH-PHASE-F-PRE-EVENT-AUTOMATION.md).
+
 ## Phase E boundary
 
 Event Day authority is explicit, current and campaign-scoped through `ops.view/manage`, `inventory.view/manage` and `issue.manage`; Phase A-D, pastor, participant and operational lead labels do not imply it. All Phase E relations use RLS and revoke raw browser access. The authenticated invoker workspace rechecks verified identity, effective/revoked assignment and exact capability on every call, then validates campaign ownership of every area, member, vehicle, item, issue and timeline ID. Same-session revocation clears browser state on the next guarded poll/focus check.

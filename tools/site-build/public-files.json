@@ -404,5 +404,11 @@
   "assets/js/outreach-prize-household.js",
   "staff-outreach-event-day.html",
   "assets/css/outreach-event-day.css",
-  "assets/js/outreach-event-day.js"
+  "assets/js/outreach-event-day.js",
+  "staff-outreach-pre-event.html",
+  "outreach-host.html",
+  "outreach-interest.html",
+  "assets/css/outreach-pre-event.css",
+  "assets/js/outreach-pre-event.js",
+  "assets/js/outreach-interest.js"
 ]

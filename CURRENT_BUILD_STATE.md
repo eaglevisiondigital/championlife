@@ -1,3 +1,15 @@
+# Current build state — Phase F pre-event automation candidate
+
+Chat accepted Phase E at exact PR #11 head `f41ab24dc256145fa37b9516c1aae2ef7a602a37` and authorized the dependent Phase F build. Branch `codex/outreach-phase-f-pre-event-automation` targets `codex/outreach-phase-e-event-day`; PR #10 stays parked and PR #9 is untouched. Production main remains `e1f75f917f9a1e6e16e0b8f9bc5d7b52fbf0a424`.
+
+Implemented: disabled service-gated interest intake, opportunity pipeline/manual creation, explicitly reviewed canonical host conversion, campaign-only host portal/contacts, immutable configurable 18-step workflow, native versioned agreement architecture, conditional procurement/flyer hooks, private versioned documents/resources, own training, task/reminder/escalation/stale states, date/venue reconfirmation, filtered campaign dashboards and canonical immutable private Event Packet/print.
+
+Migration `20261008134746_outreach_phase_f_pre_event_automation.sql` is additive and local-only. No Phase F acceptance/production application or Edge/config/provider deployment, real grant, channel activation or message occurs. Exact JotForm agreement mapping/legal text and reviewed current production packet publication remain pending before real campaign activation. Huntsville remains unpublished; Bessemer remains postponed/unchanged. Phase G is NOT STARTED.
+
+Verification and boundaries: [Phase F contract](docs/OUTREACH-PHASE-F-PRE-EVENT-AUTOMATION.md). Full 26-script local suite (including 69 Phase F database/security, 30 gateway and 35 DOM checks), 94 Christmas checks, six true-overlap PostgreSQL race groups, 39 disconnected Chrome screen/width combinations (390/768/1440), 412-file allowlist build, syntax and diff checks pass. Next gate: Chat Phase F build review, then separately scoped isolated hosted acceptance. No merge or release is authorized.
+
+## Historical accepted Phase E snapshot
+
 # Current build state — Phase E Event Day Command Center candidate
 
 Chat accepted Phase D at exact PR #8 head `d899616a81df2a62a2957db074966073310b02c0` and authorized isolated Phase E hosted acceptance. Branch `codex/outreach-phase-e-event-day` starts at that commit. PR #10 is a separate parked Bessemer release candidate and is untouched. PRs #11/#8/#7/#6/#5/#2 remain open, draft and unmerged; production main remains unchanged.

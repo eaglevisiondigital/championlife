@@ -1,5 +1,9 @@
 # Architecture — Outreach Campaign Core candidate
 
+## Phase F pre-event extension
+
+The opportunity model now feeds reviewed canonical host Organizations and campaign profiles, the existing immutable workflow/task snapshots, native versioned agreement responses, private document/resource versions, training and held reminder/escalation hooks. Canonical Event Packet projections join existing Phase B travel and Phase E operations; host packets omit those internal sections. One guarded pre-event workspace supports internal and host shells plus a service-gated disabled-by-default interest intake. No separate city CRM/task engine/LMS is created. Migration is local-only; Phase G is not started. See [Phase F contract](docs/OUTREACH-PHASE-F-PRE-EVENT-AUTOMATION.md).
+
 ## Phase E Event Day extension
 
 Phase E adds a campaign-scoped operations aggregate beneath the existing Global Propel Outreach Campaign. Immutable published area/checklist/inventory/timeline templates instantiate campaign snapshots, so future packet versions never rewrite event history. Area assignments reference Phase B team members and inventory vehicles; summaries project Phase C registration/check-in and Phase D prize readiness without duplicating their ledgers. Issues, timeline actuals, media references, closeout and immutable history remain within the campaign boundary.

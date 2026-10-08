@@ -113,3 +113,7 @@ Chat accepted Phase A/B and authorized dependent native event registration, hous
 ## Phase E build extension
 
 Chat accepted Phase D and authorized a dependent Event Day build from its exact head. The former area/inventory roadmap now has a local candidate: versioned operational templates and campaign snapshots, Phase B team/vehicle references, Phase C and D readiness projections, checklists, issues, timeline, inventory, closeout, immutable history, mobile command UI and print/CSV fallback. See [Phase E contract](OUTREACH-PHASE-E-EVENT-DAY.md). The standard template is published as reusable configuration only; no campaign is activated. Production rollout and Phase F automation remain separate gates.
+
+## Phase F build extension
+
+The accepted Phase A-E foundation is extended by [Phase F pre-event automation](OUTREACH-PHASE-F-PRE-EVENT-AUTOMATION.md). Existing version-1 snapshots and Bessemer/Huntsville records remain untouched. New conversions use native version-2 workflow gates, reviewed canonical host profiles, versioned agreement snapshots, scoped host portal, private resource/document revisions and held reminder actions. Existing team/travel/check-in/prizes/Event Day remain authoritative for packet projections. The new migration is local-only; native exact agreement mapping and real packet publication remain activation gates. Phase G/provider delivery is not authorized.
