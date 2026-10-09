@@ -1,3 +1,7 @@
+## October 9 — dependent H1 build extension
+
+Accepted G behavior remains intact. [H1 activation foundation](COMMUNICATIONS-PHASE-H1-PROVIDER-ACTIVATION.md) adds separate provider administration/test pages, current provider permissions, default-off external gates, pure audience dry-run and explicitly authorized single-recipient external test handoff. G sink never claims/recovers H1 leases; H1 never drains G batches/automations. No hosted change, actual provider message or Auth SMTP modification accompanies the build. Historical “Phase H not started” statements below describe G's own acceptance boundary; H1 is now authorized BUILD ONLY. H2 remains not started.
+
 # Communications Core — Phase G build contract
 
 This candidate depends on accepted Staff Workspace PR #13 at `80d1c702679bff3a307f306ac952ac3252f53d9b`. Authorized isolated hosted acceptance passed on October 9. The corrected migration is applied only to acceptance `bkbmjisprwmkptywtmih` as `20261009174358`; sink-only worker/callback were tested there and disabled after cleanup. No production activation, real message, production permission bootstrap, prerequisite merge, billing or Phase H is included.

@@ -1,3 +1,7 @@
+## October 9 — Authorized H1 build only
+
+Chat accepted G at `10a15402f059c605d883ec8b4517d3dfdf9cd850` and authorized the dependent H1 foundation. Retain Supabase Edge/canonical G boundaries and use a real SMTP adapter without touching Auth mail; no silent SMS vendor selection. Configuration/verification/enablement/message authorization remain distinct. All automated/bulk external work stays held; no real email/SMS during build. Network Solutions workload/structured telemetry/account DNS remain evidence gates, not guessed support. No prerequisite merges/production deployment, PR #10 changes or H2. [H1 decision and activation runbooks](docs/COMMUNICATIONS-PHASE-H1-PROVIDER-ACTIVATION.md).
+
 ## 2026-10-09 — Phase G candidate implementation decisions
 
 One Communications Core serves future modules. Initial email/SMS require explicit purpose consent with no inferred exceptions; service relationship exemptions await Chat policy. Channel/provider implementation is injected and sink-only for this build. Current source actor/recipient and campaign/task freshness are checked again at handoff, which is the revocation linearization point; uncertain handoff needs reconciliation, never blind requeue. Route approval starts future event consumption, with processed-event ledger. Inactive discipleship threshold is explicitly selected, not a platform policy default. Credits/retention/push/inbound donation are hooks, not activated products. Local tested, hosted unverified, release unapproved. See [Phase G contract](docs/COMMUNICATIONS-CORE-PHASE-G.md).

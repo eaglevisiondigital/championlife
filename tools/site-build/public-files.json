@@ -422,5 +422,8 @@
   "staff-communications.html",
   "staff-campaign-communications.html",
   "staff-communication-templates.html",
-  "staff-communication-activity.html"
+  "staff-communication-activity.html",
+  "staff-communication-providers.html",
+  "staff-communication-test.html",
+  "assets/js/communication-providers.js"
 ]

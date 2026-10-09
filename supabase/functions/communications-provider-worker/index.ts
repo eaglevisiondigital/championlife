@@ -1,0 +1,4 @@
+import {runExternalWorker,boundedBody} from '../_shared/communications/activation.mjs';
+import {rpc,enabled,runtime,resolve} from '../_shared/communications/activation-service.ts';
+import {constantTime} from '../_shared/communications/service.ts';
+Deno.serve(async(req:Request)=>{if(!enabled())return new Response('Disabled',{status:503});const key=Deno.env.get('COMMUNICATIONS_EXTERNAL_WORKER_SECRET')||'';if(key.length<32||!constantTime(req.headers.get('authorization')||'','Bearer '+key))return new Response('Unauthorized',{status:401});if(req.method!=='POST')return new Response('Method not allowed',{status:405});try{const p=JSON.parse(await boundedBody(req));if(!/^[a-f0-9-]{36}$/.test(p.organization_id||''))throw Error('Invalid scope');return Response.json(await runExternalWorker(rpc,p.organization_id,resolve,{enabled:true,runtime:runtime(),messageId:p.message_id}));}catch{return Response.json({error:'Provider worker failed'},{status:400});}});

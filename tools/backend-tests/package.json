@@ -3,10 +3,11 @@
   "type": "module",
   "devDependencies": {
     "@electric-sql/pglite": "0.5.8",
-    "jsdom": "26.1.0"
+    "jsdom": "26.1.0",
+    "nodemailer": "10.0.16"
   },
   "scripts": {
-    "test": "node login.dom.mjs && node people-staff.test.mjs && node outreach-gateway.test.mjs && node outreach-cleanup.test.mjs && node outreach-cron.test.mjs && node gateway-http.test.mjs && node outreach-workflow.test.mjs && node outreach-partner-staff.dom.mjs && node outreach-partner.dom.mjs && node site-build.test.mjs && node outreach-people.dom.mjs && node outreach-campaign.test.mjs && node outreach-prize.test.mjs && node outreach-campaign.dom.mjs && node outreach-team.test.mjs && node outreach-team.dom.mjs && node outreach-registration.test.mjs && node outreach-registration-gateway.test.mjs && node outreach-registration.dom.mjs && node outreach-prize-operations.test.mjs && node outreach-prize.dom.mjs && node outreach-event-day.test.mjs && node outreach-event-day.dom.mjs && node outreach-pre-event.test.mjs && node outreach-interest-gateway.test.mjs && node outreach-pre-event.dom.mjs && node staff-workspace.dom.mjs && node communications.test.mjs && node communications-provider.test.mjs && node communications.dom.mjs",
+    "test": "node login.dom.mjs && node people-staff.test.mjs && node outreach-gateway.test.mjs && node outreach-cleanup.test.mjs && node outreach-cron.test.mjs && node gateway-http.test.mjs && node outreach-workflow.test.mjs && node outreach-partner-staff.dom.mjs && node outreach-partner.dom.mjs && node site-build.test.mjs && node outreach-people.dom.mjs && node outreach-campaign.test.mjs && node outreach-prize.test.mjs && node outreach-campaign.dom.mjs && node outreach-team.test.mjs && node outreach-team.dom.mjs && node outreach-registration.test.mjs && node outreach-registration-gateway.test.mjs && node outreach-registration.dom.mjs && node outreach-prize-operations.test.mjs && node outreach-prize.dom.mjs && node outreach-event-day.test.mjs && node outreach-event-day.dom.mjs && node outreach-pre-event.test.mjs && node outreach-interest-gateway.test.mjs && node outreach-pre-event.dom.mjs && node staff-workspace.dom.mjs && node communications.test.mjs && node communications-provider.test.mjs && node communications.dom.mjs && node activation.test.mjs && node activation-adapter.test.mjs && node activation.dom.mjs",
     "test:login": "node login.dom.mjs",
     "test:concurrency": "node outreach-concurrency.test.mjs",
     "test:campaign": "node outreach-campaign.test.mjs && node outreach-prize.test.mjs && node outreach-campaign.dom.mjs",
@@ -24,6 +25,8 @@
     "test:pre-event-browser": "node outreach-pre-event.browser.mjs",
     "test:staff-workspace": "node staff-workspace.dom.mjs",
     "test:communications": "node communications.test.mjs && node communications-provider.test.mjs && node communications.dom.mjs",
-    "test:communications-concurrency": "node communications-concurrency.test.mjs"
+    "test:communications-concurrency": "node communications-concurrency.test.mjs",
+    "test:provider-activation": "node activation.test.mjs && node activation-adapter.test.mjs && node activation.dom.mjs",
+    "test:provider-activation-concurrency": "node activation-concurrency.test.mjs"
   }
 }
