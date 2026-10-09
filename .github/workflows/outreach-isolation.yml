@@ -1,9 +1,9 @@
 name: Isolated Outreach candidate
 on:
   pull_request:
-    branches: [main, codex/outreach-campaign-core-v1, codex/outreach-phase-b-team-travel, codex/outreach-phase-c-registration-checkin, codex/outreach-phase-d-prizes, codex/outreach-phase-e-event-day]
+    branches: [main, codex/outreach-campaign-core-v1, codex/outreach-phase-b-team-travel, codex/outreach-phase-c-registration-checkin, codex/outreach-phase-d-prizes, codex/outreach-phase-e-event-day, codex/outreach-phase-f-pre-event-automation]
   push:
-    branches: [codex/outreach-partner-production-isolation, codex/outreach-campaign-core-v1, codex/outreach-phase-b-team-travel, codex/outreach-phase-c-registration-checkin, codex/outreach-phase-d-prizes, codex/outreach-phase-e-event-day, codex/outreach-phase-f-pre-event-automation]
+    branches: [codex/outreach-partner-production-isolation, codex/outreach-campaign-core-v1, codex/outreach-phase-b-team-travel, codex/outreach-phase-c-registration-checkin, codex/outreach-phase-d-prizes, codex/outreach-phase-e-event-day, codex/outreach-phase-f-pre-event-automation, codex/staff-workspace-consolidation]
 permissions:
   contents: read
 jobs:

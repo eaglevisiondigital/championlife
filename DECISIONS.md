@@ -1,3 +1,7 @@
+## 2026-10-09 — authorized Staff Workspace consolidation
+
+Phase F is accepted at PR #12 exact head `7b883ca226ebeaa993a43dcd3a58f15dd8cfc234`; its former acceptance hold is superseded only by the user's new dependent frontend build assignment. Staff Home becomes `staff-home.html`; `staff-people.html` continues to be People & Follow-Up. Navigation derives from current server-filtered capabilities, not role labels. Existing module/denial text and guards remain authoritative. Unsupported dashboard aggregates and absent staff discipleship/admin destinations are omitted rather than fabricated. Phase G navigation is extensible but absent. Prerequisite PRs remain draft/unmerged; production, parked PR #10 and campaign activation/publication are untouched. See [navigation contract](docs/STAFF-WORKSPACE-NAVIGATION.md).
+
 # Decisions — Outreach Campaign Core v1
 
 ## 2026-10-08 — authorized Phase F build

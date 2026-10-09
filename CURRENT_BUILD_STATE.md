@@ -1,3 +1,15 @@
+# Current build state — Staff Workspace consolidation candidate
+
+Chat accepted Phase F at exact PR #12 head `7b883ca226ebeaa993a43dcd3a58f15dd8cfc234` and authorized this separate dependent frontend package before Phase G. Branch `codex/staff-workspace-consolidation` starts there and targets the still-draft Phase F branch. Production and all prerequisite PR merge states remain unchanged.
+
+Implemented: one reusable permission-projected shell/configuration across all eight existing staff pages and two new landing pages; dedicated Staff Dashboard; distinct Outreach Overview; accessible expandable groups/mobile drawer; scoped active/campaign selection; older People/Partner normal, loading, empty and denied presentation; secondary-navigation cleanup. No authorized staff discipleship/admin/Communications destination exists in this dependency, so those groups are absent. Backend authorization/workflows, migrations, Auth/SMTP/DNS, giving/merchants and SowGo `/go` are unchanged. No Phase G work.
+
+Verification: standard 27-script regression, 102 shared-shell DOM checks, 94 Christmas checks, 30 disconnected Chrome page/width combinations with 50 screenshots, 417-file allowlist build, syntax and diff checks pass. Phone tab/action wrapping defects found during visual review were corrected in scoped staff CSS.
+
+Build verification and page inventory: [Staff Workspace navigation](docs/STAFF-WORKSPACE-NAVIGATION.md). Hosted real-account acceptance and user visual approval remain separate from local synthetic browser checks; passing build tests does not authorize release.
+
+## Historical Phase F snapshot
+
 # Current build state — Phase F pre-event automation candidate
 
 Isolated hosted acceptance was authorized after the build was accepted. Acceptance project `bkbmjisprwmkptywtmih` now records Phase F migration version `20261008181857`; prior A–E ledger entries were preserved. The functional hosted checks and six real eight-worker overlapping race groups passed. Authenticated host projection, private upload, revocation and responsive browser checks are in progress; downloaded-file verification and the complete acceptance matrix are not yet certified. Exact agreement mapping and reviewed production packet publication remain activation gates.
