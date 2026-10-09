@@ -1,3 +1,7 @@
+## 2026-10-09 — Phase G communications boundary
+
+Communication tables use RLS and denied raw access, with narrow verified workspace and server-only worker RPCs. Current explicit grants, same-tenant references, constrained audience selection, separate People authority, purpose/channel consent, suppression and source recipient freshness are rechecked at claim/handoff. Bodies require communications.view, metadata/history scopes remain separate. Published content/audit immutable; uncertain handoff never blind-retried; HMAC callback plus replay ledger and bounded streaming body. Exact acceptance project runtime guard and disabled delivery preserve production. No real message or permission grant. See [Phase G security/activation contract](docs/COMMUNICATIONS-CORE-PHASE-G.md).
+
 ## 2026-10-09 — Staff Home acceptance gaps
 
 The preparation summary uses only authorized campaign IDs from the server projection and exact authenticated-user step assignments. No role inference; batch size at most four; identity/current campaign access rechecked before publishing. Failed/malformed reads omit counts; render epochs prevent stale results after sign-out. Other users, People, finance and internal operations remain governed by unchanged backend permissions.

@@ -31,10 +31,18 @@
   const data=await people('detail',{person_id:id});if(g!==generation)return;status.textContent='';const p=data.person;
   content.append(button('Back to People',()=>list()),el('h2',p.first_name+' '+p.last_name),el('p',p.email||''),el('p',p.phone||''),el('h3','Organization relationships'));
   for(const r of data.relationships||[])content.append(el('p',r.relationship+(r.active?'':' (inactive)')));
+  const actions=el('div',null,{class:'campaign-actions'});
+  if(p.phone){actions.append(el('a','Call',{href:'tel:'+encodeURIComponent(p.phone),class:'campaign-button'}),el('a','Text externally (SMS app)',{href:'sms:'+encodeURIComponent(p.phone),class:'campaign-button'}));}
+  if(p.email)actions.append(el('a','Email externally (mail app)',{href:'mailto:'+encodeURIComponent(p.email),class:'campaign-button'}));
+  if(can('communications.send'))actions.append(el('a','Send Video',{href:'staff-campaign-communications.html?organization='+encodeURIComponent(org)+'&person='+encodeURIComponent(id)+'&action=video',class:'campaign-button'}));
+  if(can('communications.send'))actions.append(el('a','Compose Email / Text',{href:'staff-campaign-communications.html?organization='+encodeURIComponent(org)+'&person='+encodeURIComponent(id),class:'campaign-button campaign-gold'}));
+  if(can('communications.delivery.view'))actions.append(el('a','Communication history',{href:'staff-campaign-communications.html?organization='+encodeURIComponent(org)+'&person='+encodeURIComponent(id),class:'campaign-button'}));
+  content.append(actions,el('p','External mail and SMS apps do not report delivery to this workspace.'));
   if(!can('followup.read'))return;
   const tasks=await request(()=>auth.client.from('followup_tasks').select('id,title,status,due_on,revision').eq('organization_id',org).eq('person_id',id).order('created_at',{ascending:false}).limit(100));if(g!==generation)return;
   // RLS-filtered empty data is not proof of continuing authority.
   await refreshPermissions();if(g!==generation)return;if(!can('followup.read')){fail(403);return}
+  if(can('followup.manage')){const form=el('div',null,{class:'campaign-panel'}),titleLabel=el('label','Task title'),title=el('input',null,{maxlength:'180'}),dueLabel=el('label','Due date'),due=el('input',null,{type:'date'});titleLabel.append(title);dueLabel.append(due);form.append(titleLabel,dueLabel,button('Create Task',async()=>{await refreshPermissions();if(g!==generation||!can('followup.manage'))return;await request(()=>auth.client.from('followup_tasks').insert({id:crypto.randomUUID(),organization_id:org,person_id:id,title:title.value,due_on:due.value||null}).select('id').single());if(g===generation)await detail(id);}));content.append(form);}
   content.append(el('h3','Follow-up tasks'));if(!tasks.length)content.append(el('p','No follow-up tasks.'));
   for(const task of tasks){const card=el('article');card.append(el('h4',task.title),el('p',task.status+' · '+(task.due_on||'No due date')));
    if(can('followup.manage')){const label=el('label','Status'),select=el('select');for(const value of ['open','completed','canceled']){const option=el('option',value,{value});option.selected=task.status===value;select.append(option)}label.append(select);card.append(label,button('Save task status',async()=>{

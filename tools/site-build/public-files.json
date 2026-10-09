@@ -416,5 +416,11 @@
   "assets/css/staff-workspace.css",
   "assets/js/staff-workspace.js",
   "assets/js/staff-dashboard.js",
-  "assets/images/kingdom-propel-logo.png"
+  "assets/images/kingdom-propel-logo.png",
+  "assets/css/communications.css",
+  "assets/js/communications.js",
+  "staff-communications.html",
+  "staff-campaign-communications.html",
+  "staff-communication-templates.html",
+  "staff-communication-activity.html"
 ]

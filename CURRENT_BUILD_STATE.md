@@ -1,3 +1,11 @@
+# Current build state — Phase G Communications Core candidate
+
+Dependent branch `codex/outreach-phase-g-communications-core` starts at accepted Staff Workspace PR #13 SHA `80d1c702679bff3a307f306ac952ac3252f53d9b`. One shared email/SMS outbox, versioned templates, scoped preview/confirmed batches, explicit consent/suppression, current-authority worker leases, safe retry/dead-letter and normalized callbacks integrate canonical People and A–F domain events. Four communications pages extend the accepted staff shell. Provider mode remains disabled except disposable acceptance sink tests. Migration/functions are local only; no hosted application or database activation.
+
+Validation and acceptance gates: [Phase G contract](docs/COMMUNICATIONS-CORE-PHASE-G.md). Local regression, six independent PostgreSQL races and disconnected responsive browser evidence are separate from hosted acceptance and release approval. PR #13/#12/#10 remain draft/unmerged, #10 parked; production unchanged. Phase H/live provider/real bulk/text-to-give not started.
+
+## Historical accepted Staff Workspace state
+
 ## 2026-10-09 — Staff Home acceptance gap closure candidate
 
 Implemented within PR #13: compact permission-aware Outreach Snapshot on Staff Home; canonical personal preparation-task summary via existing guarded Phase F reads; authorized People & Follow-Up entry; separate Quick actions. Only direct user assignments in active campaigns count; successful scoped reads required for a genuine empty state. Unsupported follow-up/approval aggregates omitted. Overview, shared navigation and exact Kingdom Propel attribution preserved. No backend/Auth/migration/production change; Phase G NOT STARTED. Local verification PASS: all 27 standard regression scripts, including 166 Staff Workspace DOM checks; 418-file allowlist build, JavaScript syntax and diff checks. Initial isolated hosted Home/Overview responsive and People revocation checks PASS. A preparation-revocation edge case found during recheck now omits personal/blocker cards when the empty API projection has no preparation authority; focused regression/build checks pass. Final-head hosted recheck pending; not yet certified for acceptance.
