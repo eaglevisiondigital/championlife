@@ -50,3 +50,21 @@ None captured in this build. The source URL `https://form.jotform.com/team/22347
 Registration identity/reference, family relation, guardian declaration, prize choices, consent domains and presence are operational concepts derived from the assignment/source intent. UI labels currently describe those native concepts. Pending: exact JotForm wording, requiredness, validation, conditional branches, waiver text/version, consent wording and exact prize guidance/options. Native `extra_fields` supports configured stable IDs, labels, text/boolean/choice types, options and requiredness; campaign prize choices are configuration, not A–H schema. A later mapping can use that configuration plus native household fields without a city schema. Notifications remain held even if source form sends mail.
 
 Work capture must review the public source without submitting real data, preserve exact questions/options/conditions/validation/signature/consent, and classify minors/contact/waiver sensitivity. Chat must approve the resulting real waiver/consent/configuration before activation. Huntsville native architecture is prepared, **not published/replacing JotForm**. Bessemer post-message decision/salvation/follow-up is distinct and unchanged.
+
+## OUTREACH AGREEMENT / PRE-CHECKLIST — Phase F
+
+### Exact captured source fields
+
+None verified from JotForm `261614615089157` in this build. Public source retrieval did not provide usable form contents. No exact wording/options/requiredness/validation/conditions/signature or consent text is asserted or guessed. Native agreement templates are intentionally unseeded; local tests use explicitly synthetic text.
+
+### Operational requirements confirmed from the documents
+
+The source flow requires an approved agreement/pre-checklist before downstream production, training and event preparation; flyer yes/no controls promotion resources; bike/tablet quantity and host versus Champion Life/SowGo procurement responsibility affect timely coordinator action; site/time, semi/load-in, permits/insurance and final packet deadlines are configurable operational inputs. They are implemented as operational configuration, not claimed as exact legacy form field mappings. Reusable resources reference the existing source packet and training playlist without hardcoding Word text into schema.
+
+### Pending fields and source policy
+
+Work must capture exact current agreement/pre-checklist questions, labels, options, requiredness, conditional logic, observed validation, acknowledgments and signature details, plus sensitivity. Chat must approve real text/schema before activation. Existing public preregistration and Huntsville team forms remain the earlier pending mapping gates; Phase F does not replace them. The packet's historical bike-winner/tablet procedure conflicts with the permanent one-prize-total rule, so a reviewed current operational packet is needed before resource publication. Private original/extracted sources are not deployed.
+
+### Future proposed additions
+
+None presented as approved policy. The native typed field/version architecture supports later explicitly reviewed additions; no fabricated source field or legal requirement is introduced.

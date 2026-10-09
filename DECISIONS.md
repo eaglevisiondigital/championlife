@@ -1,5 +1,9 @@
 # Decisions — Outreach Campaign Core v1
 
+## 2026-10-08 — authorized Phase F build
+
+Phase F branches from accepted Phase E `f41ab24dc256145fa37b9516c1aae2ef7a602a37`, targeting its unmerged draft branch; parked PR #10 and prayer PR #9 are excluded. Existing workflow steps are tasks. New host response permissions stay independent from People/registration/travel. Canonical host reuse needs explicit identity review; no email-based merge. Native exact agreement mapping/legal text remains pending instead of guessed. Production packet publication must use a reviewed version consistent with the permanent one-prize rule. Agreement/packet snapshots are immutable; date/venue changes preserve completion history and require reconfirmation. Reminders remain held/manual and require later Communications integration for delivery. Local build checks do not authorize migration/deployment, campaign activation, merge or Phase G.
+
 ## 2026-10-07 — authorized Phase E Event Day candidate
 
 Phase E branches from accepted PR #8 head `d899616a81df2a62a2957db074966073310b02c0`; parked Bessemer PR #10 is excluded. Event Day is one reusable campaign module. Packet content is seeded as a versioned published template and campaign snapshot, not hardcoded city schema. Phase B team/vehicles, Phase C check-in and Phase D prizes stay authoritative. Area duty does not grant system authority. Campaign data defines required readiness; event closeout does not close follow-up or discipleship. Full offline sync is deferred, with print/guarded CSV as fallback. Huntsville is configuration-ready but unpublished; Bessemer stays postponed and inactive. Production, merges and Phase F require later authorization.
