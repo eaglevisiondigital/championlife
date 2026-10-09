@@ -1,3 +1,11 @@
+## 2026-10-09 — Staff Home acceptance gaps
+
+Staff Home now adds a compact executive outreach snapshot and a preparation-only personal summary using existing canonical guarded Phase F context reads. No backend aggregate, task store, RPC or migration is added. Overview remains the deeper program projection.
+
+## 2026-10-09 — shared Staff Workspace candidate
+
+One opt-in static JS/CSS shell wraps the unchanged module roots/controllers. One nav configuration reads existing current staff/campaign capability projections; no role inference or new backend permission API. A dedicated personal dashboard and separate program overview use existing scoped data, omitting unavailable aggregates. Drawer/expansion, active-route matching, title/page-width and shared state visuals apply to all ten staff pages. See [navigation contract and inventory](docs/STAFF-WORKSPACE-NAVIGATION.md). No framework, Auth/database changes, production deployment or Phase G.
+
 # Architecture — Outreach Campaign Core candidate
 
 ## Phase F pre-event extension

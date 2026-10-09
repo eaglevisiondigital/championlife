@@ -410,5 +410,11 @@
   "outreach-interest.html",
   "assets/css/outreach-pre-event.css",
   "assets/js/outreach-pre-event.js",
-  "assets/js/outreach-interest.js"
+  "assets/js/outreach-interest.js",
+  "staff-home.html",
+  "staff-outreach-overview.html",
+  "assets/css/staff-workspace.css",
+  "assets/js/staff-workspace.js",
+  "assets/js/staff-dashboard.js",
+  "assets/images/kingdom-propel-logo.png"
 ]

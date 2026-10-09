@@ -6,6 +6,7 @@
  const login=()=>el('a','Sign in to your workspace',{href:'discipleship-login.html?next=%2Fstaff-people.html'});
  function fail(code){
   generation++;grants=[];org=null;content?.replaceChildren();content=null;
+  if(code!==401&&window.StaffWorkspace){window.StaffWorkspace.denied(root,'Your access is no longer available. Contact an administrator if you believe you should still have access.');return}
   root.replaceChildren(el('p',code===401?'Your session has expired. Sign in to continue.':'Your access is no longer available. Contact an administrator if you believe you should still have access.',{role:'alert'}));
   root.append(code===401?login():el('a','Return to Outreach Partner Review',{href:'staff-outreach-partners.html'}));
  }
