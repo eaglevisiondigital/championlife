@@ -1,6 +1,6 @@
 # Communications Core — Phase G build contract
 
-This candidate depends on accepted Staff Workspace PR #13 at `80d1c702679bff3a307f306ac952ac3252f53d9b`. It is an additive local build and isolated acceptance preparation. The migration and functions have **not** been applied/deployed to any hosted Supabase project. No production activation, real message, permission bootstrap, prerequisite merge, billing or Phase H is included.
+This candidate depends on accepted Staff Workspace PR #13 at `80d1c702679bff3a307f306ac952ac3252f53d9b`. It is an additive local build and isolated acceptance preparation. During authorized hosted acceptance, the corrected migration is applied only to acceptance `bkbmjisprwmkptywtmih` as `20261009174358`; sink-only worker/callback are deployed there. Hosted certification remains pending. No production activation, real message, permission bootstrap, prerequisite merge, billing or Phase H is included.
 
 ## One core and canonical boundaries
 
@@ -75,3 +75,5 @@ Disconnected browser fixtures are private test assets excluded from dist. Respon
 Next gate: Chat build review, then explicitly scoped acceptance migration/function deployment, synthetic grants/routes and sink-only hosted checks (queue/render/suppression/lifecycle/callback/six races/revocation/responsive). Carry forward accepted prerequisite evidence. Never run local fixture SQL against a hosted project. Hosted acceptance needs a separately prepared guarded runner rather than the local disposable bootstrap.
 
 Production activation requires separate approval of provider, sender ownership, consent/exemptions, opt-out/support policy, delivery reconciliation, limits/timezones/quiet hours, retention and transport secret deployment. No production Auth/SMTP/DNS/giving/merchant/SowGo /go, campaigns, PR merges or real messages changed here. Phase H is not started.
+
+Hosted upgrade correction: preserve the eight existing Check-In, Registration and Dream Team permission keys when extending the constraint/registry. A regression seeds those accepted baseline grants before Phase G; the upgrade and original grants remain valid. No old migration or existing grant is rewritten.

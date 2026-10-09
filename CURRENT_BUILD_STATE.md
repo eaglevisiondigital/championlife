@@ -4,6 +4,10 @@ Dependent branch `codex/outreach-phase-g-communications-core` starts at accepted
 
 Validation and acceptance gates: [Phase G contract](docs/COMMUNICATIONS-CORE-PHASE-G.md). Local regression, six independent PostgreSQL races and disconnected responsive browser evidence are separate from hosted acceptance and release approval. PR #13/#12/#10 remain draft/unmerged, #10 parked; production unchanged. Phase H/live provider/real bulk/text-to-give not started.
 
+## 2026-10-09 — Phase G hosted acceptance in progress
+
+The first acceptance migration attempt rolled back because Phase G omitted eight previously accepted Check-In/Registration/Dream Team permission keys. Corrected only the Phase G constraint and registry to preserve those keys; a populated-upgrade regression passes. All 30 standard scripts pass. Acceptance-only corrected migration applied as `20261009174358` (repository source `20261009154725`), preserving all 34 prior records. Sink-only functions deployed to acceptance; hosted behavior/races/browser/cleanup remain pending. Production untouched; PR #14 remains draft/unmerged; no Phase H.
+
 ## Historical accepted Staff Workspace state
 
 ## 2026-10-09 — Staff Home acceptance gap closure candidate
