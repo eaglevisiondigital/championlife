@@ -24,7 +24,8 @@
       {label:'Communications Overview',href:'staff-communications.html',capability:'commview'},
       {label:'Campaign Communications',href:'staff-campaign-communications.html',capability:'commsend'},
       {label:'Templates',href:'staff-communication-templates.html',capability:'commtemplates'},
-      {label:'Delivery Activity',href:'staff-communication-activity.html',capability:'commdelivery'}
+      {label:'Delivery Activity',href:'staff-communication-activity.html',capability:'commdelivery'},
+      {label:'Provider Settings',href:'staff-communication-providers.html',capability:'commproviders'}
     ] }
     // Future authorized destinations extend this configuration; no placeholder links.
   ];
@@ -80,7 +81,7 @@
   const hasGrant = (s, permission) => (s.staff?.grants || []).some(g => g.permission === permission && !g.department_ids);
   function allowed(s, capability) {
     if (!s?.user) return false;
-    const commKeys={commview:'communications.view',commsend:'communications.send',commtemplates:'communications.templates.view',commdelivery:'communications.delivery.view'};
+    const commKeys={commview:'communications.view',commsend:'communications.send',commtemplates:'communications.templates.view',commdelivery:'communications.delivery.view',commproviders:'communications.providers.view'};
     if(commKeys[capability])return (s.communications?.organizations||[]).some(o=>o.permissions.includes(commKeys[capability]))||(s.communications?.campaigns||[]).some(c=>(!selected||c.id===selected)&&c.permissions.includes(commKeys[capability]));
     if (capability === 'partners') return hasGrant(s, 'outreach.view');
     if (capability === 'people') return hasGrant(s, 'people.read');

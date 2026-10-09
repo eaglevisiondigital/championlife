@@ -1,3 +1,7 @@
+## October 9 — H1 provider activation build
+
+The accepted G canonical outbox/attempt/consent/audit remains the only delivery system. H1 adds environment-bound metadata controls and exact test authorizations, with separate global/org/channel/profile and message gates. A new default-off SMTP worker owns only explicitly confirmed tests; existing G sink processing excludes those rows, including lease recovery. Secret registry is server-only and must match tenant/profile/From/environment. No hosted migration, provider deployment, real message, automatic/bulk activation or Auth SMTP change. SMS and real signature verifiers remain selection/integration gates. [Contract](docs/COMMUNICATIONS-PHASE-H1-PROVIDER-ACTIVATION.md).
+
 ## 2026-10-09 — Phase G shared Communications Core
 
 A single tenant/campaign-scoped core consumes existing domain events, with canonical audience projections, versioned plain-text templates, approved sender profiles, explicit preview/confirmation batches, due-only lease/attempt worker and verified callback normalization. The service adapter is separate from workflow/People and can run only disabled or acceptance sink in this candidate. Native external actions remain explicitly unverified. No identity/task/LMS/payment duplication. See [Phase G contract](docs/COMMUNICATIONS-CORE-PHASE-G.md).
