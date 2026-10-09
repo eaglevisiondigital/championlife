@@ -20,6 +20,12 @@
       { label: 'Prize Operations', href: 'staff-outreach-prizes.html', capability: 'prizes' },
       { label: 'Event Day Command Center', href: 'staff-outreach-event-day.html', capability: 'eventday' }
     ] }
+    ,{ id: 'communications', label: 'COMMUNICATIONS', children: [
+      {label:'Communications Overview',href:'staff-communications.html',capability:'commview'},
+      {label:'Campaign Communications',href:'staff-campaign-communications.html',capability:'commsend'},
+      {label:'Templates',href:'staff-communication-templates.html',capability:'commtemplates'},
+      {label:'Delivery Activity',href:'staff-communication-activity.html',capability:'commdelivery'}
+    ] }
     // Future authorized destinations extend this configuration; no placeholder links.
   ];
   const attribution = Object.freeze({
@@ -74,8 +80,11 @@
   const hasGrant = (s, permission) => (s.staff?.grants || []).some(g => g.permission === permission && !g.department_ids);
   function allowed(s, capability) {
     if (!s?.user) return false;
+    const commKeys={commview:'communications.view',commsend:'communications.send',commtemplates:'communications.templates.view',commdelivery:'communications.delivery.view'};
+    if(commKeys[capability])return (s.communications?.organizations||[]).some(o=>o.permissions.includes(commKeys[capability]))||(s.communications?.campaigns||[]).some(c=>(!selected||c.id===selected)&&c.permissions.includes(commKeys[capability]));
     if (capability === 'partners') return hasGrant(s, 'outreach.view');
     if (capability === 'people') return hasGrant(s, 'people.read');
+    if (capability === 'workspace' && ((s.communications?.organizations||[]).length||(s.communications?.campaigns||[]).length))return true;
     if (capability === 'workspace') return (s.staff?.grants || []).length > 0 || s.organizations.length > 0 || ['campaigns','preevent','team','registration','prizes','eventday'].some(k => (s[k] || []).length);
     if (capability === 'outreach') return s.organizations.length > 0 || ['campaigns','preevent','team','registration','prizes','eventday'].some(k => rowsFor(s,k).length);
     if (capability === 'preevent') return s.organizations.length > 0 || rowsFor(s,capability).length > 0;
@@ -83,7 +92,7 @@
     return rowsFor(s,capability).length > 0;
   }
   function href(item, s = snapshot) {
-    const rows = rowsFor(s,item.capability);
+    const rows = item.capability.startsWith('comm') ? (s.communications?.campaigns||[]) : rowsFor(s,item.capability);
     if (selected && rows.length && !['workspace','outreach','people','partners'].includes(item.capability)) return item.href + '?campaign=' + encodeURIComponent(selected);
     if (item.capability === 'team' && rows.length) return item.href + '?campaign=' + encodeURIComponent(rows[0].id);
     return item.href;
@@ -119,10 +128,10 @@
     return r.data;
   }
   async function discover(user) {
-    const [staff,core,campaigns,preevent,registration,prizes,eventday] = await Promise.all([
+    const [staff,core,campaigns,preevent,registration,prizes,eventday,communications] = await Promise.all([
       read('staff_workspace_context'), read('outreach_campaign_workspace','context'), read('outreach_campaign_workspace','list'),
       read('outreach_pre_event_workspace','campaigns'),read('outreach_registration_workspace','campaigns'),
-      read('outreach_prize_workspace','campaigns'),read('outreach_event_day_workspace','campaigns')
+      read('outreach_prize_workspace','campaigns'),read('outreach_event_day_workspace','campaigns'),read('communications_workspace','context')
     ]);
     const team = [];
     const candidates = selected ? (campaigns || []).filter(c => c.id === selected) : campaigns || [];
@@ -134,7 +143,7 @@
       }));
     }
     team.sort((a,b)=>a.name.localeCompare(b.name)||a.id.localeCompare(b.id));
-    return { user,staff,organizations:core?.organizations || [],campaigns:campaigns || [],preevent:preevent || [],registration:registration || [],prizes:prizes || [],eventday:eventday || [],team,
+    return { user,staff,communications,organizations:core?.organizations || [],campaigns:campaigns || [],preevent:preevent || [],registration:registration || [],prizes:prizes || [],eventday:eventday || [],team,
       available:{campaigns:campaigns!==null,preevent:preevent!==null,registration:registration!==null,prizes:prizes!==null,eventday:eventday!==null} };
   }
   function publish(s) { snapshot=s; render(s); window.dispatchEvent(new CustomEvent('staff-workspace-context',{detail:s})); }

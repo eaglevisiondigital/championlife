@@ -1,3 +1,7 @@
+## 2026-10-09 — Phase G shared Communications Core
+
+A single tenant/campaign-scoped core consumes existing domain events, with canonical audience projections, versioned plain-text templates, approved sender profiles, explicit preview/confirmation batches, due-only lease/attempt worker and verified callback normalization. The service adapter is separate from workflow/People and can run only disabled or acceptance sink in this candidate. Native external actions remain explicitly unverified. No identity/task/LMS/payment duplication. See [Phase G contract](docs/COMMUNICATIONS-CORE-PHASE-G.md).
+
 ## 2026-10-09 — Staff Home acceptance gaps
 
 Staff Home now adds a compact executive outreach snapshot and a preparation-only personal summary using existing canonical guarded Phase F context reads. No backend aggregate, task store, RPC or migration is added. Overview remains the deeper program projection.

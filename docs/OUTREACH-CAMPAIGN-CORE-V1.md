@@ -1,3 +1,7 @@
+## Phase G Communications Core candidate
+
+Outreach uses the shared [Communications Core](COMMUNICATIONS-CORE-PHASE-G.md) for approved event/reminder routes and scoped manual/bulk batches. Canonical Phase B guardians/team, Phase C registration contacts, Phase D safe prize hooks, Phase E area roles and Phase F task/event state remain authoritative. No workflow sends directly to a provider. Local/sink build only; hosted acceptance and production activation remain separate gates.
+
 # Global Propel Outreach Campaign Core v1
 
 > Phase D extension: the accepted Phase C attendee/check-in model now has a dependent local prize-operations candidate with secure six-digit identities, configurable pools/inventory, explicit prize capabilities, server-side draw/claim serialization, household retrieval, number-only public display, held notification hooks and private backup. See [Outreach Phase D prizes](OUTREACH-PHASE-D-PRIZES.md). No campaign is enabled and no hosted/production change is included.

@@ -1,3 +1,7 @@
+## 2026-10-09 — Phase G candidate implementation decisions
+
+One Communications Core serves future modules. Initial email/SMS require explicit purpose consent with no inferred exceptions; service relationship exemptions await Chat policy. Channel/provider implementation is injected and sink-only for this build. Current source actor/recipient and campaign/task freshness are checked again at handoff, which is the revocation linearization point; uncertain handoff needs reconciliation, never blind requeue. Route approval starts future event consumption, with processed-event ledger. Inactive discipleship threshold is explicitly selected, not a platform policy default. Credits/retention/push/inbound donation are hooks, not activated products. Local tested, hosted unverified, release unapproved. See [Phase G contract](docs/COMMUNICATIONS-CORE-PHASE-G.md).
+
 ## 2026-10-09 — Staff Home acceptance gaps
 
 The two hosted acceptance gaps are closed within the existing read architecture: compact Outreach Snapshot on Staff Home plus a personal preparation-task summary. Follow-up/approval totals are intentionally omitted until a separate canonical scoped aggregate is approved. Empty-state acceptance is preparation-only, not a claim of zero work in every system. No Phase G or release authorization.
