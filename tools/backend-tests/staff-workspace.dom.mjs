@@ -114,6 +114,9 @@ for(const mode of ['anonymous','participant','campaign','host']){
  const unavailable=await harness('staff-home','campaign','',false,{failed:['outreach_pre_event_workspace']});await tick();
  ok(!unavailable.d.querySelector('#staff-dashboard').textContent.includes('Active preparation tasks'),'unsupported personal source omits numeric cards');
  ok(!unavailable.d.querySelector('#staff-dashboard').textContent.includes('Campaigns with blockers'),'unavailable readiness metric omitted');unavailable.w.close();
+ const revoked=await harness('staff-home','campaign');await tick();
+ ok(revoked.d.querySelector('#staff-dashboard').textContent.includes('Open your assigned workspace')&&!revoked.d.querySelector('#staff-dashboard').textContent.includes('Active preparation tasks'),'empty permission projection omits personal counts after preparation revocation');
+ ok(!revoked.d.querySelector('#staff-dashboard').textContent.includes('Campaigns with blockers'),'empty unauthorized preparation projection omits blocker count');revoked.w.close();
 }
 {
  const h=await harness('staff-home','host');await tick();

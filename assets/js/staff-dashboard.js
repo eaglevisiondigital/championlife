@@ -11,7 +11,7 @@
   const date=c=>c.event_start?new Date(c.event_start).toLocaleString(undefined,{timeZone:c.timezone||undefined,dateStyle:'medium',timeStyle:'short'}):'Date to be confirmed';
   function metrics(p,values){const grid=el('div',null,{class:'staff-dashboard-metrics'});for(const[label,value]of values){if(!Number.isFinite(value))continue;const c=el('div',null,{class:'staff-dashboard-metric'});c.append(el('span',label),el('strong',String(value)));grid.append(c);}p.append(grid);}
   async function personalWork(p,s,g){
-    if(!s.available.preevent){p.append(el('p','Open your assigned workspace to review available work.',{class:'staff-empty'}));return;}
+    if(!s.available.preevent||!shell.allowed(s,'preevent')){p.append(el('p','Open your assigned workspace to review available work.',{class:'staff-empty'}));return;}
     const status=el('p','Checking your preparation tasks…',{role:'status'});p.append(status);
     const campaigns=s.preevent.filter(active),tasks=[];
     try{
@@ -76,7 +76,7 @@
         const available=['campaigns','preevent','registration','prizes','eventday'].some(key=>s.available[key]);
         const current=[...rows.values()].filter(active),values=[];
         if(available)values.push(['Active campaigns',current.length],['Upcoming campaigns',current.filter(c=>c.event_start&&new Date(c.event_start)>=new Date()).length]);
-        if(s.available.preevent&&s.preevent.filter(active).every(c=>typeof c.ready==='boolean'))values.push(['Campaigns with blockers',s.preevent.filter(c=>active(c)&&!c.ready).length]);
+        if(s.available.preevent&&shell.allowed(s,'preevent')&&s.preevent.filter(active).every(c=>typeof c.ready==='boolean'))values.push(['Campaigns with blockers',s.preevent.filter(c=>active(c)&&!c.ready).length]);
         metrics(p,values);p.append(el('p','Counts cover the outreach campaigns you can access.'));
         const next=current.filter(c=>c.event_start&&new Date(c.event_start)>=new Date()).sort((a,b)=>new Date(a.event_start)-new Date(b.event_start))[0];
         if(next)item(p,'Next outreach: '+next.name,date(next),'staff-outreach-overview.html','Overview');
