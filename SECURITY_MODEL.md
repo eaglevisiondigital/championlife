@@ -1,3 +1,7 @@
+## 2026-10-09 — Staff Home acceptance gaps
+
+The preparation summary uses only authorized campaign IDs from the server projection and exact authenticated-user step assignments. No role inference; batch size at most four; identity/current campaign access rechecked before publishing. Failed/malformed reads omit counts; render epochs prevent stale results after sign-out. Other users, People, finance and internal operations remain governed by unchanged backend permissions.
+
 ## 2026-10-09 — Staff Workspace presentation boundary
 
 Shared navigation reads existing live server capability projections; hidden links never authorize operations. Selected campaign scope, department-limited grants, host/participant denial and identity-change stale-response rejection are explicit. Poll/focus/denial rechecks refresh navigation; existing module request/poll guards still clear protected content. Group expansion is the only persisted shell preference. No RLS, permission semantics, grant, migration, session/Auth policy or production change. See [navigation contract](docs/STAFF-WORKSPACE-NAVIGATION.md).

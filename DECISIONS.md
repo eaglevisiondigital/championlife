@@ -1,3 +1,7 @@
+## 2026-10-09 — Staff Home acceptance gaps
+
+The two hosted acceptance gaps are closed within the existing read architecture: compact Outreach Snapshot on Staff Home plus a personal preparation-task summary. Follow-up/approval totals are intentionally omitted until a separate canonical scoped aggregate is approved. Empty-state acceptance is preparation-only, not a claim of zero work in every system. No Phase G or release authorization.
+
 ## 2026-10-09 — permanent Kingdom Propel attribution
 
 CUSTOM-BRANDED KINGDOM PROPEL IMPLEMENTATIONS RETAIN “POWERED BY KINGDOM PROPEL” ATTRIBUTION USING THE APPROVED KINGDOM PROPEL LOGO.
