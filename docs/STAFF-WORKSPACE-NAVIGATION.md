@@ -8,9 +8,19 @@ This frontend package starts at accepted Phase F / PR #12 exact head `7b883ca226
 
 All ten staff pages opt in with `data-staff-workspace` and load `staff-workspace.js` after the established auth/common scripts. The shared script creates one sidebar/header around the existing main element and preserves module roots/controllers. Page HTML contains no sidebar/menu definition. One navigation configuration holds group, label, destination, capability key and pathname match. `.html` and clean route matching are equivalent. No framework or second authentication system is introduced.
 
-`staff-workspace.css` is scoped to opted-in pages. It defines the dark 232px desktop sidebar, gold active parent/child, cream workspace, proportional headings, header, cards and states. A 272px bounded drawer replaces the sidebar below 1044px; the closed sidebar is inert. Opening focuses Close, traps keyboard focus, inerts the content and exposes `aria-expanded`; Escape/backdrop/Close return focus to Menu. Reduced motion and print layouts are supported. Long labels wrap at words. Primary sections use accessible buttons and `aria-controls`/`aria-expanded`. Optional local storage holds group expansion preferences only; the active group reopens on navigation/refresh. Users may explicitly collapse it while viewing the page. Storage failure does not affect access or navigation.
+`staff-workspace.css` is scoped to opted-in pages. It defines the dark 232px desktop sidebar, gold active parent/child, cream workspace, proportional headings, header, cards and states. A 272px bounded drawer replaces the sidebar below 1024px; the closed sidebar is inert. Opening focuses Close, traps keyboard focus, inerts the content and exposes `aria-expanded`; Escape/backdrop/Close return focus to Menu. Reduced motion and print layouts are supported. Long labels wrap at words. Primary sections use accessible buttons and `aria-controls`/`aria-expanded`. Optional local storage holds group expansion preferences only; the active group reopens on navigation/refresh. Users may explicitly collapse it while viewing the page. Storage failure does not affect access or navigation.
 
 Current navigation: HOME / Staff Dashboard; OUTREACH / Outreach Overview, Opportunities & Pre-Event, Campaigns, Partner Intakes, People & Follow-Up; EVENT OPERATIONS / Team & Travel, Registration & Check-In, Prize Operations, Event Day Command Center. No authorized staff discipleship or administration page exists in this dependency checkout. Learner `my-discipleship.html` is not mislabeled as staff progress. COMMUNICATIONS has no implemented destination and remains absent.
+
+## Permanent platform attribution
+
+CUSTOM-BRANDED KINGDOM PROPEL IMPLEMENTATIONS RETAIN “POWERED BY KINGDOM PROPEL” ATTRIBUTION USING THE APPROVED KINGDOM PROPEL LOGO.
+
+Church/ministry branding and custom colors remain primary. Custom Champion Life, SowGo, outreach portals, giving platforms and ministry dashboards retain a discreet platform mark; standard multi-tenant installations may instead use full Kingdom Propel branding. This task applies the convention only to the shared Staff Workspace, not those future implementations.
+
+The one shared `attribution` descriptor holds label, approved image, destination, alt text and accessible link label. The bottom sidebar/drawer renders “Powered By” above `assets/images/kingdom-propel-logo.png`, copied byte-for-byte from the user's approved PNG. No redesign, recoloring, compression or cropping. The 3:1 image is bounded to 180px width with automatic height, subordinate to the Champion Life top brand.
+
+The entire block is a native anchor to `https://kingdompropel.com`, `target="_blank"`, `rel="noopener noreferrer"`, descriptive image alt and an external-link accessible label. Existing visible focus treatment and drawer keyboard behavior include it. Navigation uses native link activation, with no JavaScript click handler; once the existing JS shell is rendered, the link also works with script execution disabled. No tenant branding engine or permission change.
 
 ## Permission projection
 
@@ -64,6 +74,10 @@ Existing denial copy and 401/session destinations remain module-specific, with c
 Add a legitimate published HTML destination, its allowlisted assets and one configuration entry; derive visibility from a current server permission projection. Extend discovery only with a bounded read projection. Add active-match, direct-URL denial/revocation, mobile keyboard and scoped-navigation tests. Never add a dead placeholder or infer capability from a role label. Preserve the existing module's guards and data-clearing lifecycle.
 
 Phase G can later add COMMUNICATIONS / Inbox & Messages, Campaign Communications, Templates, Delivery & Activity through the same configuration **only when that package and its permissions are authorized**. No Phase G schema, page, provider or delivery behavior is implemented here.
+
+## Approved attribution verification
+
+Attribution polish passes 147 focused shell checks (including all existing permission/navigation/revocation regressions), exact PNG SHA-256 equality, safe native anchor attributes, descriptive alt/label, keyboard focus wrapping and visible focus. Chrome tests render all ten pages at 390/768/1440, check loaded natural dimensions and 3:1 aspect ratio, bound the mark to 180px with no clipping/overflow, and prove native external-link activation with script execution disabled and no opener. A separate 390x844 drawer check proves attribution remains reachable through normal drawer scrolling. The current allowlist build contains 418 public files; private evidence remains excluded. The earlier consolidation results below are preserved as history.
 
 ## Verification / release gate
 

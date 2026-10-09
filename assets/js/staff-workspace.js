@@ -22,6 +22,10 @@
     ] }
     // Future authorized destinations extend this configuration; no placeholder links.
   ];
+  const attribution = Object.freeze({
+    label: 'Powered By', logo: 'assets/images/kingdom-propel-logo.png', href: 'https://kingdompropel.com',
+    alt: 'Kingdom Propel by EagleVision', accessibleLabel: 'Powered by Kingdom Propel — opens KingdomPropel.com in a new tab'
+  });
   const original = document.querySelector('main');
   const shell = el('div', null, { class: 'staff-shell' });
   const sidebar = el('aside', null, { class: 'staff-sidebar', id: 'staff-navigation', 'aria-label': 'Staff workspace navigation' });
@@ -29,8 +33,8 @@
   brand.append(el('img', null, { src: 'assets/images/logo-gold.png', alt: 'Champion Life Church' }));
   const close = el('button', 'Close menu', { type: 'button', class: 'staff-close' });
   const nav = el('nav', null, { 'aria-label': 'Staff Workspace' });
-  const foot = el('div', null, { class: 'staff-sidebar-foot' });
-  foot.append(el('strong', 'Global Propel'), el('small', 'Powered by Kingdom Propel'));
+  const foot = el('a', null, { class: 'staff-sidebar-foot', href: attribution.href, target: '_blank', rel: 'noopener noreferrer', 'aria-label': attribution.accessibleLabel });
+  foot.append(el('span', attribution.label), el('img', null, { src: attribution.logo, alt: attribution.alt, width: '180', height: '60' }));
   sidebar.append(brand, el('p', 'STAFF WORKSPACE', { class: 'staff-eyebrow' }), close, nav, foot);
   const backdrop = el('button', null, { type: 'button', class: 'staff-backdrop', 'aria-label': 'Close navigation', tabindex: '-1' });
   const column = el('div', null, { class: 'staff-column' });
@@ -182,6 +186,6 @@
     }
   });
   observer.observe(original,{subtree:true,childList:true,characterData:true});
-  window.StaffWorkspace={configuration,allowed,href,refresh,denied,state,selectCampaign(id) { selected=id; if(snapshot)render(snapshot); },get context(){return snapshot;}};
+  window.StaffWorkspace={configuration,attribution,allowed,href,refresh,denied,state,selectCampaign(id) { selected=id; if(snapshot)render(snapshot); },get context(){return snapshot;}};
   render(null); refresh();
 })();

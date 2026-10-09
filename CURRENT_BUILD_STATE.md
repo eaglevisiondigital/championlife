@@ -1,3 +1,7 @@
+## 2026-10-09 — approved Kingdom Propel attribution polish
+
+User authorized permanent “Powered By” plus the exact approved Kingdom Propel logo in the shared Staff Workspace sidebar/drawer, from PR #13 accepted build head `9d9eda8d75159075e138b135d7f6c1a60b410004`. One shared descriptor/native anchor supplies the treatment to all ten pages. Asset copied unchanged to `assets/images/kingdom-propel-logo.png`; platform attribution rule documented. Verification: 147 shared-shell DOM checks, 30 disconnected responsive Chrome page/width renders plus a short-phone drawer check, native link activation with scripts disabled, unchanged-logo byte hash, 418-file allowlist build, syntax and diff checks pass. No navigation/capability/backend/Auth/giving/production change; PR #13 remains draft/unmerged; Phase G not started.
+
 # Current build state — Staff Workspace consolidation candidate
 
 Chat accepted Phase F at exact PR #12 head `7b883ca226ebeaa993a43dcd3a58f15dd8cfc234` and authorized this separate dependent frontend package before Phase G. Branch `codex/staff-workspace-consolidation` starts there and targets the still-draft Phase F branch. Production and all prerequisite PR merge states remain unchanged.

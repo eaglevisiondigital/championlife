@@ -1,3 +1,9 @@
+## 2026-10-09 — permanent Kingdom Propel attribution
+
+CUSTOM-BRANDED KINGDOM PROPEL IMPLEMENTATIONS RETAIN “POWERED BY KINGDOM PROPEL” ATTRIBUTION USING THE APPROVED KINGDOM PROPEL LOGO.
+
+The ministry/church brand remains primary and may use custom colors/layout. A discreet approved logo attribution is permanent for custom/semi-white-label implementations; standard multi-tenant installations may use full Kingdom Propel branding. The first application is the shared Staff Workspace sidebar/drawer in PR #13: exact supplied PNG, native external link to KingdomPropel.com, safe new-tab attributes and accessible focus/label. Future shells can reuse the descriptor/asset; no full branding engine or unrelated product changes are included. Production and Phase G remain unchanged/not started.
+
 ## 2026-10-09 — authorized Staff Workspace consolidation
 
 Phase F is accepted at PR #12 exact head `7b883ca226ebeaa993a43dcd3a58f15dd8cfc234`; its former acceptance hold is superseded only by the user's new dependent frontend build assignment. Staff Home becomes `staff-home.html`; `staff-people.html` continues to be People & Follow-Up. Navigation derives from current server-filtered capabilities, not role labels. Existing module/denial text and guards remain authoritative. Unsupported dashboard aggregates and absent staff discipleship/admin destinations are omitted rather than fabricated. Phase G navigation is extensible but absent. Prerequisite PRs remain draft/unmerged; production, parked PR #10 and campaign activation/publication are untouched. See [navigation contract](docs/STAFF-WORKSPACE-NAVIGATION.md).

@@ -15,12 +15,18 @@ const A='11111111-1111-4111-8111-111111111111',row={...pre.campaign,id:A,name:'S
 const cases=['staff-home','staff-outreach-overview','staff-outreach-pre-event','staff-outreach-campaigns','staff-outreach-team','staff-outreach-registration','staff-outreach-prizes','staff-outreach-event-day','staff-outreach-partners','staff-people'];
 const fixtures={pre,packet,opportunities,team,prize,eventday,row,registration:{context:registrationResponse('outreach_registration_workspace',{p_action:'context'}),list:registrationResponse('outreach_registration_workspace',{p_action:'list'})}};
 const report=[];
+async function checkAttribution(p){
+ const mark=p.locator('.staff-sidebar-foot');await mark.scrollIntoViewIfNeeded();
+ const size=await mark.evaluate(n=>{const i=n.querySelector('img'),r=i.getBoundingClientRect(),link=n.getBoundingClientRect();return{left:r.left,right:r.right,bottom:r.bottom,width:r.width,height:r.height,naturalWidth:i.naturalWidth,naturalHeight:i.naturalHeight,label:n.getAttribute('aria-label'),target:n.target,rel:n.rel,linkHeight:link.height,viewport:innerWidth,viewportHeight:innerHeight};});
+ assert.equal(size.naturalWidth,2172);assert.equal(size.naturalHeight,724);assert(Math.abs(size.width/size.height-3)<.01);assert(size.width<=180&&size.width>=150);assert(size.left>=0&&size.right<=size.viewport&&size.bottom<=size.viewportHeight+1);assert(size.linkHeight<=110);assert.equal(size.target,'_blank');assert.equal(size.rel,'noopener noreferrer');assert(size.label.includes('in a new tab'));
+}
+
 try{
  for(const width of [390,768,1440]){
   const p=await browser.newPage({viewport:{width,height:1050}}),errors=[];
   p.on('pageerror',e=>errors.push(e.message));
   p.on('console',m=>{if(m.type()==='error')errors.push(m.text());});
-  await p.route('**/*',async route=>{
+  await p.context().route('**/*',async route=>{
    const u=new URL(route.request().url()),path=u.pathname.slice(1);
    if(u.hostname!=='preview.example.test'||['assets/js/champion-life-auth.js','assets/js/supabase-config.js'].includes(path)){await route.fulfill({contentType:'text/javascript',body:'/* disconnected synthetic rendering */'});return;}
    const file=resolve(root,path);assert(file.startsWith(root+'/'));
@@ -53,9 +59,18 @@ try{
    const sizes=await p.evaluate(()=>({width:innerWidth,scroll:document.documentElement.scrollWidth,sidebars:document.querySelectorAll('.staff-sidebar').length,headings:[...document.querySelectorAll('main h1')].map(n=>n.textContent)}));
    assert.equal(sizes.width,width);assert(sizes.scroll<=width,`${page} ${width} overflow ${sizes.scroll}`);assert.equal(sizes.sidebars,1);assert.equal(errors.length,0,errors.join('; '));
    if(width===390&&['staff-outreach-prizes','staff-outreach-registration'].includes(page)){const actionWidths=await p.locator(page==='staff-outreach-prizes'?'.prize-current-actions button':'.campaign-heading>.registration-actions button').evaluateAll(nodes=>nodes.map(n=>n.getBoundingClientRect().width));assert(actionWidths.length>0);assert(actionWidths.every(w=>w>=140),'phone module actions are readable');}
+   if(width===1440)await checkAttribution(p);
    await p.screenshot({path:join(out,width+'-'+page+'.png'),fullPage:true});
-   if(width<1024){await p.getByRole('button',{name:'Menu',exact:true}).click();await p.getByRole('button',{name:'Close menu',exact:true}).waitFor({state:'visible'});assert.equal(await p.locator('.staff-menu').getAttribute('aria-expanded'),'true');await p.waitForFunction(()=>Math.abs(document.querySelector('.staff-sidebar').getBoundingClientRect().left)<1);assert(await p.locator('.staff-column').evaluate(n=>n.inert));await p.screenshot({path:join(out,width+'-'+page+'-menu.png'),fullPage:true});await p.keyboard.press('Escape');assert.equal(await p.locator('.staff-menu').getAttribute('aria-expanded'),'false');}
-   report.push({page,width,overflow:false,consoleErrors:0,sidebarCount:1});
+   if(width<1024){await p.getByRole('button',{name:'Menu',exact:true}).click();await p.getByRole('button',{name:'Close menu',exact:true}).waitFor({state:'visible'});assert.equal(await p.locator('.staff-menu').getAttribute('aria-expanded'),'true');await p.waitForFunction(()=>Math.abs(document.querySelector('.staff-sidebar').getBoundingClientRect().left)<1);assert(await p.locator('.staff-column').evaluate(n=>n.inert));await checkAttribution(p);await p.screenshot({path:join(out,width+'-'+page+'-menu.png'),fullPage:true});await p.keyboard.press('Escape');assert.equal(await p.locator('.staff-menu').getAttribute('aria-expanded'),'false');}
+   if(width===390&&page==='staff-home'){
+    await p.setViewportSize({width:390,height:844});await p.getByRole('button',{name:'Menu',exact:true}).click();await p.waitForFunction(()=>Math.abs(document.querySelector('.staff-sidebar').getBoundingClientRect().left)<1);await checkAttribution(p);await p.screenshot({path:join(out,'390x844-attribution-drawer.png')});await p.keyboard.press('Escape');await p.setViewportSize({width:390,height:1050});
+   }
+   if(width===1440&&page==='staff-home'){
+    const mark=p.locator('.staff-sidebar-foot');await p.keyboard.press('Tab');await mark.focus();assert(await mark.evaluate(n=>getComputedStyle(n).outlineStyle==='solid'&&getComputedStyle(n).outlineWidth==='3px'));
+    const box=await mark.boundingBox(),session=await p.context().newCDPSession(p);await session.send('Emulation.setScriptExecutionDisabled',{value:true});
+    try{const pending=p.waitForEvent('popup',{timeout:4000});await session.send('Input.dispatchMouseEvent',{type:'mousePressed',x:box.x+box.width/2,y:box.y+box.height/2,button:'left',clickCount:1});await session.send('Input.dispatchMouseEvent',{type:'mouseReleased',x:box.x+box.width/2,y:box.y+box.height/2,button:'left',clickCount:1});const popup=await pending;await popup.waitForLoadState('domcontentloaded');assert.equal(popup.url(),'https://kingdompropel.com/');assert.equal(await popup.evaluate(()=>window.opener),null);await popup.close();}finally{await session.send('Emulation.setScriptExecutionDisabled',{value:false});await session.detach();}
+   }
+   report.push({page,width,overflow:false,consoleErrors:0,sidebarCount:1,approvedAttribution:true});
   }
   await p.close();
  }
