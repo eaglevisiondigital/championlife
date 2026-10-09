@@ -1,5 +1,9 @@
 # Current build state — Phase F pre-event automation candidate
 
+Isolated hosted acceptance was authorized after the build was accepted. Acceptance project `bkbmjisprwmkptywtmih` now records Phase F migration version `20261008181857`; prior A–E ledger entries were preserved. The functional hosted checks and six real eight-worker overlapping race groups passed. Authenticated host projection, private upload, revocation and responsive browser checks are in progress; downloaded-file verification and the complete acceptance matrix are not yet certified. Exact agreement mapping and reviewed production packet publication remain activation gates.
+
+Hosted review found a campaign-board time formatting defect: the viewer's timezone was used beside the campaign timezone label. The board now formats each event using that row's campaign timezone. Focused DOM regression covers Toronto and Brussels in the same board. Scheduling data, deadlines, authorization and production are unchanged. PR #12 remains a dependent draft; hosted acceptance is not release authorization. Private test evidence remains outside the public repository.
+
 Chat accepted Phase E at exact PR #11 head `f41ab24dc256145fa37b9516c1aae2ef7a602a37` and authorized the dependent Phase F build. Branch `codex/outreach-phase-f-pre-event-automation` targets `codex/outreach-phase-e-event-day`; PR #10 stays parked and PR #9 is untouched. Production main remains `e1f75f917f9a1e6e16e0b8f9bc5d7b52fbf0a424`.
 
 Implemented: disabled service-gated interest intake, opportunity pipeline/manual creation, explicitly reviewed canonical host conversion, campaign-only host portal/contacts, immutable configurable 18-step workflow, native versioned agreement architecture, conditional procurement/flyer hooks, private versioned documents/resources, own training, task/reminder/escalation/stale states, date/venue reconfirmation, filtered campaign dashboards and canonical immutable private Event Packet/print.
