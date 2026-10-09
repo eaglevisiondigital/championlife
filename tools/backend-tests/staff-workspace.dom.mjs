@@ -66,5 +66,8 @@ for(const mode of ['anonymous','participant','campaign','host']){
 {
  const h=await harness('staff-outreach-partners'),status=h.w.OutreachUI.el('p','Loading intakes…',{role:'status'});h.d.querySelector('main').append(status);await tick();ok(status.classList.contains('staff-loading'),'shared loading treatment');status.textContent='';await tick();ok(!status.classList.contains('staff-loading'),'loading treatment removed after status clears');h.w.close();
 }
+{
+ const h=await harness('staff-outreach-prizes'),root=h.d.querySelector('#outreach-prize-app');root.replaceChildren(h.w.OutreachUI.el('h1','Choose a campaign'));await tick();ok(root.querySelector('.staff-campaign-choice')?.textContent.includes('contact your coordinator'),'empty campaign chooser provides clear next step');root.append(h.w.OutreachUI.el('a','Available campaign',{href:'staff-outreach-prizes.html?campaign='+A}));await tick();ok(root.querySelectorAll('.staff-campaign-choice').length===1&&root.querySelector('a').getAttribute('href').endsWith(A),'chooser help preserves real campaign actions without duplication');h.w.close();
+}
 const css=read('assets/css/staff-workspace.css');ok(css.includes('@media(max-width:1023px)')&&css.includes('@media(max-width:600px)'),'drawer for phone/tablet and desktop sidebar');ok(css.includes('minmax(0,1fr)')&&css.includes('width:272px;max-width:86vw'),'bounded responsive layout');ok(!read('assets/js/outreach-campaigns.js').includes("tabs.append(el('a','Registration & check-in'"),'no primary module links duplicated in campaign tabs');
 console.log(checks+' Staff Workspace DOM checks passed');

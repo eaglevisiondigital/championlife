@@ -170,9 +170,14 @@
       n.classList.add('staff-state');
       if(!seenDenials.has(n)) { seenDenials.add(n); refresh(); }
     }
+    for(const heading of original.querySelectorAll('h1')) {
+      if(/^Choose (?:an outreach |a )?campaign$/i.test(heading.textContent.trim()) && !heading.nextElementSibling?.classList.contains('staff-campaign-choice')) {
+        heading.after(el('p','Select an available campaign below. If none are listed, contact your coordinator about campaign access.',{class:'staff-empty staff-campaign-choice'}));
+      }
+    }
     for(const n of original.querySelectorAll('p')) {
       if(n.closest('.staff-state'))continue;
-      if(/^(No (campaign|household|outreach partner intake|matching contact|follow-up task)|Choose an outreach campaign)/i.test(n.textContent.trim())) n.classList.add('staff-empty');
+      if(/^(No (campaign|household|outreach partner intake|matching contact|follow-up task|applicant|active opportunit|event|prize|eligible)|Choose an outreach campaign)/i.test(n.textContent.trim())) n.classList.add('staff-empty');
       n.classList.toggle('staff-loading',n.getAttribute('role')==='status' && /Loading|Checking/i.test(n.textContent));
     }
   });
