@@ -1,9 +1,9 @@
 name: Isolated Outreach candidate
 on:
   pull_request:
-    branches: [main, codex/outreach-campaign-core-v1, codex/outreach-phase-b-team-travel, codex/outreach-phase-c-registration-checkin, codex/outreach-phase-d-prizes, codex/outreach-phase-e-event-day, codex/outreach-phase-f-pre-event-automation, codex/staff-workspace-consolidation, codex/outreach-phase-g-communications-core]
+    branches: [main, codex/outreach-campaign-core-v1, codex/outreach-phase-b-team-travel, codex/outreach-phase-c-registration-checkin, codex/outreach-phase-d-prizes, codex/outreach-phase-e-event-day, codex/outreach-phase-f-pre-event-automation, codex/staff-workspace-consolidation, codex/outreach-phase-g-communications-core, codex/communications-phase-h1-provider-activation]
   push:
-    branches: [codex/outreach-partner-production-isolation, codex/outreach-campaign-core-v1, codex/outreach-phase-b-team-travel, codex/outreach-phase-c-registration-checkin, codex/outreach-phase-d-prizes, codex/outreach-phase-e-event-day, codex/outreach-phase-f-pre-event-automation, codex/staff-workspace-consolidation, codex/outreach-phase-g-communications-core, codex/communications-phase-h1-provider-activation]
+    branches: [codex/outreach-partner-production-isolation, codex/outreach-campaign-core-v1, codex/outreach-phase-b-team-travel, codex/outreach-phase-c-registration-checkin, codex/outreach-phase-d-prizes, codex/outreach-phase-e-event-day, codex/outreach-phase-f-pre-event-automation, codex/staff-workspace-consolidation, codex/outreach-phase-g-communications-core, codex/communications-phase-h1-provider-activation, codex/giv-1-giving-core]
 permissions:
   contents: read
 jobs:
@@ -25,5 +25,6 @@ jobs:
       - run: TEST_POSTGRES_BIN="$(pg_config --bindir)" npm run test:pre-event-concurrency --prefix tools/backend-tests
       - run: TEST_POSTGRES_BIN="$(pg_config --bindir)" npm run test:communications-concurrency --prefix tools/backend-tests
       - run: TEST_POSTGRES_BIN="$(pg_config --bindir)" npm run test:provider-activation-concurrency --prefix tools/backend-tests
+      - run: TEST_POSTGRES_BIN="$(pg_config --bindir)" npm run test:giving-concurrency --prefix tools/backend-tests
       - run: npx --yes deno@2.9.6 check supabase/functions/communications-provider-worker/index.ts supabase/functions/communications-provider-admin/index.ts supabase/functions/communications-provider-callback/index.ts
       - run: git diff --check

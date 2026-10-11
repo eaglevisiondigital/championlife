@@ -32,5 +32,6 @@ export const migrationOrder=[
   "20261007221218_outreach_phase_e_template_clone_version.sql",
   "20261008134746_outreach_phase_f_pre_event_automation.sql",
   "20261009154725_outreach_phase_g_communications_core.sql",
-  "20261009212523_communications_phase_h1_provider_activation.sql"
+  "20261009212523_communications_phase_h1_provider_activation.sql",
+  "20261010202812_giving_core_giv_1.sql"
 ];

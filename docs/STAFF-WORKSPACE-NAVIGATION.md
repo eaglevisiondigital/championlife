@@ -1,3 +1,7 @@
+## GIV-1 Giving / Finance extension
+
+The current finance context comes from guarded `giving_workspace(context)`, with current explicitly authorized organization IDs and finance capabilities. Ten finance navigation entries include Manual Entry; Gift Detail is a ledger drill-down. The selected organization is retained only if authorized. Finance permission does not imply communications, outreach, People administration or another tenant. The same primary Champion Life brand and exact Kingdom Propel attribution are retained. See [GIV-1](GIVING-CORE-GIV-1.md).
+
 # Staff Workspace navigation
 
 ## Candidate and boundaries
