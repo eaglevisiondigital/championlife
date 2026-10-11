@@ -27,6 +27,18 @@
       {label:'Delivery Activity',href:'staff-communication-activity.html',capability:'commdelivery'},
       {label:'Provider Settings',href:'staff-communication-providers.html',capability:'commproviders'}
     ] }
+    ,{ id: 'giving', label: 'GIVING / FINANCE', children: [
+      {label:'Giving Overview',href:'staff-giving-overview.html',capability:'financereports'},
+      {label:'Gifts',href:'staff-giving-gifts.html',capability:'financegifts'},
+      {label:'Manual Entry',href:'staff-giving-manual.html',capability:'financecreate'},
+      {label:'Donors',href:'staff-giving-donors.html',capability:'financegifts'},
+      {label:'Funds',href:'staff-giving-funds.html',capability:'financefunds'},
+      {label:'Pledges',href:'staff-giving-pledges.html',capability:'financepledges'},
+      {label:'Recurring Giving',href:'staff-giving-recurring.html',capability:'financerecurring'},
+      {label:'Batches & Reconciliation',href:'staff-giving-batches.html',capability:'financebatches'},
+      {label:'Reports',href:'staff-giving-reports.html',capability:'financereports'},
+      {label:'Merchant Configuration',href:'staff-giving-merchants.html',capability:'financemerchants'}
+    ] }
     // Future authorized destinations extend this configuration; no placeholder links.
   ];
   const attribution = Object.freeze({
@@ -81,6 +93,9 @@
   const hasGrant = (s, permission) => (s.staff?.grants || []).some(g => g.permission === permission && !g.department_ids);
   function allowed(s, capability) {
     if (!s?.user) return false;
+    const financeKeys={financereports:'finance.reports.read',financegifts:'finance.gifts.read',financecreate:'finance.gifts.create',financefunds:'finance.read',financepledges:'finance.pledges.read',financerecurring:'finance.recurring.read',financebatches:'finance.reconciliation.read',financemerchants:'finance.merchant.configure'};
+    if(financeKeys[capability])return (s.giving?.organizations||[]).some(o=>o.permissions.includes(financeKeys[capability]));
+    if(capability==='workspace'&&(s.giving?.organizations||[]).length)return true;
     const commKeys={commview:'communications.view',commsend:'communications.send',commtemplates:'communications.templates.view',commdelivery:'communications.delivery.view',commproviders:'communications.providers.view'};
     if(commKeys[capability])return (s.communications?.organizations||[]).some(o=>o.permissions.includes(commKeys[capability]))||(s.communications?.campaigns||[]).some(c=>(!selected||c.id===selected)&&c.permissions.includes(commKeys[capability]));
     if (capability === 'partners') return hasGrant(s, 'outreach.view');
@@ -93,6 +108,7 @@
     return rowsFor(s,capability).length > 0;
   }
   function href(item, s = snapshot) {
+    if(item.capability.startsWith('finance')){const org=new URLSearchParams(location.search).get('organization');const scopes=s.giving?.organizations||[];const candidates=scopes.filter(o=>allowed({user:s.user,giving:{organizations:[o]}},item.capability));const chosen=candidates.find(o=>o.id===org)||candidates[0];return item.href+(chosen?'?organization='+encodeURIComponent(chosen.id):'');}
     const rows = item.capability.startsWith('comm') ? (s.communications?.campaigns||[]) : rowsFor(s,item.capability);
     if (selected && rows.length && !['workspace','outreach','people','partners'].includes(item.capability)) return item.href + '?campaign=' + encodeURIComponent(selected);
     if (item.capability === 'team' && rows.length) return item.href + '?campaign=' + encodeURIComponent(rows[0].id);
@@ -120,7 +136,7 @@
     if (!nav.children.length) nav.append(el('p', 'No staff sections assigned.', { class: 'staff-nav-status' }));
   }
   async function read(name, action, payload = {}, campaign = null) {
-    const args = name === 'staff_workspace_context' ? {} : { p_action: action, p_campaign: campaign, p_payload: payload };
+    const args = name === 'giving_workspace' ? {p_action:action,p_org:null,p_payload:payload} : name === 'staff_workspace_context' ? {} : { p_action: action, p_campaign: campaign, p_payload: payload };
     const r = await auth.client.rpc(name,args);
     if (r.error) {
       if (['42501','PGRST202','42883'].includes(r.error.code) || [401,403].includes(r.status)) return null;
@@ -129,10 +145,10 @@
     return r.data;
   }
   async function discover(user) {
-    const [staff,core,campaigns,preevent,registration,prizes,eventday,communications] = await Promise.all([
+    const [staff,core,campaigns,preevent,registration,prizes,eventday,communications,giving] = await Promise.all([
       read('staff_workspace_context'), read('outreach_campaign_workspace','context'), read('outreach_campaign_workspace','list'),
       read('outreach_pre_event_workspace','campaigns'),read('outreach_registration_workspace','campaigns'),
-      read('outreach_prize_workspace','campaigns'),read('outreach_event_day_workspace','campaigns'),read('communications_workspace','context')
+      read('outreach_prize_workspace','campaigns'),read('outreach_event_day_workspace','campaigns'),read('communications_workspace','context'),read('giving_workspace','context')
     ]);
     const team = [];
     const candidates = selected ? (campaigns || []).filter(c => c.id === selected) : campaigns || [];
@@ -144,7 +160,7 @@
       }));
     }
     team.sort((a,b)=>a.name.localeCompare(b.name)||a.id.localeCompare(b.id));
-    return { user,staff,communications,organizations:core?.organizations || [],campaigns:campaigns || [],preevent:preevent || [],registration:registration || [],prizes:prizes || [],eventday:eventday || [],team,
+    return { user,staff,communications,giving,organizations:core?.organizations || [],campaigns:campaigns || [],preevent:preevent || [],registration:registration || [],prizes:prizes || [],eventday:eventday || [],team,
       available:{campaigns:campaigns!==null,preevent:preevent!==null,registration:registration!==null,prizes:prizes!==null,eventday:eventday!==null} };
   }
   function publish(s) { snapshot=s; render(s); window.dispatchEvent(new CustomEvent('staff-workspace-context',{detail:s})); }

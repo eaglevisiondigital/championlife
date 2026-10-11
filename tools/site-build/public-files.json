@@ -425,5 +425,19 @@
   "staff-communication-activity.html",
   "staff-communication-providers.html",
   "staff-communication-test.html",
-  "assets/js/communication-providers.js"
+  "assets/js/communication-providers.js",
+  "assets/css/giving.css",
+  "assets/js/giving.js",
+  "assets/js/giving-utils.js",
+  "staff-giving-overview.html",
+  "staff-giving-gifts.html",
+  "staff-giving-gift.html",
+  "staff-giving-manual.html",
+  "staff-giving-funds.html",
+  "staff-giving-pledges.html",
+  "staff-giving-recurring.html",
+  "staff-giving-batches.html",
+  "staff-giving-reports.html",
+  "staff-giving-merchants.html",
+  "staff-giving-donors.html"
 ]

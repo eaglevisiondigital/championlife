@@ -1,0 +1,13 @@
+# Text-to-Give architecture — disabled foundation
+
+No inbound SMS processing, SMS payment, confirmation delivery or live keyword execution exists in GIV-1. Organization `text_enabled` cannot be enabled. The canonical sender scope and keyword metadata are finance-configuration records, not an active SMS service.
+
+`giving_text_scopes` owns a unique sender identity. `giving_text_keywords` binds organization/scope/normalized keyword, display name, fund and optional same-organization destination override; optional default exact amount, start/end, active state, confirmation-template reference, safe same-site landing path, reporting/accounting labels, attribution and owner are stored. Unique active `(scope_id,keyword)` prevents concurrent collision. Shared multi-organization sender ownership must be explicitly reviewed in a future package; this foundation permits only the owning organization, never cross-tenant keyword creation by inference.
+
+Resolution uses the actual canonical route: organization → keyword → fund → merchant destination → gateway → MID. GIVE/Main, YOUTH/Youth, OUTREACH/Outreach and SowGo merchant choices are separate settlement decisions even when initiated from a church site. Keyword defaults and text source/campaign attribution do not choose a bank automatically. User commands like `GIVE 50` remain future inputs, not active capabilities.
+
+First-time donor boundary: verify mobile and tenant → no usable scoped profile → secure expiring provider-hosted registration → provider-tokenized method → reviewed canonical donor/mobile/organization association → authorized future charge → immutable ledger → separately gated SMS/receipt. Returning donor boundary: reverify mobile/organization/current method/consent → resolve keyword route → future authorized charge. No contact match creates a Person, portal account, staff access, household authority or payment profile by itself.
+
+The adapter plan exposes `verify_mobile`, `secure_provider_registration` and `ready_for_future_authorized_charge`, always with execution disabled. Cross-MID vault reuse remains a processor boarding question. Unknown dispatch must later be reconciled before retry, using external-event identity and canonical session/leg idempotency.
+
+An organization/channel-usage event is the SMS-credit integration hook. No price, bundle count or credit multiplication is hardcoded; the early 10,000/$0.03/$300 idea is not active policy. Communications Core later owns messages, consent, sender approvals, templates and receipts; SMS billing and real Text-to-Give belong to a separately approved package. See [Core](GIVING-CORE-GIV-1.md), [routing](GIVING-MERCHANT-ROUTING.md) and [preserved future requirements](GIV-1-FUTURE-APPROVED-REQUIREMENTS.md).
