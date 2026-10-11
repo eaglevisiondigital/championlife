@@ -28,15 +28,14 @@
       {label:'Provider Settings',href:'staff-communication-providers.html',capability:'commproviders'}
     ] }
     ,{ id: 'giving', label: 'GIVING / FINANCE', children: [
-      {label:'Giving Overview',href:'staff-giving-overview.html',capability:'financereports'},
+      {label:'Overview',href:'staff-giving-overview.html',capability:'financereports'},
       {label:'Gifts',href:'staff-giving-gifts.html',capability:'financegifts'},
-      {label:'Manual Entry',href:'staff-giving-manual.html',capability:'financecreate'},
+      {label:'Manual Entry',href:'staff-giving-manual.html',capability:'financeentryonly'},
       {label:'Donors',href:'staff-giving-donors.html',capability:'financegifts'},
       {label:'Funds',href:'staff-giving-funds.html',capability:'financefunds'},
       {label:'Pledges',href:'staff-giving-pledges.html',capability:'financepledges'},
       {label:'Recurring Giving',href:'staff-giving-recurring.html',capability:'financerecurring'},
       {label:'Batches & Reconciliation',href:'staff-giving-batches.html',capability:'financebatches'},
-      {label:'Reports',href:'staff-giving-reports.html',capability:'financereports'},
       {label:'Merchant Configuration',href:'staff-giving-merchants.html',capability:'financemerchants'}
     ] }
     // Future authorized destinations extend this configuration; no placeholder links.
@@ -93,7 +92,8 @@
   const hasGrant = (s, permission) => (s.staff?.grants || []).some(g => g.permission === permission && !g.department_ids);
   function allowed(s, capability) {
     if (!s?.user) return false;
-    const financeKeys={financereports:'finance.reports.read',financegifts:'finance.gifts.read',financecreate:'finance.gifts.create',financefunds:'finance.read',financepledges:'finance.pledges.read',financerecurring:'finance.recurring.read',financebatches:'finance.reconciliation.read',financemerchants:'finance.merchant.configure'};
+    if(capability==='financeentryonly')return (s.giving?.organizations||[]).some(o=>o.permissions.includes('finance.gifts.create')&&!o.permissions.includes('finance.gifts.read'));
+    const financeKeys={financereports:'finance.reports.read',financegifts:'finance.gifts.read',financecreate:'finance.gifts.create',financeentryonly:'finance.gifts.create',financefunds:'finance.read',financepledges:'finance.pledges.read',financerecurring:'finance.recurring.read',financebatches:'finance.reconciliation.read',financemerchants:'finance.merchant.configure'};
     if(financeKeys[capability])return (s.giving?.organizations||[]).some(o=>o.permissions.includes(financeKeys[capability]));
     if(capability==='workspace'&&(s.giving?.organizations||[]).length)return true;
     const commKeys={commview:'communications.view',commsend:'communications.send',commtemplates:'communications.templates.view',commdelivery:'communications.delivery.view',commproviders:'communications.providers.view'};

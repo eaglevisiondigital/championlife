@@ -1,8 +1,12 @@
 # GIV-1 Giving Core — build candidate
 
-Dependent branch `codex/giv-1-giving-core` begins at accepted H1 `bce1926c6c91cfe3125c49506faf88ccaabc32eb`. The complete approved GIV-1 assignment controls this build. Preserve the byte-exact [future approved requirements](GIV-1-FUTURE-APPROVED-REQUIREMENTS.md); the later full assignment explicitly includes hierarchy, staff finance and reporting foundations in GIV-1. The full form editor, finished dashboard/statement UX and executive analytics remain later packages.
+Dependent branch `codex/giv-1-giving-core` begins at accepted H1 `bce1926c6c91cfe3125c49506faf88ccaabc32eb`. The complete approved GIV-1 assignment controls this build. Preserve the original approved requirements and subsequent authorization history in [future approved requirements](GIV-1-FUTURE-APPROVED-REQUIREMENTS.md); the later full assignment explicitly includes hierarchy, staff finance and reporting foundations in GIV-1. The full form editor, finished dashboard/statement UX and executive analytics remain later packages.
 
-## State and deployment boundary
+## Accepted checkpoint and dependent management build
+
+Chat accepted the isolated GIV-1 hosted acceptance at exact SHA `2eada4821e7b45a5f8221112a0982c36c33e9551`, then authorized dependent [GIV-2A management build](GIVING-GIV-2A-FINANCE-MANAGEMENT-UX.md). Acceptance-only GIV-1 application is distinct from production release; GiveHub and production remain unchanged. The original local build account below is preserved as historical evidence. GIV-2A adds only its separately scoped local migration/UI contract and does not certify hosted acceptance. GIV-2B/C remain unstarted.
+
+## Historical build state and deployment boundary
 
 Implemented and tested locally; **not applied to acceptance or production**, not hosted-accepted or approved for release. Migration `20261010202812_giving_core_giv_1.sql` evolves the existing Giving Configuration migration, preserves prior permission keys and introduces no real grants. Apply only after separately authorized isolated acceptance and prerequisite migration verification; do not replay historical migrations into a populated project. No processor transport is installed. Gateway accounts cannot become enabled/verified in this migration; organization online giving, donor portal and text execution cannot become enabled. Recurring instructions are drafts, claims are held, receipts are held. GiveHub remains live and its pages/URLs are unchanged.
 
