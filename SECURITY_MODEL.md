@@ -1,3 +1,7 @@
+## 2026-10-11 — GIV-2B reporting and held statements BUILD candidate
+
+Dependent `codex/giv-2b-reports-statements` begins at Chat-accepted GIV-2A `3803faf6f97116445614ba693cb841f21a7af519`. Reports Center, Leadership Finance, comparisons/charts/scoped exports and immutable Individual/Household statements extend accepted Giving and Staff Workspace. Local-only migration `20261012025915` adds guarded projections, two narrow reporting keys, version uniqueness and append-only held-delivery metadata; no real grants. Full contract: [GIV-2B](docs/GIVING-GIV-2B-REPORTS-STATEMENTS.md). Build review only; no hosted application, production/GiveHub/Auth/SMTP/DNS/provider/money/delivery changes, prerequisite merge or GIV-2C/GIV-3 work.
+
 ## 2026-10-11 — Finance refresh invalidation
 
 Routine unchanged permission reads do not cancel pending finance reads. A separate context sequence rejects superseded refreshes; identity/scope change and denied access still invalidate application reads. Pending-read revocation regression passes. Backend authorization is unchanged. Isolated hosted acceptance remains in progress.

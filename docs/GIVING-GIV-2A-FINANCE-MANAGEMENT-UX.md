@@ -1,3 +1,7 @@
+## Accepted dependency and GIV-2B extension
+
+GIV-2A was Chat-accepted at `3803faf6f97116445614ba693cb841f21a7af519`. The separately authorized [GIV-2B reports/statements build](GIVING-GIV-2B-REPORTS-STATEMENTS.md) adds guarded executive/detailed report scopes, charts and held statement presentation above this contract. It does not release production or begin GIV-2C. Historical local/acceptance snapshots below remain historical; they do not override the new package boundary.
+
 # GIV-2A Finance Dashboard and Core Management UX
 
 ## Build scope and state

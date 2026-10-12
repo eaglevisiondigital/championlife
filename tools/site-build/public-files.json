@@ -445,5 +445,17 @@
   "staff-giving-donor.html",
   "staff-giving-pledge.html",
   "staff-giving-recurringdetail.html",
-  "staff-giving-batch.html"
+  "staff-giving-batch.html",
+  "assets/css/giving-reports.css",
+  "assets/js/giving-reports.js",
+  "staff-giving-donor-report.html",
+  "staff-giving-fund-report.html",
+  "staff-giving-mid-report.html",
+  "staff-giving-pastor.html",
+  "staff-giving-pledge-report.html",
+  "staff-giving-reconciliation-report.html",
+  "staff-giving-report.html",
+  "staff-giving-statement.html",
+  "staff-giving-statements.html",
+  "staff-giving-summary.html"
 ]

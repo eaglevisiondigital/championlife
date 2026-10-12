@@ -1,0 +1,204 @@
+#giving-reports-app {
+  max-width: 1280px;
+  margin: auto;
+  min-width: 0;
+}
+#giving-reports-app .giving-header {
+  flex-wrap: wrap;
+}
+#giving-reports-app h1 {
+  font-size: clamp(1.8rem, 3vw, 2.8rem);
+  letter-spacing: -0.03em;
+}
+#giving-reports-app [hidden] {
+  display: none !important;
+}
+#giving-reports-app :focus-visible {
+  outline: 3px solid #856312;
+  outline-offset: 4px;
+}
+.giving-report-catalog,
+.giving-report-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+}
+.giving-report-catalog {
+  margin: 24px 0;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+.giving-report-link {
+  background: #fff;
+  color: #222;
+  text-decoration: none;
+  border: 1px solid #ded8c9;
+  border-top: 3px solid #c8a759;
+  border-radius: 14px;
+  padding: 22px;
+}
+.giving-report-link h2 {
+  font-size: 1.15rem;
+  margin: 0 0 12px;
+}
+.giving-report-link p {
+  color: #666;
+  font-size: 0.9rem;
+}
+.giving-report-grid .giving-panel {
+  margin: 0 0 20px;
+}
+.giving-chart {
+  display: grid;
+  gap: 14px;
+  max-height: 350px;
+  overflow: auto;
+  padding: 4px;
+}
+.giving-chart-row {
+  display: grid;
+  grid-template-columns: 100px minmax(12px, 1fr) 110px;
+  align-items: center;
+  gap: 12px;
+  color: #333;
+  text-decoration: none;
+  font-size: 0.8rem;
+  min-height: 30px;
+}
+.giving-chart-bar {
+  display: block;
+  height: 22px;
+  background: #c6a251;
+  border-radius: 4px;
+  min-width: 1px;
+}
+.giving-chart-bar.is-negative {
+  background: #95564b;
+}
+.giving-chart-value {
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+.giving-chart-label {
+  overflow-wrap: anywhere;
+}
+.giving-statement-history {
+  border-bottom: 1px solid #e1ddcf;
+  padding: 20px 0;
+}
+#giving-reports-app .giving-metric a {
+  display: block;
+  margin-top: 12px;
+  color: #71591f;
+}
+#giving-reports-app .giving-filters label {
+  max-width: 100%;
+}
+#giving-reports-app .giving-panel strong {
+  font-variant-numeric: tabular-nums;
+}
+#giving-reports-app .giving-header label {
+  display: grid;
+  gap: 8px;
+}
+#giving-reports-app select {
+  max-width: 100%;
+  min-height: 46px;
+  padding: 10px;
+  border-radius: 8px;
+}
+#giving-reports-app .giving-button {
+  margin: 12px 0;
+}
+@media (max-width: 1000px) {
+  .giving-report-catalog {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .giving-report-grid {
+    grid-template-columns: 1fr;
+  }
+}
+@media (max-width: 450px) {
+  .giving-report-catalog {
+    grid-template-columns: 1fr;
+  }
+  .giving-chart-row {
+    grid-template-columns: 70px minmax(10px, 1fr) 96px;
+    gap: 6px;
+    font-size: 0.75rem;
+  }
+  .giving-report-grid {
+    gap: 0;
+  }
+  #giving-reports-app .giving-form {
+    grid-template-columns: 1fr;
+  }
+  #giving-reports-app .giving-actions {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+  #giving-reports-app .giving-periods {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  #giving-reports-app .giving-header {
+    display: block;
+  }
+}
+@media print {
+  .staff-sidebar,
+  .staff-top,
+  .staff-skip,
+  .giving-actions,
+  .giving-periods,
+  .giving-filters,
+  .giving-report-catalog,
+  button,
+  form {
+    display: none !important;
+  }
+  .staff-shell,
+  .staff-column,
+  .staff-main {
+    display: block !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 100% !important;
+  }
+  body {
+    background: #fff !important;
+    color: #000 !important;
+  }
+  .giving-panel {
+    box-shadow: none;
+    border: 0;
+    break-inside: avoid;
+    padding: 10px 0;
+  }
+  .giving-report-grid {
+    display: block;
+  }
+  .giving-chart {
+    max-height: none;
+    overflow: visible;
+  }
+  .giving-table-wrap {
+    overflow: visible;
+  }
+  table {
+    min-width: 0 !important;
+    width: 100%;
+  }
+  a {
+    color: #000;
+    text-decoration: none;
+  }
+  .giving-metrics {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+  .giving-metric {
+    box-shadow: none;
+    border: 1px solid #ccc;
+  }
+  .giving-fund-children[hidden] {
+    display: block !important;
+  }
+}

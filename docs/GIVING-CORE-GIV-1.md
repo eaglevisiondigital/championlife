@@ -1,3 +1,7 @@
+## Accepted dependency and GIV-2B extension
+
+GIV-2A was Chat-accepted at `3803faf6f97116445614ba693cb841f21a7af519`. The separately authorized [GIV-2B reports/statements build](GIVING-GIV-2B-REPORTS-STATEMENTS.md) adds guarded executive/detailed report scopes, charts and held statement presentation above this contract. It does not release production or begin GIV-2C. Historical local/acceptance snapshots below remain historical; they do not override the new package boundary.
+
 # GIV-1 Giving Core — build candidate
 
 Dependent branch `codex/giv-1-giving-core` begins at accepted H1 `bce1926c6c91cfe3125c49506faf88ccaabc32eb`. The complete approved GIV-1 assignment controls this build. Preserve the original approved requirements and subsequent authorization history in [future approved requirements](GIV-1-FUTURE-APPROVED-REQUIREMENTS.md); the later full assignment explicitly includes hierarchy, staff finance and reporting foundations in GIV-1. The full form editor, finished dashboard/statement UX and executive analytics remain later packages.
