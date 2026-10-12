@@ -457,5 +457,14 @@
   "staff-giving-report.html",
   "staff-giving-statement.html",
   "staff-giving-statements.html",
-  "staff-giving-summary.html"
+  "staff-giving-summary.html",
+  "assets/css/forms.css",
+  "assets/js/forms-admin.js",
+  "assets/js/forms-model.js",
+  "assets/js/forms-public.js",
+  "assets/js/forms-renderer.js",
+  "form.html",
+  "staff-form-builder.html",
+  "staff-form-submissions.html",
+  "staff-forms.html"
 ]

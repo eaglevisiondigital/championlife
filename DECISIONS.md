@@ -1,3 +1,7 @@
+## 2026-10-12 — GIV-2C reusable Forms BUILD candidate
+
+The new explicit assignment authorizes a dependent Forms build from accepted GIV-2B `13aecea202dc0378f25c1c8df6650b22a0329923`, superseding earlier GIV-2C holds only for this package. Separate Forms/version/typed-answer engine, responsive visual builder/public renderer, held Giving linkage, private files and distinct current/scoped permissions. Migration `20261012201849_platform_forms_giv_2c.sql` is local only; hosted acceptance, publication, production and real processing remain unapproved. See [Forms build contract](docs/FORMS-GIV-2C-BUILDER.md) and [architecture](docs/FORMS-ARCHITECTURE.md). Preserve the approved future requirements. Stop at build review; GIV-3 is NOT STARTED.
+
 ## 2026-10-11 — GIV-2B reporting and held statements BUILD candidate
 
 Dependent `codex/giv-2b-reports-statements` begins at Chat-accepted GIV-2A `3803faf6f97116445614ba693cb841f21a7af519`. Reports Center, Leadership Finance, comparisons/charts/scoped exports and immutable Individual/Household statements extend accepted Giving and Staff Workspace. Local-only migration `20261012025915` adds guarded projections, two narrow reporting keys, version uniqueness and append-only held-delivery metadata; no real grants. Full contract: [GIV-2B](docs/GIVING-GIV-2B-REPORTS-STATEMENTS.md). Build review only; no hosted application, production/GiveHub/Auth/SMTP/DNS/provider/money/delivery changes, prerequisite merge or GIV-2C/GIV-3 work.
