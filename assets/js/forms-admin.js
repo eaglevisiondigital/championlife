@@ -30,6 +30,8 @@
     epoch = 0,
     readSequence = 0,
     drag = null,
+    pointerCleanup = null,
+    suppressClickUntil = 0,
     preview = false;
   const status = el("p", "", { class: "forms-status", role: "status" }),
     error = el("p", "", {
@@ -56,8 +58,12 @@
       });
     if (token !== epoch) throw Error("Access changed.");
     if (r.error) {
-      if (r.error.code === "42501") {
+      if (
+        ["42501", "PGRST301", "PGRST302"].includes(r.error.code) ||
+        [401, 403].includes(r.status)
+      ) {
         deny();
+        window.StaffWorkspace?.refresh();
         throw Error("Forms access is no longer available.");
       }
       const e = Error(
@@ -71,6 +77,7 @@
     return r.data;
   }
   function deny() {
+    pointerCleanup?.();
     epoch++;
     readSequence++;
     clearTimeout(saveTimer);
@@ -554,6 +561,112 @@
     });
     drag = null;
   }
+  // Carry an editor descriptor, not an operating-system file/text move. Pointer capture
+  // keeps mouse and touch gestures coherent; published definitions are never mutated.
+  function bindPointerDrag(node, descriptor) {
+    node.style.touchAction = "none";
+    node.style.userSelect = "none";
+    node.onpointerdown = (e) => {
+      if (e.button !== 0 || !can("forms.edit") || conflict) return;
+      pointerCleanup?.();
+      const x = e.clientX,
+        y = e.clientY,
+        pointer = e.pointerId;
+      let moving = false,
+        ghost = null;
+      const clear = () => {
+        ghost?.remove();
+        root
+          .querySelectorAll(".is-drop-target")
+          .forEach((n) => n.classList.remove("is-drop-target"));
+        try {
+          node.releasePointerCapture?.(pointer);
+        } catch {
+          /* Already released. */
+        }
+        node.onpointermove = node.onpointerup = node.onpointercancel = null;
+        drag = null;
+        pointerCleanup = null;
+      };
+      pointerCleanup = clear;
+      try {
+        node.setPointerCapture?.(pointer);
+      } catch {
+        /* Capture is optional in DOM tests. */
+      }
+      node.onpointermove = (move) => {
+        if (!can("forms.edit")) {
+          clear();
+          return;
+        }
+        if (!moving && Math.hypot(move.clientX - x, move.clientY - y) < 6)
+          return;
+        moving = true;
+        drag = descriptor;
+        move.preventDefault();
+        if (!ghost) {
+          ghost = el(
+            "div",
+            descriptor.type ? M.types[descriptor.type] : "Move field",
+            { class: "forms-drag-preview", "aria-hidden": "true" },
+          );
+          document.body.append(ghost);
+        }
+        ghost.style.left =
+          Math.max(4, Math.min(move.clientX + 12, innerWidth - 210)) + "px";
+        ghost.style.top =
+          Math.max(4, Math.min(move.clientY + 12, innerHeight - 70)) + "px";
+        const canvas = root.querySelector(".forms-canvas"),
+          bounds = canvas?.getBoundingClientRect();
+        if (
+          bounds &&
+          move.clientX >= bounds.left &&
+          move.clientX <= bounds.right
+        ) {
+          if (move.clientY > Math.min(bounds.bottom, innerHeight) - 35)
+            canvas.scrollTop += 16;
+          else if (move.clientY < Math.max(bounds.top, 0) + 35)
+            canvas.scrollTop -= 16;
+        }
+        root
+          .querySelectorAll(".is-drop-target")
+          .forEach((n) => n.classList.remove("is-drop-target"));
+        document
+          .elementFromPoint(move.clientX, move.clientY)
+          ?.closest(".forms-canvas-section")
+          ?.classList.add("is-drop-target");
+      };
+      node.onpointerup = (up) => {
+        if (!moving) {
+          clear();
+          return;
+        }
+        up.preventDefault();
+        suppressClickUntil = performance.now() + 400;
+        const hit = document.elementFromPoint(up.clientX, up.clientY);
+        const area = hit?.closest(".forms-canvas-section"),
+          target = hit?.closest(".forms-canvas-field");
+        const sectionKey = area?.getAttribute("data-section"),
+          targetKey = target?.getAttribute("data-key");
+        const index = targetKey
+          ? draft?.sections
+              .find((s) => s.key === sectionKey)
+              ?.fields.findIndex((f) => f.key === targetKey)
+          : undefined;
+        const permitted =
+          can("forms.edit") &&
+          !conflict &&
+          !!sectionKey &&
+          descriptor.key !== targetKey;
+        clear();
+        if (permitted) {
+          drag = descriptor;
+          reorderDrag(sectionKey, index);
+        }
+      };
+      node.onpointercancel = clear;
+    };
+  }
   function builder() {
     if (!draft) return;
     heading(form.name);
@@ -672,14 +785,18 @@
     library.append(el("h2", "Add fields"));
     const items = el("div", null, { class: "forms-library" });
     for (const [type, label] of Object.entries(M.types)) {
-      const b = button(label, () => add(type));
+      const b = button(label, () => {
+        if (performance.now() >= suppressClickUntil) add(type);
+      });
       b.disabled = !can("forms.edit") || conflict;
-      b.draggable = !b.disabled;
+      b.draggable = false;
       b.dataset.type = type;
       b.ondragstart = (e) => {
         drag = { type };
+        e.dataTransfer.effectAllowed = "copy";
         e.dataTransfer.setData("text/plain", type);
       };
+      bindPointerDrag(b, { type });
       items.append(b);
     }
     library.append(items);
@@ -715,7 +832,6 @@
           "aria-label": f.label || f.key,
           "aria-selected": selected?.key === f.key,
           "data-key": f.key,
-          draggable: can("forms.edit") && !conflict,
         });
         box.append(
           el("strong", f.label || f.key),
@@ -728,6 +844,7 @@
           ),
         );
         box.onclick = (e) => {
+          if (performance.now() < suppressClickUntil) return;
           if (e.target.closest("button")) return;
           selected = { kind: "field", key: f.key };
           activePane = "settings";
@@ -739,19 +856,24 @@
             selected = { kind: "field", key: f.key };
             activePane = "settings";
             builder();
-            root.querySelector(".forms-settings input,.forms-settings select")?.focus();
+            root
+              .querySelector(".forms-settings input,.forms-settings select")
+              ?.focus();
           }
           if (e.altKey && ["ArrowUp", "ArrowDown"].includes(e.key)) {
             e.preventDefault();
             move(f.key, e.key === "ArrowUp" ? -1 : 1);
           }
         };
-        box.ondragstart = (e) => {
-          drag = { key: f.key };
-          e.dataTransfer.setData("text/plain", f.key);
-          e.stopPropagation();
+        box.ondragover = (e) => {
+          if (drag?.key === f.key) {
+            e.stopPropagation();
+            e.dataTransfer.dropEffect = "none";
+            return;
+          }
+          e.preventDefault();
+          e.dataTransfer.dropEffect = drag?.type ? "copy" : "move";
         };
-        box.ondragover = (e) => e.preventDefault();
         box.ondrop = (e) => {
           e.preventDefault();
           e.stopPropagation();
@@ -759,6 +881,19 @@
         };
         const actions = el("div", null, { class: "forms-actions" });
         if (can("forms.edit")) {
+          const handle = el("button", "Drag", {
+            type: "button",
+            draggable: "false",
+            class: "forms-drag-handle",
+            "aria-label": "Drag " + (f.label || f.key) + " to reorder",
+          });
+          handle.ondragstart = (e) => {
+            drag = { key: f.key };
+            e.dataTransfer.effectAllowed = "move";
+            e.dataTransfer.setData("text/plain", f.key);
+          };
+          bindPointerDrag(handle, { key: f.key });
+          actions.append(handle);
           for (const [label, fn] of [
             [
               "Edit",
@@ -781,6 +916,7 @@
       area.append(grid);
       area.ondragover = (e) => {
         e.preventDefault();
+        e.dataTransfer.dropEffect = drag?.type ? "copy" : "move";
         area.classList.add("is-drop-target");
       };
       area.ondragleave = () => area.classList.remove("is-drop-target");
@@ -1617,22 +1753,26 @@
             (v) => (link[key] = v),
             key === "reviewed" ? { type: "checkbox" } : {},
           );
-        panel.append(
-          button("Link reviewed Person", async () => {
-            try {
-              await rpc("link", {
-                id: formId,
-                submission_id: id,
-                revision: s.revision,
-                ...link,
-                household_id: link.household_id || null,
-              });
-              await detail(id);
-            } catch (e) {
-              message(e);
-            }
-          }),
-        );
+        for (const [action, label] of [
+          ["review_match", "Save reviewed match"],
+          ["link", "Link reviewed Person"],
+        ])
+          panel.append(
+            button(label, async () => {
+              try {
+                await rpc(action, {
+                  id: formId,
+                  submission_id: id,
+                  revision: s.revision,
+                  ...link,
+                  household_id: link.household_id || null,
+                });
+                await detail(id);
+              } catch (e) {
+                message(e);
+              }
+            }),
+          );
       }
       panel.append(button("Close detail", () => panel.remove()));
       root.append(panel);

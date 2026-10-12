@@ -4,6 +4,23 @@
   --forms-muted: #62676e;
   --forms-line: #d8d9da;
 }
+.forms-drag-preview {
+  position: fixed;
+  pointer-events: none;
+  z-index: 10000;
+  padding: 0.6rem 0.9rem;
+  border: 1px solid #9b7623;
+  border-radius: 8px;
+  background: #f6f1e3;
+  color: #181b1e;
+  font:
+    14px Arial,
+    sans-serif;
+  max-width: 200px;
+}
+.forms-drag-handle {
+  cursor: grab;
+}
 * {
   box-sizing: border-box;
 }
@@ -418,6 +435,10 @@
   }
 }
 @media (max-width: 600px) {
+  .forms-canvas-field button {
+    min-height: 44px;
+    padding: 0.35rem 0.5rem;
+  }
   .public-form-wrap {
     padding: 1rem 0.65rem;
   }

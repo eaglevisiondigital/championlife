@@ -44,6 +44,28 @@ try {
     M.key("Mobile Phone", ["mobile_phone"]) === "mobile_phone_1",
     "stable unique key fallback",
   );
+  R.render(
+    root,
+    {
+      sections: [
+        {
+          key: "main",
+          title: "Test",
+          fields: [
+            { key: "constructor", type: "short_text", label: "Custom key" },
+          ],
+        },
+      ],
+      conditions: [],
+      settings: {},
+      payment: {},
+    },
+    { preview: true },
+  );
+  ok(
+    root.querySelector("input").value === "",
+    "valid custom keys do not inherit JavaScript object values",
+  );
   let d = definition();
   ok(
     M.state(d, { children: false }).child_count.hidden,
@@ -282,7 +304,7 @@ try {
   );
   const movedKey = api.draft.sections[0].fields[0].key;
   app
-    .querySelector('[data-key="' + movedKey + '"]')
+    .querySelector('[data-key="' + movedKey + '"] .forms-drag-handle')
     .dispatchEvent(dragEvent("dragstart"));
   app
     .querySelectorAll(".forms-canvas-section")[1]
@@ -290,6 +312,46 @@ try {
   ok(
     api.draft.sections[1].fields.at(-1).key === movedKey,
     "existing drag crosses sections without duplicate key",
+  );
+  const pointerSource = app.querySelector(
+    '[data-key="' + movedKey + '"] .forms-drag-handle',
+  );
+  w.document.elementFromPoint = () => app.querySelector('[data-key="email"]');
+  pointerSource.onpointerdown(
+    new w.MouseEvent("pointerdown", {
+      bubbles: true,
+      button: 0,
+      clientX: 1,
+      clientY: 1,
+    }),
+  );
+  pointerSource.onpointermove(
+    new w.MouseEvent("pointermove", {
+      bubbles: true,
+      cancelable: true,
+      clientX: 80,
+      clientY: 80,
+    }),
+  );
+  ok(
+    !!w.document.querySelector(".forms-drag-preview"),
+    "pointer drag has a visible move affordance",
+  );
+  pointerSource.onpointerup(
+    new w.MouseEvent("pointerup", {
+      bubbles: true,
+      cancelable: true,
+      clientX: 80,
+      clientY: 80,
+    }),
+  );
+  ok(
+    api.draft.sections[0].fields[0].key === movedKey && MISSING(api.draft),
+    "pointer drop moves exact field without duplication",
+  );
+  ok(
+    !w.document.querySelector(".forms-drag-preview"),
+    "pointer drop clears temporary drag state",
   );
   api.add("short_text");
   ok(

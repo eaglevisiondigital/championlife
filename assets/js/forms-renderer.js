@@ -32,7 +32,7 @@
         class: "forms-error",
         id: "form-errors",
       }),
-      answers = M.clone(initial),
+      answers = Object.assign(Object.create(null), M.clone(initial)),
       nodes = new Map();
     form.noValidate = true;
     form.append(error);
@@ -502,7 +502,7 @@
         return;
       }
       const states = M.state(d, answers),
-        safe = {};
+        safe = Object.create(null);
       for (const f of M.allFields(d))
         if (
           !M.display.has(f.type) &&

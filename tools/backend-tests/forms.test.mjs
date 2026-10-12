@@ -223,10 +223,23 @@ try {
       }),
     "foreign Person linkage denied",
   );
-  await rpc("link", {
+  await rpc("review_match", {
     id,
     submission_id: detail.id,
     revision: 1,
+    person_id: f.person,
+    household_id: f.household,
+    reviewed: true,
+  });
+  ok(
+    (await rpc("detail", { id, submission_id: detail.id })).submission
+      .link_status === "reviewed_match",
+    "reviewed match is distinct from final linkage",
+  );
+  await rpc("link", {
+    id,
+    submission_id: detail.id,
+    revision: 2,
     person_id: f.person,
     household_id: f.household,
     reviewed: true,
@@ -979,6 +992,24 @@ try {
       ]),
     "exact submission version identity immutable",
   );
+  await owner();
+  await q("update giving_funds set is_public=false where id=$1", [f.parent]);
+  await as(null, "anon");
+  const maskedFunds = await pub("synthetic-payment");
+  ok(
+    maskedFunds.funds.every((x) => x.parent_id !== f.parent && !x.parent_name),
+    "private parent identity/label absent from public fund projection",
+  );
+  await as();
+  for (const type of ["consent", "signature"]) {
+    const dd = definition();
+    dd.sections[0].fields.find((x) => x.type === type).default =
+      type === "consent" ? true : "Pre-signed";
+    await deny(
+      () => rpc("create", createPayload("invalid-default-" + type, dd)),
+      "no pre-affirmed " + type + " defaults",
+    );
+  }
   console.log(n + " Forms database/security checks passed");
 } finally {
   await db.close();
