@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';import {JSDOM,VirtualConsole}from 'jsdom';import {readFileSync}from 'node:fs';
 const read=p=>readFileSync(new URL('../../'+p,import.meta.url),'utf8'),tick=()=>new Promise(r=>setTimeout(r,35));let n=0;const ok=(v,m)=>{assert.ok(v,m);n++;console.log('PASS '+m)};
 const views=['overview','gifts','gift','manual','funds','pledges','pledge','recurring','recurringdetail','batches','batch','merchants','donors','donor'];
-async function page(view='overview',permissions,prepare){const errors=[],vc=new VirtualConsole();vc.on('jsdomError',e=>errors.push(e.message));const dom=new JSDOM(read('staff-giving-'+view+'.html'),{url:'https://preview.example/staff-giving-'+view+'.html?id=74000000-0000-4000-8000-000000000091',runScripts:'outside-only',pretendToBeVisual:true,virtualConsole:vc}),w=dom.window;w.matchMedia=()=>({matches:false});w.setInterval=()=>1;w.HTMLDialogElement.prototype.showModal=function(){this.setAttribute('open','')};w.HTMLDialogElement.prototype.close=function(){this.removeAttribute('open');this.dispatchEvent(new w.Event('close'));};for(const p of['tools/backend-tests/fixtures/giving-browser-fixture.js','assets/js/outreach-staff-common.js','assets/js/staff-workspace.js','assets/js/giving-utils.js','assets/js/giving-management-utils.js'])w.eval(read(p));if(permissions)w.givingFixture.permissions=permissions;if(prepare)prepare(w.givingFixture);w.eval(read('assets/js/giving-management.js'));await tick();return{w,d:w.document,g:w.givingFixture,errors,close:()=>w.close()};}
+async function page(view='overview',permissions,prepare){const errors=[],vc=new VirtualConsole();vc.on('jsdomError',e=>errors.push(e.message));const dom=new JSDOM(read('staff-giving-'+view+'.html'),{url:'https://preview.example/staff-giving-'+view+'.html?id=74000000-0000-4000-8000-000000000091',runScripts:'outside-only',pretendToBeVisual:true,virtualConsole:vc}),w=dom.window;w.matchMedia=()=>({matches:false});w.setInterval=()=>1;w.HTMLDialogElement.prototype.showModal=function(){this.setAttribute('open','')};w.HTMLDialogElement.prototype.close=function(){this.removeAttribute('open');this.dispatchEvent(new w.Event('close'));};for(const p of['tools/backend-tests/fixtures/giving-browser-fixture.js','assets/js/outreach-staff-common.js','assets/js/staff-workspace.js','assets/js/giving-utils.js','assets/js/giving-management-utils.js'])w.eval(read(p));if(permissions)w.givingFixture.permissions=permissions;if(prepare)prepare(w.givingFixture,w);w.eval(read('assets/js/giving-management.js'));await tick();return{w,d:w.document,g:w.givingFixture,errors,close:()=>w.close()};}
 const click=(h,text)=>{const b=[...h.d.querySelectorAll('button')].find(b=>b.textContent===text);assert(b,'button '+text);b.click();},input=(h,name,value,form=h.d)=>{const c=form.querySelector('[name='+name+']');assert(c,'input '+name);c.value=value;c.dispatchEvent(new h.w.Event('input',{bubbles:true}));return c;};
 for(const view of views){const h=await page(view);ok(h.d.querySelectorAll('.staff-sidebar').length===1,view+' shared Staff Workspace shell');ok(h.d.querySelector('#giving-app h1'),view+' readable headline');ok(!h.d.querySelector('#giving-app').textContent.includes('Checking finance'),view+' loading clears');ok(h.d.querySelector('.staff-sidebar-foot img').alt==='Kingdom Propel by EagleVision',view+' approved platform attribution');for(const control of h.d.querySelectorAll('input,select,textarea'))ok(control.closest('label'),view+' labeled '+control.name);for(const table of h.d.querySelectorAll('table'))ok(table.closest('.giving-table-wrap')?.tabIndex===0,view+' keyboard scrollable table');ok(!h.d.querySelector('input[type=password]'),view+' no credential fields');ok(h.errors.length===0,view+' no console error');h.close();}
 {
@@ -34,5 +34,30 @@ const h=await page('overview',undefined,g=>{g.data.dashboard.funds[0].direct_min
 }
 {const h=await page('donor',undefined,g=>{g.data.donor_detail.recurring=[{id:'active',currency:'USD',status:'active'},{id:'cancelled',currency:'USD',status:'cancelled'},{id:'foreign',currency:'CAD',status:'active'}];g.data.donor_detail.recurring_lines=[{instruction_id:'active',amount_minor:'1234'},{instruction_id:'cancelled',amount_minor:'99999'},{instruction_id:'foreign',amount_minor:'55555'}];});ok(h.d.querySelector('.giving-metrics').textContent.includes('USD 12.34'),'donor recurring total excludes cancelled and other currencies');h.close();}
 {const h=await page('merchants');ok(h.d.body.textContent.includes('Synthetic Authorize.Net')&&h.d.body.textContent.includes('A single merchant route can receive many fund designations.')&&h.d.body.textContent.includes('Youth MID'),'single merchant and multi-MID multiple-gateway layout');h.close();}
+{
+let release;
+const h=await page('gifts',undefined,(g,w)=>{
+ const rpc=w.ChampionLifeAuth.client.rpc;
+ w.ChampionLifeAuth.client.rpc=async(name,args={})=>{
+  if(name==='giving_workspace'&&args.p_action==='gift_list')await new Promise(r=>release=r);
+  return rpc(name,args);
+ };
+});
+ok(Boolean(release),'in-flight gift read is held for refresh race');
+h.w.dispatchEvent(new h.w.Event('focus'));await tick();release();await tick();
+ok(h.d.querySelector('#giving-app').textContent.includes('Foreign Missions')&&!h.d.querySelector('.giving-error'),'unchanged permission refresh preserves in-flight finance read');h.close();
+}
+{
+let release;
+const h=await page('gifts',undefined,(g,w)=>{
+ const rpc=w.ChampionLifeAuth.client.rpc;
+ w.ChampionLifeAuth.client.rpc=async(name,args={})=>{
+  if(name==='giving_workspace'&&args.p_action==='gift_list')await new Promise(r=>release=r);
+  return rpc(name,args);
+ };
+});
+h.g.deny=true;h.w.dispatchEvent(new h.w.Event('focus'));await tick();release();await tick();
+ok(h.d.querySelector('#giving-app .staff-state')&&!h.d.querySelector('#giving-app table'),'permission revocation during in-flight read keeps protected content cleared');h.close();
+}
 const css=read('assets/css/giving.css');ok(css.includes('repeat(4,minmax(0,1fr))')&&css.includes('@media(max-width:768px)')&&css.includes('@media(max-width:450px)'),'responsive scoped metric grid breakpoints');ok(css.includes('overscroll-behavior-inline:contain'),'safe narrow table scroll');
 console.log(n+' GIV-2A DOM/UX checks passed');

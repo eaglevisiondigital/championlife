@@ -1,3 +1,7 @@
+## 2026-10-11 — Finance refresh invalidation
+
+Routine unchanged permission reads do not cancel pending finance reads. A separate context sequence rejects superseded refreshes; identity/scope change and denied access still invalidate application reads. Pending-read revocation regression passes. Backend authorization is unchanged. Isolated hosted acceptance remains in progress.
+
 ## 2026-10-10 — GIV-1 financial boundary
 
 All Giving relations have RLS with revoked raw browser/service access. Guarded RPCs recheck verified identity and current explicit finance grants after tenant advisory locking; composite references enforce tenant and gateway/MID binding. Reporting, export, posting, adjustments/refunds and highly restricted merchant configuration are distinct from staff administration. No new real grant or identity merge is seeded. Token references and independently reviewed donor-account ownership stay private; matching email/portal ownership is insufficient. Ledger/snapshots/audit/outcomes are immutable, callback/request/provider identities prevent double posting, and unknown provider fees remain unknown. Provider transports, public callbacks, online giving, donor portal and Text-to-Give execution are disabled; recurring/receipt delivery held. Giving never sends messages or creates portal/staff authority. Current-session revocation tested; production and existing Auth/SMTP/DNS/GiveHub unchanged. [Security/activation contract](docs/GIVING-CORE-GIV-1.md), [provider gates](docs/GIVING-PROVIDER-ADAPTERS.md).

@@ -1,3 +1,9 @@
+## 2026-10-11 — GIV-2A isolated acceptance refresh correction
+
+Hosted synthetic acceptance exposed an in-flight finance read interrupted by an unchanged focus/permission refresh. Context request sequencing now remains separate from effective scope invalidation; identity, permission loss and denied responses still invalidate pending reads and clear protected content. Focused regressions reproduce the original failure and verify both uninterrupted reads and revocation while a read is pending. No database/Auth/processor/public giving change belongs to this correction.
+
+Acceptance migration was applied only to `bkbmjisprwmkptywtmih` as remote version `20261011193938` (source `20261011112210`). Hosted acceptance is still in progress, not accepted for release. Local validation: 78 management database/security checks, 237 DOM checks and site build checks pass. PR #17/#16 remain draft/unmerged; production, GiveHub and GIV-2B/2C remain unchanged.
+
 ## 2026-10-11 — GIV-2A finance management BUILD candidate
 
 Dependent `codex/giv-2a-finance-management-ux` starts at exact accepted GIV-1 `2eada4821e7b45a5f8221112a0982c36c33e9551` and targets its still-draft branch. The complete October 11 GIV-2A assignment authorizes Today-first canonical Overview/fund rollups, searchable Gifts/details, manual/atomic rapid entry, canonical Donors/Households, Funds/order/routing, Pledges, held multi-fund Recurring, Batches/reconciliation and restricted multi-gateway Merchant UX in the accepted shell. All money remains canonical, currency-scoped and exact. Powered By Kingdom Propel is unchanged.

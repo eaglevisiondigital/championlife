@@ -37,7 +37,7 @@
     batch: 'finance.reconciliation.read',
     merchants: 'finance.merchant.configure'
   };
-  let org = params.get('organization'), context, scope, userId, epoch = 0, busy = false, currency = 'USD', scale = 2, timezone = 'UTC', period = 'today';
+  let org = params.get('organization'), context, scope, userId, epoch = 0, contextSequence = 0, busy = false, currency = 'USD', scale = 2, timezone = 'UTC', period = 'today';
   const can = k => scope?.permissions.includes(k), money = (v, c = currency) => v == null ? 'Not available' : U.money(v, c, c === currency ? scale : new Intl.NumberFormat('en', {
       style: 'currency',
       currency: c
@@ -138,6 +138,7 @@
           403
         ].includes(res.status)) {
         epoch++;
+        contextSequence++;
         root.replaceChildren();
         window.StaffWorkspace.denied(root, 'Your access to this finance section is no longer available.');
         window.StaffWorkspace.refresh();
@@ -2670,30 +2671,36 @@
     await renderers[view]();
   }
   async function start(preserve = false) {
-    const token = ++epoch, previous = scope, priorUser = userId;
+    // Permission polling has its own sequence. An unchanged refresh must not
+    // cancel a pending finance read; epoch changes only when its scope does.
+    const token = ++contextSequence, previous = scope, priorUser = userId;
     try {
       const user = await auth.getUser();
-      if (token !== epoch)
+      if (token !== contextSequence)
         return;
       if (!user || user.is_anonymous) {
+        epoch++;
         userId = null;
         root.replaceChildren();
         window.StaffWorkspace.state(root, 'Sign in required', 'Use your authorized finance account.', 'Sign in', 'discipleship-login.html?next=' + encodeURIComponent('/' + location.pathname.split('/').pop()));
         return;
       }
+      if (userId !== user.id)
+        epoch++;
       userId = user.id;
       const res = await auth.client.rpc('giving_workspace', {
         p_action: 'context',
         p_org: null,
         p_payload: {}
       });
-      if (token !== epoch || (await auth.getUser())?.id !== userId)
+      if (token !== contextSequence || (await auth.getUser())?.id !== userId)
         return;
       if (res.error)
         throw Error('Finance access could not be checked.');
       context = res.data;
       scope = context.organizations.find(o => o.id === org && o.permissions.includes(required[view])) || (!org ? context.organizations.find(o => o.permissions.includes(required[view])) : null);
       if (!scope) {
+        epoch++;
         root.replaceChildren();
         window.StaffWorkspace.denied(root, 'Your current permissions do not include this finance section.');
         window.StaffWorkspace.refresh();
@@ -2705,10 +2712,12 @@
       timezone = scope.timezone || 'UTC';
       if (preserve && priorUser === userId && previous?.id === org && JSON.stringify(previous.permissions) === JSON.stringify(scope.permissions))
         return;
+      epoch++;
       await render();
     } catch (e) {
-      if (token !== epoch)
+      if (token !== contextSequence)
         return;
+      epoch++;
       root.replaceChildren();
       window.StaffWorkspace.state(root, 'Finance unavailable', e.message, 'Return to Staff Dashboard', 'staff-home.html');
     }
@@ -2716,6 +2725,7 @@
   auth.client.auth.onAuthStateChange((_event, session) => {
     if (session?.user?.id !== userId) {
       epoch++;
+      contextSequence++;
       root.replaceChildren();
       window.StaffWorkspace.refresh();
       setTimeout(start, 0);
