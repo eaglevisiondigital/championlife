@@ -1,9 +1,9 @@
 name: Isolated Outreach candidate
 on:
   pull_request:
-    branches: [main, codex/outreach-campaign-core-v1, codex/outreach-phase-b-team-travel, codex/outreach-phase-c-registration-checkin, codex/outreach-phase-d-prizes, codex/outreach-phase-e-event-day, codex/outreach-phase-f-pre-event-automation, codex/staff-workspace-consolidation, codex/outreach-phase-g-communications-core, codex/communications-phase-h1-provider-activation]
+    branches: [codex/giv-1-giving-core, main, codex/outreach-campaign-core-v1, codex/outreach-phase-b-team-travel, codex/outreach-phase-c-registration-checkin, codex/outreach-phase-d-prizes, codex/outreach-phase-e-event-day, codex/outreach-phase-f-pre-event-automation, codex/staff-workspace-consolidation, codex/outreach-phase-g-communications-core, codex/communications-phase-h1-provider-activation]
   push:
-    branches: [codex/outreach-partner-production-isolation, codex/outreach-campaign-core-v1, codex/outreach-phase-b-team-travel, codex/outreach-phase-c-registration-checkin, codex/outreach-phase-d-prizes, codex/outreach-phase-e-event-day, codex/outreach-phase-f-pre-event-automation, codex/staff-workspace-consolidation, codex/outreach-phase-g-communications-core, codex/communications-phase-h1-provider-activation, codex/giv-1-giving-core]
+    branches: [codex/outreach-partner-production-isolation, codex/outreach-campaign-core-v1, codex/outreach-phase-b-team-travel, codex/outreach-phase-c-registration-checkin, codex/outreach-phase-d-prizes, codex/outreach-phase-e-event-day, codex/outreach-phase-f-pre-event-automation, codex/staff-workspace-consolidation, codex/outreach-phase-g-communications-core, codex/communications-phase-h1-provider-activation, codex/giv-1-giving-core, codex/giv-2a-finance-management-ux]
 permissions:
   contents: read
 jobs:

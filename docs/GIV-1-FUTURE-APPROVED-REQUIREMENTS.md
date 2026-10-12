@@ -136,3 +136,7 @@ No title, leadership role, dashboard visibility or requirement in this document 
 These are **FUTURE APPROVED REQUIREMENTS**, linked from architecture, decisions, giving rollout and build-state documents. They are not a completed feature list or GIV-2 authorization.
 
 Continue GIV-1 only under its original complete assignment. Do not begin GIV-2. Preserve the consolidated future functional/visual contract review before building Giving Dashboard / Reports / Forms UI. This documentation task changes no application code, migration, Auth, finance grant, giving link, merchant configuration, deployment or production data.
+
+## 2026-10-11 phase authorization update
+
+The original approved requirements above remain preserved. Chat subsequently accepted GIV-1 at `2eada4821e7b45a5f8221112a0982c36c33e9551` and explicitly authorized **GIV-2A build only**. Earlier “do not begin GIV-2” wording records the original addendum's historical gate; the complete later GIV-2A assignment now authorizes the scoped management UX. [GIV-2A](GIVING-GIV-2A-FINANCE-MANAGEMENT-UX.md) implements hierarchy management/rollups, timezone-aware quick periods, light month/service comparisons, eight-item finance navigation and report-only leadership separation. It does not authorize release. Full reporting/charts/statements/executive polish remain GIV-2B; the form builder remains GIV-2C; broader executive analytics remains separately scoped. Neither later package is started.

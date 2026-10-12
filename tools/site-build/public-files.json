@@ -439,5 +439,11 @@
   "staff-giving-batches.html",
   "staff-giving-reports.html",
   "staff-giving-merchants.html",
-  "staff-giving-donors.html"
+  "staff-giving-donors.html",
+  "assets/js/giving-management.js",
+  "assets/js/giving-management-utils.js",
+  "staff-giving-donor.html",
+  "staff-giving-pledge.html",
+  "staff-giving-recurringdetail.html",
+  "staff-giving-batch.html"
 ]

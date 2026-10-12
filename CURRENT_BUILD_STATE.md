@@ -1,3 +1,17 @@
+## 2026-10-11 — GIV-2A isolated acceptance refresh correction
+
+Hosted synthetic acceptance exposed an in-flight finance read interrupted by an unchanged focus/permission refresh. Context request sequencing now remains separate from effective scope invalidation; identity, permission loss and denied responses still invalidate pending reads and clear protected content. Focused regressions reproduce the original failure and verify both uninterrupted reads and revocation while a read is pending. No database/Auth/processor/public giving change belongs to this correction.
+
+Acceptance migration was applied only to `bkbmjisprwmkptywtmih` as remote version `20261011193938` (source `20261011112210`). Hosted acceptance is still in progress, not accepted for release. Local validation: 78 management database/security checks, 237 DOM checks and site build checks pass. PR #17/#16 remain draft/unmerged; production, GiveHub and GIV-2B/2C remain unchanged.
+
+## 2026-10-11 — GIV-2A finance management BUILD candidate
+
+Dependent `codex/giv-2a-finance-management-ux` starts at exact accepted GIV-1 `2eada4821e7b45a5f8221112a0982c36c33e9551` and targets its still-draft branch. The complete October 11 GIV-2A assignment authorizes Today-first canonical Overview/fund rollups, searchable Gifts/details, manual/atomic rapid entry, canonical Donors/Households, Funds/order/routing, Pledges, held multi-fund Recurring, Batches/reconciliation and restricted multi-gateway Merchant UX in the accepted shell. All money remains canonical, currency-scoped and exact. Powered By Kingdom Propel is unchanged.
+
+Local-only migration `20261011112210_giving_finance_management_giv_2a.sql` adds guarded management projections and atomic/revisioned actions above accepted GIV-1; no acceptance/production application, grants, Auth/SMTP/DNS or processor configuration occurred. GiveHub/public giving is unchanged. GIV-1 was Chat-accepted after isolated hosted acceptance at the starting SHA; older build snapshots below are historical, not current acceptance status. GIV-2A hosted acceptance/user visual approval and release are separate future gates.
+
+Verification: standard platform regression including Staff Workspace and Communications, focused finance/security/DOM, 94 Christmas checks, eight inherited Giving races plus atomic rapid-entry replay, 42 disconnected responsive Chrome views at 390/768/1440 (zero document overflow), 447-file public allowlist build and syntax/diff checks. See [GIV-2A contract](docs/GIVING-GIV-2A-FINANCE-MANAGEMENT-UX.md). PR #16/#15 stay draft/unmerged; #10 remains parked. Production main `e1f75f917f9a1e6e16e0b8f9bc5d7b52fbf0a424` unchanged. GIV-2B and GIV-2C are NOT STARTED. Stop at build review.
+
 ## 2026-10-10 — GIV-1 Giving Core BUILD candidate
 
 The user accepted H1 at exact `bce1926c6c91cfe3125c49506faf88ccaabc32eb` and supplied the complete GIV-1 assignment. Dependent `codex/giv-1-giving-core` evolves the existing Giving Configuration foundation into canonical funds/hierarchy/groups, merchant destinations/gateways/MID routes, frozen multi-line/multi-leg sessions, partial outcome handling, immutable ledger, manual cash/check/external ACH/imports, pledges/allocations, held multi-fund recurring/token-reference models, refund/void/dispute records, batches/reconciliation, held receipts/statements, reporting/comparison/CSV and donor/text/form/executive-analytics boundaries. Eleven finance pages extend the accepted shared staff shell. No real grants, secrets or provider transports are introduced.
