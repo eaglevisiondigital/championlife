@@ -36,7 +36,10 @@
       {label:'Pledges',href:'staff-giving-pledges.html',capability:'financepledges'},
       {label:'Recurring Giving',href:'staff-giving-recurring.html',capability:'financerecurring'},
       {label:'Batches & Reconciliation',href:'staff-giving-batches.html',capability:'financebatches'},
-      {label:'Merchant Configuration',href:'staff-giving-merchants.html',capability:'financemerchants'}
+      {label:'Merchant Configuration',href:'staff-giving-merchants.html',capability:'financemerchants'},
+      {label:'Reports',href:'staff-giving-reports.html',capability:'financereports'},
+      {label:'Leadership Dashboard',href:'staff-giving-pastor.html',capability:'financereports'},
+      {label:'Statements',href:'staff-giving-statements.html',capability:'financestatements'}
     ] }
     // Future authorized destinations extend this configuration; no placeholder links.
   ];
@@ -87,13 +90,13 @@
       else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
     }
   });
-  const matches = item => item.href.replace(/\.html$/, '') === page;
+  const matches = item => item.href.replace(/\.html$/, '') === page || item.href==='staff-giving-reports.html'&&['staff-giving-report','staff-giving-summary','staff-giving-fund-report','staff-giving-donor-report','staff-giving-pledge-report','staff-giving-mid-report','staff-giving-reconciliation-report'].includes(page) || item.href==='staff-giving-statements.html'&&page==='staff-giving-statement';
   const rowsFor = (s, capability) => selected ? (s[capability] || []).filter(c => c.id === selected) : s[capability] || [];
   const hasGrant = (s, permission) => (s.staff?.grants || []).some(g => g.permission === permission && !g.department_ids);
   function allowed(s, capability) {
     if (!s?.user) return false;
     if(capability==='financeentryonly')return (s.giving?.organizations||[]).some(o=>o.permissions.includes('finance.gifts.create')&&!o.permissions.includes('finance.gifts.read'));
-    const financeKeys={financereports:'finance.reports.read',financegifts:'finance.gifts.read',financecreate:'finance.gifts.create',financeentryonly:'finance.gifts.create',financefunds:'finance.read',financepledges:'finance.pledges.read',financerecurring:'finance.recurring.read',financebatches:'finance.reconciliation.read',financemerchants:'finance.merchant.configure'};
+    const financeKeys={financestatements:'finance.statements.generate',financereports:'finance.reports.read',financegifts:'finance.gifts.read',financecreate:'finance.gifts.create',financeentryonly:'finance.gifts.create',financefunds:'finance.read',financepledges:'finance.pledges.read',financerecurring:'finance.recurring.read',financebatches:'finance.reconciliation.read',financemerchants:'finance.merchant.configure'};
     if(financeKeys[capability])return (s.giving?.organizations||[]).some(o=>o.permissions.includes(financeKeys[capability]));
     if(capability==='workspace'&&(s.giving?.organizations||[]).length)return true;
     const commKeys={commview:'communications.view',commsend:'communications.send',commtemplates:'communications.templates.view',commdelivery:'communications.delivery.view',commproviders:'communications.providers.view'};

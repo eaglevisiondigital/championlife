@@ -1,3 +1,7 @@
+## 2026-10-11 — GIV-2B reporting and held statements BUILD candidate
+
+Dependent `codex/giv-2b-reports-statements` begins at Chat-accepted GIV-2A `3803faf6f97116445614ba693cb841f21a7af519`. Reports Center, Leadership Finance, comparisons/charts/scoped exports and immutable Individual/Household statements extend accepted Giving and Staff Workspace. Local-only migration `20261012025915` adds guarded projections, two narrow reporting keys, version uniqueness and append-only held-delivery metadata; no real grants. Full contract: [GIV-2B](docs/GIVING-GIV-2B-REPORTS-STATEMENTS.md). Build review only; no hosted application, production/GiveHub/Auth/SMTP/DNS/provider/money/delivery changes, prerequisite merge or GIV-2C/GIV-3 work.
+
 ## 2026-10-10 — authorized GIV-1 build / review boundary
 
 Complete GIV-1 source supersedes the earlier documentation-only preparation hold and explicitly includes fund hierarchy, finance/reporting foundations and eight concurrency cases. Preserve the already approved future-requirements file unchanged; full form editing, polished dashboards/statements, real adapters, donor portal, Text-to-Give and controlled GiveHub cutover remain later gated packages. Build from accepted H1 `bce1926c6c91cfe3125c49506faf88ccaabc32eb`, never production main, as a dependent draft PR; merge no prerequisite.
