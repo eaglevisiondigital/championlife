@@ -148,6 +148,7 @@
   .staff-top,
   .staff-skip,
   .giving-actions,
+  #giving-reports-app .giving-header > label,
   .giving-periods,
   .giving-filters,
   .giving-report-catalog,
@@ -170,7 +171,7 @@
   .giving-panel {
     box-shadow: none;
     border: 0;
-    break-inside: avoid;
+    break-inside: auto;
     padding: 10px 0;
   }
   .giving-report-grid {
@@ -186,6 +187,13 @@
   table {
     min-width: 0 !important;
     width: 100%;
+  }
+  tr {
+    break-inside: avoid;
+  }
+  .giving-panel h2,
+  .giving-panel h3 {
+    break-after: avoid;
   }
   a {
     color: #000;

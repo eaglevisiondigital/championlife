@@ -247,4 +247,30 @@ h.close();
   );
   a.close();
 }
+// A long statement must flow onto paper without a mostly empty cover page.
+// Print-only controls must be hidden while contribution rows remain together.
+{
+  const h = new JSDOM('<style>' + read('assets/css/giving-reports.css') + '</style>');
+  const print = [...h.window.document.styleSheets[0].cssRules].find(
+    (rule) => rule.conditionText === 'print',
+  );
+  const rules = [...print.cssRules];
+  const controls = rules.find((rule) => rule.selectorText?.includes('button'));
+  ok(
+    controls.selectorText.includes('#giving-reports-app .giving-header > label') &&
+      controls.style.getPropertyValue('display') === 'none',
+    'printed organization selector hidden with operator controls',
+  );
+  ok(
+    rules.find((rule) => rule.selectorText === '.giving-panel').style
+      .getPropertyValue('break-inside') === 'auto',
+    'long printed statement flows across pages',
+  );
+  ok(
+    rules.find((rule) => rule.selectorText === 'tr').style
+      .getPropertyValue('break-inside') === 'avoid',
+    'printed contribution rows stay together',
+  );
+  h.window.close();
+}
 console.log(n + " GIV-2B DOM/accessibility checks passed");

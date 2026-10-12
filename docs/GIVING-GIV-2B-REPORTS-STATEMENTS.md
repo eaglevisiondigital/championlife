@@ -2,6 +2,10 @@
 
 Build-only dependent package from accepted GIV-2A `3803faf6f97116445614ba693cb841f21a7af519`, branch `codex/giv-2b-reports-statements`. Acceptance/production migrations, real-account hosted validation, financial-policy approval, statement delivery and release are separate gates. GIV-2C (Form Builder) and GIV-3 (real checkout/provider activation) are not started. Preserve [future approved requirements](GIV-1-FUTURE-APPROVED-REQUIREMENTS.md).
 
+## October 12 isolated acceptance print correction
+
+Native Chrome print preview exposed a mostly empty cover page for long statements and a visible organization selector. The scoped print stylesheet now lets panels flow across pages, keeps contribution rows together, and hides the selector with other operator controls. Three focused print regressions fail on the prior stylesheet and pass after correction (262 DOM checks total). This changes only printed presentation; reporting, permissions, statement snapshots and delivery remain unchanged. Hosted acceptance is still in progress; production and GIV-2C remain untouched.
+
 ## Reporting architecture and screens
 
 One new authenticated invoker RPC, `giving_reports`, delegates to a fixed-search-path private guard above canonical GIV-1 ledger/routing/People/Households and accepted GIV-2A projections. No parallel donor identity or giving ledger is created. All raw helpers, views and new delivery-event rows deny browser and service-role access. The existing organization lock precedes current verified identity/capability checks.
