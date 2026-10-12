@@ -61,6 +61,11 @@ export async function buildSite({ root = repository, env = process.env } = {}) {
     const destination = path.join(output, file);
     await mkdir(path.dirname(destination), { recursive: true });
     if (isolated && file === configPath) await writeFile(destination, previewScript(config));
+    else if(file==='assets/js/forms-config.js'&&env.FORMS_PUBLIC_SITE_KEY){
+      const siteKey=env.FORMS_PUBLIC_SITE_KEY;
+      if(!/^[A-Za-z0-9_-]{12,80}$/.test(siteKey)||(/^[123]x0+AA$/.test(siteKey)&&(!isolated||!config)))throw new Error('Invalid Forms public challenge configuration.');
+      await writeFile(destination,'// Generated Forms-only public challenge configuration.\nwindow.CHAMPION_LIFE_FORMS = '+JSON.stringify({siteKey})+';\n');
+    }
     else if(file===configPath && env.OUTREACH_PUBLIC_SITE_KEY && !/^[123]x0+/.test(env.OUTREACH_PUBLIC_SITE_KEY))await writeFile(destination,sourceConfig+'\nwindow.CHAMPION_LIFE_SUPABASE.outreachSiteKey='+JSON.stringify(env.OUTREACH_PUBLIC_SITE_KEY)+';\n');
     else await copyFile(path.join(root, file), destination);
   }

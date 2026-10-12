@@ -466,5 +466,6 @@
   "form.html",
   "staff-form-builder.html",
   "staff-form-submissions.html",
-  "staff-forms.html"
+  "staff-forms.html",
+  "assets/js/forms-config.js"
 ]

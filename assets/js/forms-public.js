@@ -21,7 +21,7 @@
   async function challenge() {
     if (
       !window.turnstile ||
-      !window.CHAMPION_LIFE_SUPABASE?.formsTurnstileSiteKey
+      !window.CHAMPION_LIFE_FORMS?.siteKey
     )
       throw Error("This form is awaiting secure submission configuration.");
     if (token) return token;
@@ -134,11 +134,11 @@
     const wait = setInterval(() => {
       if (
         window.turnstile &&
-        window.CHAMPION_LIFE_SUPABASE?.formsTurnstileSiteKey
+        window.CHAMPION_LIFE_FORMS?.siteKey
       ) {
         clearInterval(wait);
         widget = window.turnstile.render(check, {
-          sitekey: window.CHAMPION_LIFE_SUPABASE.formsTurnstileSiteKey,
+          sitekey: window.CHAMPION_LIFE_FORMS.siteKey,
           action: "forms_submit",
           callback: (t) => (token = t),
           "expired-callback": () => (token = ""),
