@@ -247,6 +247,57 @@ h.close();
   );
   a.close();
 }
+{
+  let release;
+  let pending = true;
+  const h = await page('summary', undefined, (g, w) => {
+    const rpc = w.ChampionLifeAuth.client.rpc;
+    w.ChampionLifeAuth.client.rpc = async (name, args) => {
+      if (name === 'giving_reports' && args.p_action === 'report' && pending) {
+        pending = false;
+        await new Promise((r) => (release = r));
+      }
+      return rpc(name, args);
+    };
+  });
+  ok(typeof release === 'function', 'old identity report held in flight');
+  h.g.user = { ...h.g.user, id: 'replacement-synthetic-account' };
+  h.g.callbacks.forEach((fn) => fn('SIGNED_IN', { user: h.g.user }));
+  await tick();
+  await tick();
+  ok(h.d.querySelector('#giving-reports-app table'), 'new identity report loaded');
+  release();
+  await tick();
+  ok(
+    h.d.querySelector('#giving-reports-app table') && !h.d.querySelector('.staff-state'),
+    'obsolete report rejection cannot erase current authorized render',
+  );
+  h.close();
+}
+
+{
+  let fail = true;
+  const h = await page('summary', undefined, (g, w) => {
+    const rpc = w.ChampionLifeAuth.client.rpc;
+    w.ChampionLifeAuth.client.rpc = async (name, args) => {
+      if (name === 'giving_reports' && args.p_action === 'report' && fail) {
+        fail = false;
+        throw new Error('Synthetic temporary read failure');
+      }
+      return rpc(name, args);
+    };
+  });
+  ok(h.d.querySelector('.staff-state'), 'temporary report failure clears content');
+  h.w.dispatchEvent(new h.w.Event('focus'));
+  await tick();
+  await tick();
+  ok(
+    h.d.querySelector('#giving-reports-app table') && !h.d.querySelector('.staff-state'),
+    'unchanged authority can retry a failed render',
+  );
+  h.close();
+}
+
 // A long statement must flow onto paper without a mostly empty cover page.
 // Print-only controls must be hidden while contribution rows remain together.
 {

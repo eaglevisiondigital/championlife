@@ -6,6 +6,8 @@ Build-only dependent package from accepted GIV-2A `3803faf6f97116445614ba693cb84
 
 Native Chrome print preview exposed a mostly empty cover page for long statements and a visible organization selector. The scoped print stylesheet now lets panels flow across pages, keeps contribution rows together, and hides the selector with other operator controls. Three focused print regressions fail on the prior stylesheet and pass after correction (262 DOM checks total). This changes only printed presentation; reporting, permissions, statement snapshots and delivery remain unchanged. Hosted acceptance is still in progress; production and GIV-2C remain untouched.
 
+The same-session browser checks also exposed stale render error handling. A superseded start now ignores its obsolete rejection, and a current failed render clears its loaded signature so a later access check can retry. Five additional focused assertions reproduce the old behavior and protect recovery, bringing the DOM total to267. Identity/scope validation, server capabilities and denial clearing remain enforced; no Auth configuration or backend security change is involved.
+
 ## Reporting architecture and screens
 
 One new authenticated invoker RPC, `giving_reports`, delegates to a fixed-search-path private guard above canonical GIV-1 ledger/routing/People/Households and accepted GIV-2A projections. No parallel donor identity or giving ledger is created. All raw helpers, views and new delivery-event rows deny browser and service-role access. The existing organization lock precedes current verified identity/capability checks.

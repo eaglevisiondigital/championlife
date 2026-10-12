@@ -1152,6 +1152,8 @@
       loadedSignature = signature;
       await render();
     } catch (e) {
+      if (request !== sequence) return;
+      loadedSignature = "";
       if (!root.querySelector(".staff-state")) {
         epoch++;
         root.replaceChildren();

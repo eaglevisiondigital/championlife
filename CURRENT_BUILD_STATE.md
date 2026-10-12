@@ -143,3 +143,6 @@ Local verification on 2026-10-06: the full 14-script backend test command passed
 ## 2026-10-12 — GIV-2B isolated acceptance print correction
 
 Acceptance-only migration remote `20261012130902` applied once, prior38 preserved; 204 hosted DB checks and required CSV downloads/30 responsive views pass. Native print preview exposed a mostly empty cover page and printed organization selector. Scoped print CSS corrected with three reproducing regressions; 262 DOM, public build, syntax and diff checks pass. Browser print retest, leadership/current-session UI revocation and final cleanup remain pending. No financial/security behavior, production/GiveHub/Auth/provider/money/send change; PR18 stays draft/unmerged, GIV-2C not started.
+## 2026-10-12 — GIV-2B stale-render error guard
+
+Same-session hosted checks exposed obsolete report failures clearing a newer authorized page and failed signatures preventing retry. The controller now ignores superseded start errors and clears the current failed signature. Five reproducing regression assertions plus267 totalDOM checks, build/syntax/diff PASS. Backend/identity/permissions/Auth unchanged. Hosted current-session recheck and cleanup remain required; production untouched, GIV-2C not started.
