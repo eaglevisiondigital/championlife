@@ -487,4 +487,24 @@ try {
 } finally {
   c.d.window.close();
 }
+// Hosted Netlify internal rewrites preserve the visible clean URL.
+for (const url of [
+  `https://example.test/forms/${f.org}/synthetic-form`,
+  `https://example.test/form.html?organization=${f.org}&slug=synthetic-form`,
+]) {
+  const routeDom = dom('<div id="public-form-app"></div>', url);
+  try {
+    const calls = [];
+    routeDom.window.ChampionLifeAuth = { client: { rpc: async (name, args) => {
+      calls.push({ name, args });
+      return { data: { available: false } };
+    } } };
+    routeDom.window.eval(script("forms-public.js"));
+    await tick();
+    ok(calls.length === 1 && calls[0].name === "forms_public" &&
+      calls[0].args.p_org === f.org && calls[0].args.p_slug === "synthetic-form",
+      "public renderer resolves exact organization/slug from " + (url.includes("?organization") ? "query" : "clean path"));
+  } finally { routeDom.window.close(); }
+}
+
 console.log(n + " Forms DOM/model/accessibility checks passed");

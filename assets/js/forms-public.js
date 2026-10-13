@@ -5,8 +5,12 @@
     el = R.el,
     client = window.ChampionLifeAuth?.client,
     q = new URLSearchParams(location.search),
-    org = q.get("organization"),
-    slug = q.get("slug") || location.pathname.split("/").filter(Boolean).at(-1);
+    // Internal hosting rewrites leave the clean URL visible to the browser.
+    publicPath = location.pathname.match(
+      /^\/forms\/([a-f0-9-]{36})\/([a-z0-9][a-z0-9-]{2,79})\/?$/,
+    ),
+    org = q.get("organization") || publicPath?.[1],
+    slug = q.get("slug") || publicPath?.[2];
   const key = crypto.randomUUID();
   let token = "",
     widget = null;
