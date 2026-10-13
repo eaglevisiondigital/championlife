@@ -67,7 +67,7 @@
         throw Error("Forms access is no longer available.");
       }
       const e = Error(
-        r.error.code === "40001"
+        ["40001", "PT409"].includes(r.error.code)
           ? "Another editor changed this draft. Reload before saving."
           : r.error.message || "Forms operation unavailable.",
       );
@@ -426,7 +426,7 @@
       if (dirty) saveTimer = setTimeout(save, 800);
     } catch (e) {
       if (token !== epoch) return;
-      if (e.code === "40001") {
+      if (["40001", "PT409"].includes(e.code)) {
         conflict = true;
         clearTimeout(saveTimer);
       }

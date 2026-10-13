@@ -218,7 +218,7 @@ async function admin(view = "builder") {
         if (a === "funds")
           return { data: { funds: [{ id: f.mainFund, name: "MISSIONS" }] } };
         if (a === "save") {
-          if (failSave) return { error: { code: "40001" } };
+          if (failSave) return { error: { code: "PT409" } };
           current = {
             ...current,
             version: {

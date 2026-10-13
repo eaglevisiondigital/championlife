@@ -36,5 +36,6 @@ export const migrationOrder=[
   "20261010202812_giving_core_giv_1.sql",
   "20261011112210_giving_finance_management_giv_2a.sql",
   "20261012025915_giving_reports_statements_giv_2b.sql",
-  "20261012201849_platform_forms_giv_2c.sql"
+  "20261012201849_platform_forms_giv_2c.sql",
+  "20261013193553_forms_conflict_http_409.sql"
 ];

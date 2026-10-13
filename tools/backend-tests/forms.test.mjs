@@ -1010,6 +1010,16 @@ try {
       "no pre-affirmed " + type + " defaults",
     );
   }
+  await as();
+  const conflictForm = await rpc("create", createPayload("http-conflict-regression"));
+  await assert.rejects(() => rpc("save", {
+    id: conflictForm.form.id, revision: 0, definition: conflictForm.version.definition,
+  }), (error) => error.code === "PT409");
+  ok(true, "stale Forms revision uses non-retryable HTTP409 conflict code");
+  await owner();
+  ok((await q("select revision from platform_form_versions where id=$1", [conflictForm.version.id])).rows[0].revision === 1,
+    "HTTP409 conflict preserves canonical draft revision");
+
   console.log(n + " Forms database/security checks passed");
 } finally {
   await db.close();

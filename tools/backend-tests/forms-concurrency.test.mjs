@@ -162,7 +162,7 @@ try {
 create table public.forms_test_barrier(run uuid,worker int,pid int,primary key(run,worker));create policy local_barrier on forms_test_barrier for all to authenticated,service_role using(true)with check(true);grant select,insert on forms_test_barrier to authenticated,service_role;
 create function public.forms_test_race(run uuid,n int,service boolean,action text,slug text,p jsonb)returns jsonb language plpgsql security invoker as $$declare began numeric;answer jsonb;code text;deadline timestamptz:=clock_timestamp()+interval '20 seconds';begin
  while(select count(*)from forms_test_barrier b where b.run=forms_test_race.run)<n loop if clock_timestamp()>deadline then raise exception 'Barrier timeout';end if;perform pg_sleep(.01);end loop;began:=extract(epoch from clock_timestamp());
- begin if service then answer:=forms_gateway(action,'${f.org}',slug,p,repeat('a',64));else answer:=forms_workspace(action,'${f.org}',p);end if;exception when unique_violation or check_violation or serialization_failure or raise_exception then get stacked diagnostics code=returned_sqlstate;answer:=jsonb_build_object('safe_conflict',code);end;
+ begin if service then answer:=forms_gateway(action,'${f.org}',slug,p,repeat('a',64));else answer:=forms_workspace(action,'${f.org}',p);end if;exception when unique_violation or check_violation or serialization_failure or raise_exception or sqlstate 'PT409' then get stacked diagnostics code=returned_sqlstate;answer:=jsonb_build_object('safe_conflict',code);end;
  return jsonb_build_object('pid',pg_backend_pid(),'start',began,'end',extract(epoch from clock_timestamp()),'answer',answer);end$$;grant execute on function forms_test_race(uuid,int,boolean,text,text,jsonb)to authenticated,service_role;`);
   const coordinator = execFile(exe("psql"), args, { maxBuffer: 2e6 }),
     pending = [];
@@ -278,7 +278,7 @@ create function public.forms_test_race(run uuid,n int,service boolean,action tex
     );
     assert.equal(br.filter((r) => !r.answer.safe_conflict).length, 1);
     assert.equal(
-      br.filter((r) => r.answer.safe_conflict === "40001").length,
+      br.filter((r) => r.answer.safe_conflict === "PT409").length,
       7,
     );
     const cp = { request_key: uid(), version_id: a.version.id, answers };
