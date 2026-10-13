@@ -27,3 +27,9 @@
 /my-discipleship /my-discipleship.html 200
 /bessemer /bessemer/index.html 200
 /bessemer/ /bessemer/index.html 200
+
+# Reusable Forms: explicit tenant parameter remains required on the shared host.
+/forms/:organization/:slug /form.html?organization=:organization&slug=:slug 200
+/staff-forms /staff-forms.html 200
+/staff-form-builder /staff-form-builder.html 200
+/staff-form-submissions /staff-form-submissions.html 200

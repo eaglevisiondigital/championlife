@@ -41,6 +41,7 @@
       {label:'Leadership Dashboard',href:'staff-giving-pastor.html',capability:'financereports'},
       {label:'Statements',href:'staff-giving-statements.html',capability:'financestatements'}
     ] }
+    ,{id:'forms',label:'FORMS',children:[{label:'Forms',href:'staff-forms.html',capability:'formsread'},{label:'Form Builder',href:'staff-form-builder.html',capability:'formsedit'},{label:'Submissions',href:'staff-form-submissions.html',capability:'formssubmissions'}]}
     // Future authorized destinations extend this configuration; no placeholder links.
   ];
   const attribution = Object.freeze({
@@ -95,6 +96,9 @@
   const hasGrant = (s, permission) => (s.staff?.grants || []).some(g => g.permission === permission && !g.department_ids);
   function allowed(s, capability) {
     if (!s?.user) return false;
+    const formsKeys={formsread:'forms.read',formsedit:'forms.edit',formssubmissions:'forms.submissions.read'};
+    if(formsKeys[capability])return (s.forms?.organizations||[]).some(o=>o.permissions.includes(formsKeys[capability])||(o.scoped_forms||[]).some(f=>f.permissions.includes(formsKeys[capability])));
+    if(capability==='workspace'&&(s.forms?.organizations||[]).length)return true;
     if(capability==='financeentryonly')return (s.giving?.organizations||[]).some(o=>o.permissions.includes('finance.gifts.create')&&!o.permissions.includes('finance.gifts.read'));
     const financeKeys={financestatements:'finance.statements.generate',financereports:'finance.reports.read',financegifts:'finance.gifts.read',financecreate:'finance.gifts.create',financeentryonly:'finance.gifts.create',financefunds:'finance.read',financepledges:'finance.pledges.read',financerecurring:'finance.recurring.read',financebatches:'finance.reconciliation.read',financemerchants:'finance.merchant.configure'};
     if(financeKeys[capability])return (s.giving?.organizations||[]).some(o=>o.permissions.includes(financeKeys[capability]));
@@ -111,6 +115,7 @@
     return rowsFor(s,capability).length > 0;
   }
   function href(item, s = snapshot) {
+    if(item.capability.startsWith('forms')){const org=new URLSearchParams(location.search).get('organization');const scopes=s.forms?.organizations||[];const chosen=scopes.find(o=>o.id===org)||scopes[0];return item.href+(chosen?'?organization='+encodeURIComponent(chosen.id):'');}
     if(item.capability.startsWith('finance')){const org=new URLSearchParams(location.search).get('organization');const scopes=s.giving?.organizations||[];const candidates=scopes.filter(o=>allowed({user:s.user,giving:{organizations:[o]}},item.capability));const chosen=candidates.find(o=>o.id===org)||candidates[0];return item.href+(chosen?'?organization='+encodeURIComponent(chosen.id):'');}
     const rows = item.capability.startsWith('comm') ? (s.communications?.campaigns||[]) : rowsFor(s,item.capability);
     if (selected && rows.length && !['workspace','outreach','people','partners'].includes(item.capability)) return item.href + '?campaign=' + encodeURIComponent(selected);
@@ -139,7 +144,7 @@
     if (!nav.children.length) nav.append(el('p', 'No staff sections assigned.', { class: 'staff-nav-status' }));
   }
   async function read(name, action, payload = {}, campaign = null) {
-    const args = name === 'giving_workspace' ? {p_action:action,p_org:null,p_payload:payload} : name === 'staff_workspace_context' ? {} : { p_action: action, p_campaign: campaign, p_payload: payload };
+    const args = ['giving_workspace','forms_workspace'].includes(name) ? {p_action:action,p_org:null,p_payload:payload} : name === 'staff_workspace_context' ? {} : { p_action: action, p_campaign: campaign, p_payload: payload };
     const r = await auth.client.rpc(name,args);
     if (r.error) {
       if (['42501','PGRST202','42883'].includes(r.error.code) || [401,403].includes(r.status)) return null;
@@ -148,10 +153,10 @@
     return r.data;
   }
   async function discover(user) {
-    const [staff,core,campaigns,preevent,registration,prizes,eventday,communications,giving] = await Promise.all([
+    const [staff,core,campaigns,preevent,registration,prizes,eventday,communications,giving,forms] = await Promise.all([
       read('staff_workspace_context'), read('outreach_campaign_workspace','context'), read('outreach_campaign_workspace','list'),
       read('outreach_pre_event_workspace','campaigns'),read('outreach_registration_workspace','campaigns'),
-      read('outreach_prize_workspace','campaigns'),read('outreach_event_day_workspace','campaigns'),read('communications_workspace','context'),read('giving_workspace','context')
+      read('outreach_prize_workspace','campaigns'),read('outreach_event_day_workspace','campaigns'),read('communications_workspace','context'),read('giving_workspace','context'),read('forms_workspace','context')
     ]);
     const team = [];
     const candidates = selected ? (campaigns || []).filter(c => c.id === selected) : campaigns || [];
@@ -163,7 +168,7 @@
       }));
     }
     team.sort((a,b)=>a.name.localeCompare(b.name)||a.id.localeCompare(b.id));
-    return { user,staff,communications,giving,organizations:core?.organizations || [],campaigns:campaigns || [],preevent:preevent || [],registration:registration || [],prizes:prizes || [],eventday:eventday || [],team,
+    return { user,staff,communications,giving,forms,organizations:core?.organizations || [],campaigns:campaigns || [],preevent:preevent || [],registration:registration || [],prizes:prizes || [],eventday:eventday || [],team,
       available:{campaigns:campaigns!==null,preevent:preevent!==null,registration:registration!==null,prizes:prizes!==null,eventday:eventday!==null} };
   }
   function publish(s) { snapshot=s; render(s); window.dispatchEvent(new CustomEvent('staff-workspace-context',{detail:s})); }
