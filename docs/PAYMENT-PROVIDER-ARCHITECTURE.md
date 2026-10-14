@@ -15,7 +15,7 @@ flowchart LR
  L --> C[Canonical Giving ledger after separately authorized execution]
 ```
 
-Each canonical reference is owner-scoped. Brand/UI origin does not decide the financial owner. Fund tree rollups remain independent from merchant accounts. A line must resolve exactly one currency/environment-compatible destination/account/route; currency is never silently converted. Snapshots freeze fund/destination/account/route versions and amount boundaries. Consolidation requires the same owner/destination/account/MID and allowed capability. A canonical session can hold several independently failing legs; receipts summarize those legs without claiming full success after partial failure.
+Each canonical reference is owner-scoped. Brand/UI origin does not decide the financial owner. Fund tree rollups remain independent from merchant accounts. A line must resolve exactly one currency/environment-compatible destination/account/route; currency is never silently converted. Snapshots freeze fund/destination/account/route versions and amount boundaries. Consolidation requires the same owner/destination/account/MID and allowed capability. Historical pre-GIV-3A Form purpose derives from its original immutable submission version without rewriting accepted lines; every new native/Form line has explicit purpose. A canonical session can hold several independently failing legs; receipts summarize those legs without claiming full success after partial failure.
 
 | Model | Account / route representation | Token boundary |
 |---|---|---|
