@@ -1,3 +1,7 @@
+## GIV-3B sandbox build extension (2026-10-14)
+
+NMI implementation is sandbox-only on the dependent accepted GIV-3A model. Live controls/finalizer remain unchanged/off. Current-authority canonical intent, exclusive handoff, transient tokens, private masked vault bindings, original-transaction adjustments and signed observation ingestion are described in [NMI integration](NMI-INTEGRATION.md). Default-off runtime/account/route/session opt-ins are independent from live activation. Immutable sandbox observations cannot post real Giving entries. Vendor capability/protocol/portability proof is not inferred from local mocks; [exact findings](NMI-MULTI-MID-FINDINGS.md) remain hosted-only. GIV-3C not started.
+
 # Payment-provider architecture — GIV-3A
 
 GIV-3A is a disabled build foundation. This document describes implemented boundaries, not a claim that NMI/Authorize.Net boarding, vault portability or sandbox integration has been verified.

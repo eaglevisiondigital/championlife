@@ -1,0 +1,8 @@
+{
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "@nmipayments/nmi-pay": "1.1.1",
+    "esbuild": "0.25.12"
+  }
+}

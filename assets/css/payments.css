@@ -160,3 +160,5 @@
     padding: 18px;
   }
 }
+
+.nmi-hosted-fields {width:100%;min-width:0;overflow:hidden}.nmi-sandbox-panel select {max-width:100%;width:100%;margin-bottom:1rem}.nmi-sandbox-panel h2 {color:#775d20}.nmi-sandbox-panel button {min-height:44px}.nmi-sandbox-panel {border:2px solid #d0b05b}

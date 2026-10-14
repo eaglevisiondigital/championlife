@@ -474,5 +474,8 @@
   "staff-payment-routing.html",
   "staff-payment-methods.html",
   "staff-payment-transactions.html",
-  "checkout.html"
+  "checkout.html",
+  "assets/js/nmi-config.js",
+  "assets/js/nmi-checkout.js",
+  "assets/js/nmi-component.js"
 ]

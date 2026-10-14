@@ -1,3 +1,7 @@
+## Accepted GIV-3A dependency / GIV-3B build boundary
+
+Chat accepted GIV-3A exact head `1410ebc824cdf0b9721c95db0cb41229b74a0274` after isolated hosted acceptance. The dependent [GIV-3B sandbox build](GIVING-GIV-3B-NMI-SANDBOX.md) extends the accepted model; the historical build-only statements below describe the GIV-3A commit, not current acceptance state. GIV-3A live gates remain off and its generic webhook held; the new NMI functions/migration are build-only and undeployed/unapplied. No prerequisite merge or production activation is implied.
+
 # GIV-3A — secure provider foundation build
 
 Status: BUILD candidate, stopped at build review. Based on Chat-accepted GIV-2C `edf82fb34e8db448a0d6c6465a3799c75993d5a2`, on `codex/giv-3a-provider-foundation`. GIV-1/2A/2B/2C remain accepted prerequisites; no prerequisite is merged by this package.

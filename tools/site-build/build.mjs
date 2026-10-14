@@ -26,6 +26,13 @@ export function previewScript(config) {
     `(() => { const show = () => { const notice = document.createElement('div'); notice.id = 'preview-config-error'; notice.setAttribute('role', 'alert'); notice.textContent = window.CHAMPION_LIFE_CONFIG_ERROR; notice.style.cssText = 'position:relative;z-index:2147483647;padding:1rem;background:#fff2cc;color:#332600;border:2px solid #946200;font:16px/1.5 sans-serif'; document.body.prepend(notice); }; if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', show, {once:true}); else show(); })();\n`);
 }
 
+export function nmiPreviewConfiguration(env,isolated,backend){
+  if(!isolated||!backend||env.NMI_SANDBOX_COMPONENT_ENABLED!=='true')return null;
+  const fields=['NMI_SANDBOX_ORGANIZATION_ID','NMI_SANDBOX_GATEWAY_ID'];
+  if(!fields.every(k=>/^[a-f0-9]{8}-[a-f0-9-]{27}$/.test(env[k]||''))||!/^[A-Za-z0-9]{6}(?:-[A-Za-z0-9]{6}){3}$/.test(env.NMI_SANDBOX_PUBLIC_TOKENIZATION_KEY||'')||!/^[A-Za-z0-9_-]{1,120}$/.test(env.NMI_SANDBOX_MERCHANT_REFERENCE||''))throw Error('Invalid NMI sandbox public configuration.');
+  return {project:backend.url,environment:'sandbox',enabled:true,organization_id:env.NMI_SANDBOX_ORGANIZATION_ID,gateway_id:env.NMI_SANDBOX_GATEWAY_ID,public_key:env.NMI_SANDBOX_PUBLIC_TOKENIZATION_KEY,merchant_reference:env.NMI_SANDBOX_MERCHANT_REFERENCE};
+}
+
 export async function buildSite({ root = repository, env = process.env } = {}) {
   const output = path.join(root, 'dist');
   const context = env.CONTEXT || '';
@@ -56,11 +63,13 @@ export async function buildSite({ root = repository, env = process.env } = {}) {
   const sandbox = { window: {} };
   vm.runInNewContext(sourceConfig, sandbox, { timeout: 1000 });
   const config = isolated ? previewConfiguration(env, sandbox.window.CHAMPION_LIFE_SUPABASE) : null;
+  const nmi=nmiPreviewConfiguration(env,isolated,config);
   await rm(output, { recursive: true, force: true });
   for (const file of files) {
     const destination = path.join(output, file);
     await mkdir(path.dirname(destination), { recursive: true });
-    if (isolated && file === configPath) await writeFile(destination, previewScript(config));
+    if(nmi&&file==='assets/js/nmi-config.js')await writeFile(destination,'// Isolated sandbox public key only; never a REST credential.\nwindow.CHAMPION_NMI_SANDBOX = '+JSON.stringify(nmi)+';\n');
+    else if (isolated && file === configPath) await writeFile(destination, previewScript(config));
     else if(file==='assets/js/forms-config.js'&&env.FORMS_PUBLIC_SITE_KEY){
       const siteKey=env.FORMS_PUBLIC_SITE_KEY;
       if(!/^[A-Za-z0-9_-]{12,80}$/.test(siteKey)||(/^[123]x0+AA$/.test(siteKey)&&(!isolated||!config)))throw new Error('Invalid Forms public challenge configuration.');
@@ -72,6 +81,7 @@ export async function buildSite({ root = repository, env = process.env } = {}) {
   if (isolated) {
     // Preview pages are not search results; production output remains byte-for-byte.
     await writeFile(path.join(output, '_headers'), '/*\n  X-Robots-Tag: noindex, nofollow\n/assets/js/supabase-config.js\n  Cache-Control: no-store\n');
+    if(nmi)await writeFile(path.join(output,'_headers'),"/*\n  X-Robots-Tag: noindex, nofollow\n/assets/js/supabase-config.js\n  Cache-Control: no-store\n/assets/js/nmi-config.js\n  Cache-Control: no-store\n/checkout.html\n  Content-Security-Policy: default-src 'self'; script-src 'self' https://cdn.jsdelivr.net https://secure.networkmerchants.com; frame-src https://secure.nmi.com; connect-src 'self' https://bkbmjisprwmkptywtmih.supabase.co https://secure.nmi.com https://secure.networkmerchants.com; style-src 'self' 'unsafe-inline'; img-src 'self' data:; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'\n/checkout\n  Content-Security-Policy: default-src 'self'; script-src 'self' https://cdn.jsdelivr.net https://secure.networkmerchants.com; frame-src https://secure.nmi.com; connect-src 'self' https://bkbmjisprwmkptywtmih.supabase.co https://secure.nmi.com https://secure.networkmerchants.com; style-src 'self' 'unsafe-inline'; img-src 'self' data:; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'\n");
     await writeFile(path.join(output, 'robots.txt'), 'User-agent: *\nDisallow: /\n');
   }
   return { files: files.length, context: context || 'local', backend: isolated ? (config ? 'isolated-preview' : 'blocked') : 'unchanged-production-default', output };
