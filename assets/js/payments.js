@@ -546,6 +546,7 @@
       const data = await call("session", { id });
       if (token !== epoch) return;
       await session(data);
+      window.dispatchEvent(new CustomEvent('payments-session-rendered',{detail:{organization_id:org,session_id:id}}));
       return;
     }
     const data = await call("configuration", {}, false);

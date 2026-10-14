@@ -41,7 +41,7 @@ try {
     ),
   );
   const upgrade = "20261014171912_giving_provider_foundation_giv_3a.sql";
-  for (const m of migrationOrder.filter((m) => m !== upgrade))
+  for (const m of migrationOrder.slice(0,migrationOrder.indexOf(upgrade)))
     await db.exec(
       readFileSync(
         new URL("../../supabase/migrations/" + m, import.meta.url),
@@ -151,7 +151,12 @@ try {
       still.receipt.non_charitable_minor === "2500",
     "later Form publication never changes old fee classification",
   );
-  console.log(n + " GIV-3A upgrade compatibility checks passed");
+  await db.exec("reset role");
+  for(const m of migrationOrder.slice(migrationOrder.indexOf(upgrade)+1))await db.exec(readFileSync(new URL('../../supabase/migrations/'+m,import.meta.url),'utf8'));
+  await as();const afterNmi=(await q('select payments_workspace($1,$2,$3)v',['session',f.org,{id:before.session_id}])).rows[0].v;
+  ok(afterNmi.lines[0].purpose==='event_fee'&&afterNmi.receipt.non_charitable_minor==='2500','GIV-3B preserves accepted old Form classification');
+  await db.exec('reset role');ok((await q('select count(*)::int n from private.payments_nmi_accounts')).rows[0].n===0,'upgrade creates no sandbox account or activation');
+  console.log(n + " GIV-3A/GIV-3B upgrade compatibility checks passed");
 } catch (e) {
   console.error(e.message, e.where || "");
   process.exitCode = 1;

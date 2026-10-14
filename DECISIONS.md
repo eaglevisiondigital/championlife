@@ -1,3 +1,9 @@
+## 2026-10-14 — GIV-3B NMI sandbox BUILD candidate
+
+Explicit GIV-3B assignment authorizes a dependent build from accepted GIV-3A `1410ebc824cdf0b9721c95db0cb41229b74a0274`, on `codex/giv-3b-nmi-sandbox`. Official Payment Component 1.1.1, sandbox-only REST transport, canonical current-authority exclusive handoff, private vault/plan bindings, safe normalization/receipt and signed observation paths are implemented. Local migration `20261014213506` and new NMI functions remain unapplied/undeployed. Private build checks and disconnected host QA are separate from actual NMI evidence. See [GIV-3B build contract](docs/GIVING-GIV-3B-NMI-SANDBOX.md), [integration/security](docs/NMI-INTEGRATION.md) and [unproven provider findings](docs/NMI-MULTI-MID-FINDINGS.md).
+
+No actual sandbox credentials/processors have been configured, no provider transaction/token/customer/subscription/refund/void has occurred and no real money/card/message is used. Live/global Giving gates, GiveHub, production/Auth/SMTP/DNS, prior PRs and IP/data boundaries remain unchanged. Stop at BUILD REVIEW; separately authorized hosted acceptance is next, not started. GIV-3C NOT STARTED. Earlier package holds below are historical and are superseded only for this explicitly assigned build.
+
 ## 2026-10-14 — GIV-3A provider foundation BUILD candidate
 
 Chat accepted GIV-2C at `edf82fb34e8db448a0d6c6465a3799c75993d5a2` and explicitly authorized the dependent `codex/giv-3a-provider-foundation` build. This supersedes the historic GIV-3 hold only for GIV-3A. Canonical Giving sessions/lines/legs, private account-scoped token references, deterministic multi-MID routing, immutable safe journals, held recurring/refund/void/webhook/settlement foundations and five responsive finance screens are implemented. Exact current grants, runtime-secret scope and all default-off execution gates preserve financial ownership; no parallel ledger, real secret, provider transport or real payment.
