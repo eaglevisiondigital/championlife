@@ -37,6 +37,10 @@
       {label:'Recurring Giving',href:'staff-giving-recurring.html',capability:'financerecurring'},
       {label:'Batches & Reconciliation',href:'staff-giving-batches.html',capability:'financebatches'},
       {label:'Merchant Configuration',href:'staff-giving-merchants.html',capability:'financemerchants'},
+      {label:'Native Providers',href:'staff-payment-providers.html',capability:'paymentsview'},
+      {label:'Routing Matrix',href:'staff-payment-routing.html',capability:'paymentsview'},
+      {label:'Payment Methods',href:'staff-payment-methods.html',capability:'paymentsview'},
+      {label:'Payment Transactions',href:'staff-payment-transactions.html',capability:'paymentsview'},
       {label:'Reports',href:'staff-giving-reports.html',capability:'financereports'},
       {label:'Leadership Dashboard',href:'staff-giving-pastor.html',capability:'financereports'},
       {label:'Statements',href:'staff-giving-statements.html',capability:'financestatements'}
@@ -96,6 +100,8 @@
   const hasGrant = (s, permission) => (s.staff?.grants || []).some(g => g.permission === permission && !g.department_ids);
   function allowed(s, capability) {
     if (!s?.user) return false;
+    if(capability==='paymentsview')return(s.payments?.organizations||[]).some(o=>o.permissions.includes('payments.view'));
+    if(capability==='workspace'&&(s.payments?.organizations||[]).length)return true;
     const formsKeys={formsread:'forms.read',formsedit:'forms.edit',formssubmissions:'forms.submissions.read'};
     if(formsKeys[capability])return (s.forms?.organizations||[]).some(o=>o.permissions.includes(formsKeys[capability])||(o.scoped_forms||[]).some(f=>f.permissions.includes(formsKeys[capability])));
     if(capability==='workspace'&&(s.forms?.organizations||[]).length)return true;
@@ -115,6 +121,7 @@
     return rowsFor(s,capability).length > 0;
   }
   function href(item, s = snapshot) {
+    if(item.capability.startsWith('payments')){const requested=new URLSearchParams(location.search).get('organization');const scopes=s.payments?.organizations||[];const chosen=scopes.find(o=>o.id===requested)||scopes[0];return item.href+(chosen?'?organization='+encodeURIComponent(chosen.id):'');}
     if(item.capability.startsWith('forms')){const org=new URLSearchParams(location.search).get('organization');const scopes=s.forms?.organizations||[];const chosen=scopes.find(o=>o.id===org)||scopes[0];return item.href+(chosen?'?organization='+encodeURIComponent(chosen.id):'');}
     if(item.capability.startsWith('finance')){const org=new URLSearchParams(location.search).get('organization');const scopes=s.giving?.organizations||[];const candidates=scopes.filter(o=>allowed({user:s.user,giving:{organizations:[o]}},item.capability));const chosen=candidates.find(o=>o.id===org)||candidates[0];return item.href+(chosen?'?organization='+encodeURIComponent(chosen.id):'');}
     const rows = item.capability.startsWith('comm') ? (s.communications?.campaigns||[]) : rowsFor(s,item.capability);
@@ -144,7 +151,7 @@
     if (!nav.children.length) nav.append(el('p', 'No staff sections assigned.', { class: 'staff-nav-status' }));
   }
   async function read(name, action, payload = {}, campaign = null) {
-    const args = ['giving_workspace','forms_workspace'].includes(name) ? {p_action:action,p_org:null,p_payload:payload} : name === 'staff_workspace_context' ? {} : { p_action: action, p_campaign: campaign, p_payload: payload };
+    const args = ['giving_workspace','forms_workspace','payments_workspace'].includes(name) ? {p_action:action,p_org:null,p_payload:payload} : name === 'staff_workspace_context' ? {} : { p_action: action, p_campaign: campaign, p_payload: payload };
     const r = await auth.client.rpc(name,args);
     if (r.error) {
       if (['42501','PGRST202','42883'].includes(r.error.code) || [401,403].includes(r.status)) return null;
@@ -153,10 +160,10 @@
     return r.data;
   }
   async function discover(user) {
-    const [staff,core,campaigns,preevent,registration,prizes,eventday,communications,giving,forms] = await Promise.all([
+    const [staff,core,campaigns,preevent,registration,prizes,eventday,communications,giving,forms,payments] = await Promise.all([
       read('staff_workspace_context'), read('outreach_campaign_workspace','context'), read('outreach_campaign_workspace','list'),
       read('outreach_pre_event_workspace','campaigns'),read('outreach_registration_workspace','campaigns'),
-      read('outreach_prize_workspace','campaigns'),read('outreach_event_day_workspace','campaigns'),read('communications_workspace','context'),read('giving_workspace','context'),read('forms_workspace','context')
+      read('outreach_prize_workspace','campaigns'),read('outreach_event_day_workspace','campaigns'),read('communications_workspace','context'),read('giving_workspace','context'),read('forms_workspace','context'),read('payments_workspace','context')
     ]);
     const team = [];
     const candidates = selected ? (campaigns || []).filter(c => c.id === selected) : campaigns || [];
@@ -168,7 +175,7 @@
       }));
     }
     team.sort((a,b)=>a.name.localeCompare(b.name)||a.id.localeCompare(b.id));
-    return { user,staff,communications,giving,forms,organizations:core?.organizations || [],campaigns:campaigns || [],preevent:preevent || [],registration:registration || [],prizes:prizes || [],eventday:eventday || [],team,
+    return { user,staff,communications,giving,forms,payments,organizations:core?.organizations || [],campaigns:campaigns || [],preevent:preevent || [],registration:registration || [],prizes:prizes || [],eventday:eventday || [],team,
       available:{campaigns:campaigns!==null,preevent:preevent!==null,registration:registration!==null,prizes:prizes!==null,eventday:eventday!==null} };
   }
   function publish(s) { snapshot=s; render(s); window.dispatchEvent(new CustomEvent('staff-workspace-context',{detail:s})); }

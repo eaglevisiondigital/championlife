@@ -467,5 +467,12 @@
   "staff-form-builder.html",
   "staff-form-submissions.html",
   "staff-forms.html",
-  "assets/js/forms-config.js"
+  "assets/js/forms-config.js",
+  "assets/js/payments.js",
+  "assets/css/payments.css",
+  "staff-payment-providers.html",
+  "staff-payment-routing.html",
+  "staff-payment-methods.html",
+  "staff-payment-transactions.html",
+  "checkout.html"
 ]

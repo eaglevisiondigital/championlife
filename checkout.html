@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="referrer" content="no-referrer" />
+    <title>Checkout · Champion Life</title>
+    <link rel="stylesheet" href="assets/css/giving.css" />
+    <link rel="stylesheet" href="assets/css/payments.css" />
+  </head>
+  <body class="payments-public">
+    <header>
+      <a href="index.html"
+        ><img src="assets/images/logo-gold.png" alt="Champion Life Church" /></a
+      ><span>Secure giving foundation</span>
+    </header>
+    <main id="payments-app" data-view="checkout">
+      <p role="status">Payment processing is not yet enabled.</p>
+    </main>
+    <footer>
+      <a
+        class="powered-by"
+        href="https://kingdompropel.com"
+        target="_blank"
+        rel="noopener noreferrer"
+        ><span>Powered By</span
+        ><img
+          src="assets/images/kingdom-propel-logo.png"
+          alt="Kingdom Propel by EagleVision"
+      /></a>
+    </footer>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="assets/js/supabase-config.js"></script>
+    <script src="assets/js/champion-life-auth.js"></script>
+    <script src="assets/js/outreach-staff-common.js"></script>
+    <script src="assets/js/giving-utils.js"></script>
+    <script src="assets/js/payments.js"></script>
+  </body>
+</html>
