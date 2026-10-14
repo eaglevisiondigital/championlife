@@ -1735,6 +1735,27 @@
             }),
           );
       }
+      if (
+        s.giving_session_id &&
+        window.StaffWorkspace?.context?.payments?.organizations?.some(
+          (o) => o.id === org && o.permissions.includes("payments.view"),
+        )
+      ) {
+        panel.append(button("Open held checkout summary", async () => {
+          const token = epoch, owner = org, user = await auth.getUser();
+          try {
+            const r = await auth.client.rpc("payments_workspace", {
+              p_action: "form_checkout", p_org: owner, p_payload: { submission_id: id },
+            });
+            if (token !== epoch || owner !== org || !user || (await auth.getUser())?.id !== user.id) return;
+            if (r.error || !r.data?.session?.id) {
+              if (r.error?.code === "42501") { deny(); window.StaffWorkspace?.refresh(); }
+              throw Error("Checkout summary unavailable.");
+            }
+            location.assign("checkout.html?organization=" + encodeURIComponent(owner) + "&session=" + encodeURIComponent(r.data.session.id));
+          } catch (e) { if (token === epoch) message(e); }
+        }));
+      }
       if (s.giving_session_id)
         panel.append(
           el("p", "Canonical Giving Session: " + s.giving_session_id),

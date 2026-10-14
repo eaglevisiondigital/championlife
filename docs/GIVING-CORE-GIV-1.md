@@ -1,3 +1,7 @@
+## 2026-10-14 — GIV-3A additive provider foundation
+
+Accepted canonical Giving/Forms behavior is retained. GIV-3A extends account/MID metadata and private method/operation lifecycle foundations without enabling execution. Payment Form detail reuses its existing canonical Giving session; immutable published purpose classification and combined Form/payment read grants remain required. Native/Form finalization is blocked while the stage is held; public payment fields clearly state “Payment processing is not yet enabled.” No real provider, secret, payment, production migration, receipt delivery or GiveHub replacement. See [GIV-3A](GIVING-GIV-3A-PROVIDER-FOUNDATION.md) and [provider architecture](PAYMENT-PROVIDER-ARCHITECTURE.md). GIV-3B/3C not started. Earlier package checkpoints below remain historical evidence.
+
 ## Accepted dependency and GIV-2B extension
 
 GIV-2A was Chat-accepted at `3803faf6f97116445614ba693cb841f21a7af519`. The separately authorized [GIV-2B reports/statements build](GIVING-GIV-2B-REPORTS-STATEMENTS.md) adds guarded executive/detailed report scopes, charts and held statement presentation above this contract. It does not release production or begin GIV-2C. Historical local/acceptance snapshots below remain historical; they do not override the new package boundary.

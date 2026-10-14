@@ -116,7 +116,7 @@
             wrap.append(
               el(
                 "div",
-                "Payment provider not configured. No card or bank information is collected.",
+                "Payment processing is not yet enabled. Payment provider not configured. No card or bank information is collected.",
                 { class: "form-payment", role: "note" },
               ),
             );
