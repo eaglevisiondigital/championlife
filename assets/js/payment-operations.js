@@ -1057,7 +1057,10 @@
       root.append(
         button("Export operational CSV", async () => {
           try {
-            const x = await call("export", filters);
+            const x = await call(
+              "export",
+              view === "work" ? { ...filters, assigned_to: userId } : filters,
+            );
             const safe = (x.issues || []).map((r) => ({
               Status: r.status,
               Issue: r.issue_type,

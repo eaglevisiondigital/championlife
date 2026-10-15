@@ -163,6 +163,32 @@ for (const view of [
   );
   dom.window.close();
 }
+// My Work export must preserve its implicit current-user scope, even when a
+// conflicting assignee filter is supplied. Other queues retain their filters.
+for (const view of ["work", "queue"]) {
+  const { dom, w, root } = await page(view);
+  w.URL.createObjectURL = () => "blob:synthetic-export";
+  w.URL.revokeObjectURL = () => {};
+  w.HTMLAnchorElement.prototype.click = () => {};
+  const assignee = root.querySelector("select[name=assigned_to]");
+  if (assignee) {
+    const option = w.document.createElement("option");
+    option.value = "74000000-0000-4000-8000-000000000099";
+    option.textContent = "Another synthetic operator";
+    assignee.append(option);
+    assignee.value = option.value;
+    assignee.closest("form").dispatchEvent(new w.Event("submit", { bubbles: true, cancelable: true }));
+    await tick();
+  }
+  [...root.querySelectorAll("button")].find(b => b.textContent === "Export operational CSV").click();
+  await tick();
+  const request = w.__OPS_QA.calls.filter(c => c.p_action === "export").at(-1);
+  ok(request && (view === "work"
+    ? request.p_payload.assigned_to === (await w.ChampionLifeAuth.getUser()).id
+    : request.p_payload.assigned_to === (assignee ? "74000000-0000-4000-8000-000000000099" : undefined)),
+    "export preserves visible assignee scope: " + view);
+  dom.window.close();
+}
 console.log(
   n + " GIV-3D operations DOM/accessibility/revocation checks passed",
 );
