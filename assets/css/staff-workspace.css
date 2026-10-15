@@ -47,3 +47,6 @@ body[data-staff-workspace]{background:#f5f3ed;color:#24262a;font-family:Arial,He
 @media(max-width:600px){[data-staff-workspace] .pre-tabs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}[data-staff-workspace] .pre-tabs button{overflow-wrap:normal;word-break:normal;padding:12px 10px;font-size:.85rem}[data-staff-workspace] .ops-tabs button{overflow-wrap:normal;word-break:normal}}
 
 @media(max-width:600px){[data-staff-workspace] .prize-current-actions,[data-staff-workspace] .campaign-heading>.registration-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));width:100%}[data-staff-workspace] .prize-current-actions>*,[data-staff-workspace] .campaign-heading>.registration-actions>*{min-width:0;overflow-wrap:normal;word-break:normal;white-space:normal;padding:12px 10px;font-size:.85rem}[data-staff-workspace] .prize-history th,[data-staff-workspace] .prize-history td{padding:8px 5px;overflow-wrap:normal;word-break:normal}[data-staff-workspace] .prize-history th:nth-child(2),[data-staff-workspace] .prize-history td:nth-child(2){white-space:nowrap}}
+
+/* Isolated presentation branch only; no permission or environment selection. */
+.staff-demo-notice{margin:0;padding:.65rem 1rem;background:#fff7df;color:#57420d;border-bottom:1px solid #d6b768;font-size:.875rem;line-height:1.4;text-align:center;}

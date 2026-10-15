@@ -73,6 +73,10 @@
   const crumb = el('span', 'CHAMPION LIFE · STAFF WORKSPACE', { class: 'staff-eyebrow' });
   const signout = el('button', 'Sign out', { type: 'button', class: 'staff-session', hidden: '' });
   top.append(menu, crumb, signout);
+  if (location.hostname === 'codex-pastor-roddy-demo--championlifechurch.netlify.app') {
+    const demo = el('p', 'DEMONSTRATION · Synthetic records · Payments and messages are not live', { class: 'staff-demo-notice', role: 'note' });
+    column.append(demo);
+  }
   original.classList.add('staff-main'); original.id = 'staff-main'; original.tabIndex = -1;
   const skip = el('a', 'Skip to workspace', { href: '#staff-main', class: 'staff-skip' });
   column.append(top, original); shell.append(sidebar, backdrop, column); document.body.prepend(skip, shell);

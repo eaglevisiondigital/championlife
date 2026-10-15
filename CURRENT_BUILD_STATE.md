@@ -176,3 +176,7 @@ Acceptance-only migration remote `20261012130902` applied once, prior38 preserve
 ## 2026-10-12 — GIV-2B stale-render error guard
 
 Same-session hosted checks exposed obsolete report failures clearing a newer authorized page and failed signatures preventing retry. The controller now ignores superseded start errors and clears the current failed signature. Five reproducing regression assertions plus267 totalDOM checks, build/syntax/diff PASS. Backend/identity/permissions/Auth unchanged. Hosted current-session recheck and cleanup remain required; production untouched, GIV-2C not started.
+
+## 2026-10-15 — Pastor Roddy demo-only preparation
+
+Dedicated `codex/pastor-roddy-demo` branch starts from accepted GIV-3D `ba1424b2faf9282c6b3cf5c5132e968576e1a2e6`; all requested accepted components are ancestors, so no PR merge is needed. Persistent synthetic records are isolated to acceptance organization `ba8bcf9a-4088-49af-a568-d63f518409c8`. Preparation and local fixture validation are underway; hosted presentation approval is not claimed. See `docs/PASTOR-RODDY-DEMO-READINESS.md` and the walkthrough. No production/provider/GiveHub changes; no real payment or message. Demo-only header identifies the exact demo hostname without changing authorization or backend selection.
