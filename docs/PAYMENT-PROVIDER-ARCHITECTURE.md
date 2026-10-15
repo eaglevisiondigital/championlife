@@ -1,3 +1,7 @@
+## GIV-3D provider-neutral operational extension
+
+The GIV-3D sibling starts at exact accepted GIV-3A; no provider-specific files are ported. Operations consume normalized outputs and canonical sessions/legs/requests/journals. Safe lookup observations never post a ledger; unknown outcomes stay locked, approvals are distinct from held execution, and stale charge leases require lookup rather than recharge. No actual provider/credential/runtime activation. See [GIV-3D](GIVING-GIV-3D-PAYMENT-OPERATIONS.md) and [runbook](PAYMENT-OPERATIONS-RUNBOOK.md). GIV-3B/3C remain unchanged; NMI hosted acceptance remains paused only for credentials.
+
 # Payment-provider architecture — GIV-3A
 
 GIV-3A is a disabled build foundation. This document describes implemented boundaries, not a claim that NMI/Authorize.Net boarding, vault portability or sandbox integration has been verified.

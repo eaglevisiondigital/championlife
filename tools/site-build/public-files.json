@@ -474,5 +474,18 @@
   "staff-payment-routing.html",
   "staff-payment-methods.html",
   "staff-payment-transactions.html",
-  "checkout.html"
+  "checkout.html",
+  "staff-payment-operations.html",
+  "staff-payment-issues.html",
+  "staff-payment-work.html",
+  "staff-payment-transaction-detail.html",
+  "staff-payment-session.html",
+  "staff-payment-recurring.html",
+  "staff-payment-refund.html",
+  "staff-payment-reconciliation.html",
+  "staff-payment-method-management.html",
+  "payment-history.html",
+  "assets/js/payment-operations.js",
+  "assets/css/payment-operations.css",
+  "assets/js/payment-operations-summary.js"
 ]
