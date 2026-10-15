@@ -41,7 +41,7 @@ try {
     ),
   );
   const upgrade = "20261014171912_giving_provider_foundation_giv_3a.sql";
-  for (const m of migrationOrder.filter((m) => m !== upgrade))
+  for (const m of migrationOrder.slice(0, migrationOrder.indexOf(upgrade)))
     await db.exec(
       readFileSync(
         new URL("../../supabase/migrations/" + m, import.meta.url),
@@ -151,7 +151,27 @@ try {
       still.receipt.non_charitable_minor === "2500",
     "later Form publication never changes old fee classification",
   );
-  console.log(n + " GIV-3A upgrade compatibility checks passed");
+  await db.exec("reset role");
+  await db.exec(
+    readFileSync(
+      new URL(
+        "../../supabase/migrations/20261015142024_giving_payment_operations_giv_3d.sql",
+        import.meta.url,
+      ),
+      "utf8",
+    ),
+  );
+  const afterOps = (
+    await q(
+      "select id,session_id,amount_minor,route_snapshot,tax_eligible from giving_session_lines where id=$1",
+      [before.id],
+    )
+  ).rows[0];
+  ok(
+    JSON.stringify(before) === JSON.stringify(afterOps),
+    "GIV-3D also preserves historical Form snapshot and principal",
+  );
+  console.log(n + " GIV-3A/GIV-3D upgrade compatibility checks passed");
 } catch (e) {
   console.error(e.message, e.where || "");
   process.exitCode = 1;
