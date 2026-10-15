@@ -927,6 +927,15 @@ try {
     ).rows[0].v,
     "events held no messages",
   );
+  await as();
+  const amountRows = (await rpc("queue")).issues.filter(x => x.amount_minor != null);
+  for (const kind of ["refund_pending", "void_pending", "recurring_failed", "payment_unknown"]) {
+    const row = amountRows.find(x => x.issue_type === kind);
+    assert.ok(row, "amount filter fixture " + kind);
+    const filtered = (await rpc("queue", { issue_type: kind, min_minor: row.amount_minor, max_minor: row.amount_minor })).issues;
+    ok(filtered.some(x => x.id === row.id) && filtered.every(x => x.amount_minor === row.amount_minor), "exact displayed amount filter " + kind);
+    ok((await rpc("queue", { issue_type: kind, search: row.amount_minor })).issues.some(x => x.id === row.id), "displayed amount search " + kind);
+  }
   console.log(n + " GIV-3D database/security checks passed");
 } finally {
   await db.close();
