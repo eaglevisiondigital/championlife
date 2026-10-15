@@ -1,3 +1,7 @@
+## GIV-3C sibling extension — build-only
+
+Authorize.Net is a separate disabled adapter branch from exact GIV-3A, with fixed sandbox HTTP, account-bound opaque/CIM/ARB references and an inert Accept Hosted controller. Existing canonical SQL, fourteen gates, synthetic-only writers and held runtime remain unchanged. Trusted real-provider persistence hookup is an explicit hosted gate, not an implicit use of synthetic writers. No NMI-specific implementation was copied or modified. NMI accepted build remains paused only for credential availability. [GIV-3C integration contract](AUTHORIZE-NET-INTEGRATION.md) records official API and host choices, current authorization-only void rule, unknown/refund safety and future acceptance boundaries.
+
 # Payment-provider architecture — GIV-3A
 
 GIV-3A is a disabled build foundation. This document describes implemented boundaries, not a claim that NMI/Authorize.Net boarding, vault portability or sandbox integration has been verified.
