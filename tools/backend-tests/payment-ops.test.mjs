@@ -558,6 +558,16 @@ try {
       "review",
     "retry limit moves recurring to manual review",
   );
+  await owner();
+  ok(
+    (
+      await q(
+        "select exists(select 1 from private.payment_ops_issues where organization_id=$1 and fingerprint=$2)v",
+        [f.org, "configuration.route:" + f.mainRoute],
+      )
+    ).rows[0].v,
+    "disabled original route produces scoped configuration issue without secret detail",
+  );
   // Service lease claims have no provider side effect; stale ambiguous retry cannot be recharged.
   await as(null, "service_role");
   const leaseKey = { request_key: uid(), id: lookup.id };
