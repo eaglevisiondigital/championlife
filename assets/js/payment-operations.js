@@ -318,7 +318,7 @@
               ["", "All providers"],
               ["nmi", "NMI"],
               ["authorize_net", "Authorize.Net"],
-              ["future", "Future"],
+              ["external_connector", "Future"],
               ["manual", "Manual"],
             ],
           },
@@ -619,6 +619,9 @@
         p,
       );
       card.append(E("p", label(r.status)));
+      card.append(E("p", "Reason: " + (r.reason || "Not provided")));
+      card.append(E("p", "Requested by: " + (r.requested_by || "Unknown")));
+      card.append(E("p", "Requested at: " + (r.requested_at || "Unknown")));
       if (r.status === "requested" && can("payments." + r.kind + ".approve"))
         form(
           card,
@@ -1000,6 +1003,7 @@
           ["Gross", (r) => money(r.gross_minor)],
           ["Fees", (r) => money(r.fee_minor)],
           ["Net", (r) => money(r.net_minor)],
+          ["Difference", (r) => money(r.difference_minor)],
           ["Due", (r) => r.due_on],
         ],
         data.observations || [],

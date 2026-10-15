@@ -189,6 +189,21 @@ for (const view of ["work", "queue"]) {
     "export preserves visible assignee scope: " + view);
   dom.window.close();
 }
+{
+  const { dom, w, root } = await page("queue");
+  const provider = root.querySelector('select[name="provider"]');
+  provider.value = "external_connector";
+  provider.closest("form").dispatchEvent(new w.Event("submit", { bubbles: true, cancelable: true }));
+  await tick();
+  ok(w.__OPS_QA.calls.some(c => c.p_payload?.provider === "external_connector"), "Future provider uses canonical external connector value");
+  dom.window.close();
+}
+{
+  const { dom, root } = await page("transaction", "97000000-0000-4000-8000-000000000001");
+  ok(root.textContent.includes("Difference") && root.textContent.includes("USD 0.01"), "reconciliation renders exact difference");
+  ok(root.textContent.includes("Synthetic review only") && root.textContent.includes("Synthetic requester") && root.textContent.includes("2026-10-15T09:30:00Z"), "refund request renders reason requester and timestamp");
+  dom.window.close();
+}
 console.log(
   n + " GIV-3D operations DOM/accessibility/revocation checks passed",
 );

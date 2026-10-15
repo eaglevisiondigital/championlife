@@ -164,6 +164,7 @@
           result: "settlement_mismatch",
           exception_type: "amount_mismatch",
           gross_minor: "29999",
+          difference_minor: "1",
           fee_minor: null,
           net_minor: null,
           due_on: null,
@@ -177,6 +178,8 @@
           amount_minor: "1000",
           status: "requested",
           reason: "Synthetic review only",
+          requested_by: "Synthetic requester",
+          requested_at: "2026-10-15T09:30:00Z",
         },
       ],
       notes: [
