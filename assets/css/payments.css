@@ -160,3 +160,5 @@
     padding: 18px;
   }
 }
+
+.anet-hosted-panel {max-width:100%;overflow-wrap:anywhere}.anet-hosted-panel button {max-width:100%;min-height:44px;white-space:normal}

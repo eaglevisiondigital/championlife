@@ -1,3 +1,9 @@
+## 2026-10-15 — GIV-3C Authorize.Net sibling BUILD candidate
+
+Explicit assignment authorizes `codex/giv-3c-authorize-net-foundation` from accepted GIV-3A `1410ebc824cdf0b9721c95db0cb41229b74a0274`. Server-only exact-money scoped Authorize.Net sandbox adapter, opaque/CIM/ARB/adjustment/reporting/signature contracts, inert Accept Hosted controller and focused local/mocked/native-race tests extend the accepted canonical architecture. No shared runtime/SQL policy changed; current gates remain held. No migration, deployment, credentials or provider API request. Actual provider persistence/runtime hookup and hosted acceptance remain separately gated. See [GIV-3C build](docs/GIVING-GIV-3C-AUTHORIZE-NET.md) and [integration contract](docs/AUTHORIZE-NET-INTEGRATION.md).
+
+NMI GIV-3B build `1ea6971c2a0273b1a15c132d7793b12c2822901e` UNCHANGED; its hosted acceptance is PAUSED FOR NMI CREDENTIALS. Production/GiveHub/Auth/SMTP/DNS/live routes/real financial records and prerequisite PRs unchanged. No real card/payment/subscription/refund/void/receipt/Text-to-Give. STOP AT BUILD REVIEW; no actual Authorize.Net sandbox acceptance. Earlier holds below are historical and superseded only for this explicit sibling build.
+
 ## 2026-10-14 — GIV-3A provider foundation BUILD candidate
 
 Chat accepted GIV-2C at `edf82fb34e8db448a0d6c6465a3799c75993d5a2` and explicitly authorized the dependent `codex/giv-3a-provider-foundation` build. This supersedes the historic GIV-3 hold only for GIV-3A. Canonical Giving sessions/lines/legs, private account-scoped token references, deterministic multi-MID routing, immutable safe journals, held recurring/refund/void/webhook/settlement foundations and five responsive finance screens are implemented. Exact current grants, runtime-secret scope and all default-off execution gates preserve financial ownership; no parallel ledger, real secret, provider transport or real payment.
