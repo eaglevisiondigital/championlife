@@ -334,15 +334,15 @@
   }
   function periods() {
     const p = panel("Reporting period"),
-      controls = E("div", null, { class: "giving-periods" });
+      controls = E("div", null, { class: "giving-periods giving-period-selector", role: "group", "aria-label": "Reporting period" });
     for (const [value, label] of [
-      ["past_24_hours", "Past 24 Hours"],
+      ["past_24_hours", "24 Hours"],
       ["today", "Today"],
       ["week", "Week"],
       ["month", "Month"],
       ["quarter", "Quarter"],
       ["six_months", "6 Months"],
-      ["ytd", "Year / YTD"],
+      ["ytd", "YTD"],
       ["custom", "Custom"],
     ]) {
       const b = button(label, async () => {
@@ -889,14 +889,6 @@
         grid.append(card);
       }
       root.append(grid);
-      root.append(
-        E("a", "Leadership Dashboard", {
-          href:
-            "staff-giving-pastor.html?" +
-            new URLSearchParams({ organization: org, ...filters }),
-          class: "giving-button",
-        }),
-      );
       return;
     }
     if (view === "report") await reportFilters();

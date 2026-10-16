@@ -187,3 +187,9 @@ Dedicated `codex/pastor-roddy-demo` branch starts from accepted GIV-3D `ba1424b2
 - Outreach eyebrow uses Kingdom Propel. Finance Overview directs users to the existing Reports charts instead of describing them as a future phase.
 - Isolated persistent demo data includes ten attendees/nine households, a reviewed synthetic People/follow-up journey, private preparation PDFs, and held payment recovery examples. Production and accepted source branches remain unchanged.
 - Final new-alias sign-in, separate leadership mailbox and full responsive walkthrough remain pending. Do not call the demonstration ready yet.
+
+## 2026-10-16 — Demo top-control cleanup
+
+On `codex/pastor-roddy-demo` only: People has its own permission-filtered sidebar group; operational saved-payment-method management is preserved as a sidebar destination. Staff Home shortcuts are limited to four useful authorized destinations. Outreach Program Tools, Payment Operations header navigation, and Reports Center's repeated Leadership button are removed. Finance periods retain their values and accessible pressed state, with compact horizontally scrollable controls. Forms create/archive/editor controls and all local search/export/actions remain. No authorization, database, production, or provider changes.
+
+Focused DOM checks: staff shell 170, finance management 237, reports 267, payment operations 78 passed. Hosted responsive verification is pending; overall demo readiness remains in progress.

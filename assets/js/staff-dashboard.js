@@ -97,11 +97,10 @@
     }
     if(!upcoming.length)next.append(el('p','No upcoming outreaches are available in your current scope.',{class:'staff-empty'}));
     if(!overview){
-      const p=panel('Quick actions',true),tools=shell.configuration.flatMap(g=>g.children).filter(i=>shell.allowed(s,i.capability)&&!['workspace','outreach'].includes(i.capability)),grid=el('div',null,{class:'staff-quick-actions'});
+      const p=panel('Quick actions',true),tools=['staff-outreach-overview.html','staff-giving-pastor.html','staff-giving-reports.html','staff-people.html'].map(href=>shell.configuration.flatMap(g=>g.children).find(i=>i.href===href)).filter(i=>i&&shell.allowed(s,i.capability)),grid=el('div',null,{class:'staff-quick-actions'});
       for(const t of tools){const a=el('a',t.label,{href:shell.href(t,s),class:'campaign-button'});a.append(el('small',t.capability==='preevent'?'Review campaign tasks and preparation.':'Open your authorized workspace.'));grid.append(a);}p.append(grid);
       if(!tools.length)p.append(el('p','No tools are assigned to your current role.',{class:'staff-empty'}));
     }
-    if(overview){const p=panel('Program tools');for(const t of shell.configuration.find(g=>g.id==='outreach').children.filter(i=>i.capability!=='outreach'&&shell.allowed(s,i.capability)))item(p,t.label,'Open your authorized outreach workspace.',shell.href(t,s));}
   }
   window.addEventListener('staff-workspace-context',e=>render(e.detail));
   if(shell.context)render(shell.context);

@@ -39,3 +39,11 @@ Flagship campaign: `25284494-b0e5-4156-8aa5-11e9ba5a069b`. Nine registration hou
 Existing authenticated GIV-3D session confirmed finance totals, registration, charts and conditional form preview against the new isolated organization. Leadership page had no horizontal overflow at 1440, 768 or 390 pixels. These checks do not replace final dedicated-demo-alias and reports-only-session verification.
 
 Remaining gates: dedicated demo sign-in; separate reports-only synthetic mailbox; full walkthrough/link/console/responsive verification on the final deployed candidate; prize/statement interaction review. Recommendation remains NOT READY until these gates pass.
+
+### Additional top-control polish — 2026-10-16
+
+Navigation audit: Staff Home repeated all sidebar tools; Outreach repeated Program Tools; Payment Operations repeated five destinations; Reports Center repeated Leadership. These duplicates are consolidated into the shared sidebar. People receives a dedicated group; the saved-method management destination remains available under existing payment permissions. Quick actions offer at most Outreach, Leadership, Reports, and People, filtered by the existing capabilities. Reports-only leadership gains no operational routes.
+
+Finance Overview and Leadership retain their period controls, organization context, print/export and other local actions. Compact period buttons retain `aria-pressed`, visible focus and a non-color selected indicator; overflow scrolls within the control group. Forms' Create, archive filter and editor actions remain local. No blanket button removal or shared authorization change.
+
+Focused tests pass (170 shell, 237 finance, 267 reports, 78 operations). Final hosted visual and 390/768/1440 verification remains pending. This is not overall demo approval.

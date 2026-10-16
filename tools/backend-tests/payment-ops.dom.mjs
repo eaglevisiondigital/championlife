@@ -204,6 +204,11 @@ for (const view of ["work", "queue"]) {
   ok(root.textContent.includes("Synthetic review only") && root.textContent.includes("Synthetic requester") && root.textContent.includes("2026-10-15T09:30:00Z"), "refund request renders reason requester and timestamp");
   dom.window.close();
 }
+{
+ const {dom,root}=await page();
+ ok(!root.querySelector('.ops-nav'),'operational destinations use shared sidebar rather than duplicate top navigation');
+ dom.window.close();
+}
 console.log(
   n + " GIV-3D operations DOM/accessibility/revocation checks passed",
 );

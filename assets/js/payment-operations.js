@@ -944,20 +944,6 @@
         { class: "giving-note", role: "status" },
       ),
     );
-    const nav = E("nav", null, {
-      "aria-label": "Payment operations views",
-      class: "ops-nav",
-    });
-    if (!donor)
-      for (const [text, file] of [
-        ["Operations", "staff-payment-operations.html"],
-        ["Issue Queue", "staff-payment-issues.html"],
-        ["My Work", "staff-payment-work.html"],
-        ["Recurring", "staff-payment-recurring.html"],
-        ["Payment Methods", "staff-payment-method-management.html"],
-      ])
-        nav.append(link(text, file));
-    root.append(nav);
     if (donor) {
       for (const s of data.sessions || [])
         session(panel("Payment · " + new Date(s.date).toLocaleDateString()), s);

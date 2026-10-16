@@ -464,7 +464,7 @@
           'Custom'
         ]
       ], group = E('div', null, {
-        class: 'giving-periods',
+        class: 'giving-periods giving-period-selector',
         role: 'group',
         'aria-label': 'Reporting period'
       }), custom = E('form', null, {

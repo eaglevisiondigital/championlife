@@ -7,12 +7,12 @@
   let selected = new URLSearchParams(location.search).get('campaign');
   const configuration = [
     { id: 'home', label: 'HOME', children: [{ label: 'Staff Dashboard', href: 'staff-home.html', capability: 'workspace' }] },
+    { id: 'people', label: 'PEOPLE', children: [{ label: 'People & Follow-Up', href: 'staff-people.html', capability: 'people' }] },
     { id: 'outreach', label: 'OUTREACH', children: [
       { label: 'Outreach Overview', href: 'staff-outreach-overview.html', capability: 'outreach' },
       { label: 'Opportunities & Pre-Event', href: 'staff-outreach-pre-event.html', capability: 'preevent' },
       { label: 'Campaigns', href: 'staff-outreach-campaigns.html', capability: 'campaigns' },
-      { label: 'Partner Intakes', href: 'staff-outreach-partners.html', capability: 'partners' },
-      { label: 'People & Follow-Up', href: 'staff-people.html', capability: 'people' }
+      { label: 'Partner Intakes', href: 'staff-outreach-partners.html', capability: 'partners' }
     ] },
     { id: 'operations', label: 'EVENT OPERATIONS', children: [
       { label: 'Team & Travel', href: 'staff-outreach-team.html', capability: 'team' },
@@ -41,6 +41,7 @@
       {label:'Routing Matrix',href:'staff-payment-routing.html',capability:'paymentsview'},
       {label:'Payment Methods',href:'staff-payment-methods.html',capability:'paymentsview'},
       {label:'Payment Operations',href:'staff-payment-operations.html',capability:'paymentsview'},
+      {label:'Saved Payment Methods',href:'staff-payment-method-management.html',capability:'paymentsview'},
       {label:'My Payment Work',href:'staff-payment-work.html',capability:'paymentsview'},
       {label:'Payment Issues',href:'staff-payment-issues.html',capability:'paymentsview'},
       {label:'Recurring Operations',href:'staff-payment-recurring.html',capability:'paymentsview'},

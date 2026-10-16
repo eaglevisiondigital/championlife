@@ -136,4 +136,13 @@ ok(createHash('sha256').update(readFileSync(new URL('../../assets/images/kingdom
  ok(h.d.querySelector('#staff-dashboard').textContent.includes('Active campaigns1'),'event-day operation state cannot overwrite canonical active campaign status');
  h.w.close();
 }
+{
+ const h=await harness('staff-home');
+ const shortcuts=[...h.d.querySelectorAll('.staff-quick-actions a')];
+ ok(shortcuts.length<=4 && shortcuts.every(a=>/staff-(outreach-overview|giving-pastor|giving-reports|people)\.html/.test(a.href)),'quick actions are a concise role-filtered selection');
+ ok(h.d.querySelector('[data-group=people] a[data-capability=people]'),'People has its own sidebar group');
+ h.w.close();
+ const o=await harness('staff-outreach-overview');
+ ok(!o.d.querySelector('main').textContent.includes('Program tools'),'overview does not repeat sidebar tools');o.w.close();
+}
 console.log(checks+' Staff Workspace DOM checks passed');
