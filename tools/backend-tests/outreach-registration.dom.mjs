@@ -21,8 +21,11 @@ async function guest(slug='synthetic-outreach',data=config){
 }
 const g=await guest('synthetic-outreach',{...config,organization_name:'SowGo',logo_asset:'assets/images/sowgo-logo-light.png',waiver_required:false});
 ok(g.calls[0].opts.auth.persistSession===false&&g.calls[0].opts.auth.detectSessionInUrl===false,'guest client does not require or persist an account session');
-ok(g.d.getElementById('registration-logo').getAttribute('src')==='assets/images/logo-gold.png'&&g.d.getElementById('registration-brand-name').textContent==='FREE FAMILY FUN','family-facing event uses Champion Life public hero branding');
+ok(g.d.getElementById('registration-logo').getAttribute('src')==='assets/images/sowgo-logo-light.png'&&g.d.getElementById('registration-brand-name').textContent==='SowGo · OUTREACH','generic outreach preserves campaign organization branding');
+const family=await guest('synthetic-family',{...config,event_profile:{public_name:'SYNTHETIC FAMILY EVENT'}});
+ok(family.d.getElementById('registration-logo').getAttribute('src')==='assets/images/logo-gold.png'&&family.d.getElementById('registration-brand-name').textContent==='FREE FAMILY FUN'&&family.d.getElementById('registration-title').textContent==='Event Registration','family-facing event uses Champion Life public hero branding');family.dom.window.close();
 ok(g.challenge.action==='outreach-registration','guest challenge uses dedicated action');
+ok(g.challenge.size==='compact','security widget fits the 320px public form without weakening verification');
 set(g,'Primary adult first name','Morgan');set(g,'Primary adult last name','Fixture');set(g,'Email','synthetic@example.test');set(g,'Mobile phone','+15555550100');set(g,'Address','Synthetic address');set(g,'Attendee first name','Morgan');set(g,'Attendee last name','Fixture');set(g,'Age','38');
 const submitGuest=async()=>{g.d.querySelector('form').dispatchEvent(new g.w.Event('submit',{bubbles:true,cancelable:true}));await tick()};
 await submitGuest();ok(g.d.body.textContent.includes('Complete the security check first.')&&!g.calls.some(c=>c.init),'missing challenge prevents gateway call');
