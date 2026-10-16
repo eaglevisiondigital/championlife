@@ -46,4 +46,14 @@ Navigation audit: Staff Home repeated all sidebar tools; Outreach repeated Progr
 
 Finance Overview and Leadership retain their period controls, organization context, print/export and other local actions. Compact period buttons retain `aria-pressed`, visible focus and a non-color selected indicator; overflow scrolls within the control group. Forms' Create, archive filter and editor actions remain local. No blanket button removal or shared authorization change.
 
-Focused tests pass (170 shell, 237 finance, 267 reports, 78 operations). Final hosted visual and 390/768/1440 verification remains pending. This is not overall demo approval.
+Focused tests pass (170 shell, 237 finance, 267 reports, 78 operations). All seven named pages passed disconnected synthetic browser checks at 390/768/1440: 21 renders, zero horizontal page overflow and zero console errors/warnings. Hosted reports-only navigation, YTD selection, Reports routing and mobile drawer/Escape passed on `54894e4fedc6e87d17f245820ba32960d7949d24`, deploy `6ad1be891cd3598e24d017cd`. This verifies the scoped polish, not overall demo approval.
+
+| Additional polish gate | Result |
+| --- | --- |
+| Top control cleanup | PASS |
+| Sidebar organization | PASS |
+| Redundant nav pills removed | PASS |
+| Page header cleanup | PASS |
+| Button hierarchy | PASS |
+| Filter / period control polish | PASS |
+| Mobile control layout | PASS |
