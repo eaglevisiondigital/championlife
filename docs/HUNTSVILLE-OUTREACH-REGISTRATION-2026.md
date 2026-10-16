@@ -75,3 +75,5 @@ Keep the current JotForm available as reference/fallback until native hosted acc
 ## Hosted acceptance correction — October 16, 2026
 
 The live Cloudflare widget's default 300px width caused 15px horizontal overflow at the required 320px viewport. The guest registration entrypoint now requests Cloudflare's supported 150px compact widget. Challenge action, callbacks, expiry/reset, server verification and submission behavior are unchanged. A focused DOM regression checks the requested size; hosted 320/390/768/1440 checks must confirm the resulting layout. This is a draft acceptance correction, not production activation.
+
+The hosted success path exposed a widget lifecycle warning: confirmation removed its DOM before the unconditional reset. Successful submission now removes the live Turnstile widget before showing confirmation; failed submissions still reset the attached widget for retry. Focused regressions cover both outcomes. This changes only client cleanup, not challenge verification, gateway policy or registration persistence.
