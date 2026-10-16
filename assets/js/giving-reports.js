@@ -83,7 +83,7 @@
   const date = (v) =>
     v
       ? new Intl.DateTimeFormat("en-US", {
-          timeZone: scope?.timezone || "UTC",
+          timeZone: /^\d{4}-\d{2}-\d{2}$/.test(String(v)) ? "UTC" : scope?.timezone || "UTC",
           dateStyle: "medium",
         }).format(new Date(v))
       : "Not recorded";
@@ -194,6 +194,7 @@
       for (const h of headers) {
         let value = r[h];
         if (h.endsWith("_minor")) value = money(value);
+        else if (["last_gift", "next_run_at", "batch_date", "date"].includes(h) && value) value = date(value);
         else if (Array.isArray(value))
           value = value
             .map((v) =>

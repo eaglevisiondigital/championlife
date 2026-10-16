@@ -57,3 +57,11 @@ Focused tests pass (170 shell, 237 finance, 267 reports, 78 operations). All sev
 | Button hierarchy | PASS |
 | Filter / period control polish | PASS |
 | Mobile control layout | PASS |
+
+### Final walkthrough pass — active checkpoint, October 16
+
+Not yet ready for final acceptance. Current hosted role read-back shows leadership has only `finance.reports.read`; requested People/Outreach/Forms expansion is awaiting explicit scoped approval. Operations permissions remain present. Both final browser identities require a fresh verified session.
+
+Canonical read-back: 124 ledger rows, $18,057 total, $0 prior-year history, $0 recurring receipts, and $0 for October 16/17. A private 20-record synthetic supplement passed local schema validation but automatic approval review blocked application; no supplement was applied. It would add $12,375 prior-year, $550 for each presentation date, and $300 imported recurring history. Existing history would remain unchanged. This is a pending proposal, not hosted data.
+
+A narrow report-table presentation fix formats donor timestamps and batch calendar dates while retaining the original calendar day. All 271 focused report DOM/accessibility checks pass, including four new date assertions. Final hosted review and fresh screenshot set remain pending. The updated 25–28 minute walkthrough distinguishes owner-only actions, read-only leadership, held payment observations and actual ledger totals.

@@ -73,6 +73,13 @@ const click = (h, label) => {
   assert(b, label);
   b.click();
 };
+for (const name of ["donor-report", "reconciliation-report"]) {
+  const h = await page(name);
+  const cells = [...h.d.querySelectorAll("#giving-reports-app tbody")].map(t => t.textContent).join(" ");
+  ok(cells.includes("Oct 11, 2026"), name + " formats dates without shifting calendar-only values");
+  ok(!cells.includes("2026-10-11"), name + " does not expose raw ISO timestamps");
+  h.close();
+}
 for (const name of pages) {
   const h = await page(name);
   ok(h.d.querySelector("#giving-reports-app h1"), name + " loaded headline");

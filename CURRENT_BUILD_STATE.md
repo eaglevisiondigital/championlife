@@ -193,3 +193,7 @@ Dedicated `codex/pastor-roddy-demo` branch starts from accepted GIV-3D `ba1424b2
 On `codex/pastor-roddy-demo` only: People has its own permission-filtered sidebar group; operational saved-payment-method management is preserved as a sidebar destination. Staff Home shortcuts are limited to four useful authorized destinations. Outreach Program Tools, Payment Operations header navigation, and Reports Center's repeated Leadership button are removed. Finance periods retain their values and accessible pressed state, with compact horizontally scrollable controls. Forms create/archive/editor controls and all local search/export/actions remain. No authorization, database, production, or provider changes.
 
 Focused DOM checks: staff shell 170, finance management 237, reports 267, payment operations 78 passed. All seven named pages passed disconnected synthetic browser checks at 390/768/1440 (21 renders, no overflow or console errors/warnings). Hosted reports-only navigation, YTD selection, Reports link and 390px drawer/Escape checks passed on code commit `54894e4`. Overall demo readiness remains in progress.
+
+## Pastor demo final readiness checkpoint — 2026-10-16
+
+Demo branch only: report-table timestamp formatting corrected; 271 focused report DOM checks passed. Full walkthrough remains incomplete pending authenticated sessions and explicit demo-only read-access/data-fixture approvals. No new ledger records or expanded leadership grants were applied. See docs/PASTOR-RODDY-DEMO-READINESS.md and the revised walkthrough. Production and GiveHub untouched.
