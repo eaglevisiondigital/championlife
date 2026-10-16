@@ -11,18 +11,21 @@ const publicSource=readFileSync(new URL('../../assets/js/outreach-registration-p
 async function guest(slug='synthetic-outreach',data=config){
  const t=base();t.dom.reconfigure({url:'https://preview.example.test/outreach-register.html?campaign='+slug});
  t.d.body.innerHTML='<img id="registration-logo"><p id="registration-brand-name"></p><h1 id="registration-title"></h1><div id="outreach-registration-app"></div>';
- const calls=[];let challenge,resets=0;
+ const calls=[];let challenge,resets=0,removes=0,removedBeforeConfirmation=false;
  t.w.CHAMPION_LIFE_SUPABASE={url:'https://acceptance.example.test',publishableKey:'SYNTHETIC_PUBLIC',outreachSiteKey:'SYNTHETIC_SITE'};
  t.w.supabase={createClient:(url,key,opts)=>{calls.push({url,key,opts});return{rpc:async(name,p)=>{calls.push({name,p});return{data}}}}};
- t.w.turnstile={render:(el,opts)=>{challenge=opts;return 1},reset:()=>resets++};
+ t.w.turnstile={render:(el,opts)=>{challenge=opts;return 1},reset:()=>resets++,remove:()=>{removes++;removedBeforeConfirmation=!!t.d.querySelector('form')}};
  t.w.AbortSignal.timeout=()=>new t.w.AbortController().signal;
  t.w.fetch=async(url,init)=>{calls.push({url,init});return{ok:true,status:200,json:async()=>({accepted:true,reference:'R-ABCDEF0123456789',attendee_count:1})}};
- t.w.eval(publicSource);await tick();return{...t,calls,get challenge(){return challenge},get resets(){return resets}};
+ t.w.eval(publicSource);await tick();return{...t,calls,get challenge(){return challenge},get resets(){return resets},get removes(){return removes},get removedBeforeConfirmation(){return removedBeforeConfirmation}};
 }
 const g=await guest('synthetic-outreach',{...config,organization_name:'SowGo',logo_asset:'assets/images/sowgo-logo-light.png',waiver_required:false});
 ok(g.calls[0].opts.auth.persistSession===false&&g.calls[0].opts.auth.detectSessionInUrl===false,'guest client does not require or persist an account session');
-ok(g.d.getElementById('registration-logo').getAttribute('src')==='assets/images/sowgo-logo-light.png'&&g.d.getElementById('registration-brand-name').textContent==='SowGo · OUTREACH','owning campaign brand reuses approved logo');
+ok(g.d.getElementById('registration-logo').getAttribute('src')==='assets/images/sowgo-logo-light.png'&&g.d.getElementById('registration-brand-name').textContent==='SowGo · OUTREACH','generic outreach preserves campaign organization branding');
+const family=await guest('synthetic-family',{...config,event_profile:{public_name:'SYNTHETIC FAMILY EVENT'}});
+ok(family.d.getElementById('registration-logo').getAttribute('src')==='assets/images/logo-gold.png'&&family.d.getElementById('registration-brand-name').textContent==='FREE FAMILY FUN'&&family.d.getElementById('registration-title').textContent==='Event Registration','family-facing event uses Champion Life public hero branding');family.dom.window.close();
 ok(g.challenge.action==='outreach-registration','guest challenge uses dedicated action');
+ok(g.challenge.size==='compact','security widget fits the 320px public form without weakening verification');
 set(g,'Primary adult first name','Morgan');set(g,'Primary adult last name','Fixture');set(g,'Email','synthetic@example.test');set(g,'Mobile phone','+15555550100');set(g,'Address','Synthetic address');set(g,'Attendee first name','Morgan');set(g,'Attendee last name','Fixture');set(g,'Age','38');
 const submitGuest=async()=>{g.d.querySelector('form').dispatchEvent(new g.w.Event('submit',{bubbles:true,cancelable:true}));await tick()};
 await submitGuest();ok(g.d.body.textContent.includes('Complete the security check first.')&&!g.calls.some(c=>c.init),'missing challenge prevents gateway call');
@@ -31,7 +34,11 @@ const sentGuest=JSON.parse(g.calls.find(c=>c.init).init.body);
 ok(sentGuest.payload.waiver===null,'optional published waiver can be declined without signature');
 ok(sentGuest.payload.first_name==='Changed','definite local rejection permits correction before retry');
 ok(g.calls.find(c=>c.init).url==='https://acceptance.example.test/functions/v1/outreach-registration-submit'&&sentGuest.slug==='synthetic-outreach','guest submits through dedicated gateway with campaign slug');
-ok(g.resets===1&&g.d.body.textContent.includes('REGISTRATION RECEIVED'),'successful guest bootstrap shows confirmation and resets challenge');
+ok(g.removes===1&&g.removedBeforeConfirmation&&g.resets===0&&g.d.body.textContent.includes('REGISTRATION RECEIVED'),'successful guest removes the live widget before confirmation without resetting a detached widget');
 ok(g.errors.length===0,'guest entrypoint no console exception');g.dom.window.close();
+const rejected=await guest('synthetic-rejection',{...config,waiver_required:false});
+for(const [label,value]of Object.entries({'Primary adult first name':'Morgan','Primary adult last name':'Fixture','Email':'synthetic@example.test','Mobile phone':'+15555550100','Address':'Synthetic address','Attendee first name':'Morgan','Attendee last name':'Fixture','Age':'38'}))set(rejected,label,value);
+rejected.w.fetch=async()=>({ok:false,status:400,json:async()=>({accepted:false,message:'Synthetic validation rejection'})});rejected.challenge.callback('synthetic-challenge');rejected.d.querySelector('form').dispatchEvent(new rejected.w.Event('submit',{bubbles:true,cancelable:true}));await tick();
+ok(rejected.resets===1&&rejected.removes===0&&rejected.d.querySelector('form')&&rejected.d.body.textContent.includes('Synthetic validation rejection'),'rejected submission preserves the form and resets the live challenge for a safe retry');rejected.dom.window.close();
 const missing=await guest('synthetic-outreach',null);ok(missing.d.body.textContent.includes('Registration is not open.')&&!missing.d.querySelector('form'),'unavailable guest campaign fails closed');missing.dom.window.close();
 console.log(`${count} Phase C DOM checks passed`);
