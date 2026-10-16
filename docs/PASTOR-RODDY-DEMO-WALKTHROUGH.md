@@ -85,7 +85,7 @@ Target: 20–30 minutes. Isolated synthetic environment only. Give Outreach abou
 ## 11. Pastor Dashboard
 
 - Path / URL: [staff-giving-pastor.html](https://codex-pastor-roddy-demo--championlifechurch.netlify.app/staff-giving-pastor.html?organization=ba8bcf9a-4088-49af-a568-d63f518409c8)
-- What to click: Review leadership metrics with reports-only access.
+- What to click: Review leadership metrics with reports-only access, then choose Year / YTD for the multi-month charts.
 - What to say: “Leadership visibility is distinct from financial control.”
 - Key value: Leadership visibility is distinct from financial control.
 - What not to claim: A real Pastor account has been provisioned.
@@ -116,7 +116,7 @@ Target: 20–30 minutes. Isolated synthetic environment only. Give Outreach abou
 
 ## 15. Form Builder
 
-- Path / URL: [staff-form-builder.html](https://codex-pastor-roddy-demo--championlifechurch.netlify.app/staff-form-builder.html?organization=ba8bcf9a-4088-49af-a568-d63f518409c8)
+- Path / URL: [staff-form-builder.html](https://codex-pastor-roddy-demo--championlifechurch.netlify.app/staff-form-builder.html?organization=ba8bcf9a-4088-49af-a568-d63f518409c8&form=0add7669-145e-4a25-abca-75a36cc53ff5)
 - What to click: Preview desktop/mobile; toggle bringing children; reorder a draft field.
 - What to say: “Conditional fields and layouts are editable.”
 - Key value: Conditional fields and layouts are editable.
