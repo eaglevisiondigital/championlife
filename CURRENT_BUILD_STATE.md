@@ -5,3 +5,7 @@
 Local proof: 66 migration safety, 95 registration security, 56 Huntsville, 25 calendar DOM, 38 staff/public DOM, 29 gateway checks, existing baseline suite, six eight-worker native races and 389-file build pass. Local browser public submission/staff totals/check-in/responsive checks pass. This candidate has not been hosted. Real Turnstile/Auth/Edge/native-download and hosted race gate remain pending on an isolated exact 22+2 target. Recommendation NOT READY for controlled production release. Stop at review; no merge/deploy/activation/SowGo release.
 
 See [dependency graph](docs/HUNTSVILLE-MINIMAL-DEPENDENCIES.md) and [full release/containment plan](docs/HUNTSVILLE-MINIMAL-RELEASE.md). These docs describe only this isolated production-based candidate; unrelated draft systems are not imported.
+
+## Isolated hosted target preparation — 2026-10-16
+
+Owner authorized a separate clean hosted stack. Created Supabase project `niyovbgoalulzkhbvebt` (`champion-huntsville-minimal-acceptance`) in Eagle Vision Digital, us-west-1. Initial inspection: zero application tables, Auth users or migrations. Production remains exact main baseline with 22 migrations. The preview builder and registration gateway now explicitly permit this additional acceptance project; production and unknown projects remain rejected for test keys. Full candidate regression suite passes, including the eight-case project/mode isolation matrix. CLI sign-in is pending before exact-version baseline installation; no hosted validation has passed yet. No production or existing-acceptance writes.

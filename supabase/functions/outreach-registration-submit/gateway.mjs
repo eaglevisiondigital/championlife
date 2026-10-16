@@ -2,7 +2,7 @@ import {fingerprint} from '../outreach-partner-submit/gateway.mjs';
 const message='We could not complete registration. Check your information and try again.';
 export function createRegistrationHandler(config,fetcher=fetch){
  const origins=new Set(config.origins||[]),dummy=/^[123]x0+AA$/.test(config.turnstileSecret||'');
- const ready=/^https:\/\/[a-z0-9]{20}\.supabase\.co$/.test(config.url||'')&&!!config.serviceKey&&(config.pepper||'').length>=32&&!!config.turnstileSecret&&!!config.action&&(config.hostnames||[]).length>0&&origins.size>0&&[...origins].every(o=>{try{return new URL(o).origin===o&&o.startsWith('https://')}catch{return false}})&&(!dummy||(config.mode==='acceptance'&&config.url==='https://bkbmjisprwmkptywtmih.supabase.co'));
+ const ready=/^https:\/\/[a-z0-9]{20}\.supabase\.co$/.test(config.url||'')&&!!config.serviceKey&&(config.pepper||'').length>=32&&!!config.turnstileSecret&&!!config.action&&(config.hostnames||[]).length>0&&origins.size>0&&[...origins].every(o=>{try{return new URL(o).origin===o&&o.startsWith('https://')}catch{return false}})&&(!dummy||(config.mode==='acceptance'&&['https://bkbmjisprwmkptywtmih.supabase.co','https://niyovbgoalulzkhbvebt.supabase.co'].includes(config.url)));
  return async req=>{
   const origin=req.headers.get('origin'),headers={'Content-Type':'application/json','Cache-Control':'no-store','Vary':'Origin'},reply=(status,v)=>new Response(JSON.stringify(v),{status,headers});
   if(!origins.has(origin))return reply(403,{accepted:false,message});

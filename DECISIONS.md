@@ -8,3 +8,5 @@
 6. No production deployment, merge, grants, messages, payment activation or SowGo routing change is authorized by these successful tests. Stop for review.
 
 [Exact dependency reasoning](docs/HUNTSVILLE-MINIMAL-DEPENDENCIES.md) · [Forward release and containment](docs/HUNTSVILLE-MINIMAL-RELEASE.md)
+
+7. Owner approved a separate isolated hosted target on 2026-10-16. New project `niyovbgoalulzkhbvebt` starts empty; install the exact production migration chain and only the two Huntsville additions. Preserve historical version IDs through supported CLI migration application. Add this project explicitly to preview/test-key guards, never accept arbitrary project URLs. Production defaults remain byte-for-byte. Hosted tests remain pending until installation and normal Auth/Edge setup.
