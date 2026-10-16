@@ -473,8 +473,8 @@
 .forms-dates time { font-size: .83rem; }
 .kp-form label, .kp-form legend { overflow-wrap: break-word; word-break: normal; line-height: 1.5; }
 .kp-form legend { max-width: 100%; box-sizing: border-box; }
-.kp-form label:has(> input[type="checkbox"]), .kp-form label:has(> input[type="radio"]) { display: grid; grid-template-columns: 20px minmax(0, 1fr); gap: .65rem; align-items: start; }
-.kp-form label > input[type="checkbox"], .kp-form label > input[type="radio"] { margin: .2rem 0 0; }
+.kp-form label:has(> input[type="checkbox"]), .kp-form label:has(> input[type="radio"]) { display: grid; grid-template-columns: 20px minmax(0, 1fr); gap: .65rem; align-items: start; min-height: 44px; }
+.kp-form label > input[type="checkbox"], .kp-form label > input[type="radio"] { margin: .2rem 0 0; min-height: 20px; }
 .form-label-tail { white-space: nowrap; }
 .form-required { color: #805e13; }
 .form-required[hidden] { display: none; }
