@@ -575,7 +575,7 @@
         money(c.total_minor),
         'Previous ' + money(c.prior_total_minor) + ' \xB7 Change ' + money(c.difference_minor)
       ]));
-      note(comparisons, 'Service periods use the configured weekday and boundary (' + r.period.service_weekday + ', ' + r.period.service_boundary + '), in ' + timezone + '. Full reports and charts are a later phase.');
+      note(comparisons, 'Service periods use the configured weekday and boundary (' + r.period.service_weekday + ', ' + r.period.service_boundary + '), in ' + timezone + '. Open Reports for detailed comparisons and charts.');
       note(stage, 'Reporting window: ' + date(r.period.starts_at, true) + ' to ' + date(r.period.ends_at, true) + ' (end excluded) \xB7 ' + timezone + ' \xB7 ' + currency + '.');
       output.replaceChildren(stage);
     }

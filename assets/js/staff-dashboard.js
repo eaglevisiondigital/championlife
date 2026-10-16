@@ -55,7 +55,7 @@
     if(!s?.user){shell.state(root,'Sign in to continue','Sign in with your approved staff account.','Sign in','discipleship-login.html?next='+encodeURIComponent('/'+root.dataset.view+'.html'));return;}
     if(!shell.allowed(s,'workspace')||(overview&&!shell.allowed(s,'outreach'))){shell.denied(root);return;}
     const header=el('header',null,{class:'staff-dashboard-heading'});
-    header.append(el('p',overview?'GLOBAL PROPEL · OUTREACH':'CHAMPION LIFE · YOUR WORKSPACE',{class:'staff-eyebrow'}),el('h1',overview?'Outreach Overview':'Staff Dashboard'),el('p',overview?'See the campaigns and communities within your current outreach access.':'Welcome back. Pick up your work and prepare for what’s next.'));
+    header.append(el('p',overview?'KINGDOM PROPEL · OUTREACH':'CHAMPION LIFE · YOUR WORKSPACE',{class:'staff-eyebrow'}),el('h1',overview?'Outreach Overview':'Staff Dashboard'),el('p',overview?'See the campaigns and communities within your current outreach access.':'Welcome back. Pick up your work and prepare for what’s next.'));
     root.append(header,el('div',null,{class:'staff-dashboard-grid'}));
     if(overview){
       if(s.available.campaigns&&shell.allowed(s,'campaigns')){
@@ -72,7 +72,7 @@
       personalWork(panel('My work'),s,g);
       if(shell.allowed(s,'outreach')){
         const p=panel('Outreach snapshot'),rows=new Map();
-        for(const key of ['campaigns','preevent','registration','prizes','eventday'])if(s.available[key])for(const c of s[key])rows.set(c.id,c);
+        for(const key of ['campaigns','preevent','registration','prizes','eventday'])if(s.available[key])for(const c of s[key])if(!rows.has(c.id))rows.set(c.id,c);
         const available=['campaigns','preevent','registration','prizes','eventday'].some(key=>s.available[key]);
         const current=[...rows.values()].filter(active),values=[];
         if(available)values.push(['Active campaigns',current.length],['Upcoming campaigns',current.filter(c=>c.event_start&&new Date(c.event_start)>=new Date()).length]);

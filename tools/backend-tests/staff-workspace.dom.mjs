@@ -131,4 +131,9 @@ for(const mode of ['anonymous','participant','campaign','host']){
 
 const css=read('assets/css/staff-workspace.css');ok(css.includes('@media(max-width:1023px)')&&css.includes('@media(max-width:600px)'),'drawer for phone/tablet and desktop sidebar');ok(css.includes('minmax(0,1fr)')&&css.includes('width:272px;max-width:86vw'),'bounded responsive layout');ok(!read('assets/js/outreach-campaigns.js').includes("tabs.append(el('a','Registration & check-in'"),'no primary module links duplicated in campaign tabs');
 ok(createHash('sha256').update(readFileSync(new URL('../../assets/images/kingdom-propel-logo.png',import.meta.url))).digest('hex')==='592adfa6d0a95e883ecf22adb27e7f4ba5943d2d8b5c0ef43be65e5ffcb6d5d3','approved logo exact original bytes');
+{
+ const h=await harness('staff-home','all','',false,{rows:{campaigns:[{...row,status:'approved'}],preevent:[{...row,status:'approved'}],eventday:[{...row,status:'draft'}]}});await tick();
+ ok(h.d.querySelector('#staff-dashboard').textContent.includes('Active campaigns1'),'event-day operation state cannot overwrite canonical active campaign status');
+ h.w.close();
+}
 console.log(checks+' Staff Workspace DOM checks passed');

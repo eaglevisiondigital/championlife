@@ -180,3 +180,10 @@ Same-session hosted checks exposed obsolete report failures clearing a newer aut
 ## 2026-10-15 — Pastor Roddy demo-only preparation
 
 Dedicated `codex/pastor-roddy-demo` branch starts from accepted GIV-3D `ba1424b2faf9282c6b3cf5c5132e968576e1a2e6`; all requested accepted components are ancestors, so no PR merge is needed. Persistent synthetic records are isolated to acceptance organization `ba8bcf9a-4088-49af-a568-d63f518409c8`. Preparation and local fixture validation are underway; hosted presentation approval is not claimed. See `docs/PASTOR-RODDY-DEMO-READINESS.md` and the walkthrough. No production/provider/GiveHub changes; no real payment or message. Demo-only header identifies the exact demo hostname without changing authorization or backend selection.
+
+### Pastor demo focused polish (2026-10-15)
+
+- Staff Home now retains canonical campaign status when merging operational projections; focused regression included (167 Staff Workspace DOM checks passed).
+- Outreach eyebrow uses Kingdom Propel. Finance Overview directs users to the existing Reports charts instead of describing them as a future phase.
+- Isolated persistent demo data includes ten attendees/nine households, a reviewed synthetic People/follow-up journey, private preparation PDFs, and held payment recovery examples. Production and accepted source branches remain unchanged.
+- Final new-alias sign-in, separate leadership mailbox and full responsive walkthrough remain pending. Do not call the demonstration ready yet.

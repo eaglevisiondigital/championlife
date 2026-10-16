@@ -28,7 +28,7 @@ Target: 20–30 minutes. Isolated synthetic environment only. Give Outreach abou
 
 ## 4. Flagship Campaign
 
-- Path / URL: [staff-outreach-campaigns.html](https://codex-pastor-roddy-demo--championlifechurch.netlify.app/staff-outreach-campaigns.html?organization=ba8bcf9a-4088-49af-a568-d63f518409c8)
+- Path / URL: [staff-outreach-campaigns.html](https://codex-pastor-roddy-demo--championlifechurch.netlify.app/staff-outreach-campaigns.html?campaign=25284494-b0e5-4156-8aa5-11e9ba5a069b)
 - What to click: Select Harbor Community Outreach and review its timeline.
 - What to say: “A campaign carries the whole outreach lifecycle.”
 - Key value: A campaign carries the whole outreach lifecycle.
@@ -36,7 +36,7 @@ Target: 20–30 minutes. Isolated synthetic environment only. Give Outreach abou
 
 ## 5. Pre-Event
 
-- Path / URL: [staff-outreach-pre-event.html](https://codex-pastor-roddy-demo--championlifechurch.netlify.app/staff-outreach-pre-event.html?organization=ba8bcf9a-4088-49af-a568-d63f518409c8)
+- Path / URL: [staff-outreach-pre-event.html](https://codex-pastor-roddy-demo--championlifechurch.netlify.app/staff-outreach-pre-event.html?campaign=25284494-b0e5-4156-8aa5-11e9ba5a069b)
 - What to click: Review preparation tasks and document statuses.
 - What to say: “Readiness gates expose unfinished work.”
 - Key value: Readiness gates expose unfinished work.
@@ -44,7 +44,7 @@ Target: 20–30 minutes. Isolated synthetic environment only. Give Outreach abou
 
 ## 6. Team / Logistics
 
-- Path / URL: [staff-outreach-team.html](https://codex-pastor-roddy-demo--championlifechurch.netlify.app/staff-outreach-team.html?organization=ba8bcf9a-4088-49af-a568-d63f518409c8)
+- Path / URL: [staff-outreach-team.html](https://codex-pastor-roddy-demo--championlifechurch.netlify.app/staff-outreach-team.html?campaign=25284494-b0e5-4156-8aa5-11e9ba5a069b)
 - What to click: Review Morgan Family, team van, lodging and manifest.
 - What to say: “Team coordination goes beyond a signup list.”
 - Key value: Team coordination goes beyond a signup list.
@@ -52,15 +52,15 @@ Target: 20–30 minutes. Isolated synthetic environment only. Give Outreach abou
 
 ## 7. Registration
 
-- Path / URL: [staff-outreach-registration.html](https://codex-pastor-roddy-demo--championlifechurch.netlify.app/staff-outreach-registration.html?organization=ba8bcf9a-4088-49af-a568-d63f518409c8)
-- What to click: Open a participant and waiver coverage; show walk-up controls.
+- Path / URL: [staff-outreach-registration.html](https://codex-pastor-roddy-demo--championlifechurch.netlify.app/staff-outreach-registration.html?campaign=25284494-b0e5-4156-8aa5-11e9ba5a069b)
+- What to click: Open Jordan Morgan: two family attendees, adult/minor coverage and public source. Show walk-up controls. Then Campaign follow-up shows the explicitly reviewed Jordan People link and next-step task.
 - What to say: “Registration and check-in preserve individual identity.”
 - Key value: Registration and check-in preserve individual identity.
 - What not to claim: The demonstration acknowledgment is a legal waiver.
 
 ## 8. Event Day Command Center
 
-- Path / URL: [staff-outreach-event-day.html](https://codex-pastor-roddy-demo--championlifechurch.netlify.app/staff-outreach-event-day.html?organization=ba8bcf9a-4088-49af-a568-d63f518409c8)
+- Path / URL: [staff-outreach-event-day.html](https://codex-pastor-roddy-demo--championlifechurch.netlify.app/staff-outreach-event-day.html?campaign=25284494-b0e5-4156-8aa5-11e9ba5a069b)
 - What to click: Review area readiness, inventory, timeline and issues.
 - What to say: “One operational picture for event leaders.”
 - Key value: One operational picture for event leaders.
@@ -68,7 +68,7 @@ Target: 20–30 minutes. Isolated synthetic environment only. Give Outreach abou
 
 ## 9. Prizes
 
-- Path / URL: [staff-outreach-prizes.html](https://codex-pastor-roddy-demo--championlifechurch.netlify.app/staff-outreach-prizes.html?organization=ba8bcf9a-4088-49af-a568-d63f518409c8)
+- Path / URL: [staff-outreach-prizes.html](https://codex-pastor-roddy-demo--championlifechurch.netlify.app/staff-outreach-prizes.html?campaign=25284494-b0e5-4156-8aa5-11e9ba5a069b)
 - What to click: Review bicycle/tablet inventory and drawing controls.
 - What to say: “One person, one prize with preserved history.”
 - Key value: One person, one prize with preserved history.
