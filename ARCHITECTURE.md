@@ -1,3 +1,7 @@
+## 2026-10-16 — Huntsville registration extension
+
+Reuse Phase C household/attendee/signature records and Staff Workspace. Structured address, emergency telephone and per-version media release extend the canonical records, not a parallel form store. The reviewed definition prepares the existing unused SowGo-owned Huntsville draft with disabled registration. Summary and CSV share the same active household/attending-row population; check-in is an independent projection. Confirmation calendars contain only public event details. [Huntsville contract](docs/HUNTSVILLE-OUTREACH-REGISTRATION-2026.md).
+
 ## 2026-10-09 — Staff Home acceptance gaps
 
 Staff Home now adds a compact executive outreach snapshot and a preparation-only personal summary using existing canonical guarded Phase F context reads. No backend aggregate, task store, RPC or migration is added. Overview remains the deeper program projection.

@@ -1,3 +1,7 @@
+## October 16, 2026 — Huntsville build extension (not applied remotely)
+
+See [Huntsville registration contract](HUNTSVILLE-OUTREACH-REGISTRATION-2026.md). Adds structured address, private emergency phone, exact versioned separate media consent/initials, public event profile/calendar and campaign-wide canonical attendance summaries. CSV now reconciles with active registration/attendee counts; check-in remains separate. Legacy campaigns keep their existing signature/consent behavior. The exact Huntsville liability/media source has now been captured from owner-supplied JotForm 241026266712046; this does not resolve or authorize wording for other campaigns. Build/local tests only; no legal publication or hosted activation.
+
 # Outreach Phase C — native household registration and check-in
 
 ## Build status and dependency

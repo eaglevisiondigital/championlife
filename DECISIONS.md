@@ -1,3 +1,7 @@
+## 2026-10-16 — Huntsville release candidate and attendance totals
+
+Use the existing native Phase C renderer for City Hangout and an independent permanent SowGo `/register` QR router with temporary redirects. Preserve `/go`, Bessemer and JotForm fallback. Source legal wording from JotForm 241026266712046 changes only approved event/entity/location references; required media initials remain separately versioned. Headline totals are campaign-wide and search-independent; accepted active household submissions and attending active rows drive counts and CSV, while event-day presence stays separate. Build review only; no inferred cutoff, flyer artwork, live opening or release authorization. [Full decision contract](docs/HUNTSVILLE-OUTREACH-REGISTRATION-2026.md).
+
 ## 2026-10-09 — Staff Home acceptance gaps
 
 The two hosted acceptance gaps are closed within the existing read architecture: compact Outreach Snapshot on Staff Home plus a personal preparation-task summary. Follow-up/approval totals are intentionally omitted until a separate canonical scoped aggregate is approved. Empty-state acceptance is preparation-only, not a claim of zero work in every system. No Phase G or release authorization.

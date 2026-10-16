@@ -1,3 +1,7 @@
+## 2026-10-16 — Huntsville registration boundary
+
+Address/emergency/media fields remain behind Phase C campaign-scoped RPC/RLS; no new public private-record endpoint or grant. Media wording/consent/initials are immutable signed snapshots; legacy signatures retain behavior. CSV excludes signatures/UUIDs/keys and neutralizes formulas. Guarded draft preparation fails if the targeted Huntsville placeholder has data/settings or changed ownership/state. No legal publication, campaign opening, hosted mutation, message or production action. [Security and release gates](docs/HUNTSVILLE-OUTREACH-REGISTRATION-2026.md).
+
 ## 2026-10-09 — Staff Home acceptance gaps
 
 The preparation summary uses only authorized campaign IDs from the server projection and exact authenticated-user step assignments. No role inference; batch size at most four; identity/current campaign access rechecked before publishing. Failed/malformed reads omit counts; render epochs prevent stale results after sign-out. Other users, People, finance and internal operations remain governed by unchanged backend permissions.
