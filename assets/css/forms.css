@@ -462,3 +462,19 @@
     width: 100%;
   }
 }
+
+/* Preserve readable words and align long choice labels in previews. */
+.forms-list-table { min-width: 1080px; table-layout: auto; overflow-wrap: normal; word-break: normal; }
+.forms-list-table th:first-child, .forms-list-table td:first-child { min-width: 190px; }
+.forms-list-table th:nth-child(4), .forms-list-table td:nth-child(4) { min-width: 200px; }
+.forms-list-table td:last-child { min-width: 170px; }
+.forms-dates > div + div { margin-top: .65rem; }
+.forms-dates span, .forms-dates time { display: block; }
+.forms-dates time { font-size: .83rem; }
+.kp-form label, .kp-form legend { overflow-wrap: break-word; word-break: normal; line-height: 1.5; }
+.kp-form legend { max-width: 100%; box-sizing: border-box; }
+.kp-form label:has(> input[type="checkbox"]), .kp-form label:has(> input[type="radio"]) { display: grid; grid-template-columns: 20px minmax(0, 1fr); gap: .65rem; align-items: start; }
+.kp-form label > input[type="checkbox"], .kp-form label > input[type="radio"] { margin: .2rem 0 0; }
+.form-label-tail { white-space: nowrap; }
+.form-required { color: #805e13; }
+.form-required[hidden] { display: none; }

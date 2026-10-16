@@ -168,15 +168,15 @@ try {
 } finally {
   a.window.close();
 }
-async function admin(view = "builder") {
+async function admin(view = "builder", readOnly = false) {
   const d = dom(
       '<div id="forms-app" class="forms-app" data-view="' + view + '"></div>',
       "https://example.test/staff-form-builder.html?organization=" +
         f.org +
-        "&form=87000000-0000-4000-8000-000000000001",
+        "&form=87000000-0000-4000-8000-000000000001" + (readOnly ? "&preview=true" : ""),
     ),
     w = d.window;
-  const per = [
+  const per = readOnly ? ["forms.read"] : [
     "forms.read",
     "forms.create",
     "forms.edit",
@@ -215,6 +215,7 @@ async function admin(view = "builder") {
         calls.push([name, args]);
         if (deferred && args.p_action === "draft") return await deferred;
         const a = args.p_action;
+        if (a === "list") return { data: { forms: [{ ...current.form, permissions: per, updated_at: "2026-10-15T14:00:00+00:00", last_published: "2026-01-15T14:00:00Z", published_version: 1, submission_count: 0 }] } };
         if (a === "funds")
           return { data: { funds: [{ id: f.mainFund, name: "MISSIONS" }] } };
         if (a === "save") {
@@ -237,6 +238,7 @@ async function admin(view = "builder") {
   };
   const context = {
     user: { id: f.admin },
+    giving: { organizations: [{ id: f.org, timezone: "America/Chicago" }] },
     forms: {
       organizations: [
         {
@@ -444,6 +446,24 @@ try {
   );
 } finally {
   b.d.window.close();
+}
+for (const view of ["builder", "list"]) {
+  const a = await admin(view, true), app = a.w.document.getElementById("forms-app");
+  const controls = [...app.querySelectorAll("button,a")].map(n => n.textContent);
+  ok(!controls.some(x => /editor|settings|conditions|save|publish|edit|duplicate|archive/i.test(x) && x !== "Show archived"), "leadership " + view + " offers no editing language or actions");
+  if (view === "builder") {
+    ok(app.textContent.includes("Read-only form preview") && app.querySelector(".forms-preview"), "leadership opens preview without editor panels");
+    ok(!app.querySelector(".forms-builder"), "read-only view omits builder library and settings");
+    const required = app.querySelector("input[required]");
+    ok(required?.closest(".form-field").querySelector(".form-required:not([hidden])"), "required label marker follows field requirement");
+  } else {
+    const dates = [...app.querySelectorAll("time")];
+    ok(dates[0].textContent.includes("Oct 15, 2026") && dates[0].textContent.includes("9:00 AM CDT"), "form date uses organization daylight timezone");
+    ok(dates[1].textContent.includes("8:00 AM CST"), "form date respects winter timezone");
+    ok(dates[0].getAttribute("datetime") === "2026-10-15T14:00:00+00:00", "exact form timestamp retained in semantic time element");
+    ok(controls.includes("View form"), "leadership list uses view wording");
+  }
+  a.d.window.close();
 }
 function MISSING(d) {
   return (

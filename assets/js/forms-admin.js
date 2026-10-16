@@ -12,6 +12,7 @@
   let org = query.get("organization"),
     context = null,
     permissions = [],
+    organizationTimezone = "UTC",
     form = null,
     version = null,
     draft = null,
@@ -40,6 +41,13 @@
       tabindex: "-1",
     });
   const can = (k) => permissions.includes(k);
+  function timestamp(value) {
+    if (!value || !Number.isFinite(Date.parse(value))) return el("span", "—");
+    const instant = new Date(value), options = { timeZone: organizationTimezone };
+    return el("time", instant.toLocaleDateString("en-US", { ...options, month: "short", day: "numeric", year: "numeric" }) + " · " +
+      instant.toLocaleTimeString("en-US", { ...options, hour: "numeric", minute: "2-digit", timeZoneName: "short" }),
+      { datetime: value, title: value + " · " + organizationTimezone });
+  }
   function button(text, fn, cls = "") {
     const b = el("button", text, { type: "button", class: cls });
     b.onclick = fn;
@@ -181,14 +189,14 @@
         panel.append(
           el(
             "p",
-            "No forms yet. Create a blank form or a synthetic demonstration.",
+            can("forms.create") ? "No forms yet. Create a blank form or a synthetic demonstration." : "No forms available to view.",
           ),
         );
         root.append(panel);
         return;
       }
       const scroll = el("div", null, { class: "forms-scroll" }),
-        table = el("table", null, { class: "forms-table" }),
+        table = el("table", null, { class: "forms-table forms-list-table" }),
         head = el("thead"),
         tr = el("tr");
       for (const title of [
@@ -221,7 +229,7 @@
         if (per.includes("forms.edit"))
           actions.append(link("Edit", url("builder")));
         if (per.includes("forms.read"))
-          actions.append(link("Preview", url("builder") + "&preview=true"));
+          actions.append(link(per.includes("forms.edit") ? "Preview" : "View form", url("builder") + "&preview=true"));
         if (per.includes("forms.submissions.read"))
           actions.append(link("Submissions", url("submissions")));
         if (per.includes("forms.create") && per.includes("forms.edit"))
@@ -244,17 +252,23 @@
         }
         if (per.includes("forms.archive") && f.status !== "archived")
           actions.append(button("Archive", () => act("archive", f.id)));
+        const dates = el("div", null, { class: "forms-dates" });
+        for (const [label, value] of [["Updated", f.updated_at], ["Published", f.last_published]]) {
+          const line = el("div");
+          line.append(el("span", label, { class: "forms-small" }), timestamp(value));
+          dates.append(line);
+        }
         for (const text of [
-          f.name + " · " + f.type,
+          f.name + " · " + f.type.replaceAll("_", " "),
           f.status,
           f.published_version || "—",
-          (f.updated_at || "") + " / " + (f.last_published || "—"),
+          dates,
           String(f.submission_count),
           f.payment_enabled ? "Held configuration" : "No",
           context?.organizations?.find((o) => o.id === org)?.name ||
             "Organization",
         ])
-          tr.append(el("td", text));
+          { const cell = el("td"); cell.append(text instanceof Node ? text : document.createTextNode(String(text))); tr.append(cell); }
         const td = el("td");
         td.append(actions);
         tr.append(td);
@@ -670,7 +684,9 @@
   function builder() {
     if (!draft) return;
     heading(form.name);
-    status.textContent = conflict
+    const readOnly = !can("forms.edit");
+    if (readOnly) preview = true;
+    status.textContent = readOnly ? "Read-only form preview · version " + version.version : conflict
       ? "Conflict — reload required"
       : dirty
         ? "Unsaved changes"
@@ -691,6 +707,8 @@
         mode = "mobile";
         builder();
       }),
+    );
+    if (!readOnly) toolbar.append(
       button(preview ? "Return to editor" : "Live preview", () => {
         preview = !preview;
         builder();
@@ -722,7 +740,7 @@
       );
     if (can("forms.publish"))
       toolbar.append(button("Publish version", publish, "forms-gold"));
-    toolbar.append(
+    if (!readOnly) toolbar.append(
       button("Form settings", () => {
         selected = { kind: "settings" };
         activePane = "settings";
@@ -1817,6 +1835,7 @@
       return;
     }
     org = chosen.id;
+    organizationTimezone = chosen.timezone || s.giving?.organizations?.find((o) => o.id === org)?.timezone || "UTC";
     const per = [
       ...(chosen.permissions || []),
       ...(formId

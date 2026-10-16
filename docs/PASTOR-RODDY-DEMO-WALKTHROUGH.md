@@ -6,7 +6,7 @@ Use two separate browser sessions: operations `dave@theboss.biz`; leadership `df
 
 Timing: Staff Home 1 minute; Outreach path through People 12 minutes; Finance and Reports 6 minutes; Forms 3 minutes; Payment Operations and architecture 4 minutes. Optional details can be skipped to remain under 30 minutes.
 
-Presentation gate: consult PASTOR-RODDY-DEMO-READINESS.md before showing this guide. A scripted stop is not evidence that its final hosted validation passed.
+Presentation gate: both logins and the walkthrough are verified, but final readiness is PARTIAL. Consult PASTOR-RODDY-DEMO-READINESS.md for the statement and display findings. Do not present the full walkthrough as approved until those focused findings are resolved.
 
 ## 1. Staff Home
 
@@ -59,7 +59,7 @@ Presentation gate: consult PASTOR-RODDY-DEMO-READINESS.md before showing this gu
 ## 7. Event Day Command Center
 
 - Path / URL: [staff-outreach-event-day.html](https://codex-pastor-roddy-demo--championlifechurch.netlify.app/staff-outreach-event-day.html?campaign=25284494-b0e5-4156-8aa5-11e9ba5a069b)
-- What to click: Review area readiness, inventory, timeline and issues.
+- What to click: Review area readiness, inventory, timeline and issues. Explain that the existing 5/9 summary combines five checked-in attendees with nine household registrations; Registration separately shows ten attendees. Do not present it as an attendee attendance percentage.
 - What to say: “One operational picture for event leaders.”
 - Key value: One operational picture for event leaders.
 - What not to claim: Real-time live event activity.
@@ -84,7 +84,7 @@ Presentation gate: consult PASTOR-RODDY-DEMO-READINESS.md before showing this gu
 ## 10. People
 
 - Path / URL: [staff-people.html](https://codex-pastor-roddy-demo--championlifechurch.netlify.app/staff-people.html?organization=ba8bcf9a-4088-49af-a568-d63f518409c8)
-- What to click: Open Avery Morgan and the Morgan household.
+- What to click: Open Avery Morgan for partner/follow-up context. Show Morgan Family lodging under Team / Logistics; a separate People household detail screen is not part of the verified leadership path.
 - What to say: “One People foundation supports ministry relationships.”
 - Key value: One People foundation supports ministry relationships.
 - What not to claim: Automatic identity matching or portal grants.
@@ -92,7 +92,7 @@ Presentation gate: consult PASTOR-RODDY-DEMO-READINESS.md before showing this gu
 ## 11. Finance Overview
 
 - Path / URL: [staff-giving-overview.html](https://codex-pastor-roddy-demo--championlifechurch.netlify.app/staff-giving-overview.html?organization=ba8bcf9a-4088-49af-a568-d63f518409c8)
-- What to click: Change Today, Week, Month and YTD filters.
+- What to click: Change Today, Week, Month and Year filters in Overview; use YTD in Leadership / Reports.
 - What to say: “Canonical ledger totals support consistent reporting.”
 - Key value: Canonical ledger totals support consistent reporting.
 - What not to claim: These synthetic figures are church finances.
@@ -100,7 +100,7 @@ Presentation gate: consult PASTOR-RODDY-DEMO-READINESS.md before showing this gu
 ## 12. Pastor Dashboard
 
 - Path / URL: [staff-giving-pastor.html](https://codex-pastor-roddy-demo--championlifechurch.netlify.app/staff-giving-pastor.html?organization=ba8bcf9a-4088-49af-a568-d63f518409c8)
-- What to click: Review leadership metrics with reports-only access, then choose Year / YTD for the multi-month charts.
+- What to click: Review leadership metrics with reports-only access, then choose YTD for the multi-month charts.
 - What to say: “Leadership visibility is distinct from financial control.”
 - Key value: Leadership visibility is distinct from financial control.
 - What not to claim: A real Pastor account has been provisioned.
@@ -108,7 +108,7 @@ Presentation gate: consult PASTOR-RODDY-DEMO-READINESS.md before showing this gu
 ## 13. Reports / Statements
 
 - Path / URL: [staff-giving-reports.html](https://codex-pastor-roddy-demo--championlifechurch.netlify.app/staff-giving-reports.html?organization=ba8bcf9a-4088-49af-a568-d63f518409c8)
-- What to click: Open Giving Summary, Giving by Fund and Parent Fund Rollup with the same period. Donor reports and Statements are operations-only; do not promise a historical statement view until its hosted gate passes.
+- What to click: Open Giving Summary, Giving by Fund and Parent Fund Rollup with the same period. Donor reports and Statements are operations-only. The current Avery 2026 Preview Statement renders $14,588 with rows and fund summary; use preview only, do not generate/send. Do not open the old Historical statement versions in the presentation: their legacy snapshot format does not render contribution rows correctly.
 - What to say: “Consistent reports and reproducible statements.”
 - Key value: Consistent reports and reproducible statements.
 - What not to claim: Any statement was sent.
@@ -116,7 +116,7 @@ Presentation gate: consult PASTOR-RODDY-DEMO-READINESS.md before showing this gu
 ## 14. Forms
 
 - Path / URL: [staff-forms.html](https://codex-pastor-roddy-demo--championlifechurch.netlify.app/staff-forms.html?organization=ba8bcf9a-4088-49af-a568-d63f518409c8)
-- What to click: Review six named forms; select Youth Camp Registration.
+- What to click: Review six named forms; select Youth Camp Registration → Preview. Leadership can preview conditions; it cannot save or publish. The existing read-only editor inspection has disabled editing actions.
 - What to say: “Reusable forms reduce developer dependence.”
 - Key value: Reusable forms reduce developer dependence.
 - What not to claim: Payment forms accept live money.
@@ -132,7 +132,7 @@ Presentation gate: consult PASTOR-RODDY-DEMO-READINESS.md before showing this gu
 ## 16. Payment Operations
 
 - Path / URL: [staff-payment-operations.html](https://codex-pastor-roddy-demo--championlifechurch.netlify.app/staff-payment-operations.html?organization=ba8bcf9a-4088-49af-a568-d63f518409c8)
-- What to click: Open My Payment Work and the Failed Payment, Unknown Payment, Partial Checkout, Refund Review, Settlement Exception and Recurring Failure examples. Review details only; do not retry, execute or refund.
+- What to click: Open Payment Operations for the failed, unknown, partial, refund, settlement and recurring issue states. My Payment Work contains assigned work; the recurring issue is unassigned and is visible on the full overview. Recurring Operations shows its held $300 instruction and one failure. Review details only; do not retry, execute or refund. Some fund/route labels are Unknown and the inspected settlement detail has empty observation/batch sections; this portion is not yet presentation-quality approved.
 - What to say: “Safe recovery prevents blind duplicate charges.”
 - Key value: Safe recovery prevents blind duplicate charges.
 - What not to claim: A real processor has been called.
@@ -163,4 +163,11 @@ Native production card processing; NMI or Authorize.Net production processing; p
 
 ## Date and financial explanation
 
-Use matching periods and currency when comparing pages. Pledges are commitments; they are not received gifts. A draft recurring instruction is not an executed recurring payment. Payment Operations examples are held workflow observations, not proof of settled money. Never add their amounts to ledger totals. Prior-year and presentation-date fixture additions require their own applied/read-back evidence; an empty comparison must not be described as populated.
+Use matching periods and currency when comparing pages. Pledges are commitments; they are not received gifts. A draft recurring instruction is not an executed recurring payment. Payment Operations examples are held workflow observations, not proof of settled money. Never add their amounts to ledger totals. The approved 20-record supplement is applied and reconciled: $12,375 prior-year, $550 for October 16 and $550 for October 17, and $300 imported recurring history. At October 17 noon America/Chicago, YTD is $19,457; at October 16 noon it is $18,907. All-time history is $31,832. The $300 recurring history is an imported synthetic illustration, not a processor execution. Statement previews include eligible contributions only; Avery Morgan’s 2026 preview is $14,588, held and unsent. Use the reporting date shown on screen when discussing totals.
+
+### Final presentation notes
+
+- Historical Generated Statement preserves its original $13,188 snapshot. Its aggregate-only legacy format is identified explicitly; the Current Statement Preview contains later contributions and totals $14,588. Do not present them as the same version.
+- Payment Summary, Giving / Purpose, Routing, Settlement and Recovery / Issue Status use existing scoped data. `Not designated`, `Routing not assigned`, and `—` mean the safe projection has no supplied value; they are not invented financial data.
+- Leadership opens **View form** with a read-only preview toolbar. Operations retains the editor. Forms timestamps use the organization timezone and retain the exact instant.
+- Event Day reports **Registered households**, **Checked-in people**, **Volunteer assignments**, and **Open issues** separately. No walk-up, unique-team-present or remaining-prize count is inferred from unrelated units.

@@ -10,7 +10,7 @@ const ok = (x, m) => {
   n++;
   console.log("PASS " + m);
 };
-async function page(view = "dashboard", id = "") {
+async function page(view = "dashboard", id = "", prepare) {
   const errors = [],
     dom = new JSDOM(
       '<body><main><div id="payments-app" data-ops-view="' +
@@ -32,6 +32,7 @@ async function page(view = "dashboard", id = "") {
   w.eval(read("assets/js/giving-utils.js"));
   w.eval(read("tools/backend-tests/fixtures/payments-browser-fixture.js"));
   w.eval(read("tools/backend-tests/fixtures/payment-ops-browser-fixture.js"));
+  if (prepare) prepare(w);
   w.eval(read("assets/js/payment-operations.js"));
   await tick();
   return { dom, w, errors, root: w.document.getElementById("payments-app") };
@@ -208,6 +209,40 @@ for (const view of ["work", "queue"]) {
  const {dom,root}=await page();
  ok(!root.querySelector('.ops-nav'),'operational destinations use shared sidebar rather than duplicate top navigation');
  dom.window.close();
+}
+{
+  const { dom, root } = await page("transaction", "issue", (w) => {
+    const rpc = w.ChampionLifeAuth.client.rpc;
+    w.ChampionLifeAuth.client.rpc = async (name, args) => {
+      const r = await rpc(name, args);
+      if (args.p_action === "transaction") {
+        r.data.session.lines[0].fund = "";
+        r.data.session.legs[0].route = null;
+        r.data.settlements = [];
+      }
+      return r;
+    };
+  });
+  ok(root.textContent.includes("Not designated") && root.textContent.includes("Routing not assigned"), "missing payment fund and route use explicit fallbacks");
+  ok(root.textContent.includes("Payment Summary") && root.textContent.includes("Giving / Purpose") && root.textContent.includes("Recovery / Issue Status"), "payment detail has scannable sections");
+  const settlement = [...root.querySelectorAll("section")].find(x => x.querySelector("h2")?.textContent === "Settlement");
+  ok(settlement.textContent.includes("Settlement status") && settlement.textContent.includes("Settlement date") && settlement.textContent.includes("Not available"), "settlement context remains visible without provider data");
+  ok(!settlement.textContent.includes("USD 0.00") && settlement.querySelectorAll("td").length === 6, "missing settlement amounts are not fabricated zeroes");
+  dom.window.close();
+}
+{
+  const { dom, root } = await page("transaction", "issue", (w) => {
+    const rpc = w.ChampionLifeAuth.client.rpc;
+    w.ChampionLifeAuth.client.rpc = async (name, args) => {
+      const r = await rpc(name, args);
+      if (args.p_action === "transaction") r.data.settlements = [{ state: "settled", batch: "SYNTHETIC-42", gross_minor: "10000", fee_minor: "0", net_minor: "10000", date: "2026-10-15" }];
+      return r;
+    };
+  });
+  const settlement = [...root.querySelectorAll("section")].find(x => x.querySelector("h2")?.textContent === "Settlement");
+  ok(settlement.textContent.includes("SYNTHETIC-42") && settlement.textContent.includes("USD 0.00") && settlement.textContent.includes("Oct 15, 2026"), "available batch, zero fee and exact settlement date preserved");
+  ok(root.textContent.includes("Youth") && ![...root.querySelectorAll("table")].some(t => t.textContent.includes("synthetic-leg")), "canonical labels retained without internal leg identifiers");
+  dom.window.close();
 }
 console.log(
   n + " GIV-3D operations DOM/accessibility/revocation checks passed",

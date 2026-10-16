@@ -46,8 +46,10 @@
     options = {},
     filters = {};
   const can = (k) => scope?.permissions?.includes(k),
-    money = (v, c = "USD") => (v == null ? "Unknown" : U.money(String(v), c)),
+    money = (v, c = "USD") => (v == null || v === "" ? "—" : U.money(String(v), c)),
     label = (s) => String(s || "").replaceAll("_", " "),
+    fundLabel = (r) => r.fund?.trim() || options.funds?.find((f) => f.id === r.fund_id)?.name || "Not designated",
+    routeLabel = (r) => r.route?.trim() || "Routing not assigned",
     link = (text, file, id) =>
       E("a", text, {
         class: "giving-button",
@@ -392,13 +394,12 @@
     ])
       grid.append(E("dt", title), E("dd", money(value, s.currency)));
     parent.append(grid);
+    parent.append(E("h3", "Giving / Purpose"));
     table(
       parent,
       [
-        [
-          "Purpose / Fund",
-          (r) => [label(r.purpose), r.fund].filter(Boolean).join(" · "),
-        ],
+        ["Purpose", (r) => label(r.purpose) || "Not designated"],
+        ["Fund", fundLabel],
         ["Amount", (r) => money(r.amount_minor, s.currency)],
         [
           "Status",
@@ -407,18 +408,20 @@
       ],
       s.lines || [],
     );
-    if (!donor)
+    if (!donor) {
+      parent.append(E("h3", "Routing"));
       table(
         parent,
         [
-          ["Provider leg", (r) => r.id],
-          ["Provider", (r) => r.provider],
-          ["Original route", (r) => r.route],
+          ["Payment leg", (r) => "Leg " + ((s.legs || []).indexOf(r) + 1)],
+          ["Provider", (r) => label(r.provider) || "Not assigned"],
+          ["Original route", routeLabel],
           ["Amount", (r) => money(r.amount_minor, s.currency)],
           ["State", (r) => label(r.status)],
         ],
         s.legs || [],
       );
+    }
     const receipts = panel("Historical receipts", parent);
     for (const r of s.receipts || []) {
       const b = button("View receipt " + r.number, () => {
@@ -690,9 +693,9 @@
       table(
         p,
         [
-          ["Fund", (x) => x.fund],
+          ["Fund", fundLabel],
           ["Amount", (x) => money(x.amount_minor, r.currency)],
-          ["Original route", (x) => x.route],
+          ["Original route", routeLabel],
         ],
         r.lines || [],
       );
@@ -959,16 +962,16 @@
       return;
     }
     if (view === "session" && id) {
-      session(panel("One donor session · " + data.id), data);
+      session(panel("Payment Summary"), data);
       return;
     }
     if (detail && id) {
       if (data.session)
-        session(panel("Session and provider legs"), data.session);
+        session(panel("Payment Summary"), data.session);
       const p = panel(
-        data.issue ? label(data.issue.issue_type) : "Payment review",
+        "Recovery / Issue Status",
       );
-      p.append(E("p", data.issue?.next_action || "Review current state"));
+      p.append(E("h3", label(data.issue?.issue_type) || "Payment review"), E("p", "Status: " + (label(data.issue?.status) || "Not available")), E("p", data.issue?.next_action || "Review current state"));
       table(
         panel("Safe attempt history"),
         [
@@ -994,15 +997,20 @@
         ],
         data.observations || [],
       );
+      const settlement = panel("Settlement");
+      if (!data.settlements?.length)
+        settlement.append(E("p", "Settlement details are not available. Provider execution is held; no batch, fees or net settlement have been supplied.", { class: "giving-note" }));
       table(
-        panel("Settlement batches"),
+        settlement,
         [
-          ["Batch", (r) => r.batch],
+          ["Settlement status", (r) => label(r.state) || "Not available"],
+          ["Batch", (r) => r.batch || "—"],
           ["Gross", (r) => money(r.gross_minor)],
           ["Fees", (r) => money(r.fee_minor)],
           ["Net", (r) => money(r.net_minor)],
+          ["Settlement date", (r) => r.date ? new Date(r.date).toLocaleDateString("en-US", { timeZone: "UTC", year: "numeric", month: "short", day: "numeric" }) : "—"],
         ],
-        data.settlements || [],
+        data.settlements?.length ? data.settlements : [{}],
       );
       issueActions(root, data);
       table(

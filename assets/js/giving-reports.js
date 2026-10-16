@@ -688,7 +688,7 @@
         previewKey = crypto.randomUUID();
         const data = await call("statement_preview", previewPayload);
         root.querySelector(".giving-statement-preview")?.remove();
-        const preview = panel("Statement Preview");
+        const preview = panel("Current Statement Preview");
         preview.classList.add("giving-statement-preview");
         statementContent(preview, data);
         preview.append(
@@ -756,7 +756,7 @@
     if (!historyData.statements.length)
       h.append(E("p", "No statement history.", { class: "giving-empty" }));
   }
-  function statementContent(parent, s) {
+  function statementContent(parent, s, historical = false) {
     currency = s.currency || currency;
     scale = s.minor_unit_scale ?? scale;
     parent.append(
@@ -764,19 +764,25 @@
         class: "staff-eyebrow",
       }),
       E("h2", s.organization || "Champion Life"),
-      E("h3", s.recipient || "Statement recipient"),
-      E("p", date(s.period?.starts_at) + " – " + date(s.period?.ends_at)),
+      ...(s.recipient ? [E("h3", s.recipient)] : []),
+      E("p", "Date range: " + date(s.period?.starts_at) + " – " + date(s.period?.ends_at)),
       E("p", s.address || s.address_note || ""),
     );
-    table(
-      parent,
-      (s.contributions || []).map((c) => ({ ...c, date: date(c.date) })),
-      ["date", "donor", "designation", "amount_minor", "kind"],
-    );
+    const itemized = Array.isArray(s.contributions);
+    if (historical && !itemized) {
+      parent.append(E("h3", "Historical Statement Snapshot"));
+      note(parent, "This historical statement was generated before itemized line-detail snapshots were available. Its stored total is preserved.");
+    } else {
+      table(parent, (s.contributions || []).map((c) => ({ ...c, date: date(c.date) })),
+        ["date", "donor", "designation", "amount_minor", "kind"]);
+    }
+    note(parent, historical
+      ? "This immutable generated statement reflects the records at generation. A current preview may include later activity and show a different total."
+      : "Current records as of this preview. This is not a previously generated statement and may differ from historical versions.");
     parent.append(
       E("strong", "Eligible contributions: " + money(s.total_minor ?? "0")),
     );
-    if (s.fund_summary) {
+    if (s.fund_summary && itemized) {
       const detail = panel("Fund Summary", parent);
       table(detail, M.group(s.contributions || [], "designation"), [
         "label",
@@ -805,7 +811,7 @@
             : view === "statements"
               ? "Donor Statements"
               : view === "statement"
-                ? "Statement Preview"
+                ? "Historical Generated Statement"
                 : catalog.find((r) => r[0] === kind)?.[1] || "Giving Report";
     const titleBlock = E("div");
     titleBlock.append(
@@ -864,8 +870,8 @@
     if (view === "statement") {
       const data = await call("statement_detail", { id: params.get("id") });
       if (version !== epoch) return;
-      const p = panel("Generated statement · Version " + data.version);
-      statementContent(p, data.snapshot);
+      const p = panel("Historical Generated Statement · Version " + data.version);
+      statementContent(p, data.snapshot, true);
       note(
         p,
         "Generated " +

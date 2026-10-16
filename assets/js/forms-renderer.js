@@ -452,6 +452,14 @@
         }
         if (control && !["FIELDSET"].includes(control.tagName))
           control.setAttribute("aria-describedby", help.id);
+        const caption = wrap.querySelector("legend") || wrap.querySelector("label");
+        if (caption) {
+          const words = caption.textContent.trim().split(/\s+/), last = words.pop() || "";
+          caption.replaceChildren(document.createTextNode(words.length ? words.join(" ") + " " : ""));
+          const tail = el("span", last, { class: "form-label-tail" });
+          tail.append(el("span", " *", { class: "form-required", "aria-hidden": "true", hidden: true }));
+          caption.append(tail);
+        }
         wrap.append(help);
       }
       form.append(section);
@@ -465,7 +473,11 @@
       );
     function refresh() {
       const states = M.state(d, answers);
-      for (const [k, n] of nodes) n.hidden = !!states[k]?.hidden;
+      for (const [k, n] of nodes) {
+        n.hidden = !!states[k]?.hidden;
+        const marker = n.querySelector(".form-required");
+        if (marker) marker.hidden = !states[k]?.required || !!states[k]?.disabled || !!states[k]?.hidden;
+      }
       for (const [f, n] of inputs) {
         const st = states[f.key] || {};
         n.disabled = !!st.disabled || !!st.hidden;

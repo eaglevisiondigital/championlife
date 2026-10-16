@@ -305,6 +305,21 @@ h.close();
   h.close();
 }
 
+// Legacy immutable snapshots have aggregate rows, not contribution line details.
+{
+  const snapshot = { organization: "Synthetic Church", currency: "USD", total_minor: "1318800", period: { starts_at: "2026-01-01T00:00:00Z", ends_at: "2027-01-01T00:00:00Z" }, rows: [{ label: "Missions", amount_minor: "1318800" }] };
+  const original = JSON.stringify(snapshot);
+  const a = await page("statement", undefined, (g, w) => {
+    const rpc = w.ChampionLifeAuth.client.rpc;
+    w.ChampionLifeAuth.client.rpc = async (name, args) => args.p_action === "statement_detail" ? { data: { snapshot, version: 2, generated_at: "2026-10-15T14:00:00Z" } } : rpc(name, args);
+  });
+  const text = a.d.getElementById("giving-reports-app").textContent;
+  ok(text.includes("Historical Generated Statement") && text.includes("Version 2") && text.includes("Generated") && text.includes("Date range:"), "historical statement identifies version, generation and range");
+  ok(text.includes("Historical Statement Snapshot") && text.includes("USD 13,188.00") && text.includes("before itemized"), "legacy statement displays stored total with honest missing-detail explanation");
+  ok(!a.d.querySelector("#giving-reports-app table") && !text.includes("14,588"), "legacy statement omits empty table and never substitutes current total");
+  ok(JSON.stringify(snapshot) === original, "historical snapshot remains unchanged");
+  a.close();
+}
 // A long statement must flow onto paper without a mostly empty cover page.
 // Print-only controls must be hidden while contribution rows remain together.
 {
