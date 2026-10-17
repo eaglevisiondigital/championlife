@@ -21,15 +21,18 @@ for (const env of [{}, { ...valid, CHAMPION_PREVIEW_SUPABASE_URL: production.url
   { ...valid, CHAMPION_PREVIEW_SUPABASE_PUBLISHABLE_KEY: 'eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoic2VydmljZV9yb2xlIn0.invalid' },
   { ...valid, CHAMPION_PREVIEW_SUPABASE_URL: 'https://exdocjbmylgxssanymjk.supabase.co@evil.example' },
   { ...valid, CHAMPION_PREVIEW_SUPABASE_URL: 'https://custom-alias.example' },
+  { ...valid, CHAMPION_PREVIEW_SUPABASE_URL: 'https://aaaaaaaaaaaaaaaaaaaa.supabase.co' },
   { ...valid, CHAMPION_PREVIEW_SUPABASE_URL: valid.CHAMPION_PREVIEW_SUPABASE_URL + '/rest/v1' }]) assert.equal(previewConfiguration(env, production), null);
 assert.equal(previewConfiguration(valid, production).url, valid.CHAMPION_PREVIEW_SUPABASE_URL);
+const minimal = {...valid,CHAMPION_PREVIEW_SUPABASE_URL:'https://niyovbgoalulzkhbvebt.supabase.co'};
+assert.equal(previewConfiguration(minimal,production).url,minimal.CHAMPION_PREVIEW_SUPABASE_URL);
 
 // Browser behavior: blocked config must visibly explain the failure and create no client.
 const auth = await readFile(path.join(root, 'assets/js/champion-life-auth.js'), 'utf8');
-for (const cfg of [null, previewConfiguration(valid, production)]) {
+for (const cfg of [null, previewConfiguration(valid, production),previewConfiguration(minimal,production)]) {
   const dom = new JSDOM('<!doctype html><body></body>', { runScripts: 'outside-only', url: 'https://deploy-preview-1--example.netlify.app' });
   let calls = 0;
-  dom.window.supabase = { createClient(url, key) { calls++; assert.equal(url, valid.CHAMPION_PREVIEW_SUPABASE_URL); assert.equal(key, valid.CHAMPION_PREVIEW_SUPABASE_PUBLISHABLE_KEY); return {}; } };
+  dom.window.supabase = { createClient(url, key) { calls++; assert.equal(url, cfg.url); assert.equal(key, valid.CHAMPION_PREVIEW_SUPABASE_PUBLISHABLE_KEY); return {}; } };
   dom.window.console.warn = () => {};
   dom.window.eval(previewScript(cfg));
   dom.window.eval(auth);
@@ -55,7 +58,7 @@ const forms = new JSDOM(await readFile(path.join(root, 'netlify-forms.html'), 'u
 assert.equal(forms.window.document.querySelectorAll('form[name="christmas-dinner-2026"]').length, 1);
 assert.equal(forms.window.document.querySelectorAll('form[name="outreach-partner"]').length, 0, 'No parallel outreach capture');
 forms.window.close();
-await buildSite({ root, env: { CONTEXT: 'production', ...valid } });
+await buildSite({ root, env: { CONTEXT: 'production', ...minimal } });
 for (const file of manifest) assert.deepEqual(await readFile(path.join(root, 'dist', file)), await readFile(path.join(root, file)), file);
 async function inventory(dir, prefix = '') {
   const result = [];
@@ -91,8 +94,8 @@ try {
   await writeFile(path.join(fixture, '.env'), 'PRIVATE_SENTINEL');
   const manifestFile = path.join(fixture, 'tools/site-build/public-files.json');
   await writeFile(manifestFile, JSON.stringify([configPath]));
-  for (const context of ['deploy-preview', 'branch-deploy']) {
-    const result = await buildSite({ root: fixture, env: { CONTEXT: context, ...valid } });
+  for (const context of ['deploy-preview', 'branch-deploy']) for(const accepted of [valid,minimal]) {
+    const result = await buildSite({ root: fixture, env: { CONTEXT: context, ...accepted } });
     assert.equal(result.backend, 'isolated-preview');
     assert(!(await readFile(path.join(fixture, 'dist', configPath), 'utf8')).includes(production.url));
   }

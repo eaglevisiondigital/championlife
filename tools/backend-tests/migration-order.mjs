@@ -1,5 +1,5 @@
-// Replay the already-applied production baseline BEFORE new candidate dependencies.
-export const migrationOrder=[
+// Exact 22 production versions followed only by the two isolated candidates.
+export const baselineOrder=[
   "20260923114743_create_course_progress_schema.sql",
   "20260923114822_harden_course_security_and_indexes.sql",
   "20260923115114_revoke_public_rls_helper_execution.sql",
@@ -17,9 +17,14 @@ export const migrationOrder=[
   "20260926034222_tag_workflows.sql",
   "20260926035410_giving_configuration.sql",
   "20260926040812_participant_portals.sql",
-  "20261004154340_allow_bessemer_outreach_registrations.sql",
   "20260928172557_people_staff_v1.sql",
   "20261004055336_outreach_partner_intake_v1.sql",
+  "20261004154340_allow_bessemer_outreach_registrations.sql",
   "20261004230453_outreach_partner_gateway.sql",
   "20261005161946_outreach_network_limit_120.sql"
 ];
+export const candidateOrder=[
+  "20261016201932_huntsville_registration_foundation.sql",
+  "20261016201933_huntsville_registration_draft.sql"
+];
+export const migrationOrder=[...baselineOrder,...candidateOrder];
