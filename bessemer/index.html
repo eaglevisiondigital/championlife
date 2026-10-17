@@ -275,6 +275,17 @@
       .bes-register-copy{position:static}
     }
     @media(max-width:700px){
+      /* Mobile-only flow approved for Bessemer:
+         keep desktop unchanged, remove the two explanatory panels,
+         and place registration immediately after the hero before gifts. */
+      .bes-page{display:flex;flex-direction:column}
+      .bes-hero{order:1}
+      .bes-register{order:2}
+      .bes-why{order:3}
+      .bes-after{order:4}
+      .bes-final{order:5}
+      .bes-proof,.bes-register-copy{display:none!important}
+      .bes-register-grid{display:block}
       .bes-hero{min-height:760px;padding:118px 0 66px}
       .bes-hero-grid{gap:34px}
       .bes-hero:after{right:-27vw;top:150px;width:85vw;opacity:.24}

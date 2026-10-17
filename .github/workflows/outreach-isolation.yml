@@ -1,9 +1,9 @@
 name: Isolated Outreach candidate
 on:
   pull_request:
-    branches: [main]
+    branches: [main, codex/outreach-campaign-core-v1, codex/outreach-phase-b-team-travel, codex/outreach-phase-c-registration-checkin]
   push:
-    branches: [codex/outreach-partner-production-isolation]
+    branches: [codex/outreach-partner-production-isolation, codex/outreach-campaign-core-v1, codex/outreach-phase-b-team-travel, codex/outreach-phase-c-registration-checkin]
 permissions:
   contents: read
 jobs:
@@ -17,4 +17,7 @@ jobs:
       - run: npm ci --ignore-scripts --prefix tools/backend-tests
       - run: npm test --prefix tools/backend-tests
       - run: TEST_POSTGRES_BIN="$(pg_config --bindir)" npm run test:concurrency --prefix tools/backend-tests
+      - run: TEST_POSTGRES_BIN="$(pg_config --bindir)" npm run test:campaign-concurrency --prefix tools/backend-tests
+      - run: TEST_POSTGRES_BIN="$(pg_config --bindir)" npm run test:team-concurrency --prefix tools/backend-tests
+      - run: TEST_POSTGRES_BIN="$(pg_config --bindir)" npm run test:registration-concurrency --prefix tools/backend-tests
       - run: git diff --check
