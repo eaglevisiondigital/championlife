@@ -10,3 +10,8 @@
 [Exact dependency reasoning](docs/HUNTSVILLE-MINIMAL-DEPENDENCIES.md) · [Forward release and containment](docs/HUNTSVILLE-MINIMAL-RELEASE.md)
 
 7. Owner approved a separate isolated hosted target on 2026-10-16. New project `niyovbgoalulzkhbvebt` starts empty; install the exact production migration chain and only the two Huntsville additions. Preserve historical version IDs through supported CLI migration application. Add this project explicitly to preview/test-key guards, never accept arbitrary project URLs. Production defaults remain byte-for-byte. Hosted tests remain pending until installation and normal Auth/Edge setup.
+
+
+8. Isolated exact-stack hosted acceptance is accepted as PASS. Cleanup means zero active test registrations, check-ins or grants; closed synthetic records and immutable audit/signature history are intentionally retained.
+9. The production release candidate must be reconciled onto current main `f0d6fe9e07140dab6ed829ed5ccfdbb7af12e2fd` and preserve the live Bessemer mobile registration-flow change unchanged. Backend integration must not alter the approved Huntsville public header.
+10. Current authorization is limited to preparing a draft production release PR and running CI/release checks. No merge, production migration, Edge deployment, grant, waiver publication, registration activation, SowGo route change or message send is authorized. Branded email remains a separate launch gate.

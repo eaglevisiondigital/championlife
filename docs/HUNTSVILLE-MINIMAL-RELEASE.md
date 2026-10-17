@@ -1,12 +1,12 @@
 # Huntsville minimal package — release review
 
-Status: **local implementation/proof complete; hosted validation of this minimal stack remains pending. NOT READY for controlled production release.** This is a release-preparation artifact, not authorization to merge, deploy, activate registration or change a production credential/configuration.
+Status: **isolated hosted validation PASS; candidate reconciled onto current production main. READY FOR CONTROLLED PRODUCTION RELEASE REVIEW, but NOT AUTHORIZED to merge, deploy, migrate, grant access, publish or activate registration.** Branded email remains a separate launch gate.
 
 ## Candidate
 
-- Base production main: `a9c8a73c228866749831f0df4236295c3791216f`.
+- Current production main: `f0d6fe9e07140dab6ed829ed5ccfdbb7af12e2fd` (`Release Bessemer mobile registration flow`). The validated Huntsville slice originated from prior main `a9c8a73c228866749831f0df4236295c3791216f`; the current release branch preserves the Bessemer change unchanged.
 - Accepted Huntsville reference: `dba68735cd68ddfc00ddbc16109a01e2794027dc`.
-- Branch: `codex/huntsville-minimal-production-package`.
+- Release branch: `codex/huntsville-production-release`. It combines current production main with validated minimal-package head `03d929d2a939f1e160ae12149effbf7480ecca83` without importing PR #24 ancestry.
 - New migrations, in order: `20261016201932_huntsville_registration_foundation.sql`; `20261016201933_huntsville_registration_draft.sql`.
 - Exact objects, dependency graph, files and exclusions: [dependency review](HUNTSVILLE-MINIMAL-DEPENDENCIES.md), [statement classification](HUNTSVILLE-INHERITED-STATEMENTS.json), [object catalog](HUNTSVILLE-REQUIRED-OBJECTS.json), [source manifest](HUNTSVILLE-SOURCE-MANIFEST.json).
 - SowGo accepted reference remains `3a01f00556250cd2d02777e842cc2c1b23901638`; no SowGo changes. Do not merge Champion PR #24 ancestry or SowGo PR #4 as part of this task.
@@ -29,9 +29,9 @@ Status: **local implementation/proof complete; hosted validation of this minimal
 | Site build | PASS, 389 explicit public files, docs/tests/config/SQL excluded |
 | Browser | Local public submission/confirmation, staff list/detail/check-in, fixed totals during search and access screen PASS; zero warnings/errors |
 | Responsive | Local public 320/390/768/1440 and staff 390/768/1440 DOM width checks PASS; staff desktop/mobile screenshots reviewed |
-| Real mobile Turnstile on new minimal hosted stack | NOT RUN; localhost challenge is explicitly simulated |
+| Real mobile Turnstile on new minimal hosted stack | PASS at 390px; real widget reached `Success!` with no overflow or console errors |
 | Native browser ICS download | UNVERIFIED: browser download event timed out; ICS generation/calendar DOM assertions pass |
-| Hosted minimal-stack Auth/Edge/browser/races | NOT RUN |
+| Hosted minimal-stack Auth/Edge/browser/races | PASS on isolated project `niyovbgoalulzkhbvebt`; staff totals/CSV/check-in separation/responsive layouts/same-session revocation passed |
 
 ### Six real independent-session races
 
@@ -46,7 +46,7 @@ Each race used eight independent worker backend IDs plus a separate coordinator,
 | CSV with concurrent registrations | One repeatable-read exporter plus seven submitters; exported attendee/household counts reconcile with the same database snapshot |
 | Final slot | Eight overlapping workers; exactly one success, seven safe denials; capacity preserved |
 
-Native evidence is local, **not hosted Supabase evidence**. Earlier Huntsville hosted acceptance passed on the broader shared acceptance stack. That does not prove this exact reduced schema under Supabase Auth/PostgREST/Edge hosting.
+Native evidence remains local evidence. The exact reduced 22+2 stack was subsequently installed and validated on isolated hosted Supabase project `niyovbgoalulzkhbvebt`, including Auth/Edge/public/staff behavior and the real 390px Turnstile check.
 
 Private evidence is in the outer workspace `audit/huntsville-minimal-package-2026-10-16/`: `schema-inventory.json` (full before/after), `final-suite.log`, `safety.log`, `final-native/` logs and interval evidence, browser summary and screenshots. It is excluded from this repository and every publish artifact.
 
@@ -58,15 +58,19 @@ A successful ledger migration is applied once. Manual duplicate foundation/draft
 
 The new campaign is `draft`, settings `enabled=false`, no staff grants, no published waiver and no registration fixture. Exact approved legal/media text remains in the accepted JSON file, ready for a reviewed publication by an explicitly approved real staff identity. It is not silently published under a fabricated actor.
 
-## Remaining hosted gate
+## Hosted gate completed — 2026-10-16
 
-The shared acceptance database already contains the broader Outreach stack. Applying these create-only migrations there would collide and would not prove a 22+2 transition. Do not reset it or drop its objects. A separately isolated hosted database/branch with the exact 22+2 stack is needed for the requested hosted regression/races. The existing preview builder and acceptance dummy-token exception are pinned to the current acceptance project; a different project needs an explicitly reviewed exact-project preview configuration, not a wildcard or production fallback. The owner subsequently authorized a separate clean hosted stack. Project `niyovbgoalulzkhbvebt` was created empty; exact-project preview guards were extended and tested. Baseline installation, deployment and hosted validation are still pending; this does not constitute release approval.
+The owner authorized isolated project `niyovbgoalulzkhbvebt` (`champion-huntsville-minimal-acceptance`). It received the exact 22 production baseline migrations plus only the two Huntsville migrations, and the reviewed `outreach-registration-submit` Edge Function with platform JWT verification disabled for this guest gateway only.
 
-Complete exact-head unpublished hosting and the focused public/staff/login/Edge/Turnstile/native-download/revocation/six-race gate against that isolated target. Carry forward local evidence; do not rerun unrelated packages. This is the remaining proof gap, not a detected registration or capacity defect.
+Hosted validation passed registration/staff behavior, campaign totals, CSV, check-in separation, responsive layouts, same-session revocation, cleanup and the real Cloudflare Turnstile widget at 390px. The real widget displayed `Success!` with no overflow or console errors.
+
+Cleanup left **zero active test registrations, check-ins or grants**. Closed synthetic registrations and immutable audit/signature history were intentionally preserved. The form was disabled again. Production was unchanged.
+
+The current production database was rechecked before this release refresh and still has exactly the original 22 migrations and none of the Huntsville campaign/registration objects or gateway RPCs. Current production main differs from the original minimal-package base only by the approved Bessemer mobile registration-flow commit; that file is preserved unchanged on this release branch.
 
 ## Forward release order — proposal only
 
-1. Review this exact commit, dependency inventory and the remaining hosted evidence. Verify current production main and the 22-migration ledger still match the recorded base. If they differ, reconcile and re-test; stop before writes.
+1. Review this exact release branch and CI results. Verify production still has the same 22-migration ledger and current main remains `f0d6fe9e07140dab6ed829ed5ccfdbb7af12e2fd` (or reconcile any newer production-only change before writes). Confirm the approved Huntsville public header bytes remain unchanged.
 2. Obtain a separate controlled-production authorization identifying the exact candidate, database project and approved staff bootstrap identities/capabilities. No grant is implied by this package.
 3. Take the approved production backup/checkpoint. Apply only the two new migrations in order, transactionally, preserving the 22 historical ledger entries. Verify only the documented object delta, disabled draft, existing org and zero Bessemer/data/grant changes.
 4. Deploy only `outreach-registration-submit` plus its existing fingerprint dependency through the supported function workflow. It is a public guest endpoint and requires platform JWT verification disabled for this endpoint only, matching accepted gateway architecture; application origin/Turnstile/rate controls remain mandatory. Review deployment metadata explicitly. Set only the approved exact production origins/hostnames, action `outreach-registration`, real Turnstile configuration and server-held existing secret dependencies through the approved secret mechanism. Preserve shared partner allowlist entries. Never print values or enable acceptance test-key behavior in production.
@@ -82,4 +86,4 @@ Do not drop populated tables, delete signed evidence, rewrite applied migrations
 
 ## Stop point
 
-No production writes, deploys, merges, production Supabase access, messages, payments, Bessemer import, permissions or live registration activation occurred in this task. Local synthetic databases were disposed. QR remains not live. Recommendation: **NOT READY** until the exact minimal stack's hosted gate is completed and Chat approves controlled release. Do not begin another package.
+No production database migration, production Edge deployment, production registration activation, production grant, message, payment or SowGo route change is authorized by this review. The release branch is prepared only for CI/release review. The exact minimal hosted gate is complete and passed; production remains on the 22-migration baseline. Recommendation: **GO for controlled production release review; NO-GO for merge/production activation until separately authorized.** Branded email remains a separate launch gate.

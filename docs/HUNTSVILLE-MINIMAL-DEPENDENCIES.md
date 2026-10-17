@@ -1,6 +1,6 @@
 # Huntsville minimal dependency graph
 
-This branch starts at production main `a9c8a73c228866749831f0df4236295c3791216f`, not PR #24 ancestry. Accepted reference: `dba68735cd68ddfc00ddbc16109a01e2794027dc`.
+This release branch is reconciled onto current production main `f0d6fe9e07140dab6ed829ed5ccfdbb7af12e2fd`, preserving its Bessemer mobile-only change unchanged. The validated minimal slice originated from prior production main `a9c8a73c228866749831f0df4236295c3791216f`, not PR #24 ancestry. Accepted Huntsville reference: `dba68735cd68ddfc00ddbc16109a01e2794027dc`.
 
 ## Exact inventory and statement review
 
@@ -124,6 +124,6 @@ Phase A workflow is excluded in full, including both Bessemer-related seed/impor
 - `supabase/functions/outreach-registration-submit/index.ts`: exact accepted bytes.
 - `supabase/functions/outreach-registration-submit/gateway.mjs`: exact accepted bytes.
 
-Staff HTML uses a small registration-only navigation shell, not the unpublished shared staff shell. Its fallback returns to production's existing `staff-people.html`. Staff JS reads assignments through the registration RPC. The public manifest adds only seven runtime HTML/CSS/JS files; config, tests, docs and migrations remain non-public. Existing public pages, giving links, `/go`, Bessemer/St Lucia pages, Auth config, Netlify configuration and shared gateway fingerprint helper remain unchanged.
+Staff HTML uses a small registration-only navigation shell, not the unpublished shared staff shell. Its fallback returns to production's existing `staff-people.html`. Staff JS reads assignments through the registration RPC. The public manifest adds only seven runtime HTML/CSS/JS files; config, tests, docs and migrations remain non-public. Existing public pages, giving links, `/go`, St Lucia, Auth config, Netlify configuration and shared gateway fingerprint helper remain unchanged. The current live Bessemer mobile registration-flow change from production main is preserved byte-for-byte in this release branch.
 
 The public form, legal config, form/calendar module, public handler and two Edge Function files match accepted bytes. Current main's `outreach-staff-common.js` and `outreach-partner-submit/gateway.mjs` are also byte-identical to accepted source and are reused unchanged.
