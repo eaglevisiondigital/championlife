@@ -97,45 +97,84 @@
   function showMessage(type,text){msg.className='auth-message show '+type;msg.textContent=text}
   function clearMessage(){msg.className='auth-message';msg.textContent=''}
   function goNext(){
+    if(redirected) return;
+    redirected=true;
     try { sessionStorage.removeItem('championlife-auth-next'); } catch (_) {}
     location.href = sanitizeNext(next);
   }
 
+  // ConfirmationURL returns an implicit session (or an error) in the fragment.
+  // Custom TokenHash templates instead reach verifyOtp below. The existing SDK
+  // owns session parsing/persistence; never parse JWTs or establish a second client.
+  const fragment = new URLSearchParams(location.hash.slice(1));
+  const hasDirectLink = params.has('token_hash');
+  const hasSdkLink = ['access_token','refresh_token','error','error_code','error_description','code']
+    .some(key => params.has(key) || fragment.has(key));
+  const hasCallback = hasDirectLink || hasSdkLink;
+  let initializing = true;
+  let verifying = false;
+  let callbackFailed = false;
+  let redirected = false;
+  const invalidLink = 'This sign-in link is invalid or incomplete. Request a new sign-in email.';
+  const expiredLink = 'This sign-in link has expired, was already used, or could not be verified. Request a new sign-in email.';
+
+  function clearCallback(){
+    if (!hasCallback) return;
+    // Retain only the already-sanitized destination, never callback credentials,
+    // provider error text, or a caller-supplied fragment in browser history.
+    history.replaceState(null,'',location.pathname+'?'+new URLSearchParams({next}));
+  }
+
   async function handleEmailLink(){
     const tokenHash=params.get('token_hash');
-    const rawType=params.get('type');
-    if(!tokenHash) return false;
-    const type=rawType==='magiclink'?'magiclink':rawType==='email'?'email':null;
-    if(!type || tokenHash.length<32 || tokenHash.length>256 || !/^[A-Za-z0-9_-]+$/.test(tokenHash)){
-      showMessage('error','This sign-in link is invalid or incomplete. Request a new sign-in email.');
-      return true;
-    }
-    try{
-      const {data,error}=await auth.client.auth.verifyOtp({token_hash:tokenHash,type});
-      if(error) throw error;
-      if(!data?.session) throw new Error('We could not create your session.');
-      try{
-        const clean=new URL(location.href);
-        clean.searchParams.delete('token_hash');
-        clean.searchParams.delete('type');
-        history.replaceState(null,'',clean.pathname+clean.search+clean.hash);
-      }catch(_){}
-      goNext();
-    }catch(e){
-      showMessage('error',e.message || 'That sign-in link could not be verified. Request a new sign-in email.');
-    }
-    return true;
+    const type=params.get('type');
+    if(hasSdkLink || params.getAll('token_hash').length!==1 || params.getAll('type').length!==1 ||
+        !['magiclink','email'].includes(type) || !tokenHash || tokenHash.length<32 ||
+        tokenHash.length>256 || !/^[A-Za-z0-9_-]+$/.test(tokenHash)) throw new Error(invalidLink);
+    const {data,error}=await auth.client.auth.verifyOtp({token_hash:tokenHash,type});
+    if(error || !data?.session) throw new Error(expiredLink);
+    return data.session;
   }
 
   async function existingSession(){
+    emailStep.classList.remove('active');
+    sendBtn.disabled=true;
+    verifyBtn.disabled=true;
+    if(hasCallback) showMessage('success','Verifying your sign-in link…');
     try{
-      if(await handleEmailLink()) return;
-      const session=await auth?.getSession();
+      // Do not treat an older stored session as successful callback verification.
+      if(['error','error_code','error_description'].some(key=>params.has(key)||fragment.has(key)))
+        throw new Error(expiredLink);
+      if(hasSdkLink && (params.has('code') || params.has('access_token') || params.has('refresh_token') ||
+          !fragment.get('access_token') || !fragment.get('refresh_token') ||
+          fragment.getAll('access_token').length!==1 || fragment.getAll('refresh_token').length!==1 ||
+          (fragment.has('type') && !['magiclink','email'].includes(fragment.get('type')))))
+        throw new Error(invalidLink);
+      // initialize() shares the SDK's existing initialization promise. getSession()
+      // alone can hide a URL initialization error behind a null/older session.
+      const {error:initializationError}=await auth.client.auth.initialize();
+      if(initializationError) throw new Error(expiredLink);
+      const session=hasDirectLink ? await handleEmailLink() : await auth.getSession();
+      if(hasCallback && !session) throw new Error(expiredLink);
+      clearCallback();
       if(session) goNext();
-    }catch(e){}
+      else emailStep.classList.add('active');
+    }catch(e){
+      callbackFailed=true;
+      try { clearCallback(); } catch (_) {}
+      emailStep.classList.add('active');
+      // Never render raw SDK/provider messages that may contain URL credentials.
+      showMessage('error',hasDirectLink && e.message===invalidLink ? invalidLink :
+        hasCallback ? expiredLink : 'We could not restore your session. Please sign in again.');
+    }finally{
+      initializing=false;
+      sendBtn.disabled=false;
+      verifyBtn.disabled=false;
+    }
   }
 
   sendBtn.addEventListener('click', async () => {
+    if(initializing || verifying) return;
     clearMessage();
     email=emailInput.value.trim().toLowerCase();
     if(!email || !emailInput.checkValidity()){showMessage('error','Enter a valid email address.');return}
@@ -155,10 +194,12 @@
   });
 
   verifyBtn.addEventListener('click', async () => {
+    if(initializing || verifying) return;
     clearMessage();
     const token=codeInput.value;
     if(!email){email=emailInput.value.trim().toLowerCase()}
     if(![6,8].includes(token.length) || /[^0-9]/.test(token)){showMessage('error','Enter the 6- or 8-digit code from your email.');return}
+    verifying=true;
     verifyBtn.disabled=true;verifyBtn.textContent='Signing in...';
     try{
       const {data,error}=await auth.client.auth.verifyOtp({email,token,type:'email'});
@@ -166,14 +207,16 @@
       if(!data.session) throw new Error('We could not create your session.');
       goNext();
     }catch(e){showMessage('error',e.message || 'That code could not be verified.')}
-    finally{verifyBtn.disabled=false;verifyBtn.textContent='Sign In'}
+    finally{verifying=false;verifyBtn.disabled=false;verifyBtn.textContent='Sign In'}
   });
 
   backBtn.addEventListener('click',()=>{codeStep.classList.remove('active');emailStep.classList.add('active');codeInput.value='';clearMessage()});
   codeInput.addEventListener('keydown',e=>{if(e.key==='Enter') verifyBtn.click()});
   emailInput.addEventListener('keydown',e=>{if(e.key==='Enter') sendBtn.click()});
 
-  auth?.client.auth.onAuthStateChange((_event,session)=>{if(session) setTimeout(goNext,50)});
+  auth?.client.auth.onAuthStateChange((_event,session)=>{
+    if(session && !initializing && !verifying && !callbackFailed) setTimeout(goNext,50);
+  });
   existingSession();
 })();
 </script>
