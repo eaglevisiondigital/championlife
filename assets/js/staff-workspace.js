@@ -23,7 +23,7 @@
   main.classList.add('staff-main');main.id='staff-main';
   column.append(top,main);shell.append(sidebar,column);document.body.prepend(shell);
   document.querySelector('.campaign-shell')?.remove();
-  let state={user:null,staff:null,campaigns:[],registration:[],decisions:[],team:[],selected:null};
+  let state={user:null,staff:null,campaigns:[],registration:[],decisions:[],team:[],partners:[],selected:null};
   const navItems=[
     ['Staff Home','staff-home.html','home'],
     ['Outreach Overview','staff-outreach-overview.html','outreach'],
@@ -31,6 +31,8 @@
     ['Team & Travel','staff-outreach-team.html','team'],
     ['Registration & Check-In','staff-outreach-registration.html','registration'],
     ['People & Follow-Up','staff-people.html','people'],
+    ['Partner Follow-Up','staff-outreach-partner.html','partner'],
+    ['Partner Churches','staff-outreach-partner-admin.html','partneradmin'],
     ['Staff & Access','staff-access.html','access']
   ];
   const activePath=href=>href.replace('.html','')===page;
@@ -41,6 +43,8 @@
     if(kind==='home')return true;
     if(kind==='people')return hasGrant('people.read');
     if(kind==='access')return hasGrant('staff.manage');
+    if(kind==='partner')return state.partners.length>0;
+    if(kind==='partneradmin')return hasGrant('staff.manage')||hasGrant('outreach.manage');
     if(kind==='decisions')return state.decisions.length>0;
     if(kind==='registration')return state.registration.length>0;
     if(kind==='team')return state.team.length>0;
@@ -83,11 +87,12 @@
   }
   async function refresh(){
     const user=await auth?.getUser();
-    if(!user){state={user:null,staff:null,campaigns:[],registration:[],decisions:[],team:[],selected:null};who.textContent='Signed out';renderNav();renderCampaigns();window.dispatchEvent(new CustomEvent('staff-workspace-context',{detail:state}));return;}
-    const [staff,regCandidates,dec]=await Promise.all([
+    if(!user){state={user:null,staff:null,campaigns:[],registration:[],decisions:[],team:[],partners:[],selected:null};who.textContent='Signed out';renderNav();renderCampaigns();window.dispatchEvent(new CustomEvent('staff-workspace-context',{detail:state}));return;}
+    const [staff,regCandidates,dec,partners]=await Promise.all([
       rpc('staff_workspace_context',{}),
       rpc('outreach_registration_workspace',{p_action:'campaigns',p_campaign:null,p_payload:{}}),
-      rpc('outreach_decision_workspace',{p_action:'campaigns',p_campaign:null,p_payload:{}})
+      rpc('outreach_decision_workspace',{p_action:'campaigns',p_campaign:null,p_payload:{}}),
+      rpc('outreach_partner_workspace',{p_action:'partners',p_partner:null,p_payload:{}})
     ]);
     const reg=[];
     for(const candidate of regCandidates||[]){
@@ -105,7 +110,7 @@
     const requested=new URLSearchParams(location.search).get('campaign');
     let selected=requested&&campaigns.some(c=>c.id===requested)?requested:null;
     if(!selected){try{const saved=sessionStorage.getItem('staff-current-campaign');if(saved&&campaigns.some(c=>c.id===saved))selected=saved;}catch{}}
-    state={user,staff:staff||{grants:[]},campaigns,registration:reg||[],decisions:dec||[],team,selected};
+    state={user,staff:staff||{grants:[]},campaigns,registration:reg||[],decisions:dec||[],team,partners:partners||[],selected};
     who.textContent=user.email||'Staff user';renderCampaigns();renderNav();
     window.dispatchEvent(new CustomEvent('staff-workspace-context',{detail:state}));
   }
