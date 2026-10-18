@@ -101,8 +101,35 @@
     location.href = sanitizeNext(next);
   }
 
+  async function handleEmailLink(){
+    const tokenHash=params.get('token_hash');
+    const rawType=params.get('type');
+    if(!tokenHash) return false;
+    const type=rawType==='magiclink'?'magiclink':rawType==='email'?'email':null;
+    if(!type || tokenHash.length<32 || tokenHash.length>256 || !/^[A-Za-z0-9_-]+$/.test(tokenHash)){
+      showMessage('error','This sign-in link is invalid or incomplete. Request a new sign-in email.');
+      return true;
+    }
+    try{
+      const {data,error}=await auth.client.auth.verifyOtp({token_hash:tokenHash,type});
+      if(error) throw error;
+      if(!data?.session) throw new Error('We could not create your session.');
+      try{
+        const clean=new URL(location.href);
+        clean.searchParams.delete('token_hash');
+        clean.searchParams.delete('type');
+        history.replaceState(null,'',clean.pathname+clean.search+clean.hash);
+      }catch(_){}
+      goNext();
+    }catch(e){
+      showMessage('error',e.message || 'That sign-in link could not be verified. Request a new sign-in email.');
+    }
+    return true;
+  }
+
   async function existingSession(){
     try{
+      if(await handleEmailLink()) return;
       const session=await auth?.getSession();
       if(session) goNext();
     }catch(e){}
