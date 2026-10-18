@@ -5,12 +5,6 @@
 -- Restore those kinds so canonical Household writes retain their original audit trigger.
 alter table public.organization_admin_events drop constraint organization_admin_events_kind_check;
 alter table public.organization_admin_events add constraint organization_admin_events_kind_check check(kind in ('staff_access','person_created','person_updated','person_relationship','department_affiliation','role_template','household_created','household_updated','household_member_added','household_member_updated'));
-alter table public.outreach_campaign_assignments drop constraint outreach_campaign_assignments_capabilities_check;
-alter table public.outreach_campaign_assignments add constraint outreach_campaign_assignments_capabilities_check check (
- capabilities <@ array['view','export','followup','decisions','workflow','documents','draw','team.view','team.manage','travel.view','travel.manage']::text[]
- and cardinality(capabilities)>0 and array_position(capabilities,null) is null
- and (not('team.manage'=any(capabilities)) or 'team.view'=any(capabilities))
- and (not('travel.manage'=any(capabilities)) or 'travel.view'=any(capabilities)));
 alter table public.outreach_campaign_events drop constraint outreach_campaign_events_kind_check;
 alter table public.outreach_campaign_events add constraint outreach_campaign_events_kind_check check(kind in (
  'outreach.registration.submitted','outreach.registration.updated','outreach.waiver.signed','outreach.registration.confirmed',
