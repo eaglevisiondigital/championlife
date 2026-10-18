@@ -192,26 +192,26 @@ begin
       select jsonb_agg(jsonb_build_object(
         'id',pc.id,'campaign_id',pc.campaign_id,'name',pc.name,'slug',pc.slug,
         'campaign_name',c.name,'campaign_status',c.status,
-        'capabilities',to_jsonb(array(select k from unnest(array['partner.view','partner.followup','partner.assign_local','partner.export','partner.pastoral_notes']) k where private.outreach_partner_cap(pc.id,k))),
-        'central_manage',private.outreach_partner_central_manage(pc.campaign_id)
+        'capabilities',to_jsonb(array(select k from unnest(array['partner.view','partner.followup','partner.assign_local','partner.export','partner.pastoral_notes']) k where private.outreach_partner_cap(partner_row.id,k))),
+        'central_manage',private.outreach_partner_central_manage(partner_row.campaign_id)
       ) order by c.name,pc.name)
-      from public.outreach_partner_churches p
+      from public.outreach_partner_churches pc
       join public.outreach_campaigns c on c.id=pc.campaign_id
-      where p.active and (private.outreach_partner_central_manage(pc.campaign_id) or private.outreach_partner_cap(partner_row.id,'partner.view'))
+      where pc.active and (private.outreach_partner_central_manage(pc.campaign_id) or private.outreach_partner_cap(pc.id,'partner.view'))
     ),'[]'::jsonb);
   end if;
 
   select * into partner_row from public.outreach_partner_churches where id=p_partner and active;
-  if partner_row.id is null or not(private.outreach_partner_central_manage(pc.campaign_id) or private.outreach_partner_cap(partner_row.id,'partner.view')) then
+  if partner_row.id is null or not(private.outreach_partner_central_manage(partner_row.campaign_id) or private.outreach_partner_cap(partner_row.id,'partner.view')) then
     raise exception 'Partner workspace access denied' using errcode='42501';
   end if;
-  caps:=array(select k from unnest(array['partner.view','partner.followup','partner.assign_local','partner.export','partner.pastoral_notes']) k where private.outreach_partner_cap(pc.id,k));
+  caps:=array(select k from unnest(array['partner.view','partner.followup','partner.assign_local','partner.export','partner.pastoral_notes']) k where private.outreach_partner_cap(partner_row.id,k));
 
   if p_action='context' then
     return jsonb_build_object(
       'partner',jsonb_build_object('id',partner_row.id,'name',partner_row.name,'campaign_id',partner_row.campaign_id,'slug',partner_row.slug),
       'campaign',(select jsonb_build_object('id',c.id,'name',c.name,'status',c.status,'city',c.city,'state_province',c.state_province) from public.outreach_campaigns c where c.id=partner_row.campaign_id),
-      'capabilities',to_jsonb(caps),'central_manage',private.outreach_partner_central_manage(pc.campaign_id)
+      'capabilities',to_jsonb(caps),'central_manage',private.outreach_partner_central_manage(partner_row.campaign_id)
     );
   end if;
 
@@ -253,7 +253,7 @@ begin
   end if;
 
   if p_action='followup_add' then
-    if not(private.outreach_partner_cap(partner_row.id,'partner.followup') or private.outreach_partner_central_manage(pc.campaign_id)) then raise exception 'Follow-up access denied' using errcode='42501'; end if;
+    if not(private.outreach_partner_cap(partner_row.id,'partner.followup') or private.outreach_partner_central_manage(partner_row.campaign_id)) then raise exception 'Follow-up access denied' using errcode='42501'; end if;
     assignment_id:=(p_payload->>'assignment_id')::uuid;
     select * into a from public.outreach_partner_assignments where id=assignment_id and partner_church_id=partner_row.id and status<>'revoked' for update;
     if a.id is null then raise exception 'Assignment unavailable' using errcode='42501'; end if;
@@ -278,7 +278,7 @@ begin
   end if;
 
   if p_action='assign_worker' then
-    if not(private.outreach_partner_cap(partner_row.id,'partner.assign_local') or private.outreach_partner_central_manage(pc.campaign_id)) then raise exception 'Local assignment access denied' using errcode='42501'; end if;
+    if not(private.outreach_partner_cap(partner_row.id,'partner.assign_local') or private.outreach_partner_central_manage(partner_row.campaign_id)) then raise exception 'Local assignment access denied' using errcode='42501'; end if;
     assignment_id:=(p_payload->>'assignment_id')::uuid;
     worker:=nullif(p_payload->>'user_id','')::uuid;
     if worker is not null and not exists(select 1 from public.outreach_partner_users u where u.partner_church_id=partner_row.id and u.user_id=worker and u.active and u.effective_at<=now() and (u.expires_at is null or u.expires_at>now())) then raise exception 'Worker outside partner church' using errcode='42501'; end if;
@@ -288,7 +288,7 @@ begin
   end if;
 
   if p_action='export' then
-    if not private.outreach_partner_cap(partner_row.id,'partner.export') and not private.outreach_partner_central_manage(pc.campaign_id) then raise exception 'Export access denied' using errcode='42501'; end if;
+    if not private.outreach_partner_cap(partner_row.id,'partner.export') and not private.outreach_partner_central_manage(partner_row.campaign_id) then raise exception 'Export access denied' using errcode='42501'; end if;
     return jsonb_build_object(
       'filename',partner_row.slug||'-followup.csv',
       'rows',coalesce((
