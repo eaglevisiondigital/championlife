@@ -19,18 +19,23 @@ const origin = 'https://deploy-preview-4--championlifechurch.netlify.app';
 const fallback = '/my-discipleship.html';
 let scenarios = 0;
 
-async function harness({ next, search, stored, blockedStorage = false, initialSession = false, siteOrigin = origin, verifyError = false } = {}) {
+async function harness({ next, search, stored, blockedStorage = false, initialSession = false, siteOrigin = origin, verifyError = false, linkVerifyError = false } = {}) {
   const dom = new JSDOM(html, { url: siteOrigin + '/discipleship-login.html' });
-  const calls = { sends: [], verifies: [], navigations: [], stored: [] };
+  const calls = { sends: [], verifies: [], navigations: [], stored: [], replaced: [] };
   const storage = new Map(stored === undefined ? [] : [['championlife-auth-next', stored]]);
   let onAuth;
+  const effectiveSearch = search ?? (next === undefined ? '' : '?next=' + encodeURIComponent(next));
   const location = {
     origin: siteOrigin,
-    search: search ?? (next === undefined ? '' : '?next=' + encodeURIComponent(next)),
+    pathname: '/discipleship-login.html',
+    search: effectiveSearch,
+    hash: '',
+    get href() { return siteOrigin + this.pathname + this.search + this.hash; },
     set href(value) { calls.navigations.push(value); }
   };
   const context = {
     document: dom.window.document, location, URL, URLSearchParams,
+    history: { replaceState(_a,_b,value) { calls.replaced.push(value); } },
     setTimeout: fn => { fn(); },
     sessionStorage: {
       getItem: key => { if (blockedStorage) throw Error('Storage unavailable'); return storage.get(key) ?? null; },
@@ -44,7 +49,8 @@ async function harness({ next, search, stored, blockedStorage = false, initialSe
         signInWithOtp: async args => { calls.sends.push(args); return {}; },
         verifyOtp: async args => {
           calls.verifies.push(args);
-          return verifyError ? { error: Error('Verification rejected') } : { data: { session: { user: { id: 'synthetic' } } } };
+          const isLink = Object.prototype.hasOwnProperty.call(args,'token_hash');
+          return (isLink ? linkVerifyError : verifyError) ? { error: Error('Verification rejected') } : { data: { session: { user: { id: 'synthetic' } } } };
         }
       } }
     } }
@@ -106,6 +112,46 @@ for (const [next, expected] of [...safe, ...unsafe.map(value => [value, fallback
     assert.equal(new URL(h.calls.navigations.at(-1), origin).origin, origin);
     h.close();
   }
+}
+
+// Direct email-link callback: verify token hash once and go straight to the intended staff page.
+{
+  const tokenHash='a'.repeat(64);
+  const h=await harness({ search:'?next=%2Fstaff-outreach-registration.html&token_hash='+tokenHash+'&type=email' });
+  await flush();
+  assert.equal(h.calls.verifies.length,1);
+  assert.equal(h.calls.verifies[0].token_hash,tokenHash);
+  assert.equal(h.calls.verifies[0].type,'email');
+  assert.deepEqual(h.calls.navigations,['/staff-outreach-registration.html']);
+  assert.equal(h.calls.replaced.length,1);
+  assert(!h.calls.replaced[0].includes('token_hash='));
+  h.close();
+}
+{
+  const h=await harness({ search:'?next=%2Fstaff-outreach-registration.html&token_hash='+('b'.repeat(64))+'&type=magiclink' });
+  await flush();
+  assert.equal(h.calls.verifies.length,1);
+  assert.equal(h.calls.verifies[0].type,'magiclink');
+  assert.deepEqual(h.calls.navigations,['/staff-outreach-registration.html']);
+  h.close();
+}
+for (const search of [
+  '?next=%2Fstaff-outreach-registration.html&token_hash=short&type=email',
+  '?next=%2Fstaff-outreach-registration.html&token_hash='+('c'.repeat(64))+'&type=recovery'
+]) {
+  const h=await harness({ search });
+  await flush();
+  assert.equal(h.calls.verifies.length,0);
+  assert.equal(h.calls.navigations.length,0);
+  assert.match(h.dom.window.document.querySelector('#authMessage').textContent,/invalid or incomplete/i);
+  h.close();
+}
+{
+  const h=await harness({ search:'?next=%2Fstaff-outreach-registration.html&token_hash='+('d'.repeat(64))+'&type=email', linkVerifyError:true });
+  await flush();
+  assert.equal(h.calls.navigations.length,0);
+  assert.match(h.dom.window.document.querySelector('#authMessage').textContent,/Verification rejected/);
+  h.close();
 }
 
 // Email round trip into a fresh context, no shared storage, multiple site origins.
