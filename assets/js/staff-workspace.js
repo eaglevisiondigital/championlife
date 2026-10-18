@@ -101,6 +101,7 @@
     }
     const map=new Map();
     for(const c of [...reg,...(dec||[])])map.set(c.id,{...map.get(c.id),...c});
+    for(const p of partners||[])map.set(p.campaign_id,{...map.get(p.campaign_id),id:p.campaign_id,name:p.campaign_name,status:p.campaign_status});
     const campaigns=[...map.values()].sort((a,b)=>a.name.localeCompare(b.name));
     const team=[];
     for(const c of campaigns){
