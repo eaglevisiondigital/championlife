@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <meta name="referrer" content="no-referrer">
+  <title>Outreach Backend Acceptance · Champion Life</title>
+  <link rel="icon" href="/assets/images/logo-gold.png">
+  <link rel="stylesheet" href="/assets/css/outreach-campaigns.css">
+  <link rel="stylesheet" href="/assets/css/outreach-acceptance-review.css">
+</head>
+<body>
+  <div class="acceptance-banner">ISOLATED ACCEPTANCE REVIEW · TEST DATA ONLY · NOT PRODUCTION</div>
+
+  <section id="login-card" class="acceptance-login">
+    <img src="/assets/images/logo-gold.png" alt="Champion Life Church" style="max-width:190px">
+    <p class="staff-eyebrow">SECURE ACCEPTANCE REVIEW</p>
+    <h1>Champion Life + SowGo Backend</h1>
+    <p>Use the isolated acceptance account. No production registrations, decisions, staff grants, or partner assignments are changed from this page.</p>
+    <label for="acceptance-email"><strong>Email</strong></label>
+    <input id="acceptance-email" type="email" value="dave@theboss.biz" autocomplete="email">
+    <button id="send-link" class="staff-button gold" type="button">Send secure sign-in email</button>
+    <div id="acceptance-message" hidden style="margin-top:12px"></div>
+  </section>
+
+  <div id="workspace" hidden class="staff-shell" style="min-height:calc(100vh - 44px)">
+    <aside class="staff-sidebar">
+      <a class="staff-brand" href="#" aria-label="Champion Life acceptance home"><img src="/assets/images/logo-gold.png" alt="Champion Life Church"></a>
+      <p class="staff-eyebrow">ACCEPTANCE WORKSPACE</p>
+      <p class="staff-nav-status">This review uses isolated Supabase data only.</p>
+    </aside>
+
+    <div class="staff-column">
+      <header class="staff-top">
+        <span class="staff-eyebrow">CHAMPION LIFE · SOWGO</span>
+        <div class="staff-session-wrap">
+          <span id="signed-in" class="staff-user"></span>
+          <button id="sign-out" class="staff-session" type="button">Sign out</button>
+        </div>
+      </header>
+
+      <main class="staff-main">
+        <div id="acceptance-message" hidden></div>
+
+        <nav class="acceptance-tabs" aria-label="Acceptance review sections">
+          <button type="button" class="staff-button" data-tab="overview" aria-selected="true">Overview</button>
+          <button type="button" class="staff-button" data-tab="decisions" aria-selected="false">Decisions & Follow-Up</button>
+          <button type="button" class="staff-button" data-tab="partners" aria-selected="false">Partner Follow-Up</button>
+          <button type="button" class="staff-button" data-tab="admin" aria-selected="false">Partner Churches Admin</button>
+        </nav>
+
+        <section id="tab-overview" class="acceptance-section active">
+          <p class="staff-eyebrow">UNIFIED BACKEND</p>
+          <h1>Outreach Command Center</h1>
+          <p class="acceptance-muted">Review Bessemer and Huntsville campaign access, decision data, registration availability, and partner-church operations using isolated synthetic data.</p>
+          <div id="overview-campaigns" class="acceptance-two" style="margin-top:20px"></div>
+        </section>
+
+        <section id="tab-decisions" class="acceptance-section">
+          <p class="staff-eyebrow">OUTREACH OPERATIONS</p>
+          <h1>Decisions & Follow-Up</h1>
+          <div class="staff-toolbar">
+            <label>Campaign<select id="decision-campaign" class="acceptance-input"></select></label>
+            <label>Search<input id="decision-search" class="acceptance-input" type="search" placeholder="Name, phone, email, decision"></label>
+            <button id="decision-load" class="staff-button gold" type="button">Load</button>
+          </div>
+          <div id="decision-metrics" class="staff-metric-row"></div>
+          <div id="decision-list" class="acceptance-list" style="margin-top:18px"></div>
+        </section>
+
+        <section id="tab-partners" class="acceptance-section">
+          <p class="staff-eyebrow">PARTNER CHURCH ACCESS</p>
+          <h1 id="partner-heading">Partner Follow-Up</h1>
+          <div class="staff-toolbar"><label>Partner church<select id="partner-select" class="acceptance-input"></select></label></div>
+          <div id="partner-metrics" class="staff-metric-row"></div>
+          <div id="partner-records" class="acceptance-list" style="margin-top:18px"></div>
+        </section>
+
+        <section id="tab-admin" class="acceptance-section">
+          <p class="staff-eyebrow">CENTRAL LEADERSHIP</p>
+          <h1>Partner Churches Administration</h1>
+          <p class="acceptance-muted">This view shows central routing and reporting. Partner churches cannot claim unassigned records themselves.</p>
+          <div class="staff-toolbar"><label>Campaign<select id="admin-campaign" class="acceptance-input"></select></label></div>
+          <div class="staff-metric-row">
+            <div class="staff-metric"><span>Unassigned pool</span><strong id="unassigned-count">0</strong></div>
+            <div class="staff-metric"><span>Active assignments</span><strong id="active-assignment-count">0</strong></div>
+          </div>
+          <div id="partner-admin-list" class="acceptance-list" style="margin-top:18px"></div>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="/assets/js/outreach-acceptance-review.js"></script>
+</body>
+</html>
