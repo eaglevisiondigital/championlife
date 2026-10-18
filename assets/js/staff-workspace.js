@@ -27,7 +27,7 @@
   const navItems=[
     ['Staff Home','staff-home.html','home'],
     ['Outreach Overview','staff-outreach-overview.html','outreach'],
-    ['Campaigns & Decisions','staff-outreach-decisions.html','decisions'],
+    ['Decisions & Follow-Up','staff-outreach-decisions.html','decisions'],
     ['Team & Travel','staff-outreach-team.html','team'],
     ['Registration & Check-In','staff-outreach-registration.html','registration'],
     ['People & Follow-Up','staff-people.html','people'],
