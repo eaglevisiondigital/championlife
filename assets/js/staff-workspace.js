@@ -84,13 +84,18 @@
   async function refresh(){
     const user=await auth?.getUser();
     if(!user){state={user:null,staff:null,campaigns:[],registration:[],decisions:[],team:[],selected:null};who.textContent='Signed out';renderNav();renderCampaigns();window.dispatchEvent(new CustomEvent('staff-workspace-context',{detail:state}));return;}
-    const [staff,reg,dec]=await Promise.all([
+    const [staff,regCandidates,dec]=await Promise.all([
       rpc('staff_workspace_context',{}),
       rpc('outreach_registration_workspace',{p_action:'campaigns',p_campaign:null,p_payload:{}}),
       rpc('outreach_decision_workspace',{p_action:'campaigns',p_campaign:null,p_payload:{}})
     ]);
+    const reg=[];
+    for(const candidate of regCandidates||[]){
+      const ctx=await rpc('outreach_registration_workspace',{p_action:'context',p_campaign:candidate.id,p_payload:{}});
+      if(ctx?.settings?.campaign_id)reg.push(candidate);
+    }
     const map=new Map();
-    for(const c of [...(reg||[]),...(dec||[])])map.set(c.id,{...map.get(c.id),...c});
+    for(const c of [...reg,...(dec||[])])map.set(c.id,{...map.get(c.id),...c});
     const campaigns=[...map.values()].sort((a,b)=>a.name.localeCompare(b.name));
     const team=[];
     for(const c of campaigns){
