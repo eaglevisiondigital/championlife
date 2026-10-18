@@ -321,14 +321,22 @@ declare
   pid uuid;
   uid uuid;
   assignment uuid;
-  source text;
+  decision_source text;
   target uuid;
 begin
   if not private.outreach_partner_central_manage(p_campaign) then raise exception 'Partner administration denied' using errcode='42501'; end if;
 
   if p_action='list' then
     return jsonb_build_object(
-      'partners',coalesce((select jsonb_agg(to_jsonb(x) order by x.name) from public.outreach_partner_churches x where x.campaign_id=p_campaign),'[]'::jsonb),
+      'partners',coalesce((
+        select jsonb_agg(to_jsonb(x)||jsonb_build_object(
+          'users',coalesce((select jsonb_agg(jsonb_build_object(
+            'user_id',u.user_id,'email',(select email from auth.users where id=u.user_id),
+            'capabilities',u.capabilities,'active',u.active,'revision',u.revision
+          ) order by lower((select email from auth.users where id=u.user_id))) from public.outreach_partner_users u where u.partner_church_id=x.id),'[]'::jsonb)
+        ) order by x.name)
+        from public.outreach_partner_churches x where x.campaign_id=p_campaign
+      ),'[]'::jsonb),
       'unassigned_decisions',coalesce((
         select jsonb_agg(jsonb_build_object('id',r.id,'name',r.first_name||' '||r.last_name,'decision',r.decision,'created_at',r.created_at) order by r.created_at desc)
         from public.outreach_decision_campaign_sources s
@@ -361,7 +369,12 @@ begin
 
   if p_action='user_grant' then
     pid:=(p_payload->>'partner_church_id')::uuid;
-    uid:=(p_payload->>'user_id')::uuid;
+    if nullif(p_payload->>'user_id','') is not null then
+      uid:=(p_payload->>'user_id')::uuid;
+    else
+      select id into uid from auth.users where lower(email)=lower(btrim(p_payload->>'email'));
+    end if;
+    if uid is null then raise exception 'Verified Auth account required'; end if;
     if not exists(select 1 from public.outreach_partner_churches where id=pid and campaign_id=p_campaign) then raise exception 'Partner church unavailable' using errcode='42501'; end if;
     insert into public.outreach_partner_users(partner_church_id,campaign_id,user_id,capabilities,active,granted_by,reason)
     values(pid,p_campaign,uid,array(select jsonb_array_elements_text(p_payload->'capabilities')),true,auth.uid(),p_payload->>'reason')
@@ -374,8 +387,8 @@ begin
     if not exists(select 1 from public.outreach_partner_churches where id=pid and campaign_id=p_campaign and active) then raise exception 'Partner church unavailable' using errcode='42501'; end if;
     if p_payload->>'subject_type'='decision' then
       target:=(p_payload->>'subject_id')::uuid;
-      select source into source from public.outreach_decision_campaign_sources where campaign_id=p_campaign and active;
-      if not exists(select 1 from public.outreach_registrations where id=target and outreach_registrations.source=source) then raise exception 'Decision outside campaign' using errcode='42501'; end if;
+      select s.source into decision_source from public.outreach_decision_campaign_sources s where s.campaign_id=p_campaign and s.active;
+      if not exists(select 1 from public.outreach_registrations where id=target and outreach_registrations.source=decision_source) then raise exception 'Decision outside campaign' using errcode='42501'; end if;
       insert into public.outreach_partner_assignments(campaign_id,partner_church_id,decision_registration_id,assigned_by,assignment_reason)
       values(p_campaign,pid,target,auth.uid(),p_payload->>'reason') returning id into assignment;
     elsif p_payload->>'subject_type'='household' then
