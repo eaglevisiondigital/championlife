@@ -40,7 +40,7 @@
     if(!state.user)return false;
     if(kind==='home')return true;
     if(kind==='people')return hasGrant('people.read');
-    if(kind==='access')return hasGrant('staff.manage')||hasGrant('outreach.manage');
+    if(kind==='access')return hasGrant('staff.manage');
     if(kind==='decisions')return state.decisions.length>0;
     if(kind==='registration')return state.registration.length>0;
     if(kind==='team')return state.team.length>0;
