@@ -19,18 +19,24 @@ const origin = 'https://deploy-preview-4--championlifechurch.netlify.app';
 const fallback = '/my-discipleship.html';
 let scenarios = 0;
 
-async function harness({ next, search, stored, blockedStorage = false, initialSession = false, siteOrigin = origin, verifyError = false } = {}) {
+async function harness({ next, search, stored, blockedStorage = false, initialSession = false, siteOrigin = origin, verifyError = false, linkVerifyError = false, hash = '', sessionError = false, initError = false, authDuringVerify = false, authDuringRestore = false, missingSession = false, deferredSession = false } = {}) {
   const dom = new JSDOM(html, { url: siteOrigin + '/discipleship-login.html' });
-  const calls = { sends: [], verifies: [], navigations: [], stored: [] };
+  const calls = { sends: [], verifies: [], navigations: [], stored: [], replaced: [], order: [], initializations: 0 };
   const storage = new Map(stored === undefined ? [] : [['championlife-auth-next', stored]]);
   let onAuth;
+  const effectiveSearch = search ?? (next === undefined ? '' : '?next=' + encodeURIComponent(next));
   const location = {
     origin: siteOrigin,
-    search: search ?? (next === undefined ? '' : '?next=' + encodeURIComponent(next)),
-    set href(value) { calls.navigations.push(value); }
+    pathname: '/discipleship-login.html',
+    search: effectiveSearch,
+    hash,
+    get href() { return siteOrigin + this.pathname + this.search + this.hash; },
+    set href(value) { calls.navigations.push(value); calls.order.push('navigate'); }
   };
+  let finishSession;
   const context = {
     document: dom.window.document, location, URL, URLSearchParams,
+    history: { replaceState(_a,_b,value) { calls.replaced.push(value); calls.order.push('scrub'); } },
     setTimeout: fn => { fn(); },
     sessionStorage: {
       getItem: key => { if (blockedStorage) throw Error('Storage unavailable'); return storage.get(key) ?? null; },
@@ -38,13 +44,21 @@ async function harness({ next, search, stored, blockedStorage = false, initialSe
       removeItem: key => { if (blockedStorage) throw Error('Storage unavailable'); storage.delete(key); }
     },
     window: { ChampionLifeAuth: {
-      getSession: async () => initialSession ? { user: { id: 'synthetic' } } : null,
+      getSession: async () => {
+        if(deferredSession) await new Promise(resolve=>{finishSession=resolve});
+        if(authDuringRestore) onAuth('SIGNED_IN', {user:{id:'synthetic'}});
+        if(sessionError) throw Error('SDK failure containing synthetic-secret');
+        return initialSession ? { user: { id: 'synthetic' } } : null;
+      },
       client: { auth: {
+        initialize: async () => { calls.initializations++; return {error:initError ? Error('SDK URL initialization failed') : null}; },
         onAuthStateChange: fn => { onAuth = fn; },
         signInWithOtp: async args => { calls.sends.push(args); return {}; },
         verifyOtp: async args => {
           calls.verifies.push(args);
-          return verifyError ? { error: Error('Verification rejected') } : { data: { session: { user: { id: 'synthetic' } } } };
+          if(authDuringVerify) onAuth('SIGNED_IN', {user:{id:'synthetic'}});
+          const isLink = Object.prototype.hasOwnProperty.call(args,'token_hash');
+          return (isLink ? linkVerifyError : verifyError) ? { error: Error('Verification rejected') } : { data: { session: missingSession ? null : { user: { id: 'synthetic' } } } };
         }
       } }
     } }
@@ -53,6 +67,7 @@ async function harness({ next, search, stored, blockedStorage = false, initialSe
   await flush();
   return {
     calls, storage, dom,
+    async finishRestore() { finishSession(); await flush(); },
     authEvent(session = { user: { id: 'synthetic' } }) { onAuth('SIGNED_IN', session); },
     async click(id) { dom.window.document.getElementById(id).click(); await flush(); },
     async send() { dom.window.document.querySelector('#loginEmail').value = 'synthetic@example.test'; await this.click('sendCodeBtn'); },
@@ -106,6 +121,126 @@ for (const [next, expected] of [...safe, ...unsafe.map(value => [value, fallback
     assert.equal(new URL(h.calls.navigations.at(-1), origin).origin, origin);
     h.close();
   }
+}
+
+// Direct email-link callback: verify token hash once and go straight to the intended staff page.
+{
+  const tokenHash='a'.repeat(64);
+  const h=await harness({ search:'?next=%2Fstaff-outreach-registration.html&token_hash='+tokenHash+'&type=email' });
+  await flush();
+  assert.equal(h.calls.verifies.length,1);
+  assert.equal(h.calls.verifies[0].token_hash,tokenHash);
+  assert.equal(h.calls.verifies[0].type,'email');
+  assert.deepEqual(h.calls.navigations,['/staff-outreach-registration.html']);
+  assert.equal(h.calls.replaced.length,1);
+  assert(!h.calls.replaced[0].includes('token_hash='));
+  h.close();
+}
+{
+  const h=await harness({ search:'?next=%2Fstaff-outreach-registration.html&token_hash='+('b'.repeat(64))+'&type=magiclink' });
+  await flush();
+  assert.equal(h.calls.verifies.length,1);
+  assert.equal(h.calls.verifies[0].type,'magiclink');
+  assert.deepEqual(h.calls.navigations,['/staff-outreach-registration.html']);
+  h.close();
+}
+for (const search of [
+  '?next=%2Fstaff-outreach-registration.html&token_hash=short&type=email',
+  '?next=%2Fstaff-outreach-registration.html&token_hash='+('c'.repeat(64))+'&type=recovery'
+]) {
+  const h=await harness({ search });
+  await flush();
+  assert.equal(h.calls.verifies.length,0);
+  assert.equal(h.calls.navigations.length,0);
+  assert.match(h.dom.window.document.querySelector('#authMessage').textContent,/invalid or incomplete/i);
+  h.close();
+}
+{
+  const h=await harness({ search:'?next=%2Fstaff-outreach-registration.html&token_hash='+('d'.repeat(64))+'&type=email', linkVerifyError:true });
+  await flush();
+  assert.equal(h.calls.navigations.length,0);
+  assert.match(h.dom.window.document.querySelector('#authMessage').textContent,/expired, was already used/);
+  h.close();
+}
+
+// Observed acceptance template: ConfirmationURL -> /auth/v1/verify?token=...&type=magiclink
+// -> intended login URL with an implicit session fragment. Fictional tokens only.
+const implicitHash='#access_token=synthetic-access&refresh_token=synthetic-refresh&expires_in=3600&token_type=bearer&type=magiclink';
+for(const opts of [{}, {blockedStorage:true}, {authDuringRestore:true}]) {
+  const h=await harness({next:'/staff-outreach-registration.html',hash:implicitHash,initialSession:true,...opts});
+  assert.deepEqual(h.calls.navigations,['/staff-outreach-registration.html']);
+  assert.equal(h.calls.initializations,1);
+  assert.equal(h.calls.verifies.length,0,'SDK owns fragment verification, no second verifyOtp');
+  assert.equal(h.calls.sends.length,0,'no second email/code request');
+  assert.deepEqual(h.calls.order,['scrub','navigate']);
+  assert.equal(h.calls.replaced[0],'/discipleship-login.html?next=%2Fstaff-outreach-registration.html');
+  h.authEvent();
+  assert.equal(h.calls.navigations.length,1,'auth event cannot cause a second redirect');
+  h.close();
+}
+{
+  const h=await harness({next:'/staff-outreach-registration.html',hash:implicitHash,initialSession:true,deferredSession:true});
+  assert(!h.dom.window.document.querySelector('#emailStep').classList.contains('active'),'do not ask for email while SDK restores callback');
+  assert(h.dom.window.document.querySelector('#sendCodeBtn').disabled);
+  h.authEvent();
+  assert.equal(h.calls.navigations.length,0,'wait for SDK initialization/session result');
+  await h.finishRestore();
+  assert.deepEqual(h.calls.order,['scrub','navigate']);
+  h.close();
+}
+for(const opts of [
+  {hash:'#error=access_denied&error_code=otp_expired&error_description=Email+link+is+invalid+or+has+expired&sb=',initialSession:true},
+  {hash:implicitHash,initError:true,initialSession:true},
+  {hash:implicitHash,sessionError:true},
+  {hash:implicitHash,initialSession:false},
+  {hash:'#refresh_token=synthetic-refresh',initialSession:true},
+  {hash:implicitHash+'&access_token=duplicate',initialSession:true},
+  {hash:implicitHash.replace('magiclink','recovery'),initialSession:true},
+  {search:'?code=unsupported-pkce',initialSession:true},
+  {search:'?token_hash=&type=email',initialSession:true},
+  {search:'?token_hash='+('a'.repeat(64))+'&token_hash='+('b'.repeat(64))+'&type=email'},
+  {search:'?token_hash='+('a'.repeat(64))+'&type=email&type=magiclink'},
+  {search:'?token_hash='+('a'.repeat(64))+'&type=email',hash:implicitHash},
+  {search:'?token_hash='+('a'.repeat(64))+'&type=email',missingSession:true},
+  {search:'?token_hash='+('a'.repeat(64))+'&type=email',linkVerifyError:true,authDuringVerify:true}
+]) {
+  const h=await harness(opts);
+  h.authEvent();
+  assert.equal(h.calls.navigations.length,0,'invalid callback must not fall through to older session/events');
+  assert.equal(h.calls.sends.length,0);
+  assert.equal(h.calls.replaced.length,1,'credentials scrubbed even on failure');
+  const message=h.dom.window.document.querySelector('#authMessage');
+  assert(message.classList.contains('error'));
+  assert.match(message.textContent,/sign-in link/);
+  assert(!message.textContent.includes('synthetic-secret'));
+  h.close();
+}
+// Callback errors do not prevent a subsequent explicitly requested OTP login.
+{
+  const h=await harness({hash:'#error_code=otp_expired'});
+  await h.send();await h.verify('12345678');
+  assert.deepEqual(h.calls.navigations,[fallback]);
+  h.close();
+}
+for(const target of unsafe) {
+  for(const callback of [{hash:implicitHash,initialSession:true}, {search:'?token_hash='+('a'.repeat(64))+'&type=email&next='+encodeURIComponent(target)}]) {
+    const h=await harness({next:target,stored:'//poison.example',...callback});
+    assert.deepEqual(h.calls.navigations,[fallback]);
+    assert.deepEqual(h.calls.order,['scrub','navigate']);
+    h.close();
+  }
+}
+{
+  const h=await harness({search:'?token_hash='+('a'.repeat(64))+'&type=email&next=%2Fstaff-outreach-registration.html',authDuringVerify:true});
+  assert.deepEqual(h.calls.order,['scrub','navigate'],'verifyOtp events must not race URL cleanup');
+  assert.equal(h.calls.sends.length,0);
+  h.close();
+}
+{
+  const h=await harness({verifyError:true,authDuringVerify:true});
+  await h.send();await h.verify('12345678');
+  assert.equal(h.calls.navigations.length,0,'failed OTP must not redirect from an early auth event');
+  h.close();
 }
 
 // Email round trip into a fresh context, no shared storage, multiple site origins.
