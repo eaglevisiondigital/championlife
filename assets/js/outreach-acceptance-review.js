@@ -112,13 +112,21 @@
     $('#login-card').hidden=!!session;$('#workspace').hidden=!session;
     if(session){$('#signed-in').textContent=session.user.email||'Acceptance user';await loadContext();activateTab('overview');}
   }
+  let pendingEmail='';
   $('#send-link').onclick=async()=>{
-    const email=$('#acceptance-email').value.trim().toLowerCase();if(!email)return;
-    $('#send-link').disabled=true;
+    const email=$('#acceptance-email').value.trim().toLowerCase();if(!email||!$('#acceptance-email').checkValidity()){msg('Enter a valid email address.','error');return;}
+    pendingEmail=email;$('#send-link').disabled=true;
     try{
       const {error}=await client.auth.signInWithOtp({email,options:{shouldCreateUser:false,emailRedirectTo:location.href.split('#')[0]}});
-      if(error)throw error;msg('Secure acceptance sign-in email sent. Open it on this device and return here.');
+      if(error)throw error;$('#code-step').hidden=false;$('#acceptance-code').focus();msg('Secure acceptance sign-in email sent. Enter the 6- or 8-digit code below, or use the secure sign-in link.');
     }catch(e){msg(e.message,'error');}finally{$('#send-link').disabled=false;}
+  };
+  $('#verify-code').onclick=async()=>{
+    const token=$('#acceptance-code').value.trim();const email=pendingEmail||$('#acceptance-email').value.trim().toLowerCase();
+    if(![6,8].includes(token.length)||/[^0-9]/.test(token)){msg('Enter the 6- or 8-digit code from your email.','error');return;}
+    $('#verify-code').disabled=true;
+    try{const {data,error}=await client.auth.verifyOtp({email,token,type:'email'});if(error)throw error;if(!data?.session)throw new Error('Could not create the acceptance session.');await boot();}
+    catch(e){msg(e.message||'That code could not be verified.','error');}finally{$('#verify-code').disabled=false;}
   };
   $('#sign-out').onclick=async()=>{await client.auth.signOut();location.reload();};
   $$('.acceptance-tabs button').forEach(b=>b.onclick=()=>activateTab(b.dataset.tab));
