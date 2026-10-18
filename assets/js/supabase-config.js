@@ -1,6 +1,6 @@
 // Champion Life Supabase public browser configuration
 // The publishable key is intentionally public and protected by Supabase Row Level Security.
-const unifiedStaffAcceptance = location.hostname.startsWith('codex-unified-staff-workspace-production--championlifechurch.netlify.app');
+const unifiedStaffAcceptance = typeof location !== 'undefined' && location.hostname.startsWith('codex-unified-staff-workspace-production--championlifechurch.netlify.app');
 window.CHAMPION_LIFE_SUPABASE = unifiedStaffAcceptance ? {
   url: "https://niyovbgoalulzkhbvebt.supabase.co",
   publishableKey: "sb_publishable_iLqCqzZuXRp5hoY777V-JQ_hCuorFHA"
