@@ -14,7 +14,8 @@ export function previewConfiguration(env, production) {
       url === production.url ||
       !/^sb_publishable_[A-Za-z0-9_-]+$/.test(publishableKey) ||
       publishableKey === production.publishableKey) return null;
-  if(url!=='https://bkbmjisprwmkptywtmih.supabase.co')return null;
+  // Explicit nonproduction projects only; never accept an arbitrary environment URL.
+  if(!['https://bkbmjisprwmkptywtmih.supabase.co','https://niyovbgoalulzkhbvebt.supabase.co'].includes(url))return null;
   return { url, publishableKey, outreachSiteKey:'1x00000000000000000000AA' };
 }
 

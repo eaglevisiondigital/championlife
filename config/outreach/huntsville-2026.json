@@ -1,0 +1,59 @@
+{
+  "schema_version": 1,
+  "organization_slug": "sowgo",
+  "existing_campaign_code": "huntsville_al_2026",
+  "campaign": {
+    "name": "Huntsville Outreach / City Hangout",
+    "public_slug": "huntsville-2026",
+    "city": "Madison",
+    "state_province": "AL",
+    "country": "US",
+    "timezone": "America/Chicago",
+    "event_start": "2026-10-24T14:00:00-05:00",
+    "event_end": "2026-10-24T16:00:00-05:00",
+    "venue": {
+      "name": "Cornerstone Word of Life Church",
+      "address": "3783 Sullivan St, Madison, AL 35758"
+    }
+  },
+  "registration": {
+    "public_slug": "huntsville-2026",
+    "enabled": false,
+    "opens_at": null,
+    "closes_at": null,
+    "address_required": true,
+    "structured_address": true,
+    "emergency_phone_required": true,
+    "waiver_required": true,
+    "household_limit": null,
+    "instructions": "Please complete registration and check in before the giveaway eligibility cutoff announced by the event team. All ticket holders must be present to win. Giveaways are subject to eligibility and availability; preregistration does not guarantee a bicycle or tablet.",
+    "prize_choices": [],
+    "extra_fields": [],
+    "event_profile": {
+      "public_name": "CITY HANGOUT",
+      "on_site_registration_at": "2026-10-24T13:00:00-05:00",
+      "confirmation_message": "Thank you for registering for City Hangout. We look forward to seeing you Saturday, October 24 at Cornerstone Word of Life Church.",
+      "highlights": "Music · Games · Inflatables · Giveaways · Free Bicycles · Free Tablets · All Free"
+    }
+  },
+  "waiver": {
+    "template_key": "city-hangout-family-2026",
+    "version": 1,
+    "text": "*PLEASE USE ONE WAIVER PER FAMILY\n\nOutreach Event (“Activity”) October 24, 2026\n\nRELEASE OF CLAIMS AND HOLD HARMLESS AGREEMENT\n\nI [First Name] [Last Name] (Individual or Head of Household) hereby affirm and agree that I am legally competent to sign and release; that I have fully informed myself to this agreement by reading it before signing; and that I have fully informed myself of the details and risks of the Activity prior to signing this release. I agree, individually and on behalf of any Minor indicated below, to release and to hold harmless Champion Life (Living Faith Christian Center, Inc.) in Fort Walton Beach, FL & Cornerstone Word of Life Church in Madison, AL their agents, officers, directors, and employees (collectively referred to as “the Ministry”) from liability for my own and/or Minor’s injury, death, or damages to or loss of my own and/or Minor’s personal property, resulting directly or indirectly from my own and/or his/her participation in the Activity and agree to indemnify the Ministry from any liability assessed against the Ministry as a direct or indirect result of my own and/or Minor’s participation in the Activity. This release includes all risks and liabilities connected with the Activity, whether foreseen or unforeseen.\n\nMinors Names: (must be parent/legal guardian of all listed)",
+    "media_text": "I give my permission for Champion Life (Living Faith Christian Center, Inc.) in Fort Walton Beach, FL & Cornerstone Word of Life Church in Madison, AL to use any photos and/or video taken of me, my child (children) or my family in their publications (print and/or digital, including but not limited to social media). I release my right to any kind of remuneration from said photos and/or video.",
+    "media_required": true,
+    "media_initials_required": true
+  },
+  "source": {
+    "url": "https://form.jotform.com/241026266712046",
+    "form_id": "241026266712046",
+    "captured_on": "2026-10-16",
+    "substitutions": [
+      "October 17, 2026 → October 24, 2026",
+      "Rediscover Church in Birmingham, AL → Cornerstone Word of Life Church in Madison, AL"
+    ],
+    "field_mapping": "Typed legal-name fields and selected minor attendee rows replace the source blanks; whitespace normalized. Media initials and household signature are separately required in source. Server timestamp replaces manual date.",
+    "captured_url": "https://www.jotform.com/team/223471619444054/preregistration-form-outreach"
+  },
+  "release_gate": "BUILD ONLY. Enable/publish exact legal version only through separately authorized campaign admin acceptance/release. No grants, production activation, remote writes or messages."
+}

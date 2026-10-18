@@ -1,0 +1,68 @@
+[
+  {
+    "file": "outreach-register.html",
+    "sha256": "583ceef610b0bcfaa6fbbb7d536d5b6c5731f65369fe8762fb8ece729522044f",
+    "accepted_source_sha256": "583ceef610b0bcfaa6fbbb7d536d5b6c5731f65369fe8762fb8ece729522044f",
+    "exact_accepted_bytes": true
+  },
+  {
+    "file": "staff-outreach-registration.html",
+    "sha256": "b4089d9e435b7d6a63509263c31cd91a1d9d161836d38b0460e9d0278cc87053",
+    "accepted_source_sha256": "f9151de708c1fb2718649764d5493a5cb5360c9befb16ad34f3c8b25ef219bf4",
+    "exact_accepted_bytes": false
+  },
+  {
+    "file": "assets/css/outreach-campaigns.css",
+    "sha256": "3b062e4113e2b8da3fdb02769b1ffdf29e8a5d4cb86784c2b8f8bd9abbfbda81",
+    "accepted_source_sha256": "3b062e4113e2b8da3fdb02769b1ffdf29e8a5d4cb86784c2b8f8bd9abbfbda81",
+    "exact_accepted_bytes": true
+  },
+  {
+    "file": "assets/css/outreach-registration.css",
+    "sha256": "e7a100428730bbed02df86f031a587d5dc2db8afd11698e52c4d8aee72c46957",
+    "accepted_source_sha256": "e7a100428730bbed02df86f031a587d5dc2db8afd11698e52c4d8aee72c46957",
+    "exact_accepted_bytes": true
+  },
+  {
+    "file": "assets/js/outreach-registration-form.js",
+    "sha256": "3821768e878c9827bf76c0ff00a683045dc06d2ee85ef6dd1194b38baaec5047",
+    "accepted_source_sha256": "3821768e878c9827bf76c0ff00a683045dc06d2ee85ef6dd1194b38baaec5047",
+    "exact_accepted_bytes": true
+  },
+  {
+    "file": "assets/js/outreach-registration-public.js",
+    "sha256": "e258666c0fa2e6a985b7407d10aab94ba700fabaae34f529d926469550a76ef8",
+    "accepted_source_sha256": "e258666c0fa2e6a985b7407d10aab94ba700fabaae34f529d926469550a76ef8",
+    "exact_accepted_bytes": true
+  },
+  {
+    "file": "assets/js/outreach-registration-staff.js",
+    "sha256": "5b7574d8ef9f85ee8601afe087f202cb533b4393f42b187391e295f93ded7963",
+    "accepted_source_sha256": "243b06ebaab923aa3f127b0036b5cfe597ed7887161411174dcf83f7db6223c3",
+    "exact_accepted_bytes": false
+  },
+  {
+    "file": "config/outreach/huntsville-2026.json",
+    "sha256": "6011a953eb604225db4537d5285439dd370cc51f1eecc76abe25fec71e74ba82",
+    "accepted_source_sha256": "6011a953eb604225db4537d5285439dd370cc51f1eecc76abe25fec71e74ba82",
+    "exact_accepted_bytes": true
+  },
+  {
+    "file": "tools/site-build/public-files.json",
+    "sha256": "751d851e976c8bffd95eed29188a1d6a6398240c9726cff7733cb9167144c371",
+    "accepted_source_sha256": "20521d7646833ad370537376dc731c888b561862187c7d26ebdf71e020b3778d",
+    "exact_accepted_bytes": false
+  },
+  {
+    "file": "supabase/functions/outreach-registration-submit/index.ts",
+    "sha256": "a4f99f27565701c5760dfa07c3ad1fa28e2e7cf6591483c7d80d87cad8c5a453",
+    "accepted_source_sha256": "a4f99f27565701c5760dfa07c3ad1fa28e2e7cf6591483c7d80d87cad8c5a453",
+    "exact_accepted_bytes": true
+  },
+  {
+    "file": "supabase/functions/outreach-registration-submit/gateway.mjs",
+    "sha256": "8c730b007bb208215879206a18b237c5a79bf0ed0bfc19981fa4aa09ee1ff7f5",
+    "accepted_source_sha256": "8c730b007bb208215879206a18b237c5a79bf0ed0bfc19981fa4aa09ee1ff7f5",
+    "exact_accepted_bytes": true
+  }
+]
