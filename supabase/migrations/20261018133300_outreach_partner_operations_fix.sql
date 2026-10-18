@@ -103,6 +103,7 @@ begin
     worker:=nullif(p_payload->>'user_id','')::uuid;
     if worker is not null and not exists(select 1 from public.outreach_partner_users u where u.partner_church_id=partner_row.id and u.user_id=worker and u.active and u.effective_at<=now() and (u.expires_at is null or u.expires_at>now())) then raise exception 'Worker outside partner church' using errcode='42501'; end if;
     update public.outreach_partner_assignments set assigned_worker_user_id=worker,revision=revision+1 where id=a.id;
+    perform private.outreach_audit(a.campaign_id,(select organization_id from public.outreach_campaigns where id=a.campaign_id),'partner.worker_assigned',a.id,jsonb_build_object('partner_church_id',partner_row.id,'worker_user_id',worker));
     return jsonb_build_object('saved',true);
   elsif p_action='export' then
     if not private.outreach_partner_cap(partner_row.id,'partner.export') and not private.outreach_partner_central_manage(partner_row.campaign_id) then raise exception 'Export access denied' using errcode='42501'; end if;
@@ -155,12 +156,14 @@ begin
     insert into public.outreach_partner_users(partner_church_id,campaign_id,user_id,capabilities,active,granted_by,reason)
     values(pid,p_campaign,uid,array(select jsonb_array_elements_text(p_payload->'capabilities')),true,auth.uid(),p_payload->>'reason')
     on conflict(partner_church_id,user_id) do update set capabilities=excluded.capabilities,active=true,effective_at=now(),expires_at=null,granted_by=excluded.granted_by,reason=excluded.reason,revision=public.outreach_partner_users.revision+1;
+    perform private.outreach_audit(p_campaign,(select organization_id from public.outreach_campaigns where id=p_campaign),'partner.user_granted',uid,jsonb_build_object('partner_church_id',pid,'capabilities',p_payload->'capabilities'));
     return jsonb_build_object('saved',true);
   elsif p_action='user_revoke' then
     pid:=(p_payload->>'partner_church_id')::uuid; uid:=(p_payload->>'user_id')::uuid;
     update public.outreach_partner_users set active=false,expires_at=now(),granted_by=auth.uid(),reason=p_payload->>'reason',revision=revision+1 where partner_church_id=pid and campaign_id=p_campaign and user_id=uid and active;
     if not found then raise exception 'Partner user unavailable'; end if;
     update public.outreach_partner_assignments set assigned_worker_user_id=null,revision=revision+1 where partner_church_id=pid and assigned_worker_user_id=uid and status<>'revoked';
+    perform private.outreach_audit(p_campaign,(select organization_id from public.outreach_campaigns where id=p_campaign),'partner.user_revoked',uid,jsonb_build_object('partner_church_id',pid));
     return jsonb_build_object('saved',true);
   elsif p_action='assign' then
     pid:=(p_payload->>'partner_church_id')::uuid;
@@ -178,9 +181,10 @@ begin
     return jsonb_build_object('saved',true,'id',assignment);
   elsif p_action='revoke_assignment' then
     assignment:=(p_payload->>'assignment_id')::uuid;
+    if length(btrim(coalesce(p_payload->>'reason','')))<10 then raise exception 'Assignment revocation reason required'; end if;
     update public.outreach_partner_assignments set status='revoked',revoked_at=now(),revoked_by=auth.uid(),revision=revision+1 where id=assignment and campaign_id=p_campaign and status<>'revoked';
     if not found then raise exception 'Assignment unavailable'; end if;
-    perform private.outreach_audit(p_campaign,(select organization_id from public.outreach_campaigns where id=p_campaign),'partner.assignment_revoked',assignment,'{}'::jsonb);
+    perform private.outreach_audit(p_campaign,(select organization_id from public.outreach_campaigns where id=p_campaign),'partner.assignment_revoked',assignment,jsonb_build_object('reason',left(btrim(p_payload->>'reason'),500)));
     return jsonb_build_object('saved',true);
   end if;
   raise exception 'Unsupported partner admin action';
