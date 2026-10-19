@@ -1,3 +1,9 @@
+# Gate 0 visible revocation recovery — 2026-10-18
+
+Current-head adoption exposed a shared-shell UX regression: clearing protected content detached module mounts, so module denial messages could render outside the live document. The shared shell now renders a non-sensitive accessible “Access changed” state and dashboard recovery link after clearing. Detached mounts and response-epoch rejection remain intact; stale responses cannot restore protected data. No permission, SQL or module business behavior is widened. Focused shared-shell regression: 80 checks PASS, including visible recovery and late-response denial.
+
+---
+
 # Gate 0 current-head adoption correction — 2026-10-18
 
 NMI adoption now targets owner-specified `d82ed7fdb049389ae43d50a2ceb1ac300665a7cc`; Outreach remains `bff9612ac9385cf963c5e7e41f9091da7af86cf0`. Earlier3a8317/e39b832 results are historical, not current adoption certification. All newer NMI business work is preserved in source contracts. Independent adoption found missing-Auth, identity/role, branch-pin bypass and composer contamination defects; the bounded shared correction and current-head evidence are detailed in [Gate 0](docs/SHARED-PLATFORM-GATE0.md). Module-owned offline migration plans must explicitly include Gate0; no automatic widening or hosted application. No production/GiveHub/NMI execution/real grants or deployment changes.

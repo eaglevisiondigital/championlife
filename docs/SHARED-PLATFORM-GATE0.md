@@ -1,6 +1,6 @@
 # Shared Platform Gate 0 — implementation and adoption contract
 
-Status: bounded local reconciliation; no hosted or release approval. Base: `e3157f0afa3f563ab6560ca64c9049448f02c806`. Frozen NMI PR #34: `3a8317fb265c0cabb894133ac169100aaea83622`. Frozen Outreach PR #35: `bff9612ac9385cf963c5e7e41f9091da7af86cf0`. Later child work requires a new comparison and regression run.
+Status: bounded local reconciliation; no hosted or release approval. Base: `e3157f0afa3f563ab6560ca64c9049448f02c806`. Current owner-selected NMI PR #34: `d82ed7fdb049389ae43d50a2ceb1ac300665a7cc`. Original checkpoint results below are historical where explicitly labeled. Frozen Outreach PR #35: `bff9612ac9385cf963c5e7e41f9091da7af86cf0`. Later child work requires a new comparison and regression run.
 
 ## Proven root cause
 
@@ -64,7 +64,7 @@ Owner corrected the NMI adoption target to `d82ed7fdb049389ae43d50a2ceb1ac300665
 
 Outreach adoption independently exposed four shared integration defects: missing-Auth crash; dropped identity/server-role display; preview branch-name bypass; composer treating the adopted child's entire delta/manifest as Gate0. The correction restores the disabled fail-closed adapter and text-only identity/role, requires an explicit actual-source-branch target for every isolated build, and uses explicit Gate0-owned files, production baseline public files and canonical test package. Unknown/reconciliation branches never inherit an older acceptance target. NMI public Giving configuration/CSP hooks from d82ed7 are retained, additionally subject to both platform and module acceptance pins. No actual target is configured.
 
-Current local primary evidence: 82 upgrade assertions / seven orders including both current NMI and frozen Outreach orders; 43+14 scope assertions on PGlite/native; 69 shell DOM checks; 56 build/composition checks including already-adopted roots; 63 Chromium checks/19 screenshots with disabled Auth and identity/role at all widths. Full primary baseline suite passes. Complete adopted NMI regression and explicit offline38-file migration packaging are separately recorded in the private current-head handoff; do not infer them merely from these primary tests.
+Current local primary evidence: 82 upgrade assertions / seven orders including both current NMI and frozen Outreach orders; 43+14 scope assertions on PGlite/native; 80 shell DOM checks; 56 build/composition checks including already-adopted roots; 64 Chromium checks/20 screenshots with disabled Auth and identity/role at all widths. Full primary baseline suite passes. Complete adopted NMI regression and explicit offline38-file migration packaging are separately recorded in the private current-head handoff; do not infer them merely from these primary tests.
 
 Module-owned offline packagers must explicitly append Gate0 SQL and hash to their reviewed plan: NMI25+12+1=38, Outreach25+4+1=30. No filesystem-driven widening; all historical SQL/ledger aliases retained; packages remain unapplied. Module source-inventory/shell fixtures must reflect that explicit dependency without dropping security/business assertions. Current NMI adoption uses the updated source contract; never downgrade/reset PR34. Original3439e703 is an intermediate dependency and must be followed by this correction before final adoption tests.
 
@@ -87,3 +87,7 @@ Production, GiveHub, NMI execution, real user grants, public routes, hosted migr
 ### partner
 
 `partner.view`, `partner.followup`, `partner.assign_local`, `partner.export`, `partner.pastoral_notes`.
+
+## Visible revocation recovery follow-up
+
+Current NMI adoption exposed a live-document defect: protected-content clearing detached module mounts, so their later denial cards were invisible. The authoritative shared shell now shows an accessible, non-sensitive Access changed state with a Staff Dashboard recovery link. The detached mounts and late-response rejection are retained. Tests must preserve both data clearing and visible recovery; an empty page is not an acceptable replacement assertion. This UI-only follow-up does not change migration hashes, permissions or module business sources.

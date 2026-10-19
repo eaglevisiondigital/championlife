@@ -210,7 +210,13 @@
     if(r.error&&(r.error.code==='42501'||[401,403].includes(r.status))){clearProtected();publish(empty());if(args[0]!=='shared_platform_context')setTimeout(refresh,0);}
     return r;
   };
-  function clearProtected(){responseEpoch++;original.replaceChildren();window.dispatchEvent(new CustomEvent('staff-protected-clear'));}
+  function clearProtected(){
+    responseEpoch++;original.replaceChildren();
+    window.dispatchEvent(new CustomEvent('staff-protected-clear'));
+    // Module mounts are detached intentionally: late results cannot restore protected data.
+    // Keep a visible, non-sensitive recovery state in the live document.
+    state(original,'Access changed','Your session or permissions changed. Return to the dashboard to check available access.','Return to Staff Dashboard','staff-home.html');
+  }
 
   function publish(s) { snapshot=s; render(s); window.dispatchEvent(new CustomEvent('staff-workspace-context',{detail:s})); }
   async function refresh() {
