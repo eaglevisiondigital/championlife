@@ -1,3 +1,15 @@
+# NMI integration security review — 2026-10-18
+
+All 449 protected production source files, including all 25 migrations, existing Edge functions, Supabase configuration, public registration/Auth/legal pages, GiveHub links and redirects, are checked against Git blob hashes at exact base `e3157f0`. No production access or remote configuration/migration was performed.
+
+Extracted SQL retains RLS, revoked direct financial/private-table access, guarded private definers with empty search paths and invoker public wrappers. New bridge is private, not executable by anon/authenticated/service_role, and runs only on immutable NMI observation insertion through the existing service boundary. It verifies original organization/operation scope and calls Operations' service-only safe observation path. It does not store provider payloads, credentials or payment tokens; it does not post financial truth, approve adjustment or run payment retries. Local combined-schema tests prove unknown-result queue visibility, duplicate-charge denial, current-session permission revocation and zero ledger posting.
+
+NMI entry/adapter/browser remain default-off sandbox-only with exact acceptance project and origin guards. Production and Huntsville component configurations fail closed. No PAN/CVV in app storage/database/logging is allowed; hosted-field behavior must still be proven with actual sandbox provider acceptance. No live credentials, real payment, donor communication or production release has occurred. No claim of hosted advisors or fresh provider/browser acceptance is made.
+
+Provider sandbox verification, receipt delivery, authoritative settlement lookup and merchant routing are mandatory release blockers. Unknown results require authoritative original-account lookup; absence of a result never authorizes another sale. Preserve GiveHub primary and all legacy recurring until separately approved transition/reconciliation. See `docs/NMI-CUTOVER-HOSTED-ACCEPTANCE.md` for supervised evidence/cleanup and stop conditions.
+
+---
+
 # Huntsville candidate security boundaries
 
 All new tables have RLS and no raw anon/authenticated privileges. Scoped RPCs check verified identity and active/dated campaign authority. Private helper execution is revoked; security-definer functions use empty search paths. Registration administration requires existing active organization staff plus explicit campaign-admin authority. No actual grants are created by migrations.

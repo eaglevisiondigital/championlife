@@ -1,3 +1,23 @@
+# NMI Friday integration candidate — 2026-10-18
+
+Implemented on `codex/nmi-giving-friday-cutover`, direct production base `e3157f0afa3f563ab6560ca64c9049448f02c806`. This supersedes historical candidate status below only for this isolated Giving package. Production/live schema state has NOT been inspected or changed by this assignment.
+
+COMPLETED / CHANGED: inventoried PRs #16–21 and #23 at exact heads; extracted accepted Giving/Forms/provider/NMI/Operations modules without merging their old prerequisite chain. Preserved all 25 current-main migration files; added nine byte-identical source extractions under unapplied forward versions and one new NMI observation-to-Operations bridge. Finance shell discovers installed Giving/Forms only; return paths use existing production staff entry. All 449 protected production runtime/content/config/function/migration files match the specified commit. Public allowlist is 462 files; no private documentation/test/SQL enters dist.
+
+TESTED: 41 standard scripts; Giving/Forms/provider/NMI/Operations independent native PostgreSQL race groups; Huntsville native security/count/CSV and six races; existing Outreach concurrency; 44 JS/MJS syntax checks; five Deno Edge entrypoint checks; pinned NMI component rebuild; source/protection hashes; public artifact/isolation; diff checks. All local synthetic results, not hosted/browser/provider acceptance. See `docs/NMI-CUTOVER-VALIDATION.md` for exact commands/results.
+
+SECURITY: NMI remains sandbox-only/default-off; raw card input belongs only to hosted fields, tokens remain transient, REST/webhook/service secrets stay server-only. Safe NMI sale/authorization/capture/transaction observations reach scoped Operations issues; no ledger posting or retry execution is enabled. Same-session revocation, duplicate prevention, cross-org boundaries and revoked private helper access are tested. No live key or money movement.
+
+DOCUMENTATION: complete 11-part inventory, source commit/blob manifests, route/MID worksheet, GiveHub export inventory and supervised provider acceptance/cleanup procedure are in `docs/NMI-CUTOVER-*`. Offline bundle builder: `node tools/nmi-acceptance/package.mjs`, from clean committed candidate only; generates private bundle with blocked preview and hashes.
+
+UNRESOLVED: actual merchant/MID/settlement and GiveHub export data are not supplied; no actual NMI sandbox calls/tokenization or hosted stack installation. Original NMI exact-project guard points to shared acceptance with incompatible schema; require new clean target and reviewed exact pin. Accepted source still holds anonymous public payment completion, active recurring, live ledger posting, receipt/statement delivery, Operations executor integration and full settlement lookup. This candidate is NO-GO for public cutover. Do not count sandbox metadata as financial ledger truth or mocks as provider acceptance.
+
+NEXT RECOMMENDED BUILD: close mandatory product execution gaps on this candidate, pin an approved clean isolated target, then run actual sandbox/finance acceptance. Keep GiveHub primary until all launch gates and separate owner GO pass. No merge, production migration/function deployment, public link change, GiveHub recurring modification, Authorize.Net/Text-to-Give activation or unrelated redesign is authorized.
+
+CHAT HANDOFF: review `docs/NMI-CUTOVER-INVENTORY.md` and validation. Draft PR is an integration/build review candidate only. Use the complete Work assignment in `docs/NMI-CUTOVER-HOSTED-ACCEPTANCE.md` after engineering blockers are resolved and isolated target authorization is explicit.
+
+---
+
 # Isolated Huntsville email-link acceptance fix — 2026-10-17
 
 PR #26 only, based on release head `c083447559d698a44ea7d63aeab2ea310b61f877`. The actual isolated branded template uses Supabase `ConfirmationURL`: `/auth/v1/verify?token=…&type=magiclink&redirect_to=…`, followed by an implicit session/error fragment at the login page. It does not currently use a custom `token_hash` callback or PKCE.

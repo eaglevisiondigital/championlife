@@ -27,4 +27,17 @@ export const candidateOrder=[
   "20261016201932_huntsville_registration_foundation.sql",
   "20261016201933_huntsville_registration_draft.sql"
 ];
-export const migrationOrder=[...baselineOrder,...candidateOrder];
+export const productionOrder=[...baselineOrder,...candidateOrder,"20261018121900_allow_huntsville_decision_registrations.sql"];
+export const givingOrder=[
+  "20261019002847_nmi_friday_giving_core_giv_1.sql",
+  "20261019002848_nmi_friday_giving_finance_management_giv_2a.sql",
+  "20261019002849_nmi_friday_giving_reports_statements_giv_2b.sql",
+  "20261019002850_nmi_friday_platform_forms_giv_2c.sql",
+  "20261019002851_nmi_friday_forms_conflict_http_409.sql",
+  "20261019002853_nmi_friday_giving_provider_foundation_giv_3a.sql",
+  "20261019002854_nmi_friday_giving_nmi_sandbox_giv_3b.sql",
+  "20261019002855_nmi_friday_giving_payment_operations_giv_3d.sql",
+  "20261019002856_nmi_friday_giving_payment_ops_amount_filters.sql"
+];
+export const integrationOrder=["20261019003215_nmi_friday_operations_bridge.sql"];
+export const migrationOrder=[...productionOrder,...givingOrder,...integrationOrder];

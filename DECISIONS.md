@@ -1,3 +1,15 @@
+# NMI Friday candidate decisions — 2026-10-18
+
+1. Current explicit assignment supersedes the earlier package freeze only for the named isolated NMI integration branch. Use exact production base `e3157f0`, preserve all other checkouts/changes, and do not merge old dependent PRs.
+2. Reuse current production shared prerequisites. Extract nine accepted Giving SQL files byte-identically under new forward versions allocated by Supabase CLI; do not add the old Outreach Phase A–H chain, duplicate campaign identity, seed imports or unrelated operational pages.
+3. Integrate NMI/Operations siblings through safe immutable observation projection, never a second ledger or automatic finalizer/retry. Keep original held provider/execution boundaries and audit/tenant ownership.
+4. Restrict the new module shell to installed destinations and existing production staff return entry. Add original approved Kingdom Propel attribution asset without redesigning production pages.
+5. Preserve exact existing production files via machine-readable blob manifest and regression. Isolated package is prepared offline only. Existing NMI shared-project pin must be replaced with an explicitly approved clean acceptance target in a reviewed follow-up before hosted writes; do not generalize to arbitrary project URLs.
+6. Missing merchant/settlement/receipt/GiveHub facts stay unverified. Required launch capabilities missing from source remain engineering blockers. Friday deadline does not reduce the command document's mandatory acceptance gates. GiveHub stays primary until complete GO package and explicit release authorization.
+7. No production merge/migration/function deployment, real credentials in repo, live payment, public GiveHub link change, recurring cancellation, Authorize.Net/Text-to-Give activation or unrelated page redesign is performed or authorized by this build.
+
+---
+
 # Huntsville isolation decisions — 2026-10-16
 
 1. Start from exact current main rather than merging PR #24 ancestry. Preserve all 22 historical migrations byte-for-byte.
