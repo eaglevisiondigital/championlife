@@ -1,0 +1,8 @@
+{
+  "status": "awaiting_owner_organization_choice",
+  "projectRef": null,
+  "productionRefDenied": "exdocjbmylgxssanymjk",
+  "sharedAcceptanceRefDenied": "niyovbgoalulzkhbvebt",
+  "candidateBranch": "codex/unified-outreach-production-v1",
+  "baselineManifest": "docs/UNIFIED-OUTREACH-PRODUCTION-BASELINE.json"
+}

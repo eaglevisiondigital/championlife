@@ -4,13 +4,22 @@
   "devDependencies": {
     "@electric-sql/pglite": "0.5.8",
     "jsdom": "26.1.0",
-    "pg": "8.23.1"
+    "pg": "8.23.1",
+    "nodemailer": "10.0.16"
   },
   "scripts": {
-    "test": "node login.dom.mjs && node people-staff.test.mjs && node outreach-gateway.test.mjs && node outreach-cleanup.test.mjs && node outreach-cron.test.mjs && node gateway-http.test.mjs && node outreach-workflow.test.mjs && node outreach-partner-staff.dom.mjs && node outreach-partner.dom.mjs && node site-build.test.mjs && node outreach-people.dom.mjs && node huntsville-registration.test.mjs && node huntsville-registration.dom.mjs && node outreach-registration.dom.mjs && node outreach-registration-gateway.test.mjs && node outreach-registration.test.mjs && node huntsville-minimal-safety.test.mjs",
+    "test": "node login.dom.mjs && node people-staff.test.mjs && node outreach-gateway.test.mjs && node outreach-cleanup.test.mjs && node outreach-cron.test.mjs && node gateway-http.test.mjs && node outreach-workflow.test.mjs && node outreach-partner-staff.dom.mjs && node outreach-partner.dom.mjs && node site-build.test.mjs && node outreach-people.dom.mjs && node huntsville-registration.test.mjs && node huntsville-registration.dom.mjs && node outreach-registration.dom.mjs && node outreach-registration-gateway.test.mjs && node outreach-registration.test.mjs && node huntsville-minimal-safety.test.mjs && npm run test:gate0",
     "test:login": "node login.dom.mjs",
     "test:concurrency": "node outreach-concurrency.test.mjs",
     "test:huntsville-native": "TEST_NATIVE_PG=1 node outreach-registration.test.mjs && TEST_NATIVE_PG=1 node huntsville-registration.test.mjs && node huntsville-minimal-concurrency.test.mjs",
-    "test:huntsville-safety": "node huntsville-minimal-safety.test.mjs"
+    "test:huntsville-safety": "node huntsville-minimal-safety.test.mjs",
+    "test:gate0": "node gate0-upgrade.test.mjs && node gate0-security.test.mjs && node gate0-shell.dom.mjs && node gate0-build.test.mjs",
+    "test:gate0:native": "TEST_NATIVE_PG=1 node gate0-upgrade.test.mjs && TEST_NATIVE_PG=1 node gate0-security.test.mjs",
+    "test:frozen:outreach": "node login.dom.mjs && node people-staff.test.mjs && node outreach-gateway.test.mjs && node outreach-cleanup.test.mjs && node outreach-cron.test.mjs && node gateway-http.test.mjs && node outreach-workflow.test.mjs && node outreach-partner-staff.dom.mjs && node outreach-partner.dom.mjs && node site-build.test.mjs && node outreach-people.dom.mjs && node huntsville-registration.test.mjs && node huntsville-registration.dom.mjs && node outreach-registration.dom.mjs && node outreach-registration-gateway.test.mjs && node outreach-registration.test.mjs && node huntsville-minimal-safety.test.mjs && node unified-staff-workspace.test.mjs && node outreach-partner-pastoral.test.mjs && npm run test:unified && npm run test:accepted",
+    "test:unified": "node unified-outreach-integration.test.mjs && node unified-outreach-roles.test.mjs && node unified-staff-shell.dom.mjs && node unified-fixture-generator.test.mjs",
+    "test:accepted": "node accepted-activation-adapter.test.mjs && node accepted-activation.test.mjs && node accepted-communications-provider.test.mjs && node accepted-communications.dom.mjs && node accepted-communications.test.mjs && node accepted-outreach-event-day.dom.mjs && node accepted-outreach-event-day.test.mjs && node accepted-outreach-pre-event.dom.mjs && node accepted-outreach-pre-event.test.mjs && node accepted-outreach-prize-operations.test.mjs && node accepted-outreach-prize.dom.mjs && node accepted-outreach-prize.test.mjs && node accepted-outreach-team.dom.mjs && node accepted-outreach-team.test.mjs",
+    "test:unified:native": "TEST_NATIVE_PG=1 node unified-outreach-roles.test.mjs && node unified-registration-concurrency.test.mjs",
+    "test:unified:browser": "node unified-browser.mjs",
+    "test:unified:compatibility": "node unified-nmi-compatibility.test.mjs"
   }
 }

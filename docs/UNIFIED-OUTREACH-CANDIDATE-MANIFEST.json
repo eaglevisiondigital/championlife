@@ -1,0 +1,729 @@
+{
+  "productionBase": "e3157f0afa3f563ab6560ca64c9049448f02c806",
+  "branch": "codex/unified-outreach-production-v1",
+  "productionChanges": "NONE",
+  "fileHashAlgorithm": "SHA-256",
+  "selfReferenceNote": "docs/UNIFIED-OUTREACH-CANDIDATE-MANIFEST.json is excluded from its own file list; the immutable private handoff hashes all committed paths including this manifest.",
+  "migrations": [
+    {
+      "order": 1,
+      "path": "supabase/migrations/20261019004611_unified_outreach_staff_partner.sql",
+      "status": "added",
+      "bytes": 193856,
+      "sha256": "418862e6e22a5c3280958253ade398a7f9e362f039c312a971d9d063e692749f"
+    },
+    {
+      "order": 2,
+      "path": "supabase/migrations/20261019004612_unified_outreach_workflow_foundation.sql",
+      "status": "added",
+      "bytes": 76629,
+      "sha256": "3ba064f7900624ca32faa95befa1d1de702ce3e428cc74131aac737581bff0f2"
+    },
+    {
+      "order": 3,
+      "path": "supabase/migrations/20261019004613_unified_outreach_operations.sql",
+      "status": "added",
+      "bytes": 353194,
+      "sha256": "e6ebf423e395f65cac1d0e60913c6877c78bfdbbd193b714e7d9d56dc870ddfb"
+    },
+    {
+      "order": 4,
+      "path": "supabase/migrations/20261019004614_unified_outreach_security.sql",
+      "status": "added",
+      "bytes": 13967,
+      "sha256": "a361cff97ec94cad6994d23529d89990f71d772dc2341caa64f63673f9d92030"
+    }
+  ],
+  "files": [
+    {
+      "path": "AGENTS.md",
+      "status": "added",
+      "bytes": 1840,
+      "sha256": "bd84f4fed0adb6e7d0ce911f8ab36db08d7793a6b644806df2f9dbbeeff124e8"
+    },
+    {
+      "path": "ARCHITECTURE.md",
+      "status": "modified",
+      "bytes": 2635,
+      "sha256": "c52fe13b631ef56345b059b4708ba0b96f35dd3da92c261395429e96bbd41fcf"
+    },
+    {
+      "path": "CURRENT_BUILD_STATE.md",
+      "status": "modified",
+      "bytes": 4228,
+      "sha256": "07300aa97cd59a40d4558f4967e358b852a0d2de555c11dad7ce945324f8d1d2"
+    },
+    {
+      "path": "DECISIONS.md",
+      "status": "modified",
+      "bytes": 2518,
+      "sha256": "ca1b994a08bdcbbdfbcb488e7503abab2b069c7214422415e3590d6595e7d3ba"
+    },
+    {
+      "path": "SECURITY_MODEL.md",
+      "status": "modified",
+      "bytes": 3171,
+      "sha256": "0e991777d79549e40ae033ea95100acd26a0391b2b86af77abee4c77995b4283"
+    },
+    {
+      "path": "assets/css/communications.css",
+      "status": "added",
+      "bytes": 3467,
+      "sha256": "d0d739a847d9b5dade11dd270957c6b3aa239bf1998318ee0560038e7028412d"
+    },
+    {
+      "path": "assets/css/outreach-event-day.css",
+      "status": "added",
+      "bytes": 5990,
+      "sha256": "306794aa3270db9babb1bc07d6c57f3b3ddd1cf29ffcb2795da481644a0fda3c"
+    },
+    {
+      "path": "assets/css/outreach-pre-event.css",
+      "status": "added",
+      "bytes": 4413,
+      "sha256": "65de34a4a9b7035b362aea14351fb32efca09a210817348af3f1d8ec46125ed1"
+    },
+    {
+      "path": "assets/css/outreach-prizes.css",
+      "status": "added",
+      "bytes": 3636,
+      "sha256": "103cc1ca7d26b7067e76c925581dd67fd47b72fe691eb538926afdf707cabdd0"
+    },
+    {
+      "path": "assets/css/outreach-team.css",
+      "status": "added",
+      "bytes": 4605,
+      "sha256": "e353ba323b193545f1632bea4d896ee759e54741e300c2f0663755c8054d074d"
+    },
+    {
+      "path": "assets/css/staff-workspace.css",
+      "status": "added",
+      "bytes": 15499,
+      "sha256": "8a00dc6824687c7c4cd094cd7cfef506c78b91ea224552c4acf6465317cf04d0"
+    },
+    {
+      "path": "assets/js/communications.js",
+      "status": "added",
+      "bytes": 19834,
+      "sha256": "fc73603e2402a26a52662fc3e78b41a6592964aa88980eee2e7ef508870a45dd"
+    },
+    {
+      "path": "assets/js/outreach-campaigns.js",
+      "status": "added",
+      "bytes": 27798,
+      "sha256": "c48478717bfbbb60cf99064b562338c26f126632324c8f3dbe66dfa1d7609fd6"
+    },
+    {
+      "path": "assets/js/outreach-event-day.js",
+      "status": "added",
+      "bytes": 17457,
+      "sha256": "826927edb40900c54def95afa1404fb375fedc6a4d640042a1b1f197b8303149"
+    },
+    {
+      "path": "assets/js/outreach-pre-event.js",
+      "status": "added",
+      "bytes": 38535,
+      "sha256": "da67a6191b8e8943e7e07f398d4f6387af1a10b691daa1f7b67c382be0ad7645"
+    },
+    {
+      "path": "assets/js/outreach-prize-display.js",
+      "status": "added",
+      "bytes": 1396,
+      "sha256": "3bef11cc2eea029d6e06b56532596a88814bd16debfde81cf460ecb09d681ab2"
+    },
+    {
+      "path": "assets/js/outreach-prize-household.js",
+      "status": "added",
+      "bytes": 1525,
+      "sha256": "383996a62cd0bea6baddf8be0df8ed6c997e8c072e6b3bc0afe118b5f2d6fa74"
+    },
+    {
+      "path": "assets/js/outreach-prizes.js",
+      "status": "added",
+      "bytes": 13743,
+      "sha256": "6699b32e1a3ecc3c63ea192e4ae90456866d22429ffd4cc0f7f7a8146cf4f529"
+    },
+    {
+      "path": "assets/js/outreach-team-portal.js",
+      "status": "added",
+      "bytes": 14109,
+      "sha256": "91364568331c80dc6bd2808bcd2311fd47f5fd241e78a5dc79b54cd7e8146892"
+    },
+    {
+      "path": "assets/js/outreach-team.js",
+      "status": "added",
+      "bytes": 27946,
+      "sha256": "1dde980bec2fc56e3623f1eb0dea5f08cb6f83deb0a0d9b618442a8c2a806c3d"
+    },
+    {
+      "path": "assets/js/staff-access.js",
+      "status": "added",
+      "bytes": 1855,
+      "sha256": "1852a74fc8c5516b761ba0ff82ed715eb3bb816d5c398c32038f53926b669d1b"
+    },
+    {
+      "path": "assets/js/staff-dashboard.js",
+      "status": "added",
+      "bytes": 4945,
+      "sha256": "3dbdf89430ce1bc1bfacaac7c479e658d5f56ce027f69cef8965a395755de39c"
+    },
+    {
+      "path": "assets/js/staff-outreach-decisions.js",
+      "status": "added",
+      "bytes": 5609,
+      "sha256": "51f62e69929bafa25f7ff2195813dab29b0fdb04df310ec30da9f94c221bd821"
+    },
+    {
+      "path": "assets/js/staff-outreach-partner-admin.js",
+      "status": "added",
+      "bytes": 9117,
+      "sha256": "2ee0c17206f766f3078bf03158eb51f882994ce37ce72e6a1636f177f3d05d17"
+    },
+    {
+      "path": "assets/js/staff-outreach-partner.js",
+      "status": "added",
+      "bytes": 7681,
+      "sha256": "b9e46a963d0441dd3e3a75cdcae8f24493bb8885470693a632675273cc649c5d"
+    },
+    {
+      "path": "assets/js/staff-outreach-summary.js",
+      "status": "added",
+      "bytes": 3324,
+      "sha256": "43dc00e079feb56a948598eac1570a1c296bf561cf32a01664456aa3676efff4"
+    },
+    {
+      "path": "assets/js/staff-workspace.js",
+      "status": "added",
+      "bytes": 10907,
+      "sha256": "c708b1f18685e60e1bb3ceb71b9d9e1ac70d4e8fd02edf00453349c2c33ef2ad"
+    },
+    {
+      "path": "assets/js/unified-preview-config.js",
+      "status": "added",
+      "bytes": 559,
+      "sha256": "7f7161209c813ba23248452968162c64e55e0dcd3d349c1312a116108f6a1e2f"
+    },
+    {
+      "path": "config/outreach/unified-acceptance.json",
+      "status": "added",
+      "bytes": 312,
+      "sha256": "abedc932075b0c1598e1f467ccfc3ef67eb1e565d073b5df217245c0defee48f"
+    },
+    {
+      "path": "docs/CHAMPION-LIFE-UNIFIED-PLATFORM-COMMAND.md",
+      "status": "added",
+      "bytes": 13485,
+      "sha256": "06641bf738393058f1e172e9a023fded344fad8c04dbd16f192094f4e4a815e7"
+    },
+    {
+      "path": "docs/UNIFIED-OUTREACH-EXTRACTION-MANIFEST.json",
+      "status": "added",
+      "bytes": 117930,
+      "sha256": "4c028e4008cd3341b13a68431359b1127475b5312fb35895fc0c52a93b4be985"
+    },
+    {
+      "path": "docs/UNIFIED-OUTREACH-HOSTED-ACCEPTANCE.md",
+      "status": "added",
+      "bytes": 7767,
+      "sha256": "34ee32b118b96f02da501444e7b2054d9377ecc1b5fec3a495d33d0c5d52f62a"
+    },
+    {
+      "path": "docs/UNIFIED-OUTREACH-INTEGRATION-INVENTORY.md",
+      "status": "added",
+      "bytes": 13914,
+      "sha256": "8f6f528dafa81d18f40e424cd5f441b483791faf0e2ce0eabc8555f3e47a52d1"
+    },
+    {
+      "path": "docs/UNIFIED-OUTREACH-PRODUCTION-BASELINE.json",
+      "status": "added",
+      "bytes": 6706,
+      "sha256": "a346d9793bfa409b1824e6bd47581e984805bc385298cf91c9dbdbce121a3cb5"
+    },
+    {
+      "path": "docs/UNIFIED-OUTREACH-PRODUCTION-INTEGRATION-V1.md",
+      "status": "added",
+      "bytes": 5186,
+      "sha256": "2725050f77a1770bf59a2c6d9e0bdb38b6b152c318538d324215d516deb86212"
+    },
+    {
+      "path": "docs/UNIFIED-OUTREACH-SHARED-COORDINATION.md",
+      "status": "added",
+      "bytes": 6047,
+      "sha256": "e57d6a1b552c206dade5a97339862f836ae945e764e13367dc33160e31ae9ac0"
+    },
+    {
+      "path": "docs/UNIFIED-OUTREACH-SHARED-OVERLAP.json",
+      "status": "added",
+      "bytes": 8103,
+      "sha256": "8ca1038fbc2eb384cd2d78b72d6e876547aaea91b5392b4949ba33a48c19ee82"
+    },
+    {
+      "path": "docs/UNIFIED-OUTREACH-SOURCE-INVENTORY.json",
+      "status": "added",
+      "bytes": 171041,
+      "sha256": "9306c1fbd799b5de155b97fc788fa0cfd390ca0b284c6478658e6717146097df"
+    },
+    {
+      "path": "docs/UNIFIED-OUTREACH-STAFF-EXTRACTION.json",
+      "status": "added",
+      "bytes": 2545,
+      "sha256": "9e9e300515c9cd538edb75920e8ffe0304dee0db253fd3a8f3ec4dfd60adf3b6"
+    },
+    {
+      "path": "docs/UNIFIED-OUTREACH-VALIDATION.md",
+      "status": "added",
+      "bytes": 4523,
+      "sha256": "d02850268763e2881a56c2cac67910d8d18a52f6d0beed7285a3c6895fe12f7f"
+    },
+    {
+      "path": "outreach-drawing-numbers.html",
+      "status": "added",
+      "bytes": 1103,
+      "sha256": "3bdc534d283c02ade1b0e9fb4d91b4b46b7470df52eb1c0fd790f9c18ff111b5"
+    },
+    {
+      "path": "outreach-host.html",
+      "status": "added",
+      "bytes": 1262,
+      "sha256": "bc83016ff5cdc7f8311f73ca0068a3078d104afe12f7c0c3af7fc049352a4fbb"
+    },
+    {
+      "path": "outreach-prize-display.html",
+      "status": "added",
+      "bytes": 638,
+      "sha256": "7d2cb092818e9013d92191fb7ae285a11cf87bc1985055d6153cc7fe36f1a0be"
+    },
+    {
+      "path": "outreach-team.html",
+      "status": "added",
+      "bytes": 1331,
+      "sha256": "2e30945955dcff541406fce12a58886fc051483462c1e46b7b322496fff25fb9"
+    },
+    {
+      "path": "staff-access.html",
+      "status": "added",
+      "bytes": 935,
+      "sha256": "15918ac3ff30c8b0d21f9ecf4df74460f0bc686d14beb765d40826dd51277610"
+    },
+    {
+      "path": "staff-campaign-communications.html",
+      "status": "added",
+      "bytes": 1181,
+      "sha256": "a89b88c49fcbd358fbb9ca0086c6109ea09a6579e95810c75b2b1300fe39302c"
+    },
+    {
+      "path": "staff-communication-activity.html",
+      "status": "added",
+      "bytes": 1175,
+      "sha256": "75df7bdd0835be90a6db2e35ee56c895925d0bc88aa2d6d610a382235869d90c"
+    },
+    {
+      "path": "staff-communication-templates.html",
+      "status": "added",
+      "bytes": 1182,
+      "sha256": "c1fa21ddb335a3d819a1970c0f81e3acbacf32e88ba7e80ca967c277a4b6f41b"
+    },
+    {
+      "path": "staff-communications.html",
+      "status": "added",
+      "bytes": 1181,
+      "sha256": "eaec0e64281f4f5e18e218db3fe644c6e526098d25b8eb6379a3243e74cfc1c5"
+    },
+    {
+      "path": "staff-home.html",
+      "status": "added",
+      "bytes": 952,
+      "sha256": "a7c6e52938dc2c40268461dadf5140c7a12b9013b79b0ba72c7ed28c3ec57e16"
+    },
+    {
+      "path": "staff-outreach-campaigns.html",
+      "status": "added",
+      "bytes": 1215,
+      "sha256": "d16e322b0efd8e3adbf12d9436753ff08134802898dbcfc39e035e2afa980707"
+    },
+    {
+      "path": "staff-outreach-decisions.html",
+      "status": "added",
+      "bytes": 953,
+      "sha256": "ed58444054965c24b6ccaa59eec9e674ba8aaa90cc148987f1ad6cb6f545173d"
+    },
+    {
+      "path": "staff-outreach-event-day.html",
+      "status": "added",
+      "bytes": 1272,
+      "sha256": "fc5e293ef1bb3c41142678d7b1ed58df0ba8400993fb0e31adfb31606ece664a"
+    },
+    {
+      "path": "staff-outreach-giving.html",
+      "status": "added",
+      "bytes": 964,
+      "sha256": "7067650cdb6e41037057043ddf4e70a0753442b20e03a01c41af325c3859785d"
+    },
+    {
+      "path": "staff-outreach-overview.html",
+      "status": "added",
+      "bytes": 957,
+      "sha256": "f6a7de8706815a7ef7011c63a1d67ec8272204cd45b56291c0f0bd725a04d83a"
+    },
+    {
+      "path": "staff-outreach-partner-admin.html",
+      "status": "added",
+      "bytes": 960,
+      "sha256": "fe698d196fb858e8b2b309a727786375680fd995aec2333b17a0fe8eee638e45"
+    },
+    {
+      "path": "staff-outreach-partner.html",
+      "status": "added",
+      "bytes": 954,
+      "sha256": "7b794dae31ce81b05c5d32eac2c315ef627b59d90976d0f57adb7490917e2ebb"
+    },
+    {
+      "path": "staff-outreach-pre-event.html",
+      "status": "added",
+      "bytes": 1262,
+      "sha256": "bc83016ff5cdc7f8311f73ca0068a3078d104afe12f7c0c3af7fc049352a4fbb"
+    },
+    {
+      "path": "staff-outreach-prizes.html",
+      "status": "added",
+      "bytes": 1247,
+      "sha256": "d7bb14b360701ea38fe438e219a3b58ade5c0c290a05967a54604625988af642"
+    },
+    {
+      "path": "staff-outreach-registration.html",
+      "status": "modified",
+      "bytes": 1240,
+      "sha256": "f7184d91c934bdd5d3b6fceed38354a658b01ffaedc7571e845d123b72e0343c"
+    },
+    {
+      "path": "staff-outreach-reports.html",
+      "status": "added",
+      "bytes": 966,
+      "sha256": "f47cbd51515c2d33e7056c3aa23566c7dc1603ca981cbb9c38539cf64c1cae2c"
+    },
+    {
+      "path": "staff-outreach-settings.html",
+      "status": "added",
+      "bytes": 968,
+      "sha256": "d6c4c123820f3ffe68bbe96d1b3498d39ae22540dbce245e477e7d043695385c"
+    },
+    {
+      "path": "staff-outreach-team.html",
+      "status": "added",
+      "bytes": 996,
+      "sha256": "8d4ef28292a26ab4e1a51de15d8f537bf5a3c555655f80c9157183a875d3ac8a"
+    },
+    {
+      "path": "staff-people.html",
+      "status": "modified",
+      "bytes": 1100,
+      "sha256": "ab681be65a6898af1c8b1a96c26caa372200b50ec5077f7d70aa56ec20041098"
+    },
+    {
+      "path": "supabase/functions/_shared/communications/activation-service.ts",
+      "status": "added",
+      "bytes": 2696,
+      "sha256": "3d290facdf1efa614974697975c95177d82a524ee4ea661e00afa3ed7e7ee2f0"
+    },
+    {
+      "path": "supabase/functions/_shared/communications/activation.mjs",
+      "status": "added",
+      "bytes": 8034,
+      "sha256": "3572b1f42f44fa388d7fe668612f81b916986b4371bdaa6c2a05b47acc70e2d1"
+    },
+    {
+      "path": "supabase/functions/_shared/communications/providers.mjs",
+      "status": "added",
+      "bytes": 4833,
+      "sha256": "1b9bcfaa7f70f987c8381e42d20817b0ef708cf1871a0ffb36a0c91c735ce576"
+    },
+    {
+      "path": "supabase/functions/_shared/communications/service.ts",
+      "status": "added",
+      "bytes": 1135,
+      "sha256": "131fa8e7f0dd653a4de66ffa6d02b3590fb189c0fb6c8aa950ee6478b5619faa"
+    },
+    {
+      "path": "supabase/functions/communications-callback/index.ts",
+      "status": "added",
+      "bytes": 1131,
+      "sha256": "6f68199cb794d19523840f0db735be629233a92b159ff0ac256b4fa3acc3ab9d"
+    },
+    {
+      "path": "supabase/functions/communications-provider-admin/index.ts",
+      "status": "added",
+      "bytes": 1764,
+      "sha256": "9df9bd83a1e572e28a070cfd5aad88b6a0a9678b4d68b487b883a338605ae4bd"
+    },
+    {
+      "path": "supabase/functions/communications-provider-callback/index.ts",
+      "status": "added",
+      "bytes": 1280,
+      "sha256": "e1d86e08606c044d1505e654c3f88cb2cdeeb5cea230ded04c0b5956d8210629"
+    },
+    {
+      "path": "supabase/functions/communications-provider-worker/index.ts",
+      "status": "added",
+      "bytes": 957,
+      "sha256": "2d11226e044eb46a990d81b8930b0ab15c97803c7a0ce364e1202ab8a802b903"
+    },
+    {
+      "path": "supabase/functions/communications-worker/index.ts",
+      "status": "added",
+      "bytes": 864,
+      "sha256": "e86ea9a30b5b5e6f98469e82259e269cbef6a29103c1eee509a629eb586129b4"
+    },
+    {
+      "path": "supabase/migrations/20261019004611_unified_outreach_staff_partner.sql",
+      "status": "added",
+      "bytes": 193856,
+      "sha256": "418862e6e22a5c3280958253ade398a7f9e362f039c312a971d9d063e692749f"
+    },
+    {
+      "path": "supabase/migrations/20261019004612_unified_outreach_workflow_foundation.sql",
+      "status": "added",
+      "bytes": 76629,
+      "sha256": "3ba064f7900624ca32faa95befa1d1de702ce3e428cc74131aac737581bff0f2"
+    },
+    {
+      "path": "supabase/migrations/20261019004613_unified_outreach_operations.sql",
+      "status": "added",
+      "bytes": 353194,
+      "sha256": "e6ebf423e395f65cac1d0e60913c6877c78bfdbbd193b714e7d9d56dc870ddfb"
+    },
+    {
+      "path": "supabase/migrations/20261019004614_unified_outreach_security.sql",
+      "status": "added",
+      "bytes": 13967,
+      "sha256": "a361cff97ec94cad6994d23529d89990f71d772dc2341caa64f63673f9d92030"
+    },
+    {
+      "path": "tools/backend-tests/accepted-activation-adapter.test.mjs",
+      "status": "added",
+      "bytes": 8664,
+      "sha256": "654e63e156473d60befe0163bb2a473da30367d8a229d89d8a7d8bfdaa0176d0"
+    },
+    {
+      "path": "tools/backend-tests/accepted-activation.test.mjs",
+      "status": "added",
+      "bytes": 12535,
+      "sha256": "4bc63a933dc8f8ce6dad0c1c951cfe9dbfa2a8ea8b896e8eafaa131360ee89f8"
+    },
+    {
+      "path": "tools/backend-tests/accepted-communications-provider.test.mjs",
+      "status": "added",
+      "bytes": 3481,
+      "sha256": "bde1a03fe577ac80e9ccf1ed6135a04c63e22656eb0edc5db2adbdb01c518cc8"
+    },
+    {
+      "path": "tools/backend-tests/accepted-communications.dom.mjs",
+      "status": "added",
+      "bytes": 3652,
+      "sha256": "18020f7baef12c0445c84b4b0dbe149270abd4eae7295f02bca23be93655e704"
+    },
+    {
+      "path": "tools/backend-tests/accepted-communications.test.mjs",
+      "status": "added",
+      "bytes": 18133,
+      "sha256": "e7fdf0fbad51c3df57d85f4abc35c36197f13be159dd737100336d0c735d90cf"
+    },
+    {
+      "path": "tools/backend-tests/accepted-outreach-event-day.dom.mjs",
+      "status": "added",
+      "bytes": 8162,
+      "sha256": "2043618e823b3b8d9ad4abaabba6732d735ace873ca108b970991dde0ba9545c"
+    },
+    {
+      "path": "tools/backend-tests/accepted-outreach-event-day.test.mjs",
+      "status": "added",
+      "bytes": 13844,
+      "sha256": "b46f79eba4f0b40276be3de752508ef2cdd53fafe1861bfb4e45988c1093c98a"
+    },
+    {
+      "path": "tools/backend-tests/accepted-outreach-pre-event.dom.mjs",
+      "status": "added",
+      "bytes": 7409,
+      "sha256": "ad94e2b567f24ac90a15d4ef223141952fbf38ec0736f60e099550ce7a51271d"
+    },
+    {
+      "path": "tools/backend-tests/accepted-outreach-pre-event.test.mjs",
+      "status": "added",
+      "bytes": 18640,
+      "sha256": "1549b3b1a03c491f1fbbde88cb841ab0ce1eb8e6b1c5cbc7c841828f4e88ceb5"
+    },
+    {
+      "path": "tools/backend-tests/accepted-outreach-prize-operations.test.mjs",
+      "status": "added",
+      "bytes": 9630,
+      "sha256": "13f430ac4bcdbfffa9703350685fa54402b8d2a53923ab9ee2c205206d70b86f"
+    },
+    {
+      "path": "tools/backend-tests/accepted-outreach-prize.dom.mjs",
+      "status": "added",
+      "bytes": 7376,
+      "sha256": "2459eb2ed909e6fb978b9d20cd1bddfbe3b28d08c4538f8f0fe6cf9262ea8734"
+    },
+    {
+      "path": "tools/backend-tests/accepted-outreach-prize.test.mjs",
+      "status": "added",
+      "bytes": 5876,
+      "sha256": "4ed4fcf4b9c43f36a61b1f5c7a352effbfc9e02a99d1fe18947ec806912f489e"
+    },
+    {
+      "path": "tools/backend-tests/accepted-outreach-team.dom.mjs",
+      "status": "added",
+      "bytes": 7108,
+      "sha256": "31fa4037250bc0a626b128855f687e7cb84f79c75f505c5d53288dbb795b5320"
+    },
+    {
+      "path": "tools/backend-tests/accepted-outreach-team.test.mjs",
+      "status": "added",
+      "bytes": 22824,
+      "sha256": "75f1f51398cb6c431d4669c58cce442f35ad5a40886ce8977d88346c805230d3"
+    },
+    {
+      "path": "tools/backend-tests/activation-fixture.mjs",
+      "status": "added",
+      "bytes": 1698,
+      "sha256": "cfdb4a912e7896b7a48beeee919b78fdec181f6021b87bbb1928011d60ebff92"
+    },
+    {
+      "path": "tools/backend-tests/communications-fixture.mjs",
+      "status": "added",
+      "bytes": 5202,
+      "sha256": "f9be8598d21c44e1dc4a9a2c7a050c93d7b406bcdc43d8c8206709d641d86f98"
+    },
+    {
+      "path": "tools/backend-tests/fixtures/communications-browser-fixture.js",
+      "status": "added",
+      "bytes": 4304,
+      "sha256": "fef0494030f3c90689ba0b21d723e4c9f0022ac8395915c5288134ac5538140b"
+    },
+    {
+      "path": "tools/backend-tests/fixtures/outreach-team-ui.mjs",
+      "status": "added",
+      "bytes": 7946,
+      "sha256": "8c0ba08bc24ffc5782afe08da633e5b72ac0e2e3c6a730559cdff6995a5cdfca"
+    },
+    {
+      "path": "tools/backend-tests/fixtures/pre-event-context.mjs",
+      "status": "added",
+      "bytes": 6081,
+      "sha256": "9cdf8b4fc3fd110e4c72b444b64809fe95653062cb452c600db900fc739dfe73"
+    },
+    {
+      "path": "tools/backend-tests/fixtures/prize-workspace-ui.mjs",
+      "status": "added",
+      "bytes": 2295,
+      "sha256": "5e7ac401a5085ab815e769e1070dd2e444b7b855c34d692cdef7b4f6c051f61a"
+    },
+    {
+      "path": "tools/backend-tests/fixtures/unified-bootstrap.sql",
+      "status": "added",
+      "bytes": 1275,
+      "sha256": "ab65b0a5688b2dcc4921706c94a750bd637378e05dd8848a4a78581c0476c6c5"
+    },
+    {
+      "path": "tools/backend-tests/outreach-partner-pastoral.test.mjs",
+      "status": "added",
+      "bytes": 2381,
+      "sha256": "6c59d0d77472cb5d156aeea1ee062a63158fa6d146ff87ed242b08b2ad9ac4e0"
+    },
+    {
+      "path": "tools/backend-tests/package-lock.json",
+      "status": "modified",
+      "bytes": 24973,
+      "sha256": "76d97f676e3ff14f5a85878391d9a8a5b3b5282e8bcb0164da5bc96f1fb8ae66"
+    },
+    {
+      "path": "tools/backend-tests/package.json",
+      "status": "modified",
+      "bytes": 2381,
+      "sha256": "680d49d96990d3d1a89b7cf5d2a9dacba7d34bf72368b929512a79ac9ca961cd"
+    },
+    {
+      "path": "tools/backend-tests/unified-browser.mjs",
+      "status": "added",
+      "bytes": 9705,
+      "sha256": "40c37b500839661817b043d1e6dc459683209e41c178c1ee173e90cea6b69787"
+    },
+    {
+      "path": "tools/backend-tests/unified-fixture-generator.test.mjs",
+      "status": "added",
+      "bytes": 3212,
+      "sha256": "0ebbe2d1d8cf780a66987f38e1e1b0e4fdedbe802848b8c996a0e3755c7ff164"
+    },
+    {
+      "path": "tools/backend-tests/unified-module-order.mjs",
+      "status": "added",
+      "bytes": 72,
+      "sha256": "c4438f4f6b7f84819994128955579923176c1325d2e4225b43066ad788b5d7a2"
+    },
+    {
+      "path": "tools/backend-tests/unified-nmi-compatibility.test.mjs",
+      "status": "added",
+      "bytes": 3538,
+      "sha256": "3f999375112eaf3a49de56f76dee56df0b321a3d326b113f199c80fdd29e3e57"
+    },
+    {
+      "path": "tools/backend-tests/unified-outreach-integration.test.mjs",
+      "status": "added",
+      "bytes": 3452,
+      "sha256": "062e78d944dac9750c5438bee09583f73cc2ddf6821f51802a7f664c57a0897f"
+    },
+    {
+      "path": "tools/backend-tests/unified-outreach-roles.test.mjs",
+      "status": "added",
+      "bytes": 12807,
+      "sha256": "cf7f5bb8a3a7f7aacaae84c52d838efc318e9f721ebfff78fda5385b7df0812d"
+    },
+    {
+      "path": "tools/backend-tests/unified-outreach.fixture.mjs",
+      "status": "added",
+      "bytes": 1601,
+      "sha256": "636ea3baa07cc7f2be146a5cbb3d0bcecfb1bce8088ba6f0795fd698a6738539"
+    },
+    {
+      "path": "tools/backend-tests/unified-registration-concurrency.test.mjs",
+      "status": "added",
+      "bytes": 9495,
+      "sha256": "53e6a4ee7c49b6d44d8613f52ccab0b6f68677782ec4bc589097cc5d1772b732"
+    },
+    {
+      "path": "tools/backend-tests/unified-staff-shell.dom.mjs",
+      "status": "added",
+      "bytes": 5382,
+      "sha256": "bfc2d4f7762203a36e85afedd05f255c53d84822522fe8ee1a9f7575cafa67a5"
+    },
+    {
+      "path": "tools/backend-tests/unified-staff-workspace.test.mjs",
+      "status": "added",
+      "bytes": 2760,
+      "sha256": "0eea64f9e4cc8ce7997d2764906f92c17f1aab14d21e8df2f8a9d5f2bf091710"
+    },
+    {
+      "path": "tools/outreach-integration/acceptance-fixtures.mjs",
+      "status": "added",
+      "bytes": 6853,
+      "sha256": "6141b12536367e670ebfdf681b17ad23b1728471c80dc3f56be90b5a26aa9f7e"
+    },
+    {
+      "path": "tools/outreach-integration/prepare-acceptance.mjs",
+      "status": "added",
+      "bytes": 2073,
+      "sha256": "b7af4d2c81e087989eb1881abd164d651545987022b65400fff602057b10d03b"
+    },
+    {
+      "path": "tools/site-build/build.mjs",
+      "status": "modified",
+      "bytes": 5769,
+      "sha256": "08de9fb49511b53bc1b3760d90ada4535d682cd818b6dfe5d64c9a14481db82c"
+    },
+    {
+      "path": "tools/site-build/public-files.json",
+      "status": "modified",
+      "bytes": 18892,
+      "sha256": "da740c80d464c13a8b7164780eb1a4cef2d1607db69a85a242af67423becb0b4"
+    }
+  ]
+}

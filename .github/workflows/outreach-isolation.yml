@@ -18,5 +18,6 @@ jobs:
           node-version: 22
       - run: npm ci --ignore-scripts --prefix tools/backend-tests
       - run: npm test --prefix tools/backend-tests
+      - run: npm run test:frozen:outreach --prefix tools/backend-tests
       - run: TEST_POSTGRES_BIN="$(pg_config --bindir)" npm run test:concurrency --prefix tools/backend-tests
       - run: git diff --check
