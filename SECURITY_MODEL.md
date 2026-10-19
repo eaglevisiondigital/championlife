@@ -1,3 +1,9 @@
+# Gate 0 combined-artifact regression contracts — 2026-10-18
+
+Preserved uncommitted NMI d82ed7 and Outreach bff9612 adoption trees before continuing validation. The private composer now identifies exact selected source heads. Standalone module inventories remain strict; combined tests explicitly verify the two Outreach-owned staff-page hashes and all four Outreach SQL hashes. NMI fixtures execute all 42 migrations only after that validation. Test bootstrap ownership prevents duplicate Storage creation. Legacy test RPC calls name their SQL argument types; standalone registration still requires no prize schema, while the combined registration test proves zero drawing numbers and no prize activation. Application business sources, historical SQL, credentials and real grants remain unchanged. Full results and local adoption commits belong in the private integration register; hosted/provider/finance/release gates remain open.
+
+---
+
 # Gate 0 visible revocation recovery — 2026-10-18
 
 Current-head adoption exposed a shared-shell UX regression: clearing protected content detached module mounts, so module denial messages could render outside the live document. The shared shell now renders a non-sensitive accessible “Access changed” state and dashboard recovery link after clearing. Detached mounts and response-epoch rejection remain intact; stale responses cannot restore protected data. No permission, SQL or module business behavior is widened. Focused shared-shell regression: 80 checks PASS, including visible recovery and late-response denial.

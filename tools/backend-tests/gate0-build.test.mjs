@@ -9,6 +9,7 @@ const catalog=JSON.parse(read('config/platform/capabilities.json'));ok(catalog.o
 for(const modules of [['nmi'],['outreach'],['nmi','outreach']]){
  const dir=path.join('/tmp','gate0-'+randomUUID());try{
  const result=compose(dir,modules);ok(result.modules.length===modules.length,'explicit '+modules.join('+')+' composition');
+ const composition=JSON.parse(readFileSync(path.join(dir,'config/platform/composition.json')));assert.deepEqual(composition,{schema:1,production:pins.production,modules,sourceHeads:Object.fromEntries(modules.map(m=>[m,pins[m]]))});ok(true,'composition identity pins exact selected module heads');
  const beforeManifest=readFileSync(path.join(dir,'tools/site-build/public-files.json'),'utf8');reconcile(dir,modules,fileURLToPath(new URL('../../',import.meta.url)));assert.equal(readFileSync(path.join(dir,'tools/site-build/public-files.json'),'utf8'),beforeManifest);ok(true,'adoption manifest reconciliation is idempotent');
  const pkg=JSON.parse(readFileSync(path.join(dir,'tools/backend-tests/package.json')));for(const m of modules)ok(!!pkg.scripts['test:frozen:'+m],m+' suite retained');
  const production=await buildSite({root:dir,env:{CONTEXT:'production'}});

@@ -31,6 +31,8 @@
   "tools/backend-tests/gate0-shell.dom.mjs",
   "tools/backend-tests/gate0-upgrade.test.mjs",
   "tools/backend-tests/gate0.fixture.mjs",
+  "tools/backend-tests/outreach-registration.test.mjs",
+  "tools/backend-tests/outreach-workflow.test.mjs",
   "tools/backend-tests/package.json",
   "tools/backend-tests/site-build.test.mjs",
   "tools/platform/compose-gate0.mjs",
