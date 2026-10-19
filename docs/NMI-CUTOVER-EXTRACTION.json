@@ -1,0 +1,586 @@
+{
+  "assets/css/forms.css": {
+    "source_commit": "ba1424b2faf9282c6b3cf5c5132e968576e1a2e6",
+    "source_blob": "6789ea1bf98be93564668ab3288e952f929f5970"
+  },
+  "assets/css/giving-reports.css": {
+    "source_commit": "ba1424b2faf9282c6b3cf5c5132e968576e1a2e6",
+    "source_blob": "9bc8c33e173ebb85c90c743d40ae49038838b776"
+  },
+  "assets/css/giving.css": {
+    "source_commit": "ba1424b2faf9282c6b3cf5c5132e968576e1a2e6",
+    "source_blob": "cc0cd05be8f2cc5a8d727aff6f7ebc769e445ad5"
+  },
+  "assets/css/payment-operations.css": {
+    "source_commit": "ba1424b2faf9282c6b3cf5c5132e968576e1a2e6",
+    "source_blob": "fa4bbb409d43d1f40a06142643da07bac50db647"
+  },
+  "assets/css/payments.css": {
+    "source_commit": "1ea6971c2a0273b1a15c132d7793b12c2822901e",
+    "source_blob": "6c3ad42e67263ec34fe18a25e388ab93b165f266"
+  },
+  "assets/js/forms-admin.js": {
+    "source_commit": "ba1424b2faf9282c6b3cf5c5132e968576e1a2e6",
+    "source_blob": "22800f82352762c973687671f2595f38bba8fbc3"
+  },
+  "assets/js/forms-config.js": {
+    "source_commit": "ba1424b2faf9282c6b3cf5c5132e968576e1a2e6",
+    "source_blob": "68c65a2075302ab5742e25b48dbec63b73c9a007"
+  },
+  "assets/js/forms-model.js": {
+    "source_commit": "ba1424b2faf9282c6b3cf5c5132e968576e1a2e6",
+    "source_blob": "23aa8c885a64f961c91f8ad5f53d6c4ad6ebe17f"
+  },
+  "assets/js/forms-public.js": {
+    "source_commit": "ba1424b2faf9282c6b3cf5c5132e968576e1a2e6",
+    "source_blob": "dfa265edff6df65e90e9d95b2b830f1be37559d8"
+  },
+  "assets/js/forms-renderer.js": {
+    "source_commit": "ba1424b2faf9282c6b3cf5c5132e968576e1a2e6",
+    "source_blob": "fddfee96ea44d36fee3f843d33803f35580d4510"
+  },
+  "assets/js/giving-management-utils.js": {
+    "source_commit": "ba1424b2faf9282c6b3cf5c5132e968576e1a2e6",
+    "source_blob": "48776e6dc8cd5491f62e10d9166a34a4af00e9e7"
+  },
+  "assets/js/giving-management.js": {
+    "source_commit": "ba1424b2faf9282c6b3cf5c5132e968576e1a2e6",
+    "source_blob": "2fc91cb597160437335af5b7ddc0b3c2ef8da5be"
+  },
+  "assets/js/giving-reports.js": {
+    "source_commit": "ba1424b2faf9282c6b3cf5c5132e968576e1a2e6",
+    "source_blob": "c27c640a9098bc2053f0066731052f1868fec5c0"
+  },
+  "assets/js/giving-utils.js": {
+    "source_commit": "ba1424b2faf9282c6b3cf5c5132e968576e1a2e6",
+    "source_blob": "919bceaf031efd09c0d441c51b7d670064cee3a1"
+  },
+  "assets/js/giving.js": {
+    "source_commit": "ba1424b2faf9282c6b3cf5c5132e968576e1a2e6",
+    "source_blob": "18c4d19bd460046060eabc285d243f9739ed8268"
+  },
+  "assets/js/payment-operations-summary.js": {
+    "source_commit": "ba1424b2faf9282c6b3cf5c5132e968576e1a2e6",
+    "source_blob": "a977d6faf64e10eecc287471640d5f7e4eca41db"
+  },
+  "assets/js/payment-operations.js": {
+    "source_commit": "ba1424b2faf9282c6b3cf5c5132e968576e1a2e6",
+    "source_blob": "dbb87d6ddb31ebb56dee9a190b3a6eca94592c2b"
+  },
+  "assets/js/payments.js": {
+    "source_commit": "1ea6971c2a0273b1a15c132d7793b12c2822901e",
+    "source_blob": "d96fea1135b57051c819ab322f25b0f9c18b906a"
+  },
+  "checkout.html": {
+    "source_commit": "1ea6971c2a0273b1a15c132d7793b12c2822901e",
+    "source_blob": "7921f26db25c0a71d3e92b0c879b0e20aad5d127"
+  },
+  "docs/FORMS-ARCHITECTURE.md": {
+    "source_commit": "ba1424b2faf9282c6b3cf5c5132e968576e1a2e6",
+    "source_blob": "71ad556f3f1f3203037849fc64d770a02e240c72"
+  },
+  "docs/FORMS-GIV-2C-BUILDER.md": {
+    "source_commit": "ba1424b2faf9282c6b3cf5c5132e968576e1a2e6",
+    "source_blob": "4bfc8b69afda9ad719bd6110b9913387181c2609"
+  },
+  "docs/GIV-1-FUTURE-APPROVED-REQUIREMENTS.md": {
+    "source_commit": "ba1424b2faf9282c6b3cf5c5132e968576e1a2e6",
+    "source_blob": "5dc04e225a046512db89f53f2692b1b22c571dd3"
+  },
+  "docs/GIVING-CORE-GIV-1.md": {
+    "source_commit": "ba1424b2faf9282c6b3cf5c5132e968576e1a2e6",
+    "source_blob": "45b26edc0d7b2e7bf2e21d6a38fab3ef25e89ae7"
+  },
+  "docs/GIVING-GIV-2A-FINANCE-MANAGEMENT-UX.md": {
+    "source_commit": "ba1424b2faf9282c6b3cf5c5132e968576e1a2e6",
+    "source_blob": "bdb48c7b1700e04a1c7fc67dd19f71382879a992"
+  },
+  "docs/GIVING-GIV-2B-REPORTS-STATEMENTS.md": {
+    "source_commit": "ba1424b2faf9282c6b3cf5c5132e968576e1a2e6",
+    "source_blob": "83a10f529898bf1e3d273e895633cf494328cad2"
+  },
+  "docs/GIVING-GIV-3A-PROVIDER-FOUNDATION.md": {
+    "source_commit": "1ea6971c2a0273b1a15c132d7793b12c2822901e",
+    "source_blob": "82b2b5f66e6e51566a0843b8852ddadf1ad47128"
+  },
+  "docs/GIVING-GIV-3D-PAYMENT-OPERATIONS.md": {
+    "source_commit": "ba1424b2faf9282c6b3cf5c5132e968576e1a2e6",
+    "source_blob": "a6dd82070a2bc315e5c641a0889df1e0e3737551"
+  },
+  "docs/GIVING-LEDGER.md": {
+    "source_commit": "ba1424b2faf9282c6b3cf5c5132e968576e1a2e6",
+    "source_blob": "830f9344a5cb034f246310abe5b7f8958e9d1590"
+  },
+  "docs/GIVING-MERCHANT-ROUTING.md": {
+    "source_commit": "ba1424b2faf9282c6b3cf5c5132e968576e1a2e6",
+    "source_blob": "32ebe3f1b4c04d24829b0db44c89e4b49ea43013"
+  },
+  "docs/GIVING-PLEDGES.md": {
+    "source_commit": "ba1424b2faf9282c6b3cf5c5132e968576e1a2e6",
+    "source_blob": "9dd2b82e7b8c0359612f2dc647d9a9facf18ebd2"
+  },
+  "docs/GIVING-PROVIDER-ADAPTERS.md": {
+    "source_commit": "ba1424b2faf9282c6b3cf5c5132e968576e1a2e6",
+    "source_blob": "0f52af4c271b1e8412dce9939204c2c511f527d8"
+  },
+  "docs/GIVING-TEXT-TO-GIVE-ARCHITECTURE.md": {
+    "source_commit": "ba1424b2faf9282c6b3cf5c5132e968576e1a2e6",
+    "source_blob": "2df8d990cfa16b02dbaf9dbe0e4e1881c81c9917"
+  },
+  "docs/PAYMENT-OPERATIONS-RUNBOOK.md": {
+    "source_commit": "ba1424b2faf9282c6b3cf5c5132e968576e1a2e6",
+    "source_blob": "c8b76c463969dc35c5f6effef8ce814fb9a2df3d"
+  },
+  "docs/PAYMENT-PROVIDER-ARCHITECTURE.md": {
+    "source_commit": "1ea6971c2a0273b1a15c132d7793b12c2822901e",
+    "source_blob": "45c7cd977985963bc37b388f4b289bc0a3253c0f"
+  },
+  "form.html": {
+    "source_commit": "ba1424b2faf9282c6b3cf5c5132e968576e1a2e6",
+    "source_blob": "e731570985a3e72b4d9cd966747fd365f2f8987b"
+  },
+  "payment-history.html": {
+    "source_commit": "ba1424b2faf9282c6b3cf5c5132e968576e1a2e6",
+    "source_blob": "7299a9db06a18cdfec3205e5e534e39a9f707e50"
+  },
+  "staff-form-builder.html": {
+    "source_commit": "ba1424b2faf9282c6b3cf5c5132e968576e1a2e6",
+    "source_blob": "a9f8448e11fee7c21b545a465640abb36da8e275"
+  },
+  "staff-form-submissions.html": {
+    "source_commit": "ba1424b2faf9282c6b3cf5c5132e968576e1a2e6",
+    "source_blob": "1f2e56d3a8908f7e64fe1c1483baec2373432923"
+  },
+  "staff-forms.html": {
+    "source_commit": "ba1424b2faf9282c6b3cf5c5132e968576e1a2e6",
+    "source_blob": "839e5a74193b9b016c5f80b35e650c77436d7a90"
+  },
+  "staff-giving-batch.html": {
+    "source_commit": "ba1424b2faf9282c6b3cf5c5132e968576e1a2e6",
+    "source_blob": "8b67167db6ca40841a6ca61579c7cf1c8aa4912d"
+  },
+  "staff-giving-batches.html": {
+    "source_commit": "ba1424b2faf9282c6b3cf5c5132e968576e1a2e6",
+    "source_blob": "a499777c4a8f46123fba4668617a056d37577f83"
+  },
+  "staff-giving-donor-report.html": {
+    "source_commit": "ba1424b2faf9282c6b3cf5c5132e968576e1a2e6",
+    "source_blob": "6b4b418bf647742d201faeeb8328e1c5cc5a92ae"
+  },
+  "staff-giving-donor.html": {
+    "source_commit": "ba1424b2faf9282c6b3cf5c5132e968576e1a2e6",
+    "source_blob": "5cb0fb667cebda0480751b5ce5ec51bbaa4b32e9"
+  },
+  "staff-giving-donors.html": {
+    "source_commit": "ba1424b2faf9282c6b3cf5c5132e968576e1a2e6",
+    "source_blob": "9fa9cc7a5b92d4e706b9b76a7df6c333c71ad2f5"
+  },
+  "staff-giving-fund-report.html": {
+    "source_commit": "ba1424b2faf9282c6b3cf5c5132e968576e1a2e6",
+    "source_blob": "7246e5fb434adf712e93165c800b7101a3e3ced5"
+  },
+  "staff-giving-funds.html": {
+    "source_commit": "ba1424b2faf9282c6b3cf5c5132e968576e1a2e6",
+    "source_blob": "6bc157cf5682211c113298da29b0b2fc3d9b271d"
+  },
+  "staff-giving-gift.html": {
+    "source_commit": "ba1424b2faf9282c6b3cf5c5132e968576e1a2e6",
+    "source_blob": "b7491c84aec0282dda6ad8e3ed794fa1bb9830ce"
+  },
+  "staff-giving-gifts.html": {
+    "source_commit": "ba1424b2faf9282c6b3cf5c5132e968576e1a2e6",
+    "source_blob": "fe5360f5bbceeec3a30eae38b444df9d443f1752"
+  },
+  "staff-giving-manual.html": {
+    "source_commit": "ba1424b2faf9282c6b3cf5c5132e968576e1a2e6",
+    "source_blob": "c81a197f3b720dde631df8a70a440f2c36825ac0"
+  },
+  "staff-giving-merchants.html": {
+    "source_commit": "ba1424b2faf9282c6b3cf5c5132e968576e1a2e6",
+    "source_blob": "4525181a7695d69c781fb7471f20aaf11c230be6"
+  },
+  "staff-giving-mid-report.html": {
+    "source_commit": "ba1424b2faf9282c6b3cf5c5132e968576e1a2e6",
+    "source_blob": "dd8129fc21343cd3ea689ad983f3f25b968539db"
+  },
+  "staff-giving-overview.html": {
+    "source_commit": "ba1424b2faf9282c6b3cf5c5132e968576e1a2e6",
+    "source_blob": "88b59029fa4f060ea9039b65619b385ab2734665"
+  },
+  "staff-giving-pastor.html": {
+    "source_commit": "ba1424b2faf9282c6b3cf5c5132e968576e1a2e6",
+    "source_blob": "8cf7c1a49ff5b084856d4e14e219cb059322e1b0"
+  },
+  "staff-giving-pledge-report.html": {
+    "source_commit": "ba1424b2faf9282c6b3cf5c5132e968576e1a2e6",
+    "source_blob": "042cbf9ec349b511c4fdb1451fa0d72226ae9e61"
+  },
+  "staff-giving-pledge.html": {
+    "source_commit": "ba1424b2faf9282c6b3cf5c5132e968576e1a2e6",
+    "source_blob": "35b0f06cdce62655706c92462f13c865b503609d"
+  },
+  "staff-giving-pledges.html": {
+    "source_commit": "ba1424b2faf9282c6b3cf5c5132e968576e1a2e6",
+    "source_blob": "724a14a3a34019fdbe5641a05fea0342af1ee5f4"
+  },
+  "staff-giving-reconciliation-report.html": {
+    "source_commit": "ba1424b2faf9282c6b3cf5c5132e968576e1a2e6",
+    "source_blob": "f38a5e6aacd7db61b656c07d512e86abc475c698"
+  },
+  "staff-giving-recurring.html": {
+    "source_commit": "ba1424b2faf9282c6b3cf5c5132e968576e1a2e6",
+    "source_blob": "353a921db1104763783a81d1efa09c131f5de52d"
+  },
+  "staff-giving-recurringdetail.html": {
+    "source_commit": "ba1424b2faf9282c6b3cf5c5132e968576e1a2e6",
+    "source_blob": "c1bad501cf5095338bb58336ece8f318cf9126ab"
+  },
+  "staff-giving-report.html": {
+    "source_commit": "ba1424b2faf9282c6b3cf5c5132e968576e1a2e6",
+    "source_blob": "bfd5a6616106b22e9b8e82ea601e3f0aa6f9552e"
+  },
+  "staff-giving-reports.html": {
+    "source_commit": "ba1424b2faf9282c6b3cf5c5132e968576e1a2e6",
+    "source_blob": "7d308d48a4242bce0fbdf5922e9837f399e21452"
+  },
+  "staff-giving-statement.html": {
+    "source_commit": "ba1424b2faf9282c6b3cf5c5132e968576e1a2e6",
+    "source_blob": "5afcc11b8ec61f9a9886b8732327d1bb280e9bec"
+  },
+  "staff-giving-statements.html": {
+    "source_commit": "ba1424b2faf9282c6b3cf5c5132e968576e1a2e6",
+    "source_blob": "72aee91a93f0ed3a876672d611786d31d7adf41b"
+  },
+  "staff-giving-summary.html": {
+    "source_commit": "ba1424b2faf9282c6b3cf5c5132e968576e1a2e6",
+    "source_blob": "697b3f787fad107e82e4767c5a3bb47680969843"
+  },
+  "staff-payment-issues.html": {
+    "source_commit": "ba1424b2faf9282c6b3cf5c5132e968576e1a2e6",
+    "source_blob": "229572eb307e1874fc08837a237b00a6a5d89bce"
+  },
+  "staff-payment-method-management.html": {
+    "source_commit": "ba1424b2faf9282c6b3cf5c5132e968576e1a2e6",
+    "source_blob": "cfe581a6924601d8643b10cdaeb61fc24b59a7f7"
+  },
+  "staff-payment-methods.html": {
+    "source_commit": "ba1424b2faf9282c6b3cf5c5132e968576e1a2e6",
+    "source_blob": "172b406a83fd5eaace4d0955fc3a87aaf838caaa"
+  },
+  "staff-payment-operations.html": {
+    "source_commit": "ba1424b2faf9282c6b3cf5c5132e968576e1a2e6",
+    "source_blob": "c35d9a9664e99e915fc6a101827a0e43fe97138d"
+  },
+  "staff-payment-providers.html": {
+    "source_commit": "ba1424b2faf9282c6b3cf5c5132e968576e1a2e6",
+    "source_blob": "d4ced092a54366eb1c7a51ad69997bbe40bc7a9b"
+  },
+  "staff-payment-reconciliation.html": {
+    "source_commit": "ba1424b2faf9282c6b3cf5c5132e968576e1a2e6",
+    "source_blob": "187a4b283b0ca95dc62d5cbba482a210e291ead1"
+  },
+  "staff-payment-recurring.html": {
+    "source_commit": "ba1424b2faf9282c6b3cf5c5132e968576e1a2e6",
+    "source_blob": "e292aa915e8d974f467140bcd8c5643821a31fea"
+  },
+  "staff-payment-refund.html": {
+    "source_commit": "ba1424b2faf9282c6b3cf5c5132e968576e1a2e6",
+    "source_blob": "bcf21fa969d3bfc5ce1f0c142ffa45dc42bc2650"
+  },
+  "staff-payment-routing.html": {
+    "source_commit": "ba1424b2faf9282c6b3cf5c5132e968576e1a2e6",
+    "source_blob": "5071ed96de52e67e66ed8161b0c6f1ce8eb0e252"
+  },
+  "staff-payment-session.html": {
+    "source_commit": "ba1424b2faf9282c6b3cf5c5132e968576e1a2e6",
+    "source_blob": "2355f36cda22dc71aef5cb1d39b7b9f9789784e0"
+  },
+  "staff-payment-transaction-detail.html": {
+    "source_commit": "ba1424b2faf9282c6b3cf5c5132e968576e1a2e6",
+    "source_blob": "2d43a32fae22e23e2aebb1ce1ec7e245670720bd"
+  },
+  "staff-payment-transactions.html": {
+    "source_commit": "ba1424b2faf9282c6b3cf5c5132e968576e1a2e6",
+    "source_blob": "67d1c1bd745bf2e3041496bad130432db6472ce5"
+  },
+  "staff-payment-work.html": {
+    "source_commit": "ba1424b2faf9282c6b3cf5c5132e968576e1a2e6",
+    "source_blob": "3b6f86f8f1843e7c99db4db5c792a285c58e4201"
+  },
+  "supabase/functions/_shared/giving/adapters.mjs": {
+    "source_commit": "ba1424b2faf9282c6b3cf5c5132e968576e1a2e6",
+    "source_blob": "3c5d5c56e8cd9dd94eae89a109888b9717adddf4"
+  },
+  "supabase/functions/_shared/payments/operations.mjs": {
+    "source_commit": "ba1424b2faf9282c6b3cf5c5132e968576e1a2e6",
+    "source_blob": "1d9cbdc3970aed7993820e93cfaf266e1133ba10"
+  },
+  "supabase/functions/_shared/payments/providers.mjs": {
+    "source_commit": "ba1424b2faf9282c6b3cf5c5132e968576e1a2e6",
+    "source_blob": "b0e07265eecfc52317404ff121198d3f15b45a6c"
+  },
+  "supabase/functions/_shared/payments/runtime.mjs": {
+    "source_commit": "ba1424b2faf9282c6b3cf5c5132e968576e1a2e6",
+    "source_blob": "96911aa797e3d82bb22993fdafc88770af2dbc23"
+  },
+  "supabase/functions/forms-file-access/gateway.mjs": {
+    "source_commit": "ba1424b2faf9282c6b3cf5c5132e968576e1a2e6",
+    "source_blob": "dc00d06c9a2a5a018ffe98bdf4727b741c2715c5"
+  },
+  "supabase/functions/forms-file-access/index.ts": {
+    "source_commit": "ba1424b2faf9282c6b3cf5c5132e968576e1a2e6",
+    "source_blob": "94f707258a549276047469dbec04d061d2a10984"
+  },
+  "supabase/functions/forms-submit/gateway.mjs": {
+    "source_commit": "ba1424b2faf9282c6b3cf5c5132e968576e1a2e6",
+    "source_blob": "0bb7133adbfd1ed6dbf31e67c27994be03be2374"
+  },
+  "supabase/functions/forms-submit/index.ts": {
+    "source_commit": "ba1424b2faf9282c6b3cf5c5132e968576e1a2e6",
+    "source_blob": "b63139e5078caebc00373a654b1377e84f910407"
+  },
+  "supabase/functions/payments-webhook/index.ts": {
+    "source_commit": "ba1424b2faf9282c6b3cf5c5132e968576e1a2e6",
+    "source_blob": "3601567a6926d97b6abf1d0e6f9e5317cdb8fbb9"
+  },
+  "tools/backend-tests/fixtures/forms-browser-fixture.js": {
+    "source_commit": "ba1424b2faf9282c6b3cf5c5132e968576e1a2e6",
+    "source_blob": "9032e19ee54a800f3b8cf6b48ff36b6cb107ec66"
+  },
+  "tools/backend-tests/fixtures/giving-browser-fixture.js": {
+    "source_commit": "ba1424b2faf9282c6b3cf5c5132e968576e1a2e6",
+    "source_blob": "771fdc58d66acb41d59edf9017a9632f897a5cc2"
+  },
+  "tools/backend-tests/fixtures/giving-legacy-report.html": {
+    "source_commit": "ba1424b2faf9282c6b3cf5c5132e968576e1a2e6",
+    "source_blob": "866977e2de7da9a19a8cc27aae86bf5d8a798a50"
+  },
+  "tools/backend-tests/fixtures/giving-reports-browser-fixture.js": {
+    "source_commit": "ba1424b2faf9282c6b3cf5c5132e968576e1a2e6",
+    "source_blob": "3595caa1f6147a332c9c130ab233a1c81d16947d"
+  },
+  "tools/backend-tests/fixtures/payment-ops-browser-fixture.js": {
+    "source_commit": "ba1424b2faf9282c6b3cf5c5132e968576e1a2e6",
+    "source_blob": "b8d572a5c578ba5dd35e153901e636f8b2cb73fc"
+  },
+  "tools/backend-tests/fixtures/payments-browser-fixture.js": {
+    "source_commit": "ba1424b2faf9282c6b3cf5c5132e968576e1a2e6",
+    "source_blob": "28dfcf83043471e19755087fccb2fbf5fcdcc867"
+  },
+  "tools/backend-tests/forms-concurrency.test.mjs": {
+    "source_commit": "ba1424b2faf9282c6b3cf5c5132e968576e1a2e6",
+    "source_blob": "53e2aca837ec2e173dc30f5f8600f80f02ed7e54"
+  },
+  "tools/backend-tests/forms-fixture.mjs": {
+    "source_commit": "ba1424b2faf9282c6b3cf5c5132e968576e1a2e6",
+    "source_blob": "f239f587e6af905b5159216cc27a283dec93158e"
+  },
+  "tools/backend-tests/forms-gateway.test.mjs": {
+    "source_commit": "ba1424b2faf9282c6b3cf5c5132e968576e1a2e6",
+    "source_blob": "a53436de7c14f39c8da827c5e1b8b99f48e3bb97"
+  },
+  "tools/backend-tests/forms.dom.mjs": {
+    "source_commit": "ba1424b2faf9282c6b3cf5c5132e968576e1a2e6",
+    "source_blob": "1f717d9945fe32952caf60dc9597a2aa424be650"
+  },
+  "tools/backend-tests/forms.test.mjs": {
+    "source_commit": "ba1424b2faf9282c6b3cf5c5132e968576e1a2e6",
+    "source_blob": "30b76dd08b88e279194d5bc888243d57258de19b"
+  },
+  "tools/backend-tests/giving-adapter.test.mjs": {
+    "source_commit": "ba1424b2faf9282c6b3cf5c5132e968576e1a2e6",
+    "source_blob": "a439194b44d61e71f43b41220e090145a37f4170"
+  },
+  "tools/backend-tests/giving-concurrency.test.mjs": {
+    "source_commit": "ba1424b2faf9282c6b3cf5c5132e968576e1a2e6",
+    "source_blob": "04bdba99f53570010279177a89b577afe909b0cf"
+  },
+  "tools/backend-tests/giving-fixture.mjs": {
+    "source_commit": "ba1424b2faf9282c6b3cf5c5132e968576e1a2e6",
+    "source_blob": "ef9466054df454f99b06d4a1d38a73b64691f8fb"
+  },
+  "tools/backend-tests/giving-management.dom.mjs": {
+    "source_commit": "ba1424b2faf9282c6b3cf5c5132e968576e1a2e6",
+    "source_blob": "1de8483e3013eda8c03a64971ea60d027b63e150"
+  },
+  "tools/backend-tests/giving-management.test.mjs": {
+    "source_commit": "ba1424b2faf9282c6b3cf5c5132e968576e1a2e6",
+    "source_blob": "9d3614fc5acbfb8404ecb5e0ebe818a8ef0e1236"
+  },
+  "tools/backend-tests/giving-reports.dom.mjs": {
+    "source_commit": "ba1424b2faf9282c6b3cf5c5132e968576e1a2e6",
+    "source_blob": "67f6be93dc7a3766241cf124aacc57369ae531e3"
+  },
+  "tools/backend-tests/giving-reports.test.mjs": {
+    "source_commit": "ba1424b2faf9282c6b3cf5c5132e968576e1a2e6",
+    "source_blob": "85bfdd5f6cbdb2f1efd584d772a44559bc1fbc6f"
+  },
+  "tools/backend-tests/giving.dom.mjs": {
+    "source_commit": "ba1424b2faf9282c6b3cf5c5132e968576e1a2e6",
+    "source_blob": "5de7e443b6f4529498d0e3d8b273c2db3b0565f2"
+  },
+  "tools/backend-tests/giving.test.mjs": {
+    "source_commit": "ba1424b2faf9282c6b3cf5c5132e968576e1a2e6",
+    "source_blob": "433d8541b28c034929616689567c623390723a06"
+  },
+  "tools/backend-tests/payment-ops-adapter.test.mjs": {
+    "source_commit": "ba1424b2faf9282c6b3cf5c5132e968576e1a2e6",
+    "source_blob": "476ea41d7ad9bd6682cd9bbb8d31827813e54939"
+  },
+  "tools/backend-tests/payment-ops-concurrency.test.mjs": {
+    "source_commit": "ba1424b2faf9282c6b3cf5c5132e968576e1a2e6",
+    "source_blob": "cc3e43320e387ff96da718cff869bc80e4330e0c"
+  },
+  "tools/backend-tests/payment-ops-preview.mjs": {
+    "source_commit": "ba1424b2faf9282c6b3cf5c5132e968576e1a2e6",
+    "source_blob": "8e506f4084164733248f64f18e0dfff27a0560c4"
+  },
+  "tools/backend-tests/payment-ops.dom.mjs": {
+    "source_commit": "ba1424b2faf9282c6b3cf5c5132e968576e1a2e6",
+    "source_blob": "dc7b6dbc0ca4227599c204539365180915fc96ba"
+  },
+  "tools/backend-tests/payment-ops.test.mjs": {
+    "source_commit": "ba1424b2faf9282c6b3cf5c5132e968576e1a2e6",
+    "source_blob": "bbdbcf933b90d5d2aa6c884573b4048f5135408d"
+  },
+  "tools/backend-tests/payment-test-provider.mjs": {
+    "source_commit": "ba1424b2faf9282c6b3cf5c5132e968576e1a2e6",
+    "source_blob": "7d1d13a5786504859c350fbe9b153cd583cc293b"
+  },
+  "tools/backend-tests/payments-adapter.test.mjs": {
+    "source_commit": "ba1424b2faf9282c6b3cf5c5132e968576e1a2e6",
+    "source_blob": "1cfe857dc3122354c6421a99dfd7d0bcb678268c"
+  },
+  "tools/backend-tests/payments-concurrency.test.mjs": {
+    "source_commit": "ba1424b2faf9282c6b3cf5c5132e968576e1a2e6",
+    "source_blob": "6342d6dfb11c14966c1f6f4e80c4fe58f185a9ab"
+  },
+  "tools/backend-tests/payments-fixture.mjs": {
+    "source_commit": "ba1424b2faf9282c6b3cf5c5132e968576e1a2e6",
+    "source_blob": "f36abd539c810cc0c779a7fcb9a7067a9b7c0869"
+  },
+  "tools/backend-tests/payments-preview.mjs": {
+    "source_commit": "ba1424b2faf9282c6b3cf5c5132e968576e1a2e6",
+    "source_blob": "e4e720221e1b3708f360e5aa2895d07b631afaca"
+  },
+  "tools/backend-tests/payments-upgrade.test.mjs": {
+    "source_commit": "1ea6971c2a0273b1a15c132d7793b12c2822901e",
+    "source_blob": "7c72cd1772f1d50ce38c4a4ad3dca78c9f2e563a"
+  },
+  "tools/backend-tests/payments.dom.mjs": {
+    "source_commit": "ba1424b2faf9282c6b3cf5c5132e968576e1a2e6",
+    "source_blob": "865a641179aae3e25883b76fa62125c9689a8569"
+  },
+  "tools/backend-tests/payments.test.mjs": {
+    "source_commit": "ba1424b2faf9282c6b3cf5c5132e968576e1a2e6",
+    "source_blob": "ed1220015530202a5cfb2e9f7b1b7fefd999de79"
+  },
+  "assets/js/nmi-checkout.js": {
+    "source_commit": "1ea6971c2a0273b1a15c132d7793b12c2822901e",
+    "source_blob": "8170a8a9aef2c7fdaf92d5860a4141902b6434c5"
+  },
+  "assets/js/nmi-component.js": {
+    "source_commit": "1ea6971c2a0273b1a15c132d7793b12c2822901e",
+    "source_blob": "514f5d96a34eb9c30e4b0640b05198d2bf5ca670"
+  },
+  "assets/js/nmi-config.js": {
+    "source_commit": "1ea6971c2a0273b1a15c132d7793b12c2822901e",
+    "source_blob": "ffd5347f21947a652924a4ab4c03ffb588b02944"
+  },
+  "docs/GIVING-GIV-3B-NMI-SANDBOX.md": {
+    "source_commit": "1ea6971c2a0273b1a15c132d7793b12c2822901e",
+    "source_blob": "0ed316f131ae722b31ddfa8c4023920aaf3fb4cc"
+  },
+  "docs/NMI-INTEGRATION.md": {
+    "source_commit": "1ea6971c2a0273b1a15c132d7793b12c2822901e",
+    "source_blob": "c58777c44e581631846ab9ef7393ab0b8bf31765"
+  },
+  "docs/NMI-MULTI-MID-FINDINGS.md": {
+    "source_commit": "1ea6971c2a0273b1a15c132d7793b12c2822901e",
+    "source_blob": "cb54298a8339cbb1316f36db824720ea8351ecd2"
+  },
+  "supabase/functions/_shared/payments/nmi.mjs": {
+    "source_commit": "1ea6971c2a0273b1a15c132d7793b12c2822901e",
+    "source_blob": "13f717772f4ac1725286656f7e550e80a258ca69"
+  },
+  "supabase/functions/payments-nmi-webhook/gateway.mjs": {
+    "source_commit": "1ea6971c2a0273b1a15c132d7793b12c2822901e",
+    "source_blob": "2a5deb9c623185baa8a5fb3a47c2e96d54bf0797"
+  },
+  "supabase/functions/payments-nmi-webhook/index.ts": {
+    "source_commit": "1ea6971c2a0273b1a15c132d7793b12c2822901e",
+    "source_blob": "9439fde1e64bba3bfc50736aac34e4600342559b"
+  },
+  "supabase/functions/payments-nmi/gateway.mjs": {
+    "source_commit": "1ea6971c2a0273b1a15c132d7793b12c2822901e",
+    "source_blob": "12b89818e7ec6e3c71e8a4b365469bffa3477f10"
+  },
+  "supabase/functions/payments-nmi/index.ts": {
+    "source_commit": "1ea6971c2a0273b1a15c132d7793b12c2822901e",
+    "source_blob": "f078726d6e959bac30401420fd11df43b2673d92"
+  },
+  "tools/backend-tests/fixtures/nmi-browser-fixture.js": {
+    "source_commit": "1ea6971c2a0273b1a15c132d7793b12c2822901e",
+    "source_blob": "0c6aacb61136df5e4c0b49d3061d00c60c4880db"
+  },
+  "tools/backend-tests/nmi-adapter.test.mjs": {
+    "source_commit": "1ea6971c2a0273b1a15c132d7793b12c2822901e",
+    "source_blob": "0d0f0e11f2b9200655ee779594c503ff3c8d8272"
+  },
+  "tools/backend-tests/nmi-build.test.mjs": {
+    "source_commit": "1ea6971c2a0273b1a15c132d7793b12c2822901e",
+    "source_blob": "24335dc33360ae51c53a32a7916dd4fc07581a70"
+  },
+  "tools/backend-tests/nmi-concurrency.test.mjs": {
+    "source_commit": "1ea6971c2a0273b1a15c132d7793b12c2822901e",
+    "source_blob": "4d02c6ecc3467d7e1664907f33fd5e1825c8b5cd"
+  },
+  "tools/backend-tests/nmi-fixture.mjs": {
+    "source_commit": "1ea6971c2a0273b1a15c132d7793b12c2822901e",
+    "source_blob": "d9f7a946e3f28d3a8362b5649c0fe89c0e97c8c0"
+  },
+  "tools/backend-tests/nmi-gateway.test.mjs": {
+    "source_commit": "1ea6971c2a0273b1a15c132d7793b12c2822901e",
+    "source_blob": "9d5fcda69b5a8e10dede0bf34dcad24495168722"
+  },
+  "tools/backend-tests/nmi-preview.mjs": {
+    "source_commit": "1ea6971c2a0273b1a15c132d7793b12c2822901e",
+    "source_blob": "6596b6c8035c34fac274b4f6ccf452b80269d6a5"
+  },
+  "tools/backend-tests/nmi.dom.mjs": {
+    "source_commit": "1ea6971c2a0273b1a15c132d7793b12c2822901e",
+    "source_blob": "dafdfb92f214112b477e41bd67aa52aa73332eef"
+  },
+  "tools/backend-tests/nmi.test.mjs": {
+    "source_commit": "1ea6971c2a0273b1a15c132d7793b12c2822901e",
+    "source_blob": "4a6bae8d8caab4f2229efd4898128f5be51a2882"
+  },
+  "tools/nmi-component/build.mjs": {
+    "source_commit": "1ea6971c2a0273b1a15c132d7793b12c2822901e",
+    "source_blob": "44447b5b1ffdea91844f56106932cd8f4cc51f3b"
+  },
+  "tools/nmi-component/package-lock.json": {
+    "source_commit": "1ea6971c2a0273b1a15c132d7793b12c2822901e",
+    "source_blob": "8e14913a7aed80e5fb43a3d364b9ca62f13ee6a5"
+  },
+  "tools/nmi-component/package.json": {
+    "source_commit": "1ea6971c2a0273b1a15c132d7793b12c2822901e",
+    "source_blob": "d527abfe335a3002645caff7eb57e0e8e00ca060"
+  },
+  "tools/nmi-component/source.mjs": {
+    "source_commit": "1ea6971c2a0273b1a15c132d7793b12c2822901e",
+    "source_blob": "ddaf9861f1e4cb8bf5cd5cf4d8e2216938a02790"
+  },
+  "assets/js/staff-workspace.js": {
+    "source_commit": "ba1424b2faf9282c6b3cf5c5132e968576e1a2e6",
+    "source_blob": "d1e1e5127bf9804d2ff50d4e8553fb38aba8e68a"
+  },
+  "assets/css/staff-workspace.css": {
+    "source_commit": "ba1424b2faf9282c6b3cf5c5132e968576e1a2e6",
+    "source_blob": "fae7d0ed67e63fe56fe528ea666ae13f2ae8940a"
+  },
+  "assets/images/kingdom-propel-logo.png": {
+    "source_commit": "ba1424b2faf9282c6b3cf5c5132e968576e1a2e6",
+    "source_blob": "855b47a66af227cb67572cd8a63b2cea61436d12"
+  }
+}

@@ -1,0 +1,56 @@
+[
+  {
+    "source": "20261010202812_giving_core_giv_1.sql",
+    "candidate": "20261019002847_nmi_friday_giving_core_giv_1.sql",
+    "source_commit": "ba1424b2faf9282c6b3cf5c5132e968576e1a2e6",
+    "source_blob": "bbc72b1aa1e53ed7e7ab7811c9ccf83f58bd3780"
+  },
+  {
+    "source": "20261011112210_giving_finance_management_giv_2a.sql",
+    "candidate": "20261019002848_nmi_friday_giving_finance_management_giv_2a.sql",
+    "source_commit": "ba1424b2faf9282c6b3cf5c5132e968576e1a2e6",
+    "source_blob": "cd1c4c1ab0ebaedb161f294f7c4da975c4cda96d"
+  },
+  {
+    "source": "20261012025915_giving_reports_statements_giv_2b.sql",
+    "candidate": "20261019002849_nmi_friday_giving_reports_statements_giv_2b.sql",
+    "source_commit": "ba1424b2faf9282c6b3cf5c5132e968576e1a2e6",
+    "source_blob": "e238088f7274fb890788bb38c044a5135ff7ca1c"
+  },
+  {
+    "source": "20261012201849_platform_forms_giv_2c.sql",
+    "candidate": "20261019002850_nmi_friday_platform_forms_giv_2c.sql",
+    "source_commit": "ba1424b2faf9282c6b3cf5c5132e968576e1a2e6",
+    "source_blob": "ed5397a357278665959f2720464f6ad4e07cf005"
+  },
+  {
+    "source": "20261013193553_forms_conflict_http_409.sql",
+    "candidate": "20261019002851_nmi_friday_forms_conflict_http_409.sql",
+    "source_commit": "ba1424b2faf9282c6b3cf5c5132e968576e1a2e6",
+    "source_blob": "1f8c3113e7c9f67d45de3dd21c287935114d88dc"
+  },
+  {
+    "source": "20261014171912_giving_provider_foundation_giv_3a.sql",
+    "candidate": "20261019002853_nmi_friday_giving_provider_foundation_giv_3a.sql",
+    "source_commit": "ba1424b2faf9282c6b3cf5c5132e968576e1a2e6",
+    "source_blob": "46fc67df20b94a4360e23b4e7b50a875273ada59"
+  },
+  {
+    "source": "20261014213506_giving_nmi_sandbox_giv_3b.sql",
+    "candidate": "20261019002854_nmi_friday_giving_nmi_sandbox_giv_3b.sql",
+    "source_commit": "1ea6971c2a0273b1a15c132d7793b12c2822901e",
+    "source_blob": "f05b2f54b5996b2f435b734a90c3608c8a9213f2"
+  },
+  {
+    "source": "20261015142024_giving_payment_operations_giv_3d.sql",
+    "candidate": "20261019002855_nmi_friday_giving_payment_operations_giv_3d.sql",
+    "source_commit": "ba1424b2faf9282c6b3cf5c5132e968576e1a2e6",
+    "source_blob": "ed5952334e2782a85e76f27adc382e07f9edc567"
+  },
+  {
+    "source": "20261015203814_giving_payment_ops_amount_filters.sql",
+    "candidate": "20261019002856_nmi_friday_giving_payment_ops_amount_filters.sql",
+    "source_commit": "ba1424b2faf9282c6b3cf5c5132e968576e1a2e6",
+    "source_blob": "038348c883233c980b2cb0b73a54a7898ddf984b"
+  }
+]
