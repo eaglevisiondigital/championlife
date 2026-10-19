@@ -1,0 +1,102 @@
+{
+  "outreach_snapshot_status": "uncommitted; exact SQL hashes identify tested snapshot; rerun after changes",
+  "not_authorization_for_combined_release": true,
+  "unpopulated": {
+    "scope": "local synthetic diagnostic only; candidate branches not merged; no hosted writes",
+    "givingHead": "3a8317fb265c0cabb894133ac169100aaea83622",
+    "outreachSnapshot": [
+      {
+        "file": "20261019004611_unified_outreach_staff_partner.sql",
+        "sha256": "418862e6e22a5c3280958253ade398a7f9e362f039c312a971d9d063e692749f"
+      },
+      {
+        "file": "20261019004612_unified_outreach_workflow_foundation.sql",
+        "sha256": "3ba064f7900624ca32faa95befa1d1de702ce3e428cc74131aac737581bff0f2"
+      },
+      {
+        "file": "20261019004613_unified_outreach_operations.sql",
+        "sha256": "69debbb2171c582782c820534c70c533ea79903977e08a144c0848b315186526"
+      },
+      {
+        "file": "20261019004614_unified_outreach_security.sql",
+        "sha256": "a361cff97ec94cad6994d23529d89990f71d772dc2341caa64f63673f9d92030"
+      }
+    ],
+    "combinedReplayError": null,
+    "permissionKeysBefore": 70,
+    "permissionKeysAfter": 46,
+    "lostGivingKeys": [
+      "finance.export",
+      "finance.gifts.adjust",
+      "finance.gifts.create",
+      "finance.gifts.read",
+      "finance.merchant.configure",
+      "finance.pledges.manage",
+      "finance.pledges.read",
+      "finance.reconciliation.manage",
+      "finance.reconciliation.read",
+      "finance.recurring.manage",
+      "finance.recurring.read",
+      "finance.refunds.manage",
+      "finance.reports.export",
+      "finance.reports.merchant",
+      "finance.reports.read",
+      "finance.statements.generate",
+      "forms.archive",
+      "forms.create",
+      "forms.edit",
+      "forms.payment.configure",
+      "forms.publish",
+      "forms.read",
+      "forms.submissions.export",
+      "forms.submissions.read",
+      "payments.configure",
+      "payments.issue.assign",
+      "payments.manage",
+      "payments.method.manage",
+      "payments.provider.activate",
+      "payments.reconcile",
+      "payments.recurring.manage",
+      "payments.refund",
+      "payments.refund.approve",
+      "payments.refund.execute",
+      "payments.refund.request",
+      "payments.route",
+      "payments.view",
+      "payments.void",
+      "payments.void.approve",
+      "payments.void.execute",
+      "payments.void.request"
+    ]
+  },
+  "synthetic_preexisting_giving_grants": {
+    "scope": "local synthetic diagnostic only; candidate branches not merged; no hosted writes",
+    "givingHead": "3a8317fb265c0cabb894133ac169100aaea83622",
+    "outreachSnapshot": [
+      {
+        "file": "20261019004611_unified_outreach_staff_partner.sql",
+        "sha256": "418862e6e22a5c3280958253ade398a7f9e362f039c312a971d9d063e692749f"
+      },
+      {
+        "file": "20261019004612_unified_outreach_workflow_foundation.sql",
+        "sha256": "3ba064f7900624ca32faa95befa1d1de702ce3e428cc74131aac737581bff0f2"
+      },
+      {
+        "file": "20261019004613_unified_outreach_operations.sql",
+        "sha256": "69debbb2171c582782c820534c70c533ea79903977e08a144c0848b315186526"
+      },
+      {
+        "file": "20261019004614_unified_outreach_security.sql",
+        "sha256": "a361cff97ec94cad6994d23529d89990f71d772dc2341caa64f63673f9d92030"
+      }
+    ],
+    "combinedReplayError": {
+      "file": "20261019004613_unified_outreach_operations.sql",
+      "message": "check constraint \"organization_staff_permissions_permission_check\" of relation \"organization_staff_permissions\" is violated by some row"
+    },
+    "permissionKeysBefore": 70,
+    "permissionKeysAfter": 70,
+    "lostGivingKeys": []
+  },
+  "result": "BLOCKED: fixed Outreach registry removes 41 Giving keys on empty grants and rejects existing synthetic Giving grants. Primary must reconcile additive registry/constraint and tested release order."
+}

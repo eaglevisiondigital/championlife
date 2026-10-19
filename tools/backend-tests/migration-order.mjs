@@ -40,4 +40,5 @@ export const givingOrder=[
   "20261019002856_nmi_friday_giving_payment_ops_amount_filters.sql"
 ];
 export const integrationOrder=["20261019003215_nmi_friday_operations_bridge.sql"];
-export const migrationOrder=[...productionOrder,...givingOrder,...integrationOrder];
+export const executionOrder=["20261019010048_nmi_sandbox_execution.sql","20261019010932_nmi_sandbox_recovery_reconciliation.sql"];
+export const migrationOrder=[...productionOrder,...givingOrder,...integrationOrder,...executionOrder];

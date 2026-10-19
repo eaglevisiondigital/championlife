@@ -460,5 +460,11 @@
   "assets/js/nmi-config.js",
   "assets/js/staff-workspace.js",
   "assets/css/staff-workspace.css",
-  "assets/images/kingdom-propel-logo.png"
+  "assets/images/kingdom-propel-logo.png",
+  "nmi-giving.html",
+  "staff-nmi-execution.html",
+  "assets/js/nmi-giving-config.js",
+  "assets/js/nmi-giving-client.js",
+  "assets/js/nmi-public-giving.js",
+  "assets/js/nmi-staff-execution.js"
 ]

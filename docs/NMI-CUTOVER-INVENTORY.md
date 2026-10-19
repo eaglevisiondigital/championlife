@@ -1,3 +1,11 @@
+# Execution follow-up to frozen PR #34
+
+Do not restart the accepted source inventory below. The new implementation is described in `NMI-CUTOVER-CHILD-HANDOFF.md`; exact files since `3a8317f` and since production are in `NMI-CUTOVER-CHANGED-FILES.json`. Two new forward execution migrations extend the ten frozen candidate migrations. `NMI-CUTOVER-ACCEPTANCE-MIGRATIONS.json` gives exact staged order/source and staged hashes for all 25 primary-confirmed baseline + 12 forward files. New runtime hosts are `nmi-giving.html` and `staff-nmi-execution.html`; functions are `nmi-giving` and `nmi-giving-webhook` with source-pinned default-off orchestration/Query helpers. Existing protected production runtime and GiveHub are unchanged.
+
+Anonymous execution, authoritative sandbox ledger posting, active recurring/cancel/pause, Operations executor, held receipts, transaction/batch lookup and recovery are implemented/tested locally in this follow-up. Real provider acceptance, complete merchant facts, primary shared integration, legal sender/delivery and release approval remain gates. Older no-execution statements below describe the frozen foundation only. No hosted target or live payment was used. Exact GiveHub normalized requirements are in `NMI-CUTOVER-GIVEHUB-CONTRACT.md`; no export contents are assumed.
+
+---
+
 # NMI Friday integration inventory — 2026-10-18
 
 First deliverable; repository inspection, not a release authorization. Base and branch: `e3157f0afa3f563ab6560ca64c9049448f02c806`, `codex/nmi-giving-friday-cutover`. Command documents copied exactly from PR #31 head `b1c1e281ff8f085b3b2a0083b004054da4adaac1`; Issue #32 requires a separate GO package. No old dependent branch is merged.
@@ -33,6 +41,8 @@ Retain every one of the 25 migration files present at the exact production commi
 | 9 | `20261019002856_nmi_friday_giving_payment_ops_amount_filters.sql` | `20261015203814_giving_payment_ops_amount_filters.sql` |
 
 10. `20261019003215_nmi_friday_operations_bridge.sql`: new integration-only trigger forwards safe NMI sale/authorization/capture/transaction observations to the accepted Operations service. No ledger posting, retry or payment execution.
+
+Hosted-history correction: repository source order remains unchanged, but offline packages stage the three reported applied version aliases from `NMI-CUTOVER-PRODUCTION-BASELINE.json`; primary live-ledger confirmation is pending. See `NMI-CUTOVER-CHILD-HANDOFF.md`. Never apply the original repository-named package as an exact live-ledger rehearsal.
 
 Exact source commits/blob hashes: `NMI-CUTOVER-MIGRATIONS.json`. Never use these new versions on a project where the old Giving chain was already applied; use a clean isolated project matching this production baseline.
 
@@ -181,3 +191,7 @@ Verbatim environment references in extracted Edge entrypoints:
 - `supabase/functions/payments-nmi-webhook/index.ts`: `NMI_SANDBOX_GATEWAY_ID`, `NMI_SANDBOX_MERCHANT_REFERENCE`, `NMI_SANDBOX_ORGANIZATION_ID`, `NMI_SANDBOX_WEBHOOK_ENABLED`, `SUPABASE_SERVICE_ROLE_KEY`, `SUPABASE_URL`
 - `supabase/functions/payments-nmi/index.ts`: `NMI_SANDBOX_ALLOWED_ORIGINS`, `NMI_SANDBOX_EXECUTION_ENABLED`, `SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY`, `SUPABASE_URL`
 - `supabase/functions/payments-webhook/index.ts`: 
+
+## Primary-thread coordination checkpoint
+
+The current primary handoff is `NMI-CUTOVER-CHILD-HANDOFF.md`. Exact shared-path fingerprints, SQL permission incompatibilities and full changed-file list are in the associated JSON artifacts. The primary owns shared models, migration order and final shell integration. No combined release authority is delegated to this child.

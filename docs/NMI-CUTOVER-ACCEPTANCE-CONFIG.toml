@@ -1,0 +1,7 @@
+# Proposed dedicated acceptance gateway settings ONLY. Not applied anywhere.
+# Anonymous checkout verifies Turnstile/capabilities; staff requests verify Auth and current SQL permissions.
+# Webhook authenticates raw bytes with gateway-specific HMAC before database calls.
+[functions.nmi-giving]
+verify_jwt = false
+[functions.nmi-giving-webhook]
+verify_jwt = false

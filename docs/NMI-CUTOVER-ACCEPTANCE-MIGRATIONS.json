@@ -1,0 +1,341 @@
+{
+  "production_base": "e3157f0afa3f563ab6560ca64c9049448f02c806",
+  "baseline_confirmation": "CONFIRMED_CURRENT_SNAPSHOT",
+  "baseline_count": 25,
+  "forward_count": 12,
+  "order": [
+    {
+      "order": 1,
+      "kind": "production_baseline",
+      "source": "20260923114743_create_course_progress_schema.sql",
+      "staged": "20260923114743_create_course_progress_schema.sql",
+      "source_sha256": "c42d6a9a7f213558170e389f011e0f0b1972d065efd8fb9dc30644349b901f72",
+      "staged_sha256": "c42d6a9a7f213558170e389f011e0f0b1972d065efd8fb9dc30644349b901f72",
+      "staged_sql_md5": "74d5ff1a36e101169f473eb68f36c6a2"
+    },
+    {
+      "order": 2,
+      "kind": "production_baseline",
+      "source": "20260923114822_harden_course_security_and_indexes.sql",
+      "staged": "20260923114822_harden_course_security_and_indexes.sql",
+      "source_sha256": "9becd4c0e52b1787bf7ecf066683359aaced0b27c5b71123da066dd8a09193fb",
+      "staged_sha256": "9becd4c0e52b1787bf7ecf066683359aaced0b27c5b71123da066dd8a09193fb",
+      "staged_sql_md5": "f6a0a281f571a024d94da6dfe81175ca"
+    },
+    {
+      "order": 3,
+      "kind": "production_baseline",
+      "source": "20260923115114_revoke_public_rls_helper_execution.sql",
+      "staged": "20260923115114_revoke_public_rls_helper_execution.sql",
+      "source_sha256": "a8c9d9e0044ea4f8ac6b6bf726b7b28370ddf9ade493eaceaaef319dcf741ee9",
+      "staged_sha256": "a8c9d9e0044ea4f8ac6b6bf726b7b28370ddf9ade493eaceaaef319dcf741ee9",
+      "staged_sql_md5": "3c2f822083bbd41c61de60dbd901b2b7"
+    },
+    {
+      "order": 4,
+      "kind": "production_baseline",
+      "source": "20260923115706_grant_authenticated_course_api_access.sql",
+      "staged": "20260923115706_grant_authenticated_course_api_access.sql",
+      "source_sha256": "83998f15a0236a4765dd83803a34166854a278fc2888073d28b4eee5b9a7dd26",
+      "staged_sha256": "83998f15a0236a4765dd83803a34166854a278fc2888073d28b4eee5b9a7dd26",
+      "staged_sql_md5": "07c6c9aeaafd2dcbed8618a3fd98321e"
+    },
+    {
+      "order": 5,
+      "kind": "production_baseline",
+      "source": "20260923115732_restrict_authenticated_course_privileges.sql",
+      "staged": "20260923115732_restrict_authenticated_course_privileges.sql",
+      "source_sha256": "5f53a377265a3b68231e32f75b4c99f656bea74900ec4fbdffc346f03473b103",
+      "staged_sha256": "5f53a377265a3b68231e32f75b4c99f656bea74900ec4fbdffc346f03473b103",
+      "staged_sql_md5": "9733262ac589e5963aee9717cfb8f7b2"
+    },
+    {
+      "order": 6,
+      "kind": "production_baseline",
+      "source": "20260923121707_add_st_lucia_registration_and_account_linking.sql",
+      "staged": "20260923121707_add_st_lucia_registration_and_account_linking.sql",
+      "source_sha256": "225e352e966e466068649b30885a6003e44964237218f99dcbc678ccfffbcf71",
+      "staged_sha256": "225e352e966e466068649b30885a6003e44964237218f99dcbc678ccfffbcf71",
+      "staged_sql_md5": "f7d1b175b4e5cd8d0a88fedab4cf3b92"
+    },
+    {
+      "order": 7,
+      "kind": "production_baseline",
+      "source": "20260923122017_secure_st_lucia_registration_claim_after_login.sql",
+      "staged": "20260923122017_secure_st_lucia_registration_claim_after_login.sql",
+      "source_sha256": "a0636bf90aacd1eb1c8ac05aed9170527c46aba56b2e4b0c619dd6412702fcde",
+      "staged_sha256": "a0636bf90aacd1eb1c8ac05aed9170527c46aba56b2e4b0c619dd6412702fcde",
+      "staged_sql_md5": "0c0be680d67d7e5f0872959792078b10"
+    },
+    {
+      "order": 8,
+      "kind": "production_baseline",
+      "source": "20260925200310_organization_foundation.sql",
+      "staged": "20260925200310_organization_foundation.sql",
+      "source_sha256": "3d26adbdb35e0aa657a08af6f175fc108fe9e49bc9ad01117314441b953d0d8c",
+      "staged_sha256": "3d26adbdb35e0aa657a08af6f175fc108fe9e49bc9ad01117314441b953d0d8c",
+      "staged_sql_md5": "61b5d3e275d566d6edfbe23b5c486de8"
+    },
+    {
+      "order": 9,
+      "kind": "production_baseline",
+      "source": "20260925200318_harden_outreach_claim.sql",
+      "staged": "20260925200318_harden_outreach_claim.sql",
+      "source_sha256": "55160b1ce86006a8acfcb8608f39689b3916eaaaf905587a7bbeec86dff37a4b",
+      "staged_sha256": "55160b1ce86006a8acfcb8608f39689b3916eaaaf905587a7bbeec86dff37a4b",
+      "staged_sql_md5": "658faf3975a5dc4c0ec7e3fa292a0b7d"
+    },
+    {
+      "order": 10,
+      "kind": "production_baseline",
+      "source": "20260925202633_lesson_notes.sql",
+      "staged": "20260925202633_lesson_notes.sql",
+      "source_sha256": "774a2b1a345ab7efa4952d0aef9ecceda2952b21fdc91c146fde2d110d973d48",
+      "staged_sha256": "774a2b1a345ab7efa4952d0aef9ecceda2952b21fdc91c146fde2d110d973d48",
+      "staged_sql_md5": "1f46cf05d385d4d6927b106aff7e2643"
+    },
+    {
+      "order": 11,
+      "kind": "production_baseline",
+      "source": "20260926000821_followup_tasks.sql",
+      "staged": "20260926000821_followup_tasks.sql",
+      "source_sha256": "db3fa4c4869fc6efff84133e300ee162697558d2d64c6c37abd68c1ff4748f74",
+      "staged_sha256": "db3fa4c4869fc6efff84133e300ee162697558d2d64c6c37abd68c1ff4748f74",
+      "staged_sql_md5": "838147e76135807cda4c2001250bb0af"
+    },
+    {
+      "order": 12,
+      "kind": "production_baseline",
+      "source": "20260926022613_staff_access_and_people.sql",
+      "staged": "20260926022613_staff_access_and_people.sql",
+      "source_sha256": "5245c90b63fe289b929f6210c294c36f300deeec3786aa22866c7b59141aca4c",
+      "staged_sha256": "5245c90b63fe289b929f6210c294c36f300deeec3786aa22866c7b59141aca4c",
+      "staged_sql_md5": "903217b3f93478c771b2f5bea7579d6a"
+    },
+    {
+      "order": 13,
+      "kind": "production_baseline",
+      "source": "20260926024742_household_records.sql",
+      "staged": "20260926024742_household_records.sql",
+      "source_sha256": "9da11eb6ff58e3df63e4d5e6ccd961f1a3e14db234e6eeca8c49cb73c66a93e1",
+      "staged_sha256": "9da11eb6ff58e3df63e4d5e6ccd961f1a3e14db234e6eeca8c49cb73c66a93e1",
+      "staged_sql_md5": "963a3e14a7c989e4294353312704d055"
+    },
+    {
+      "order": 14,
+      "kind": "production_baseline",
+      "source": "20260926032026_department_tags.sql",
+      "staged": "20260926032026_department_tags.sql",
+      "source_sha256": "ca8dbaa58b0a8f7d8e5ac25e221b9fe7b77886befb843c23b8c67440b105bffe",
+      "staged_sha256": "ca8dbaa58b0a8f7d8e5ac25e221b9fe7b77886befb843c23b8c67440b105bffe",
+      "staged_sql_md5": "430a081e4a0d84cf4359e6445b7f6450"
+    },
+    {
+      "order": 15,
+      "kind": "production_baseline",
+      "source": "20260926034222_tag_workflows.sql",
+      "staged": "20260926034222_tag_workflows.sql",
+      "source_sha256": "caa052c1bfc892c93291753afd9435d76e974859147010e955c2752d00dac678",
+      "staged_sha256": "caa052c1bfc892c93291753afd9435d76e974859147010e955c2752d00dac678",
+      "staged_sql_md5": "8005dd40e22c604ff630bfb1a1ce7e1b"
+    },
+    {
+      "order": 16,
+      "kind": "production_baseline",
+      "source": "20260926035410_giving_configuration.sql",
+      "staged": "20260926035410_giving_configuration.sql",
+      "source_sha256": "3fddb322a99c478bf13784bde14deb62ae05257dff1d899a279611edc08ffef4",
+      "staged_sha256": "3fddb322a99c478bf13784bde14deb62ae05257dff1d899a279611edc08ffef4",
+      "staged_sql_md5": "8d6571a673d73be232f0ead583c743e3"
+    },
+    {
+      "order": 17,
+      "kind": "production_baseline",
+      "source": "20260926040812_participant_portals.sql",
+      "staged": "20260926040812_participant_portals.sql",
+      "source_sha256": "a9189d02e8723da20ac05acd061f7278d2b4ca4c293b338165f410f272f4f921",
+      "staged_sha256": "a9189d02e8723da20ac05acd061f7278d2b4ca4c293b338165f410f272f4f921",
+      "staged_sql_md5": "5b6ccf6591c2597e584fb190abadd318"
+    },
+    {
+      "order": 18,
+      "kind": "production_baseline",
+      "source": "20260928172557_people_staff_v1.sql",
+      "staged": "20260928172557_people_staff_v1.sql",
+      "source_sha256": "0c00fe4f50f2bc92f1d9a4896125f9143a56e7ea37e3317540954cdb52cadc07",
+      "staged_sha256": "0c00fe4f50f2bc92f1d9a4896125f9143a56e7ea37e3317540954cdb52cadc07",
+      "staged_sql_md5": "a26a3063333816fb70feb8a9406369f2"
+    },
+    {
+      "order": 19,
+      "kind": "production_baseline",
+      "source": "20261004055336_outreach_partner_intake_v1.sql",
+      "staged": "20261004055336_outreach_partner_intake_v1.sql",
+      "source_sha256": "c2feb7c1675b973da4f3e0f5cf3a18aaf97dacdc59aca7a7e01a029d5ca84351",
+      "staged_sha256": "c2feb7c1675b973da4f3e0f5cf3a18aaf97dacdc59aca7a7e01a029d5ca84351",
+      "staged_sql_md5": "16ea4420b2986cad1049a3067b6d331b"
+    },
+    {
+      "order": 20,
+      "kind": "production_baseline",
+      "source": "20261004154340_allow_bessemer_outreach_registrations.sql",
+      "staged": "20261004154340_allow_bessemer_outreach_registrations.sql",
+      "source_sha256": "9919250f0df4280a311baf929e8c2eb5d97770285bc3ea93f204752d213a462a",
+      "staged_sha256": "9bb2d910ae0951587cf5b4d4f4bdeba88489b1a96f34298e3a2c956757cfc77a",
+      "staged_sql_md5": "0d12ae8e2dc5a9cdc7abfa851e73e722"
+    },
+    {
+      "order": 21,
+      "kind": "production_baseline",
+      "source": "20261004230453_outreach_partner_gateway.sql",
+      "staged": "20261004230453_outreach_partner_gateway.sql",
+      "source_sha256": "25802f89d285d86fc3783b454132e6f0378b93f74c4802435d6bf7369dc29a67",
+      "staged_sha256": "25802f89d285d86fc3783b454132e6f0378b93f74c4802435d6bf7369dc29a67",
+      "staged_sql_md5": "038a5a3b3e91a9c63fc60dfd44179e97"
+    },
+    {
+      "order": 22,
+      "kind": "production_baseline",
+      "source": "20261005161946_outreach_network_limit_120.sql",
+      "staged": "20261005161946_outreach_network_limit_120.sql",
+      "source_sha256": "6159ef5ac6fff5a5480f4a71acc45ece4a0298144e1a4078fb114d1ded0f4f0e",
+      "staged_sha256": "6159ef5ac6fff5a5480f4a71acc45ece4a0298144e1a4078fb114d1ded0f4f0e",
+      "staged_sql_md5": "1d944ed5d04855ef57fda4109f3d9500"
+    },
+    {
+      "order": 23,
+      "kind": "production_baseline",
+      "source": "20261016201932_huntsville_registration_foundation.sql",
+      "staged": "20261018113932_20261016201932_huntsville_registration_foundation.sql",
+      "source_sha256": "365ade7c6995541ad99f32135c3775b4e03c52d9a9bde95cc8f70da844f10a09",
+      "staged_sha256": "365ade7c6995541ad99f32135c3775b4e03c52d9a9bde95cc8f70da844f10a09",
+      "staged_sql_md5": "5053e090cfa6d95df13e347d5e203dea"
+    },
+    {
+      "order": 24,
+      "kind": "production_baseline",
+      "source": "20261016201933_huntsville_registration_draft.sql",
+      "staged": "20261018113939_20261016201933_huntsville_registration_draft.sql",
+      "source_sha256": "961187b9a667c021909019a0ba77dd83b140c590de56b21a1111eeb039689952",
+      "staged_sha256": "961187b9a667c021909019a0ba77dd83b140c590de56b21a1111eeb039689952",
+      "staged_sql_md5": "a3db5a8bf1d64295cf2806ee4331a126"
+    },
+    {
+      "order": 25,
+      "kind": "production_baseline",
+      "source": "20261018121900_allow_huntsville_decision_registrations.sql",
+      "staged": "20261018144843_20261018121900_allow_huntsville_decision_registrations.sql",
+      "source_sha256": "af9abe5821e299b53457ca6c1ec516f402e63c0dc757b6b617570783bd3efda1",
+      "staged_sha256": "af9abe5821e299b53457ca6c1ec516f402e63c0dc757b6b617570783bd3efda1",
+      "staged_sql_md5": "9223ab5708d96fed0ae35c85984e15cf"
+    },
+    {
+      "order": 26,
+      "kind": "giving_candidate",
+      "source": "20261019002847_nmi_friday_giving_core_giv_1.sql",
+      "staged": "20261019002847_nmi_friday_giving_core_giv_1.sql",
+      "source_sha256": "f6cdf5f45b38ac57a122396b6b588d5594d3085db221bb69406b386628b99e3e",
+      "staged_sha256": "f6cdf5f45b38ac57a122396b6b588d5594d3085db221bb69406b386628b99e3e",
+      "staged_sql_md5": "1f1c5dfa98cacdfb31c2a62f89ae4207"
+    },
+    {
+      "order": 27,
+      "kind": "giving_candidate",
+      "source": "20261019002848_nmi_friday_giving_finance_management_giv_2a.sql",
+      "staged": "20261019002848_nmi_friday_giving_finance_management_giv_2a.sql",
+      "source_sha256": "eb7e37f5597fcf67a0fbf37487426606fe3c1c49f5680e140755ae2489c38efc",
+      "staged_sha256": "eb7e37f5597fcf67a0fbf37487426606fe3c1c49f5680e140755ae2489c38efc",
+      "staged_sql_md5": "e2d6ed5044b1c327bffd6593eeb7c001"
+    },
+    {
+      "order": 28,
+      "kind": "giving_candidate",
+      "source": "20261019002849_nmi_friday_giving_reports_statements_giv_2b.sql",
+      "staged": "20261019002849_nmi_friday_giving_reports_statements_giv_2b.sql",
+      "source_sha256": "51779dea8614cb783d6667b1a162f7779752049f5c5cf0dcbc2855d875eca6c9",
+      "staged_sha256": "51779dea8614cb783d6667b1a162f7779752049f5c5cf0dcbc2855d875eca6c9",
+      "staged_sql_md5": "376f30ebe66cd31535d57eb3c79f0077"
+    },
+    {
+      "order": 29,
+      "kind": "giving_candidate",
+      "source": "20261019002850_nmi_friday_platform_forms_giv_2c.sql",
+      "staged": "20261019002850_nmi_friday_platform_forms_giv_2c.sql",
+      "source_sha256": "d6be09498385749c9648cf8c40475c8f94533271bc45a2736b76881af15bb313",
+      "staged_sha256": "d6be09498385749c9648cf8c40475c8f94533271bc45a2736b76881af15bb313",
+      "staged_sql_md5": "e4e1d59f0efb3b5fe8946e3d9f3b2f11"
+    },
+    {
+      "order": 30,
+      "kind": "giving_candidate",
+      "source": "20261019002851_nmi_friday_forms_conflict_http_409.sql",
+      "staged": "20261019002851_nmi_friday_forms_conflict_http_409.sql",
+      "source_sha256": "364fd93391678daee7b986337137bb2efd4b9bc07bb31d5e8f281ba2e886be1e",
+      "staged_sha256": "364fd93391678daee7b986337137bb2efd4b9bc07bb31d5e8f281ba2e886be1e",
+      "staged_sql_md5": "ee8998c016860db42d649aaf68f465ad"
+    },
+    {
+      "order": 31,
+      "kind": "giving_candidate",
+      "source": "20261019002853_nmi_friday_giving_provider_foundation_giv_3a.sql",
+      "staged": "20261019002853_nmi_friday_giving_provider_foundation_giv_3a.sql",
+      "source_sha256": "116881c4e0466fcc0c2c6cae394f9841c51e1643afb3e1f2c9dde31991ea8fbe",
+      "staged_sha256": "116881c4e0466fcc0c2c6cae394f9841c51e1643afb3e1f2c9dde31991ea8fbe",
+      "staged_sql_md5": "7435af7790a0b35c519af688d9da8e57"
+    },
+    {
+      "order": 32,
+      "kind": "giving_candidate",
+      "source": "20261019002854_nmi_friday_giving_nmi_sandbox_giv_3b.sql",
+      "staged": "20261019002854_nmi_friday_giving_nmi_sandbox_giv_3b.sql",
+      "source_sha256": "f66fc9ec50958fa07a88651ff06b65465d21a0b350f0e5de16037726dff2365c",
+      "staged_sha256": "f66fc9ec50958fa07a88651ff06b65465d21a0b350f0e5de16037726dff2365c",
+      "staged_sql_md5": "7c7756b354dec295624e1f6dd9ccd64e"
+    },
+    {
+      "order": 33,
+      "kind": "giving_candidate",
+      "source": "20261019002855_nmi_friday_giving_payment_operations_giv_3d.sql",
+      "staged": "20261019002855_nmi_friday_giving_payment_operations_giv_3d.sql",
+      "source_sha256": "5ceb43a536a0989e8a0a4f4541e0c98a3fa668722d7610d16c25a6619353b0eb",
+      "staged_sha256": "5ceb43a536a0989e8a0a4f4541e0c98a3fa668722d7610d16c25a6619353b0eb",
+      "staged_sql_md5": "7124f9405b1aaaf3cdcb7bfb36371d8d"
+    },
+    {
+      "order": 34,
+      "kind": "giving_candidate",
+      "source": "20261019002856_nmi_friday_giving_payment_ops_amount_filters.sql",
+      "staged": "20261019002856_nmi_friday_giving_payment_ops_amount_filters.sql",
+      "source_sha256": "a451a208ec0ae96a48b3711805d6ea9531d438b37b9b59527c767c7b64a8ef71",
+      "staged_sha256": "a451a208ec0ae96a48b3711805d6ea9531d438b37b9b59527c767c7b64a8ef71",
+      "staged_sql_md5": "ed7d36c1a09ad503e4fbf16e9a066b69"
+    },
+    {
+      "order": 35,
+      "kind": "giving_candidate",
+      "source": "20261019003215_nmi_friday_operations_bridge.sql",
+      "staged": "20261019003215_nmi_friday_operations_bridge.sql",
+      "source_sha256": "910e603bac085d819f28854c6506141b75fbb0160834799089ce6cc3fa26cc9e",
+      "staged_sha256": "910e603bac085d819f28854c6506141b75fbb0160834799089ce6cc3fa26cc9e",
+      "staged_sql_md5": "fcb36b3ed99f399ecf6d1545e446e8a1"
+    },
+    {
+      "order": 36,
+      "kind": "giving_candidate",
+      "source": "20261019010048_nmi_sandbox_execution.sql",
+      "staged": "20261019010048_nmi_sandbox_execution.sql",
+      "source_sha256": "17e4e3f3eddd8666304bfe793c72e9bbb69819e38093541a7eb80c0ec548717f",
+      "staged_sha256": "17e4e3f3eddd8666304bfe793c72e9bbb69819e38093541a7eb80c0ec548717f",
+      "staged_sql_md5": "1055d30207010149f148c1b440dd914d"
+    },
+    {
+      "order": 37,
+      "kind": "giving_candidate",
+      "source": "20261019010932_nmi_sandbox_recovery_reconciliation.sql",
+      "staged": "20261019010932_nmi_sandbox_recovery_reconciliation.sql",
+      "source_sha256": "181d3e4463f38d00d09dbb057d22a2541195203a82eb573b805650274ab2c707",
+      "staged_sha256": "181d3e4463f38d00d09dbb057d22a2541195203a82eb573b805650274ab2c707",
+      "staged_sql_md5": "d40b1409279043802ed9435e1aaad202"
+    }
+  ]
+}

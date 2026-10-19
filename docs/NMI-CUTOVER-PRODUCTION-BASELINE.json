@@ -1,0 +1,192 @@
+{
+  "productionCommit": "e3157f0afa3f563ab6560ca64c9049448f02c806",
+  "readOnlyVerified": "2026-10-18",
+  "projectRef": "exdocjbmylgxssanymjk",
+  "notes": "Repository history remains unchanged. Stage the exact production version IDs into a disposable acceptance package only. One historical SQL differs only by a final newline.",
+  "migrations": [
+    {
+      "version": "20260923114743",
+      "name": "create_course_progress_schema",
+      "sql_md5": "74d5ff1a36e101169f473eb68f36c6a2",
+      "sourceFile": "20260923114743_create_course_progress_schema.sql",
+      "sourceNormalization": "none"
+    },
+    {
+      "version": "20260923114822",
+      "name": "harden_course_security_and_indexes",
+      "sql_md5": "f6a0a281f571a024d94da6dfe81175ca",
+      "sourceFile": "20260923114822_harden_course_security_and_indexes.sql",
+      "sourceNormalization": "none"
+    },
+    {
+      "version": "20260923115114",
+      "name": "revoke_public_rls_helper_execution",
+      "sql_md5": "3c2f822083bbd41c61de60dbd901b2b7",
+      "sourceFile": "20260923115114_revoke_public_rls_helper_execution.sql",
+      "sourceNormalization": "none"
+    },
+    {
+      "version": "20260923115706",
+      "name": "grant_authenticated_course_api_access",
+      "sql_md5": "07c6c9aeaafd2dcbed8618a3fd98321e",
+      "sourceFile": "20260923115706_grant_authenticated_course_api_access.sql",
+      "sourceNormalization": "none"
+    },
+    {
+      "version": "20260923115732",
+      "name": "restrict_authenticated_course_privileges",
+      "sql_md5": "9733262ac589e5963aee9717cfb8f7b2",
+      "sourceFile": "20260923115732_restrict_authenticated_course_privileges.sql",
+      "sourceNormalization": "none"
+    },
+    {
+      "version": "20260923121707",
+      "name": "add_st_lucia_registration_and_account_linking",
+      "sql_md5": "f7d1b175b4e5cd8d0a88fedab4cf3b92",
+      "sourceFile": "20260923121707_add_st_lucia_registration_and_account_linking.sql",
+      "sourceNormalization": "none"
+    },
+    {
+      "version": "20260923122017",
+      "name": "secure_st_lucia_registration_claim_after_login",
+      "sql_md5": "0c0be680d67d7e5f0872959792078b10",
+      "sourceFile": "20260923122017_secure_st_lucia_registration_claim_after_login.sql",
+      "sourceNormalization": "none"
+    },
+    {
+      "version": "20260925200310",
+      "name": "organization_foundation",
+      "sql_md5": "61b5d3e275d566d6edfbe23b5c486de8",
+      "sourceFile": "20260925200310_organization_foundation.sql",
+      "sourceNormalization": "none"
+    },
+    {
+      "version": "20260925200318",
+      "name": "harden_outreach_claim",
+      "sql_md5": "658faf3975a5dc4c0ec7e3fa292a0b7d",
+      "sourceFile": "20260925200318_harden_outreach_claim.sql",
+      "sourceNormalization": "none"
+    },
+    {
+      "version": "20260925202633",
+      "name": "lesson_notes",
+      "sql_md5": "1f46cf05d385d4d6927b106aff7e2643",
+      "sourceFile": "20260925202633_lesson_notes.sql",
+      "sourceNormalization": "none"
+    },
+    {
+      "version": "20260926000821",
+      "name": "followup_tasks",
+      "sql_md5": "838147e76135807cda4c2001250bb0af",
+      "sourceFile": "20260926000821_followup_tasks.sql",
+      "sourceNormalization": "none"
+    },
+    {
+      "version": "20260926022613",
+      "name": "staff_access_and_people",
+      "sql_md5": "903217b3f93478c771b2f5bea7579d6a",
+      "sourceFile": "20260926022613_staff_access_and_people.sql",
+      "sourceNormalization": "none"
+    },
+    {
+      "version": "20260926024742",
+      "name": "household_records",
+      "sql_md5": "963a3e14a7c989e4294353312704d055",
+      "sourceFile": "20260926024742_household_records.sql",
+      "sourceNormalization": "none"
+    },
+    {
+      "version": "20260926032026",
+      "name": "department_tags",
+      "sql_md5": "430a081e4a0d84cf4359e6445b7f6450",
+      "sourceFile": "20260926032026_department_tags.sql",
+      "sourceNormalization": "none"
+    },
+    {
+      "version": "20260926034222",
+      "name": "tag_workflows",
+      "sql_md5": "8005dd40e22c604ff630bfb1a1ce7e1b",
+      "sourceFile": "20260926034222_tag_workflows.sql",
+      "sourceNormalization": "none"
+    },
+    {
+      "version": "20260926035410",
+      "name": "giving_configuration",
+      "sql_md5": "8d6571a673d73be232f0ead583c743e3",
+      "sourceFile": "20260926035410_giving_configuration.sql",
+      "sourceNormalization": "none"
+    },
+    {
+      "version": "20260926040812",
+      "name": "participant_portals",
+      "sql_md5": "5b6ccf6591c2597e584fb190abadd318",
+      "sourceFile": "20260926040812_participant_portals.sql",
+      "sourceNormalization": "none"
+    },
+    {
+      "version": "20260928172557",
+      "name": "people_staff_v1",
+      "sql_md5": "a26a3063333816fb70feb8a9406369f2",
+      "sourceFile": "20260928172557_people_staff_v1.sql",
+      "sourceNormalization": "none"
+    },
+    {
+      "version": "20261004055336",
+      "name": "outreach_partner_intake_v1",
+      "sql_md5": "16ea4420b2986cad1049a3067b6d331b",
+      "sourceFile": "20261004055336_outreach_partner_intake_v1.sql",
+      "sourceNormalization": "none"
+    },
+    {
+      "version": "20261004154340",
+      "name": "allow_bessemer_outreach_registrations",
+      "sql_md5": "0d12ae8e2dc5a9cdc7abfa851e73e722",
+      "sourceFile": "20261004154340_allow_bessemer_outreach_registrations.sql",
+      "sourceNormalization": "trim-final-newline"
+    },
+    {
+      "version": "20261004230453",
+      "name": "outreach_partner_gateway",
+      "sql_md5": "038a5a3b3e91a9c63fc60dfd44179e97",
+      "sourceFile": "20261004230453_outreach_partner_gateway.sql",
+      "sourceNormalization": "none"
+    },
+    {
+      "version": "20261005161946",
+      "name": "outreach_network_limit_120",
+      "sql_md5": "1d944ed5d04855ef57fda4109f3d9500",
+      "sourceFile": "20261005161946_outreach_network_limit_120.sql",
+      "sourceNormalization": "none"
+    },
+    {
+      "version": "20261018113932",
+      "name": "20261016201932_huntsville_registration_foundation",
+      "sql_md5": "5053e090cfa6d95df13e347d5e203dea",
+      "sourceFile": "20261016201932_huntsville_registration_foundation.sql",
+      "sourceNormalization": "none"
+    },
+    {
+      "version": "20261018113939",
+      "name": "20261016201933_huntsville_registration_draft",
+      "sql_md5": "a3db5a8bf1d64295cf2806ee4331a126",
+      "sourceFile": "20261016201933_huntsville_registration_draft.sql",
+      "sourceNormalization": "none"
+    },
+    {
+      "version": "20261018144843",
+      "name": "20261018121900_allow_huntsville_decision_registrations",
+      "sql_md5": "9223ab5708d96fed0ae35c85984e15cf",
+      "sourceFile": "20261018121900_allow_huntsville_decision_registrations.sql",
+      "sourceNormalization": "none"
+    }
+  ],
+  "provenance": {
+    "source_workstream": "Unified Outreach Production Candidate",
+    "source_file": "docs/UNIFIED-OUTREACH-PRODUCTION-BASELINE.json",
+    "source_sha256": "a346d9793bfa409b1824e6bd47581e984805bc385298cf91c9dbdbce121a3cb5",
+    "verification_scope": "Primary independently verified all 25 live ledger versions/names/SQL hashes and deployed production SHA at this snapshot. Giving validates exact local source hashes; no new hosted authorization.",
+    "primary_confirmation": "CONFIRMED_CURRENT_SNAPSHOT",
+    "primary_source": "audit/platform-integration-2026-10-18/production-version-source-map.json",
+    "primary_source_sha256": "0bbc0d8d6c84df298ff1ea1ce7867424ab9e1114b793d2adadd0487acbc32e39"
+  }
+}

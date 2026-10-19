@@ -1,5 +1,6 @@
 // Server-only NMI REST v5 sandbox adapter. No credential/token/raw response logging.
 import { minor, normalizeError } from "./providers.mjs";
+import {dedicatedAcceptance} from "./acceptance-pin.mjs";
 export const NMI_BASE = "https://sandbox.nmi.com/api/v5";
 export const ACCEPTANCE = "https://bkbmjisprwmkptywtmih.supabase.co";
 export class NmiFailure extends Error {
@@ -44,7 +45,7 @@ export function inputOnly(value, keys) {
 }
 export function credential(config, scope, readSecret) {
   if (
-    config.project !== ACCEPTANCE ||
+    (config.project !== ACCEPTANCE && !dedicatedAcceptance(config)) ||
     config.enabled !== true ||
     scope.environment !== "sandbox" ||
     scope.provider !== "nmi" ||
@@ -150,6 +151,7 @@ export function normalizeNmi(data, operation, httpStatus = 200) {
     category: status === "review" ? "unknown" : null,
     retry_automatically: false,
   };
+  if(typeof data.currency==='string'&&/^[A-Z]{3}$/.test(data.currency))result.currency=data.currency;
   for (const [field, key] of [
     ["id", "provider_reference"],
     ["customer_vault_id", "customer_reference"],
@@ -161,6 +163,9 @@ export function normalizeNmi(data, operation, httpStatus = 200) {
     result.customer_reference = result.provider_reference;
   if (data.amount !== undefined)
     result.amount_minor = decimalMinor(data.amount);
+  if(typeof data.paused_subscription==='boolean')result.paused=data.paused_subscription;
+  if(typeof data.plan_id==='string')result.plan_reference=reference(data.plan_id);
+  if(operation==='subscription_status'&&result.provider_reference&&typeof result.paused==='boolean')result.status=result.paused?'paused':'active';
   const details =
     data.payment_details ||
     data.billing?.payment_details ||
@@ -232,6 +237,7 @@ export function createNmiAdapter({
     } catch {
       throw new NmiFailure("unknown", "review");
     }
+    if(res.status===404&&op==='cancel_subscription_lookup')return {status:'cancelled',authoritative:true};
     // Bound streamed response. Nothing from a response or transport exception is logged.
     const reader = res.body?.getReader();
     let bytes = 0,
@@ -316,7 +322,7 @@ export function createNmiAdapter({
     return { customer_vault_id: reference(p.vault_reference) };
   }
   const charge = (op, p) => {
-    inputOnly(p, ["amount_minor", "method", "save_method"]);
+    inputOnly(p, ["amount_minor", "method", "save_method", "order_reference"]);
     const details = method(p.method);
     const body = {
       amount: decimal(p.amount_minor),
@@ -324,6 +330,7 @@ export function createNmiAdapter({
       processor_id: route(),
       payment_details: details,
       customer_receipt: false,
+      ...(p.order_reference ? {order_details:{order_id:reference(p.order_reference)},dup_seconds:900}:{}),
     };
     if (p.save_method === true) {
       body.customer_vault = { add_customer: true };
@@ -431,7 +438,7 @@ export function createNmiAdapter({
       );
     },
     create_recurring_profile: (p) => {
-      inputOnly(p, ["plan_id", "method", "start_date"]);
+      inputOnly(p, ["plan_id", "method", "start_date", "active", "save_method", "order_reference"]);
       route();
       // Current v5 subscription schema has no processor_id. Require provider-verified default processor, never assume routing.
       if (scope.subscription_default_verified !== true) fail("routing_error");
@@ -440,9 +447,11 @@ export function createNmiAdapter({
         "/subscriptions",
         {
           plan_id: reference(p.plan_id),
+          ...(p.order_reference?{order_details:{order_id:reference(p.order_reference)}}:{}),
+          ...(p.save_method===true?{customer_vault:{add_customer:true}}:{}),
           payment_details: method(p.method),
           start_date: p.start_date,
-          paused_subscription: true,
+          paused_subscription: p.active===true&&dedicatedAcceptance(config)?false:true,
         },
         "create_recurring_profile",
       );
@@ -473,6 +482,13 @@ export function createNmiAdapter({
         "DELETE",
       );
     },
+    retrieve_subscription: async(p)=>{
+      inputOnly(p,['subscription_reference','cancelled']);route();
+      const r=await post(`/subscriptions/${reference(p.subscription_reference)}`,{},p.cancelled?'cancel_subscription_lookup':'subscription_status','GET');
+      if(r.status==='cancelled')return {...r,provider_reference:p.subscription_reference};
+      if(r.provider_reference!==p.subscription_reference)throw new NmiFailure('unknown','review');return r;
+    },
+    pause_recurring_profile: (p)=>{inputOnly(p,['subscription_reference']);route();return post(`/subscriptions/${reference(p.subscription_reference)}`,{paused_subscription:true},'pause_recurring_profile','PUT');},
     retrieve_settlement: async () => {
       fail("configuration_error");
     }, // No invented v5 settlement endpoint. Signed batch observations remain nullable until proved.

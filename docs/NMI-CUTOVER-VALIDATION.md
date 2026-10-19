@@ -1,30 +1,27 @@
-# Integration validation — local synthetic only
+# Execution follow-up validation — October 18 CDT / 19 UTC 2026
 
-Base: `e3157f0afa3f563ab6560ca64c9049448f02c806`. Candidate identity: draft PR HEAD and offline bundle `MANIFEST.json`; no production release. No actual NMI network request or hosted deployment was made.
+Frozen foundation: `3a8317fb265c0cabb894133ac169100aaea83622`; current production Git main `e3157f0afa3f563ab6560ca64c9049448f02c806`. This follow-up is local synthetic engineering validation only. Actual hosted/browser/NMI provider acceptance **NOT RUN**. Public cutover **NO-GO** pending primary Gate 0, provider/finance proof, legal sender/delivery and separate release authorization.
 
 | check | result |
 |---|---|
-| `npm ci --ignore-scripts --prefix tools/backend-tests` | PASS; pinned dependencies, zero installation audit findings |
-| `npm test --prefix tools/backend-tests` | PASS, 41 scripts: current-main regression plus all extracted Giving/Forms/NMI/Operations database, gateway, adapter and DOM suites; new preservation/integration and shell checks |
-| `npm run test:giving-concurrency --prefix tools/backend-tests` | PASS, 11 race cases: eight GIV-1 plus rapid-batch replay and two statement cases |
-| `npm run test:forms-concurrency --prefix tools/backend-tests` | PASS, six race cases |
-| `npm run test:payments-concurrency --prefix tools/backend-tests` | PASS, six race cases |
-| `npm run test:payment-operations-concurrency --prefix tools/backend-tests` | PASS, six race cases |
-| `npm run test:nmi-concurrency --prefix tools/backend-tests` | PASS, six race cases |
-| `npm run test:huntsville-native --prefix tools/backend-tests` | PASS, 95 registration + 56 Huntsville checks and six race cases; final slot one success/seven safe denials |
-| `npm run test:concurrency --prefix tools/backend-tests` | PASS, existing independent PostgreSQL intake idempotency/rate-limit concurrency |
-| Native race methodology | 41 Giving/Forms/provider/Operations/NMI/Huntsville cases, eight independent overlapping workers plus separate coordinator per case; synthetic temporary local clusters only |
-| `npm ci --ignore-scripts --prefix tools/nmi-component` + `node tools/nmi-component/build.mjs` | PASS, pinned official SDK 1.1.1, reproducible bundle |
-| `node --check` over assets JS, server MJS and package tool | PASS, 44 scripts |
-| `deno check` new five Edge entrypoints | PASS: forms-submit, forms-file-access, payments-webhook, payments-nmi, payments-nmi-webhook |
-| Source/preservation | PASS, nine extracted SQL source blobs; all 449 protected runtime/content/config/function/migration files match exact production base; 25 existing + 10 forward versions, no old chain |
-| Bridge | PASS, unknown NMI result creates scoped Operations observation/issue; another charge denied; permission revocation denies; helper ACLs/RLS intact; zero real ledger posting |
-| Public artifact | PASS, 462 explicit files; production bytes preserved, isolated preview blocks without config; docs/SQL/tests/private artifacts excluded; new page dependencies present |
-| `git diff --check` | PASS |
-| Hosted migration/advisors/browser/Auth/provider/receipt/settlement | NOT RUN; separate gates, no fresh hosted/browser proof claimed |
+| `npm test --prefix tools/backend-tests` | **PASS, 47 scripts**; complete migration replay, existing production/Huntsville/Bessemer/Outreach/Giving/Forms/provider/Operations security and DOM regressions retained. |
+| New execution DB suite | **PASS, 34 checks**; anonymous canonical checkout, authoritative posting/immutable held receipt, idempotency, unknown/no-post, wrong scope/amount, recurring/vault/renewal tax snapshot, approval/revocation, refunds/voids, batches, bank arithmetic, Operations job leases/no blind retry, linked donor/household revocation and shutdown recovery. |
+| HTTP orchestration + real synthetic SQL | **PASS**; mock sandbox sale/query/decline, response lost after provider handoff, original-order lookup with new charges OFF, one gift/held receipt, real HMAC synthetic event replay/tamper, no token/key persistence. All HTTP substituted, zero provider traffic. |
+| Query/recovery security | **PASS**; exact cents/order/processor/currency, bounded hostile XML/DTD/entity rejection, scoped batch/unknown fee projection, active subscription/cancel GET; read-only refund/void/subscription/pause/cancel recovery with zero repeat mutations. |
+| New donor/staff DOM | **PASS**; disabled fallback, no card-owned fields/storage, production guard, synthetic hosted callback, unchecked storage consent, double click, success/held receipt/pending recovery; Operations/reconciliation controls, same-session revocation and stale-response clearing. JSDOM/mocks, not actual hosted browser acceptance. |
+| Native PostgreSQL races | **PASS, 51** eight-worker races: Giving/management/reports 11; Forms 6; provider 6; Operations 6; original NMI + observation bridge 6; new execution/refund 10; Huntsville 6. Separate coordinator, committed barrier, eight distinct backends, observed lock wait and overlapping server intervals for new/financial race cases. |
+| Existing Outreach concurrency | **PASS**; 95 accepted + 40 changing-email/phone requests give exactly 120 accepted/15 rejected; 20 identical retries give one intake; independent normalized email/phone caps pass. |
+| Native registration security/count/export | **PASS**; 95 Phase C and 56 Huntsville assertions, including Bessemer preservation, no inferred identity/consent, current-session revocation and CSV totals/security. |
+| Offline staging | **PASS**; exact 25 primary-confirmed live SQL/version hashes, three aliases, one controlled final newline; 12 forward versions; all 37 committed source/staged hashes verified; wrong base/hash/inventory/order denied. |
+| Production/source preservation | **PASS, all 449 protected blobs**; all nine accepted extracted SQL blobs unchanged; all 25 repository production migrations and both production functions unchanged. |
+| Public artifact/isolation | **PASS, 468 allowlisted files**; no docs/SQL/tests/private evidence exposed. New source pin null/origins empty; preview backend BLOCKED without reviewed configuration; production Giving config null. |
+| Type/syntax/component | **PASS**, seven Deno Edge entrypoints; 132 JS/MJS files parse; pinned official NMI SDK rebuild produces no bundle diff. |
+| `git diff --check` | **PASS** after LF normalization of candidate CSV worksheets. |
 
-The first synthetic test run exposed missing Storage fixture metadata and a mistakenly listed test HTML fixture; both were fixed before successful full regression. The first native run was blocked by macOS sandbox shared-memory permissions; approved local-only rerun and final post-bridge rerun passed. No production database or network provider was involved.
+Exact native commands (each exit 0): `test:giving-concurrency`, `test:forms-concurrency`, `test:payments-concurrency`, `test:payment-operations-concurrency`, `test:nmi-concurrency`, `test:nmi-execution-concurrency`, `test:huntsville-native`, `test:concurrency`, all through `npm run ... --prefix tools/backend-tests` with local PostgreSQL 17. The new CI workflow retains every command and adds the new execution races/two Deno entrypoints.
 
-Exact protected files and source lineage: `NMI-CUTOVER-PROTECTED-FILES.json`, `NMI-CUTOVER-SOURCE-COMMITS.json`, `NMI-CUTOVER-EXTRACTION.json`, `NMI-CUTOVER-MIGRATIONS.json`. Extraction manifest records original source hashes; migration-path references, installed staff return links, isolated shell discovery and build integration are deliberate candidate adaptations. Original NMI SDK asset remains reproducible.
+Raw local evidence: `/private/tmp/nmi-package-full-tests.log`; `/private/tmp/nmi-final-native-results.json` and `/private/tmp/nmi-final-native-{0..7}.log`; `/private/tmp/nmi-package-deno.log`. These use synthetic data only. Native macOS initdb required sandbox escalation for local shared memory; no hosted connection was used. Early fixture/guard regression failures were corrected before the final complete PASS; no check was removed or security assertion weakened.
 
-Private local raw logs: `/private/tmp/nmi-friday-tests.log`, `/private/tmp/nmi-friday-races-final.log`, `/private/tmp/nmi-friday-deno.log`. These are not committed or publicly built. CI runs the same suite and races; remote CI is reported separately, never inferred from local results.
+The original overlap/permission diagnostic remains scoped to its fingerprinted earlier Outreach snapshot. Later sibling repairs and the separately authorized primary Gate 0 require their own combined validation; these child results do not declare shared integration safe. Final PR CI status and exact follow-up commit are attached to PR #34; offline `MANIFEST.json.candidate` pins the artifact. A successful default-disabled deploy preview is not provider acceptance.
+
+No production migration/function/configuration/data write, target creation, live credential/payment, real donor message, GiveHub link change or recurring modification occurred.

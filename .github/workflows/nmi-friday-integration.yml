@@ -31,7 +31,8 @@ jobs:
           npm run test:payments-concurrency --prefix tools/backend-tests
           npm run test:payment-operations-concurrency --prefix tools/backend-tests
           npm run test:nmi-concurrency --prefix tools/backend-tests
+          npm run test:nmi-execution-concurrency --prefix tools/backend-tests
           npm run test:huntsville-native --prefix tools/backend-tests
           npm run test:concurrency --prefix tools/backend-tests
-      - run: deno check supabase/functions/payments-nmi/index.ts supabase/functions/payments-nmi-webhook/index.ts supabase/functions/forms-submit/index.ts supabase/functions/forms-file-access/index.ts supabase/functions/payments-webhook/index.ts
+      - run: deno check supabase/functions/payments-nmi/index.ts supabase/functions/payments-nmi-webhook/index.ts supabase/functions/forms-submit/index.ts supabase/functions/forms-file-access/index.ts supabase/functions/payments-webhook/index.ts supabase/functions/nmi-giving/index.ts supabase/functions/nmi-giving-webhook/index.ts
       - run: git diff --check

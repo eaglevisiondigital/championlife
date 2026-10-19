@@ -1,5 +1,6 @@
 dataset,required_fields,control,received,record_count
 donors,source_donor_id; legal_recipient; person_id; household_id; verified_ownership; contact_consent,Do not link by name/email alone; private duplicate review,NO,UNKNOWN
+households,source_household_id; source_member_donor_ids; recipient_organization_id; canonical_household_id; verified_membership; statement_preference,No name/email-only merge; reviewed canonical household and membership; see exact normalized contract,NO,UNKNOWN
 historical_gifts,source_transaction_id; donor_id; fund_id; gift_date; amount_minor; currency; status; fees; refund_ids,Source unique key; reconcile counts and gross/refund/net per recipient/currency/year; no new charge,NO,UNKNOWN
 funds,source_fund_id; source_name; legal_recipient; canonical_fund_id; tax_classification,Finance approves exact mapping; no label-based MID inference,NO,UNKNOWN
 recurring,source_schedule_id; donor_id; recipient; fund; amount_minor; currency; frequency; timezone; next_charge_date; status,Inventory all active/paused/failed schedules; keep running in GiveHub; no cancellation,NO,UNKNOWN

@@ -1,0 +1,15 @@
+import assert from 'node:assert/strict';import{JSDOM}from'jsdom';import{readFileSync}from'node:fs';
+const read=p=>readFileSync(new URL('../../'+p,import.meta.url),'utf8');
+const dom=new JSDOM(read('staff-nmi-execution.html'),{url:'https://synthetic.example.test/staff-nmi-execution.html',runScripts:'outside-only'}),w=dom.window;let permitted=true,finish;
+w.setInterval=()=>0;w.confirm=()=>true;
+w.ChampionLifeAuth={getUser:async()=>({id:'synthetic-user'}),client:{auth:{onAuthStateChange(){}},rpc:async()=>({data:{organizations:[{id:'synthetic-org',name:'Synthetic'}]}})}};
+w.StaffWorkspace={denied:(root,message)=>root.replaceChildren(w.document.createTextNode(message))};w.GivingUtils={money:x=>x};
+w.eval(read('assets/js/nmi-giving-client.js'));const E=w.NmiGivingClient.element;
+const operations={enabled:true,attempts:[{id:'attempt',session_id:'session',leg_id:'leg',operation:'refund',state:'review',amount_minor:'500',currency:'USD',route_label:'Synthetic'}],recurring:[],held_receipts:1,jobs:[{id:'job',kind:'lookup',state:'held'}]};
+w.NmiGivingClient={element:E,call:async()=>{if(!permitted)throw Error('Current finance access denied');return operations}};
+w.eval(read('assets/js/nmi-staff-execution.js'));await new Promise(r=>setTimeout(r,15));const root=w.document.getElementById('nmi-staff-app');
+assert(root.textContent.includes('Run authoritative lookup'));assert(root.textContent.includes('Reconcile statement evidence'));assert(root.textContent.includes('Look up original result'));
+w.NmiGivingClient.call=()=>new Promise(r=>{finish=r});w.dispatchEvent(new w.Event('focus'));await new Promise(r=>setTimeout(r,1));
+permitted=false;w.NmiGivingClient.call=async()=>{throw Error('Current finance access denied')};w.dispatchEvent(new w.Event('focus'));await new Promise(r=>setTimeout(r,5));finish(operations);await new Promise(r=>setTimeout(r,5));
+assert(!root.textContent.includes('Synthetic'));assert(!root.querySelector('form'));assert(root.textContent.includes('denied'));w.close();
+console.log('PASS sandbox staff controls: Operations job/adjustment lookup/statement reconciliation and same-session revocation clears protected content; stale responses cannot restore it');

@@ -1,3 +1,4 @@
+import {NMI_GIVING_ACCEPTANCE_PIN,dedicatedAcceptance} from '../../supabase/functions/_shared/payments/acceptance-pin.mjs';
 import { readFile, writeFile, mkdir, copyFile, rm, lstat } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -14,7 +15,7 @@ export function previewConfiguration(env, production) {
       url === production.url ||
       !/^sb_publishable_[A-Za-z0-9_-]+$/.test(publishableKey) ||
       publishableKey === production.publishableKey) return null;
-  if(!['https://bkbmjisprwmkptywtmih.supabase.co','https://niyovbgoalulzkhbvebt.supabase.co'].includes(url))return null;
+  if(!['https://bkbmjisprwmkptywtmih.supabase.co','https://niyovbgoalulzkhbvebt.supabase.co'].includes(url)&&!dedicatedAcceptance({project:url,acceptance_pin:NMI_GIVING_ACCEPTANCE_PIN}))return null;
   return { url, publishableKey, outreachSiteKey:'1x00000000000000000000AA' };
 }
 
@@ -31,6 +32,12 @@ export function nmiPreviewConfiguration(env,isolated,backend){
   const fields=['NMI_SANDBOX_ORGANIZATION_ID','NMI_SANDBOX_GATEWAY_ID'];
   if(!fields.every(k=>/^[a-f0-9]{8}-[a-f0-9-]{27}$/.test(env[k]||''))||!/^[A-Za-z0-9]{6}(?:-[A-Za-z0-9]{6}){3}$/.test(env.NMI_SANDBOX_PUBLIC_TOKENIZATION_KEY||'')||!/^[A-Za-z0-9_-]{1,120}$/.test(env.NMI_SANDBOX_MERCHANT_REFERENCE||''))throw Error('Invalid NMI sandbox public configuration.');
   return {project:backend.url,environment:'sandbox',enabled:true,organization_id:env.NMI_SANDBOX_ORGANIZATION_ID,gateway_id:env.NMI_SANDBOX_GATEWAY_ID,public_key:env.NMI_SANDBOX_PUBLIC_TOKENIZATION_KEY,merchant_reference:env.NMI_SANDBOX_MERCHANT_REFERENCE};
+}
+
+export function givingPreviewConfiguration(env,isolated,backend){
+ if(!isolated||!backend||env.NMI_GIVING_PUBLIC_ENABLED!=='true'||!dedicatedAcceptance({project:backend.url,acceptance_pin:NMI_GIVING_ACCEPTANCE_PIN}))return null;
+ const origin=env.DEPLOY_PRIME_URL||'';if(!NMI_GIVING_ACCEPTANCE_PIN.origins.includes(origin)||!/^https:\/\/[a-z0-9-]+--championlifechurch\.netlify\.app$/.test(origin)||!/^[A-Za-z0-9_-]{12,80}$/.test(env.NMI_GIVING_PUBLIC_SITE_KEY||''))throw Error('Invalid dedicated NMI preview configuration.');
+ return {enabled:true,project:backend.url,origin,siteKey:env.NMI_GIVING_PUBLIC_SITE_KEY};
 }
 
 export async function buildSite({ root = repository, env = process.env } = {}) {
@@ -64,11 +71,13 @@ export async function buildSite({ root = repository, env = process.env } = {}) {
   vm.runInNewContext(sourceConfig, sandbox, { timeout: 1000 });
   const config = isolated ? previewConfiguration(env, sandbox.window.CHAMPION_LIFE_SUPABASE) : null;
   const nmi=nmiPreviewConfiguration(env,isolated,config);
+  const giving=givingPreviewConfiguration(env,isolated,config);
   await rm(output, { recursive: true, force: true });
   for (const file of files) {
     const destination = path.join(output, file);
     await mkdir(path.dirname(destination), { recursive: true });
-    if(nmi&&file==='assets/js/nmi-config.js')await writeFile(destination,'// Isolated sandbox public key only; never a REST credential.\nwindow.CHAMPION_NMI_SANDBOX = '+JSON.stringify(nmi)+';\n');
+    if(giving&&file==='assets/js/nmi-giving-config.js')await writeFile(destination,'// Public dedicated acceptance config only.\nwindow.CHAMPION_NMI_GIVING = '+JSON.stringify(giving)+';\n');
+    else if(nmi&&file==='assets/js/nmi-config.js')await writeFile(destination,'// Isolated sandbox public key only; never a REST credential.\nwindow.CHAMPION_NMI_SANDBOX = '+JSON.stringify(nmi)+';\n');
     else if (isolated && file === configPath) await writeFile(destination, previewScript(config));
     else if(file==='assets/js/forms-config.js'&&env.FORMS_PUBLIC_SITE_KEY){
       const siteKey=env.FORMS_PUBLIC_SITE_KEY;
@@ -82,6 +91,7 @@ export async function buildSite({ root = repository, env = process.env } = {}) {
     // Preview pages are not search results; production output remains byte-for-byte.
     await writeFile(path.join(output, '_headers'), '/*\n  X-Robots-Tag: noindex, nofollow\n/assets/js/supabase-config.js\n  Cache-Control: no-store\n');
     if(nmi)await writeFile(path.join(output,'_headers'),"/*\n  X-Robots-Tag: noindex, nofollow\n/assets/js/supabase-config.js\n  Cache-Control: no-store\n/assets/js/nmi-config.js\n  Cache-Control: no-store\n/checkout.html\n  Content-Security-Policy: default-src 'self'; script-src 'self' https://cdn.jsdelivr.net https://secure.networkmerchants.com; frame-src https://secure.nmi.com; connect-src 'self' https://bkbmjisprwmkptywtmih.supabase.co https://secure.nmi.com https://secure.networkmerchants.com; style-src 'self' 'unsafe-inline'; img-src 'self' data:; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'\n/checkout\n  Content-Security-Policy: default-src 'self'; script-src 'self' https://cdn.jsdelivr.net https://secure.networkmerchants.com; frame-src https://secure.nmi.com; connect-src 'self' https://bkbmjisprwmkptywtmih.supabase.co https://secure.nmi.com https://secure.networkmerchants.com; style-src 'self' 'unsafe-inline'; img-src 'self' data:; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'\n");
+    if(giving){const csp="default-src 'self'; script-src 'self' https://cdn.jsdelivr.net https://secure.networkmerchants.com https://challenges.cloudflare.com; frame-src https://secure.nmi.com https://challenges.cloudflare.com; connect-src 'self' "+giving.project+" https://secure.nmi.com https://secure.networkmerchants.com; style-src 'self' 'unsafe-inline'; img-src 'self' data:; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'";const prior=await readFile(path.join(output,'_headers'),'utf8');await writeFile(path.join(output,'_headers'),prior+'\n/assets/js/nmi-giving-config.js\n  Cache-Control: no-store\n/nmi-giving.html\n  Content-Security-Policy: '+csp+'\n/nmi-giving\n  Content-Security-Policy: '+csp+'\n');}
     await writeFile(path.join(output, 'robots.txt'), 'User-agent: *\nDisallow: /\n');
   }
   return { files: files.length, context: context || 'local', backend: isolated ? (config ? 'isolated-preview' : 'blocked') : 'unchanged-production-default', output };

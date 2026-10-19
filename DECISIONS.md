@@ -1,3 +1,18 @@
+# NMI Giving sandbox execution follow-up — October 18 CDT / 19 UTC, 2026
+
+Primary authority remains **Align Codex with Champion Life**. This is a bounded Giving follow-up to frozen draft PR #34 head `3a8317fb265c0cabb894133ac169100aaea83622`; no restart, merge or historical SQL rewrite. Production Git main is still `e3157f0afa3f563ab6560ca64c9049448f02c806`. Primary independently confirmed the live 25-row baseline; source attribution and all hashes are in `docs/NMI-CUTOVER-PRODUCTION-BASELINE.json`. No production inspection/write is claimed by this child.
+
+1. Continue accepted PR #34 by forward additions only. The two new execution migrations remain proposed and unapplied; primary owns combined numbering/order.
+2. Keep every new execution path source-pinned, default-disabled and sandbox-only. Preparing a named acceptance target does not authorize creating it, provisioning staff or accessing another acceptance project.
+3. Accept authoritative provider lookup before a successful gift; never post from a browser, mutation response or webhook alone. Use original intent/order identity for recovery; a missing response never authorizes another charge. Account/provider ambiguity remains held pending actual evidence.
+4. Reuse canonical People/Households/ledger/recurring/receipt/Operations. Guest identity stays unlinked until verified; no implicit People creation or pooled Propel funds. Preserve recurring tax classification and organization merchant ownership.
+5. Generate one immutable SANDBOX receipt and held outbox item after terminal successful gifts; primary Communications/legal sender and real delivery acceptance stay gated. No messages were sent.
+6. Preserve current main, all 449 protected blobs and every production function/migration/public GiveHub link. Keep sibling/primary files untouched. Primary Gate 0, actual NMI acceptance, finance worksheet and separately authorized release are still required; Friday does not weaken them.
+
+---
+
+Historical frozen integration/earlier platform checkpoints follow; the execution follow-up above supersedes their held engineering status.
+
 # NMI Friday candidate decisions — 2026-10-18
 
 1. Current explicit assignment supersedes the earlier package freeze only for the named isolated NMI integration branch. Use exact production base `e3157f0`, preserve all other checkouts/changes, and do not merge old dependent PRs.

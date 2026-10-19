@@ -3,13 +3,13 @@ import assert from 'node:assert/strict';
 import {readFileSync,readdirSync} from 'node:fs';
 import {createHash,randomUUID as uid} from 'node:crypto';
 import {nmiDatabase,f,checkout,seedRoutes} from './nmi-fixture.mjs';
-import {productionOrder,givingOrder,integrationOrder,migrationOrder} from './migration-order.mjs';
+import {productionOrder,givingOrder,integrationOrder,executionOrder,migrationOrder} from './migration-order.mjs';
 const root=new URL('../../',import.meta.url), read=p=>readFileSync(new URL(p,root));
 const hash=b=>createHash('sha1').update(Buffer.from('blob '+b.length+'\0')).update(b).digest('hex');
 const protectedFiles=JSON.parse(read('docs/NMI-CUTOVER-PROTECTED-FILES.json'));
 for(const [name,blob] of Object.entries(protectedFiles.files))assert.equal(hash(read(name)),blob,'Protected production file: '+name);
 assert.equal(productionOrder.length,25);
-assert.equal(givingOrder.length,9);assert.equal(integrationOrder.length,1);
+assert.equal(givingOrder.length,9);assert.equal(integrationOrder.length,1);assert.equal(executionOrder.length,2);
 assert.deepEqual(migrationOrder,[...migrationOrder].sort(),'Production followed by new forward versions');
 assert.deepEqual([...migrationOrder].sort(),readdirSync(new URL('supabase/migrations/',root)).filter(f=>f.endsWith('.sql')).sort());
 for(const row of JSON.parse(read('docs/NMI-CUTOVER-MIGRATIONS.json')))assert.equal(hash(read('supabase/migrations/'+row.candidate)),row.source_blob);
@@ -43,5 +43,5 @@ try {
  await db.exec('reset role');
  for(const role of ['anon','authenticated','service_role'])assert.equal((await q("select has_function_privilege($1,'private.nmi_friday_operations_observation()','execute') v",[role])).rows[0].v,false);
  assert.equal(Number((await q("select count(*) n from pg_tables where schemaname in ('public','private') and (tablename like 'giving_%' or tablename like 'payments_%' or tablename like 'payment_ops_%') and not rowsecurity")).rows[0].n),0);
- console.log(`PASS current-main integration: ${Object.keys(protectedFiles.files).length} protected files; 25 baseline + 10 forward migrations; source hashes; NMI unknown reaches scoped Operations queue; duplicate/revocation/RLS; zero ledger posting`);
+ console.log(`PASS current-main integration: ${Object.keys(protectedFiles.files).length} protected files; 25 baseline + 12 forward migrations; source hashes; NMI unknown reaches scoped Operations queue; duplicate/revocation/RLS; zero ledger posting`);
 }finally{await db.close()}
