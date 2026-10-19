@@ -1,0 +1,57 @@
+[
+  {
+    "sourceFile": "20261018124500_unified_staff_workspace_v1.sql",
+    "sourceCommit": "350512a9401c6e783673af33f2f045d6ba04f62d",
+    "sourceSha256": "719d645f0afd80dd472454f6ca6acf8d03b2fc681912178fd9d96e607b652cb1"
+  },
+  {
+    "sourceFile": "20261018124600_unified_staff_team_travel_v1.sql",
+    "sourceCommit": "350512a9401c6e783673af33f2f045d6ba04f62d",
+    "sourceSha256": "62bc377df4951c0b75a875ec49e4e1a4b2f7da5bb23732ee122a95a49802c67e"
+  },
+  {
+    "sourceFile": "20261018124700_huntsville_team_setup.sql",
+    "sourceCommit": "350512a9401c6e783673af33f2f045d6ba04f62d",
+    "sourceSha256": "37eb15be8b2df345e561ece2a66c32c9e96bcfb151b47cd650d4844d4f6700b6"
+  },
+  {
+    "sourceFile": "20261018124800_unified_staff_workspace_grants_fix.sql",
+    "sourceCommit": "350512a9401c6e783673af33f2f045d6ba04f62d",
+    "sourceSha256": "3232c13bff26c8ca992f259c588356683f40b6c1aac5fb29d9ab0a36ae508577"
+  },
+  {
+    "sourceFile": "20261018124900_unified_staff_workspace_function_fix.sql",
+    "sourceCommit": "350512a9401c6e783673af33f2f045d6ba04f62d",
+    "sourceSha256": "7032c103c3f2f3e03855835b654cee639f85b0feec376be558e5ed93883c0164"
+  },
+  {
+    "sourceFile": "20261018125000_restrict_unified_staff_access_admin.sql",
+    "sourceCommit": "350512a9401c6e783673af33f2f045d6ba04f62d",
+    "sourceSha256": "7150e01e2ecfa1581d6aa972e8a399490ead658d9db4aad42c3b8539355938b6"
+  },
+  {
+    "sourceFile": "20261018133000_outreach_partner_pastoral_v1.sql",
+    "sourceCommit": "350512a9401c6e783673af33f2f045d6ba04f62d",
+    "sourceSha256": "541044b0aabece5c6f70a33fafc3e4043065c62db2adbfa3d4f56c6d4574ac07"
+  },
+  {
+    "sourceFile": "20261018133100_outreach_partner_workspace_fix.sql",
+    "sourceCommit": "350512a9401c6e783673af33f2f045d6ba04f62d",
+    "sourceSha256": "524b26564f73310ef27eba4ea85c7b0fe5daadeb8847132e65a308baea5a88db"
+  },
+  {
+    "sourceFile": "20261018133200_outreach_partner_workspace_alias_fix.sql",
+    "sourceCommit": "350512a9401c6e783673af33f2f045d6ba04f62d",
+    "sourceSha256": "524b26564f73310ef27eba4ea85c7b0fe5daadeb8847132e65a308baea5a88db"
+  },
+  {
+    "sourceFile": "20261018133300_outreach_partner_operations_fix.sql",
+    "sourceCommit": "350512a9401c6e783673af33f2f045d6ba04f62d",
+    "sourceSha256": "801b57ded028e0c3b8d5a491d9eb861c8ea167c1671651033f3b8e9bcc631a0a"
+  },
+  {
+    "sourceFile": "20261018133400_outreach_partner_audit_fix.sql",
+    "sourceCommit": "350512a9401c6e783673af33f2f045d6ba04f62d",
+    "sourceSha256": "801b57ded028e0c3b8d5a491d9eb861c8ea167c1671651033f3b8e9bcc631a0a"
+  }
+]

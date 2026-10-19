@@ -1,0 +1,3589 @@
+{
+  "productionBase": "e3157f0afa3f563ab6560ca64c9049448f02c806",
+  "sources": {
+    "production": {
+      "ref": "origin/main",
+      "commit": "e3157f0afa3f563ab6560ca64c9049448f02c806",
+      "migrations": [
+        "supabase/migrations/20260923114743_create_course_progress_schema.sql",
+        "supabase/migrations/20260923114822_harden_course_security_and_indexes.sql",
+        "supabase/migrations/20260923115114_revoke_public_rls_helper_execution.sql",
+        "supabase/migrations/20260923115706_grant_authenticated_course_api_access.sql",
+        "supabase/migrations/20260923115732_restrict_authenticated_course_privileges.sql",
+        "supabase/migrations/20260923121707_add_st_lucia_registration_and_account_linking.sql",
+        "supabase/migrations/20260923122017_secure_st_lucia_registration_claim_after_login.sql",
+        "supabase/migrations/20260925200310_organization_foundation.sql",
+        "supabase/migrations/20260925200318_harden_outreach_claim.sql",
+        "supabase/migrations/20260925202633_lesson_notes.sql",
+        "supabase/migrations/20260926000821_followup_tasks.sql",
+        "supabase/migrations/20260926022613_staff_access_and_people.sql",
+        "supabase/migrations/20260926024742_household_records.sql",
+        "supabase/migrations/20260926032026_department_tags.sql",
+        "supabase/migrations/20260926034222_tag_workflows.sql",
+        "supabase/migrations/20260926035410_giving_configuration.sql",
+        "supabase/migrations/20260926040812_participant_portals.sql",
+        "supabase/migrations/20260928172557_people_staff_v1.sql",
+        "supabase/migrations/20261004055336_outreach_partner_intake_v1.sql",
+        "supabase/migrations/20261004154340_allow_bessemer_outreach_registrations.sql",
+        "supabase/migrations/20261004230453_outreach_partner_gateway.sql",
+        "supabase/migrations/20261005161946_outreach_network_limit_120.sql",
+        "supabase/migrations/20261016201932_huntsville_registration_foundation.sql",
+        "supabase/migrations/20261016201933_huntsville_registration_draft.sql",
+        "supabase/migrations/20261018121900_allow_huntsville_decision_registrations.sql"
+      ],
+      "pages": [
+        "bessemer/index.html",
+        "huntsville/index.html",
+        "outreach-backend-acceptance-2026.html",
+        "outreach-give/index.html",
+        "outreach-giving.html",
+        "outreach-partner.html",
+        "outreach-register.html",
+        "outreach.html",
+        "staff-outreach-partners.html",
+        "staff-outreach-registration.html",
+        "staff-people.html"
+      ],
+      "functions": [
+        "supabase/functions/outreach-partner-submit/gateway.mjs",
+        "supabase/functions/outreach-partner-submit/index.ts",
+        "supabase/functions/outreach-registration-submit/gateway.mjs",
+        "supabase/functions/outreach-registration-submit/index.ts"
+      ],
+      "deltaFromProduction": []
+    },
+    "campaign_core": {
+      "ref": "codex/outreach-campaign-core-v1",
+      "commit": "098a87b061e7ffad53ae86f76d750a5aacfbc935",
+      "migrations": [
+        "supabase/migrations/20260923114743_create_course_progress_schema.sql",
+        "supabase/migrations/20260923114822_harden_course_security_and_indexes.sql",
+        "supabase/migrations/20260923115114_revoke_public_rls_helper_execution.sql",
+        "supabase/migrations/20260923115706_grant_authenticated_course_api_access.sql",
+        "supabase/migrations/20260923115732_restrict_authenticated_course_privileges.sql",
+        "supabase/migrations/20260923121707_add_st_lucia_registration_and_account_linking.sql",
+        "supabase/migrations/20260923122017_secure_st_lucia_registration_claim_after_login.sql",
+        "supabase/migrations/20260925200310_organization_foundation.sql",
+        "supabase/migrations/20260925200318_harden_outreach_claim.sql",
+        "supabase/migrations/20260925202633_lesson_notes.sql",
+        "supabase/migrations/20260926000821_followup_tasks.sql",
+        "supabase/migrations/20260926022613_staff_access_and_people.sql",
+        "supabase/migrations/20260926024742_household_records.sql",
+        "supabase/migrations/20260926032026_department_tags.sql",
+        "supabase/migrations/20260926034222_tag_workflows.sql",
+        "supabase/migrations/20260926035410_giving_configuration.sql",
+        "supabase/migrations/20260926040812_participant_portals.sql",
+        "supabase/migrations/20260928172557_people_staff_v1.sql",
+        "supabase/migrations/20261004055336_outreach_partner_intake_v1.sql",
+        "supabase/migrations/20261004154340_allow_bessemer_outreach_registrations.sql",
+        "supabase/migrations/20261004230453_outreach_partner_gateway.sql",
+        "supabase/migrations/20261005161946_outreach_network_limit_120.sql",
+        "supabase/migrations/20261006113255_outreach_campaign_core_v1.sql",
+        "supabase/migrations/20261006113311_outreach_campaign_workflow_v1.sql",
+        "supabase/migrations/20261006113322_outreach_prize_integrity_foundation.sql"
+      ],
+      "pages": [
+        "bessemer/index.html",
+        "outreach-give/index.html",
+        "outreach-giving.html",
+        "outreach-partner.html",
+        "outreach.html",
+        "staff-outreach-campaigns.html",
+        "staff-outreach-partners.html",
+        "staff-people.html"
+      ],
+      "functions": [
+        "supabase/functions/outreach-partner-submit/gateway.mjs",
+        "supabase/functions/outreach-partner-submit/index.ts"
+      ],
+      "deltaFromProduction": [
+        "M\t.github/workflows/outreach-isolation.yml",
+        "M\tARCHITECTURE.md",
+        "M\tCURRENT_BUILD_STATE.md",
+        "M\tDECISIONS.md",
+        "M\tSECURITY_MODEL.md",
+        "D\tassets/css/outreach-acceptance-review.css",
+        "D\tassets/css/outreach-registration.css",
+        "D\tassets/images/sowgo-go-qr.svg",
+        "D\tassets/js/outreach-acceptance-review.js",
+        "A\tassets/js/outreach-campaigns.js",
+        "D\tassets/js/outreach-registration-form.js",
+        "D\tassets/js/outreach-registration-public.js",
+        "D\tassets/js/outreach-registration-staff.js",
+        "M\tbessemer/index.html",
+        "D\tconfig/outreach/huntsville-2026.json",
+        "M\tdiscipleship-login.html",
+        "D\tdocs/HUNTSVILLE-INHERITED-STATEMENTS.json",
+        "D\tdocs/HUNTSVILLE-MINIMAL-DEPENDENCIES.md",
+        "D\tdocs/HUNTSVILLE-MINIMAL-RELEASE.md",
+        "D\tdocs/HUNTSVILLE-REQUIRED-OBJECTS.json",
+        "D\tdocs/HUNTSVILLE-SOURCE-MANIFEST.json",
+        "A\tdocs/OUTREACH-CAMPAIGN-CORE-V1.md",
+        "A\tdocs/OUTREACH-FIELD-MAPPING.md",
+        "D\thuntsville/index.html",
+        "M\tindex.html",
+        "D\toutreach-backend-acceptance-2026.html",
+        "D\toutreach-register.html",
+        "M\tprayer.html",
+        "A\tstaff-outreach-campaigns.html",
+        "D\tstaff-outreach-registration.html",
+        "M\tstlucia/index.html",
+        "D\tsupabase/functions/outreach-registration-submit/gateway.mjs",
+        "D\tsupabase/functions/outreach-registration-submit/index.ts",
+        "A\tsupabase/migrations/20261006113255_outreach_campaign_core_v1.sql",
+        "A\tsupabase/migrations/20261006113311_outreach_campaign_workflow_v1.sql",
+        "A\tsupabase/migrations/20261006113322_outreach_prize_integrity_foundation.sql",
+        "D\tsupabase/migrations/20261016201932_huntsville_registration_foundation.sql",
+        "D\tsupabase/migrations/20261016201933_huntsville_registration_draft.sql",
+        "D\tsupabase/migrations/20261018121900_allow_huntsville_decision_registrations.sql",
+        "D\ttools/backend-tests/fixtures/outreach-registration-ui.mjs",
+        "M\ttools/backend-tests/fixtures/supabase-test-bootstrap.sql",
+        "D\ttools/backend-tests/huntsville-minimal-concurrency.test.mjs",
+        "D\ttools/backend-tests/huntsville-minimal-safety.test.mjs",
+        "D\ttools/backend-tests/huntsville-registration-preview.mjs",
+        "D\ttools/backend-tests/huntsville-registration.dom.mjs",
+        "D\ttools/backend-tests/huntsville-registration.test.mjs",
+        "D\ttools/backend-tests/local-postgres.mjs",
+        "M\ttools/backend-tests/login.dom.mjs",
+        "M\ttools/backend-tests/migration-order.mjs",
+        "A\ttools/backend-tests/outreach-campaign-concurrency.test.mjs",
+        "A\ttools/backend-tests/outreach-campaign.dom.mjs",
+        "A\ttools/backend-tests/outreach-campaign.test.mjs",
+        "A\ttools/backend-tests/outreach-prize.test.mjs",
+        "D\ttools/backend-tests/outreach-registration-gateway.test.mjs",
+        "D\ttools/backend-tests/outreach-registration.dom.mjs",
+        "D\ttools/backend-tests/outreach-registration.test.mjs",
+        "M\ttools/backend-tests/package-lock.json",
+        "M\ttools/backend-tests/package.json",
+        "M\ttools/backend-tests/site-build.test.mjs",
+        "M\ttools/site-build/build.mjs",
+        "M\ttools/site-build/public-files.json"
+      ]
+    },
+    "team_travel": {
+      "ref": "codex/outreach-phase-b-team-travel",
+      "commit": "79404bb5648af269bbaea1604aed4891c507e2c3",
+      "migrations": [
+        "supabase/migrations/20260923114743_create_course_progress_schema.sql",
+        "supabase/migrations/20260923114822_harden_course_security_and_indexes.sql",
+        "supabase/migrations/20260923115114_revoke_public_rls_helper_execution.sql",
+        "supabase/migrations/20260923115706_grant_authenticated_course_api_access.sql",
+        "supabase/migrations/20260923115732_restrict_authenticated_course_privileges.sql",
+        "supabase/migrations/20260923121707_add_st_lucia_registration_and_account_linking.sql",
+        "supabase/migrations/20260923122017_secure_st_lucia_registration_claim_after_login.sql",
+        "supabase/migrations/20260925200310_organization_foundation.sql",
+        "supabase/migrations/20260925200318_harden_outreach_claim.sql",
+        "supabase/migrations/20260925202633_lesson_notes.sql",
+        "supabase/migrations/20260926000821_followup_tasks.sql",
+        "supabase/migrations/20260926022613_staff_access_and_people.sql",
+        "supabase/migrations/20260926024742_household_records.sql",
+        "supabase/migrations/20260926032026_department_tags.sql",
+        "supabase/migrations/20260926034222_tag_workflows.sql",
+        "supabase/migrations/20260926035410_giving_configuration.sql",
+        "supabase/migrations/20260926040812_participant_portals.sql",
+        "supabase/migrations/20260928172557_people_staff_v1.sql",
+        "supabase/migrations/20261004055336_outreach_partner_intake_v1.sql",
+        "supabase/migrations/20261004154340_allow_bessemer_outreach_registrations.sql",
+        "supabase/migrations/20261004230453_outreach_partner_gateway.sql",
+        "supabase/migrations/20261005161946_outreach_network_limit_120.sql",
+        "supabase/migrations/20261006113255_outreach_campaign_core_v1.sql",
+        "supabase/migrations/20261006113311_outreach_campaign_workflow_v1.sql",
+        "supabase/migrations/20261006113322_outreach_prize_integrity_foundation.sql",
+        "supabase/migrations/20261006200021_outreach_phase_b_team_travel.sql"
+      ],
+      "pages": [
+        "bessemer/index.html",
+        "outreach-give/index.html",
+        "outreach-giving.html",
+        "outreach-partner.html",
+        "outreach-team.html",
+        "outreach.html",
+        "staff-outreach-campaigns.html",
+        "staff-outreach-partners.html",
+        "staff-outreach-team.html",
+        "staff-people.html"
+      ],
+      "functions": [
+        "supabase/functions/outreach-partner-submit/gateway.mjs",
+        "supabase/functions/outreach-partner-submit/index.ts"
+      ],
+      "deltaFromProduction": [
+        "M\t.github/workflows/outreach-isolation.yml",
+        "M\tARCHITECTURE.md",
+        "M\tCURRENT_BUILD_STATE.md",
+        "M\tDECISIONS.md",
+        "M\tSECURITY_MODEL.md",
+        "D\tassets/css/outreach-acceptance-review.css",
+        "D\tassets/css/outreach-registration.css",
+        "A\tassets/css/outreach-team.css",
+        "D\tassets/images/sowgo-go-qr.svg",
+        "D\tassets/js/outreach-acceptance-review.js",
+        "A\tassets/js/outreach-campaigns.js",
+        "D\tassets/js/outreach-registration-form.js",
+        "D\tassets/js/outreach-registration-public.js",
+        "D\tassets/js/outreach-registration-staff.js",
+        "A\tassets/js/outreach-team-portal.js",
+        "A\tassets/js/outreach-team.js",
+        "M\tbessemer/index.html",
+        "D\tconfig/outreach/huntsville-2026.json",
+        "M\tdiscipleship-login.html",
+        "D\tdocs/HUNTSVILLE-INHERITED-STATEMENTS.json",
+        "D\tdocs/HUNTSVILLE-MINIMAL-DEPENDENCIES.md",
+        "D\tdocs/HUNTSVILLE-MINIMAL-RELEASE.md",
+        "D\tdocs/HUNTSVILLE-REQUIRED-OBJECTS.json",
+        "D\tdocs/HUNTSVILLE-SOURCE-MANIFEST.json",
+        "A\tdocs/OUTREACH-CAMPAIGN-CORE-V1.md",
+        "A\tdocs/OUTREACH-FIELD-MAPPING.md",
+        "A\tdocs/OUTREACH-PHASE-B-TEAM-TRAVEL.md",
+        "D\thuntsville/index.html",
+        "M\tindex.html",
+        "D\toutreach-backend-acceptance-2026.html",
+        "D\toutreach-register.html",
+        "A\toutreach-team.html",
+        "M\tprayer.html",
+        "A\tstaff-outreach-campaigns.html",
+        "D\tstaff-outreach-registration.html",
+        "A\tstaff-outreach-team.html",
+        "M\tstlucia/index.html",
+        "D\tsupabase/functions/outreach-registration-submit/gateway.mjs",
+        "D\tsupabase/functions/outreach-registration-submit/index.ts",
+        "A\tsupabase/migrations/20261006113255_outreach_campaign_core_v1.sql",
+        "A\tsupabase/migrations/20261006113311_outreach_campaign_workflow_v1.sql",
+        "A\tsupabase/migrations/20261006113322_outreach_prize_integrity_foundation.sql",
+        "A\tsupabase/migrations/20261006200021_outreach_phase_b_team_travel.sql",
+        "D\tsupabase/migrations/20261016201932_huntsville_registration_foundation.sql",
+        "D\tsupabase/migrations/20261016201933_huntsville_registration_draft.sql",
+        "D\tsupabase/migrations/20261018121900_allow_huntsville_decision_registrations.sql",
+        "D\ttools/backend-tests/fixtures/outreach-registration-ui.mjs",
+        "A\ttools/backend-tests/fixtures/outreach-team-ui.mjs",
+        "M\ttools/backend-tests/fixtures/supabase-test-bootstrap.sql",
+        "D\ttools/backend-tests/huntsville-minimal-concurrency.test.mjs",
+        "D\ttools/backend-tests/huntsville-minimal-safety.test.mjs",
+        "D\ttools/backend-tests/huntsville-registration-preview.mjs",
+        "D\ttools/backend-tests/huntsville-registration.dom.mjs",
+        "D\ttools/backend-tests/huntsville-registration.test.mjs",
+        "D\ttools/backend-tests/local-postgres.mjs",
+        "M\ttools/backend-tests/login.dom.mjs",
+        "M\ttools/backend-tests/migration-order.mjs",
+        "A\ttools/backend-tests/outreach-campaign-concurrency.test.mjs",
+        "A\ttools/backend-tests/outreach-campaign.dom.mjs",
+        "A\ttools/backend-tests/outreach-campaign.test.mjs",
+        "A\ttools/backend-tests/outreach-prize.test.mjs",
+        "D\ttools/backend-tests/outreach-registration-gateway.test.mjs",
+        "D\ttools/backend-tests/outreach-registration.dom.mjs",
+        "D\ttools/backend-tests/outreach-registration.test.mjs",
+        "A\ttools/backend-tests/outreach-team-concurrency.test.mjs",
+        "A\ttools/backend-tests/outreach-team-preview.mjs",
+        "A\ttools/backend-tests/outreach-team.dom.mjs",
+        "A\ttools/backend-tests/outreach-team.test.mjs",
+        "M\ttools/backend-tests/package-lock.json",
+        "M\ttools/backend-tests/package.json",
+        "M\ttools/backend-tests/site-build.test.mjs",
+        "M\ttools/site-build/build.mjs",
+        "M\ttools/site-build/public-files.json"
+      ]
+    },
+    "registration": {
+      "ref": "codex/outreach-phase-c-registration-checkin",
+      "commit": "2c57b1ec0e1407d750b052cc22bbe9b4dc86e418",
+      "migrations": [
+        "supabase/migrations/20260923114743_create_course_progress_schema.sql",
+        "supabase/migrations/20260923114822_harden_course_security_and_indexes.sql",
+        "supabase/migrations/20260923115114_revoke_public_rls_helper_execution.sql",
+        "supabase/migrations/20260923115706_grant_authenticated_course_api_access.sql",
+        "supabase/migrations/20260923115732_restrict_authenticated_course_privileges.sql",
+        "supabase/migrations/20260923121707_add_st_lucia_registration_and_account_linking.sql",
+        "supabase/migrations/20260923122017_secure_st_lucia_registration_claim_after_login.sql",
+        "supabase/migrations/20260925200310_organization_foundation.sql",
+        "supabase/migrations/20260925200318_harden_outreach_claim.sql",
+        "supabase/migrations/20260925202633_lesson_notes.sql",
+        "supabase/migrations/20260926000821_followup_tasks.sql",
+        "supabase/migrations/20260926022613_staff_access_and_people.sql",
+        "supabase/migrations/20260926024742_household_records.sql",
+        "supabase/migrations/20260926032026_department_tags.sql",
+        "supabase/migrations/20260926034222_tag_workflows.sql",
+        "supabase/migrations/20260926035410_giving_configuration.sql",
+        "supabase/migrations/20260926040812_participant_portals.sql",
+        "supabase/migrations/20260928172557_people_staff_v1.sql",
+        "supabase/migrations/20261004055336_outreach_partner_intake_v1.sql",
+        "supabase/migrations/20261004154340_allow_bessemer_outreach_registrations.sql",
+        "supabase/migrations/20261004230453_outreach_partner_gateway.sql",
+        "supabase/migrations/20261005161946_outreach_network_limit_120.sql",
+        "supabase/migrations/20261006113255_outreach_campaign_core_v1.sql",
+        "supabase/migrations/20261006113311_outreach_campaign_workflow_v1.sql",
+        "supabase/migrations/20261006113322_outreach_prize_integrity_foundation.sql",
+        "supabase/migrations/20261006200021_outreach_phase_b_team_travel.sql",
+        "supabase/migrations/20261007073021_outreach_phase_c_registration_checkin.sql"
+      ],
+      "pages": [
+        "bessemer/index.html",
+        "outreach-give/index.html",
+        "outreach-giving.html",
+        "outreach-partner.html",
+        "outreach-register.html",
+        "outreach-team.html",
+        "outreach.html",
+        "staff-outreach-campaigns.html",
+        "staff-outreach-partners.html",
+        "staff-outreach-registration.html",
+        "staff-outreach-team.html",
+        "staff-people.html"
+      ],
+      "functions": [
+        "supabase/functions/outreach-partner-submit/gateway.mjs",
+        "supabase/functions/outreach-partner-submit/index.ts",
+        "supabase/functions/outreach-registration-submit/gateway.mjs",
+        "supabase/functions/outreach-registration-submit/index.ts"
+      ],
+      "deltaFromProduction": [
+        "M\t.github/workflows/outreach-isolation.yml",
+        "M\tARCHITECTURE.md",
+        "M\tCURRENT_BUILD_STATE.md",
+        "M\tDECISIONS.md",
+        "M\tSECURITY_MODEL.md",
+        "D\tassets/css/outreach-acceptance-review.css",
+        "M\tassets/css/outreach-registration.css",
+        "A\tassets/css/outreach-team.css",
+        "D\tassets/images/sowgo-go-qr.svg",
+        "D\tassets/js/outreach-acceptance-review.js",
+        "A\tassets/js/outreach-campaigns.js",
+        "M\tassets/js/outreach-registration-form.js",
+        "M\tassets/js/outreach-registration-public.js",
+        "M\tassets/js/outreach-registration-staff.js",
+        "A\tassets/js/outreach-team-portal.js",
+        "A\tassets/js/outreach-team.js",
+        "M\tbessemer/index.html",
+        "D\tconfig/outreach/huntsville-2026.json",
+        "M\tdiscipleship-login.html",
+        "D\tdocs/HUNTSVILLE-INHERITED-STATEMENTS.json",
+        "D\tdocs/HUNTSVILLE-MINIMAL-DEPENDENCIES.md",
+        "D\tdocs/HUNTSVILLE-MINIMAL-RELEASE.md",
+        "D\tdocs/HUNTSVILLE-REQUIRED-OBJECTS.json",
+        "D\tdocs/HUNTSVILLE-SOURCE-MANIFEST.json",
+        "A\tdocs/OUTREACH-CAMPAIGN-CORE-V1.md",
+        "A\tdocs/OUTREACH-FIELD-MAPPING.md",
+        "A\tdocs/OUTREACH-PHASE-B-TEAM-TRAVEL.md",
+        "A\tdocs/OUTREACH-PHASE-C-REGISTRATION-CHECKIN.md",
+        "D\thuntsville/index.html",
+        "M\tindex.html",
+        "D\toutreach-backend-acceptance-2026.html",
+        "M\toutreach-register.html",
+        "A\toutreach-team.html",
+        "M\tprayer.html",
+        "A\tstaff-outreach-campaigns.html",
+        "M\tstaff-outreach-registration.html",
+        "A\tstaff-outreach-team.html",
+        "M\tstlucia/index.html",
+        "M\tsupabase/functions/outreach-registration-submit/gateway.mjs",
+        "A\tsupabase/migrations/20261006113255_outreach_campaign_core_v1.sql",
+        "A\tsupabase/migrations/20261006113311_outreach_campaign_workflow_v1.sql",
+        "A\tsupabase/migrations/20261006113322_outreach_prize_integrity_foundation.sql",
+        "A\tsupabase/migrations/20261006200021_outreach_phase_b_team_travel.sql",
+        "R061\tsupabase/migrations/20261016201932_huntsville_registration_foundation.sql\tsupabase/migrations/20261007073021_outreach_phase_c_registration_checkin.sql",
+        "D\tsupabase/migrations/20261016201933_huntsville_registration_draft.sql",
+        "D\tsupabase/migrations/20261018121900_allow_huntsville_decision_registrations.sql",
+        "A\ttools/backend-tests/fixtures/outreach-team-ui.mjs",
+        "M\ttools/backend-tests/fixtures/supabase-test-bootstrap.sql",
+        "D\ttools/backend-tests/huntsville-minimal-concurrency.test.mjs",
+        "D\ttools/backend-tests/huntsville-minimal-safety.test.mjs",
+        "D\ttools/backend-tests/huntsville-registration-preview.mjs",
+        "D\ttools/backend-tests/huntsville-registration.dom.mjs",
+        "D\ttools/backend-tests/huntsville-registration.test.mjs",
+        "D\ttools/backend-tests/local-postgres.mjs",
+        "M\ttools/backend-tests/login.dom.mjs",
+        "M\ttools/backend-tests/migration-order.mjs",
+        "A\ttools/backend-tests/outreach-campaign-concurrency.test.mjs",
+        "A\ttools/backend-tests/outreach-campaign.dom.mjs",
+        "A\ttools/backend-tests/outreach-campaign.test.mjs",
+        "A\ttools/backend-tests/outreach-prize.test.mjs",
+        "A\ttools/backend-tests/outreach-registration-concurrency.test.mjs",
+        "M\ttools/backend-tests/outreach-registration-gateway.test.mjs",
+        "A\ttools/backend-tests/outreach-registration-preview.mjs",
+        "M\ttools/backend-tests/outreach-registration.dom.mjs",
+        "M\ttools/backend-tests/outreach-registration.test.mjs",
+        "A\ttools/backend-tests/outreach-team-concurrency.test.mjs",
+        "A\ttools/backend-tests/outreach-team-preview.mjs",
+        "A\ttools/backend-tests/outreach-team.dom.mjs",
+        "A\ttools/backend-tests/outreach-team.test.mjs",
+        "M\ttools/backend-tests/package-lock.json",
+        "M\ttools/backend-tests/package.json",
+        "M\ttools/backend-tests/site-build.test.mjs",
+        "M\ttools/site-build/build.mjs",
+        "M\ttools/site-build/public-files.json"
+      ]
+    },
+    "prizes": {
+      "ref": "codex/outreach-phase-d-prizes",
+      "commit": "d899616a81df2a62a2957db074966073310b02c0",
+      "migrations": [
+        "supabase/migrations/20260923114743_create_course_progress_schema.sql",
+        "supabase/migrations/20260923114822_harden_course_security_and_indexes.sql",
+        "supabase/migrations/20260923115114_revoke_public_rls_helper_execution.sql",
+        "supabase/migrations/20260923115706_grant_authenticated_course_api_access.sql",
+        "supabase/migrations/20260923115732_restrict_authenticated_course_privileges.sql",
+        "supabase/migrations/20260923121707_add_st_lucia_registration_and_account_linking.sql",
+        "supabase/migrations/20260923122017_secure_st_lucia_registration_claim_after_login.sql",
+        "supabase/migrations/20260925200310_organization_foundation.sql",
+        "supabase/migrations/20260925200318_harden_outreach_claim.sql",
+        "supabase/migrations/20260925202633_lesson_notes.sql",
+        "supabase/migrations/20260926000821_followup_tasks.sql",
+        "supabase/migrations/20260926022613_staff_access_and_people.sql",
+        "supabase/migrations/20260926024742_household_records.sql",
+        "supabase/migrations/20260926032026_department_tags.sql",
+        "supabase/migrations/20260926034222_tag_workflows.sql",
+        "supabase/migrations/20260926035410_giving_configuration.sql",
+        "supabase/migrations/20260926040812_participant_portals.sql",
+        "supabase/migrations/20260928172557_people_staff_v1.sql",
+        "supabase/migrations/20261004055336_outreach_partner_intake_v1.sql",
+        "supabase/migrations/20261004154340_allow_bessemer_outreach_registrations.sql",
+        "supabase/migrations/20261004230453_outreach_partner_gateway.sql",
+        "supabase/migrations/20261005161946_outreach_network_limit_120.sql",
+        "supabase/migrations/20261006113255_outreach_campaign_core_v1.sql",
+        "supabase/migrations/20261006113311_outreach_campaign_workflow_v1.sql",
+        "supabase/migrations/20261006113322_outreach_prize_integrity_foundation.sql",
+        "supabase/migrations/20261006200021_outreach_phase_b_team_travel.sql",
+        "supabase/migrations/20261007073021_outreach_phase_c_registration_checkin.sql",
+        "supabase/migrations/20261007160000_outreach_phase_d_prize_operations.sql"
+      ],
+      "pages": [
+        "bessemer/index.html",
+        "outreach-drawing-numbers.html",
+        "outreach-give/index.html",
+        "outreach-giving.html",
+        "outreach-partner.html",
+        "outreach-prize-display.html",
+        "outreach-register.html",
+        "outreach-team.html",
+        "outreach.html",
+        "staff-outreach-campaigns.html",
+        "staff-outreach-partners.html",
+        "staff-outreach-prizes.html",
+        "staff-outreach-registration.html",
+        "staff-outreach-team.html",
+        "staff-people.html"
+      ],
+      "functions": [
+        "supabase/functions/outreach-partner-submit/gateway.mjs",
+        "supabase/functions/outreach-partner-submit/index.ts",
+        "supabase/functions/outreach-registration-submit/gateway.mjs",
+        "supabase/functions/outreach-registration-submit/index.ts"
+      ],
+      "deltaFromProduction": [
+        "M\t.github/workflows/outreach-isolation.yml",
+        "M\tARCHITECTURE.md",
+        "M\tCURRENT_BUILD_STATE.md",
+        "M\tDECISIONS.md",
+        "M\tSECURITY_MODEL.md",
+        "D\tassets/css/outreach-acceptance-review.css",
+        "A\tassets/css/outreach-prizes.css",
+        "M\tassets/css/outreach-registration.css",
+        "A\tassets/css/outreach-team.css",
+        "D\tassets/images/sowgo-go-qr.svg",
+        "D\tassets/js/outreach-acceptance-review.js",
+        "A\tassets/js/outreach-campaigns.js",
+        "A\tassets/js/outreach-prize-display.js",
+        "A\tassets/js/outreach-prize-household.js",
+        "A\tassets/js/outreach-prizes.js",
+        "M\tassets/js/outreach-registration-form.js",
+        "M\tassets/js/outreach-registration-public.js",
+        "M\tassets/js/outreach-registration-staff.js",
+        "A\tassets/js/outreach-team-portal.js",
+        "A\tassets/js/outreach-team.js",
+        "M\tbessemer/index.html",
+        "D\tconfig/outreach/huntsville-2026.json",
+        "M\tdiscipleship-login.html",
+        "D\tdocs/HUNTSVILLE-INHERITED-STATEMENTS.json",
+        "D\tdocs/HUNTSVILLE-MINIMAL-DEPENDENCIES.md",
+        "D\tdocs/HUNTSVILLE-MINIMAL-RELEASE.md",
+        "D\tdocs/HUNTSVILLE-REQUIRED-OBJECTS.json",
+        "D\tdocs/HUNTSVILLE-SOURCE-MANIFEST.json",
+        "A\tdocs/OUTREACH-CAMPAIGN-CORE-V1.md",
+        "A\tdocs/OUTREACH-FIELD-MAPPING.md",
+        "A\tdocs/OUTREACH-PHASE-B-TEAM-TRAVEL.md",
+        "A\tdocs/OUTREACH-PHASE-C-REGISTRATION-CHECKIN.md",
+        "A\tdocs/OUTREACH-PHASE-D-PRIZES.md",
+        "D\thuntsville/index.html",
+        "M\tindex.html",
+        "D\toutreach-backend-acceptance-2026.html",
+        "A\toutreach-drawing-numbers.html",
+        "A\toutreach-prize-display.html",
+        "M\toutreach-register.html",
+        "A\toutreach-team.html",
+        "M\tprayer.html",
+        "A\tstaff-outreach-campaigns.html",
+        "A\tstaff-outreach-prizes.html",
+        "M\tstaff-outreach-registration.html",
+        "A\tstaff-outreach-team.html",
+        "M\tstlucia/index.html",
+        "M\tsupabase/functions/outreach-registration-submit/gateway.mjs",
+        "A\tsupabase/migrations/20261006113255_outreach_campaign_core_v1.sql",
+        "A\tsupabase/migrations/20261006113311_outreach_campaign_workflow_v1.sql",
+        "A\tsupabase/migrations/20261006113322_outreach_prize_integrity_foundation.sql",
+        "A\tsupabase/migrations/20261006200021_outreach_phase_b_team_travel.sql",
+        "R061\tsupabase/migrations/20261016201932_huntsville_registration_foundation.sql\tsupabase/migrations/20261007073021_outreach_phase_c_registration_checkin.sql",
+        "A\tsupabase/migrations/20261007160000_outreach_phase_d_prize_operations.sql",
+        "D\tsupabase/migrations/20261016201933_huntsville_registration_draft.sql",
+        "D\tsupabase/migrations/20261018121900_allow_huntsville_decision_registrations.sql",
+        "A\ttools/backend-tests/fixtures/outreach-team-ui.mjs",
+        "M\ttools/backend-tests/fixtures/supabase-test-bootstrap.sql",
+        "D\ttools/backend-tests/huntsville-minimal-concurrency.test.mjs",
+        "D\ttools/backend-tests/huntsville-minimal-safety.test.mjs",
+        "D\ttools/backend-tests/huntsville-registration-preview.mjs",
+        "D\ttools/backend-tests/huntsville-registration.dom.mjs",
+        "D\ttools/backend-tests/huntsville-registration.test.mjs",
+        "D\ttools/backend-tests/local-postgres.mjs",
+        "M\ttools/backend-tests/login.dom.mjs",
+        "M\ttools/backend-tests/migration-order.mjs",
+        "A\ttools/backend-tests/outreach-campaign-concurrency.test.mjs",
+        "A\ttools/backend-tests/outreach-campaign.dom.mjs",
+        "A\ttools/backend-tests/outreach-campaign.test.mjs",
+        "A\ttools/backend-tests/outreach-prize-concurrency.test.mjs",
+        "A\ttools/backend-tests/outreach-prize-operations.test.mjs",
+        "A\ttools/backend-tests/outreach-prize.dom.mjs",
+        "A\ttools/backend-tests/outreach-prize.test.mjs",
+        "A\ttools/backend-tests/outreach-registration-concurrency.test.mjs",
+        "M\ttools/backend-tests/outreach-registration-gateway.test.mjs",
+        "A\ttools/backend-tests/outreach-registration-preview.mjs",
+        "M\ttools/backend-tests/outreach-registration.dom.mjs",
+        "M\ttools/backend-tests/outreach-registration.test.mjs",
+        "A\ttools/backend-tests/outreach-team-concurrency.test.mjs",
+        "A\ttools/backend-tests/outreach-team-preview.mjs",
+        "A\ttools/backend-tests/outreach-team.dom.mjs",
+        "A\ttools/backend-tests/outreach-team.test.mjs",
+        "M\ttools/backend-tests/package-lock.json",
+        "M\ttools/backend-tests/package.json",
+        "M\ttools/backend-tests/site-build.test.mjs",
+        "M\ttools/site-build/build.mjs",
+        "M\ttools/site-build/public-files.json"
+      ]
+    },
+    "event_day": {
+      "ref": "codex/outreach-phase-e-event-day",
+      "commit": "f41ab24dc256145fa37b9516c1aae2ef7a602a37",
+      "migrations": [
+        "supabase/migrations/20260923114743_create_course_progress_schema.sql",
+        "supabase/migrations/20260923114822_harden_course_security_and_indexes.sql",
+        "supabase/migrations/20260923115114_revoke_public_rls_helper_execution.sql",
+        "supabase/migrations/20260923115706_grant_authenticated_course_api_access.sql",
+        "supabase/migrations/20260923115732_restrict_authenticated_course_privileges.sql",
+        "supabase/migrations/20260923121707_add_st_lucia_registration_and_account_linking.sql",
+        "supabase/migrations/20260923122017_secure_st_lucia_registration_claim_after_login.sql",
+        "supabase/migrations/20260925200310_organization_foundation.sql",
+        "supabase/migrations/20260925200318_harden_outreach_claim.sql",
+        "supabase/migrations/20260925202633_lesson_notes.sql",
+        "supabase/migrations/20260926000821_followup_tasks.sql",
+        "supabase/migrations/20260926022613_staff_access_and_people.sql",
+        "supabase/migrations/20260926024742_household_records.sql",
+        "supabase/migrations/20260926032026_department_tags.sql",
+        "supabase/migrations/20260926034222_tag_workflows.sql",
+        "supabase/migrations/20260926035410_giving_configuration.sql",
+        "supabase/migrations/20260926040812_participant_portals.sql",
+        "supabase/migrations/20260928172557_people_staff_v1.sql",
+        "supabase/migrations/20261004055336_outreach_partner_intake_v1.sql",
+        "supabase/migrations/20261004154340_allow_bessemer_outreach_registrations.sql",
+        "supabase/migrations/20261004230453_outreach_partner_gateway.sql",
+        "supabase/migrations/20261005161946_outreach_network_limit_120.sql",
+        "supabase/migrations/20261006113255_outreach_campaign_core_v1.sql",
+        "supabase/migrations/20261006113311_outreach_campaign_workflow_v1.sql",
+        "supabase/migrations/20261006113322_outreach_prize_integrity_foundation.sql",
+        "supabase/migrations/20261006200021_outreach_phase_b_team_travel.sql",
+        "supabase/migrations/20261007073021_outreach_phase_c_registration_checkin.sql",
+        "supabase/migrations/20261007160000_outreach_phase_d_prize_operations.sql",
+        "supabase/migrations/20261007213000_outreach_phase_e_event_day.sql",
+        "supabase/migrations/20261007221218_outreach_phase_e_template_clone_version.sql"
+      ],
+      "pages": [
+        "bessemer/index.html",
+        "outreach-drawing-numbers.html",
+        "outreach-give/index.html",
+        "outreach-giving.html",
+        "outreach-partner.html",
+        "outreach-prize-display.html",
+        "outreach-register.html",
+        "outreach-team.html",
+        "outreach.html",
+        "staff-outreach-campaigns.html",
+        "staff-outreach-event-day.html",
+        "staff-outreach-partners.html",
+        "staff-outreach-prizes.html",
+        "staff-outreach-registration.html",
+        "staff-outreach-team.html",
+        "staff-people.html"
+      ],
+      "functions": [
+        "supabase/functions/outreach-partner-submit/gateway.mjs",
+        "supabase/functions/outreach-partner-submit/index.ts",
+        "supabase/functions/outreach-registration-submit/gateway.mjs",
+        "supabase/functions/outreach-registration-submit/index.ts"
+      ],
+      "deltaFromProduction": [
+        "M\t.github/workflows/outreach-isolation.yml",
+        "M\tARCHITECTURE.md",
+        "M\tCURRENT_BUILD_STATE.md",
+        "M\tDECISIONS.md",
+        "M\tSECURITY_MODEL.md",
+        "D\tassets/css/outreach-acceptance-review.css",
+        "A\tassets/css/outreach-event-day.css",
+        "A\tassets/css/outreach-prizes.css",
+        "M\tassets/css/outreach-registration.css",
+        "A\tassets/css/outreach-team.css",
+        "D\tassets/images/sowgo-go-qr.svg",
+        "D\tassets/js/outreach-acceptance-review.js",
+        "A\tassets/js/outreach-campaigns.js",
+        "A\tassets/js/outreach-event-day.js",
+        "A\tassets/js/outreach-prize-display.js",
+        "A\tassets/js/outreach-prize-household.js",
+        "A\tassets/js/outreach-prizes.js",
+        "M\tassets/js/outreach-registration-form.js",
+        "M\tassets/js/outreach-registration-public.js",
+        "M\tassets/js/outreach-registration-staff.js",
+        "A\tassets/js/outreach-team-portal.js",
+        "A\tassets/js/outreach-team.js",
+        "M\tbessemer/index.html",
+        "D\tconfig/outreach/huntsville-2026.json",
+        "M\tdiscipleship-login.html",
+        "D\tdocs/HUNTSVILLE-INHERITED-STATEMENTS.json",
+        "D\tdocs/HUNTSVILLE-MINIMAL-DEPENDENCIES.md",
+        "D\tdocs/HUNTSVILLE-MINIMAL-RELEASE.md",
+        "D\tdocs/HUNTSVILLE-REQUIRED-OBJECTS.json",
+        "D\tdocs/HUNTSVILLE-SOURCE-MANIFEST.json",
+        "A\tdocs/OUTREACH-CAMPAIGN-CORE-V1.md",
+        "A\tdocs/OUTREACH-FIELD-MAPPING.md",
+        "A\tdocs/OUTREACH-PHASE-B-TEAM-TRAVEL.md",
+        "A\tdocs/OUTREACH-PHASE-C-REGISTRATION-CHECKIN.md",
+        "A\tdocs/OUTREACH-PHASE-D-PRIZES.md",
+        "A\tdocs/OUTREACH-PHASE-E-EVENT-DAY.md",
+        "D\thuntsville/index.html",
+        "M\tindex.html",
+        "D\toutreach-backend-acceptance-2026.html",
+        "A\toutreach-drawing-numbers.html",
+        "A\toutreach-prize-display.html",
+        "M\toutreach-register.html",
+        "A\toutreach-team.html",
+        "M\tprayer.html",
+        "A\tstaff-outreach-campaigns.html",
+        "A\tstaff-outreach-event-day.html",
+        "A\tstaff-outreach-prizes.html",
+        "M\tstaff-outreach-registration.html",
+        "A\tstaff-outreach-team.html",
+        "M\tstlucia/index.html",
+        "M\tsupabase/functions/outreach-registration-submit/gateway.mjs",
+        "A\tsupabase/migrations/20261006113255_outreach_campaign_core_v1.sql",
+        "A\tsupabase/migrations/20261006113311_outreach_campaign_workflow_v1.sql",
+        "A\tsupabase/migrations/20261006113322_outreach_prize_integrity_foundation.sql",
+        "A\tsupabase/migrations/20261006200021_outreach_phase_b_team_travel.sql",
+        "R061\tsupabase/migrations/20261016201932_huntsville_registration_foundation.sql\tsupabase/migrations/20261007073021_outreach_phase_c_registration_checkin.sql",
+        "A\tsupabase/migrations/20261007160000_outreach_phase_d_prize_operations.sql",
+        "A\tsupabase/migrations/20261007213000_outreach_phase_e_event_day.sql",
+        "A\tsupabase/migrations/20261007221218_outreach_phase_e_template_clone_version.sql",
+        "D\tsupabase/migrations/20261016201933_huntsville_registration_draft.sql",
+        "D\tsupabase/migrations/20261018121900_allow_huntsville_decision_registrations.sql",
+        "A\ttools/backend-tests/fixtures/outreach-team-ui.mjs",
+        "M\ttools/backend-tests/fixtures/supabase-test-bootstrap.sql",
+        "D\ttools/backend-tests/huntsville-minimal-concurrency.test.mjs",
+        "D\ttools/backend-tests/huntsville-minimal-safety.test.mjs",
+        "D\ttools/backend-tests/huntsville-registration-preview.mjs",
+        "D\ttools/backend-tests/huntsville-registration.dom.mjs",
+        "D\ttools/backend-tests/huntsville-registration.test.mjs",
+        "D\ttools/backend-tests/local-postgres.mjs",
+        "M\ttools/backend-tests/login.dom.mjs",
+        "M\ttools/backend-tests/migration-order.mjs",
+        "A\ttools/backend-tests/outreach-campaign-concurrency.test.mjs",
+        "A\ttools/backend-tests/outreach-campaign.dom.mjs",
+        "A\ttools/backend-tests/outreach-campaign.test.mjs",
+        "A\ttools/backend-tests/outreach-event-day-concurrency.test.mjs",
+        "A\ttools/backend-tests/outreach-event-day.dom.mjs",
+        "A\ttools/backend-tests/outreach-event-day.test.mjs",
+        "A\ttools/backend-tests/outreach-prize-concurrency.test.mjs",
+        "A\ttools/backend-tests/outreach-prize-operations.test.mjs",
+        "A\ttools/backend-tests/outreach-prize.dom.mjs",
+        "A\ttools/backend-tests/outreach-prize.test.mjs",
+        "A\ttools/backend-tests/outreach-registration-concurrency.test.mjs",
+        "M\ttools/backend-tests/outreach-registration-gateway.test.mjs",
+        "A\ttools/backend-tests/outreach-registration-preview.mjs",
+        "M\ttools/backend-tests/outreach-registration.dom.mjs",
+        "M\ttools/backend-tests/outreach-registration.test.mjs",
+        "A\ttools/backend-tests/outreach-team-concurrency.test.mjs",
+        "A\ttools/backend-tests/outreach-team-preview.mjs",
+        "A\ttools/backend-tests/outreach-team.dom.mjs",
+        "A\ttools/backend-tests/outreach-team.test.mjs",
+        "M\ttools/backend-tests/package-lock.json",
+        "M\ttools/backend-tests/package.json",
+        "M\ttools/backend-tests/site-build.test.mjs",
+        "M\ttools/site-build/build.mjs",
+        "M\ttools/site-build/public-files.json"
+      ]
+    },
+    "host_pre_event": {
+      "ref": "codex/outreach-phase-f-pre-event-automation",
+      "commit": "7b883ca226ebeaa993a43dcd3a58f15dd8cfc234",
+      "migrations": [
+        "supabase/migrations/20260923114743_create_course_progress_schema.sql",
+        "supabase/migrations/20260923114822_harden_course_security_and_indexes.sql",
+        "supabase/migrations/20260923115114_revoke_public_rls_helper_execution.sql",
+        "supabase/migrations/20260923115706_grant_authenticated_course_api_access.sql",
+        "supabase/migrations/20260923115732_restrict_authenticated_course_privileges.sql",
+        "supabase/migrations/20260923121707_add_st_lucia_registration_and_account_linking.sql",
+        "supabase/migrations/20260923122017_secure_st_lucia_registration_claim_after_login.sql",
+        "supabase/migrations/20260925200310_organization_foundation.sql",
+        "supabase/migrations/20260925200318_harden_outreach_claim.sql",
+        "supabase/migrations/20260925202633_lesson_notes.sql",
+        "supabase/migrations/20260926000821_followup_tasks.sql",
+        "supabase/migrations/20260926022613_staff_access_and_people.sql",
+        "supabase/migrations/20260926024742_household_records.sql",
+        "supabase/migrations/20260926032026_department_tags.sql",
+        "supabase/migrations/20260926034222_tag_workflows.sql",
+        "supabase/migrations/20260926035410_giving_configuration.sql",
+        "supabase/migrations/20260926040812_participant_portals.sql",
+        "supabase/migrations/20260928172557_people_staff_v1.sql",
+        "supabase/migrations/20261004055336_outreach_partner_intake_v1.sql",
+        "supabase/migrations/20261004154340_allow_bessemer_outreach_registrations.sql",
+        "supabase/migrations/20261004230453_outreach_partner_gateway.sql",
+        "supabase/migrations/20261005161946_outreach_network_limit_120.sql",
+        "supabase/migrations/20261006113255_outreach_campaign_core_v1.sql",
+        "supabase/migrations/20261006113311_outreach_campaign_workflow_v1.sql",
+        "supabase/migrations/20261006113322_outreach_prize_integrity_foundation.sql",
+        "supabase/migrations/20261006200021_outreach_phase_b_team_travel.sql",
+        "supabase/migrations/20261007073021_outreach_phase_c_registration_checkin.sql",
+        "supabase/migrations/20261007160000_outreach_phase_d_prize_operations.sql",
+        "supabase/migrations/20261007213000_outreach_phase_e_event_day.sql",
+        "supabase/migrations/20261007221218_outreach_phase_e_template_clone_version.sql",
+        "supabase/migrations/20261008134746_outreach_phase_f_pre_event_automation.sql"
+      ],
+      "pages": [
+        "bessemer/index.html",
+        "outreach-drawing-numbers.html",
+        "outreach-give/index.html",
+        "outreach-giving.html",
+        "outreach-host.html",
+        "outreach-interest.html",
+        "outreach-partner.html",
+        "outreach-prize-display.html",
+        "outreach-register.html",
+        "outreach-team.html",
+        "outreach.html",
+        "staff-outreach-campaigns.html",
+        "staff-outreach-event-day.html",
+        "staff-outreach-partners.html",
+        "staff-outreach-pre-event.html",
+        "staff-outreach-prizes.html",
+        "staff-outreach-registration.html",
+        "staff-outreach-team.html",
+        "staff-people.html"
+      ],
+      "functions": [
+        "supabase/functions/outreach-interest-submit/gateway.mjs",
+        "supabase/functions/outreach-interest-submit/index.ts",
+        "supabase/functions/outreach-partner-submit/gateway.mjs",
+        "supabase/functions/outreach-partner-submit/index.ts",
+        "supabase/functions/outreach-registration-submit/gateway.mjs",
+        "supabase/functions/outreach-registration-submit/index.ts"
+      ],
+      "deltaFromProduction": [
+        "M\t.github/workflows/outreach-isolation.yml",
+        "M\tARCHITECTURE.md",
+        "M\tCURRENT_BUILD_STATE.md",
+        "M\tDECISIONS.md",
+        "M\tSECURITY_MODEL.md",
+        "D\tassets/css/outreach-acceptance-review.css",
+        "A\tassets/css/outreach-event-day.css",
+        "A\tassets/css/outreach-pre-event.css",
+        "A\tassets/css/outreach-prizes.css",
+        "M\tassets/css/outreach-registration.css",
+        "A\tassets/css/outreach-team.css",
+        "D\tassets/images/sowgo-go-qr.svg",
+        "D\tassets/js/outreach-acceptance-review.js",
+        "A\tassets/js/outreach-campaigns.js",
+        "A\tassets/js/outreach-event-day.js",
+        "A\tassets/js/outreach-interest.js",
+        "A\tassets/js/outreach-pre-event.js",
+        "A\tassets/js/outreach-prize-display.js",
+        "A\tassets/js/outreach-prize-household.js",
+        "A\tassets/js/outreach-prizes.js",
+        "M\tassets/js/outreach-registration-form.js",
+        "M\tassets/js/outreach-registration-public.js",
+        "M\tassets/js/outreach-registration-staff.js",
+        "A\tassets/js/outreach-team-portal.js",
+        "A\tassets/js/outreach-team.js",
+        "M\tbessemer/index.html",
+        "D\tconfig/outreach/huntsville-2026.json",
+        "M\tdiscipleship-login.html",
+        "D\tdocs/HUNTSVILLE-INHERITED-STATEMENTS.json",
+        "D\tdocs/HUNTSVILLE-MINIMAL-DEPENDENCIES.md",
+        "D\tdocs/HUNTSVILLE-MINIMAL-RELEASE.md",
+        "D\tdocs/HUNTSVILLE-REQUIRED-OBJECTS.json",
+        "D\tdocs/HUNTSVILLE-SOURCE-MANIFEST.json",
+        "A\tdocs/OUTREACH-CAMPAIGN-CORE-V1.md",
+        "A\tdocs/OUTREACH-FIELD-MAPPING.md",
+        "A\tdocs/OUTREACH-PHASE-B-TEAM-TRAVEL.md",
+        "A\tdocs/OUTREACH-PHASE-C-REGISTRATION-CHECKIN.md",
+        "A\tdocs/OUTREACH-PHASE-D-PRIZES.md",
+        "A\tdocs/OUTREACH-PHASE-E-EVENT-DAY.md",
+        "A\tdocs/OUTREACH-PHASE-F-PRE-EVENT-AUTOMATION.md",
+        "D\thuntsville/index.html",
+        "M\tindex.html",
+        "D\toutreach-backend-acceptance-2026.html",
+        "A\toutreach-drawing-numbers.html",
+        "A\toutreach-host.html",
+        "A\toutreach-interest.html",
+        "A\toutreach-prize-display.html",
+        "M\toutreach-register.html",
+        "A\toutreach-team.html",
+        "M\tprayer.html",
+        "A\tstaff-outreach-campaigns.html",
+        "A\tstaff-outreach-event-day.html",
+        "A\tstaff-outreach-pre-event.html",
+        "A\tstaff-outreach-prizes.html",
+        "M\tstaff-outreach-registration.html",
+        "A\tstaff-outreach-team.html",
+        "M\tstlucia/index.html",
+        "A\tsupabase/functions/outreach-interest-submit/gateway.mjs",
+        "A\tsupabase/functions/outreach-interest-submit/index.ts",
+        "M\tsupabase/functions/outreach-registration-submit/gateway.mjs",
+        "A\tsupabase/migrations/20261006113255_outreach_campaign_core_v1.sql",
+        "A\tsupabase/migrations/20261006113311_outreach_campaign_workflow_v1.sql",
+        "A\tsupabase/migrations/20261006113322_outreach_prize_integrity_foundation.sql",
+        "A\tsupabase/migrations/20261006200021_outreach_phase_b_team_travel.sql",
+        "R061\tsupabase/migrations/20261016201932_huntsville_registration_foundation.sql\tsupabase/migrations/20261007073021_outreach_phase_c_registration_checkin.sql",
+        "A\tsupabase/migrations/20261007160000_outreach_phase_d_prize_operations.sql",
+        "A\tsupabase/migrations/20261007213000_outreach_phase_e_event_day.sql",
+        "A\tsupabase/migrations/20261007221218_outreach_phase_e_template_clone_version.sql",
+        "A\tsupabase/migrations/20261008134746_outreach_phase_f_pre_event_automation.sql",
+        "D\tsupabase/migrations/20261016201933_huntsville_registration_draft.sql",
+        "D\tsupabase/migrations/20261018121900_allow_huntsville_decision_registrations.sql",
+        "A\ttools/backend-tests/fixtures/outreach-team-ui.mjs",
+        "A\ttools/backend-tests/fixtures/pre-event-context.mjs",
+        "M\ttools/backend-tests/fixtures/supabase-test-bootstrap.sql",
+        "D\ttools/backend-tests/huntsville-minimal-concurrency.test.mjs",
+        "D\ttools/backend-tests/huntsville-minimal-safety.test.mjs",
+        "D\ttools/backend-tests/huntsville-registration-preview.mjs",
+        "D\ttools/backend-tests/huntsville-registration.dom.mjs",
+        "D\ttools/backend-tests/huntsville-registration.test.mjs",
+        "D\ttools/backend-tests/local-postgres.mjs",
+        "M\ttools/backend-tests/login.dom.mjs",
+        "M\ttools/backend-tests/migration-order.mjs",
+        "A\ttools/backend-tests/outreach-campaign-concurrency.test.mjs",
+        "A\ttools/backend-tests/outreach-campaign.dom.mjs",
+        "A\ttools/backend-tests/outreach-campaign.test.mjs",
+        "A\ttools/backend-tests/outreach-event-day-concurrency.test.mjs",
+        "A\ttools/backend-tests/outreach-event-day.dom.mjs",
+        "A\ttools/backend-tests/outreach-event-day.test.mjs",
+        "A\ttools/backend-tests/outreach-interest-gateway.test.mjs",
+        "A\ttools/backend-tests/outreach-pre-event-concurrency.test.mjs",
+        "A\ttools/backend-tests/outreach-pre-event.browser.mjs",
+        "A\ttools/backend-tests/outreach-pre-event.dom.mjs",
+        "A\ttools/backend-tests/outreach-pre-event.test.mjs",
+        "A\ttools/backend-tests/outreach-prize-concurrency.test.mjs",
+        "A\ttools/backend-tests/outreach-prize-operations.test.mjs",
+        "A\ttools/backend-tests/outreach-prize.dom.mjs",
+        "A\ttools/backend-tests/outreach-prize.test.mjs",
+        "A\ttools/backend-tests/outreach-registration-concurrency.test.mjs",
+        "M\ttools/backend-tests/outreach-registration-gateway.test.mjs",
+        "A\ttools/backend-tests/outreach-registration-preview.mjs",
+        "M\ttools/backend-tests/outreach-registration.dom.mjs",
+        "M\ttools/backend-tests/outreach-registration.test.mjs",
+        "A\ttools/backend-tests/outreach-team-concurrency.test.mjs",
+        "A\ttools/backend-tests/outreach-team-preview.mjs",
+        "A\ttools/backend-tests/outreach-team.dom.mjs",
+        "A\ttools/backend-tests/outreach-team.test.mjs",
+        "M\ttools/backend-tests/package-lock.json",
+        "M\ttools/backend-tests/package.json",
+        "M\ttools/backend-tests/site-build.test.mjs",
+        "M\ttools/site-build/build.mjs",
+        "M\ttools/site-build/public-files.json"
+      ]
+    },
+    "staff_workspace": {
+      "ref": "codex/staff-workspace-consolidation",
+      "commit": "80d1c702679bff3a307f306ac952ac3252f53d9b",
+      "migrations": [
+        "supabase/migrations/20260923114743_create_course_progress_schema.sql",
+        "supabase/migrations/20260923114822_harden_course_security_and_indexes.sql",
+        "supabase/migrations/20260923115114_revoke_public_rls_helper_execution.sql",
+        "supabase/migrations/20260923115706_grant_authenticated_course_api_access.sql",
+        "supabase/migrations/20260923115732_restrict_authenticated_course_privileges.sql",
+        "supabase/migrations/20260923121707_add_st_lucia_registration_and_account_linking.sql",
+        "supabase/migrations/20260923122017_secure_st_lucia_registration_claim_after_login.sql",
+        "supabase/migrations/20260925200310_organization_foundation.sql",
+        "supabase/migrations/20260925200318_harden_outreach_claim.sql",
+        "supabase/migrations/20260925202633_lesson_notes.sql",
+        "supabase/migrations/20260926000821_followup_tasks.sql",
+        "supabase/migrations/20260926022613_staff_access_and_people.sql",
+        "supabase/migrations/20260926024742_household_records.sql",
+        "supabase/migrations/20260926032026_department_tags.sql",
+        "supabase/migrations/20260926034222_tag_workflows.sql",
+        "supabase/migrations/20260926035410_giving_configuration.sql",
+        "supabase/migrations/20260926040812_participant_portals.sql",
+        "supabase/migrations/20260928172557_people_staff_v1.sql",
+        "supabase/migrations/20261004055336_outreach_partner_intake_v1.sql",
+        "supabase/migrations/20261004154340_allow_bessemer_outreach_registrations.sql",
+        "supabase/migrations/20261004230453_outreach_partner_gateway.sql",
+        "supabase/migrations/20261005161946_outreach_network_limit_120.sql",
+        "supabase/migrations/20261006113255_outreach_campaign_core_v1.sql",
+        "supabase/migrations/20261006113311_outreach_campaign_workflow_v1.sql",
+        "supabase/migrations/20261006113322_outreach_prize_integrity_foundation.sql",
+        "supabase/migrations/20261006200021_outreach_phase_b_team_travel.sql",
+        "supabase/migrations/20261007073021_outreach_phase_c_registration_checkin.sql",
+        "supabase/migrations/20261007160000_outreach_phase_d_prize_operations.sql",
+        "supabase/migrations/20261007213000_outreach_phase_e_event_day.sql",
+        "supabase/migrations/20261007221218_outreach_phase_e_template_clone_version.sql",
+        "supabase/migrations/20261008134746_outreach_phase_f_pre_event_automation.sql"
+      ],
+      "pages": [
+        "bessemer/index.html",
+        "outreach-drawing-numbers.html",
+        "outreach-give/index.html",
+        "outreach-giving.html",
+        "outreach-host.html",
+        "outreach-interest.html",
+        "outreach-partner.html",
+        "outreach-prize-display.html",
+        "outreach-register.html",
+        "outreach-team.html",
+        "outreach.html",
+        "staff-home.html",
+        "staff-outreach-campaigns.html",
+        "staff-outreach-event-day.html",
+        "staff-outreach-overview.html",
+        "staff-outreach-partners.html",
+        "staff-outreach-pre-event.html",
+        "staff-outreach-prizes.html",
+        "staff-outreach-registration.html",
+        "staff-outreach-team.html",
+        "staff-people.html"
+      ],
+      "functions": [
+        "supabase/functions/outreach-interest-submit/gateway.mjs",
+        "supabase/functions/outreach-interest-submit/index.ts",
+        "supabase/functions/outreach-partner-submit/gateway.mjs",
+        "supabase/functions/outreach-partner-submit/index.ts",
+        "supabase/functions/outreach-registration-submit/gateway.mjs",
+        "supabase/functions/outreach-registration-submit/index.ts"
+      ],
+      "deltaFromProduction": [
+        "M\t.github/workflows/outreach-isolation.yml",
+        "M\tARCHITECTURE.md",
+        "M\tCURRENT_BUILD_STATE.md",
+        "M\tDECISIONS.md",
+        "M\tSECURITY_MODEL.md",
+        "A\tassets/css/outreach-event-day.css",
+        "A\tassets/css/outreach-pre-event.css",
+        "A\tassets/css/outreach-prizes.css",
+        "M\tassets/css/outreach-registration.css",
+        "A\tassets/css/outreach-team.css",
+        "R058\tassets/css/outreach-acceptance-review.css\tassets/css/staff-workspace.css",
+        "A\tassets/images/kingdom-propel-logo.png",
+        "D\tassets/images/sowgo-go-qr.svg",
+        "D\tassets/js/outreach-acceptance-review.js",
+        "A\tassets/js/outreach-campaigns.js",
+        "A\tassets/js/outreach-event-day.js",
+        "A\tassets/js/outreach-interest.js",
+        "M\tassets/js/outreach-people.js",
+        "A\tassets/js/outreach-pre-event.js",
+        "A\tassets/js/outreach-prize-display.js",
+        "A\tassets/js/outreach-prize-household.js",
+        "A\tassets/js/outreach-prizes.js",
+        "M\tassets/js/outreach-registration-form.js",
+        "M\tassets/js/outreach-registration-public.js",
+        "M\tassets/js/outreach-registration-staff.js",
+        "A\tassets/js/outreach-team-portal.js",
+        "A\tassets/js/outreach-team.js",
+        "A\tassets/js/staff-dashboard.js",
+        "A\tassets/js/staff-workspace.js",
+        "M\tbessemer/index.html",
+        "D\tconfig/outreach/huntsville-2026.json",
+        "M\tdiscipleship-login.html",
+        "D\tdocs/HUNTSVILLE-INHERITED-STATEMENTS.json",
+        "D\tdocs/HUNTSVILLE-MINIMAL-DEPENDENCIES.md",
+        "D\tdocs/HUNTSVILLE-MINIMAL-RELEASE.md",
+        "D\tdocs/HUNTSVILLE-REQUIRED-OBJECTS.json",
+        "D\tdocs/HUNTSVILLE-SOURCE-MANIFEST.json",
+        "A\tdocs/OUTREACH-CAMPAIGN-CORE-V1.md",
+        "A\tdocs/OUTREACH-FIELD-MAPPING.md",
+        "A\tdocs/OUTREACH-PHASE-B-TEAM-TRAVEL.md",
+        "A\tdocs/OUTREACH-PHASE-C-REGISTRATION-CHECKIN.md",
+        "A\tdocs/OUTREACH-PHASE-D-PRIZES.md",
+        "A\tdocs/OUTREACH-PHASE-E-EVENT-DAY.md",
+        "A\tdocs/OUTREACH-PHASE-F-PRE-EVENT-AUTOMATION.md",
+        "A\tdocs/STAFF-WORKSPACE-NAVIGATION.md",
+        "D\thuntsville/index.html",
+        "M\tindex.html",
+        "D\toutreach-backend-acceptance-2026.html",
+        "A\toutreach-drawing-numbers.html",
+        "A\toutreach-host.html",
+        "A\toutreach-interest.html",
+        "A\toutreach-prize-display.html",
+        "M\toutreach-register.html",
+        "A\toutreach-team.html",
+        "M\tprayer.html",
+        "A\tstaff-home.html",
+        "A\tstaff-outreach-campaigns.html",
+        "A\tstaff-outreach-event-day.html",
+        "A\tstaff-outreach-overview.html",
+        "M\tstaff-outreach-partners.html",
+        "A\tstaff-outreach-pre-event.html",
+        "A\tstaff-outreach-prizes.html",
+        "M\tstaff-outreach-registration.html",
+        "A\tstaff-outreach-team.html",
+        "M\tstaff-people.html",
+        "M\tstlucia/index.html",
+        "A\tsupabase/functions/outreach-interest-submit/gateway.mjs",
+        "A\tsupabase/functions/outreach-interest-submit/index.ts",
+        "M\tsupabase/functions/outreach-registration-submit/gateway.mjs",
+        "A\tsupabase/migrations/20261006113255_outreach_campaign_core_v1.sql",
+        "A\tsupabase/migrations/20261006113311_outreach_campaign_workflow_v1.sql",
+        "A\tsupabase/migrations/20261006113322_outreach_prize_integrity_foundation.sql",
+        "A\tsupabase/migrations/20261006200021_outreach_phase_b_team_travel.sql",
+        "R061\tsupabase/migrations/20261016201932_huntsville_registration_foundation.sql\tsupabase/migrations/20261007073021_outreach_phase_c_registration_checkin.sql",
+        "A\tsupabase/migrations/20261007160000_outreach_phase_d_prize_operations.sql",
+        "A\tsupabase/migrations/20261007213000_outreach_phase_e_event_day.sql",
+        "A\tsupabase/migrations/20261007221218_outreach_phase_e_template_clone_version.sql",
+        "A\tsupabase/migrations/20261008134746_outreach_phase_f_pre_event_automation.sql",
+        "D\tsupabase/migrations/20261016201933_huntsville_registration_draft.sql",
+        "D\tsupabase/migrations/20261018121900_allow_huntsville_decision_registrations.sql",
+        "A\ttools/backend-tests/fixtures/eventday-workspace-ui.mjs",
+        "A\ttools/backend-tests/fixtures/outreach-team-ui.mjs",
+        "A\ttools/backend-tests/fixtures/pre-event-context.mjs",
+        "A\ttools/backend-tests/fixtures/prize-workspace-ui.mjs",
+        "M\ttools/backend-tests/fixtures/supabase-test-bootstrap.sql",
+        "D\ttools/backend-tests/huntsville-minimal-concurrency.test.mjs",
+        "D\ttools/backend-tests/huntsville-minimal-safety.test.mjs",
+        "D\ttools/backend-tests/huntsville-registration-preview.mjs",
+        "D\ttools/backend-tests/huntsville-registration.dom.mjs",
+        "D\ttools/backend-tests/huntsville-registration.test.mjs",
+        "D\ttools/backend-tests/local-postgres.mjs",
+        "M\ttools/backend-tests/login.dom.mjs",
+        "M\ttools/backend-tests/migration-order.mjs",
+        "A\ttools/backend-tests/outreach-campaign-concurrency.test.mjs",
+        "A\ttools/backend-tests/outreach-campaign.dom.mjs",
+        "A\ttools/backend-tests/outreach-campaign.test.mjs",
+        "A\ttools/backend-tests/outreach-event-day-concurrency.test.mjs",
+        "A\ttools/backend-tests/outreach-event-day.dom.mjs",
+        "A\ttools/backend-tests/outreach-event-day.test.mjs",
+        "A\ttools/backend-tests/outreach-interest-gateway.test.mjs",
+        "A\ttools/backend-tests/outreach-pre-event-concurrency.test.mjs",
+        "A\ttools/backend-tests/outreach-pre-event.browser.mjs",
+        "A\ttools/backend-tests/outreach-pre-event.dom.mjs",
+        "A\ttools/backend-tests/outreach-pre-event.test.mjs",
+        "A\ttools/backend-tests/outreach-prize-concurrency.test.mjs",
+        "A\ttools/backend-tests/outreach-prize-operations.test.mjs",
+        "A\ttools/backend-tests/outreach-prize.dom.mjs",
+        "A\ttools/backend-tests/outreach-prize.test.mjs",
+        "A\ttools/backend-tests/outreach-registration-concurrency.test.mjs",
+        "M\ttools/backend-tests/outreach-registration-gateway.test.mjs",
+        "A\ttools/backend-tests/outreach-registration-preview.mjs",
+        "M\ttools/backend-tests/outreach-registration.dom.mjs",
+        "M\ttools/backend-tests/outreach-registration.test.mjs",
+        "A\ttools/backend-tests/outreach-team-concurrency.test.mjs",
+        "A\ttools/backend-tests/outreach-team-preview.mjs",
+        "A\ttools/backend-tests/outreach-team.dom.mjs",
+        "A\ttools/backend-tests/outreach-team.test.mjs",
+        "M\ttools/backend-tests/package-lock.json",
+        "M\ttools/backend-tests/package.json",
+        "M\ttools/backend-tests/site-build.test.mjs",
+        "A\ttools/backend-tests/staff-workspace.browser.mjs",
+        "A\ttools/backend-tests/staff-workspace.dom.mjs",
+        "M\ttools/site-build/build.mjs",
+        "M\ttools/site-build/public-files.json"
+      ]
+    },
+    "communications": {
+      "ref": "codex/outreach-phase-g-communications-core",
+      "commit": "10a15402f059c605d883ec8b4517d3dfdf9cd850",
+      "migrations": [
+        "supabase/migrations/20260923114743_create_course_progress_schema.sql",
+        "supabase/migrations/20260923114822_harden_course_security_and_indexes.sql",
+        "supabase/migrations/20260923115114_revoke_public_rls_helper_execution.sql",
+        "supabase/migrations/20260923115706_grant_authenticated_course_api_access.sql",
+        "supabase/migrations/20260923115732_restrict_authenticated_course_privileges.sql",
+        "supabase/migrations/20260923121707_add_st_lucia_registration_and_account_linking.sql",
+        "supabase/migrations/20260923122017_secure_st_lucia_registration_claim_after_login.sql",
+        "supabase/migrations/20260925200310_organization_foundation.sql",
+        "supabase/migrations/20260925200318_harden_outreach_claim.sql",
+        "supabase/migrations/20260925202633_lesson_notes.sql",
+        "supabase/migrations/20260926000821_followup_tasks.sql",
+        "supabase/migrations/20260926022613_staff_access_and_people.sql",
+        "supabase/migrations/20260926024742_household_records.sql",
+        "supabase/migrations/20260926032026_department_tags.sql",
+        "supabase/migrations/20260926034222_tag_workflows.sql",
+        "supabase/migrations/20260926035410_giving_configuration.sql",
+        "supabase/migrations/20260926040812_participant_portals.sql",
+        "supabase/migrations/20260928172557_people_staff_v1.sql",
+        "supabase/migrations/20261004055336_outreach_partner_intake_v1.sql",
+        "supabase/migrations/20261004154340_allow_bessemer_outreach_registrations.sql",
+        "supabase/migrations/20261004230453_outreach_partner_gateway.sql",
+        "supabase/migrations/20261005161946_outreach_network_limit_120.sql",
+        "supabase/migrations/20261006113255_outreach_campaign_core_v1.sql",
+        "supabase/migrations/20261006113311_outreach_campaign_workflow_v1.sql",
+        "supabase/migrations/20261006113322_outreach_prize_integrity_foundation.sql",
+        "supabase/migrations/20261006200021_outreach_phase_b_team_travel.sql",
+        "supabase/migrations/20261007073021_outreach_phase_c_registration_checkin.sql",
+        "supabase/migrations/20261007160000_outreach_phase_d_prize_operations.sql",
+        "supabase/migrations/20261007213000_outreach_phase_e_event_day.sql",
+        "supabase/migrations/20261007221218_outreach_phase_e_template_clone_version.sql",
+        "supabase/migrations/20261008134746_outreach_phase_f_pre_event_automation.sql",
+        "supabase/migrations/20261009154725_outreach_phase_g_communications_core.sql"
+      ],
+      "pages": [
+        "bessemer/index.html",
+        "outreach-drawing-numbers.html",
+        "outreach-give/index.html",
+        "outreach-giving.html",
+        "outreach-host.html",
+        "outreach-interest.html",
+        "outreach-partner.html",
+        "outreach-prize-display.html",
+        "outreach-register.html",
+        "outreach-team.html",
+        "outreach.html",
+        "staff-campaign-communications.html",
+        "staff-communication-activity.html",
+        "staff-communication-templates.html",
+        "staff-communications.html",
+        "staff-home.html",
+        "staff-outreach-campaigns.html",
+        "staff-outreach-event-day.html",
+        "staff-outreach-overview.html",
+        "staff-outreach-partners.html",
+        "staff-outreach-pre-event.html",
+        "staff-outreach-prizes.html",
+        "staff-outreach-registration.html",
+        "staff-outreach-team.html",
+        "staff-people.html"
+      ],
+      "functions": [
+        "supabase/functions/_shared/communications/providers.mjs",
+        "supabase/functions/_shared/communications/service.ts",
+        "supabase/functions/communications-callback/index.ts",
+        "supabase/functions/communications-worker/index.ts",
+        "supabase/functions/outreach-interest-submit/gateway.mjs",
+        "supabase/functions/outreach-interest-submit/index.ts",
+        "supabase/functions/outreach-partner-submit/gateway.mjs",
+        "supabase/functions/outreach-partner-submit/index.ts",
+        "supabase/functions/outreach-registration-submit/gateway.mjs",
+        "supabase/functions/outreach-registration-submit/index.ts"
+      ],
+      "deltaFromProduction": [
+        "M\t.github/workflows/outreach-isolation.yml",
+        "M\tARCHITECTURE.md",
+        "M\tCURRENT_BUILD_STATE.md",
+        "M\tDECISIONS.md",
+        "M\tSECURITY_MODEL.md",
+        "A\tassets/css/communications.css",
+        "A\tassets/css/outreach-event-day.css",
+        "A\tassets/css/outreach-pre-event.css",
+        "A\tassets/css/outreach-prizes.css",
+        "M\tassets/css/outreach-registration.css",
+        "A\tassets/css/outreach-team.css",
+        "R058\tassets/css/outreach-acceptance-review.css\tassets/css/staff-workspace.css",
+        "A\tassets/images/kingdom-propel-logo.png",
+        "D\tassets/images/sowgo-go-qr.svg",
+        "A\tassets/js/communications.js",
+        "D\tassets/js/outreach-acceptance-review.js",
+        "A\tassets/js/outreach-campaigns.js",
+        "A\tassets/js/outreach-event-day.js",
+        "A\tassets/js/outreach-interest.js",
+        "M\tassets/js/outreach-people.js",
+        "A\tassets/js/outreach-pre-event.js",
+        "A\tassets/js/outreach-prize-display.js",
+        "A\tassets/js/outreach-prize-household.js",
+        "A\tassets/js/outreach-prizes.js",
+        "M\tassets/js/outreach-registration-form.js",
+        "M\tassets/js/outreach-registration-public.js",
+        "M\tassets/js/outreach-registration-staff.js",
+        "A\tassets/js/outreach-team-portal.js",
+        "A\tassets/js/outreach-team.js",
+        "A\tassets/js/staff-dashboard.js",
+        "A\tassets/js/staff-workspace.js",
+        "M\tbessemer/index.html",
+        "D\tconfig/outreach/huntsville-2026.json",
+        "M\tdiscipleship-login.html",
+        "A\tdocs/COMMUNICATIONS-CORE-PHASE-G.md",
+        "D\tdocs/HUNTSVILLE-INHERITED-STATEMENTS.json",
+        "D\tdocs/HUNTSVILLE-MINIMAL-DEPENDENCIES.md",
+        "D\tdocs/HUNTSVILLE-MINIMAL-RELEASE.md",
+        "D\tdocs/HUNTSVILLE-REQUIRED-OBJECTS.json",
+        "D\tdocs/HUNTSVILLE-SOURCE-MANIFEST.json",
+        "A\tdocs/OUTREACH-CAMPAIGN-CORE-V1.md",
+        "A\tdocs/OUTREACH-FIELD-MAPPING.md",
+        "A\tdocs/OUTREACH-PHASE-B-TEAM-TRAVEL.md",
+        "A\tdocs/OUTREACH-PHASE-C-REGISTRATION-CHECKIN.md",
+        "A\tdocs/OUTREACH-PHASE-D-PRIZES.md",
+        "A\tdocs/OUTREACH-PHASE-E-EVENT-DAY.md",
+        "A\tdocs/OUTREACH-PHASE-F-PRE-EVENT-AUTOMATION.md",
+        "A\tdocs/STAFF-WORKSPACE-NAVIGATION.md",
+        "D\thuntsville/index.html",
+        "M\tindex.html",
+        "D\toutreach-backend-acceptance-2026.html",
+        "A\toutreach-drawing-numbers.html",
+        "A\toutreach-host.html",
+        "A\toutreach-interest.html",
+        "A\toutreach-prize-display.html",
+        "M\toutreach-register.html",
+        "A\toutreach-team.html",
+        "M\tprayer.html",
+        "A\tstaff-campaign-communications.html",
+        "A\tstaff-communication-activity.html",
+        "A\tstaff-communication-templates.html",
+        "A\tstaff-communications.html",
+        "A\tstaff-home.html",
+        "A\tstaff-outreach-campaigns.html",
+        "A\tstaff-outreach-event-day.html",
+        "A\tstaff-outreach-overview.html",
+        "M\tstaff-outreach-partners.html",
+        "A\tstaff-outreach-pre-event.html",
+        "A\tstaff-outreach-prizes.html",
+        "M\tstaff-outreach-registration.html",
+        "A\tstaff-outreach-team.html",
+        "M\tstaff-people.html",
+        "M\tstlucia/index.html",
+        "A\tsupabase/functions/_shared/communications/providers.mjs",
+        "A\tsupabase/functions/_shared/communications/service.ts",
+        "A\tsupabase/functions/communications-callback/index.ts",
+        "A\tsupabase/functions/communications-worker/index.ts",
+        "A\tsupabase/functions/outreach-interest-submit/gateway.mjs",
+        "A\tsupabase/functions/outreach-interest-submit/index.ts",
+        "M\tsupabase/functions/outreach-registration-submit/gateway.mjs",
+        "A\tsupabase/migrations/20261006113255_outreach_campaign_core_v1.sql",
+        "A\tsupabase/migrations/20261006113311_outreach_campaign_workflow_v1.sql",
+        "A\tsupabase/migrations/20261006113322_outreach_prize_integrity_foundation.sql",
+        "A\tsupabase/migrations/20261006200021_outreach_phase_b_team_travel.sql",
+        "R061\tsupabase/migrations/20261016201932_huntsville_registration_foundation.sql\tsupabase/migrations/20261007073021_outreach_phase_c_registration_checkin.sql",
+        "A\tsupabase/migrations/20261007160000_outreach_phase_d_prize_operations.sql",
+        "A\tsupabase/migrations/20261007213000_outreach_phase_e_event_day.sql",
+        "A\tsupabase/migrations/20261007221218_outreach_phase_e_template_clone_version.sql",
+        "A\tsupabase/migrations/20261008134746_outreach_phase_f_pre_event_automation.sql",
+        "A\tsupabase/migrations/20261009154725_outreach_phase_g_communications_core.sql",
+        "D\tsupabase/migrations/20261016201933_huntsville_registration_draft.sql",
+        "D\tsupabase/migrations/20261018121900_allow_huntsville_decision_registrations.sql",
+        "A\ttools/backend-tests/communications-concurrency.test.mjs",
+        "A\ttools/backend-tests/communications-fixture.mjs",
+        "A\ttools/backend-tests/communications-provider.test.mjs",
+        "A\ttools/backend-tests/communications.dom.mjs",
+        "A\ttools/backend-tests/communications.test.mjs",
+        "A\ttools/backend-tests/fixtures/communications-browser-fixture.js",
+        "A\ttools/backend-tests/fixtures/eventday-workspace-ui.mjs",
+        "A\ttools/backend-tests/fixtures/outreach-team-ui.mjs",
+        "A\ttools/backend-tests/fixtures/pre-event-context.mjs",
+        "A\ttools/backend-tests/fixtures/prize-workspace-ui.mjs",
+        "M\ttools/backend-tests/fixtures/supabase-test-bootstrap.sql",
+        "D\ttools/backend-tests/huntsville-minimal-concurrency.test.mjs",
+        "D\ttools/backend-tests/huntsville-minimal-safety.test.mjs",
+        "D\ttools/backend-tests/huntsville-registration-preview.mjs",
+        "D\ttools/backend-tests/huntsville-registration.dom.mjs",
+        "D\ttools/backend-tests/huntsville-registration.test.mjs",
+        "D\ttools/backend-tests/local-postgres.mjs",
+        "M\ttools/backend-tests/login.dom.mjs",
+        "M\ttools/backend-tests/migration-order.mjs",
+        "A\ttools/backend-tests/outreach-campaign-concurrency.test.mjs",
+        "A\ttools/backend-tests/outreach-campaign.dom.mjs",
+        "A\ttools/backend-tests/outreach-campaign.test.mjs",
+        "A\ttools/backend-tests/outreach-event-day-concurrency.test.mjs",
+        "A\ttools/backend-tests/outreach-event-day.dom.mjs",
+        "A\ttools/backend-tests/outreach-event-day.test.mjs",
+        "A\ttools/backend-tests/outreach-interest-gateway.test.mjs",
+        "A\ttools/backend-tests/outreach-pre-event-concurrency.test.mjs",
+        "A\ttools/backend-tests/outreach-pre-event.browser.mjs",
+        "A\ttools/backend-tests/outreach-pre-event.dom.mjs",
+        "A\ttools/backend-tests/outreach-pre-event.test.mjs",
+        "A\ttools/backend-tests/outreach-prize-concurrency.test.mjs",
+        "A\ttools/backend-tests/outreach-prize-operations.test.mjs",
+        "A\ttools/backend-tests/outreach-prize.dom.mjs",
+        "A\ttools/backend-tests/outreach-prize.test.mjs",
+        "A\ttools/backend-tests/outreach-registration-concurrency.test.mjs",
+        "M\ttools/backend-tests/outreach-registration-gateway.test.mjs",
+        "A\ttools/backend-tests/outreach-registration-preview.mjs",
+        "M\ttools/backend-tests/outreach-registration.dom.mjs",
+        "M\ttools/backend-tests/outreach-registration.test.mjs",
+        "A\ttools/backend-tests/outreach-team-concurrency.test.mjs",
+        "A\ttools/backend-tests/outreach-team-preview.mjs",
+        "A\ttools/backend-tests/outreach-team.dom.mjs",
+        "A\ttools/backend-tests/outreach-team.test.mjs",
+        "M\ttools/backend-tests/package-lock.json",
+        "M\ttools/backend-tests/package.json",
+        "M\ttools/backend-tests/site-build.test.mjs",
+        "A\ttools/backend-tests/staff-workspace.browser.mjs",
+        "A\ttools/backend-tests/staff-workspace.dom.mjs",
+        "M\ttools/site-build/build.mjs",
+        "M\ttools/site-build/public-files.json"
+      ]
+    },
+    "provider_foundation": {
+      "ref": "codex/communications-phase-h1-provider-activation",
+      "commit": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+      "migrations": [
+        "supabase/migrations/20260923114743_create_course_progress_schema.sql",
+        "supabase/migrations/20260923114822_harden_course_security_and_indexes.sql",
+        "supabase/migrations/20260923115114_revoke_public_rls_helper_execution.sql",
+        "supabase/migrations/20260923115706_grant_authenticated_course_api_access.sql",
+        "supabase/migrations/20260923115732_restrict_authenticated_course_privileges.sql",
+        "supabase/migrations/20260923121707_add_st_lucia_registration_and_account_linking.sql",
+        "supabase/migrations/20260923122017_secure_st_lucia_registration_claim_after_login.sql",
+        "supabase/migrations/20260925200310_organization_foundation.sql",
+        "supabase/migrations/20260925200318_harden_outreach_claim.sql",
+        "supabase/migrations/20260925202633_lesson_notes.sql",
+        "supabase/migrations/20260926000821_followup_tasks.sql",
+        "supabase/migrations/20260926022613_staff_access_and_people.sql",
+        "supabase/migrations/20260926024742_household_records.sql",
+        "supabase/migrations/20260926032026_department_tags.sql",
+        "supabase/migrations/20260926034222_tag_workflows.sql",
+        "supabase/migrations/20260926035410_giving_configuration.sql",
+        "supabase/migrations/20260926040812_participant_portals.sql",
+        "supabase/migrations/20260928172557_people_staff_v1.sql",
+        "supabase/migrations/20261004055336_outreach_partner_intake_v1.sql",
+        "supabase/migrations/20261004154340_allow_bessemer_outreach_registrations.sql",
+        "supabase/migrations/20261004230453_outreach_partner_gateway.sql",
+        "supabase/migrations/20261005161946_outreach_network_limit_120.sql",
+        "supabase/migrations/20261006113255_outreach_campaign_core_v1.sql",
+        "supabase/migrations/20261006113311_outreach_campaign_workflow_v1.sql",
+        "supabase/migrations/20261006113322_outreach_prize_integrity_foundation.sql",
+        "supabase/migrations/20261006200021_outreach_phase_b_team_travel.sql",
+        "supabase/migrations/20261007073021_outreach_phase_c_registration_checkin.sql",
+        "supabase/migrations/20261007160000_outreach_phase_d_prize_operations.sql",
+        "supabase/migrations/20261007213000_outreach_phase_e_event_day.sql",
+        "supabase/migrations/20261007221218_outreach_phase_e_template_clone_version.sql",
+        "supabase/migrations/20261008134746_outreach_phase_f_pre_event_automation.sql",
+        "supabase/migrations/20261009154725_outreach_phase_g_communications_core.sql",
+        "supabase/migrations/20261009212523_communications_phase_h1_provider_activation.sql"
+      ],
+      "pages": [
+        "bessemer/index.html",
+        "outreach-drawing-numbers.html",
+        "outreach-give/index.html",
+        "outreach-giving.html",
+        "outreach-host.html",
+        "outreach-interest.html",
+        "outreach-partner.html",
+        "outreach-prize-display.html",
+        "outreach-register.html",
+        "outreach-team.html",
+        "outreach.html",
+        "staff-campaign-communications.html",
+        "staff-communication-activity.html",
+        "staff-communication-providers.html",
+        "staff-communication-templates.html",
+        "staff-communication-test.html",
+        "staff-communications.html",
+        "staff-home.html",
+        "staff-outreach-campaigns.html",
+        "staff-outreach-event-day.html",
+        "staff-outreach-overview.html",
+        "staff-outreach-partners.html",
+        "staff-outreach-pre-event.html",
+        "staff-outreach-prizes.html",
+        "staff-outreach-registration.html",
+        "staff-outreach-team.html",
+        "staff-people.html"
+      ],
+      "functions": [
+        "supabase/functions/_shared/communications/activation-service.ts",
+        "supabase/functions/_shared/communications/activation.mjs",
+        "supabase/functions/_shared/communications/providers.mjs",
+        "supabase/functions/_shared/communications/service.ts",
+        "supabase/functions/communications-callback/index.ts",
+        "supabase/functions/communications-provider-admin/index.ts",
+        "supabase/functions/communications-provider-callback/index.ts",
+        "supabase/functions/communications-provider-worker/index.ts",
+        "supabase/functions/communications-worker/index.ts",
+        "supabase/functions/outreach-interest-submit/gateway.mjs",
+        "supabase/functions/outreach-interest-submit/index.ts",
+        "supabase/functions/outreach-partner-submit/gateway.mjs",
+        "supabase/functions/outreach-partner-submit/index.ts",
+        "supabase/functions/outreach-registration-submit/gateway.mjs",
+        "supabase/functions/outreach-registration-submit/index.ts"
+      ],
+      "deltaFromProduction": [
+        "M\t.github/workflows/outreach-isolation.yml",
+        "M\tARCHITECTURE.md",
+        "M\tCURRENT_BUILD_STATE.md",
+        "M\tDECISIONS.md",
+        "M\tSECURITY_MODEL.md",
+        "A\tassets/css/communications.css",
+        "A\tassets/css/outreach-event-day.css",
+        "A\tassets/css/outreach-pre-event.css",
+        "A\tassets/css/outreach-prizes.css",
+        "M\tassets/css/outreach-registration.css",
+        "A\tassets/css/outreach-team.css",
+        "R058\tassets/css/outreach-acceptance-review.css\tassets/css/staff-workspace.css",
+        "A\tassets/images/kingdom-propel-logo.png",
+        "D\tassets/images/sowgo-go-qr.svg",
+        "A\tassets/js/communication-providers.js",
+        "A\tassets/js/communications.js",
+        "D\tassets/js/outreach-acceptance-review.js",
+        "A\tassets/js/outreach-campaigns.js",
+        "A\tassets/js/outreach-event-day.js",
+        "A\tassets/js/outreach-interest.js",
+        "M\tassets/js/outreach-people.js",
+        "A\tassets/js/outreach-pre-event.js",
+        "A\tassets/js/outreach-prize-display.js",
+        "A\tassets/js/outreach-prize-household.js",
+        "A\tassets/js/outreach-prizes.js",
+        "M\tassets/js/outreach-registration-form.js",
+        "M\tassets/js/outreach-registration-public.js",
+        "M\tassets/js/outreach-registration-staff.js",
+        "A\tassets/js/outreach-team-portal.js",
+        "A\tassets/js/outreach-team.js",
+        "A\tassets/js/staff-dashboard.js",
+        "A\tassets/js/staff-workspace.js",
+        "M\tbessemer/index.html",
+        "D\tconfig/outreach/huntsville-2026.json",
+        "M\tdiscipleship-login.html",
+        "A\tdocs/COMMUNICATIONS-CORE-PHASE-G.md",
+        "A\tdocs/COMMUNICATIONS-PHASE-H1-PROVIDER-ACTIVATION.md",
+        "D\tdocs/HUNTSVILLE-INHERITED-STATEMENTS.json",
+        "D\tdocs/HUNTSVILLE-MINIMAL-DEPENDENCIES.md",
+        "D\tdocs/HUNTSVILLE-MINIMAL-RELEASE.md",
+        "D\tdocs/HUNTSVILLE-REQUIRED-OBJECTS.json",
+        "D\tdocs/HUNTSVILLE-SOURCE-MANIFEST.json",
+        "A\tdocs/OUTREACH-CAMPAIGN-CORE-V1.md",
+        "A\tdocs/OUTREACH-FIELD-MAPPING.md",
+        "A\tdocs/OUTREACH-PHASE-B-TEAM-TRAVEL.md",
+        "A\tdocs/OUTREACH-PHASE-C-REGISTRATION-CHECKIN.md",
+        "A\tdocs/OUTREACH-PHASE-D-PRIZES.md",
+        "A\tdocs/OUTREACH-PHASE-E-EVENT-DAY.md",
+        "A\tdocs/OUTREACH-PHASE-F-PRE-EVENT-AUTOMATION.md",
+        "A\tdocs/STAFF-WORKSPACE-NAVIGATION.md",
+        "D\thuntsville/index.html",
+        "M\tindex.html",
+        "D\toutreach-backend-acceptance-2026.html",
+        "A\toutreach-drawing-numbers.html",
+        "A\toutreach-host.html",
+        "A\toutreach-interest.html",
+        "A\toutreach-prize-display.html",
+        "M\toutreach-register.html",
+        "A\toutreach-team.html",
+        "M\tprayer.html",
+        "A\tstaff-campaign-communications.html",
+        "A\tstaff-communication-activity.html",
+        "A\tstaff-communication-providers.html",
+        "A\tstaff-communication-templates.html",
+        "A\tstaff-communication-test.html",
+        "A\tstaff-communications.html",
+        "A\tstaff-home.html",
+        "A\tstaff-outreach-campaigns.html",
+        "A\tstaff-outreach-event-day.html",
+        "A\tstaff-outreach-overview.html",
+        "M\tstaff-outreach-partners.html",
+        "A\tstaff-outreach-pre-event.html",
+        "A\tstaff-outreach-prizes.html",
+        "M\tstaff-outreach-registration.html",
+        "A\tstaff-outreach-team.html",
+        "M\tstaff-people.html",
+        "M\tstlucia/index.html",
+        "A\tsupabase/functions/_shared/communications/activation-service.ts",
+        "A\tsupabase/functions/_shared/communications/activation.mjs",
+        "A\tsupabase/functions/_shared/communications/providers.mjs",
+        "A\tsupabase/functions/_shared/communications/service.ts",
+        "A\tsupabase/functions/communications-callback/index.ts",
+        "A\tsupabase/functions/communications-provider-admin/index.ts",
+        "A\tsupabase/functions/communications-provider-callback/index.ts",
+        "A\tsupabase/functions/communications-provider-worker/index.ts",
+        "A\tsupabase/functions/communications-worker/index.ts",
+        "A\tsupabase/functions/outreach-interest-submit/gateway.mjs",
+        "A\tsupabase/functions/outreach-interest-submit/index.ts",
+        "M\tsupabase/functions/outreach-registration-submit/gateway.mjs",
+        "A\tsupabase/migrations/20261006113255_outreach_campaign_core_v1.sql",
+        "A\tsupabase/migrations/20261006113311_outreach_campaign_workflow_v1.sql",
+        "A\tsupabase/migrations/20261006113322_outreach_prize_integrity_foundation.sql",
+        "A\tsupabase/migrations/20261006200021_outreach_phase_b_team_travel.sql",
+        "R061\tsupabase/migrations/20261016201932_huntsville_registration_foundation.sql\tsupabase/migrations/20261007073021_outreach_phase_c_registration_checkin.sql",
+        "A\tsupabase/migrations/20261007160000_outreach_phase_d_prize_operations.sql",
+        "A\tsupabase/migrations/20261007213000_outreach_phase_e_event_day.sql",
+        "A\tsupabase/migrations/20261007221218_outreach_phase_e_template_clone_version.sql",
+        "A\tsupabase/migrations/20261008134746_outreach_phase_f_pre_event_automation.sql",
+        "A\tsupabase/migrations/20261009154725_outreach_phase_g_communications_core.sql",
+        "A\tsupabase/migrations/20261009212523_communications_phase_h1_provider_activation.sql",
+        "D\tsupabase/migrations/20261016201933_huntsville_registration_draft.sql",
+        "D\tsupabase/migrations/20261018121900_allow_huntsville_decision_registrations.sql",
+        "A\ttools/backend-tests/activation-adapter.test.mjs",
+        "A\ttools/backend-tests/activation-concurrency.test.mjs",
+        "A\ttools/backend-tests/activation-fixture.mjs",
+        "A\ttools/backend-tests/activation.dom.mjs",
+        "A\ttools/backend-tests/activation.test.mjs",
+        "A\ttools/backend-tests/communications-concurrency.test.mjs",
+        "A\ttools/backend-tests/communications-fixture.mjs",
+        "A\ttools/backend-tests/communications-provider.test.mjs",
+        "A\ttools/backend-tests/communications.dom.mjs",
+        "A\ttools/backend-tests/communications.test.mjs",
+        "A\ttools/backend-tests/fixtures/activation-browser-fixture.js",
+        "A\ttools/backend-tests/fixtures/communications-browser-fixture.js",
+        "A\ttools/backend-tests/fixtures/eventday-workspace-ui.mjs",
+        "A\ttools/backend-tests/fixtures/outreach-team-ui.mjs",
+        "A\ttools/backend-tests/fixtures/pre-event-context.mjs",
+        "A\ttools/backend-tests/fixtures/prize-workspace-ui.mjs",
+        "M\ttools/backend-tests/fixtures/supabase-test-bootstrap.sql",
+        "D\ttools/backend-tests/huntsville-minimal-concurrency.test.mjs",
+        "D\ttools/backend-tests/huntsville-minimal-safety.test.mjs",
+        "D\ttools/backend-tests/huntsville-registration-preview.mjs",
+        "D\ttools/backend-tests/huntsville-registration.dom.mjs",
+        "D\ttools/backend-tests/huntsville-registration.test.mjs",
+        "D\ttools/backend-tests/local-postgres.mjs",
+        "M\ttools/backend-tests/login.dom.mjs",
+        "M\ttools/backend-tests/migration-order.mjs",
+        "A\ttools/backend-tests/outreach-campaign-concurrency.test.mjs",
+        "A\ttools/backend-tests/outreach-campaign.dom.mjs",
+        "A\ttools/backend-tests/outreach-campaign.test.mjs",
+        "A\ttools/backend-tests/outreach-event-day-concurrency.test.mjs",
+        "A\ttools/backend-tests/outreach-event-day.dom.mjs",
+        "A\ttools/backend-tests/outreach-event-day.test.mjs",
+        "A\ttools/backend-tests/outreach-interest-gateway.test.mjs",
+        "A\ttools/backend-tests/outreach-pre-event-concurrency.test.mjs",
+        "A\ttools/backend-tests/outreach-pre-event.browser.mjs",
+        "A\ttools/backend-tests/outreach-pre-event.dom.mjs",
+        "A\ttools/backend-tests/outreach-pre-event.test.mjs",
+        "A\ttools/backend-tests/outreach-prize-concurrency.test.mjs",
+        "A\ttools/backend-tests/outreach-prize-operations.test.mjs",
+        "A\ttools/backend-tests/outreach-prize.dom.mjs",
+        "A\ttools/backend-tests/outreach-prize.test.mjs",
+        "A\ttools/backend-tests/outreach-registration-concurrency.test.mjs",
+        "M\ttools/backend-tests/outreach-registration-gateway.test.mjs",
+        "A\ttools/backend-tests/outreach-registration-preview.mjs",
+        "M\ttools/backend-tests/outreach-registration.dom.mjs",
+        "M\ttools/backend-tests/outreach-registration.test.mjs",
+        "A\ttools/backend-tests/outreach-team-concurrency.test.mjs",
+        "A\ttools/backend-tests/outreach-team-preview.mjs",
+        "A\ttools/backend-tests/outreach-team.dom.mjs",
+        "A\ttools/backend-tests/outreach-team.test.mjs",
+        "M\ttools/backend-tests/package-lock.json",
+        "M\ttools/backend-tests/package.json",
+        "M\ttools/backend-tests/site-build.test.mjs",
+        "A\ttools/backend-tests/staff-workspace.browser.mjs",
+        "A\ttools/backend-tests/staff-workspace.dom.mjs",
+        "M\ttools/site-build/build.mjs",
+        "M\ttools/site-build/public-files.json"
+      ]
+    },
+    "partner_pastoral_pr29": {
+      "ref": "origin/codex/unified-staff-partner-pastoral-v1",
+      "commit": "350512a9401c6e783673af33f2f045d6ba04f62d",
+      "migrations": [
+        "supabase/migrations/20260923114743_create_course_progress_schema.sql",
+        "supabase/migrations/20260923114822_harden_course_security_and_indexes.sql",
+        "supabase/migrations/20260923115114_revoke_public_rls_helper_execution.sql",
+        "supabase/migrations/20260923115706_grant_authenticated_course_api_access.sql",
+        "supabase/migrations/20260923115732_restrict_authenticated_course_privileges.sql",
+        "supabase/migrations/20260923121707_add_st_lucia_registration_and_account_linking.sql",
+        "supabase/migrations/20260923122017_secure_st_lucia_registration_claim_after_login.sql",
+        "supabase/migrations/20260925200310_organization_foundation.sql",
+        "supabase/migrations/20260925200318_harden_outreach_claim.sql",
+        "supabase/migrations/20260925202633_lesson_notes.sql",
+        "supabase/migrations/20260926000821_followup_tasks.sql",
+        "supabase/migrations/20260926022613_staff_access_and_people.sql",
+        "supabase/migrations/20260926024742_household_records.sql",
+        "supabase/migrations/20260926032026_department_tags.sql",
+        "supabase/migrations/20260926034222_tag_workflows.sql",
+        "supabase/migrations/20260926035410_giving_configuration.sql",
+        "supabase/migrations/20260926040812_participant_portals.sql",
+        "supabase/migrations/20260928172557_people_staff_v1.sql",
+        "supabase/migrations/20261004055336_outreach_partner_intake_v1.sql",
+        "supabase/migrations/20261004154340_allow_bessemer_outreach_registrations.sql",
+        "supabase/migrations/20261004230453_outreach_partner_gateway.sql",
+        "supabase/migrations/20261005161946_outreach_network_limit_120.sql",
+        "supabase/migrations/20261016201932_huntsville_registration_foundation.sql",
+        "supabase/migrations/20261016201933_huntsville_registration_draft.sql",
+        "supabase/migrations/20261018121900_allow_huntsville_decision_registrations.sql",
+        "supabase/migrations/20261018124500_unified_staff_workspace_v1.sql",
+        "supabase/migrations/20261018124600_unified_staff_team_travel_v1.sql",
+        "supabase/migrations/20261018124700_huntsville_team_setup.sql",
+        "supabase/migrations/20261018124800_unified_staff_workspace_grants_fix.sql",
+        "supabase/migrations/20261018124900_unified_staff_workspace_function_fix.sql",
+        "supabase/migrations/20261018125000_restrict_unified_staff_access_admin.sql",
+        "supabase/migrations/20261018133000_outreach_partner_pastoral_v1.sql",
+        "supabase/migrations/20261018133100_outreach_partner_workspace_fix.sql",
+        "supabase/migrations/20261018133200_outreach_partner_workspace_alias_fix.sql",
+        "supabase/migrations/20261018133300_outreach_partner_operations_fix.sql",
+        "supabase/migrations/20261018133400_outreach_partner_audit_fix.sql"
+      ],
+      "pages": [
+        "bessemer/index.html",
+        "huntsville/index.html",
+        "outreach-give/index.html",
+        "outreach-giving.html",
+        "outreach-partner.html",
+        "outreach-register.html",
+        "outreach-team.html",
+        "outreach.html",
+        "staff-access.html",
+        "staff-home.html",
+        "staff-outreach-decisions.html",
+        "staff-outreach-overview.html",
+        "staff-outreach-partner-admin.html",
+        "staff-outreach-partner.html",
+        "staff-outreach-partners.html",
+        "staff-outreach-registration.html",
+        "staff-outreach-team.html",
+        "staff-people.html"
+      ],
+      "functions": [
+        "supabase/functions/outreach-partner-submit/gateway.mjs",
+        "supabase/functions/outreach-partner-submit/index.ts",
+        "supabase/functions/outreach-registration-submit/gateway.mjs",
+        "supabase/functions/outreach-registration-submit/index.ts"
+      ],
+      "deltaFromProduction": [
+        "A\tassets/css/outreach-team.css",
+        "R088\tassets/css/outreach-acceptance-review.css\tassets/css/staff-workspace.css",
+        "D\tassets/js/outreach-acceptance-review.js",
+        "A\tassets/js/outreach-team-portal.js",
+        "A\tassets/js/outreach-team.js",
+        "A\tassets/js/staff-access.js",
+        "A\tassets/js/staff-dashboard.js",
+        "A\tassets/js/staff-outreach-decisions.js",
+        "A\tassets/js/staff-outreach-partner-admin.js",
+        "A\tassets/js/staff-outreach-partner.js",
+        "A\tassets/js/staff-workspace.js",
+        "A\tassets/js/unified-preview-config.js",
+        "D\toutreach-backend-acceptance-2026.html",
+        "A\toutreach-team.html",
+        "A\tstaff-access.html",
+        "A\tstaff-home.html",
+        "A\tstaff-outreach-decisions.html",
+        "A\tstaff-outreach-overview.html",
+        "A\tstaff-outreach-partner-admin.html",
+        "A\tstaff-outreach-partner.html",
+        "M\tstaff-outreach-registration.html",
+        "A\tstaff-outreach-team.html",
+        "M\tstaff-people.html",
+        "A\tsupabase/migrations/20261018124500_unified_staff_workspace_v1.sql",
+        "A\tsupabase/migrations/20261018124600_unified_staff_team_travel_v1.sql",
+        "A\tsupabase/migrations/20261018124700_huntsville_team_setup.sql",
+        "A\tsupabase/migrations/20261018124800_unified_staff_workspace_grants_fix.sql",
+        "A\tsupabase/migrations/20261018124900_unified_staff_workspace_function_fix.sql",
+        "A\tsupabase/migrations/20261018125000_restrict_unified_staff_access_admin.sql",
+        "A\tsupabase/migrations/20261018133000_outreach_partner_pastoral_v1.sql",
+        "A\tsupabase/migrations/20261018133100_outreach_partner_workspace_fix.sql",
+        "A\tsupabase/migrations/20261018133200_outreach_partner_workspace_alias_fix.sql",
+        "A\tsupabase/migrations/20261018133300_outreach_partner_operations_fix.sql",
+        "A\tsupabase/migrations/20261018133400_outreach_partner_audit_fix.sql",
+        "A\ttools/backend-tests/outreach-partner-pastoral.test.mjs",
+        "M\ttools/backend-tests/package.json",
+        "A\ttools/backend-tests/unified-staff-workspace.test.mjs",
+        "M\ttools/site-build/public-files.json"
+      ]
+    },
+    "production_huntsville_release": {
+      "ref": "origin/codex/huntsville-production-release",
+      "commit": "7e4976d33411230b63430086606ce9df7b43571d",
+      "migrations": [
+        "supabase/migrations/20260923114743_create_course_progress_schema.sql",
+        "supabase/migrations/20260923114822_harden_course_security_and_indexes.sql",
+        "supabase/migrations/20260923115114_revoke_public_rls_helper_execution.sql",
+        "supabase/migrations/20260923115706_grant_authenticated_course_api_access.sql",
+        "supabase/migrations/20260923115732_restrict_authenticated_course_privileges.sql",
+        "supabase/migrations/20260923121707_add_st_lucia_registration_and_account_linking.sql",
+        "supabase/migrations/20260923122017_secure_st_lucia_registration_claim_after_login.sql",
+        "supabase/migrations/20260925200310_organization_foundation.sql",
+        "supabase/migrations/20260925200318_harden_outreach_claim.sql",
+        "supabase/migrations/20260925202633_lesson_notes.sql",
+        "supabase/migrations/20260926000821_followup_tasks.sql",
+        "supabase/migrations/20260926022613_staff_access_and_people.sql",
+        "supabase/migrations/20260926024742_household_records.sql",
+        "supabase/migrations/20260926032026_department_tags.sql",
+        "supabase/migrations/20260926034222_tag_workflows.sql",
+        "supabase/migrations/20260926035410_giving_configuration.sql",
+        "supabase/migrations/20260926040812_participant_portals.sql",
+        "supabase/migrations/20260928172557_people_staff_v1.sql",
+        "supabase/migrations/20261004055336_outreach_partner_intake_v1.sql",
+        "supabase/migrations/20261004154340_allow_bessemer_outreach_registrations.sql",
+        "supabase/migrations/20261004230453_outreach_partner_gateway.sql",
+        "supabase/migrations/20261005161946_outreach_network_limit_120.sql",
+        "supabase/migrations/20261016201932_huntsville_registration_foundation.sql",
+        "supabase/migrations/20261016201933_huntsville_registration_draft.sql"
+      ],
+      "pages": [
+        "bessemer/index.html",
+        "outreach-give/index.html",
+        "outreach-giving.html",
+        "outreach-partner.html",
+        "outreach-register.html",
+        "outreach.html",
+        "staff-outreach-partners.html",
+        "staff-outreach-registration.html",
+        "staff-people.html"
+      ],
+      "functions": [
+        "supabase/functions/outreach-partner-submit/gateway.mjs",
+        "supabase/functions/outreach-partner-submit/index.ts",
+        "supabase/functions/outreach-registration-submit/gateway.mjs",
+        "supabase/functions/outreach-registration-submit/index.ts"
+      ],
+      "deltaFromProduction": [
+        "D\tassets/css/outreach-acceptance-review.css",
+        "D\tassets/images/sowgo-go-qr.svg",
+        "D\tassets/js/outreach-acceptance-review.js",
+        "D\thuntsville/index.html",
+        "D\toutreach-backend-acceptance-2026.html",
+        "D\tsupabase/migrations/20261018121900_allow_huntsville_decision_registrations.sql",
+        "M\ttools/site-build/public-files.json"
+      ]
+    },
+    "production_huntsville_public": {
+      "ref": "origin/codex/huntsville-public-page-production",
+      "commit": "ed31eabe5dce418d750eecb342e18fdbc0ab89d0",
+      "migrations": [
+        "supabase/migrations/20260923114743_create_course_progress_schema.sql",
+        "supabase/migrations/20260923114822_harden_course_security_and_indexes.sql",
+        "supabase/migrations/20260923115114_revoke_public_rls_helper_execution.sql",
+        "supabase/migrations/20260923115706_grant_authenticated_course_api_access.sql",
+        "supabase/migrations/20260923115732_restrict_authenticated_course_privileges.sql",
+        "supabase/migrations/20260923121707_add_st_lucia_registration_and_account_linking.sql",
+        "supabase/migrations/20260923122017_secure_st_lucia_registration_claim_after_login.sql",
+        "supabase/migrations/20260925200310_organization_foundation.sql",
+        "supabase/migrations/20260925200318_harden_outreach_claim.sql",
+        "supabase/migrations/20260925202633_lesson_notes.sql",
+        "supabase/migrations/20260926000821_followup_tasks.sql",
+        "supabase/migrations/20260926022613_staff_access_and_people.sql",
+        "supabase/migrations/20260926024742_household_records.sql",
+        "supabase/migrations/20260926032026_department_tags.sql",
+        "supabase/migrations/20260926034222_tag_workflows.sql",
+        "supabase/migrations/20260926035410_giving_configuration.sql",
+        "supabase/migrations/20260926040812_participant_portals.sql",
+        "supabase/migrations/20260928172557_people_staff_v1.sql",
+        "supabase/migrations/20261004055336_outreach_partner_intake_v1.sql",
+        "supabase/migrations/20261004154340_allow_bessemer_outreach_registrations.sql",
+        "supabase/migrations/20261004230453_outreach_partner_gateway.sql",
+        "supabase/migrations/20261005161946_outreach_network_limit_120.sql",
+        "supabase/migrations/20261016201932_huntsville_registration_foundation.sql",
+        "supabase/migrations/20261016201933_huntsville_registration_draft.sql",
+        "supabase/migrations/20261018121900_allow_huntsville_decision_registrations.sql"
+      ],
+      "pages": [
+        "bessemer/index.html",
+        "huntsville/index.html",
+        "outreach-give/index.html",
+        "outreach-giving.html",
+        "outreach-partner.html",
+        "outreach-register.html",
+        "outreach.html",
+        "staff-outreach-partners.html",
+        "staff-outreach-registration.html",
+        "staff-people.html"
+      ],
+      "functions": [
+        "supabase/functions/outreach-partner-submit/gateway.mjs",
+        "supabase/functions/outreach-partner-submit/index.ts",
+        "supabase/functions/outreach-registration-submit/gateway.mjs",
+        "supabase/functions/outreach-registration-submit/index.ts"
+      ],
+      "deltaFromProduction": [
+        "D\tassets/css/outreach-acceptance-review.css",
+        "D\tassets/js/outreach-acceptance-review.js",
+        "D\toutreach-backend-acceptance-2026.html",
+        "M\ttools/site-build/public-files.json"
+      ]
+    },
+    "production_bessemer_mobile": {
+      "ref": "origin/main",
+      "commit": "e3157f0afa3f563ab6560ca64c9049448f02c806",
+      "migrations": [
+        "supabase/migrations/20260923114743_create_course_progress_schema.sql",
+        "supabase/migrations/20260923114822_harden_course_security_and_indexes.sql",
+        "supabase/migrations/20260923115114_revoke_public_rls_helper_execution.sql",
+        "supabase/migrations/20260923115706_grant_authenticated_course_api_access.sql",
+        "supabase/migrations/20260923115732_restrict_authenticated_course_privileges.sql",
+        "supabase/migrations/20260923121707_add_st_lucia_registration_and_account_linking.sql",
+        "supabase/migrations/20260923122017_secure_st_lucia_registration_claim_after_login.sql",
+        "supabase/migrations/20260925200310_organization_foundation.sql",
+        "supabase/migrations/20260925200318_harden_outreach_claim.sql",
+        "supabase/migrations/20260925202633_lesson_notes.sql",
+        "supabase/migrations/20260926000821_followup_tasks.sql",
+        "supabase/migrations/20260926022613_staff_access_and_people.sql",
+        "supabase/migrations/20260926024742_household_records.sql",
+        "supabase/migrations/20260926032026_department_tags.sql",
+        "supabase/migrations/20260926034222_tag_workflows.sql",
+        "supabase/migrations/20260926035410_giving_configuration.sql",
+        "supabase/migrations/20260926040812_participant_portals.sql",
+        "supabase/migrations/20260928172557_people_staff_v1.sql",
+        "supabase/migrations/20261004055336_outreach_partner_intake_v1.sql",
+        "supabase/migrations/20261004154340_allow_bessemer_outreach_registrations.sql",
+        "supabase/migrations/20261004230453_outreach_partner_gateway.sql",
+        "supabase/migrations/20261005161946_outreach_network_limit_120.sql",
+        "supabase/migrations/20261016201932_huntsville_registration_foundation.sql",
+        "supabase/migrations/20261016201933_huntsville_registration_draft.sql",
+        "supabase/migrations/20261018121900_allow_huntsville_decision_registrations.sql"
+      ],
+      "pages": [
+        "bessemer/index.html",
+        "huntsville/index.html",
+        "outreach-backend-acceptance-2026.html",
+        "outreach-give/index.html",
+        "outreach-giving.html",
+        "outreach-partner.html",
+        "outreach-register.html",
+        "outreach.html",
+        "staff-outreach-partners.html",
+        "staff-outreach-registration.html",
+        "staff-people.html"
+      ],
+      "functions": [
+        "supabase/functions/outreach-partner-submit/gateway.mjs",
+        "supabase/functions/outreach-partner-submit/index.ts",
+        "supabase/functions/outreach-registration-submit/gateway.mjs",
+        "supabase/functions/outreach-registration-submit/index.ts"
+      ],
+      "deltaFromProduction": []
+    },
+    "commands_pr31": {
+      "ref": "origin/codex/champion-life-unified-platform-command",
+      "commit": "b1c1e281ff8f085b3b2a0083b004054da4adaac1",
+      "migrations": [
+        "supabase/migrations/20260923114743_create_course_progress_schema.sql",
+        "supabase/migrations/20260923114822_harden_course_security_and_indexes.sql",
+        "supabase/migrations/20260923115114_revoke_public_rls_helper_execution.sql",
+        "supabase/migrations/20260923115706_grant_authenticated_course_api_access.sql",
+        "supabase/migrations/20260923115732_restrict_authenticated_course_privileges.sql",
+        "supabase/migrations/20260923121707_add_st_lucia_registration_and_account_linking.sql",
+        "supabase/migrations/20260923122017_secure_st_lucia_registration_claim_after_login.sql",
+        "supabase/migrations/20260925200310_organization_foundation.sql",
+        "supabase/migrations/20260925200318_harden_outreach_claim.sql",
+        "supabase/migrations/20260925202633_lesson_notes.sql",
+        "supabase/migrations/20260926000821_followup_tasks.sql",
+        "supabase/migrations/20260926022613_staff_access_and_people.sql",
+        "supabase/migrations/20260926024742_household_records.sql",
+        "supabase/migrations/20260926032026_department_tags.sql",
+        "supabase/migrations/20260926034222_tag_workflows.sql",
+        "supabase/migrations/20260926035410_giving_configuration.sql",
+        "supabase/migrations/20260926040812_participant_portals.sql",
+        "supabase/migrations/20260928172557_people_staff_v1.sql",
+        "supabase/migrations/20261004055336_outreach_partner_intake_v1.sql",
+        "supabase/migrations/20261004154340_allow_bessemer_outreach_registrations.sql",
+        "supabase/migrations/20261004230453_outreach_partner_gateway.sql",
+        "supabase/migrations/20261005161946_outreach_network_limit_120.sql",
+        "supabase/migrations/20261016201932_huntsville_registration_foundation.sql",
+        "supabase/migrations/20261016201933_huntsville_registration_draft.sql",
+        "supabase/migrations/20261018121900_allow_huntsville_decision_registrations.sql"
+      ],
+      "pages": [
+        "bessemer/index.html",
+        "huntsville/index.html",
+        "outreach-backend-acceptance-2026.html",
+        "outreach-give/index.html",
+        "outreach-giving.html",
+        "outreach-partner.html",
+        "outreach-register.html",
+        "outreach.html",
+        "staff-outreach-partners.html",
+        "staff-outreach-registration.html",
+        "staff-people.html"
+      ],
+      "functions": [
+        "supabase/functions/outreach-partner-submit/gateway.mjs",
+        "supabase/functions/outreach-partner-submit/index.ts",
+        "supabase/functions/outreach-registration-submit/gateway.mjs",
+        "supabase/functions/outreach-registration-submit/index.ts"
+      ],
+      "deltaFromProduction": [
+        "A\tdocs/CHAMPION-LIFE-UNIFIED-PLATFORM-COMMAND.md",
+        "A\tdocs/NMI-GIVING-CUTOVER-2026-10-23.md",
+        "A\tdocs/UNIFIED-OUTREACH-PRODUCTION-INTEGRATION-V1.md"
+      ]
+    }
+  },
+  "protectedFiles": [
+    {
+      "path": "_redirects",
+      "sha256": "aedee9c4c229fa00ac2df651c0be198d59a8dfc4d46f3396ff8e010fd75f438e"
+    },
+    {
+      "path": "about.html",
+      "sha256": "472a4d8227aadc8cb751172a5d26a902e74fdd91809bf04f649fcaab05e1b649"
+    },
+    {
+      "path": "assets/css/christmas-dinner-2026.css",
+      "sha256": "cb1663d4f9485994188fff8e0fff93e79484b8c3b993b6091aa592e9f9f3056f"
+    },
+    {
+      "path": "assets/css/grip-course.css",
+      "sha256": "499ff21d8571dc199d4a49b3d54f9cdcdea4d95e1ef56874de89566dca32944b"
+    },
+    {
+      "path": "assets/css/outreach-acceptance-review.css",
+      "sha256": "139cd8d435899599f31c80290c1e9a2360888b03802b0295f9753f7c32d59148"
+    },
+    {
+      "path": "assets/css/outreach-campaigns.css",
+      "sha256": "3b062e4113e2b8da3fdb02769b1ffdf29e8a5d4cb86784c2b8f8bd9abbfbda81"
+    },
+    {
+      "path": "assets/css/outreach-partner.css",
+      "sha256": "dbdc617a658720ae5edca22d269b08a0677e141173ba769288b21b6505a8278f"
+    },
+    {
+      "path": "assets/css/outreach-registration.css",
+      "sha256": "e7a100428730bbed02df86f031a587d5dc2db8afd11698e52c4d8aee72c46957"
+    },
+    {
+      "path": "assets/css/styles-base-20260915.css",
+      "sha256": "eebed7553d9805a66dd787e9a988ff2d7063669f4091842b87803e444e246098"
+    },
+    {
+      "path": "assets/css/styles.css",
+      "sha256": "b8acd59baefcd15f9ad6fbd7752a8bf08dc2c73d82e23fd65f6f88ceba6f5380"
+    },
+    {
+      "path": "assets/downloads/grip/getting-a-grip-lesson-1-how-to-become-a-christian.pdf",
+      "sha256": "66da89958ac3b85f42d32c3ef7139d567589385c2a0d524458cd85250f4cb3bd"
+    },
+    {
+      "path": "assets/downloads/grip/getting-a-grip-lesson-10-how-to-grow-and-develop-your-faith.pdf",
+      "sha256": "e4233168a5da2b0b58e9b86495c4c5e4ace44341a4466093beb045354f642592"
+    },
+    {
+      "path": "assets/downloads/grip/getting-a-grip-lesson-11-how-to-experience-the-abundant-life.pdf",
+      "sha256": "9567b85b3dc0fabf047763a57598b9a7545e67efb7249322e011c9df0d905b86"
+    },
+    {
+      "path": "assets/downloads/grip/getting-a-grip-lesson-12-how-to-be-an-overcomer.pdf",
+      "sha256": "132334c850edb65b7a00002b53ba6f9efbe61e25dac2c3756ff32819cdf1df2d"
+    },
+    {
+      "path": "assets/downloads/grip/getting-a-grip-lesson-13-how-to-serve-god.pdf",
+      "sha256": "2ec99366a35bd035a832a67072f5f7d120db88527ed76a9c7a53eda5cc6fa8fc"
+    },
+    {
+      "path": "assets/downloads/grip/getting-a-grip-lesson-2-how-to-be-sure-you-are-a-christian.pdf",
+      "sha256": "ebbcab59f0818720ff234228289b3a980806d4c5cb39ca4c8e8750c072417832"
+    },
+    {
+      "path": "assets/downloads/grip/getting-a-grip-lesson-3-how-to-develop-your-relationship-with-god.pdf",
+      "sha256": "1df22c89b0e8520329d8428b00d47163ec1e0d65762c5273684cc0ecfb9329a0"
+    },
+    {
+      "path": "assets/downloads/grip/getting-a-grip-lesson-4-how-to-talk-to-god.pdf",
+      "sha256": "ef326cca49abad2d4ad04a3b65dc22bd8625bce06fb5abfa6f4cd922cfc51f36"
+    },
+    {
+      "path": "assets/downloads/grip/getting-a-grip-lesson-5-how-to-hear-from-god.pdf",
+      "sha256": "1bbdad8553334d10bf550f67bfad39aaa3da57ccc9324f21a537c5403f6ab917"
+    },
+    {
+      "path": "assets/downloads/grip/getting-a-grip-lesson-6-how-to-obey-god.pdf",
+      "sha256": "3f5f9b39629b805cb426081016209cb6a6fd2e428aef18646d4fa9be0925522c"
+    },
+    {
+      "path": "assets/downloads/grip/getting-a-grip-lesson-7-how-to-experience-gods-love-and-forgiveness.pdf",
+      "sha256": "dc917a0fa68e4d06f61cc45de78b5f1125eb7c2653d568cd420db94e70c46265"
+    },
+    {
+      "path": "assets/downloads/grip/getting-a-grip-lesson-8-how-to-be-filled-with-the-holy-spirit.pdf",
+      "sha256": "733273b3c4e0d310d4677005318da4909196653891236ecf6387d34db6749f5f"
+    },
+    {
+      "path": "assets/downloads/grip/getting-a-grip-lesson-9-how-to-be-sure-you-are-filled-with-the-spirit.pdf",
+      "sha256": "5dd0921fd20b2f0c1f603c1983eaa84b18672187f3e00c06c4f0dd911690e391"
+    },
+    {
+      "path": "assets/downloads/grip/getting-a-grip-on-the-basics-full-workbook.pdf",
+      "sha256": "3048f852d892293f1b0555e74821eb33ed73a6959cd257ad349073ad5e884772"
+    },
+    {
+      "path": "assets/images/6am-prayer-homepage-approved-20260806.png",
+      "sha256": "e6ca8fa42583526cf060c4df6b95bf1a1013fe5fa9959b256f5a73b6b11d8a58"
+    },
+    {
+      "path": "assets/images/6am-prayer-homepage-approved-20260806.webp",
+      "sha256": "e6c99401a2b80ad27421d17f347dbf20bd0268968b3b80d71663456cd6c62038"
+    },
+    {
+      "path": "assets/images/baptism-joy.jpg",
+      "sha256": "1b894b7e088034e8a02fecac1842e87889b80a2c0527bfb3e932c757d2ff209b"
+    },
+    {
+      "path": "assets/images/baptism-wide.jpg",
+      "sha256": "bfe23573125ffc02637267bc81e32f2646209f33e0d389d55af93ad69b11fd2a"
+    },
+    {
+      "path": "assets/images/baptism-wide.webp",
+      "sha256": "7be2487bf9e1995a378ead45d6655d123910fc5d821f604572137e4354afa145"
+    },
+    {
+      "path": "assets/images/bessemer-qr.svg",
+      "sha256": "39d3fcefea2330dedbb60516c5d79ea00c1cd87a0ea71fc1e91a9f063a19feec"
+    },
+    {
+      "path": "assets/images/building.jpg",
+      "sha256": "7569f2cb4e3086cd98f4ef1cd13d97ca11453171c612c238af9b4885d088f8c3"
+    },
+    {
+      "path": "assets/images/building.webp",
+      "sha256": "bb91165adb1e5147386211e91182173b4faaf826809d020f3c49c09e78788188"
+    },
+    {
+      "path": "assets/images/champion_kids_program_cards.png",
+      "sha256": "aca86b2b432f4d1a3152538541c721cb85b498748a269f29179054cdc661706d"
+    },
+    {
+      "path": "assets/images/champion_kids_program_cards.webp",
+      "sha256": "4d723df9384baf6f5b455bdcd979d3d9df702be4af554e852346ae5da5c24a23"
+    },
+    {
+      "path": "assets/images/church-life.jpg",
+      "sha256": "eaa2aaf76976f8be60c29f9a5046e4c214bad996d744ef809f6512e04758cd50"
+    },
+    {
+      "path": "assets/images/coffee.jpg",
+      "sha256": "186f2540e7c31c964bb33439717719648e689302d8e5b1aea6e31c238d8cf2ba"
+    },
+    {
+      "path": "assets/images/danielle-portrait.jpg",
+      "sha256": "8e27d365ec1418e95d471f049fba0068e64e7580058f76e921090ffe13bc002d"
+    },
+    {
+      "path": "assets/images/fellowship.jpg",
+      "sha256": "cb003b39a0b838c22a3a5e369379e53244bf0fae7f8e07bbdfa5dbda2283652b"
+    },
+    {
+      "path": "assets/images/food-outreach-hero-20260919.jpg",
+      "sha256": "3cf64eb0aafd3d971964d703bf03c16fdca880aa482a97913b598290ddf0667f"
+    },
+    {
+      "path": "assets/images/food-outreach-hero-20260919.webp",
+      "sha256": "d253ac505189a64216e23877a46cc81f6b6296efa97470de4409454436d5902b"
+    },
+    {
+      "path": "assets/images/food-outreach-hero-chunks/00.txt",
+      "sha256": "0c784683421eced7bf086742c8cd9ee6d381ec4cd30ff0f9fa0dd3cbd11e4421"
+    },
+    {
+      "path": "assets/images/food-outreach-hero-chunks/01.txt",
+      "sha256": "e93993380676836aa54c092ebc22f0a9237b28c9349f3ef5e332414afa3a8a91"
+    },
+    {
+      "path": "assets/images/food-outreach-hero-chunks/02.txt",
+      "sha256": "c1e9309da2b4b7d279e6ba883a909f67a4b03769f035f5c86854958529b3b757"
+    },
+    {
+      "path": "assets/images/food-outreach-hero-chunks/03.txt",
+      "sha256": "3b936eae6b8a8c8fa3c4e9d16969f1b0cc9715226db6b623e7a8149adbf6daeb"
+    },
+    {
+      "path": "assets/images/food-outreach-hero-chunks/04.txt",
+      "sha256": "730cfec5d8a00063b553034cf91b63f433cc34cfe86e080a66bc2e4212009164"
+    },
+    {
+      "path": "assets/images/food-outreach-hero-chunks/05.txt",
+      "sha256": "a60a6af31739527cc3a7b6bd08f4a8f49c3d020dda3f95439e757520cacb5af2"
+    },
+    {
+      "path": "assets/images/food-outreach-hero-chunks/06.txt",
+      "sha256": "51f2887c44639e1979356074817ae3a57ea2eadfa127dcff553915c9fcd293d4"
+    },
+    {
+      "path": "assets/images/food-outreach-hero-chunks/07.txt",
+      "sha256": "6a3e61dfa86378b61dcfa6de1a404b97d09e79488d588b1b09569f23fe12153b"
+    },
+    {
+      "path": "assets/images/food-outreach-hero-chunks/08.txt",
+      "sha256": "c9d9c4f41e5e7a6129bf74c42505fc325527f627f7ed705915958159c7740f0d"
+    },
+    {
+      "path": "assets/images/food-outreach-hero-final.webp",
+      "sha256": "ab4850c23f0599fe6be651f851dbfcabf2f0884dfc966992dcf8a7d95f2ff2cd"
+    },
+    {
+      "path": "assets/images/footer-raise-reign-reach.png",
+      "sha256": "5aed7045392d9d02cf839c52611bf4c7eba54b7b0fc2ed1c23642215818ab8df"
+    },
+    {
+      "path": "assets/images/footer-raise-reign-reach.webp",
+      "sha256": "25b12f2818d9f6dfe8a15f0e31df7ea3c215f13db14b70a15d7d6cccfce13a5e"
+    },
+    {
+      "path": "assets/images/hero-roddy-approved.jpg",
+      "sha256": "92c7a9da2f6205dca4c68e5d3e0cffb790857817a9e0e581086425bd8fae39e9"
+    },
+    {
+      "path": "assets/images/hero-roddy-approved.webp",
+      "sha256": "b78dab13a5ed2198928d84efc0c6e9ff9ebd1d0569ae992bebb68247cc81cd60"
+    },
+    {
+      "path": "assets/images/hero-roddy.jpg",
+      "sha256": "cfff2f99cc112780f69638cdb785279b77baffc127c7cbbffc61481ce6b534ae"
+    },
+    {
+      "path": "assets/images/home-adults.jpg",
+      "sha256": "4cdc341ef5e68702d0a6c1f10ac458c77a80a6f107fa69a54a1701388e9aa3b1"
+    },
+    {
+      "path": "assets/images/home-adults.webp",
+      "sha256": "5dbcdf2b006f63279904ad9666a681dae8cb01d7d8f5318dd2211c1a9abad995"
+    },
+    {
+      "path": "assets/images/home-kids.jpg",
+      "sha256": "e2846dc86ab1ccd8a0fc6b0a54660fbf0aecbf4a68ba5dc92013ca01324cb6f8"
+    },
+    {
+      "path": "assets/images/home-kids.webp",
+      "sha256": "2175e620e042f36c265ccd982228b53b6b30bb385970221f753801b233ab7988"
+    },
+    {
+      "path": "assets/images/home-serve.jpg",
+      "sha256": "826dda345c786f3c5e88a1aad10652c7d3ed44ee9aea2a917059c709f42e9989"
+    },
+    {
+      "path": "assets/images/home-serve.webp",
+      "sha256": "20e30487fc1fa93b5d69a8e66f7daaa166ea1479b7b8bea1125d033d77a1df60"
+    },
+    {
+      "path": "assets/images/home-youth.jpg",
+      "sha256": "2aff083fea711b17ea41ce45ab234157599bcd2cfcc0baec404975b51205530b"
+    },
+    {
+      "path": "assets/images/home-youth.webp",
+      "sha256": "a218fe9ebdd7a9a40c3f417c55d2223c7349fb618bf6ee5aa3e557ecf16f31dd"
+    },
+    {
+      "path": "assets/images/kids-age-early-elementary-mobile.webp",
+      "sha256": "e8c0a5b26d867f2edb5703d610295d5e1d7af088e731acb65879864925d8cdbc"
+    },
+    {
+      "path": "assets/images/kids-age-early-elementary.webp",
+      "sha256": "da69ad619630efcc2aa89d3f5a8a9daf38029827339c79ee5a9f07cbf5ca6b55"
+    },
+    {
+      "path": "assets/images/kids-age-nursery-mobile.webp",
+      "sha256": "795875ecc587b38b16b0ec0d7ae061ea7325431f2694530c1cc2bb2c30d2660b"
+    },
+    {
+      "path": "assets/images/kids-age-nursery.webp",
+      "sha256": "49ef37e69a0c234ead1df0b08011b856961a7e3f85aea5900e0aaea16c7f2de7"
+    },
+    {
+      "path": "assets/images/kids-age-upper-elementary-mobile.webp",
+      "sha256": "ff8202597e9e324fd8a53c8d5e966bdcb230c5c5339f5deb7863776ca843588b"
+    },
+    {
+      "path": "assets/images/kids-age-upper-elementary.webp",
+      "sha256": "13771298146e8b5771788e8fdd1f027f74b53706ec983ce57468845bd074e7e1"
+    },
+    {
+      "path": "assets/images/kids-class.jpg",
+      "sha256": "12a221ad8559a211d29a65cddaf44733fd4946bba953b247a77cb4798f7e96aa"
+    },
+    {
+      "path": "assets/images/kids-class.webp",
+      "sha256": "e7f011c7cc8e84dbc6cffddefad01a7aa8292ed719fc57e4b783360e620e3203"
+    },
+    {
+      "path": "assets/images/kids-every-child-matters.jpg",
+      "sha256": "c8169ac01ace7305b6bfb9cffc62d73e67cbf9cea1ea2051bae3005ea94e2e45"
+    },
+    {
+      "path": "assets/images/kids-every-child-matters.webp",
+      "sha256": "d2be845fa92ef982e36cfc50387ab4fd9cf67ca430042591ca8edb1979d9dc47"
+    },
+    {
+      "path": "assets/images/kids-hands-on-approved-20260807.jpg",
+      "sha256": "fd950c762daeb7aa507afa976859c58da0aa1e114a02aabfecf143b6fe11817e"
+    },
+    {
+      "path": "assets/images/kids-hands-on-approved-20260807.webp",
+      "sha256": "4e08e8543434a67d0eee414791324440f5473c86fdccb825677647f8d70e6820"
+    },
+    {
+      "path": "assets/images/kids-logo.jpg",
+      "sha256": "d5deeb10d297d2024b73671e737b0fd717d18d7287bf2f3c54ceb7a910bfc36f"
+    },
+    {
+      "path": "assets/images/kids-logo.webp",
+      "sha256": "17982432e79689fd480815e0190a999e41fe03e51aed238e53f5ecc904d01fb6"
+    },
+    {
+      "path": "assets/images/kids-prayer.jpg",
+      "sha256": "d9b40c2cd067927a81f3c0c322b113a4c35fff72a37e48b1100da6d0566b1fc8"
+    },
+    {
+      "path": "assets/images/kids-prayer.webp",
+      "sha256": "03805e79bdf21009b65e05567cc048612c209d29a0c56cb11dcf7c8e2424d19f"
+    },
+    {
+      "path": "assets/images/kids-series.jpg",
+      "sha256": "8cbc3a4f825c067447d5f7fa7731888051049d67da29817c623d29aca737e8f4"
+    },
+    {
+      "path": "assets/images/kids-series.webp",
+      "sha256": "4b9895eb2d04e114144369b53fe4f43fc30f385768b13a969fe4e36b02a5c7e4"
+    },
+    {
+      "path": "assets/images/kids-worship.jpg",
+      "sha256": "5505f4e6c750fc6678683757fd4c8e4933c3cdcf158a7d031ad2b0d02a127604"
+    },
+    {
+      "path": "assets/images/kids-worship.webp",
+      "sha256": "4744d768deeee6de70be3f60033526f63f43f35a3b7134ab6334f7484271a970"
+    },
+    {
+      "path": "assets/images/king-kind-cover.svg",
+      "sha256": "44b0f4fac636d11440e3d0585b63f82b02bb53dd399114d05904eb5674f957f4"
+    },
+    {
+      "path": "assets/images/lockliel-powered-logo.webp",
+      "sha256": "d6edec937a7a13886f80598f19fa057ab84a0cc77c1511833cec2c18c58c4075"
+    },
+    {
+      "path": "assets/images/logo-black.png",
+      "sha256": "c20990cac319d9265a5fcf43bfc948f93be816c79e9631cf07d3e300aa4402c8"
+    },
+    {
+      "path": "assets/images/logo-gold.png",
+      "sha256": "0a58d621918aeffc58ab72a30311054432461014b52eae5dd973da1f3cc59a69"
+    },
+    {
+      "path": "assets/images/logo-gold.webp",
+      "sha256": "c194d6a5ae499f08b108b220edd09b884ec930b96af70ee770d10c02250d6adc"
+    },
+    {
+      "path": "assets/images/logo-white.png",
+      "sha256": "b594077dd353bb0ae90fde41e33632f49f8baac6cda9b8b3d004845838156a22"
+    },
+    {
+      "path": "assets/images/logo-white.webp",
+      "sha256": "e5974b97c325c72f5cc0a73471f2998f1c6d292d19cc009acd3384478f0c061b"
+    },
+    {
+      "path": "assets/images/manage-giving-logo.png",
+      "sha256": "e9f07abfc8ab611e7cc8e50a08bce055370cb56fa1ecc0e0e8b707aee9906c68"
+    },
+    {
+      "path": "assets/images/ministries/6am-prayer-card.png",
+      "sha256": "7904b3136565711f2611077bc330356fdf8040ae925a0adced5f6ba8cd69062a"
+    },
+    {
+      "path": "assets/images/ministries/6am-prayer-card.webp",
+      "sha256": "27c6a90b22509f3239af5640025ec152e201cabe3ebd4c9b6296650970260d3b"
+    },
+    {
+      "path": "assets/images/ministries/champion-kids-card.png",
+      "sha256": "b560fc6d6e4428f13d2b7f561d9b937d84fa4fffc5a8ae731e019ef9ab1f6ef6"
+    },
+    {
+      "path": "assets/images/ministries/champion-kids-card.webp",
+      "sha256": "c0977ddc991e8aebd6a216aafb45dc51b6be93a94cfdaec822cf65a9a85d9d22"
+    },
+    {
+      "path": "assets/images/ministries/champion-yth-card.png",
+      "sha256": "5c118790e8f62ebff99d02045ce56cb1569370d860565dd2e66f1fafdda34c89"
+    },
+    {
+      "path": "assets/images/ministries/champion-yth-card.webp",
+      "sha256": "c852537440530c2a1dd97334169ad8a7f841ffc84a52f2009f5e14406c3080a6"
+    },
+    {
+      "path": "assets/images/ministries/dream-team-card.png",
+      "sha256": "bfa27d9c61e816dcacfe9ffb47af103682faf8ef2bbb9db3e87f38dbd7ffe402"
+    },
+    {
+      "path": "assets/images/ministries/dream-team-card.webp",
+      "sha256": "4dcdb16ee8d03ca85dc802c15b614d113dca805822b4ba2f4daed5fdd5ebbd6d"
+    },
+    {
+      "path": "assets/images/ministries/next-steps-card.png",
+      "sha256": "a79fecc7fc359ea53da80491dc79d4c1095de4a89f0fd4c76234b4ed25b56590"
+    },
+    {
+      "path": "assets/images/ministries/next-steps-card.webp",
+      "sha256": "6088d660a2313b2c7ccf8640f3f6da7d00d189205d47fdeb60a91b8c2c01832a"
+    },
+    {
+      "path": "assets/images/ministries/outreach-card.png",
+      "sha256": "3bb0fa1215860ce35b22c2039d535ddb99c3bde5af951b5be03f1abecdd55b49"
+    },
+    {
+      "path": "assets/images/ministries/outreach-card.webp",
+      "sha256": "a14e087822b5e8db801d40698e9c17bd87d88a8e1c8bb2a1dbb9ea4ed21b1a93"
+    },
+    {
+      "path": "assets/images/mobile-hero-crown-logo.png",
+      "sha256": "c20990cac319d9265a5fcf43bfc948f93be816c79e9631cf07d3e300aa4402c8"
+    },
+    {
+      "path": "assets/images/mobile-hero-crown-logo.webp",
+      "sha256": "5997b37b2efd7580e4093e8ee9041374d0ac24cb29d185205023ae72b6109ba8"
+    },
+    {
+      "path": "assets/images/nursery-logo.jpg",
+      "sha256": "5bba922692a6628145825a7980d81bebb6a833dc37d89a06e54e293edca66c33"
+    },
+    {
+      "path": "assets/images/outreach-bikes-20260807.jpg",
+      "sha256": "7c70befecfbf7ad634942902f8b7c57a50800cd135305397acac28d276bbc353"
+    },
+    {
+      "path": "assets/images/outreach-bikes-20260807.webp",
+      "sha256": "d666c5c19374cf57a6644ceb5040bccb1ed63d865e7296e36ea0ebf78189d660"
+    },
+    {
+      "path": "assets/images/outreach-bikes.jpg",
+      "sha256": "82837a228405ceaf8a6ebc03916d01eac01d935601162632a1a053cb305a7429"
+    },
+    {
+      "path": "assets/images/outreach-community-20260807.jpg",
+      "sha256": "d4412e51042bf2e8b0d9f8aa1e6d6a1b3dde00559419c88ef76d4a77080e5753"
+    },
+    {
+      "path": "assets/images/outreach-community-20260807.webp",
+      "sha256": "b29684f572138e28d4e439710466f9eb59d822bda9fa5f9730a0361eaea6a66b"
+    },
+    {
+      "path": "assets/images/outreach-connection-20260807.jpg",
+      "sha256": "cb7adcc32f7c16da52c3f5db30dd793d169fa90bd96bee0f84a2f7344c660468"
+    },
+    {
+      "path": "assets/images/outreach-connection-20260807.webp",
+      "sha256": "2bf491194d3a97350f2e9de59f4c1fd6f06000fe6e156aa193ad13978cf65b15"
+    },
+    {
+      "path": "assets/images/outreach-crowd.jpg",
+      "sha256": "a46bf0e56c525414006254306f867dcffed96e8ba1c0589f66299f727169aac4"
+    },
+    {
+      "path": "assets/images/outreach-crowd.webp",
+      "sha256": "d79e269324c3c37a4fa174313a56b5f670576b56bdd85b2a724f7670fe62d83a"
+    },
+    {
+      "path": "assets/images/outreach-hero-20260807.jpg",
+      "sha256": "d93749a6ab182973493de6c3f97060a35210e6f18424cc857be8780880f91b49"
+    },
+    {
+      "path": "assets/images/outreach-hero-20260807.webp",
+      "sha256": "3d033ab71ad5e7df393039beb0e9d6f761f193b03407cb0bc3032a3763b16dd1"
+    },
+    {
+      "path": "assets/images/outreach-prayer.jpg",
+      "sha256": "56aae3f3a28f615ac10975c503be97c59d1fb709f404bd8960adcd4fe7db006e"
+    },
+    {
+      "path": "assets/images/pastors-together.jpg",
+      "sha256": "fdc937e8c2e1f580a2527f8567fa1138725b55a584e2b836ab070f27890ee183"
+    },
+    {
+      "path": "assets/images/pastors-together.webp",
+      "sha256": "a001c7bc0ca40e209685d913471ad0b89327f77e2fb615adf50174f24c444698"
+    },
+    {
+      "path": "assets/images/prayer-home-official-v2.png",
+      "sha256": "e6ca8fa42583526cf060c4df6b95bf1a1013fe5fa9959b256f5a73b6b11d8a58"
+    },
+    {
+      "path": "assets/images/prayer-home-official.png",
+      "sha256": "e6ca8fa42583526cf060c4df6b95bf1a1013fe5fa9959b256f5a73b6b11d8a58"
+    },
+    {
+      "path": "assets/images/prayer-ministry.jpg",
+      "sha256": "7109a3218b5af262ed36204c6c5a19ee2c168e2fceb003739dcc7bf98591c645"
+    },
+    {
+      "path": "assets/images/prayer-psalm91.jpg",
+      "sha256": "f9cb15e807f5750d25353547bfb49b2b5dbbb5e50b53a0a8cef4664613932514"
+    },
+    {
+      "path": "assets/images/prayer-psalm91.webp",
+      "sha256": "0180184163b32a192ee527baa66f6965e90ff6768b50aab7451b157ec1e2ab80"
+    },
+    {
+      "path": "assets/images/raise-reign-reach-clean.png",
+      "sha256": "9fc4c609415def4f71dc17dc12811b029993f14db69b9c25b17a4739ae51e914"
+    },
+    {
+      "path": "assets/images/raise-reign-reach-clean.webp",
+      "sha256": "b803ffa94e789e5a26bda1b20614162bef7d2a71ba1f81c93e63abbf85f339e7"
+    },
+    {
+      "path": "assets/images/raise-reign-reach.jpg",
+      "sha256": "63a6eb3267e5ddd08a3bd4f44fd6a143bd22e7c2ede9ba3262f473a8cf8fc948"
+    },
+    {
+      "path": "assets/images/roddy-bible.jpg",
+      "sha256": "51348aa66c6e7e806f419ba699f104ba03b78982636c6a628493f623a4c275b2"
+    },
+    {
+      "path": "assets/images/roddy-bible.webp",
+      "sha256": "124bacac0f2d5ee2fbe98cf90f469882c1f8d0b21135f5cfeea871ca8df2a660"
+    },
+    {
+      "path": "assets/images/roddy-portrait.jpg",
+      "sha256": "a2230853c42f8298df26210a11c72ec638f190003e83d446f1f38d1e118af237"
+    },
+    {
+      "path": "assets/images/sowgo-go-qr.svg",
+      "sha256": "33e2aaceaa460a2c686e134bc881464efb72c6e3b03f53b475e69a95e40a9630"
+    },
+    {
+      "path": "assets/images/sowgo-logo-light.png",
+      "sha256": "d31e384f18283058dc40ec187a5f5323a1937afb0e5af473147c989db17ecae5"
+    },
+    {
+      "path": "assets/images/stlucia-qr.svg",
+      "sha256": "3974f00bfbfa67cc434aa2d5b99af2863299c30b4268ab1901ab4a9ea9d85000"
+    },
+    {
+      "path": "assets/images/watch-join-us-approved.png",
+      "sha256": "ae11510115541c7fef041ed1c005941d5849726accc2251542ee8fa3e16a785c"
+    },
+    {
+      "path": "assets/images/watch-starts-shortly-approved.png",
+      "sha256": "b0b338f6bf5b8bdff0b00034a133838cf2726ac515e7cb8c57ce55ef5a593cd3"
+    },
+    {
+      "path": "assets/images/worship-girl.jpg",
+      "sha256": "d9b40c2cd067927a81f3c0c322b113a4c35fff72a37e48b1100da6d0566b1fc8"
+    },
+    {
+      "path": "assets/images/worship-girl.webp",
+      "sha256": "03805e79bdf21009b65e05567cc048612c209d29a0c56cb11dcf7c8e2424d19f"
+    },
+    {
+      "path": "assets/images/worship-wide.jpg",
+      "sha256": "ae1b74bbeb6ccc1615e7592c7e7d23f6097fa35a43977d618b5edf4539de39f1"
+    },
+    {
+      "path": "assets/images/youth-friends.jpg",
+      "sha256": "56a1de63644e9d937dfefbeebda6def53766e4162126440ee69ed5f7474957c9"
+    },
+    {
+      "path": "assets/images/youth-friends.webp",
+      "sha256": "6683c4a0fdb3f692823fcf3456d559d2083114328b69c8ad1acebd50acf98792"
+    },
+    {
+      "path": "assets/images/youth-hero.jpg",
+      "sha256": "776ffc6221446d6bbb4ef4f152cb8355318ce1116a7aef0e6d26315030199d01"
+    },
+    {
+      "path": "assets/images/youth-hero.webp",
+      "sha256": "464588ba230b734b0ecc1f8104d3d78946fcf2bbd9a34b50339f83e1cd15389b"
+    },
+    {
+      "path": "assets/images/youth-logo.png",
+      "sha256": "378c3035a84714c08bda257c7e030125e6148799055526deae761c89c1c7191b"
+    },
+    {
+      "path": "assets/images/youth-logo.webp",
+      "sha256": "e63c95841999e4f8ccbf1ce9ea1e88d7e4fe7b80a1e4c7f134e9c0c2bae810a3"
+    },
+    {
+      "path": "assets/images/youth-purpose.jpg",
+      "sha256": "e0da70050582209c13ad5589c17969fccba144488b8233151bdb6fa02c8a116c"
+    },
+    {
+      "path": "assets/images/youth-purpose.webp",
+      "sha256": "c064cf39eb7d1d4563360e92fd07411da16800301b7dc4205a32bc7b3bb0ecf9"
+    },
+    {
+      "path": "assets/images/youth-worship.jpg",
+      "sha256": "caccb5d39ff455c0933e69ff438498ea02cf864b8be8e90e80e4961bc3dda630"
+    },
+    {
+      "path": "assets/images/youth-worship.webp",
+      "sha256": "e9e27a7c7c5bfb51fd20b0a47c9d950f79ffd939eba3a7426339d249b068d63e"
+    },
+    {
+      "path": "assets/js/champion-life-auth.js",
+      "sha256": "f1d277ea1cb5cf608de471b0a62f6ae41c9ecdc3b675960628083ee4e1df3cb4"
+    },
+    {
+      "path": "assets/js/christmas-dinner-2026.js",
+      "sha256": "fc552b37d4a4e8437339c0e6f0b8f138f4d05ea15a13120bf037360d92c3afba"
+    },
+    {
+      "path": "assets/js/grip-course.js",
+      "sha256": "fd5f8a350eb8c291bc11b0de4709a70e404b190770c549072149ca7fdc81cb4d"
+    },
+    {
+      "path": "assets/js/outreach-acceptance-review.js",
+      "sha256": "cccfb1db73d0ab4af74a8baa79b85cd0598504bf5be46645c8cf6ee2f7ccb23f"
+    },
+    {
+      "path": "assets/js/outreach-partner.js",
+      "sha256": "d2539ce18dd4408f0d42710d52a297232921056ab4fe9c3d6d52e7d2c4cecc4b"
+    },
+    {
+      "path": "assets/js/outreach-people.js",
+      "sha256": "2a688f17a0b8ac7515d32f7b8f030099f3f2139df52d39e36a73dffedf16e8b2"
+    },
+    {
+      "path": "assets/js/outreach-registration-form.js",
+      "sha256": "3821768e878c9827bf76c0ff00a683045dc06d2ee85ef6dd1194b38baaec5047"
+    },
+    {
+      "path": "assets/js/outreach-registration-public.js",
+      "sha256": "e258666c0fa2e6a985b7407d10aab94ba700fabaae34f529d926469550a76ef8"
+    },
+    {
+      "path": "assets/js/outreach-registration-staff.js",
+      "sha256": "5b7574d8ef9f85ee8601afe087f202cb533b4393f42b187391e295f93ded7963"
+    },
+    {
+      "path": "assets/js/outreach-staff-common.js",
+      "sha256": "78ae549e7077b662dc6a275f23307fea2b6eb34b6a0c1da407ffe3ec36dad164"
+    },
+    {
+      "path": "assets/js/site.js",
+      "sha256": "e50758bad797cec269c385955426680b3b3604c7a03425478e748a375f2e3cde"
+    },
+    {
+      "path": "assets/js/staff-outreach-partners.js",
+      "sha256": "0852e677e0a89155aeef455d0d00d264c1a2d5d4eb266cd1971885f634f3a503"
+    },
+    {
+      "path": "assets/js/supabase-config.js",
+      "sha256": "df1645963771760944d8bb4d26292537e4eb3e98850dcb187a3d81a59c592a37"
+    },
+    {
+      "path": "assets/js/watch-live-config.js",
+      "sha256": "b5400cb324f8f98a5fcd8f9de937f679d1ac0519310d502fa85dc7310089c70c"
+    },
+    {
+      "path": "assets/js/watch-live.js",
+      "sha256": "b827353b1e0529a432d798af3b98d268960678eeaccf8d331c460f840b93f666"
+    },
+    {
+      "path": "assets/prayer-confessions/believe-and-receive-confessions.pdf",
+      "sha256": "6847ffd7a1dbeefa495f2a6f0c2ab26aecdac4bef4cdcb8d26a39637e4bee3bc"
+    },
+    {
+      "path": "assets/prayer-confessions/certain-success-confessions.pdf",
+      "sha256": "42e26caf59288cac1ebb28843ec98005a469a7347a5bf344a7c2516f33dc3623"
+    },
+    {
+      "path": "assets/prayer-confessions/christ-in-me-confessions.pdf",
+      "sha256": "7ccb4c08af4934d5d4105043a02f2ba9df517a449c80089154db519e5fe343f1"
+    },
+    {
+      "path": "assets/prayer-confessions/daily-mercy-confessions.pdf",
+      "sha256": "0a3a13d91c3c85848dfde16d3b0103a56bd3a6c53c25f650865063057f606388"
+    },
+    {
+      "path": "assets/prayer-confessions/divine-purpose-confessions.pdf",
+      "sha256": "51bfb812da76be3150895805ed16c09a547aca61ebc7a82833bc3818f4f4cd87"
+    },
+    {
+      "path": "assets/prayer-confessions/drawing-near-to-god-confessions.pdf",
+      "sha256": "cb77285e9a82b1a84f581a0d48e9ab887e0bcfa9e549f811bfc1b641883a1dfc"
+    },
+    {
+      "path": "assets/prayer-confessions/faith-supplements-confessions.pdf",
+      "sha256": "6c2b19b84b60692ce68a18ac99937fc4081ce72019c7258ac2a88679943e456d"
+    },
+    {
+      "path": "assets/prayer-confessions/fire-of-the-holy-spirit-confessions.pdf",
+      "sha256": "731883474eb2462d53ef7f8d44d03e469eb80d8210baae55296b32c9ed29262d"
+    },
+    {
+      "path": "assets/prayer-confessions/fixed-focused-and-determined-confessions.pdf",
+      "sha256": "8a76379173f3f04f21af42a9cf8146a60d7e5fefb2fb4e0b8adff19388997f5d"
+    },
+    {
+      "path": "assets/prayer-confessions/fresh-fruit-confessions.pdf",
+      "sha256": "51abc54975ed1e6ab0f543f414d15ae431ec9a2e12d2d314560108ba49866856"
+    },
+    {
+      "path": "assets/prayer-confessions/give-him-glory-confessions.pdf",
+      "sha256": "61c6ae090900004f45351647e6a23d113160b7e96e294704a3238912614a0c8d"
+    },
+    {
+      "path": "assets/prayer-confessions/glory-to-glory-confessions.pdf",
+      "sha256": "4c984a279eec4e500ecf2950f0cf9e3009f5726f756307590b3d27f00519825c"
+    },
+    {
+      "path": "assets/prayer-confessions/god-is-good-confessions.pdf",
+      "sha256": "bc4c4a7eeb543c2599651a099074dfc41ba4c5ed97d8abbfb1d0165a1015ecf2"
+    },
+    {
+      "path": "assets/prayer-confessions/great-and-effective-doors-confessions.pdf",
+      "sha256": "784e445b075549f9381fbef02ba9c69d80f342f4d59263652248c9a0cca79a09"
+    },
+    {
+      "path": "assets/prayer-confessions/holding-fast-confessions.pdf",
+      "sha256": "bbbdd0676958e6e19eb589deaada5fcd49a88afa4f4b2049c54a8c5c13347297"
+    },
+    {
+      "path": "assets/prayer-confessions/in-christ-confessions.pdf",
+      "sha256": "4571914ed7698ec60888275932181209fb71df0a0d330305e99bc5cc60c8471e"
+    },
+    {
+      "path": "assets/prayer-confessions/legacy-prayer-confessions.pdf",
+      "sha256": "73fca69883fcd26bbd25f960792ee95be610cc76f2331461938be6c7f83b2eb4"
+    },
+    {
+      "path": "assets/prayer-confessions/lifting-up-leaders-confessions.pdf",
+      "sha256": "a88d3d17c26de38cdd518bff73b5aa15732ca5d631511cbcec80f6682f91cb9c"
+    },
+    {
+      "path": "assets/prayer-confessions/living-large-confessions.pdf",
+      "sha256": "a86dbf2761214f3586b05eb881550988027865f7da02fbf8aa14d59b561dde6f"
+    },
+    {
+      "path": "assets/prayer-confessions/love-of-god-confessions.pdf",
+      "sha256": "ead4a48a0d45d4146f393339d20e54798e02647abb84ba0c37f13b073b09e1e3"
+    },
+    {
+      "path": "assets/prayer-confessions/maximize-confessions.pdf",
+      "sha256": "e6432a05a7ebfedf95c0fa232d60630d3b6c396580227618253a152dc6d86546"
+    },
+    {
+      "path": "assets/prayer-confessions/names-of-god-confessions.pdf",
+      "sha256": "6f73284a60da488d2067d91ae7570eeff0a9a7743533402bcb613c53e2f64834"
+    },
+    {
+      "path": "assets/prayer-confessions/new-life-confessions.pdf",
+      "sha256": "9da00a864ddcb43a51e2512d9ecf9d1551c0b3345e23951fbc302c401b89e3da"
+    },
+    {
+      "path": "assets/prayer-confessions/new-to-do-confessions.pdf",
+      "sha256": "702094b756d1139ed080c0eacba9a64c818fb42c28cbb5c21802089b2ed2b7bb"
+    },
+    {
+      "path": "assets/prayer-confessions/nothing-but-the-blood-confessions.pdf",
+      "sha256": "bf2fbc52e722948fdf755d98043a4096fb385aea9f6778be908a9238290946bb"
+    },
+    {
+      "path": "assets/prayer-confessions/nothing-is-impossible-confessions.pdf",
+      "sha256": "1185f9ad8af8b88f8a65f1ca1f003b600e7ef19a2c6daa33e61676b4e665fe2a"
+    },
+    {
+      "path": "assets/prayer-confessions/occupying-high-places-confessions.pdf",
+      "sha256": "62a907c56347d1a4b8ad9f66ce102849ed132659cdc8ad16a1cb6cfee4102eda"
+    },
+    {
+      "path": "assets/prayer-confessions/prayer-power-confessions.pdf",
+      "sha256": "3ee464ade0388d7ae955330d6c36553afa74e6a68f0cf0c739581112554b2fed"
+    },
+    {
+      "path": "assets/prayer-confessions/praying-ii-pet-1-vs-3-4-confessions.pdf",
+      "sha256": "1fa45870970e2c3dc8f514ec8cb7e412239ec39d371f85f69bb1f21d485ac033"
+    },
+    {
+      "path": "assets/prayer-confessions/praying-luke-12-vs-32-confessions.pdf",
+      "sha256": "cc721a1884b23c530c759adcdbb90af4ae9fa01ff49bf923a863bf1ce6288e9f"
+    },
+    {
+      "path": "assets/prayer-confessions/praying-out-the-promises-confessions.pdf",
+      "sha256": "652ea7298f1133c669f4154b90035c0c4d033043feee4334a84ae19c747d80dd"
+    },
+    {
+      "path": "assets/prayer-confessions/prosperity-and-authority-confessions.pdf",
+      "sha256": "66e685647c695c5155de07deddfade0debe48ce25e14c63231b657009b26ccab"
+    },
+    {
+      "path": "assets/prayer-confessions/psalm-34-confessions.pdf",
+      "sha256": "d204bfccf432cac3f357c3e36ac7c8b1490483ed62803eec119d9f0956b20924"
+    },
+    {
+      "path": "assets/prayer-confessions/psalm-91-confessions.pdf",
+      "sha256": "5e4f7f956c384f2729f58154899f59b83376cbbc83eeb310b21b846a64dedd3c"
+    },
+    {
+      "path": "assets/prayer-confessions/psalm-91-verse-by-verse-confessions.pdf",
+      "sha256": "4429644a1d71c4789e31640175ed171fdda73bb00627de0e9e8d0527fa67d36f"
+    },
+    {
+      "path": "assets/prayer-confessions/raised-up-confessions.pdf",
+      "sha256": "66de1ac2a4e11b9bf953d935100604ec754503e5a5c559ea80c2f3910565ce9a"
+    },
+    {
+      "path": "assets/prayer-confessions/romans-confessions.pdf",
+      "sha256": "e2c8e726c7e598c6b5490cfbd00a36ff3a465f6eb6eccd75839bb8206f3fe8d4"
+    },
+    {
+      "path": "assets/prayer-confessions/stay-strong-confessions.pdf",
+      "sha256": "cd5d4f0f2e158c53b89cf5ba68b66ee7706b4b195a00da21948ec0efc0dc880a"
+    },
+    {
+      "path": "assets/prayer-confessions/such-a-time-as-this-confessions.pdf",
+      "sha256": "54b3c05a97a1184b65afb92588c16716196ea8da25ab91a46eeb6b50f2ea4df6"
+    },
+    {
+      "path": "assets/prayer-confessions/the-good-fight-confessions.pdf",
+      "sha256": "4ec790cc61f10bc9f7c354e4ee4a19dbe3d143f96dcfc62a18e9506e3f2ae74c"
+    },
+    {
+      "path": "assets/prayer-confessions/the-great-exchange-confessions.pdf",
+      "sha256": "053a6839ce33efcafca1cf6b25386d731d1da194a50c23678a687fdf9f2eb265"
+    },
+    {
+      "path": "baptism-interest.html",
+      "sha256": "159f4277da14bdcf8be84e192365aa1eead87d7a9d29c96de04266d849c4e754"
+    },
+    {
+      "path": "baptism-thank-you.html",
+      "sha256": "4e3afa5f670aaf982a7e65663d6861586798ff4e9a8286ade40bdaee48e06d48"
+    },
+    {
+      "path": "bessemer/index.html",
+      "sha256": "23204f352fdd8637e93da432b253739107d2f4deb420287f491bdf085189471c"
+    },
+    {
+      "path": "christmas-dinner-2026.html",
+      "sha256": "0dff57c9758e0a6950c91b157557840a1155dcb82de3fb6160d9ebf54c9c39a8"
+    },
+    {
+      "path": "config/outreach/huntsville-2026.json",
+      "sha256": "6011a953eb604225db4537d5285439dd370cc51f1eecc76abe25fec71e74ba82"
+    },
+    {
+      "path": "contact.html",
+      "sha256": "8eed4992a3d728abf26b8211b90ab458bff064588ef7004e930d179a7d02f2f2"
+    },
+    {
+      "path": "css/styles.css",
+      "sha256": "3014ad37d4e225100de23c24ef97f7057a73d2298acb71a240ce45467fc9c6a6"
+    },
+    {
+      "path": "daily-supplements.html",
+      "sha256": "57023696640a00cbb13a16011670113a03ee7d680a922afef04d87663ff7c76b"
+    },
+    {
+      "path": "decision-card.html",
+      "sha256": "ebf5d22552b2094071faa0e94c5917d74af5043189231853989d236b48fd6d91"
+    },
+    {
+      "path": "discipleship-login.html",
+      "sha256": "7e783b81c580aad730c0ddceed5ef045d56e958d0192bffa2c58b0fb9b0d994b"
+    },
+    {
+      "path": "dot.html",
+      "sha256": "54157ee3a9577ca01041d3faa4e148a4ff47bfcaded01d99c4769a2232ac4ddc"
+    },
+    {
+      "path": "downloads/grip/getting-a-grip-lesson-1-how-to-become-a-christian.pdf",
+      "sha256": "66da89958ac3b85f42d32c3ef7139d567589385c2a0d524458cd85250f4cb3bd"
+    },
+    {
+      "path": "downloads/grip/getting-a-grip-lesson-10-how-to-grow-and-develop-your-faith.pdf",
+      "sha256": "e4233168a5da2b0b58e9b86495c4c5e4ace44341a4466093beb045354f642592"
+    },
+    {
+      "path": "downloads/grip/getting-a-grip-lesson-11-how-to-experience-the-abundant-life.pdf",
+      "sha256": "9567b85b3dc0fabf047763a57598b9a7545e67efb7249322e011c9df0d905b86"
+    },
+    {
+      "path": "downloads/grip/getting-a-grip-lesson-12-how-to-be-an-overcomer.pdf",
+      "sha256": "132334c850edb65b7a00002b53ba6f9efbe61e25dac2c3756ff32819cdf1df2d"
+    },
+    {
+      "path": "downloads/grip/getting-a-grip-lesson-13-how-to-serve-god.pdf",
+      "sha256": "2ec99366a35bd035a832a67072f5f7d120db88527ed76a9c7a53eda5cc6fa8fc"
+    },
+    {
+      "path": "downloads/grip/getting-a-grip-lesson-2-how-to-be-sure-you-are-a-christian.pdf",
+      "sha256": "ebbcab59f0818720ff234228289b3a980806d4c5cb39ca4c8e8750c072417832"
+    },
+    {
+      "path": "downloads/grip/getting-a-grip-lesson-3-how-to-develop-your-relationship-with-god.pdf",
+      "sha256": "1df22c89b0e8520329d8428b00d47163ec1e0d65762c5273684cc0ecfb9329a0"
+    },
+    {
+      "path": "downloads/grip/getting-a-grip-lesson-4-how-to-talk-to-god.pdf",
+      "sha256": "ef326cca49abad2d4ad04a3b65dc22bd8625bce06fb5abfa6f4cd922cfc51f36"
+    },
+    {
+      "path": "downloads/grip/getting-a-grip-lesson-5-how-to-hear-from-god.pdf",
+      "sha256": "1bbdad8553334d10bf550f67bfad39aaa3da57ccc9324f21a537c5403f6ab917"
+    },
+    {
+      "path": "downloads/grip/getting-a-grip-lesson-6-how-to-obey-god.pdf",
+      "sha256": "3f5f9b39629b805cb426081016209cb6a6fd2e428aef18646d4fa9be0925522c"
+    },
+    {
+      "path": "downloads/grip/getting-a-grip-lesson-7-how-to-experience-gods-love-and-forgiveness.pdf",
+      "sha256": "dc917a0fa68e4d06f61cc45de78b5f1125eb7c2653d568cd420db94e70c46265"
+    },
+    {
+      "path": "downloads/grip/getting-a-grip-lesson-8-how-to-be-filled-with-the-holy-spirit.pdf",
+      "sha256": "733273b3c4e0d310d4677005318da4909196653891236ecf6387d34db6749f5f"
+    },
+    {
+      "path": "downloads/grip/getting-a-grip-lesson-9-how-to-be-sure-you-are-filled-with-the-spirit.pdf",
+      "sha256": "5dd0921fd20b2f0c1f603c1983eaa84b18672187f3e00c06c4f0dd911690e391"
+    },
+    {
+      "path": "downloads/grip/getting-a-grip-on-the-basics-full-workbook.pdf",
+      "sha256": "3048f852d892293f1b0555e74821eb33ed73a6959cd257ad349073ad5e884772"
+    },
+    {
+      "path": "dream-team-signup.html",
+      "sha256": "d9cf6ee0e0fc676fa683a7bfe967dfaef1e43b4dbdf2889cba8538a0dba0a7b7"
+    },
+    {
+      "path": "dream-team-thank-you.html",
+      "sha256": "cf3910e443a894357a9cf255abdd2a273ce4e1d3dbea60477fbaf05a189b4c21"
+    },
+    {
+      "path": "dream-track-1.html",
+      "sha256": "1d046d89a1ecd611c129ae8644af6f0d26628977ae93b3db2e7d48f5983dd383"
+    },
+    {
+      "path": "dream-track-2.html",
+      "sha256": "e47f3ef13f1811c26025185e59881b7313fff2d0a6a2915ff74e08d227527c9c"
+    },
+    {
+      "path": "dream-track-3.html",
+      "sha256": "61b72262d8e875a5e814bf8548c80e9966898d11dc9a86ecccc2b0d7006d1c77"
+    },
+    {
+      "path": "dream-track-4.html",
+      "sha256": "a3557addc4885f8127eb01b77be62a5582cff7e90b5bff93de74a75877ac8788"
+    },
+    {
+      "path": "dream-track-5.html",
+      "sha256": "1e5b482a28a9468205a8585d33d70c9da8b9f9511bbbdb5c175d58adc757dd3c"
+    },
+    {
+      "path": "dream-track-6.html",
+      "sha256": "937681392c2c0c0a51ed19dc2ce57ca59aa573477d91a51a307bae0727aa06a7"
+    },
+    {
+      "path": "dream-track-7.html",
+      "sha256": "a055f107fabf91a4dcf5db820fc03f8b2ae0a4f44b6419e4cd799957a673e19a"
+    },
+    {
+      "path": "dream-track-access.html",
+      "sha256": "e8df159ab77d804744b7bb1839ee627094dff4b2287d68784636d8453d357d02"
+    },
+    {
+      "path": "dream-track.html",
+      "sha256": "f50ae575c5197a396b87030b69f536d580b6b83d47a1a12e6e8ad95680b5a51f"
+    },
+    {
+      "path": "events.html",
+      "sha256": "a01ed78d5242bbd39460f8a17211e6aed8bf10c72e9d9ff18df2666ec07a58df"
+    },
+    {
+      "path": "food.html",
+      "sha256": "cb936da1d9e7bf7ef9639576bfc5533cb47a8e2a4cee6341e51adf3e73211e4c"
+    },
+    {
+      "path": "getting-a-grip-1.html",
+      "sha256": "52376addd0707cf319a47606524a01bd63dffaa3d1b4784ac3b88f40a08462c3"
+    },
+    {
+      "path": "getting-a-grip-10.html",
+      "sha256": "6433343139e89b61960b5f51876f2820e4c6fb770de3898c01104603a2d97410"
+    },
+    {
+      "path": "getting-a-grip-11.html",
+      "sha256": "8dd1ac2a6e221aa7b4ac6176aabc0956bad93375eb5d379e73d925ee9539b76d"
+    },
+    {
+      "path": "getting-a-grip-12.html",
+      "sha256": "8ac82d963d34d7cc5410f816e0c71bdcc35caf80dc8f6d71160f5176a193d67d"
+    },
+    {
+      "path": "getting-a-grip-13.html",
+      "sha256": "751ddca5d9bb88de128c458678ce3026886ac3046dd1d73e264f1063031f9dee"
+    },
+    {
+      "path": "getting-a-grip-2.html",
+      "sha256": "26cf543ca2c646ddfc506324b87bddf11c744bbf74da58cb188cc50959cf3d39"
+    },
+    {
+      "path": "getting-a-grip-3.html",
+      "sha256": "91d48bdfe9fea09ea6504abe9022c956efb5ebb5b906b19e8ea859c1fa8f9aac"
+    },
+    {
+      "path": "getting-a-grip-4.html",
+      "sha256": "d059ec4bcfe035fa35a44f1243d41de6966bb41cc37adf3fe8a7bfb58ddd2f14"
+    },
+    {
+      "path": "getting-a-grip-5.html",
+      "sha256": "e08e1a6f966993098d1da99689388950b8a800074299d6cdb137640e58eb995c"
+    },
+    {
+      "path": "getting-a-grip-6.html",
+      "sha256": "1b5ddebbc29babf684da00324264d2a2b6b854cd2862ed46b46ffd4dc9ef1284"
+    },
+    {
+      "path": "getting-a-grip-7.html",
+      "sha256": "376ab5a3542f6f390f431e60c46b2fedadd0f3717d4bc5801fb5f4bab72be657"
+    },
+    {
+      "path": "getting-a-grip-8.html",
+      "sha256": "71d0658094e20e579cd13b1a62ba1c7add3269ed81fe40af144f90f1aa5be472"
+    },
+    {
+      "path": "getting-a-grip-9.html",
+      "sha256": "3c78874402b0eef6e8ced428dd932504c8c56b2fbf4fbe344fe1e5438bf9bab8"
+    },
+    {
+      "path": "getting-a-grip.html",
+      "sha256": "44da4d1511497f4b64b8822e6ce6666942181674b1a19282e8a9063e558a4f02"
+    },
+    {
+      "path": "give.html",
+      "sha256": "d1e99652c10002082f6acf9497b5a1145356bfa7b06f119afe8c66345b36e857"
+    },
+    {
+      "path": "giving-dashboard.html",
+      "sha256": "64353f84f5a05371bd4cc56f71ae605244e8e9a7c22c172571b19ed50ad2deb0"
+    },
+    {
+      "path": "giving-portal.html",
+      "sha256": "a4bd6cd989bdd4164e0769d0c62fc4e9f3dd4ed3bdb56f1bbb3725704cd8909e"
+    },
+    {
+      "path": "huntsville/index.html",
+      "sha256": "6a74949ae8ddb25aca4bd26cc3203358c1843bb5e1ceb616a69a1bba0f97badf"
+    },
+    {
+      "path": "images/6am-prayer-homepage-approved-20260806.png",
+      "sha256": "e6ca8fa42583526cf060c4df6b95bf1a1013fe5fa9959b256f5a73b6b11d8a58"
+    },
+    {
+      "path": "images/baptism-joy.jpg",
+      "sha256": "1b894b7e088034e8a02fecac1842e87889b80a2c0527bfb3e932c757d2ff209b"
+    },
+    {
+      "path": "images/baptism-wide.jpg",
+      "sha256": "bfe23573125ffc02637267bc81e32f2646209f33e0d389d55af93ad69b11fd2a"
+    },
+    {
+      "path": "images/building.jpg",
+      "sha256": "7569f2cb4e3086cd98f4ef1cd13d97ca11453171c612c238af9b4885d088f8c3"
+    },
+    {
+      "path": "images/champion_kids_program_cards.png",
+      "sha256": "aca86b2b432f4d1a3152538541c721cb85b498748a269f29179054cdc661706d"
+    },
+    {
+      "path": "images/church-life.jpg",
+      "sha256": "eaa2aaf76976f8be60c29f9a5046e4c214bad996d744ef809f6512e04758cd50"
+    },
+    {
+      "path": "images/coffee.jpg",
+      "sha256": "186f2540e7c31c964bb33439717719648e689302d8e5b1aea6e31c238d8cf2ba"
+    },
+    {
+      "path": "images/danielle-portrait.jpg",
+      "sha256": "8e27d365ec1418e95d471f049fba0068e64e7580058f76e921090ffe13bc002d"
+    },
+    {
+      "path": "images/fellowship.jpg",
+      "sha256": "cb003b39a0b838c22a3a5e369379e53244bf0fae7f8e07bbdfa5dbda2283652b"
+    },
+    {
+      "path": "images/footer-raise-reign-reach.png",
+      "sha256": "5aed7045392d9d02cf839c52611bf4c7eba54b7b0fc2ed1c23642215818ab8df"
+    },
+    {
+      "path": "images/hero-roddy-approved.jpg",
+      "sha256": "92c7a9da2f6205dca4c68e5d3e0cffb790857817a9e0e581086425bd8fae39e9"
+    },
+    {
+      "path": "images/hero-roddy.jpg",
+      "sha256": "cfff2f99cc112780f69638cdb785279b77baffc127c7cbbffc61481ce6b534ae"
+    },
+    {
+      "path": "images/home-adults.jpg",
+      "sha256": "4cdc341ef5e68702d0a6c1f10ac458c77a80a6f107fa69a54a1701388e9aa3b1"
+    },
+    {
+      "path": "images/home-kids.jpg",
+      "sha256": "e2846dc86ab1ccd8a0fc6b0a54660fbf0aecbf4a68ba5dc92013ca01324cb6f8"
+    },
+    {
+      "path": "images/home-serve.jpg",
+      "sha256": "826dda345c786f3c5e88a1aad10652c7d3ed44ee9aea2a917059c709f42e9989"
+    },
+    {
+      "path": "images/home-youth.jpg",
+      "sha256": "2aff083fea711b17ea41ce45ab234157599bcd2cfcc0baec404975b51205530b"
+    },
+    {
+      "path": "images/kids-age-early-elementary-mobile.webp",
+      "sha256": "e8c0a5b26d867f2edb5703d610295d5e1d7af088e731acb65879864925d8cdbc"
+    },
+    {
+      "path": "images/kids-age-nursery-mobile.webp",
+      "sha256": "795875ecc587b38b16b0ec0d7ae061ea7325431f2694530c1cc2bb2c30d2660b"
+    },
+    {
+      "path": "images/kids-age-upper-elementary-mobile.webp",
+      "sha256": "ff8202597e9e324fd8a53c8d5e966bdcb230c5c5339f5deb7863776ca843588b"
+    },
+    {
+      "path": "images/kids-class.jpg",
+      "sha256": "12a221ad8559a211d29a65cddaf44733fd4946bba953b247a77cb4798f7e96aa"
+    },
+    {
+      "path": "images/kids-every-child-matters.jpg",
+      "sha256": "c8169ac01ace7305b6bfb9cffc62d73e67cbf9cea1ea2051bae3005ea94e2e45"
+    },
+    {
+      "path": "images/kids-hands-on-approved-20260807.jpg",
+      "sha256": "fd950c762daeb7aa507afa976859c58da0aa1e114a02aabfecf143b6fe11817e"
+    },
+    {
+      "path": "images/kids-hands-on-teaching-approved-20260807.jpg",
+      "sha256": "46667bf290bb18ec81c2790db35bd18f3b4fdc096ef107d239b9375383d6b66b"
+    },
+    {
+      "path": "images/kids-hands-on-teaching.jpg",
+      "sha256": "46667bf290bb18ec81c2790db35bd18f3b4fdc096ef107d239b9375383d6b66b"
+    },
+    {
+      "path": "images/kids-logo.jpg",
+      "sha256": "d5deeb10d297d2024b73671e737b0fd717d18d7287bf2f3c54ceb7a910bfc36f"
+    },
+    {
+      "path": "images/kids-prayer.jpg",
+      "sha256": "d9b40c2cd067927a81f3c0c322b113a4c35fff72a37e48b1100da6d0566b1fc8"
+    },
+    {
+      "path": "images/kids-series.jpg",
+      "sha256": "8cbc3a4f825c067447d5f7fa7731888051049d67da29817c623d29aca737e8f4"
+    },
+    {
+      "path": "images/kids-worship.jpg",
+      "sha256": "5505f4e6c750fc6678683757fd4c8e4933c3cdcf158a7d031ad2b0d02a127604"
+    },
+    {
+      "path": "images/logo-black.png",
+      "sha256": "c20990cac319d9265a5fcf43bfc948f93be816c79e9631cf07d3e300aa4402c8"
+    },
+    {
+      "path": "images/logo-gold.png",
+      "sha256": "0a58d621918aeffc58ab72a30311054432461014b52eae5dd973da1f3cc59a69"
+    },
+    {
+      "path": "images/logo-white.png",
+      "sha256": "b594077dd353bb0ae90fde41e33632f49f8baac6cda9b8b3d004845838156a22"
+    },
+    {
+      "path": "images/ministries/6am-prayer-card.png",
+      "sha256": "7904b3136565711f2611077bc330356fdf8040ae925a0adced5f6ba8cd69062a"
+    },
+    {
+      "path": "images/ministries/champion-kids-card.png",
+      "sha256": "b560fc6d6e4428f13d2b7f561d9b937d84fa4fffc5a8ae731e019ef9ab1f6ef6"
+    },
+    {
+      "path": "images/ministries/champion-yth-card.png",
+      "sha256": "5c118790e8f62ebff99d02045ce56cb1569370d860565dd2e66f1fafdda34c89"
+    },
+    {
+      "path": "images/ministries/dream-team-card.png",
+      "sha256": "bfa27d9c61e816dcacfe9ffb47af103682faf8ef2bbb9db3e87f38dbd7ffe402"
+    },
+    {
+      "path": "images/ministries/next-steps-card.png",
+      "sha256": "a79fecc7fc359ea53da80491dc79d4c1095de4a89f0fd4c76234b4ed25b56590"
+    },
+    {
+      "path": "images/ministries/outreach-card.png",
+      "sha256": "3bb0fa1215860ce35b22c2039d535ddb99c3bde5af951b5be03f1abecdd55b49"
+    },
+    {
+      "path": "images/mobile-hero-crown-logo.png",
+      "sha256": "c20990cac319d9265a5fcf43bfc948f93be816c79e9631cf07d3e300aa4402c8"
+    },
+    {
+      "path": "images/nursery-logo.jpg",
+      "sha256": "5bba922692a6628145825a7980d81bebb6a833dc37d89a06e54e293edca66c33"
+    },
+    {
+      "path": "images/outreach-bikes-20260807.jpg",
+      "sha256": "7c70befecfbf7ad634942902f8b7c57a50800cd135305397acac28d276bbc353"
+    },
+    {
+      "path": "images/outreach-bikes.jpg",
+      "sha256": "82837a228405ceaf8a6ebc03916d01eac01d935601162632a1a053cb305a7429"
+    },
+    {
+      "path": "images/outreach-community-20260807.jpg",
+      "sha256": "d4412e51042bf2e8b0d9f8aa1e6d6a1b3dde00559419c88ef76d4a77080e5753"
+    },
+    {
+      "path": "images/outreach-connection-20260807.jpg",
+      "sha256": "cb7adcc32f7c16da52c3f5db30dd793d169fa90bd96bee0f84a2f7344c660468"
+    },
+    {
+      "path": "images/outreach-crowd.jpg",
+      "sha256": "a46bf0e56c525414006254306f867dcffed96e8ba1c0589f66299f727169aac4"
+    },
+    {
+      "path": "images/outreach-hero-20260807.jpg",
+      "sha256": "d93749a6ab182973493de6c3f97060a35210e6f18424cc857be8780880f91b49"
+    },
+    {
+      "path": "images/outreach-prayer.jpg",
+      "sha256": "56aae3f3a28f615ac10975c503be97c59d1fb709f404bd8960adcd4fe7db006e"
+    },
+    {
+      "path": "images/pastors-together.jpg",
+      "sha256": "fdc937e8c2e1f580a2527f8567fa1138725b55a584e2b836ab070f27890ee183"
+    },
+    {
+      "path": "images/prayer-home-official-v2.png",
+      "sha256": "e6ca8fa42583526cf060c4df6b95bf1a1013fe5fa9959b256f5a73b6b11d8a58"
+    },
+    {
+      "path": "images/prayer-home-official.png",
+      "sha256": "e6ca8fa42583526cf060c4df6b95bf1a1013fe5fa9959b256f5a73b6b11d8a58"
+    },
+    {
+      "path": "images/prayer-ministry.jpg",
+      "sha256": "7109a3218b5af262ed36204c6c5a19ee2c168e2fceb003739dcc7bf98591c645"
+    },
+    {
+      "path": "images/prayer-psalm91.jpg",
+      "sha256": "f9cb15e807f5750d25353547bfb49b2b5dbbb5e50b53a0a8cef4664613932514"
+    },
+    {
+      "path": "images/raise-reign-reach-clean.png",
+      "sha256": "9fc4c609415def4f71dc17dc12811b029993f14db69b9c25b17a4739ae51e914"
+    },
+    {
+      "path": "images/raise-reign-reach.jpg",
+      "sha256": "63a6eb3267e5ddd08a3bd4f44fd6a143bd22e7c2ede9ba3262f473a8cf8fc948"
+    },
+    {
+      "path": "images/roddy-bible.jpg",
+      "sha256": "51348aa66c6e7e806f419ba699f104ba03b78982636c6a628493f623a4c275b2"
+    },
+    {
+      "path": "images/roddy-portrait.jpg",
+      "sha256": "a2230853c42f8298df26210a11c72ec638f190003e83d446f1f38d1e118af237"
+    },
+    {
+      "path": "images/worship-girl.jpg",
+      "sha256": "d9b40c2cd067927a81f3c0c322b113a4c35fff72a37e48b1100da6d0566b1fc8"
+    },
+    {
+      "path": "images/worship-wide.jpg",
+      "sha256": "ae1b74bbeb6ccc1615e7592c7e7d23f6097fa35a43977d618b5edf4539de39f1"
+    },
+    {
+      "path": "images/youth-friends.jpg",
+      "sha256": "56a1de63644e9d937dfefbeebda6def53766e4162126440ee69ed5f7474957c9"
+    },
+    {
+      "path": "images/youth-hero.jpg",
+      "sha256": "776ffc6221446d6bbb4ef4f152cb8355318ce1116a7aef0e6d26315030199d01"
+    },
+    {
+      "path": "images/youth-logo.png",
+      "sha256": "378c3035a84714c08bda257c7e030125e6148799055526deae761c89c1c7191b"
+    },
+    {
+      "path": "images/youth-purpose.jpg",
+      "sha256": "e0da70050582209c13ad5589c17969fccba144488b8233151bdb6fa02c8a116c"
+    },
+    {
+      "path": "images/youth-worship.jpg",
+      "sha256": "caccb5d39ff455c0933e69ff438498ea02cf864b8be8e90e80e4961bc3dda630"
+    },
+    {
+      "path": "index.html",
+      "sha256": "0174864f004c502453fdaa7cd54e2f9c83f7508d317f00a48126ff1f85cc122b"
+    },
+    {
+      "path": "js/site.js",
+      "sha256": "1ac205e328ceb87cc12b160e9fb83b3a6cbee23bab03958c9d6184de0a17b159"
+    },
+    {
+      "path": "kids.html",
+      "sha256": "e7f48b761c2245b152804d00fc7ad7761ec8006649cd3094d4c4366702c26608"
+    },
+    {
+      "path": "manage-giving-2.html",
+      "sha256": "2c63974a83a2d9c528db10e5e40ed27369668f28cf8d45f1d3f5ff09f85fd751"
+    },
+    {
+      "path": "manage-giving-3.html",
+      "sha256": "eaae174e6567e5e4238c9de1a97d4dc8e5b4f57a9b125a431441af5181a273a1"
+    },
+    {
+      "path": "manage-giving-4.html",
+      "sha256": "ab6430bb36aeb169477279511c3c2d84ffd9907506402f6b0d93b30691df3441"
+    },
+    {
+      "path": "manage-giving-5.html",
+      "sha256": "17d1595aa7829eb53aa75ca0ea1bc870c78f2bb2cb4e5669c2478322d5633336"
+    },
+    {
+      "path": "manage-giving.html",
+      "sha256": "ce7b424082ea218b0c084796a4efda0dc53de09764a485450babe97fa487435e"
+    },
+    {
+      "path": "ministries.html",
+      "sha256": "43c68090eb1f0601a68bd0b20af1fb90d4393e9bf3de6b6f08d4588ea9fc2133"
+    },
+    {
+      "path": "my-discipleship.html",
+      "sha256": "de17813eff25c532484da71a0db75444a7dd0d77040b903b9ed47f615d176478"
+    },
+    {
+      "path": "netlify-forms.html",
+      "sha256": "c5bca6cbf68882e35f5553c309a26838d7f4518bf0d6e9f03212f08555aa7b67"
+    },
+    {
+      "path": "netlify.toml",
+      "sha256": "cfcd55aabfe05c87eb3e283232cabf247250fab54341288ef8c496912135c0e6"
+    },
+    {
+      "path": "netlify/edge-functions/dream-track-protect.js",
+      "sha256": "1492bfeb324588f82cbee74c160465475e436ad3eb4f97182b903a12abfc2cb0"
+    },
+    {
+      "path": "netlify/functions/dream-track-auth.mjs",
+      "sha256": "ce336311ce737078706bc6b4a9ddebe48f963eac85c33d629476243d2442cb82"
+    },
+    {
+      "path": "netlify/functions/youtube-live.js",
+      "sha256": "ebec3f96c287a0734d992f28f3fa9705fdf63f83fce0b4fa2dca4bad376e9c4f"
+    },
+    {
+      "path": "next-steps.html",
+      "sha256": "107b0cdd91b79f5bd2cff1e4d2c2c2b40f929880e89932fc41fd62086b56e61c"
+    },
+    {
+      "path": "outreach-backend-acceptance-2026.html",
+      "sha256": "fdc756c12e15f0d795b5f279f8be6115ebdefc58fb2ed29085a12902c7a26a01"
+    },
+    {
+      "path": "outreach-give/index.html",
+      "sha256": "2b610c21fc5115a3b78aa4d0111b03cef415168180087925750ff5a3a5eb2159"
+    },
+    {
+      "path": "outreach-giving.html",
+      "sha256": "2c41cfcdb3c452d8d7454a0bc1e6dc56f95a6f4d58a0b2e15a42166c2264e7f9"
+    },
+    {
+      "path": "outreach-partner.html",
+      "sha256": "daea67e308c2ba35c55f80e75b82fadd9614afc48c50ef8c580719df603f1dcb"
+    },
+    {
+      "path": "outreach-register.html",
+      "sha256": "583ceef610b0bcfaa6fbbb7d536d5b6c5731f65369fe8762fb8ece729522044f"
+    },
+    {
+      "path": "outreach.html",
+      "sha256": "0f5efce5f2883af4d2146c34ae2c55363efbb62b646421d170c36eafda18eb1f"
+    },
+    {
+      "path": "plan-your-visit.html",
+      "sha256": "339ab21f3d8fd1658bfac6ee124a9f30a7a45c0ef062e58d6a61f42395c19f44"
+    },
+    {
+      "path": "prayer-confessions.html",
+      "sha256": "d3ad896765f3e8176fc404d30dcb26e6b04094c2534f3d852409edcf720023d6"
+    },
+    {
+      "path": "prayer-confessions/believe-and-receive-confessions.pdf",
+      "sha256": "6847ffd7a1dbeefa495f2a6f0c2ab26aecdac4bef4cdcb8d26a39637e4bee3bc"
+    },
+    {
+      "path": "prayer-confessions/christ-in-me-confessions.pdf",
+      "sha256": "7ccb4c08af4934d5d4105043a02f2ba9df517a449c80089154db519e5fe343f1"
+    },
+    {
+      "path": "prayer-confessions/daily-mercy-confessions.pdf",
+      "sha256": "0a3a13d91c3c85848dfde16d3b0103a56bd3a6c53c25f650865063057f606388"
+    },
+    {
+      "path": "prayer-confessions/divine-purpose-confessions.pdf",
+      "sha256": "51bfb812da76be3150895805ed16c09a547aca61ebc7a82833bc3818f4f4cd87"
+    },
+    {
+      "path": "prayer-confessions/drawing-near-to-god-confessions.pdf",
+      "sha256": "cb77285e9a82b1a84f581a0d48e9ab887e0bcfa9e549f811bfc1b641883a1dfc"
+    },
+    {
+      "path": "prayer-confessions/faith-supplements-confessions.pdf",
+      "sha256": "6c2b19b84b60692ce68a18ac99937fc4081ce72019c7258ac2a88679943e456d"
+    },
+    {
+      "path": "prayer-confessions/fire-of-the-holy-spirit-confessions.pdf",
+      "sha256": "731883474eb2462d53ef7f8d44d03e469eb80d8210baae55296b32c9ed29262d"
+    },
+    {
+      "path": "prayer-confessions/fixed-focused-and-determined-confessions.pdf",
+      "sha256": "8a76379173f3f04f21af42a9cf8146a60d7e5fefb2fb4e0b8adff19388997f5d"
+    },
+    {
+      "path": "prayer-confessions/fresh-fruit-confessions.pdf",
+      "sha256": "51abc54975ed1e6ab0f543f414d15ae431ec9a2e12d2d314560108ba49866856"
+    },
+    {
+      "path": "prayer-confessions/give-him-glory-confessions.pdf",
+      "sha256": "61c6ae090900004f45351647e6a23d113160b7e96e294704a3238912614a0c8d"
+    },
+    {
+      "path": "prayer-confessions/glory-to-glory-confessions.pdf",
+      "sha256": "4c984a279eec4e500ecf2950f0cf9e3009f5726f756307590b3d27f00519825c"
+    },
+    {
+      "path": "prayer-confessions/god-is-good-confessions.pdf",
+      "sha256": "bc4c4a7eeb543c2599651a099074dfc41ba4c5ed97d8abbfb1d0165a1015ecf2"
+    },
+    {
+      "path": "prayer-confessions/great-and-effective-doors-confessions.pdf",
+      "sha256": "784e445b075549f9381fbef02ba9c69d80f342f4d59263652248c9a0cca79a09"
+    },
+    {
+      "path": "prayer-confessions/holding-fast-confessions.pdf",
+      "sha256": "bbbdd0676958e6e19eb589deaada5fcd49a88afa4f4b2049c54a8c5c13347297"
+    },
+    {
+      "path": "prayer-confessions/in-christ-confessions.pdf",
+      "sha256": "4571914ed7698ec60888275932181209fb71df0a0d330305e99bc5cc60c8471e"
+    },
+    {
+      "path": "prayer-confessions/legacy-prayer-confessions.pdf",
+      "sha256": "73fca69883fcd26bbd25f960792ee95be610cc76f2331461938be6c7f83b2eb4"
+    },
+    {
+      "path": "prayer-confessions/lifting-up-leaders-confessions.pdf",
+      "sha256": "a88d3d17c26de38cdd518bff73b5aa15732ca5d631511cbcec80f6682f91cb9c"
+    },
+    {
+      "path": "prayer-confessions/living-large-confessions.pdf",
+      "sha256": "a86dbf2761214f3586b05eb881550988027865f7da02fbf8aa14d59b561dde6f"
+    },
+    {
+      "path": "prayer-confessions/love-of-god-confessions.pdf",
+      "sha256": "ead4a48a0d45d4146f393339d20e54798e02647abb84ba0c37f13b073b09e1e3"
+    },
+    {
+      "path": "prayer-confessions/maximize-confessions.pdf",
+      "sha256": "e6432a05a7ebfedf95c0fa232d60630d3b6c396580227618253a152dc6d86546"
+    },
+    {
+      "path": "prayer-confessions/names-of-god-confessions.pdf",
+      "sha256": "6f73284a60da488d2067d91ae7570eeff0a9a7743533402bcb613c53e2f64834"
+    },
+    {
+      "path": "prayer-confessions/new-life-confessions.pdf",
+      "sha256": "9da00a864ddcb43a51e2512d9ecf9d1551c0b3345e23951fbc302c401b89e3da"
+    },
+    {
+      "path": "prayer-confessions/new-to-do-confessions.pdf",
+      "sha256": "702094b756d1139ed080c0eacba9a64c818fb42c28cbb5c21802089b2ed2b7bb"
+    },
+    {
+      "path": "prayer-confessions/nothing-but-the-blood-confessions.pdf",
+      "sha256": "bf2fbc52e722948fdf755d98043a4096fb385aea9f6778be908a9238290946bb"
+    },
+    {
+      "path": "prayer-confessions/nothing-is-impossible-confessions.pdf",
+      "sha256": "1185f9ad8af8b88f8a65f1ca1f003b600e7ef19a2c6daa33e61676b4e665fe2a"
+    },
+    {
+      "path": "prayer-confessions/occupying-high-places-confessions.pdf",
+      "sha256": "62a907c56347d1a4b8ad9f66ce102849ed132659cdc8ad16a1cb6cfee4102eda"
+    },
+    {
+      "path": "prayer-confessions/prayer-power-confessions.pdf",
+      "sha256": "3ee464ade0388d7ae955330d6c36553afa74e6a68f0cf0c739581112554b2fed"
+    },
+    {
+      "path": "prayer-confessions/praying-ii-pet-1-vs-3-4-confessions.pdf",
+      "sha256": "1fa45870970e2c3dc8f514ec8cb7e412239ec39d371f85f69bb1f21d485ac033"
+    },
+    {
+      "path": "prayer-confessions/praying-luke-12-vs-32-confessions.pdf",
+      "sha256": "cc721a1884b23c530c759adcdbb90af4ae9fa01ff49bf923a863bf1ce6288e9f"
+    },
+    {
+      "path": "prayer-confessions/praying-out-the-promises-confessions.pdf",
+      "sha256": "652ea7298f1133c669f4154b90035c0c4d033043feee4334a84ae19c747d80dd"
+    },
+    {
+      "path": "prayer-confessions/prosperity-and-authority-confessions.pdf",
+      "sha256": "66e685647c695c5155de07deddfade0debe48ce25e14c63231b657009b26ccab"
+    },
+    {
+      "path": "prayer-confessions/psalm-34-confessions.pdf",
+      "sha256": "d204bfccf432cac3f357c3e36ac7c8b1490483ed62803eec119d9f0956b20924"
+    },
+    {
+      "path": "prayer-confessions/psalm-91-confessions.pdf",
+      "sha256": "5e4f7f956c384f2729f58154899f59b83376cbbc83eeb310b21b846a64dedd3c"
+    },
+    {
+      "path": "prayer-confessions/raised-up-confessions.pdf",
+      "sha256": "66de1ac2a4e11b9bf953d935100604ec754503e5a5c559ea80c2f3910565ce9a"
+    },
+    {
+      "path": "prayer-confessions/romans-confessions.pdf",
+      "sha256": "e2c8e726c7e598c6b5490cfbd00a36ff3a465f6eb6eccd75839bb8206f3fe8d4"
+    },
+    {
+      "path": "prayer-confessions/stay-strong-confessions.pdf",
+      "sha256": "cd5d4f0f2e158c53b89cf5ba68b66ee7706b4b195a00da21948ec0efc0dc880a"
+    },
+    {
+      "path": "prayer-confessions/such-a-time-as-this-confessions.pdf",
+      "sha256": "54b3c05a97a1184b65afb92588c16716196ea8da25ab91a46eeb6b50f2ea4df6"
+    },
+    {
+      "path": "prayer-confessions/the-good-fight-confessions.pdf",
+      "sha256": "4ec790cc61f10bc9f7c354e4ee4a19dbe3d143f96dcfc62a18e9506e3f2ae74c"
+    },
+    {
+      "path": "prayer-confessions/the-great-exchange-confessions.pdf",
+      "sha256": "053a6839ce33efcafca1cf6b25386d731d1da194a50c23678a687fdf9f2eb265"
+    },
+    {
+      "path": "prayer.html",
+      "sha256": "48aa1f98528c315ca062df6009abafed04e27b1821c3ce45d26a1f225f18a357"
+    },
+    {
+      "path": "privacy.html",
+      "sha256": "4c14898a6b8619b83a230e9bc6e41cc9be2d687ce28889ac38def1af8b7a4fea"
+    },
+    {
+      "path": "sermon-notes.html",
+      "sha256": "6c04b58cc6eb689ebc32f140978eb179c75a5e31a6db25464ea1a705c7c200d6"
+    },
+    {
+      "path": "staff-outreach-partners.html",
+      "sha256": "3a85cdff93d8c5ac7d1ba51652f2817517d0f0e387995f9e369566d81b4c6031"
+    },
+    {
+      "path": "stlucia/index.html",
+      "sha256": "59b5c0738ed2d7549d9851068b99be69faa6b66e699f1e9582cd41353b6bd038"
+    },
+    {
+      "path": "supabase/functions/outreach-partner-submit/gateway.mjs",
+      "sha256": "777b213061db4123d393f976f511a218925e2595f09939eb583674e9ff884250"
+    },
+    {
+      "path": "supabase/functions/outreach-partner-submit/index.ts",
+      "sha256": "15af6d1cec78391decb3e718966d2b7cd305df9a2baf1d52964b76350b6d8218"
+    },
+    {
+      "path": "supabase/functions/outreach-registration-submit/gateway.mjs",
+      "sha256": "10d70a49c21d153d481bbe2ab650401645305293b799b5215b1a62be99b074f4"
+    },
+    {
+      "path": "supabase/functions/outreach-registration-submit/index.ts",
+      "sha256": "a4f99f27565701c5760dfa07c3ad1fa28e2e7cf6591483c7d80d87cad8c5a453"
+    },
+    {
+      "path": "supabase/migrations/20260923114743_create_course_progress_schema.sql",
+      "sha256": "c42d6a9a7f213558170e389f011e0f0b1972d065efd8fb9dc30644349b901f72"
+    },
+    {
+      "path": "supabase/migrations/20260923114822_harden_course_security_and_indexes.sql",
+      "sha256": "9becd4c0e52b1787bf7ecf066683359aaced0b27c5b71123da066dd8a09193fb"
+    },
+    {
+      "path": "supabase/migrations/20260923115114_revoke_public_rls_helper_execution.sql",
+      "sha256": "a8c9d9e0044ea4f8ac6b6bf726b7b28370ddf9ade493eaceaaef319dcf741ee9"
+    },
+    {
+      "path": "supabase/migrations/20260923115706_grant_authenticated_course_api_access.sql",
+      "sha256": "83998f15a0236a4765dd83803a34166854a278fc2888073d28b4eee5b9a7dd26"
+    },
+    {
+      "path": "supabase/migrations/20260923115732_restrict_authenticated_course_privileges.sql",
+      "sha256": "5f53a377265a3b68231e32f75b4c99f656bea74900ec4fbdffc346f03473b103"
+    },
+    {
+      "path": "supabase/migrations/20260923121707_add_st_lucia_registration_and_account_linking.sql",
+      "sha256": "225e352e966e466068649b30885a6003e44964237218f99dcbc678ccfffbcf71"
+    },
+    {
+      "path": "supabase/migrations/20260923122017_secure_st_lucia_registration_claim_after_login.sql",
+      "sha256": "a0636bf90aacd1eb1c8ac05aed9170527c46aba56b2e4b0c619dd6412702fcde"
+    },
+    {
+      "path": "supabase/migrations/20260925200310_organization_foundation.sql",
+      "sha256": "3d26adbdb35e0aa657a08af6f175fc108fe9e49bc9ad01117314441b953d0d8c"
+    },
+    {
+      "path": "supabase/migrations/20260925200318_harden_outreach_claim.sql",
+      "sha256": "55160b1ce86006a8acfcb8608f39689b3916eaaaf905587a7bbeec86dff37a4b"
+    },
+    {
+      "path": "supabase/migrations/20260925202633_lesson_notes.sql",
+      "sha256": "774a2b1a345ab7efa4952d0aef9ecceda2952b21fdc91c146fde2d110d973d48"
+    },
+    {
+      "path": "supabase/migrations/20260926000821_followup_tasks.sql",
+      "sha256": "db3fa4c4869fc6efff84133e300ee162697558d2d64c6c37abd68c1ff4748f74"
+    },
+    {
+      "path": "supabase/migrations/20260926022613_staff_access_and_people.sql",
+      "sha256": "5245c90b63fe289b929f6210c294c36f300deeec3786aa22866c7b59141aca4c"
+    },
+    {
+      "path": "supabase/migrations/20260926024742_household_records.sql",
+      "sha256": "9da11eb6ff58e3df63e4d5e6ccd961f1a3e14db234e6eeca8c49cb73c66a93e1"
+    },
+    {
+      "path": "supabase/migrations/20260926032026_department_tags.sql",
+      "sha256": "ca8dbaa58b0a8f7d8e5ac25e221b9fe7b77886befb843c23b8c67440b105bffe"
+    },
+    {
+      "path": "supabase/migrations/20260926034222_tag_workflows.sql",
+      "sha256": "caa052c1bfc892c93291753afd9435d76e974859147010e955c2752d00dac678"
+    },
+    {
+      "path": "supabase/migrations/20260926035410_giving_configuration.sql",
+      "sha256": "3fddb322a99c478bf13784bde14deb62ae05257dff1d899a279611edc08ffef4"
+    },
+    {
+      "path": "supabase/migrations/20260926040812_participant_portals.sql",
+      "sha256": "a9189d02e8723da20ac05acd061f7278d2b4ca4c293b338165f410f272f4f921"
+    },
+    {
+      "path": "supabase/migrations/20260928172557_people_staff_v1.sql",
+      "sha256": "0c00fe4f50f2bc92f1d9a4896125f9143a56e7ea37e3317540954cdb52cadc07"
+    },
+    {
+      "path": "supabase/migrations/20261004055336_outreach_partner_intake_v1.sql",
+      "sha256": "c2feb7c1675b973da4f3e0f5cf3a18aaf97dacdc59aca7a7e01a029d5ca84351"
+    },
+    {
+      "path": "supabase/migrations/20261004154340_allow_bessemer_outreach_registrations.sql",
+      "sha256": "9919250f0df4280a311baf929e8c2eb5d97770285bc3ea93f204752d213a462a"
+    },
+    {
+      "path": "supabase/migrations/20261004230453_outreach_partner_gateway.sql",
+      "sha256": "25802f89d285d86fc3783b454132e6f0378b93f74c4802435d6bf7369dc29a67"
+    },
+    {
+      "path": "supabase/migrations/20261005161946_outreach_network_limit_120.sql",
+      "sha256": "6159ef5ac6fff5a5480f4a71acc45ece4a0298144e1a4078fb114d1ded0f4f0e"
+    },
+    {
+      "path": "supabase/migrations/20261016201932_huntsville_registration_foundation.sql",
+      "sha256": "365ade7c6995541ad99f32135c3775b4e03c52d9a9bde95cc8f70da844f10a09"
+    },
+    {
+      "path": "supabase/migrations/20261016201933_huntsville_registration_draft.sql",
+      "sha256": "961187b9a667c021909019a0ba77dd83b140c590de56b21a1111eeb039689952"
+    },
+    {
+      "path": "supabase/migrations/20261018121900_allow_huntsville_decision_registrations.sql",
+      "sha256": "af9abe5821e299b53457ca6c1ec516f402e63c0dc757b6b617570783bd3efda1"
+    },
+    {
+      "path": "tap/assets/champion-life-logo.png",
+      "sha256": "0a58d621918aeffc58ab72a30311054432461014b52eae5dd973da1f3cc59a69"
+    },
+    {
+      "path": "tap/index.html",
+      "sha256": "6ffd57df688f158e0d366070dbab9cc7cf82a4fbc1d893126fee0455caa2b83f"
+    },
+    {
+      "path": "terms.html",
+      "sha256": "3254bd2d59f845d524c85db97846ad611785b8377c27af9d6c0fa4ab699b8eb2"
+    },
+    {
+      "path": "watch-join-us-approved.png",
+      "sha256": "0d9442e3caf020b9350fdf9181dc7874db71888309fedeac3b43815529478a20"
+    },
+    {
+      "path": "watch.html",
+      "sha256": "f9c0a157efd356bbeaa03d8b6db454de263c9345ae6e7330f7c9a1bde7677dae"
+    },
+    {
+      "path": "youth.html",
+      "sha256": "a643903136435b1e6c25bc3c7749298de115ee948db6977b98a8ed1878b87915"
+    }
+  ],
+  "protectionNote": "Expanded after preflight from the initial 124-file focused list to all original public manifest files except the two approved staff HTML adaptations, plus production migrations/functions/config/routing."
+}

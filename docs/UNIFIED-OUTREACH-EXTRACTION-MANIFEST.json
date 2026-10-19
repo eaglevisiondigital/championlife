@@ -1,0 +1,3078 @@
+[
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261006113255_outreach_campaign_core_v1.sql",
+    "statement": 1,
+    "sha256": "7c9fc85d8b9f72f616f9efb9090bbfc3b759b3a1c9b569c3f4f75c1a96384af9",
+    "retained": false,
+    "reason": "production/PR29 object retained unchanged"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261006113255_outreach_campaign_core_v1.sql",
+    "statement": 2,
+    "sha256": "428635b4021ae359b945549b724208c758ea445b849b20ddea7f3613202c1050",
+    "retained": false,
+    "reason": "production/PR29 object retained unchanged"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261006113255_outreach_campaign_core_v1.sql",
+    "statement": 3,
+    "sha256": "d28b7fb4b28c6be086e7e7158df79e8be732d473cd7dea018e7c1bd2eb0f6368",
+    "retained": true,
+    "reason": "retained missing dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261006113255_outreach_campaign_core_v1.sql",
+    "statement": 4,
+    "sha256": "9e95de635ff9eddf206d94d0d1808f49e9f75b1b4dd3e562d6c3f5a625ff6e4f",
+    "retained": true,
+    "reason": "retained missing dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261006113255_outreach_campaign_core_v1.sql",
+    "statement": 5,
+    "sha256": "633a9aa83d4910eacca7b57734ee8e3b707fbc22bad0b6e151a5421964148604",
+    "retained": true,
+    "reason": "retained missing dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261006113255_outreach_campaign_core_v1.sql",
+    "statement": 6,
+    "sha256": "0daf8cebf55ace6d9c9ccbf719dd255f612755302d3425d484dfd557a8025b36",
+    "retained": false,
+    "reason": "production/PR29 object retained unchanged"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261006113255_outreach_campaign_core_v1.sql",
+    "statement": 7,
+    "sha256": "7d02b0e7739c063d75e0017f0efa56a4309af7b54acdffc0491bc06cf176461e",
+    "retained": false,
+    "reason": "production/PR29 object retained unchanged"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261006113255_outreach_campaign_core_v1.sql",
+    "statement": 8,
+    "sha256": "d09c7f3b63500b0d1d4d71956e8a9fe871827aeb978e8e02ab0cd70ba3dc4466",
+    "retained": false,
+    "reason": "production/PR29 object retained unchanged"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261006113255_outreach_campaign_core_v1.sql",
+    "statement": 9,
+    "sha256": "cbf1110d5fdb6b4768c55c320decec0f82014568101ee13d5b38e9d0bc6a9e39",
+    "retained": false,
+    "reason": "production/PR29 object retained unchanged"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261006113255_outreach_campaign_core_v1.sql",
+    "statement": 10,
+    "sha256": "ebe914dd4b9fa81a0b580176d70299062b38eea965b8a7c1bad9189185ff9853",
+    "retained": true,
+    "reason": "retained missing dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261006113255_outreach_campaign_core_v1.sql",
+    "statement": 11,
+    "sha256": "2f7f9fd4853697081ea4aed11d7e622885ac69b4176aa45ad61feecc796ba39b",
+    "retained": true,
+    "reason": "retained missing dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261006113255_outreach_campaign_core_v1.sql",
+    "statement": 12,
+    "sha256": "ed905f617cc91ec4131d6ee89be14401b37cb778b4445a30f70ed614db9dd65f",
+    "retained": true,
+    "reason": "retained missing dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261006113255_outreach_campaign_core_v1.sql",
+    "statement": 13,
+    "sha256": "f80925d5d6cbec295919a375c6029d2c54a219554796ad656a72fffb85c158c6",
+    "retained": true,
+    "reason": "retained missing dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261006113255_outreach_campaign_core_v1.sql",
+    "statement": 14,
+    "sha256": "6cc92ff92be6d2e377b7fa707c76c5d20dd772dfd55f62b783978728153e9611",
+    "retained": false,
+    "reason": "production/PR29 object retained unchanged"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261006113255_outreach_campaign_core_v1.sql",
+    "statement": 15,
+    "sha256": "7c369a3445e2e7e50cda0413e34d174597b2b4fb49c1f5a585c5b0147c61241a",
+    "retained": false,
+    "reason": "production/PR29 object retained unchanged"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261006113255_outreach_campaign_core_v1.sql",
+    "statement": 16,
+    "sha256": "99277565d53e98d6a50f587e99c08e4f845062d63c017763383af0882e6643b6",
+    "retained": false,
+    "reason": "production/PR29 object retained unchanged"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261006113255_outreach_campaign_core_v1.sql",
+    "statement": 17,
+    "sha256": "c0a743b34a8880e1855fa58931d5e1e77f0b6d7493355a36552c8694b6a4e990",
+    "retained": true,
+    "reason": "retained missing dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261006113255_outreach_campaign_core_v1.sql",
+    "statement": 18,
+    "sha256": "6dff3248ce1d897f9d14f9010170a4022afb499182d866c3059032a41588297c",
+    "retained": true,
+    "reason": "retained missing dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261006113255_outreach_campaign_core_v1.sql",
+    "statement": 19,
+    "sha256": "3c618d3525bf80217f7e531f6078c37206fb2c7464467219d96885a19777b42a",
+    "retained": true,
+    "reason": "retained missing dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261006113255_outreach_campaign_core_v1.sql",
+    "statement": 20,
+    "sha256": "9e4395044275d87404f1eb6fc7fd3482ef25dd8a5ea7a179285e1046973fdd0d",
+    "retained": true,
+    "reason": "retained missing dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261006113255_outreach_campaign_core_v1.sql",
+    "statement": 21,
+    "sha256": "d8be19c8e0ac1bcbbcbeb20340f2ad73e611d5560ced0cf91f8187553f6a7fbc",
+    "retained": false,
+    "reason": "production/PR29 object retained unchanged"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261006113255_outreach_campaign_core_v1.sql",
+    "statement": 22,
+    "sha256": "7add315767faf2ce73f715c3e7ff4b6a3f1c8b18000813b368645fb9b5ea0693",
+    "retained": false,
+    "reason": "production/PR29 object retained unchanged"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261006113255_outreach_campaign_core_v1.sql",
+    "statement": 23,
+    "sha256": "03b53d8c52ca10ceb88cbbc1d4537ffaa5cecbf18768fb58a6722b2143c2a88f",
+    "retained": false,
+    "reason": "production/PR29 object retained unchanged"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261006113255_outreach_campaign_core_v1.sql",
+    "statement": 24,
+    "sha256": "ba7dab10e303ce69070ee567f66e2083b90a9f6931d249a1caf8c6cbfd4c45b2",
+    "retained": false,
+    "reason": "production/PR29 object retained unchanged"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261006113255_outreach_campaign_core_v1.sql",
+    "statement": 25,
+    "sha256": "689fbeb48a6ad29a72242df27564d02f5afacd51aa40063277c2b29fa4666d9e",
+    "retained": false,
+    "reason": "production/PR29 object retained unchanged"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261006113255_outreach_campaign_core_v1.sql",
+    "statement": 26,
+    "sha256": "fdaec464d6d0e267a4a26b7a8947575290c76c0c4e9b1ea735723937b5af9ba5",
+    "retained": false,
+    "reason": "production/PR29 object retained unchanged"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261006113255_outreach_campaign_core_v1.sql",
+    "statement": 27,
+    "sha256": "9814593f3cee9d5e89c9aa46f1a610384da7f4252a759c8942dca4e82ec478b0",
+    "retained": true,
+    "reason": "retained missing dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261006113255_outreach_campaign_core_v1.sql",
+    "statement": 28,
+    "sha256": "35fbde73d2799eefac5631850f9548d736313a01e233fdd968febfcc23835812",
+    "retained": false,
+    "reason": "production/PR29 object retained unchanged"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261006113255_outreach_campaign_core_v1.sql",
+    "statement": 29,
+    "sha256": "83218ec47db2063cd5296d78842c4b957bc296b7eef704fcf70d9da019a7fa73",
+    "retained": false,
+    "reason": "production/PR29 object retained unchanged"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261006113255_outreach_campaign_core_v1.sql",
+    "statement": 30,
+    "sha256": "2cfa65eabb66f852bba128b4498e33e3439dc83a5b342d242b88413a5d401c59",
+    "retained": false,
+    "reason": "production/PR29 object retained unchanged"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261006113255_outreach_campaign_core_v1.sql",
+    "statement": 31,
+    "sha256": "e6b4820a49d2d3f284de10a2b15cf4b4736920244d3504a777895cb17da0039e",
+    "retained": false,
+    "reason": "production/PR29 object retained unchanged"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261006113255_outreach_campaign_core_v1.sql",
+    "statement": 32,
+    "sha256": "ca26f69030ded700155f32af4380c95139ab16c1d0f41daf8f776925cbe29442",
+    "retained": true,
+    "reason": "retained missing dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261006113255_outreach_campaign_core_v1.sql",
+    "statement": 33,
+    "sha256": "418f24eb77962762e1e4da0c677a05f19f5b8fa7ae6e8a3eb8aae9aab1222b09",
+    "retained": true,
+    "reason": "retained missing dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261006113255_outreach_campaign_core_v1.sql",
+    "statement": 34,
+    "sha256": "841aea96161d3eb12b662b5a7a9f7ea09a29026a9cb0387831f9f24695674639",
+    "retained": true,
+    "reason": "retained missing dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261006113255_outreach_campaign_core_v1.sql",
+    "statement": 35,
+    "sha256": "4b7d391f2464cad12e256e1cfc41e0b92711f03a833fe2f38be6252143d8a30c",
+    "retained": false,
+    "reason": "production/PR29 object retained unchanged"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261006113255_outreach_campaign_core_v1.sql",
+    "statement": 36,
+    "sha256": "119cb843f1b7e2fef856ab63f7a9985a48c37fd4312912c6d30537d28c3ce315",
+    "retained": true,
+    "reason": "retained missing dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261006113255_outreach_campaign_core_v1.sql",
+    "statement": 37,
+    "sha256": "d9cda9d7f1a6fcb643d901b20b6377da55fb08d29958559aa76754be47984ba0",
+    "retained": true,
+    "reason": "retained missing dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261006113255_outreach_campaign_core_v1.sql",
+    "statement": 38,
+    "sha256": "7415572a986f6ff1fa2c3331063019a783167428b20a1cd627059328f73d9608",
+    "retained": true,
+    "reason": "retained missing dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261006113255_outreach_campaign_core_v1.sql",
+    "statement": 39,
+    "sha256": "654c338125c8741b11b2b7bb7640692569b51f0ec5d0a0fab6c8e6e267f195a4",
+    "retained": true,
+    "reason": "retained missing dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261006113255_outreach_campaign_core_v1.sql",
+    "statement": 40,
+    "sha256": "a50566f2293365bcc81f1ba391d565b8c9df754e684527884d0f67224d9b1c61",
+    "retained": true,
+    "reason": "retained missing dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261006113255_outreach_campaign_core_v1.sql",
+    "statement": 41,
+    "sha256": "371758ba6763ccff9df2c2cf91c86d37a011d96a15bb01dd4a559fd429530791",
+    "retained": true,
+    "reason": "retained missing dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261006113255_outreach_campaign_core_v1.sql",
+    "statement": 42,
+    "sha256": "798b54461e8e149e980ae32347e9caea7e5725fa195847f1e069ee0555e58f41",
+    "retained": true,
+    "reason": "retained missing dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261006113311_outreach_campaign_workflow_v1.sql",
+    "statement": 1,
+    "sha256": "7c335a199d453ba8e12891988cc8df667e7cb9024203299531b06eb342f9da7e",
+    "retained": true,
+    "reason": "retained missing dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261006113311_outreach_campaign_workflow_v1.sql",
+    "statement": 2,
+    "sha256": "dd8a40e3c87a020e7a20242fa5489ed79eee5fbaeb1de3c732f7063d367d0a9e",
+    "retained": true,
+    "reason": "retained missing dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261006113311_outreach_campaign_workflow_v1.sql",
+    "statement": 3,
+    "sha256": "153ef188f90429c235cd8c1e7b0b517dd16a8fa53f5cf4f87a5a29d3cc3c52b5",
+    "retained": true,
+    "reason": "retained missing dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261006113311_outreach_campaign_workflow_v1.sql",
+    "statement": 4,
+    "sha256": "6d2a7908c80498efc6f54ca94f15b2ea5c048babef3c27172c293859b1acc246",
+    "retained": true,
+    "reason": "retained missing dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261006113311_outreach_campaign_workflow_v1.sql",
+    "statement": 5,
+    "sha256": "756dfb7d9429d376462d27a43e4767aa65f311d7e4f31f59a1ce313afeda087d",
+    "retained": true,
+    "reason": "retained missing dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261006113311_outreach_campaign_workflow_v1.sql",
+    "statement": 6,
+    "sha256": "4cef13c6c019834aacb080a13ade69129350f8cdd340a31a967da85a11878efc",
+    "retained": true,
+    "reason": "retained missing dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261006113311_outreach_campaign_workflow_v1.sql",
+    "statement": 7,
+    "sha256": "5b3ffc6280982170a796d66617b33ddfef9faa9147e3bf1cc091ad659c193ef5",
+    "retained": true,
+    "reason": "retained missing dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261006113311_outreach_campaign_workflow_v1.sql",
+    "statement": 8,
+    "sha256": "213b4264a0b23ee07a1ae8385225fdd9696daa797c0a0ccb73ecc128fe2cd735",
+    "retained": true,
+    "reason": "retained missing dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261006113311_outreach_campaign_workflow_v1.sql",
+    "statement": 9,
+    "sha256": "e00d202be2770b27e49547e9cb43ea7dc7c7087c321820a008097971ff8fb41c",
+    "retained": true,
+    "reason": "retained missing dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261006113311_outreach_campaign_workflow_v1.sql",
+    "statement": 10,
+    "sha256": "e5a79377fd8e340aa7f0192c85652a19e9d55d479cc739885c7cf27a79d3667d",
+    "retained": true,
+    "reason": "retained missing dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261006113311_outreach_campaign_workflow_v1.sql",
+    "statement": 11,
+    "sha256": "23a4aea20cb12849c1285fd0e1ef538bbf76ea54d39fab316566f8aa8f441a75",
+    "retained": true,
+    "reason": "retained missing dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261006113311_outreach_campaign_workflow_v1.sql",
+    "statement": 12,
+    "sha256": "14f45b8a56bb05ca21cbb7e85d5d0d34728146f8dbde46bdd9dc45112584d989",
+    "retained": true,
+    "reason": "retained missing dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261006113311_outreach_campaign_workflow_v1.sql",
+    "statement": 13,
+    "sha256": "33f9fdb34cadecee7134d6d53c294a27309400ecd4307557b3b97a221eeea826",
+    "retained": true,
+    "reason": "retained missing dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261006113311_outreach_campaign_workflow_v1.sql",
+    "statement": 14,
+    "sha256": "ea2e844826825bc1f86d3da00da3d4d8b707a4c60ae768d9023f8a0b51e63019",
+    "retained": true,
+    "reason": "retained missing dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261006113311_outreach_campaign_workflow_v1.sql",
+    "statement": 15,
+    "sha256": "09220ffad35c1fbc9cb1802aa4f9d31185150e527f853d4ff90a05c2bab91c4b",
+    "retained": true,
+    "reason": "retained missing dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261006113311_outreach_campaign_workflow_v1.sql",
+    "statement": 16,
+    "sha256": "cb0b7e9ca8b064e7ba8a54aacd96122d6a891087f6b6958665b80387d1344c5a",
+    "retained": true,
+    "reason": "retained missing dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261006113311_outreach_campaign_workflow_v1.sql",
+    "statement": 17,
+    "sha256": "95d8aecfff56dad4037c2863e3715933756117b2b266a18b50dc487f913aa082",
+    "retained": true,
+    "reason": "retained missing dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261006113311_outreach_campaign_workflow_v1.sql",
+    "statement": 18,
+    "sha256": "8d18edcfc539a6d71bcbc72c61c03dd85dcffec2851ef724be8b38f8aa0eea27",
+    "retained": true,
+    "reason": "retained missing dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261006113311_outreach_campaign_workflow_v1.sql",
+    "statement": 19,
+    "sha256": "93cd4e17030b099f8c5419e2914d706dfa5a952e6439e8335c592b48106841a9",
+    "retained": true,
+    "reason": "retained missing dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261006113311_outreach_campaign_workflow_v1.sql",
+    "statement": 20,
+    "sha256": "8b3cdb3368f1faaf08d0fea9d5b205d7c56d37a273f7aa3d63018897e00c9ce7",
+    "retained": true,
+    "reason": "retained missing dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261006113311_outreach_campaign_workflow_v1.sql",
+    "statement": 21,
+    "sha256": "681903faf1971a63c18a32669bd2095bfb89fcd834e116407da2c620da796d74",
+    "retained": true,
+    "reason": "retained missing dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261006113311_outreach_campaign_workflow_v1.sql",
+    "statement": 22,
+    "sha256": "e017db64f9e1799b80bfc9176153f2dcfcaf064adbe39b8c674c9043dff68d0c",
+    "retained": true,
+    "reason": "retained missing dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261006113311_outreach_campaign_workflow_v1.sql",
+    "statement": 23,
+    "sha256": "96b8da531843f36fb6de9097df7ebbdb6a873708642ba6a57a3ce5aef3c46328",
+    "retained": true,
+    "reason": "retained missing dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261006113311_outreach_campaign_workflow_v1.sql",
+    "statement": 24,
+    "sha256": "01629ed94187361d9818ad2227721265763bfb5d0caab45f19fc2097b499c5ec",
+    "retained": true,
+    "reason": "retained missing dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261006113311_outreach_campaign_workflow_v1.sql",
+    "statement": 25,
+    "sha256": "6c823e4e5a4ef85c2b9f1b68ce73c02afde70018be1956be9dff46b6b5bf0e97",
+    "retained": true,
+    "reason": "retained missing dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261006113311_outreach_campaign_workflow_v1.sql",
+    "statement": 26,
+    "sha256": "2db3596dd9aead07a0290465147ec7fdf62fb8f3a417d9c47f4892197efea5f5",
+    "retained": true,
+    "reason": "retained missing dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261006113311_outreach_campaign_workflow_v1.sql",
+    "statement": 27,
+    "sha256": "81d721fd40f5ffd65c3328d0a53921d973148cecbd5588df6a6c2553fab99f79",
+    "retained": true,
+    "reason": "retained missing dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261006113311_outreach_campaign_workflow_v1.sql",
+    "statement": 28,
+    "sha256": "143833692f4ebface85c2b680fefa9004c1ba78365e5a715406734819ea80ff4",
+    "retained": true,
+    "reason": "retained missing dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261006113311_outreach_campaign_workflow_v1.sql",
+    "statement": 29,
+    "sha256": "a7a19f788471c209e213b73e7dad09cfbf394937c9af7d7918e870a1b3587e0f",
+    "retained": true,
+    "reason": "retained missing dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261006113311_outreach_campaign_workflow_v1.sql",
+    "statement": 30,
+    "sha256": "94d0920a30218642bb1574ca050d262f3461a82d12aa5671a204f65ae3a69aae",
+    "retained": true,
+    "reason": "retained missing dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261006113311_outreach_campaign_workflow_v1.sql",
+    "statement": 31,
+    "sha256": "a9490272e84ae25614c36f918497d50c91a8bbc6777fc5fa33852692a6fc2320",
+    "retained": true,
+    "reason": "retained missing dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261006113311_outreach_campaign_workflow_v1.sql",
+    "statement": 32,
+    "sha256": "d3f750c643fee7a168101a2635b78f3a487a5f6f787b71cf6c61da2c7b9b9180",
+    "retained": true,
+    "reason": "retained missing dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261006113311_outreach_campaign_workflow_v1.sql",
+    "statement": 33,
+    "sha256": "3a4436eb2353e78f4c6175b4b7607d0324689cc444906756e80a4c81db489800",
+    "retained": true,
+    "reason": "retained missing dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261006113311_outreach_campaign_workflow_v1.sql",
+    "statement": 34,
+    "sha256": "2253a0ed7729d913a2ebdedefe650064a9a1ab6798c8ad19a9a5b9716b8e13cc",
+    "retained": true,
+    "reason": "retained missing dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261006113311_outreach_campaign_workflow_v1.sql",
+    "statement": 35,
+    "sha256": "4cf9ec584ba352ed80f16710426a2a6158e223cf26f4288fa340fbbe9fddd0d4",
+    "retained": false,
+    "reason": "exclude historical Bessemer seed"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261006113311_outreach_campaign_workflow_v1.sql",
+    "statement": 36,
+    "sha256": "e1a7b7daf0ebc7b6d87c200263ba53c757eb38dbca83d1b724b1b9c56e57ded9",
+    "retained": false,
+    "reason": "use PR29 canonical decision-source mapping"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261006113311_outreach_campaign_workflow_v1.sql",
+    "statement": 37,
+    "sha256": "02ddeb305f26c6b8b98748bced1da6f112bff2afe10b53c6d36c2dc1c11f8172",
+    "retained": false,
+    "reason": "separate guarded bridge backfill"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261006113311_outreach_campaign_workflow_v1.sql",
+    "statement": 38,
+    "sha256": "bf2696667ed467d4167e3894bc50fb8691f9791830bd804b8a45e22c39ead9e2",
+    "retained": true,
+    "reason": "retained missing dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261006113311_outreach_campaign_workflow_v1.sql",
+    "statement": 39,
+    "sha256": "605045d34e2402bda24fd730c3107c10e47939237aa9b216926143eac67fe3e9",
+    "retained": true,
+    "reason": "retained missing dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261006113311_outreach_campaign_workflow_v1.sql",
+    "statement": 40,
+    "sha256": "9f8f75059b31d3e7847d6a4ba72bd6ad0716e0095d281c3f16f5e4c846097d11",
+    "retained": true,
+    "reason": "retained missing dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261006113311_outreach_campaign_workflow_v1.sql",
+    "statement": 41,
+    "sha256": "99638e951c581636d374f7c0040d68e46cdf07625231a44204eeee942071db58",
+    "retained": true,
+    "reason": "retained missing dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261006113311_outreach_campaign_workflow_v1.sql",
+    "statement": 42,
+    "sha256": "63408708c028205c0065026e1f8ba3cd51e0d3c2fe1100598398ae310ed69989",
+    "retained": true,
+    "reason": "retained missing dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261006113311_outreach_campaign_workflow_v1.sql",
+    "statement": 43,
+    "sha256": "2da79530b905274c5692be4eb1a96e8487bc72fc56540b9213aa2c56439be6bc",
+    "retained": true,
+    "reason": "retained missing dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261006113322_outreach_prize_integrity_foundation.sql",
+    "statement": 1,
+    "sha256": "f2c8713049d53e46602578fff7cfbe16bf452bb09f8fc6b9138b7405e0f2b6c9",
+    "retained": false,
+    "reason": "production/PR29 object retained unchanged"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261006113322_outreach_prize_integrity_foundation.sql",
+    "statement": 2,
+    "sha256": "4dea7729a247a1af309e2920e7346b9592cb4202a74c9052fee2bf77aea8b682",
+    "retained": true,
+    "reason": "retained missing dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261006113322_outreach_prize_integrity_foundation.sql",
+    "statement": 3,
+    "sha256": "aeccbb751628b04867e9ce7dd4e64e7485bd913aa4cbe0bb2cbd4987b7698caf",
+    "retained": true,
+    "reason": "retained missing dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261006113322_outreach_prize_integrity_foundation.sql",
+    "statement": 4,
+    "sha256": "d5cc0829bed2911c90ac9bca9075b2e7fb65a0ec75d09e83d8224bd264b9f4e1",
+    "retained": true,
+    "reason": "retained missing dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261006113322_outreach_prize_integrity_foundation.sql",
+    "statement": 5,
+    "sha256": "a43cfa6a1016097cd6deb7810db2ed54a5150c69ae9aecfdcd7320968a5b59e3",
+    "retained": true,
+    "reason": "retained missing dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261006113322_outreach_prize_integrity_foundation.sql",
+    "statement": 6,
+    "sha256": "7dca105571f06f217f72af95cb13d1b35d4c5af8221a4c595f133282a464bb96",
+    "retained": true,
+    "reason": "retained missing dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261006113322_outreach_prize_integrity_foundation.sql",
+    "statement": 7,
+    "sha256": "27a60a7d99791e02c5474de6c91cd9800690bc68e469b05458e5e0afee8e6913",
+    "retained": true,
+    "reason": "retained missing dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261006113322_outreach_prize_integrity_foundation.sql",
+    "statement": 8,
+    "sha256": "a85f5de6269ce91ceb7883a96a908147b75bae0b0f1a7523430eaadda91414df",
+    "retained": true,
+    "reason": "retained missing dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261006113322_outreach_prize_integrity_foundation.sql",
+    "statement": 9,
+    "sha256": "282b7569224e438a7354d769c2c58a5962fe99d90f089403a5d8d0752fb2cba8",
+    "retained": true,
+    "reason": "retained missing dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261006113322_outreach_prize_integrity_foundation.sql",
+    "statement": 10,
+    "sha256": "4ce7f741ba6e5024554f08283f5c10970d1c02ab9fe2eb2c380e6714bfe0559e",
+    "retained": true,
+    "reason": "retained missing dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261006113322_outreach_prize_integrity_foundation.sql",
+    "statement": 11,
+    "sha256": "0a8c2d2c30b4b85a80a687d992157f38cd48e64707f7d5a8b03a7c169594afb5",
+    "retained": true,
+    "reason": "retained missing dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261006113322_outreach_prize_integrity_foundation.sql",
+    "statement": 12,
+    "sha256": "30eea4ad7ade8774f59ff1f53dfba299b8a3368b72bc7ebd80509581c3acfa81",
+    "retained": true,
+    "reason": "retained missing dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261006113322_outreach_prize_integrity_foundation.sql",
+    "statement": 13,
+    "sha256": "b8f5577942ca56e6982d01c043fee35628cdb1744510cacbaa3026a38b3d9b24",
+    "retained": true,
+    "reason": "retained missing dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261006113322_outreach_prize_integrity_foundation.sql",
+    "statement": 14,
+    "sha256": "f5c552f3576ea8af917948e1b0c38a5b9b917c54a8ab0a34a0178cf4a404a38c",
+    "retained": true,
+    "reason": "retained missing dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261006113322_outreach_prize_integrity_foundation.sql",
+    "statement": 15,
+    "sha256": "2f30dc8505289a0a9b0200656b706f17db956f3403d7a458792194daa082470f",
+    "retained": true,
+    "reason": "retained missing dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261006113322_outreach_prize_integrity_foundation.sql",
+    "statement": 16,
+    "sha256": "d94a722828e5580843d954c1c53ce1e380c01e46e032839cc9f1d266802ae973",
+    "retained": true,
+    "reason": "retained missing dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261006113322_outreach_prize_integrity_foundation.sql",
+    "statement": 17,
+    "sha256": "72f77fb1891bda677d2148aa797443aff80717d52d04ce9236c562acf14fe91c",
+    "retained": true,
+    "reason": "retained missing dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261007160000_outreach_phase_d_prize_operations.sql",
+    "statement": 1,
+    "sha256": "2adbfa4ef7389b645e7819ce56bfbc03991cf6d270ac6d334b2ea6adbe18f66e",
+    "retained": false,
+    "reason": "union constraints in forward foundation preserve current namespaces"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261007160000_outreach_phase_d_prize_operations.sql",
+    "statement": 2,
+    "sha256": "3b9cf99719eaf5efd4099c8269c64ec2844f9f40922cb1210c35e510dea83a0f",
+    "retained": false,
+    "reason": "union constraints in forward foundation preserve current namespaces"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261007160000_outreach_phase_d_prize_operations.sql",
+    "statement": 3,
+    "sha256": "163efbe42677f10449916b970ceaf3a6094a2e616ea14801fd95bc0315056664",
+    "retained": false,
+    "reason": "union constraints in forward foundation preserve current namespaces"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261007160000_outreach_phase_d_prize_operations.sql",
+    "statement": 4,
+    "sha256": "a8f96c3eefc09131c6dd6e66f8795586e47bc9c65b1089c0143f71fe1bf183d8",
+    "retained": false,
+    "reason": "union constraints in forward foundation preserve current namespaces"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261007160000_outreach_phase_d_prize_operations.sql",
+    "statement": 5,
+    "sha256": "2cc92bde40f7033fc7d705a924aba33aca7ade6fa529c7704402f514d3967d9b",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261007160000_outreach_phase_d_prize_operations.sql",
+    "statement": 6,
+    "sha256": "9849c88bb219261123db364cb2cb4eecf5aea7c4ab6b89b66f5e355321fe6e89",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261007160000_outreach_phase_d_prize_operations.sql",
+    "statement": 7,
+    "sha256": "13720c51a3a76cd50991e624d645b8dd31cb0d8e31ea1cb241b17b2eaa326089",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261007160000_outreach_phase_d_prize_operations.sql",
+    "statement": 8,
+    "sha256": "1169889d03f3c12c3c73b0b2c2cec97deb85fe5e470321ad9d6d038d1d90f9f9",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261007160000_outreach_phase_d_prize_operations.sql",
+    "statement": 9,
+    "sha256": "187b0198ccf498835e9c300b72c87222bb58e9c49fe0084e646fb120958358a1",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261007160000_outreach_phase_d_prize_operations.sql",
+    "statement": 10,
+    "sha256": "76a205d6ad04273290abd80ce8ad85e53b123a09ff2006e93993d0441c1d759f",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261007160000_outreach_phase_d_prize_operations.sql",
+    "statement": 11,
+    "sha256": "4c22187c43bb7b441166418949e5b5ab59833ca2387f0b0ca69274368a5b36b1",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261007160000_outreach_phase_d_prize_operations.sql",
+    "statement": 12,
+    "sha256": "5b36903b902eed69709d7ff9c5a5df6432fbb49d14ee4b116b56e1ac50597e41",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261007160000_outreach_phase_d_prize_operations.sql",
+    "statement": 13,
+    "sha256": "ba9c32d0e27c0893bd14bae9cdac52884b3c84193d2919023ebd5eeed873fe8d",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261007160000_outreach_phase_d_prize_operations.sql",
+    "statement": 14,
+    "sha256": "e21a6fa3334322700e77646fd444a4ece0dd73e7a2ef25679736b6393124dd8a",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261007160000_outreach_phase_d_prize_operations.sql",
+    "statement": 15,
+    "sha256": "008d6ca7761f2b9f8c327538564f447650473b349b7cac77e8b4904c73622797",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261007160000_outreach_phase_d_prize_operations.sql",
+    "statement": 16,
+    "sha256": "9d512c71ffa2507cc2afa40e94c8c735fa0ccee6a58cdb7bcabca0418af30ea2",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261007160000_outreach_phase_d_prize_operations.sql",
+    "statement": 17,
+    "sha256": "c3f2e4660ce35c4c945b0b0a83daaf3b78601f289ecaf675a47fcc459ea6e66b",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261007160000_outreach_phase_d_prize_operations.sql",
+    "statement": 18,
+    "sha256": "6a785d4722ba83ea6131756cb34ec543946dffeca593ed230afd20909233a271",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261007160000_outreach_phase_d_prize_operations.sql",
+    "statement": 19,
+    "sha256": "681fd7c5c8197013877be9a629fc6f6ef837379fc0bbe94996d98aab35dfe780",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261007160000_outreach_phase_d_prize_operations.sql",
+    "statement": 20,
+    "sha256": "df7ed8ba765973fe4fece348ff323e895261c3b56164c23a137a85aca5997e10",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261007160000_outreach_phase_d_prize_operations.sql",
+    "statement": 21,
+    "sha256": "339ff0ef8c098f08e7b99fb1c57977d521cc277a1abe6f9defc67aba073e2468",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261007160000_outreach_phase_d_prize_operations.sql",
+    "statement": 22,
+    "sha256": "f15bbed6cc4f5bce41989a2f52623d767e898d6e499c643cc463acfae99b8e32",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261007160000_outreach_phase_d_prize_operations.sql",
+    "statement": 23,
+    "sha256": "c372d19c588f71175dfc4631b58db55784015ea8a937752c4f7c08252071b92e",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261007160000_outreach_phase_d_prize_operations.sql",
+    "statement": 24,
+    "sha256": "c3d9b59360ec9981cf3b53ff59910e7ecb37ed7469c5e02afac2e84b4c7fd5af",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261007160000_outreach_phase_d_prize_operations.sql",
+    "statement": 25,
+    "sha256": "37901cae93c32dea089ba2ed82e4b6d1b117dab243111448bd59808a912a5208",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261007160000_outreach_phase_d_prize_operations.sql",
+    "statement": 26,
+    "sha256": "475e5eac1fc34c2d639ad098e1423c5586c27fa441d788dcdcd780952de7e8e8",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261007160000_outreach_phase_d_prize_operations.sql",
+    "statement": 27,
+    "sha256": "9112dd6a47b1bf63ce3e4df5700c37fbacc6481fd323438aa7684b69f84a56b7",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261007160000_outreach_phase_d_prize_operations.sql",
+    "statement": 28,
+    "sha256": "cff359bb233faeadd7248fbe7339a8b828c4f8f13a57ca30789f1ef3f618ef5c",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261007160000_outreach_phase_d_prize_operations.sql",
+    "statement": 29,
+    "sha256": "b8bbaa136782a3e933f888bba06bb5dc611334ed590ac30a7316ce20049d2283",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261007160000_outreach_phase_d_prize_operations.sql",
+    "statement": 30,
+    "sha256": "a7dcc23d0b08d803c2851771fdb04f686479ca89725d9c79ee33b14a7aa9bfe9",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261007160000_outreach_phase_d_prize_operations.sql",
+    "statement": 31,
+    "sha256": "da3ef5709efd5901c22b6fe137195e8738fe07fd697cf84371a2e14113d0a8d8",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261007160000_outreach_phase_d_prize_operations.sql",
+    "statement": 32,
+    "sha256": "5d37a890c2e09b4732b756eddd07d31977b2e1d23afe60e114c9e6bffa428a71",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261007160000_outreach_phase_d_prize_operations.sql",
+    "statement": 33,
+    "sha256": "e6ebdbc61974a42e0bff4cb560f27bb3032c16795b73f379955c3ce7016d5ba0",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261007160000_outreach_phase_d_prize_operations.sql",
+    "statement": 34,
+    "sha256": "5cc547161499e97f3024fd288ddb3152e86d5991370d6eeff1d349141de1d072",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261007160000_outreach_phase_d_prize_operations.sql",
+    "statement": 35,
+    "sha256": "676fe0850e062bcd13785bb5860d801793049e0363df37a3e680b2a92db79098",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261007160000_outreach_phase_d_prize_operations.sql",
+    "statement": 36,
+    "sha256": "2550ee3f0d732de0db4bcf7de779659ac69215a5e0d02aace9dbdfd8a6d4fe1e",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261007160000_outreach_phase_d_prize_operations.sql",
+    "statement": 37,
+    "sha256": "244061927b525bfee36eb99df8636c183a9a03d7c4f5581b826ea37864571f4e",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261007160000_outreach_phase_d_prize_operations.sql",
+    "statement": 38,
+    "sha256": "1dae80e4a743444418ea67b341c809ec1b0bc308ca3a95354afc60378193342b",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261007160000_outreach_phase_d_prize_operations.sql",
+    "statement": 39,
+    "sha256": "f73d3b5e78050217eabf24e161f035c174688891447e78a8bc940e7cb86511cc",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261007160000_outreach_phase_d_prize_operations.sql",
+    "statement": 40,
+    "sha256": "713546fd9c3544df891e40b6ade71d4877254b6c0c613777296ca601e7bea131",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261007160000_outreach_phase_d_prize_operations.sql",
+    "statement": 41,
+    "sha256": "8ccb03ebb64d7adc12c03f0444f3b3c13d69439b9895b8a3eec6a2d792f5a8ac",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261007160000_outreach_phase_d_prize_operations.sql",
+    "statement": 42,
+    "sha256": "f07b6de46b3b77aec0c696a94a3f2882d6c231e774cea724944558c7b595adce",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261007160000_outreach_phase_d_prize_operations.sql",
+    "statement": 43,
+    "sha256": "4f70792555ed2f962157322dcf60ca7c2a75b6d027fd729f55130203488a4056",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261007160000_outreach_phase_d_prize_operations.sql",
+    "statement": 44,
+    "sha256": "fcffcf14a6f45eb5d8a9f050a876ecfac6633632c824c0582a0198ac94f93b96",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261007160000_outreach_phase_d_prize_operations.sql",
+    "statement": 45,
+    "sha256": "7f11d82059ad3a99f59ab72c3a216b9b3c88f4c98942d61236971d2c367c3a57",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261007160000_outreach_phase_d_prize_operations.sql",
+    "statement": 46,
+    "sha256": "3a5a71ce6dcc2d2ef99d8c37fcade583ed10456fa0139f0adbee985bc6aedabf",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261007213000_outreach_phase_e_event_day.sql",
+    "statement": 1,
+    "sha256": "d8f8aeba40a7b872e065b3e0b26e9a04fe06e801ef69b545d5188609efcbe2f7",
+    "retained": false,
+    "reason": "union constraints in forward foundation preserve current namespaces"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261007213000_outreach_phase_e_event_day.sql",
+    "statement": 2,
+    "sha256": "b2718d2fe2256ae809c2624c781b1eb64a36222f0a22c15fb6f71d740c9255b5",
+    "retained": false,
+    "reason": "union constraints in forward foundation preserve current namespaces"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261007213000_outreach_phase_e_event_day.sql",
+    "statement": 3,
+    "sha256": "163efbe42677f10449916b970ceaf3a6094a2e616ea14801fd95bc0315056664",
+    "retained": false,
+    "reason": "union constraints in forward foundation preserve current namespaces"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261007213000_outreach_phase_e_event_day.sql",
+    "statement": 4,
+    "sha256": "dcee6ed424cf0a2c8d20cb42c13f550f448f86933a71801f1ac06e310103aa1d",
+    "retained": false,
+    "reason": "union constraints in forward foundation preserve current namespaces"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261007213000_outreach_phase_e_event_day.sql",
+    "statement": 5,
+    "sha256": "03dadbebc1b56be7bdbb5a1bcde348941405268ef9084390a088992448432967",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261007213000_outreach_phase_e_event_day.sql",
+    "statement": 6,
+    "sha256": "918788ee239421dc5b5ba40c619d92317a116d678c8987766395c2e14ebc9e46",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261007213000_outreach_phase_e_event_day.sql",
+    "statement": 7,
+    "sha256": "6b5e2e21828a60e90a7dde725e1ae482950ed3660f8f2fb6589b4e90fceab997",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261007213000_outreach_phase_e_event_day.sql",
+    "statement": 8,
+    "sha256": "d7d2bf3958e39b960df915c8b984c263be73a63fdedea1343802a40d05e1e052",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261007213000_outreach_phase_e_event_day.sql",
+    "statement": 9,
+    "sha256": "f0ae1a7f9978e3865052c03eb164d1374ef191589326e16ef38972d196eff264",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261007213000_outreach_phase_e_event_day.sql",
+    "statement": 10,
+    "sha256": "6c515151a1b59fe5e85fccf1436a30bc5f49b6739de07bdeda3574c51787c79d",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261007213000_outreach_phase_e_event_day.sql",
+    "statement": 11,
+    "sha256": "8fdfcdbe66c72635052656d53e5fad87fe8a9b4aa131e0c5cb1cc24536af99c7",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261007213000_outreach_phase_e_event_day.sql",
+    "statement": 12,
+    "sha256": "bc5d75b50f22d33520fbd520fb66ca94f6d9ece2b7fdf7546126b1a45acf8880",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261007213000_outreach_phase_e_event_day.sql",
+    "statement": 13,
+    "sha256": "fb1ddf05077aa2b3a127aededd2f238e009a85a5a8152b9951e36b9b7e35bcb8",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261007213000_outreach_phase_e_event_day.sql",
+    "statement": 14,
+    "sha256": "bccf83fcbc5547d4ecb4172f07798fa7320f852128d7caf8d266bcda88df6737",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261007213000_outreach_phase_e_event_day.sql",
+    "statement": 15,
+    "sha256": "f615725b280c66712b995bfb1173cb6de1cadeeef6f6e76177a60978f248baa0",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261007213000_outreach_phase_e_event_day.sql",
+    "statement": 16,
+    "sha256": "4306c720f622fe276e2b80e2c62b3e9e52a4f86dab149f999b1f481458dfa0a3",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261007213000_outreach_phase_e_event_day.sql",
+    "statement": 17,
+    "sha256": "da7949a0f095f72b5f298dcc2e86b73d92bea84b29587015e8c67a4fc25ef94e",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261007213000_outreach_phase_e_event_day.sql",
+    "statement": 18,
+    "sha256": "f0d1870dc072788fec0831e3fe8125555f4f8c7530ff16f65f3f890be2555d6f",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261007213000_outreach_phase_e_event_day.sql",
+    "statement": 19,
+    "sha256": "ae53108eeafb7df4e20bfdd3f60c0553e3afbcf0196659f80b7a594646b7caee",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261007213000_outreach_phase_e_event_day.sql",
+    "statement": 20,
+    "sha256": "0345ecd4152fd44a4e7c56d6bec031cfd088f763790c9957b02966108749914a",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261007213000_outreach_phase_e_event_day.sql",
+    "statement": 21,
+    "sha256": "5bef06de836817862e1855fefd44dba38de6c6d3222bc30ee865160b5c347bcd",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261007213000_outreach_phase_e_event_day.sql",
+    "statement": 22,
+    "sha256": "3b45ea7e70aad3209aa4e58ccb5c63ec785964bcddecd68e80b68be3648d355f",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261007213000_outreach_phase_e_event_day.sql",
+    "statement": 23,
+    "sha256": "160e6fa8fff8741dd0fdf1dfe1530dbd46da74932cff370fcc05939e0d7c3759",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261007213000_outreach_phase_e_event_day.sql",
+    "statement": 24,
+    "sha256": "63c931f13e29140520bbf0ff2c2671b6f5dd60a0370f62de05bb42daddf3a734",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261007213000_outreach_phase_e_event_day.sql",
+    "statement": 25,
+    "sha256": "ef47bd208f6c22f33d8b9d7f47b95b159d18c31993037d3854aea717e87c348b",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261007213000_outreach_phase_e_event_day.sql",
+    "statement": 26,
+    "sha256": "6386fd9c7b36ea1842764faecd52b2b6349daf06efe543c7773078c92c62bb35",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261007213000_outreach_phase_e_event_day.sql",
+    "statement": 27,
+    "sha256": "88bbf08cfbeac5d999ddbb4753a93124ec60d4985efa9255306f9fac6f70ef0e",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261007213000_outreach_phase_e_event_day.sql",
+    "statement": 28,
+    "sha256": "a06334b73509507674e31900f3540f880f4d9fa5d5b9b5b460dc705ec3d099be",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261007213000_outreach_phase_e_event_day.sql",
+    "statement": 29,
+    "sha256": "15b35749bf1e3556f38fda7df8b5e6dbcfecac72b2a37e123d2b1cbe5790c61e",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261007213000_outreach_phase_e_event_day.sql",
+    "statement": 30,
+    "sha256": "427d929b78d3288792bfeb2a2e22118beb4cbf4a839a8de90b3e6b2fc7a2dfcb",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261007213000_outreach_phase_e_event_day.sql",
+    "statement": 31,
+    "sha256": "d63b74140f9f97d1c06f59142a338b32274995f714eb6fd6925586df4992ec37",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261007213000_outreach_phase_e_event_day.sql",
+    "statement": 32,
+    "sha256": "5da4f29b585a16009aa7b01342582ff56c4ef9acb0c9263fc856bd7620d6a4d6",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261007213000_outreach_phase_e_event_day.sql",
+    "statement": 33,
+    "sha256": "4704b30f01e241da491def19f779c15d541e71e9006542d8b34b54134d2aa29b",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261007213000_outreach_phase_e_event_day.sql",
+    "statement": 34,
+    "sha256": "8191f5b1759d685392a3da6c4327cccfc9719c9d0ca8b5e2d84e37f472433ba3",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261007213000_outreach_phase_e_event_day.sql",
+    "statement": 35,
+    "sha256": "a13f7d87132de45ea23de94f588ebb7a4da7e273c74e7b9c197589f7a11f318f",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261007213000_outreach_phase_e_event_day.sql",
+    "statement": 36,
+    "sha256": "0b4f0396e2e01bbb4963739d3e2cf8ef9a15b41db2b5c421a270fa1a6113d7cf",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261007213000_outreach_phase_e_event_day.sql",
+    "statement": 37,
+    "sha256": "41ea40ba0e7922ee48db6eb18c228df499c746fbda839c528077048901491550",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261007213000_outreach_phase_e_event_day.sql",
+    "statement": 38,
+    "sha256": "2d61435f2698c38a94ae5eec6e93e2b0ce93073fd1ff3d46f95d61e319bfaa10",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261007213000_outreach_phase_e_event_day.sql",
+    "statement": 39,
+    "sha256": "6bbb1ce5ee77d5de153a7b05423850bcddd4de546f2895f1e531630c95df55cc",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261007213000_outreach_phase_e_event_day.sql",
+    "statement": 40,
+    "sha256": "fe4c79bda3ad1b0436ad0909fdd9942b1ad03cf99bbd52598a220d97817bae76",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261007213000_outreach_phase_e_event_day.sql",
+    "statement": 41,
+    "sha256": "163d3ab0dc50be590deae141a77b0121d31917febd5b7c6d0240b5751eb4749e",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261007213000_outreach_phase_e_event_day.sql",
+    "statement": 42,
+    "sha256": "e4e8e3e037db4e726066dcf710ada3caa23246f4558a1faa7daad5feab9a2c14",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261007213000_outreach_phase_e_event_day.sql",
+    "statement": 43,
+    "sha256": "7646b473c8cb82aec4f3e34849da33cc2870c8d6b0b21bf9b4c8d381d0c6902e",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261007213000_outreach_phase_e_event_day.sql",
+    "statement": 44,
+    "sha256": "e4731f4a13294208bc70f7e95dcf6f58d22ae58a477b3940207e3ed561df3020",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261007213000_outreach_phase_e_event_day.sql",
+    "statement": 45,
+    "sha256": "03b0beb5298c4b6feae0d578634820210262a96456b207400edc751236c5e7eb",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261007213000_outreach_phase_e_event_day.sql",
+    "statement": 46,
+    "sha256": "d63b9c663103fb9a01fc9c8a88a700a02d4ddce0ddad19799c50f01d6cc791b8",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261007213000_outreach_phase_e_event_day.sql",
+    "statement": 47,
+    "sha256": "9c5a14323a66614f138267359944c171d636cc67193b520b3cad2fdb2e239709",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261007213000_outreach_phase_e_event_day.sql",
+    "statement": 48,
+    "sha256": "3b259084f09dff3aaf0d127ed6eecc5a7cbbd850772d419a47538205f858a144",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261007213000_outreach_phase_e_event_day.sql",
+    "statement": 49,
+    "sha256": "1962b56d4721873ba7a84c61584d2227209536596715feaa0043ab711055fa59",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261007213000_outreach_phase_e_event_day.sql",
+    "statement": 50,
+    "sha256": "55095075322e850537bf1bb421c79c34ce7197ebe3a8d391d0c25fcd82f220ea",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261007213000_outreach_phase_e_event_day.sql",
+    "statement": 51,
+    "sha256": "2aa1f98b42747cc96bba1bc158cb93155e93df536ca72c1360a825337433c8ea",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261007221218_outreach_phase_e_template_clone_version.sql",
+    "statement": 1,
+    "sha256": "de1f4fc8109ba46f82cdf121f67ab8e0419c6d1bcc386f5a992e08fa5669a24f",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261007221218_outreach_phase_e_template_clone_version.sql",
+    "statement": 2,
+    "sha256": "ca68d49231bab7245aa928d004e793379d57f0a95c4b855ecedce5719f049d30",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261007221218_outreach_phase_e_template_clone_version.sql",
+    "statement": 3,
+    "sha256": "065b3dfdb87ce797ad2fd3cb0b695b6f0321d812ecd88bcc022590f451daf606",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261008134746_outreach_phase_f_pre_event_automation.sql",
+    "statement": 1,
+    "sha256": "e134b76a0d9c4dd734a558a5738fdc326c13cea620351fbeddb5ae0d7024b6c9",
+    "retained": false,
+    "reason": "union constraints in forward foundation preserve current namespaces"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261008134746_outreach_phase_f_pre_event_automation.sql",
+    "statement": 2,
+    "sha256": "2ad5bcb3ed6d8941a0361bccd9fa587317a5af2baec47a047a69917900d2d01b",
+    "retained": false,
+    "reason": "union constraints in forward foundation preserve current namespaces"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261008134746_outreach_phase_f_pre_event_automation.sql",
+    "statement": 3,
+    "sha256": "916cc3f4d2e212c669c8f7d3c2627f536329be19ca9fc6d8624ea6a43cf884f9",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261008134746_outreach_phase_f_pre_event_automation.sql",
+    "statement": 4,
+    "sha256": "76025732a48f10af1c839cd8ba0aadf1aeb7b27e970539793de34672bc87203b",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261008134746_outreach_phase_f_pre_event_automation.sql",
+    "statement": 5,
+    "sha256": "163efbe42677f10449916b970ceaf3a6094a2e616ea14801fd95bc0315056664",
+    "retained": false,
+    "reason": "union constraints in forward foundation preserve current namespaces"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261008134746_outreach_phase_f_pre_event_automation.sql",
+    "statement": 6,
+    "sha256": "38d111f560f6ac42b4ac005699f3a6886f2d84e6f64d9fbbe45b45c5446cdf74",
+    "retained": false,
+    "reason": "union constraints in forward foundation preserve current namespaces"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261008134746_outreach_phase_f_pre_event_automation.sql",
+    "statement": 7,
+    "sha256": "f0467cde3d779700be0b89f099b9f55ba9b7066f6b1cc24fd4912b7cc98fefec",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261008134746_outreach_phase_f_pre_event_automation.sql",
+    "statement": 8,
+    "sha256": "11147c367a1fe1a1fadbcd86e4e50f50c911d0d3d7eb413f46c7696df5fb4b95",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261008134746_outreach_phase_f_pre_event_automation.sql",
+    "statement": 9,
+    "sha256": "1da034bffc1a64d9f1e9a32f4ce153856061bc705207f63151ad924846aec28e",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261008134746_outreach_phase_f_pre_event_automation.sql",
+    "statement": 10,
+    "sha256": "6677cfc8c2cf45cd0c274f77a1ef40aee84c6d667351ce4c7a20d7c7727d80ea",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261008134746_outreach_phase_f_pre_event_automation.sql",
+    "statement": 11,
+    "sha256": "ac5aef0c60144de624a937a325c0efd890ce26eb1c53727c4dae01ac67711918",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261008134746_outreach_phase_f_pre_event_automation.sql",
+    "statement": 12,
+    "sha256": "df7a88a622dacff11f84b2db1634ac3b5a9d21a348083211491fa7b46da19554",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261008134746_outreach_phase_f_pre_event_automation.sql",
+    "statement": 13,
+    "sha256": "488082006ea408921d925c217361bfc8b923044f7559621daa6ede27aba3bfa5",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261008134746_outreach_phase_f_pre_event_automation.sql",
+    "statement": 14,
+    "sha256": "1a7e74227a8fb488d8d06b322e364839d56bacff2ab414b57fd11bcc7e90f16f",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261008134746_outreach_phase_f_pre_event_automation.sql",
+    "statement": 15,
+    "sha256": "fb46df96f260632378e96efacf2210ae8fd6150d2eb782b5394f4c52e187d7ac",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261008134746_outreach_phase_f_pre_event_automation.sql",
+    "statement": 16,
+    "sha256": "4ba5199ce5ad4f9d2519b29f58c86f44b9820cd30836581e9fef5ae7fe1295c7",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261008134746_outreach_phase_f_pre_event_automation.sql",
+    "statement": 17,
+    "sha256": "b09b36b8f54192afd4aff948b0f2bff00304b656061017eef53e37502d4f081a",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261008134746_outreach_phase_f_pre_event_automation.sql",
+    "statement": 18,
+    "sha256": "2e08810c48c5102df21786cf059f851e4ac0d600fdceea5cd3502c3bd910202f",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261008134746_outreach_phase_f_pre_event_automation.sql",
+    "statement": 19,
+    "sha256": "8a11c7e16b73daab0e35562b0cefb49307a597c7d03589464a71bf8f700a7c6d",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261008134746_outreach_phase_f_pre_event_automation.sql",
+    "statement": 20,
+    "sha256": "fdbca92db28964f2102020063d5222035378263bb4a74eecbc967950134698a4",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261008134746_outreach_phase_f_pre_event_automation.sql",
+    "statement": 21,
+    "sha256": "372aa130a2e033e90e315a99322bda480c4437cde675f3c2914a571578fb2d07",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261008134746_outreach_phase_f_pre_event_automation.sql",
+    "statement": 22,
+    "sha256": "e2fce23717ff36a4ba85e5ebb78d532550fd973d0d754211900b1c24314cdf18",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261008134746_outreach_phase_f_pre_event_automation.sql",
+    "statement": 23,
+    "sha256": "424c73c70f7706167398b4e8cc4156e371ee5bceb8a9b670675bab3dc1f4de3f",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261008134746_outreach_phase_f_pre_event_automation.sql",
+    "statement": 24,
+    "sha256": "102489268fe0b85a41e0fa8cefc2b66a4c54f975229442f9d54e8ef73c6ab269",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261008134746_outreach_phase_f_pre_event_automation.sql",
+    "statement": 25,
+    "sha256": "1f83c564dc0c80c8786412b733f6af003ca7dba727658671accaf0411c84abf3",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261008134746_outreach_phase_f_pre_event_automation.sql",
+    "statement": 26,
+    "sha256": "b61d1dc6ba6ce295b9ad41dc325beccf34c4df8931ddaee0d8dba9b444f3274d",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261008134746_outreach_phase_f_pre_event_automation.sql",
+    "statement": 27,
+    "sha256": "784c7d633359e59a476e5c7b146310757c60eab82b824d90eb85ab932bf9cd35",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261008134746_outreach_phase_f_pre_event_automation.sql",
+    "statement": 28,
+    "sha256": "5027f04e66c9ed53d8c9a209f0d27ecb58e46d1d4e045e2b225f881c2a2c543b",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261008134746_outreach_phase_f_pre_event_automation.sql",
+    "statement": 29,
+    "sha256": "e675b9fd1e96fae0b0f1e00e8e0543e7a6d49674e7c950505072d4158c468fbf",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261008134746_outreach_phase_f_pre_event_automation.sql",
+    "statement": 30,
+    "sha256": "23f48cd58facf969917633eb5ae6ca964283858dcd4055b470c6d726b6e0c2d3",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261008134746_outreach_phase_f_pre_event_automation.sql",
+    "statement": 31,
+    "sha256": "599a086a3735e445d7be50049d4c961190a221b00032254bea73371e27ec4d00",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261008134746_outreach_phase_f_pre_event_automation.sql",
+    "statement": 32,
+    "sha256": "be3286da1aa6154aa8d64a97f396e348fe4423803d0d8cb915c5ee80f9ceeaec",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261008134746_outreach_phase_f_pre_event_automation.sql",
+    "statement": 33,
+    "sha256": "5825d49807d9aa2deb68beab8ea94cf7fee468441e486b3dc7f6c7f010f6e674",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261008134746_outreach_phase_f_pre_event_automation.sql",
+    "statement": 34,
+    "sha256": "d05045c47167543e4ec320776d67528fc366717b638b409b984fb9319d109f1a",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261008134746_outreach_phase_f_pre_event_automation.sql",
+    "statement": 35,
+    "sha256": "fac5d413337ef47b0a7827ce96f2bc0cf6feeab22a629c18b29ec4eb41e58e20",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261008134746_outreach_phase_f_pre_event_automation.sql",
+    "statement": 36,
+    "sha256": "d4143c69ec5fd4f5ffc2b89228253594f90182870c03d7a7b06395c7df7e02aa",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261008134746_outreach_phase_f_pre_event_automation.sql",
+    "statement": 37,
+    "sha256": "b36079b799e2db765ea2ebe31ce252fdf4f0ee21b4e73279be04a5895fa7220a",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261008134746_outreach_phase_f_pre_event_automation.sql",
+    "statement": 38,
+    "sha256": "dde688a2de8e67c959283e8ae546944c88c5bfc95d14dbf9559dc200ffa2ee87",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261008134746_outreach_phase_f_pre_event_automation.sql",
+    "statement": 39,
+    "sha256": "d4f4b5f6642299c2f065f801e5cdae3126cb764fec7a2d973bb08f6027b3a10e",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261008134746_outreach_phase_f_pre_event_automation.sql",
+    "statement": 40,
+    "sha256": "1d3b93b609d407e169008f67313655d298bb9d31ccb789b29bbeca7c95ed37ac",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261008134746_outreach_phase_f_pre_event_automation.sql",
+    "statement": 41,
+    "sha256": "5deebe2c2559f2fc89c83acf7cfb12cc83dfa83aaabe20930ade742ee0e79678",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261008134746_outreach_phase_f_pre_event_automation.sql",
+    "statement": 42,
+    "sha256": "2817acc62ca66f55a0a6982c2d3a00ac10eb1c7a5dac03c4198c83009c691093",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261008134746_outreach_phase_f_pre_event_automation.sql",
+    "statement": 43,
+    "sha256": "bbf09dfd1c3aebe7b3a9a9aa837962cca91e0ef64ec41a309ca0615ea0358f63",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261008134746_outreach_phase_f_pre_event_automation.sql",
+    "statement": 44,
+    "sha256": "5b2061a2b2fcbf82664df7500b588a1aab96e98cc720c5fbe79eac725bf1a77e",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261008134746_outreach_phase_f_pre_event_automation.sql",
+    "statement": 45,
+    "sha256": "82bb1ba8551eba593baa263a53001119a193a1bd7ed344778deb55a388e44439",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261008134746_outreach_phase_f_pre_event_automation.sql",
+    "statement": 46,
+    "sha256": "aa35b8e7d88bce4ab9f3e178eda07f343aa19b9ca25bfc65ffca2eb902cc99a8",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261008134746_outreach_phase_f_pre_event_automation.sql",
+    "statement": 47,
+    "sha256": "9401a4be6002f4e78896e89599952fe10f5d18b52049b2f98f0d94c4988762a7",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261008134746_outreach_phase_f_pre_event_automation.sql",
+    "statement": 48,
+    "sha256": "c88c81d2ee335ccc49585a7cd521f34cdf0b99671b2d5bbd7539ae0d894eba0b",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261008134746_outreach_phase_f_pre_event_automation.sql",
+    "statement": 49,
+    "sha256": "9af9af88f4781c9731f216ba372b63b296e3155d387ac1cff5aaef9c8856cf34",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261008134746_outreach_phase_f_pre_event_automation.sql",
+    "statement": 50,
+    "sha256": "442bae61536a8a2a376722a6c61e60834df1daaa224e1ab8e75bf51feb10c6cf",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261008134746_outreach_phase_f_pre_event_automation.sql",
+    "statement": 51,
+    "sha256": "b75a419bbf1cfeace7259ee72fff6f70d800dc5993dc8c4e067e535c70e00bf0",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261008134746_outreach_phase_f_pre_event_automation.sql",
+    "statement": 52,
+    "sha256": "913522d554ecfd2be3bdb45a6a225f2282554e44015cf23cf61b52307ad88a9c",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261008134746_outreach_phase_f_pre_event_automation.sql",
+    "statement": 53,
+    "sha256": "6566fee6ec957fb582cf43688daf300e5b1c6591e606bfb7b0e5ffab52ddcdd5",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261008134746_outreach_phase_f_pre_event_automation.sql",
+    "statement": 54,
+    "sha256": "75aa0e750c9f9b9456ed1e76fb766955ae4d00fe6680b4af26432b132b47223d",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261008134746_outreach_phase_f_pre_event_automation.sql",
+    "statement": 55,
+    "sha256": "ac79c96179908bbffd675a42acfde3e0f438269a4f18650e146cb50462637981",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261008134746_outreach_phase_f_pre_event_automation.sql",
+    "statement": 56,
+    "sha256": "1b8174aa7400a58ed192c22396e53c9b0691a364ad029ce93862ba09b2cdc6d3",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261008134746_outreach_phase_f_pre_event_automation.sql",
+    "statement": 57,
+    "sha256": "4406f3383a5d922a18857bfc17bbb0770c53034853bb1fd3c47c215ea87d75bc",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261008134746_outreach_phase_f_pre_event_automation.sql",
+    "statement": 58,
+    "sha256": "a0b01a10cf1c6885a6b7b07b599d76bb0de15b7d5ee49138b74afd862a280a0a",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261008134746_outreach_phase_f_pre_event_automation.sql",
+    "statement": 59,
+    "sha256": "2c8cd110d078c9dfc215d468bc70e6ce9f19f6de94aaafb2a0e1b6233f2666ce",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261008134746_outreach_phase_f_pre_event_automation.sql",
+    "statement": 60,
+    "sha256": "3676659bfddff23317a13902d7a84b4b7aa07823cef4e2f16f34b455322ef4a4",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261008134746_outreach_phase_f_pre_event_automation.sql",
+    "statement": 61,
+    "sha256": "12cc44df22a5b5b4e1e70e23246927c0d90b5fca52ad3344588b82890d90d1a2",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261008134746_outreach_phase_f_pre_event_automation.sql",
+    "statement": 62,
+    "sha256": "c01ab138d65301f7d48b28848cd763c10a0d34ea5df7d98bd1b1efa5223163ee",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261008134746_outreach_phase_f_pre_event_automation.sql",
+    "statement": 63,
+    "sha256": "6be9edaecae24464368b5da9c4fbefb424f20f97ee77f04e9cca617dfea4121f",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261008134746_outreach_phase_f_pre_event_automation.sql",
+    "statement": 64,
+    "sha256": "468c4d6a5e2d95b710e106cef562ca9058f6d1547f07ee361ad3dd442debaea9",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261008134746_outreach_phase_f_pre_event_automation.sql",
+    "statement": 65,
+    "sha256": "9ddbc6df64838ad4ceca782eae34b08a87e1f5a8e184c78855094cb1ae553161",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261008134746_outreach_phase_f_pre_event_automation.sql",
+    "statement": 66,
+    "sha256": "4b9c0f35370beaa3a18e4e0d98dbf88d126fa75ee01d536ccec9c48f4a17fe2f",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261008134746_outreach_phase_f_pre_event_automation.sql",
+    "statement": 67,
+    "sha256": "0055e4720b664bccc1e47e5fbe351154f525d24772f90c003c6062f8a05887a1",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261008134746_outreach_phase_f_pre_event_automation.sql",
+    "statement": 68,
+    "sha256": "926d4bf9f102b0264d3dfce72bd5e0b8bb7cf394f0b797b235ad0cb1d4d450b2",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261008134746_outreach_phase_f_pre_event_automation.sql",
+    "statement": 69,
+    "sha256": "7cfea6a96f5a1b04674fb8ce0aedc08018f8fb647f8d744e2aca94035677ecc1",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261008134746_outreach_phase_f_pre_event_automation.sql",
+    "statement": 70,
+    "sha256": "6d6f57964e75d7bf4474b24c1f175584434150823c28d4a3ba3059539f1d1b2b",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261008134746_outreach_phase_f_pre_event_automation.sql",
+    "statement": 71,
+    "sha256": "39bd7755af0c145fcbcf96679993e4448529a0a1177daa1c91be8a8f56336d69",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261008134746_outreach_phase_f_pre_event_automation.sql",
+    "statement": 72,
+    "sha256": "8252624f68ab91594a725a28358aa9c9766698080cea4eae974f287a00afaa7e",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261008134746_outreach_phase_f_pre_event_automation.sql",
+    "statement": 73,
+    "sha256": "e03f7997347d7e30a8ad3504d37d0a5abf105f9b2b75a8fccf9b447b6dbc8dd2",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261008134746_outreach_phase_f_pre_event_automation.sql",
+    "statement": 74,
+    "sha256": "c0559914ce99c9ab1a1109cfeb0330ecd02e39f0b31893ceb58e8392f9dfe2da",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261008134746_outreach_phase_f_pre_event_automation.sql",
+    "statement": 75,
+    "sha256": "17ce136a5900b5f9b63858aef01d7cc483d3207b57d95a59bfedf225f90cb709",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261008134746_outreach_phase_f_pre_event_automation.sql",
+    "statement": 76,
+    "sha256": "5775ba46ea591f69e7eb700810975b5f50eca804717f1760330704c58c1c5584",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261008134746_outreach_phase_f_pre_event_automation.sql",
+    "statement": 77,
+    "sha256": "92d4db6122c490b59e8b8cf58f30a6215872e1ff1c7c8d703b32f994e97fbb3e",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261008134746_outreach_phase_f_pre_event_automation.sql",
+    "statement": 78,
+    "sha256": "21e27f66fe681f7410c94450b34753da96a781b8598bc85e0e73f887a438fcb4",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261008134746_outreach_phase_f_pre_event_automation.sql",
+    "statement": 79,
+    "sha256": "6e925a7cea2c074e29c34e2fe304b10e1240ffdef5d40c30fb723804b36f8953",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261008134746_outreach_phase_f_pre_event_automation.sql",
+    "statement": 80,
+    "sha256": "7e684c068fde605628f0160fb683d89ec2ed51673538d924c706b5ee6b688b7e",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261008134746_outreach_phase_f_pre_event_automation.sql",
+    "statement": 81,
+    "sha256": "fd8103e22fab67d91eb8fa1581a6c178ad792305becb3bf5d9351540e92c6ea1",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261008134746_outreach_phase_f_pre_event_automation.sql",
+    "statement": 82,
+    "sha256": "aac446ee6b47294d30c373165db5792b92d3c9950acfbdc9946660158948a9c4",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261008134746_outreach_phase_f_pre_event_automation.sql",
+    "statement": 83,
+    "sha256": "a5f5907e8df6d2912a55e42c8ca8c4f70888a89871c4a3d6b1e6049717efaf9e",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261008134746_outreach_phase_f_pre_event_automation.sql",
+    "statement": 84,
+    "sha256": "e4c6ec21558864f57370d2d2ff5cfef75d779b668ad0da8562856a52cd02369e",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261008134746_outreach_phase_f_pre_event_automation.sql",
+    "statement": 85,
+    "sha256": "9d44d2e4a6e887975704c1cbc215033e4523e0d54c6515b10655c6e78e8a1b62",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261008134746_outreach_phase_f_pre_event_automation.sql",
+    "statement": 86,
+    "sha256": "3729711dae67d259f693f017b48116a63627f65afb29c071981e441eb5d33d45",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261008134746_outreach_phase_f_pre_event_automation.sql",
+    "statement": 87,
+    "sha256": "d7365f16b83457af76376742eff4f4182942b975e7f6ddfd743a1af9720b48b1",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261008134746_outreach_phase_f_pre_event_automation.sql",
+    "statement": 88,
+    "sha256": "59c60acdc62ebb1960130171aa0eab877e49c386a934fa9e31383348e8fd0020",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261008134746_outreach_phase_f_pre_event_automation.sql",
+    "statement": 89,
+    "sha256": "92b56b84215e52da3e99b04a05a80e1605f66e1be2f33a226861c13924d564a5",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261008134746_outreach_phase_f_pre_event_automation.sql",
+    "statement": 90,
+    "sha256": "a3804a9cdad62dc0b11399a6dc10c857567c0c72a4bc170110b5d9d710752c0a",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261008134746_outreach_phase_f_pre_event_automation.sql",
+    "statement": 91,
+    "sha256": "6ea3f145d8f9207e53db494cfe1e91d84297cc0613893fa674fc5c7072ad9bbd",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261008134746_outreach_phase_f_pre_event_automation.sql",
+    "statement": 92,
+    "sha256": "9da733cb8f6165f0f3cb92caca30108489fdb3fd2b758f7bcc66368f367bd977",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261008134746_outreach_phase_f_pre_event_automation.sql",
+    "statement": 93,
+    "sha256": "da9c44caf4d1fb7a05ab94a2daeb197ac4b823829a2b092e1ae55ca48139e9a2",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261008134746_outreach_phase_f_pre_event_automation.sql",
+    "statement": 94,
+    "sha256": "471f0d408795db851ecd5725aa35dcc5195ba787491460b3a64963cffba9d794",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261008134746_outreach_phase_f_pre_event_automation.sql",
+    "statement": 95,
+    "sha256": "d5ae35ee4318206e137374a6b0f0306db14fb30c41c4a961c68215baff1522d5",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261008134746_outreach_phase_f_pre_event_automation.sql",
+    "statement": 96,
+    "sha256": "3ef0a0470e8fcbec2ee86625fa34e1c5a13078ef4d32720c294de6e56165ef8d",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261008134746_outreach_phase_f_pre_event_automation.sql",
+    "statement": 97,
+    "sha256": "84d22c86f115d64f4a8faa39d0a1c2d7ae7de98aa8b0bcf36398f362d99e9965",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261008134746_outreach_phase_f_pre_event_automation.sql",
+    "statement": 98,
+    "sha256": "8e9faeb7f38b1a6c809a57db637aaa597fb89e3a93a965ec2b65b43474a77f01",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261008134746_outreach_phase_f_pre_event_automation.sql",
+    "statement": 99,
+    "sha256": "87b5403cb1d2bde2c807329b207d750ae7d9469f4f964cbe727b1b78d3f8eb4a",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261008134746_outreach_phase_f_pre_event_automation.sql",
+    "statement": 100,
+    "sha256": "b13d8c36e9d9b4dbe8b3995620f23aa37aca1480d714d3c78cd02194a4860312",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261008134746_outreach_phase_f_pre_event_automation.sql",
+    "statement": 101,
+    "sha256": "8dce8b12e0e1a3345e923983d9659feb4e728fe24bf0be1724cdb7b4eac4baae",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261009154725_outreach_phase_g_communications_core.sql",
+    "statement": 1,
+    "sha256": "c9cc62ff6db3707d20f450ebb5a94b57d945004417756666384a0b036e4e3229",
+    "retained": false,
+    "reason": "union constraints in forward foundation preserve current namespaces"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261009154725_outreach_phase_g_communications_core.sql",
+    "statement": 2,
+    "sha256": "9aef778929b927aa4682dd5764b776e4e06475ba865ab7c64f6d1874e737fe4b",
+    "retained": false,
+    "reason": "union constraints in forward foundation preserve current namespaces"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261009154725_outreach_phase_g_communications_core.sql",
+    "statement": 3,
+    "sha256": "5100bd7c8fc0ec924d2d31613be3386a54f0dc4f3ef24e6007f2fbc9617c11ed",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261009154725_outreach_phase_g_communications_core.sql",
+    "statement": 4,
+    "sha256": "81da0d7a2bdbe53958c8b2d997c85d472b685e160bdbdd106a3cde15c14e510c",
+    "retained": true,
+    "reason": "accepted module dependency",
+    "adaptation": "Append current installed capability registry using accepted NMI pattern; preserve populated grants and both module namespaces."
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261009154725_outreach_phase_g_communications_core.sql",
+    "statement": 5,
+    "sha256": "ceba5e49d2ba88d24ff8f86ffd86bf3e0ef1bde1c5984bf1f4be30e6c2345c4d",
+    "retained": true,
+    "reason": "accepted module dependency",
+    "adaptation": "Append current installed capability registry using accepted NMI pattern; preserve populated grants and both module namespaces."
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261009154725_outreach_phase_g_communications_core.sql",
+    "statement": 6,
+    "sha256": "77957272e86d1faf08771466b6eeb070697df253db488e143cd9e6671bfcc959",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261009154725_outreach_phase_g_communications_core.sql",
+    "statement": 7,
+    "sha256": "3e88743386883220c774d8b40082e2e16b4143eec7c71002a5be833923c92b11",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261009154725_outreach_phase_g_communications_core.sql",
+    "statement": 8,
+    "sha256": "4d2ba105d2aade9c70ac035bbae28b2111c6c071e14b971944d5d2c8fe885127",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261009154725_outreach_phase_g_communications_core.sql",
+    "statement": 9,
+    "sha256": "3166d7e7c2e4fadf3a20e80bb476983632016dfbbbc0f7a752d627e9280d92ed",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261009154725_outreach_phase_g_communications_core.sql",
+    "statement": 10,
+    "sha256": "00c47e53527e55318f3e3efbe675667a502dd91c6c431416da161aa6314e2eb3",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261009154725_outreach_phase_g_communications_core.sql",
+    "statement": 11,
+    "sha256": "0e3295f626f9238f5cf56cf28d44a35aa09f6ea1224d61b6308e9e6670c4dac5",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261009154725_outreach_phase_g_communications_core.sql",
+    "statement": 12,
+    "sha256": "7a9420adb38f7d0808857a21071c4a9439c630f3c188151a21cbb1ab6b767ac5",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261009154725_outreach_phase_g_communications_core.sql",
+    "statement": 13,
+    "sha256": "77718ee78f6eb4ee778b00a961336bfeaa02239b01e42e2eef1242fcf688c52a",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261009154725_outreach_phase_g_communications_core.sql",
+    "statement": 14,
+    "sha256": "7a0cda92213b4f826bb866d99ee545fc9b59cc06d819c51b09b8cfb717ff87eb",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261009154725_outreach_phase_g_communications_core.sql",
+    "statement": 15,
+    "sha256": "285de6fb93d83311ebab2d589b68a5ffd1eb472e49026ae4dc6ed56b8ace8e90",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261009154725_outreach_phase_g_communications_core.sql",
+    "statement": 16,
+    "sha256": "a8052d453f3a7141a4ec4ab9ade26729203cc244cca467fdec4f6b37d0e5e712",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261009154725_outreach_phase_g_communications_core.sql",
+    "statement": 17,
+    "sha256": "2688ab0b54b944acf3e35f8a15beecb1ce5bb035baf5ccf55b89a49527ad539f",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261009154725_outreach_phase_g_communications_core.sql",
+    "statement": 18,
+    "sha256": "01eeacd1d0fef353ecdef3b9d8f61340fc1fd6fe7fb16e24847934ecb26b209f",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261009154725_outreach_phase_g_communications_core.sql",
+    "statement": 19,
+    "sha256": "9b19750fd017b652f1fa9b470d76855f56b05a1da6ac8ad8dd807d0cbac5a5cf",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261009154725_outreach_phase_g_communications_core.sql",
+    "statement": 20,
+    "sha256": "ee2326944f857c0ee8d1655f17118a82466615835948fcc2a7d951113984f3b8",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261009154725_outreach_phase_g_communications_core.sql",
+    "statement": 21,
+    "sha256": "cd23039fc5549d55234b926f80b924a7f15e193f72b63aaab9906598a545427c",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261009154725_outreach_phase_g_communications_core.sql",
+    "statement": 22,
+    "sha256": "deda5ffa9d2c4ba8ffeae7b5e7ab5efb9e4374bd53c9d3b98a40a4aec27dcca0",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261009154725_outreach_phase_g_communications_core.sql",
+    "statement": 23,
+    "sha256": "3fc204e5ed1f56571b53e6450a8b22e44679f29299b27336056c417dbd7eaf44",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261009154725_outreach_phase_g_communications_core.sql",
+    "statement": 24,
+    "sha256": "09dcda5b1075663882bccb98cb3bcc2e8a741764aae65d4b7be36d1bc0e9beef",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261009154725_outreach_phase_g_communications_core.sql",
+    "statement": 25,
+    "sha256": "11004a400c2c454e71f2f04941a747be82121105117c18ee6ef85bb517840e0e",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261009154725_outreach_phase_g_communications_core.sql",
+    "statement": 26,
+    "sha256": "8cf6c86985b8c8b85d41ea097ca48b5cadafaf12c093b11869764985d33805f1",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261009154725_outreach_phase_g_communications_core.sql",
+    "statement": 27,
+    "sha256": "712ace94bda3ffd4828dfed9edbc8c0002ff11de54d7ffc1c03def4c5fd8b806",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261009154725_outreach_phase_g_communications_core.sql",
+    "statement": 28,
+    "sha256": "1d1c5a886b870f62f6a071390eab82d89d22ab91db083d65963687f1ba4f6b19",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261009154725_outreach_phase_g_communications_core.sql",
+    "statement": 29,
+    "sha256": "cae766e5e0b646ff6674d97a24b2904c0f96ad065d3b650215131488be2483ab",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261009154725_outreach_phase_g_communications_core.sql",
+    "statement": 30,
+    "sha256": "ca94106f09f1428f2f17f66c30593013cc1ed0044541de03ae3bc4c745a27f2b",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261009154725_outreach_phase_g_communications_core.sql",
+    "statement": 31,
+    "sha256": "0fcf61b4955c8754200e47936ba842f23caa590e5a45758b3dcd1b778f1405f3",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261009154725_outreach_phase_g_communications_core.sql",
+    "statement": 32,
+    "sha256": "ebef9406f6bedfcb2d9e1fd0f6218630b6e630df7235c36f235531ff2f2d1740",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261009154725_outreach_phase_g_communications_core.sql",
+    "statement": 33,
+    "sha256": "755b9f5cb8c3a3073ed000cd5d2bb0582c57863b1a75bbd3d50249eeb22cdef1",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261009154725_outreach_phase_g_communications_core.sql",
+    "statement": 34,
+    "sha256": "5dce5a8623aa88976feee69cbb7bc8cf54701f63f19bfb572377d8c0265386b0",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261009154725_outreach_phase_g_communications_core.sql",
+    "statement": 35,
+    "sha256": "25c2981e0f3249591413a0d160aaa9f27f6514fe1d543764ac371de845f4e6bf",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261009154725_outreach_phase_g_communications_core.sql",
+    "statement": 36,
+    "sha256": "546931389bf4f8225904c536b1cfe27925f470ac57cf6a81722884c77f62c94b",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261009154725_outreach_phase_g_communications_core.sql",
+    "statement": 37,
+    "sha256": "087359add6c063cf976dcbc602f22973deeb1718dd56eeeb57fec15d5d74c194",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261009154725_outreach_phase_g_communications_core.sql",
+    "statement": 38,
+    "sha256": "654d431fd65cd96264022aebd1f63871c73b3a4693de002d8615bd89749fb348",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261009154725_outreach_phase_g_communications_core.sql",
+    "statement": 39,
+    "sha256": "ef0e48ad731501da77bea6bdab9c89088fa48eb8528cf2538546d71ee13b3256",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261009154725_outreach_phase_g_communications_core.sql",
+    "statement": 40,
+    "sha256": "1ed90f59688ecce1a5a9dcb9bde07b2e4055bc005a1e7bca27459d5bee30d4e6",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261009154725_outreach_phase_g_communications_core.sql",
+    "statement": 41,
+    "sha256": "3138409ed9964b3e363fd61caf28b2831b3373f62a2de3200c46c779ace84d2f",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261009154725_outreach_phase_g_communications_core.sql",
+    "statement": 42,
+    "sha256": "a9a00d8f2fa86122ea7c7a3fbde35c26a0b8891e8beee8cd19fca15196d31ca5",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261009154725_outreach_phase_g_communications_core.sql",
+    "statement": 43,
+    "sha256": "883996908159e2027406a0dcfe90f2f00beea5641dc09f3721b4d40e86c352c7",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261009154725_outreach_phase_g_communications_core.sql",
+    "statement": 44,
+    "sha256": "c186fc2ac8c15aae78be919a5032b4e0a16684d5f5e8d3433b6ee157eeece243",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261009154725_outreach_phase_g_communications_core.sql",
+    "statement": 45,
+    "sha256": "fd3e465e3debcb1b0c493e669f70027aaaffc0ea134958cb919cc0025ae892ca",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261009154725_outreach_phase_g_communications_core.sql",
+    "statement": 46,
+    "sha256": "9bf48ed209d9ab319414d826c12f93f016ebe1e8a8050a43312ef2a19cca060a",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261009154725_outreach_phase_g_communications_core.sql",
+    "statement": 47,
+    "sha256": "10168da5b815fff30a87a00a66868bedea74f0e0a3f830ca7aee7677661f95a4",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261009154725_outreach_phase_g_communications_core.sql",
+    "statement": 48,
+    "sha256": "5bf687055376877169dc346376c3ccb2ed9a70c8408b70d40a62f5fb63beac04",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261009154725_outreach_phase_g_communications_core.sql",
+    "statement": 49,
+    "sha256": "c003f88972a75d7b4dac8e31c85efbdf7783b18e005a8ea2cb8780f7ce79acf8",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261009154725_outreach_phase_g_communications_core.sql",
+    "statement": 50,
+    "sha256": "1adac6d762d884cdeebe301893078bad6dab406dace8c53d311a8bd7ad2eeaf5",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261009154725_outreach_phase_g_communications_core.sql",
+    "statement": 51,
+    "sha256": "da217df6f76b8352b3e3f5042df7f312cfe02c428b508fff6956014675408e2b",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261009154725_outreach_phase_g_communications_core.sql",
+    "statement": 52,
+    "sha256": "a682f596f010c4c8594db1fe61e7420ff92db8573130aa2e26073fc56420d3cd",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261009154725_outreach_phase_g_communications_core.sql",
+    "statement": 53,
+    "sha256": "dccfb4a72d2b503bc797278f89dbbb50dd7e32522a0581b67248ca01518cf287",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261009154725_outreach_phase_g_communications_core.sql",
+    "statement": 54,
+    "sha256": "543899877a3c976cdf0f1d104f39f381abedbd391d76be3f9c7d70a5aefa2574",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261009212523_communications_phase_h1_provider_activation.sql",
+    "statement": 1,
+    "sha256": "ddb648dbd21fbc0e3bcad3dddf11e147dd015fe84bd9316505f68cf0a0c10e85",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261009212523_communications_phase_h1_provider_activation.sql",
+    "statement": 2,
+    "sha256": "04fb62e5d74c550c860718b34fb07012af9607b2a71d78b14760c895d3687593",
+    "retained": true,
+    "reason": "accepted module dependency",
+    "adaptation": "Append current installed capability registry using accepted NMI pattern; preserve populated grants and both module namespaces."
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261009212523_communications_phase_h1_provider_activation.sql",
+    "statement": 3,
+    "sha256": "2f4e3f04dc1f6e5889e484ad37a3bec53c74f18706d6649528c1c1301717e522",
+    "retained": true,
+    "reason": "accepted module dependency",
+    "adaptation": "Append current installed capability registry using accepted NMI pattern; preserve populated grants and both module namespaces."
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261009212523_communications_phase_h1_provider_activation.sql",
+    "statement": 4,
+    "sha256": "3711c67118bcd09dd4cd929651e242bbb1953c5700cd3b3615d74c1abc6719db",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261009212523_communications_phase_h1_provider_activation.sql",
+    "statement": 5,
+    "sha256": "ed275348ff81c9e2b57f37d13d9d6b7f1741814a782013b220e596e627739992",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261009212523_communications_phase_h1_provider_activation.sql",
+    "statement": 6,
+    "sha256": "d999abfea399cc7275b4e2cffc1c0004dbee4829636669d11354aac9d9f1ad0f",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261009212523_communications_phase_h1_provider_activation.sql",
+    "statement": 7,
+    "sha256": "b8c796d6ad5914ef7c151f437973629de20b576988c2145d82bb5e2585b5f2ae",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261009212523_communications_phase_h1_provider_activation.sql",
+    "statement": 8,
+    "sha256": "b5c472cbbbe541c29443091208773f5dd8cea620a026e93a87c30642b64795cb",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261009212523_communications_phase_h1_provider_activation.sql",
+    "statement": 9,
+    "sha256": "b2a88be24cb42179bff0aca3d4074291c10f89d9269a7262e4545fb4fda6b13f",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261009212523_communications_phase_h1_provider_activation.sql",
+    "statement": 10,
+    "sha256": "6fb399ba3b0776bb87e6d2385e818549a20985613d74118729e11682eaf67864",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261009212523_communications_phase_h1_provider_activation.sql",
+    "statement": 11,
+    "sha256": "a7a2157b9545e92cad41f91f10ee51d10218b5d26394e2b0dfc88bbea6556b89",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261009212523_communications_phase_h1_provider_activation.sql",
+    "statement": 12,
+    "sha256": "578e597929eeb73f9941fb36f5908701c4f4e373156fb89eb66e9a427d89f063",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261009212523_communications_phase_h1_provider_activation.sql",
+    "statement": 13,
+    "sha256": "70f8478a3cc638868a2acad2189e9b6f673b82c341d3faa8ca49a5a2b186413b",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261009212523_communications_phase_h1_provider_activation.sql",
+    "statement": 14,
+    "sha256": "baf29dbcb573c1f1b70aed6a42d3c91281c4775f7bee75a087e15f8976aa1cec",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261009212523_communications_phase_h1_provider_activation.sql",
+    "statement": 15,
+    "sha256": "90aff3f6da5402e265c34c9989a688e1496a9dbbee3654e21fe5b01b2b2fe4e7",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261009212523_communications_phase_h1_provider_activation.sql",
+    "statement": 16,
+    "sha256": "550c5061e5a058583b2262d149d465029fd1a736f77e598776250bf8b879dc5f",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261009212523_communications_phase_h1_provider_activation.sql",
+    "statement": 17,
+    "sha256": "7dbcd4f061324733048dbfee38d6de32b17a49a8c136d516389019de9277e2ca",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261009212523_communications_phase_h1_provider_activation.sql",
+    "statement": 18,
+    "sha256": "467b90bc6533fc69a884ace0dce36ea58a16763e36ac024f1ef06b61e1eadb58",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261009212523_communications_phase_h1_provider_activation.sql",
+    "statement": 19,
+    "sha256": "bbaba952d035e64c2c1f855074f9fe5ce8ea874e18ad82e2cce71477f95191d5",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261009212523_communications_phase_h1_provider_activation.sql",
+    "statement": 20,
+    "sha256": "5735e34b2629551e35b3774015c3804f97d8192760be8f22db4052defd394771",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261009212523_communications_phase_h1_provider_activation.sql",
+    "statement": 21,
+    "sha256": "3d91cd06a5c99dfe543f40803360a90557e20c030b3ac96fcae26c95781d33b5",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261009212523_communications_phase_h1_provider_activation.sql",
+    "statement": 22,
+    "sha256": "c6796901c98b6efe63790ec8ff44720fe0460ba3709820c4d0519c1dc94e2ff9",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261009212523_communications_phase_h1_provider_activation.sql",
+    "statement": 23,
+    "sha256": "31469663e485d991ec3ee997785e368dba5c4b256d9d195fc905109f05b04f6f",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261009212523_communications_phase_h1_provider_activation.sql",
+    "statement": 24,
+    "sha256": "d925dc2ac1f21a33048cdc7fdb9076a2deb3b7dfe55853e2c69909a65e7658d0",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261009212523_communications_phase_h1_provider_activation.sql",
+    "statement": 25,
+    "sha256": "b321acb2a12b787792ada8a17542ff99d814511edff32d59967037702f756d3e",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261009212523_communications_phase_h1_provider_activation.sql",
+    "statement": 26,
+    "sha256": "0eb0bab5e4b74c3e5f4cdb631555e9e5a83fd56f758dac6e51c29a53bbd570d7",
+    "retained": true,
+    "reason": "accepted module dependency"
+  },
+  {
+    "source": "bce1926c6c91cfe3125c49506faf88ccaabc32eb",
+    "file": "20261009212523_communications_phase_h1_provider_activation.sql",
+    "statement": 27,
+    "sha256": "ec9bb2f9c22bb7749799520e41d2ab6170f091c63daced2d5e0c8cd260bfc27a",
+    "retained": true,
+    "reason": "accepted module dependency"
+  }
+]

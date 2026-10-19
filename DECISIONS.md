@@ -1,17 +1,12 @@
-# Huntsville isolation decisions — 2026-10-16
+# Unified Outreach integration decisions — 2026-10-18
 
-1. Start from exact current main rather than merging PR #24 ancestry. Preserve all 22 historical migrations byte-for-byte.
-2. Add two forward-only migrations: required registration foundation and guarded fresh disabled Huntsville draft. Do not depend on an acceptance draft or silently update a conflict.
-3. Keep accepted registration/waiver/check-in semantics and exact legal/public files. Remove template/opportunity coupling and restrict capabilities/events to registration. Retain dormant participant identity solely for the accepted check-in/reversal dependency; exclude all prize operations.
-4. Replace the staff page's broad campaign assignment-list call with a registration-admin-only read action. Use a scoped shell and the current production staff return route instead of importing unpublished navigation.
-5. Prove baseline+candidate locally with real independent PostgreSQL races. Earlier broader-stack hosted acceptance is not re-labeled as minimal-stack hosted evidence. No production readiness claim until the outstanding exact-stack hosted gate passes.
-6. No production deployment, merge, grants, messages, payment activation or SowGo routing change is authorized by these successful tests. Stop for review.
-
-[Exact dependency reasoning](docs/HUNTSVILLE-MINIMAL-DEPENDENCIES.md) · [Forward release and containment](docs/HUNTSVILLE-MINIMAL-RELEASE.md)
-
-7. Owner approved a separate isolated hosted target on 2026-10-16. New project `niyovbgoalulzkhbvebt` starts empty; install the exact production migration chain and only the two Huntsville additions. Preserve historical version IDs through supported CLI migration application. Add this project explicitly to preview/test-key guards, never accept arbitrary project URLs. Production defaults remain byte-for-byte. Hosted tests remain pending until installation and normal Auth/Edge setup.
-
-
-8. Isolated exact-stack hosted acceptance is accepted as PASS. Cleanup means zero active test registrations, check-ins or grants; closed synthetic records and immutable audit/signature history are intentionally retained.
-9. The production release candidate must be reconciled onto current main `f0d6fe9e07140dab6ed829ed5ccfdbb7af12e2fd` and preserve the live Bessemer mobile registration-flow change unchanged. Backend integration must not alter the approved Huntsville public header.
-10. Current authorization is limited to preparing a draft production release PR and running CI/release checks. No merge, production migration, Edge deployment, grant, waiver publication, registration activation, SowGo route change or message send is authorized. Branded email remains a separate launch gate.
+1. Execute Issue #33 and PR #31 on the existing requested branch from exact production `e3157f0…`. Preserve other worktrees and uncommitted Giving work. No old dependent branch merge.
+2. Extract PR #29 effective staff/partner/team implementation and only missing workflow/operations dependencies. Preserve the 25 production migration files, production registration definitions and 124 protected source files. Do not reuse the temporary acceptance harness as product UI.
+3. Consolidate the eleven unmerged PR #29 migration files into one new forward migration, followed by workflow foundation, operations and integration security. All four versions follow the actual production ledger. This changes no applied history.
+4. Preserve the live migration version IDs in isolated replay staging. Repository filenames for the three newest baseline migrations differ from the live ledger; one earlier SQL differs only by a final newline. Record the exact mapping/checksums; never repair or reapply production history.
+5. Keep original decisions and legal snapshots exact. Use reference bridges and separate follow-up histories. Partner membership alone never grants a campaign-wide pool, People, finance or private pastoral access.
+6. Leadership access is a profile model in this assignment. Hold the source provisioning RPC against writes, prevent cross-tenant directory enumeration, and remove invitation sending from partner administration. No real grant/send is performed.
+7. Retain accepted workflow, giveaway, Event Day, Host and communications foundations in the candidate. Keep external providers/workers/schedulers disabled; minimum release scope and their individual gates remain distinct.
+8. Use local synthetic fixtures for all automated checks. Production access is read-only aggregate/catalog verification. Do not copy production customer records into Git or test fixtures.
+9. A fresh isolated hosted project is required: the existing Huntsville acceptance stack contains differently versioned PR #29 migrations. Owner organization choice is pending. The new branch's hosted configuration fails closed until the exact new target is approved/configured.
+10. Successful local tests and a draft PR authorize neither merge nor production migrations/functions/deployment, real onboarding, public route/header changes, provider activation or Giving cutover. Next gate: exact-head isolated hosted acceptance of this candidate; then Chat review and separate GO.

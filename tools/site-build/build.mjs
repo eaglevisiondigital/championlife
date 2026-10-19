@@ -56,7 +56,12 @@ export async function buildSite({ root = repository, env = process.env } = {}) {
   const sourceConfig = await readFile(path.join(root, configPath), 'utf8');
   const sandbox = { window: {} };
   vm.runInNewContext(sourceConfig, sandbox, { timeout: 1000 });
-  const config = isolated ? previewConfiguration(env, sandbox.window.CHAMPION_LIFE_SUPABASE) : null;
+  let config = isolated ? previewConfiguration(env, sandbox.window.CHAMPION_LIFE_SUPABASE) : null;
+  if (isolated && [env.BRANCH, env.HEAD].includes('codex/unified-outreach-production-v1')) {
+    const target = JSON.parse(await readFile(path.join(root, 'config/outreach/unified-acceptance.json'), 'utf8'));
+    const expected = target.projectRef ? `https://${target.projectRef}.supabase.co` : null;
+    if (!expected || config?.url !== expected || [target.productionRefDenied,target.sharedAcceptanceRefDenied].includes(target.projectRef)) config = null;
+  }
   await rm(output, { recursive: true, force: true });
   for (const file of files) {
     const destination = path.join(output, file);
