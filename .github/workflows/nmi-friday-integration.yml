@@ -1,0 +1,39 @@
+name: NMI Friday integration candidate
+on:
+  pull_request:
+    branches: [main]
+    paths: ['supabase/**', 'assets/**', 'tools/**', 'docs/NMI-CUTOVER-*', '.github/workflows/nmi-friday-integration.yml']
+  push:
+    branches: [codex/nmi-giving-friday-cutover]
+permissions:
+  contents: read
+jobs:
+  integration:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - uses: denoland/setup-deno@v2
+        with:
+          deno-version: v2.x
+      - run: npm ci --ignore-scripts --prefix tools/backend-tests
+      - run: npm ci --ignore-scripts --prefix tools/nmi-component
+      - run: node tools/nmi-component/build.mjs && git diff --exit-code -- assets/js/nmi-component.js
+      - run: npm test --prefix tools/backend-tests
+      - run: npm run test:frozen:nmi --prefix tools/backend-tests
+      - run: |
+          export TEST_POSTGRES_BIN="$(pg_config --bindir)"
+          npm run test:giving-concurrency --prefix tools/backend-tests
+          npm run test:forms-concurrency --prefix tools/backend-tests
+          npm run test:payments-concurrency --prefix tools/backend-tests
+          npm run test:payment-operations-concurrency --prefix tools/backend-tests
+          npm run test:nmi-concurrency --prefix tools/backend-tests
+          npm run test:nmi-execution-concurrency --prefix tools/backend-tests
+          npm run test:huntsville-native --prefix tools/backend-tests
+          npm run test:concurrency --prefix tools/backend-tests
+      - run: deno check supabase/functions/payments-nmi/index.ts supabase/functions/payments-nmi-webhook/index.ts supabase/functions/forms-submit/index.ts supabase/functions/forms-file-access/index.ts supabase/functions/payments-webhook/index.ts supabase/functions/nmi-giving/index.ts supabase/functions/nmi-giving-webhook/index.ts
+      - run: git diff --check

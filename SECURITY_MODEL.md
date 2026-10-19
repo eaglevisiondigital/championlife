@@ -1,3 +1,31 @@
+# Gate 0 combined-artifact regression contracts — 2026-10-18
+
+Preserved uncommitted NMI d82ed7 and Outreach bff9612 adoption trees before continuing validation. The private composer now identifies exact selected source heads. Standalone module inventories remain strict; combined tests explicitly verify the two Outreach-owned staff-page hashes and all four Outreach SQL hashes. NMI fixtures execute all 42 migrations only after that validation. Test bootstrap ownership prevents duplicate Storage creation. Legacy test RPC calls name their SQL argument types; standalone registration still requires no prize schema, while the combined registration test proves zero drawing numbers and no prize activation. Application business sources, historical SQL, credentials and real grants remain unchanged. Full results and local adoption commits belong in the private integration register; hosted/provider/finance/release gates remain open.
+
+---
+
+# Gate 0 visible revocation recovery — 2026-10-18
+
+Current-head adoption exposed a shared-shell UX regression: clearing protected content detached module mounts, so module denial messages could render outside the live document. The shared shell now renders a non-sensitive accessible “Access changed” state and dashboard recovery link after clearing. Detached mounts and response-epoch rejection remain intact; stale responses cannot restore protected data. No permission, SQL or module business behavior is widened. Focused shared-shell regression: 80 checks PASS, including visible recovery and late-response denial.
+
+---
+
+# Gate 0 current-head adoption correction — 2026-10-18
+
+NMI adoption now targets owner-specified `d82ed7fdb049389ae43d50a2ceb1ac300665a7cc`; Outreach remains `bff9612ac9385cf963c5e7e41f9091da7af86cf0`. Earlier3a8317/e39b832 results are historical, not current adoption certification. All newer NMI business work is preserved in source contracts. Independent adoption found missing-Auth, identity/role, branch-pin bypass and composer contamination defects; the bounded shared correction and current-head evidence are detailed in [Gate 0](docs/SHARED-PLATFORM-GATE0.md). Module-owned offline migration plans must explicitly include Gate0; no automatic widening or hosted application. No production/GiveHub/NMI execution/real grants or deployment changes.
+
+---
+
+# Shared Platform Gate 0 — 2026-10-18
+
+Bounded reconciliation from production `e3157f0afa3f563ab6560ca64c9049448f02c806`, frozen NMI PR #34 and Outreach PR #35. See [Gate 0 contract, evidence and adoption procedure](docs/SHARED-PLATFORM-GATE0.md) and [canonical scoped registry](config/platform/capabilities.json). This package adds one forward-only local migration, a shared context/navigation contract and upgrade/security/build regression tests. It does not merge the child business packages.
+
+The historical 41-capability failure is reproduced and explained. The frozen Outreach candidate already uses additive lists; Gate 0 preserves and tests that correction in both orders with populated grants. No grant/template rows or existing authorization helpers are changed. Tests use local synthetic databases/browser transport; hosted acceptance and production release are not approved. Both frozen child versions of this document are preserved verbatim in `docs/gate0-source-continuity/`; the production history follows below.
+
+No production change, GiveHub change, payment activation, hosted migration, real-user grant or deployment. Child adoption, later deltas, hosted/provider/operator acceptance and explicit release approval remain gates. Do not start unrelated platform modules.
+
+---
+
 # Huntsville candidate security boundaries
 
 All new tables have RLS and no raw anon/authenticated privileges. Scoped RPCs check verified identity and active/dated campaign authority. Private helper execution is revoked; security-definer functions use empty search paths. Registration administration requires existing active organization staff plus explicit campaign-admin authority. No actual grants are created by migrations.

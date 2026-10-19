@@ -1,0 +1,164 @@
+#payments-app {
+  max-width: 1600px;
+  margin: 0 auto;
+  min-width: 0;
+}
+#payments-app h1 {
+  font-size: clamp(1.55rem, 3.5vw, 2.4rem);
+  line-height: 1.2;
+  overflow-wrap: anywhere;
+}
+#payments-app .giving-panel {
+  min-width: 0;
+}
+#payments-app input,
+#payments-app select {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  padding: 12px;
+  border: 1px solid #bdb8ac;
+  border-radius: 8px;
+  color: #151619;
+  background: white;
+  font: inherit;
+}
+#payments-app fieldset {
+  min-width: 0;
+  border: 1px solid #ded8c7;
+  border-radius: 12px;
+  padding: 20px;
+  margin: 20px 0;
+}
+#payments-app legend {
+  font-weight: 650;
+}
+#payments-app [type="checkbox"] {
+  width: auto;
+  min-height: 24px;
+}
+#payments-app .giving-form {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px 24px;
+}
+#payments-app .giving-form label {
+  align-self: center;
+}
+#payments-app .giving-form button {
+  grid-column: 1/-1;
+  min-height: 46px;
+}
+.payments-table-wrap {
+  max-width: 100%;
+  overflow: auto;
+  border-radius: 10px;
+  overscroll-behavior-inline: contain;
+  margin: 18px 0;
+}
+.payments-table-wrap table {
+  border-collapse: collapse;
+  width: 100%;
+  min-width: 620px;
+}
+.payments-table-wrap td,
+.payments-table-wrap th {
+  text-align: left;
+  border-bottom: 1px solid #ded8c7;
+  padding: 14px;
+  font-size: 0.95rem;
+}
+.payments-table-wrap td a {
+  overflow-wrap: anywhere;
+  display: block;
+  max-width: 280px;
+}
+.payments-placeholder {
+  border: 1px solid #caa74e;
+  border-left: 5px solid #caa74e;
+  border-radius: 10px;
+  padding: 24px;
+  background: #fffaf0;
+  margin: 20px 0;
+}
+.payments-total {
+  font-size: 1.7rem;
+  font-weight: 700;
+}
+.payments-public {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 32px 20px;
+  background: #f5f3ed;
+  color: #161719;
+  min-height: 100vh;
+}
+.payments-public > header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
+.payments-public > header img {
+  width: 130px;
+  max-width: 100%;
+  height: auto;
+}
+.payments-public .powered-by img {
+  width: 160px;
+  height: auto;
+}
+.payments-public footer {
+  margin-top: 30px;
+}
+.payments-public button:disabled {
+  cursor: not-allowed;
+  opacity: 0.75;
+}
+#payments-app :focus-visible {
+  outline: 3px solid #856312;
+  outline-offset: 3px;
+}
+#payments-app button {
+  min-height: 46px;
+  max-width: 100%;
+  white-space: normal;
+}
+#payments-app [role="alert"] {
+  overflow-wrap: anywhere;
+}
+#payments-app label {
+  font-weight: 500;
+}
+#payments-app .giving-note {
+  font-size: 1rem;
+}
+#payments-app .giving-gateway-card {
+  overflow-wrap: anywhere;
+}
+@media (max-width: 768px) {
+  #payments-app .giving-form {
+    grid-template-columns: 1fr;
+  }
+  #payments-app .giving-form button {
+    grid-column: auto;
+  }
+  .payments-public {
+    padding: 20px 12px;
+  }
+  #payments-app fieldset {
+    padding: 15px;
+  }
+  #payments-app .giving-panel {
+    padding: 18px;
+  }
+  .payments-table-wrap table {
+    min-width: 560px;
+  }
+  .payments-placeholder {
+    padding: 18px;
+  }
+}
+
+.nmi-hosted-fields {width:100%;min-width:0;overflow:hidden}.nmi-sandbox-panel select {max-width:100%;width:100%;margin-bottom:1rem}.nmi-sandbox-panel h2 {color:#775d20}.nmi-sandbox-panel button {min-height:44px}.nmi-sandbox-panel {border:2px solid #d0b05b}

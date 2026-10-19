@@ -1,0 +1,53 @@
+// Current-main + both accepted sibling branches, synthetic local database only.
+import assert from 'node:assert/strict';
+import {readFileSync} from 'node:fs';
+import {createHash,randomUUID as uid} from 'node:crypto';
+import {nmiDatabase,f,checkout,seedRoutes} from './nmi-fixture.mjs';
+import {productionOrder,givingOrder,integrationOrder,executionOrder,gate0Order,migrationOrder} from './migration-order.mjs';
+import {integrationInventory} from './nmi-integration-inventory.test.mjs';
+const root=new URL('../../',import.meta.url), read=p=>readFileSync(new URL(p,root));
+const hash=b=>createHash('sha1').update(Buffer.from('blob '+b.length+'\0')).update(b).digest('hex');
+const protectedFiles=JSON.parse(read('docs/NMI-CUTOVER-PROTECTED-FILES.json'));
+assert.equal(productionOrder.length,25);
+assert.equal(givingOrder.length,9);assert.equal(integrationOrder.length,1);assert.equal(executionOrder.length,2);
+assert.deepEqual(gate0Order,['20261019012735_shared_platform_gate0.sql']);
+assert(read('.github/workflows/nmi-friday-integration.yml').toString().includes('npm run test:frozen:nmi --prefix tools/backend-tests'),'NMI CI retains the full current module suite after shared package adoption');
+assert.deepEqual(migrationOrder,[...migrationOrder].sort(),'Production followed by new forward versions');
+for(const row of JSON.parse(read('docs/NMI-CUTOVER-MIGRATIONS.json')))assert.equal(hash(read('supabase/migrations/'+row.candidate)),row.source_blob);
+const manifest=JSON.parse(read('tools/site-build/public-files.json'));
+assert(!manifest.some(x=>/^(?:docs|tools|supabase)\//.test(x)));
+const db=await nmiDatabase(),q=(s,p=[])=>db.query(s,p);
+const as=async(u=f.admin,role='authenticated')=>{await db.exec('reset role');await q("select set_config('request.jwt.claim.sub',$1,false)",[u||'']);await db.exec('set role '+role)};
+const call=(name,a,p={})=>q('select '+name+'($1,$2,$3) v',[a,f.org,p]).then(r=>r.rows[0].v);
+try {
+ if(integrationInventory.mode==='nmi+outreach'){
+  const installed=(await q("select to_regclass('public.outreach_decision_followup') is not null as staff_partner, to_regprocedure('public.unified_outreach_context()') is not null as security")).rows[0];
+  assert.equal(installed.staff_partner,true,'Combined NMI fixture executed sibling staff/partner SQL');
+  assert.equal(installed.security,true,'Combined NMI fixture executed final sibling security SQL');
+ }
+ await db.exec(`insert into organization_staff_permissions(organization_id,user_id,permission)select '${f.org}','${f.admin}',k from unnest(private.payment_ops_permissions())k on conflict do nothing;`);
+ await as();
+ const session=await call('payments_workspace','checkout_prepare',checkout(uid()));
+ const view=await call('payments_workspace','session',{id:session.id}),leg=view.legs.find(l=>l.route_label==='Main MID');
+ await db.exec('reset role');await db.exec(seedRoutes);await q('insert into private.payments_nmi_sessions values($1,$2,true)',[f.org,session.id]);await as();
+ const intent={session_id:session.id,leg_id:leg.id,operation:'sale',request_key:uid()};
+ const op=await call('payments_nmi_workspace','prepare',intent);await as(null,'service_role');
+ const claim=await call('payments_nmi_service','claim',{id:op.id,actor_id:f.admin});
+ await call('payments_nmi_service','handoff',{id:op.id,actor_id:f.admin,lease:claim.lease});
+ await call('payments_nmi_service','complete',{id:op.id,lease:claim.lease,status:'review',category:'unknown'});
+ await db.exec('reset role');
+ const observations=(await q('select * from private.payment_ops_observations where operation_id=$1',[op.id])).rows;
+ assert.equal(observations.length,1);assert.equal(observations[0].result,'unknown');assert.equal(observations[0].failure_category,'unknown');
+ assert.equal(Number((await q('select count(*) n from giving_ledger')).rows[0].n),0);
+ await as();const queue=await call('payment_operations','queue');
+ assert(queue.issues.some(i=>i.issue_type==='payment_unknown'&&i.leg_id===leg.id));
+ await assert.rejects(()=>call('payments_nmi_workspace','prepare',{...intent,request_key:uid()}));
+ await as(f.ordinary);await assert.rejects(()=>call('payment_operations','queue'));
+ await as();await db.exec('reset role');
+ await q("update organization_staff_permissions set revoked_at=now() where user_id=$1 and permission='payments.view'",[f.admin]);
+ await as();await assert.rejects(()=>call('payment_operations','queue'));
+ await db.exec('reset role');
+ for(const role of ['anon','authenticated','service_role'])assert.equal((await q("select has_function_privilege($1,'private.nmi_friday_operations_observation()','execute') v",[role])).rows[0].v,false);
+ assert.equal(Number((await q("select count(*) n from pg_tables where schemaname in ('public','private') and (tablename like 'giving_%' or tablename like 'payments_%' or tablename like 'payment_ops_%') and not rowsecurity")).rows[0].n),0);
+ console.log(`PASS current-main integration: ${Object.keys(protectedFiles.files).length} protected paths; ${integrationInventory.mode} ${migrationOrder.length} exact migrations; source hashes; NMI unknown reaches scoped Operations queue; duplicate/revocation/RLS; zero ledger posting`);
+}finally{await db.close()}

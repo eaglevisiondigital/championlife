@@ -1,0 +1,13 @@
+{
+  "nmi_source_checkpoint": "d82ed7fdb049389ae43d50a2ceb1ac300665a7cc",
+  "gate0_authoritative_commit": "bbadd2b4adf75a4342b653d57c81fac8aa86e74a",
+  "migration": "20261019012735_shared_platform_gate0.sql",
+  "sha256": "826b5d11e2f1a137b2e22445c3c805e59d6ff08ebfda7cef916142ac59593613",
+  "status": "REVIEWED_PRIMARY_FOLLOWUP",
+  "gate0_prerequisite_commits": [
+    "3439e703ec5186e779f458ab5496afde611cc4aa",
+    "d39fdc84e22a4668b193a3962286a79ae93f2a81",
+    "02459359e10e5338755da411d952042246bd23e7",
+    "60c46eef1fd017db6816ef139910b3492a40a75e"
+  ]
+}
