@@ -26,7 +26,7 @@ The ten frozen forward files remain byte-identical. The proposed additions are:
 
 | migration | exact source SHA-256 |
 |---|---|
-| `20261019010048_nmi_sandbox_execution.sql` | `17e4e3f3eddd8666304bfe793c72e9bbb69819e38093541a7eb80c0ec548717f` |
+| `20261019010048_nmi_sandbox_execution.sql` | `c5a405d4fd1b1018d2555fdf8f5be9bf71979adbfd2d3c6316d0bf8b5afd12b6` |
 | `20261019010932_nmi_sandbox_recovery_reconciliation.sql` | `181d3e4463f38d00d09dbb057d22a2541195203a82eb573b805650274ab2c707` |
 
 Exact **37-file** hosted staging order/hashes: `NMI-CUTOVER-ACCEPTANCE-MIGRATIONS.json` (25 confirmed production baseline + nine accepted Giving extractions + frozen bridge + two new execution files). Three baseline version aliases and one controlled final-newline normalization apply only in offline staging. Repository historical migrations are unchanged. No migration applied remotely. Both new version allocations are proposals subject to primary's combined release order/collision check.
@@ -44,7 +44,7 @@ The new private service layer reuses canonical sessions/legs/lines, immutable le
 | Unknown recovery | Stable server order identity, original attempt linkage, no second financial mutation; authoritative transaction/refund/void/known subscription lookup resolves only supported facts. Missing/ambiguous evidence, unknown subscription ID and provider action ambiguity remain held for NMI/finance matching, never permission to retry. |
 | Shutdown / GiveHub fallback | Current scoped finance shutdown disables new org charges and audits. Separate narrowly scoped recovery permits lookup/refund/void/pause/cancel after new-charge disable. Provider subscriptions must be explicitly confirmed stopped. Existing church/Outreach GiveHub host pages and links stay unchanged. |
 | Donor/staff states | Success/declined/pending/partial/held receipt/recovery; explicit storage consent defaults unchecked, duplicate clicks blocked. Finance jobs, adjustment lookup, batches, reconciliation and shutdown inside same staff platform; current-session revocation clears protected content and stale responses cannot restore it. |
-| Boundaries/defaults | Same organization/fund/destination/gateway/processor snapshot rechecked before charge handoff; explicit MID/settlement/merchant proof. Source pin null, origins empty, flags OFF, fixed sandbox host; no live/production path enabled. |
+| Boundaries/defaults | Same organization/fund/destination/gateway/processor snapshot and private routing-proof fingerprint rechecked before charge handoff; explicit MID/settlement/merchant proof. Source pin null, origins empty, flags OFF, fixed sandbox host; no live/production path enabled. |
 
 ## 4. Edge/server components
 
@@ -82,7 +82,7 @@ Provider/finance proof still required for hosted tokenization, sale/decline/auth
 
 ## 10. Automated tests / races
 
-See `NMI-CUTOVER-VALIDATION.md` and PR CI for complete final results. Standard suite includes **47 scripts**, full source migration replay, 34 new execution database assertions, real synthetic SQL + mocked HTTP orchestration, Query/hostile XML/recovery checks, donor UI double-click and staff revocation DOM tests, and exact baseline staging/protected-file checks. Native suite includes prior 41 eight-worker race cases plus **10 new execution/refund races** (51 total), and existing Outreach concurrency. Seven Deno entrypoints, 132 JS/MJS syntax checks, pinned component rebuild and public artifact/protection checks are separate. All data is synthetic and all provider HTTP/SDK callbacks are mocked; this is not browser/hosted/provider proof.
+See `NMI-CUTOVER-VALIDATION.md` and PR CI for complete final results. Standard suite includes **47 scripts**, full source migration replay, 37 new execution database assertions, real synthetic SQL + mocked HTTP orchestration, Query/hostile XML/recovery checks, donor UI double-click and staff revocation DOM tests, and exact baseline staging/protected-file checks. Native suite includes prior 41 eight-worker race cases plus **10 new execution/refund races** (51 total), and existing Outreach concurrency. Seven Deno entrypoints, 132 JS/MJS syntax checks, pinned component rebuild and public artifact/protection checks are separate. All data is synthetic and all provider HTTP/SDK callbacks are mocked; this is not browser/hosted/provider proof.
 
 ## 11. Dedicated target and actual acceptance still required
 

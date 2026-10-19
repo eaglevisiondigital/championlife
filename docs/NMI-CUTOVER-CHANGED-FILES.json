@@ -11,12 +11,12 @@
     {
       "path": "ARCHITECTURE.md",
       "status": "M",
-      "sha256": "259efabe0482dd2eed08b9a02be3f98a97eb1e603b1230db47a838468940af8c"
+      "sha256": "b869857caaee434dc8ff713dcc784b0dc4da038380b774e36d4391d9b75cfc9d"
     },
     {
       "path": "CURRENT_BUILD_STATE.md",
       "status": "M",
-      "sha256": "4d689256a7e890bcb9e8a3cecf0761b51e7cc3cbe009b7a0b4a1efad924bb3ec"
+      "sha256": "dc820fcb7d6dd82f2368d6e87ade67b7585ca41439a463b84db1c167a7d1fcaa"
     },
     {
       "path": "DECISIONS.md",
@@ -26,7 +26,7 @@
     {
       "path": "SECURITY_MODEL.md",
       "status": "M",
-      "sha256": "57e283bbbec292d8fa8eae09ca094dd35ca773dbb09a4d3c71160ac83d821506"
+      "sha256": "b2ff3047dc204245afefd9bbf396653022252777b80f6a39b28e48a5517b9415"
     },
     {
       "path": "assets/js/nmi-giving-client.js",
@@ -56,7 +56,7 @@
     {
       "path": "docs/NMI-CUTOVER-ACCEPTANCE-MIGRATIONS.json",
       "status": "A",
-      "sha256": "7a0f471cd88b457073053e9495b4c89baa3c092f62f9a0624d639ea067e67e18"
+      "sha256": "3cde09023688953b703294e5298ebac63d048f1f7cfadbf7f8c43cb5ce86ac1e"
     },
     {
       "path": "docs/NMI-CUTOVER-CHANGED-FILES.json",
@@ -66,7 +66,7 @@
     {
       "path": "docs/NMI-CUTOVER-CHILD-HANDOFF.md",
       "status": "A",
-      "sha256": "320e57ec3b29890276ab2962db3e993f1d45b04520f8c96301faa450c0fa138d"
+      "sha256": "dff44962094e76ea93509f21e98e3f78c9b220b8374f0c7e843fca2d5b19f097"
     },
     {
       "path": "docs/NMI-CUTOVER-COMPATIBILITY-DIAGNOSTIC.json",
@@ -111,7 +111,7 @@
     {
       "path": "docs/NMI-CUTOVER-VALIDATION.md",
       "status": "M",
-      "sha256": "6467bb02aab340ddeb43046f4d6fa3114b7707c55ba551e1edde8b3c1fbf05a3"
+      "sha256": "f63fb904d4341aaefb37ff479008e2c1630a5f33aca8ecf23cc8c79cdbf19105"
     },
     {
       "path": "nmi-giving.html",
@@ -176,7 +176,7 @@
     {
       "path": "supabase/migrations/20261019010048_nmi_sandbox_execution.sql",
       "status": "A",
-      "sha256": "17e4e3f3eddd8666304bfe793c72e9bbb69819e38093541a7eb80c0ec548717f"
+      "sha256": "c5a405d4fd1b1018d2555fdf8f5be9bf71979adbfd2d3c6316d0bf8b5afd12b6"
     },
     {
       "path": "supabase/migrations/20261019010932_nmi_sandbox_recovery_reconciliation.sql",
@@ -211,7 +211,7 @@
     {
       "path": "tools/backend-tests/nmi-execution.test.mjs",
       "status": "A",
-      "sha256": "6dd4878de536bca528a45e65d9c15ec57dc3a836f3ebb6a40a5e145a3e50d4a6"
+      "sha256": "dc37c0cd09daf3e98628fd306f20548c1b3cfc4563a8ea2be9aa77b608723b34"
     },
     {
       "path": "tools/backend-tests/nmi-integration.test.mjs",
@@ -268,12 +268,12 @@
     {
       "path": "ARCHITECTURE.md",
       "status": "M",
-      "sha256": "259efabe0482dd2eed08b9a02be3f98a97eb1e603b1230db47a838468940af8c"
+      "sha256": "b869857caaee434dc8ff713dcc784b0dc4da038380b774e36d4391d9b75cfc9d"
     },
     {
       "path": "CURRENT_BUILD_STATE.md",
       "status": "M",
-      "sha256": "4d689256a7e890bcb9e8a3cecf0761b51e7cc3cbe009b7a0b4a1efad924bb3ec"
+      "sha256": "dc820fcb7d6dd82f2368d6e87ade67b7585ca41439a463b84db1c167a7d1fcaa"
     },
     {
       "path": "DECISIONS.md",
@@ -283,7 +283,7 @@
     {
       "path": "SECURITY_MODEL.md",
       "status": "M",
-      "sha256": "57e283bbbec292d8fa8eae09ca094dd35ca773dbb09a4d3c71160ac83d821506"
+      "sha256": "b2ff3047dc204245afefd9bbf396653022252777b80f6a39b28e48a5517b9415"
     },
     {
       "path": "assets/css/forms.css",
@@ -513,7 +513,7 @@
     {
       "path": "docs/NMI-CUTOVER-ACCEPTANCE-MIGRATIONS.json",
       "status": "A",
-      "sha256": "7a0f471cd88b457073053e9495b4c89baa3c092f62f9a0624d639ea067e67e18"
+      "sha256": "3cde09023688953b703294e5298ebac63d048f1f7cfadbf7f8c43cb5ce86ac1e"
     },
     {
       "path": "docs/NMI-CUTOVER-CHANGED-FILES.json",
@@ -523,7 +523,7 @@
     {
       "path": "docs/NMI-CUTOVER-CHILD-HANDOFF.md",
       "status": "A",
-      "sha256": "320e57ec3b29890276ab2962db3e993f1d45b04520f8c96301faa450c0fa138d"
+      "sha256": "dff44962094e76ea93509f21e98e3f78c9b220b8374f0c7e843fca2d5b19f097"
     },
     {
       "path": "docs/NMI-CUTOVER-COMPATIBILITY-DIAGNOSTIC.json",
@@ -588,7 +588,7 @@
     {
       "path": "docs/NMI-CUTOVER-VALIDATION.md",
       "status": "A",
-      "sha256": "6467bb02aab340ddeb43046f4d6fa3114b7707c55ba551e1edde8b3c1fbf05a3"
+      "sha256": "f63fb904d4341aaefb37ff479008e2c1630a5f33aca8ecf23cc8c79cdbf19105"
     },
     {
       "path": "docs/NMI-GIVING-CUTOVER-2026-10-23.md",
@@ -1003,7 +1003,7 @@
     {
       "path": "supabase/migrations/20261019010048_nmi_sandbox_execution.sql",
       "status": "A",
-      "sha256": "17e4e3f3eddd8666304bfe793c72e9bbb69819e38093541a7eb80c0ec548717f"
+      "sha256": "c5a405d4fd1b1018d2555fdf8f5be9bf71979adbfd2d3c6316d0bf8b5afd12b6"
     },
     {
       "path": "supabase/migrations/20261019010932_nmi_sandbox_recovery_reconciliation.sql",
@@ -1163,7 +1163,7 @@
     {
       "path": "tools/backend-tests/nmi-execution.test.mjs",
       "status": "A",
-      "sha256": "6dd4878de536bca528a45e65d9c15ec57dc3a836f3ebb6a40a5e145a3e50d4a6"
+      "sha256": "dc37c0cd09daf3e98628fd306f20548c1b3cfc4563a8ea2be9aa77b608723b34"
     },
     {
       "path": "tools/backend-tests/nmi-fixture.mjs",

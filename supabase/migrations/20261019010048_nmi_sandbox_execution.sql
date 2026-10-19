@@ -52,6 +52,7 @@ create table private.nmi_giving_attempts(
  instruction_id uuid references public.giving_recurring_instructions(id),plan_reference text,provider_reference text,
  state text not null default 'prepared' check(state in('prepared','claimed','dispatched','completed','failed','review')),
  lease uuid,expires_at timestamptz not null default now()+interval '5 minutes',created_at timestamptz not null default now(),
+ authority_kind text not null default 'service'check(authority_kind in('service','checkout','donor','staff')),
  save_method boolean not null default false,foreign key(organization_id,session_id) references public.giving_sessions(organization_id,id)
 );
 create table private.nmi_giving_vault_bindings(
@@ -98,6 +99,15 @@ create trigger nmi_giving_batches_immutable before update or delete on private.n
 create trigger nmi_giving_receipts_immutable before update or delete on private.nmi_giving_receipt_outbox for each row execute function private.giving_immutable();
 
 alter table public.giving_recurring_lines add column nmi_tax_eligible boolean;
+
+create function private.nmi_giving_route_fingerprint(o uuid,r uuid)returns text language sql stable security definer set search_path=''as $$
+select encode(sha256(convert_to(jsonb_build_object('organization',o,'gateway',proof.gateway_id,'route',r,'processor',nr.processor_id,
+ 'mid',proof.mid_reference,'settlement',proof.settlement_reference,'merchant',proof.merchant_reference,'component',proof.public_tokenization_key,
+ 'secret_version',a.secret_version,'recurring_default',a.subscription_default_route_id,'timezone',a.gateway_timezone)::text,'UTF8')),'hex')
+from private.nmi_giving_route_proofs proof join private.payments_nmi_routes nr on nr.organization_id=o and nr.gateway_id=proof.gateway_id and nr.route_id=proof.route_id
+join private.payments_nmi_accounts a on a.organization_id=o and a.gateway_id=proof.gateway_id where proof.organization_id=o and proof.route_id=r
+$$;
+revoke all on function private.nmi_giving_route_fingerprint(uuid,uuid)from public,anon,authenticated,service_role;
 
 create function private.nmi_giving_route_ok(o uuid,r uuid)returns boolean language sql stable security definer set search_path=''as $$
 select exists(select 1 from private.nmi_giving_control c join private.nmi_giving_route_proofs proof on proof.organization_id=c.organization_id
@@ -184,6 +194,7 @@ begin
   for row in select value from jsonb_array_elements(p->'lines')loop
    select ff.purpose into purpose from private.nmi_giving_form_funds ff where ff.form_id=form.id and ff.fund_id=(row->>'fund_id')::uuid;
    frozen:=private.payments_route(o,(row->>'fund_id')::uuid,null,purpose,form.currency);
+   frozen:=frozen||jsonb_build_object('nmi_route_proof',private.nmi_giving_route_fingerprint(o,(frozen->>'processor_route_id')::uuid));
    insert into public.giving_transaction_legs(organization_id,session_id,amount_minor,route_snapshot,route_key,currency)
     values(o,sid,(row->>'amount_minor')::bigint,frozen,frozen->>'processor_route_id',form.currency)
     on conflict(session_id,route_key)do update set amount_minor=giving_transaction_legs.amount_minor+excluded.amount_minor returning id into rid;
@@ -259,8 +270,8 @@ begin
   end if;
   insert into private.payments_operations(organization_id,leg_id,gateway_id,operation,request_key,payload_digest,amount_minor,refund_id)
    values(o,l.id,(l.route_snapshot->>'gateway_id')::uuid,kind,key,digest,amount,refund.id)returning id into identifier;
-  insert into private.nmi_giving_attempts(id,organization_id,session_id,actor_id,parent_attempt_id,instruction_id,save_method)
-   values(identifier,o,sid,actor,parent,instruction,coalesce((p->>'save_method')::boolean,false));
+  insert into private.nmi_giving_attempts(id,organization_id,session_id,actor_id,parent_attempt_id,instruction_id,save_method,authority_kind)
+   values(identifier,o,sid,actor,parent,instruction,coalesce((p->>'save_method')::boolean,false),case when kind in('sale','authorize','recurring_create','recurring_cancel')and c.capability_hash=coalesce(p->>'capability_hash','')and c.expires_at>now()then 'checkout'when kind in('sale','authorize','recurring_create','recurring_cancel')and exists(select 1 from private.giving_donor_account_links dl where dl.organization_id=o and dl.user_id=actor and dl.person_id=s.person_id and dl.active and private.outreach_verified(actor))then 'donor'else 'staff'end);
   insert into public.giving_audit(organization_id,actor_user_id,action,subject_id,safe_detail)values(o,actor,'nmi.operation.prepared',identifier,jsonb_build_object('operation',kind));
   return jsonb_build_object('id',identifier,'state','prepared');
  end if;
@@ -280,7 +291,8 @@ begin
  if a in('claim','handoff')then
   perform private.giving_payload(p,array['session_id','id','lease']);
   if not private.nmi_giving_route_ok(o,route.route_id)or attempt.expires_at<=now()then raise exception 'Execution held'using errcode='42501';end if;
-  if attempt.actor_id is not null and op.operation not in('sale','recurring_create','recurring_cancel','authorize')and not private.nmi_giving_actor(o,attempt.actor_id,case op.operation when 'refund'then 'payments.refund.execute'when 'void'then 'payments.void.execute'when 'recurring_pause'then 'payments.recurring.manage'else 'payments.manage'end)then raise exception 'Execution authority revoked';end if;
+  if attempt.authority_kind='checkout'and c.expires_at<=now()then raise exception 'Checkout authority expired';end if;
+  if attempt.authority_kind='staff'and not private.nmi_giving_actor(o,attempt.actor_id,case op.operation when 'refund'then 'payments.refund.execute'when 'void'then 'payments.void.execute'when 'sale'then 'payments.configure'when 'authorize'then 'payments.configure'when 'recurring_create'then 'payments.recurring.manage'when 'recurring_cancel'then 'payments.recurring.manage'when 'recurring_pause'then 'payments.recurring.manage'else 'payments.manage'end)then raise exception 'Execution authority revoked';end if;
   if op.operation in('refund','void')then
    select * into refund from public.giving_refunds where id=op.refund_id and organization_id=o and status in('approved','execution_pending');select * into approval from private.payment_ops_approvals where refund_id=refund.id and organization_id=o;
    if refund.id is null or approval.refund_id is null or approval.route_snapshot is distinct from l.route_snapshot or(approval.approval_required and not private.nmi_giving_actor(o,approval.approved_by,'payments.'||op.operation||'.approve'))then raise exception 'Adjustment approval no longer current';end if;
@@ -288,7 +300,7 @@ begin
   if (l.route_snapshot->>'processor_revision')::int is distinct from(select revision from public.giving_processor_routes where id=route.route_id)then raise exception 'Frozen route changed before handoff';end if;
   if op.operation in('sale','authorize','recurring_create','capture')then
    -- Every contributing line must still resolve to its original organization/fund/destination/gateway/MID.
-   if exists(select 1 from public.giving_session_lines sl where sl.organization_id=o and sl.leg_id=l.id and private.payments_route(o,sl.fund_id,null,sl.payment_purpose,l.currency) is distinct from sl.route_snapshot)then raise exception 'Frozen financial routing changed';end if;
+   if exists(select 1 from public.giving_session_lines sl where sl.organization_id=o and sl.leg_id=l.id and (private.payments_route(o,sl.fund_id,null,sl.payment_purpose,l.currency) is distinct from(sl.route_snapshot-'nmi_route_proof')or sl.route_snapshot->>'nmi_route_proof'is distinct from private.nmi_giving_route_fingerprint(o,route.route_id)))then raise exception 'Frozen financial routing changed';end if;
    if s.person_id is not null and not exists(select 1 from private.giving_donor_account_links dl where dl.organization_id=o and dl.user_id=attempt.actor_id and dl.person_id=s.person_id and dl.verified_household_id is not distinct from s.household_id and dl.active and private.outreach_verified(attempt.actor_id))then raise exception 'Donor linkage revoked';end if;
   end if;
   if op.operation='recurring_pause'and not private.nmi_giving_actor(o,attempt.actor_id,'payments.recurring.manage')then raise exception 'Recurring authority revoked';end if;
@@ -299,6 +311,7 @@ begin
   else
    if attempt.state<>'claimed'or attempt.lease is distinct from(p->>'lease')::uuid then raise exception 'Handoff already used'using errcode='PT409';end if;
    token:=attempt.lease;update private.nmi_giving_attempts set state='dispatched'where id=attempt.id;
+   insert into public.giving_audit(organization_id,actor_user_id,action,subject_id,safe_detail)values(o,attempt.actor_id,'nmi.operation.dispatched',attempt.id,jsonb_build_object('operation',op.operation,'sandbox',true,'authority',attempt.authority_kind));
   end if;
   if op.operation='recurring_create'then
    select plan.plan_reference into cap from private.payments_nmi_plans plan join public.giving_recurring_instructions i on i.id=attempt.instruction_id where plan.organization_id=o and plan.gateway_id=op.gateway_id and plan.amount_minor=op.amount_minor and plan.currency=l.currency and plan.frequency=i.frequency order by plan.verified_at desc limit 1;
