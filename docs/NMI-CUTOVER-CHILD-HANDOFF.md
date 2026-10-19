@@ -26,7 +26,7 @@ The ten frozen forward files remain byte-identical. The proposed additions are:
 
 | migration | exact source SHA-256 |
 |---|---|
-| `20261019010048_nmi_sandbox_execution.sql` | `c5a405d4fd1b1018d2555fdf8f5be9bf71979adbfd2d3c6316d0bf8b5afd12b6` |
+| `20261019010048_nmi_sandbox_execution.sql` | `a931d792de8c9804adaa6903795891e42b386a2bea492d7736699f64a6fb2b82` |
 | `20261019010932_nmi_sandbox_recovery_reconciliation.sql` | `181d3e4463f38d00d09dbb057d22a2541195203a82eb573b805650274ab2c707` |
 
 Exact **37-file** hosted staging order/hashes: `NMI-CUTOVER-ACCEPTANCE-MIGRATIONS.json` (25 confirmed production baseline + nine accepted Giving extractions + frozen bridge + two new execution files). Three baseline version aliases and one controlled final-newline normalization apply only in offline staging. Repository historical migrations are unchanged. No migration applied remotely. Both new version allocations are proposals subject to primary's combined release order/collision check.
@@ -82,7 +82,7 @@ Provider/finance proof still required for hosted tokenization, sale/decline/auth
 
 ## 10. Automated tests / races
 
-See `NMI-CUTOVER-VALIDATION.md` and PR CI for complete final results. Standard suite includes **47 scripts**, full source migration replay, 37 new execution database assertions, real synthetic SQL + mocked HTTP orchestration, Query/hostile XML/recovery checks, donor UI double-click and staff revocation DOM tests, and exact baseline staging/protected-file checks. Native suite includes prior 41 eight-worker race cases plus **10 new execution/refund races** (51 total), and existing Outreach concurrency. Seven Deno entrypoints, 132 JS/MJS syntax checks, pinned component rebuild and public artifact/protection checks are separate. All data is synthetic and all provider HTTP/SDK callbacks are mocked; this is not browser/hosted/provider proof.
+See `NMI-CUTOVER-VALIDATION.md` and PR CI for complete final results. Standard suite includes **47 scripts**, full source migration replay, 39 new execution database assertions, real synthetic SQL + mocked HTTP orchestration, Query/hostile XML/recovery checks, donor UI double-click and staff revocation DOM tests, and exact baseline staging/protected-file checks. Native suite includes prior 41 eight-worker race cases plus **11 new execution/refund races** (52 total), and existing Outreach concurrency. Seven Deno entrypoints, 132 JS/MJS syntax checks, pinned component rebuild and public artifact/protection checks are separate. All data is synthetic and all provider HTTP/SDK callbacks are mocked; this is not browser/hosted/provider proof.
 
 ## 11. Dedicated target and actual acceptance still required
 

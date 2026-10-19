@@ -272,7 +272,9 @@ create function public.giving_test_race(run uuid,n int,service boolean,action te
     const refundOp=refundPrepared[0].answer,refundClaim=service('claim',{session_id,id:refundOp.id});service('handoff',{session_id,id:refundOp.id,lease:refundClaim.lease});
     const refundDone=await race('EXECUTION REFUND PRINCIPAL ONCE',repeat(true,'complete',{session_id,id:refundOp.id,lease:refundClaim.lease,status:'refunded',authoritative:true,provider_reference:'synthetic-race-refund',amount_minor:'500',currency:'USD',processor_id:'synthetic-main'}));
     assert.equal(refundDone.filter(x=>!x.answer.safe_conflict).length,1);assert.equal(count(`select sum(amount_minor)from giving_ledger where leg_id='${leg_id}'`),2000);assert.equal(count(`select count(*)from giving_refund_outcomes where refund_id='${adjustment.id}'`),1);
-    console.log('10 dedicated NMI execution native races passed; eight overlapping workers + coordinator each; one canonical gift/receipt; zero real provider calls');
+    sql(`update private.nmi_giving_checkouts set created_at=now()-interval '1 day'where session_id='${second.session_id}'`);
+    const aged=await race('EXECUTION AGED UNKNOWN CROSS-SESSION DENIAL',Array.from({length:8},()=>[true,'create',{...payload,request_key:uid(),receipt_email:'synthetic-different-key@example.test'}]));assert.equal(aged.filter(x=>x.answer.safe_conflict).length,8);
+    console.log('11 dedicated NMI execution native races passed; eight overlapping workers + coordinator each; one canonical gift/receipt; zero real provider calls');
 
   } finally {
     coordinator.stdin.end();
