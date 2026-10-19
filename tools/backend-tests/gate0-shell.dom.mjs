@@ -1,0 +1,28 @@
+import assert from 'node:assert/strict';import {JSDOM} from 'jsdom';import {read} from './gate0.fixture.mjs';
+let n=0;const ok=(v,m)=>{assert.ok(v,m);n++;console.log('PASS '+m);};const tick=()=>new Promise(r=>setTimeout(r,30));
+const shell=read('assets/js/staff-workspace.js'),routes=[...shell.matchAll(/href:\s*'([^']+\.html)'/g)].map(x=>x[1]),O='10000000-0000-4000-8000-000000000001',B='20000000-0000-4000-8000-000000000001',H='20000000-0000-4000-8000-000000000002';
+export function fixture(profile='mixed'){
+ const finance=['mixed','finance','reports'].includes(profile),partner=['bessemer','huntsville'].includes(profile),cam=profile==='huntsville'?H:B;
+ return{staff:{organizations:[{id:O,slug:'sowgo'}],grants:[]},modules:['giving','outreach'],giving:{organizations:finance?[{id:O,permissions:profile==='reports'?['finance.reports.read']:['finance.gifts.read','finance.reports.read','finance.read','finance.merchant.configure']}]:[]},payments:{organizations:profile==='finance'?[{id:O,permissions:['payments.view']}]:[]},forms:{organizations:[]},outreach:{contexts:finance?['champion',...(profile==='mixed'?['outreach']:[])]:['outreach'],campaigns:profile==='finance'||profile==='reports'?[]:[{id:cam,name:cam===B?'Bessemer':'Huntsville',modules:partner?['partner']:['decisions','registration']}],access_version:'v1'},partners:partner?[{id:'church',campaign_id:cam}]:[],decisions:[]};
+}
+export async function setup(profile='mixed',query='',available=routes){
+ const dom=new JSDOM('<!doctype html><body data-staff-workspace><main><p>CONTENT</p></main></body>',{url:'https://example.test/staff-outreach-registration.html'+query,runScripts:'outside-only',pretendToBeVisual:true}),w=dom.window;let data=fixture(profile),user={id:'synthetic',email:'synthetic@example.test'},resolve,fail=false;
+ w.matchMedia=()=>({matches:false});w.OutreachUI={el:(t,text,attrs={})=>{const e=w.document.createElement(t);if(text!=null)e.textContent=text;for(const[k,v]of Object.entries(attrs))e.setAttribute(k,v);return e;}};
+ const callbacks=[];w.ChampionLifeAuth={getUser:async()=>user,signOut:async()=>{user=null;callbacks.forEach(cb=>cb('SIGNED_OUT',null));},client:{auth:{onAuthStateChange:cb=>callbacks.push(cb)},rpc:async name=>{if(name==='late')return new Promise(r=>resolve=r);if(fail||name==='denied')return{data:null,error:{code:'42501'},status:403};return{data:structuredClone(data)};}}};
+ w.eval(shell.replace('/* GATE0_ROUTES */ []',JSON.stringify(available)));await tick();return{dom,w,d:w.document,data,change:x=>{data=x},deny:()=>{fail=true},late:()=>resolve({data:{sensitive:true}}),logout:()=>{user=null;callbacks.forEach(cb=>cb('SIGNED_OUT',null));}};
+}
+for(const profile of ['mixed','finance','reports','bessemer','huntsville']){const h=await setup(profile),links=()=>[...h.d.querySelectorAll('nav a')],has=x=>links().some(a=>a.getAttribute('href').startsWith(x));
+ ok(h.d.querySelectorAll('.staff-shell').length===1,profile+' one shell');
+ ok(has('staff-giving-reports')===['mixed','finance','reports'].includes(profile),profile+' finance reporting projection');
+ ok(has('staff-giving-merchants')===['mixed','finance'].includes(profile),profile+' configuration not implied by reporting');
+ ok(!has('staff-people')&&!has('staff-access'),profile+' no implicit People/admin');
+ if(['bessemer','huntsville'].includes(profile)){ok(has('staff-outreach-partner'),profile+' partner destination');ok(!has('staff-outreach-registration')&&!has('staff-outreach-decisions'),profile+' no general campaign pools');ok(h.d.querySelector('[aria-label="Current outreach campaign"]').options.length===2,profile+' exactly one authorized campaign');}
+ if(profile==='mixed')ok(has('staff-outreach-registration')&&has('staff-giving-gifts'),'both modules visible together');
+ ok(h.d.querySelectorAll('[aria-current="page"]').length===(profile==='mixed'?1:0),profile+' active item precise');
+ h.d.querySelector('.staff-menu').click();ok(h.d.querySelector('.staff-menu').getAttribute('aria-expanded')==='true',profile+' drawer accessible state');
+ h.d.querySelector('main').textContent='PRIVATE';const revoked=structuredClone(h.data);revoked.giving.organizations=[];revoked.payments.organizations=[];revoked.outreach.campaigns=[];revoked.partners=[];revoked.outreach.access_version='v2';h.change(revoked);await h.w.StaffWorkspace.refresh();ok(!has('staff-giving-gifts')&&!has('staff-outreach-partner'),'unauthorized navigation disappears after refresh');ok(!h.d.querySelector('main').textContent.includes('PRIVATE'),'revocation clears protected content');h.dom.window.close();}
+{const h=await setup('mixed','?campaign='+H);ok(h.w.StaffWorkspace.context.selected===B,'poisoned campaign URL cannot switch scope');ok(![...h.d.querySelectorAll('nav a')].some(a=>a.href.includes(H)),'no unauthorized campaign destination');h.dom.window.close();}
+{const h=await setup('mixed','',[]);ok(h.d.querySelectorAll('nav a').length===0,'missing public destinations never rendered');h.dom.window.close();}
+{const h=await setup();const late=h.w.ChampionLifeAuth.client.rpc('late',{});h.d.querySelector('main').textContent='PRIVATE';h.deny();await h.w.ChampionLifeAuth.client.rpc('denied',{});h.late();ok((await late).data===null,'late protected RPC cannot resurrect revoked content');await tick();ok(h.d.querySelectorAll('nav a').length===0,'verification failure clears old navigation');h.dom.window.close();}
+{const h=await setup();h.d.querySelector('main').textContent='PRIVATE';h.logout();await tick();ok(h.d.querySelectorAll('nav a').length===0&&!h.d.querySelector('main').textContent.includes('PRIVATE'),'signout clears content and all nav');h.dom.window.close();}
+console.log(n+' Gate 0 shared-shell DOM checks passed');

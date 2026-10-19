@@ -42,7 +42,7 @@ for (const cfg of [null, previewConfiguration(valid, production),previewConfigur
   dom.window.close();
 }
 
-// Real production artifact preserves every explicitly public file byte-for-byte.
+// Existing production files remain byte-identical. New shell receives only the reviewed route inventory.
 const manifest = JSON.parse(await readFile(path.join(root, 'tools/site-build/public-files.json')));
 // Released main pages must survive the development branch's explicit publish allowlist.
 for (const file of ['christmas-dinner-2026.html', 'assets/css/christmas-dinner-2026.css',
@@ -59,7 +59,11 @@ assert.equal(forms.window.document.querySelectorAll('form[name="christmas-dinner
 assert.equal(forms.window.document.querySelectorAll('form[name="outreach-partner"]').length, 0, 'No parallel outreach capture');
 forms.window.close();
 await buildSite({ root, env: { CONTEXT: 'production', ...minimal } });
-for (const file of manifest) assert.deepEqual(await readFile(path.join(root, 'dist', file)), await readFile(path.join(root, file)), file);
+for (const file of manifest) {
+ const bytes=await readFile(path.join(root,file));
+ const expected=file==='assets/js/staff-workspace.js'?Buffer.from(bytes.toString().replace('/* GATE0_ROUTES */ []',JSON.stringify(manifest.filter(p=>/^staff-[a-z0-9-]+\.html$/.test(p))))):bytes;
+ assert.deepEqual(await readFile(path.join(root,'dist',file)),expected,file);
+}
 async function inventory(dir, prefix = '') {
   const result = [];
   for (const item of await readdir(dir, { withFileTypes: true })) {

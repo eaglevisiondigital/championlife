@@ -1,0 +1,12 @@
+{
+  "denied": [
+    "exdocjbmylgxssanymjk",
+    "bkbmjisprwmkptywtmih",
+    "niyovbgoalulzkhbvebt"
+  ],
+  "branches": {
+    "codex/shared-platform-gate0": null,
+    "codex/nmi-giving-friday-cutover": null,
+    "codex/unified-outreach-production-v1": null
+  }
+}
