@@ -61,6 +61,7 @@
   ];
   // Injected from the reviewed public build manifest. Raw source fails closed.
   const publishedRoutes = /* GATE0_ROUTES */ [];
+  const workspaceHome = ['staff-home.html','staff-people.html'].find(route=>publishedRoutes.includes(route));
   const attribution = Object.freeze({
     label: 'Powered By', logo: 'assets/images/kingdom-propel-logo.png', href: 'https://kingdompropel.com',
     alt: 'Kingdom Propel by EagleVision', accessibleLabel: 'Powered by Kingdom Propel — opens KingdomPropel.com in a new tab'
@@ -68,7 +69,7 @@
   const original = document.querySelector('main');
   const shell = el('div', null, { class: 'staff-shell' });
   const sidebar = el('aside', null, { class: 'staff-sidebar', id: 'staff-navigation', 'aria-label': 'Staff workspace navigation' });
-  const brand = el('a', null, { href: 'staff-home.html', class: 'staff-brand', 'aria-label': 'Champion Life Staff Dashboard' });
+  const brand = el('a', null, { href: workspaceHome || '#staff-main', class: 'staff-brand', 'aria-label': 'Champion Life Staff Dashboard' });
   brand.append(el('img', null, { src: 'assets/images/logo-gold.png', alt: 'Champion Life Church' }));
   const close = el('button', 'Close menu', { type: 'button', class: 'staff-close' });
   const nav = el('nav', null, { 'aria-label': 'Staff Workspace' });
@@ -215,7 +216,8 @@
     window.dispatchEvent(new CustomEvent('staff-protected-clear'));
     // Module mounts are detached intentionally: late results cannot restore protected data.
     // Keep a visible, non-sensitive recovery state in the live document.
-    state(original,'Access changed','Your session or permissions changed. Return to the dashboard to check available access.','Return to Staff Dashboard','staff-home.html');
+    const target=['staff-home.html',page+'.html','staff-people.html'].find(route=>publishedRoutes.includes(route));
+    state(original,'Access changed','Your session or permissions changed. Reload the workspace to check available access.',target ? (target==='staff-home.html'?'Return to Staff Dashboard':'Reload workspace') : null,target);
   }
 
   function publish(s) { snapshot=s; render(s); window.dispatchEvent(new CustomEvent('staff-workspace-context',{detail:s})); }
