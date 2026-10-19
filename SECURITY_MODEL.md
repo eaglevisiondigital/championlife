@@ -1,17 +1,43 @@
-# Unified Outreach candidate security model
+# Gate 0 combined-artifact regression contracts — 2026-10-18
 
-Authority comes from verified Auth identity plus current active/dated database staff, campaign, or partner grants. User-editable metadata and cached JWT role claims grant no capability. Missing, revoked, inactive, expired, future, cross-campaign and cross-church authority denies. Organization scope remains separate from campaign and partner assignment scope.
+Preserved uncommitted NMI d82ed7 and Outreach bff9612 adoption trees before continuing validation. The private composer now identifies exact selected source heads. Standalone module inventories remain strict; combined tests explicitly verify the two Outreach-owned staff-page hashes and all four Outreach SQL hashes. NMI fixtures execute all 42 migrations only after that validation. Test bootstrap ownership prevents duplicate Storage creation. Legacy test RPC calls name their SQL argument types; standalone registration still requires no prize schema, while the combined registration test proves zero drawing numbers and no prize activation. Application business sources, historical SQL, credentials and real grants remain unchanged. Full results and local adoption commits belong in the private integration register; hosted/provider/finance/release gates remain open.
 
-Public application tables use RLS and RPC-only access; new raw table privileges are denied to anon/authenticated. Privileged implementations use empty search paths and explicit capability checks. Private source implementations renamed by the integration are not browser-executable. Recreated wrappers explicitly revoke PostgreSQL's default PUBLIC EXECUTE. Scoped Storage predicates remain required for private documents.
+---
 
-Partners cannot browse or claim the unassigned pool, query another church/campaign UUID, choose another church's worker, or acquire general People/finance rights. Composite foreign keys bind partner follow-up and pastoral notes to their exact assignment/campaign/church. Both histories are immutable. Existing verified accounts are required before any partner grant; the UI sends no invitations.
+# Gate 0 visible revocation recovery — 2026-10-18
 
-Private pastoral content has a separate capability or explicitly scoped pastoral-care permission. It is absent from ordinary staff projections, CSV and general audit metadata. Household projections return registering-adult/guardian contact and omit child answer/contact fields. Central follow-up cannot rewrite original decision/contact/prayer/timestamp/consent fields and may assign only a currently authorized verified worker. CSV is scoped, server-generated, formula-neutralized and audited.
+Current-head adoption exposed a shared-shell UX regression: clearing protected content detached module mounts, so module denial messages could render outside the live document. The shared shell now renders a non-sensitive accessible “Access changed” state and dashboard recovery link after clearing. Detached mounts and response-epoch rejection remain intact; stale responses cannot restore protected data. No permission, SQL or module business behavior is widened. Focused shared-shell regression: 80 checks PASS, including visible recovery and late-response denial.
 
-The shell rechecks current authority on focus and every 15 seconds. Access/assignment revisions clear protected UI without logout; any RPC denial clears it immediately. A shared request epoch rejects late protected responses after revocation/session change. Sign Out clears protected DOM before navigation. Backend denial remains authoritative regardless of UI timing.
+---
 
-Profile models describe Dave/Roddy/Tania full Champion Life/Outreach, Kelsea full Outreach, Pastor Chris assigned Bessemer-only and local Huntsville pastors assigned Huntsville-only. No real identity/grant is created. Staff-provisioning writes are held behind a separate release; the directory read is limited to organizations for which the current administrator has staff.manage, with no unrelated-tenant Auth enumeration.
+# Gate 0 current-head adoption correction — 2026-10-18
 
-Communications global/org/provider enablement is false/unconfigured; no actual provider credentials, worker deployment, scheduler, test send or financial activation occurs. Protected public registration functions, Edge gateways, headers/routes and historical migrations remain unchanged.
+NMI adoption now targets owner-specified `d82ed7fdb049389ae43d50a2ceb1ac300665a7cc`; Outreach remains `bff9612ac9385cf963c5e7e41f9091da7af86cf0`. Earlier3a8317/e39b832 results are historical, not current adoption certification. All newer NMI business work is preserved in source contracts. Independent adoption found missing-Auth, identity/role, branch-pin bypass and composer contamination defects; the bounded shared correction and current-head evidence are detailed in [Gate 0](docs/SHARED-PLATFORM-GATE0.md). Module-owned offline migration plans must explicitly include Gate0; no automatic widening or hosted application. No production/GiveHub/NMI execution/real grants or deployment changes.
 
-Local role, negative authorization, export, immutable-source, race and responsive browser tests are evidence for this candidate. They do not establish real hosted Auth, API/Storage exposure, Turnstile, email callbacks, live database migration application or production release readiness. Exact-stack hosted acceptance and separate production GO are still required.
+---
+
+# Shared Platform Gate 0 — 2026-10-18
+
+Bounded reconciliation from production `e3157f0afa3f563ab6560ca64c9049448f02c806`, frozen NMI PR #34 and Outreach PR #35. See [Gate 0 contract, evidence and adoption procedure](docs/SHARED-PLATFORM-GATE0.md) and [canonical scoped registry](config/platform/capabilities.json). This package adds one forward-only local migration, a shared context/navigation contract and upgrade/security/build regression tests. It does not merge the child business packages.
+
+The historical 41-capability failure is reproduced and explained. The frozen Outreach candidate already uses additive lists; Gate 0 preserves and tests that correction in both orders with populated grants. No grant/template rows or existing authorization helpers are changed. Tests use local synthetic databases/browser transport; hosted acceptance and production release are not approved. Both frozen child versions of this document are preserved verbatim in `docs/gate0-source-continuity/`; the production history follows below.
+
+No production change, GiveHub change, payment activation, hosted migration, real-user grant or deployment. Child adoption, later deltas, hosted/provider/operator acceptance and explicit release approval remain gates. Do not start unrelated platform modules.
+
+---
+
+# Huntsville candidate security boundaries
+
+All new tables have RLS and no raw anon/authenticated privileges. Scoped RPCs check verified identity and active/dated campaign authority. Private helper execution is revoked; security-definer functions use empty search paths. Registration administration requires existing active organization staff plus explicit campaign-admin authority. No actual grants are created by migrations.
+
+Only the public gateway holds service authority. Exact origin, Turnstile hostname/action, bounded payload and hashed-network rate checks remain unchanged from accepted source. Audit/signature/version/correction records remain immutable. Events are held, with no send worker. Public submissions cannot create canonical People or portal/staff authority. CSV is scoped and formula-neutralized.
+
+See [exact object ACLs](docs/HUNTSVILLE-REQUIRED-OBJECTS.json) and [release gates](docs/HUNTSVILLE-MINIMAL-RELEASE.md). No production credential, service key, private audit evidence or actual customer record is stored in this candidate. Local fixture auth/Turnstile simulation is test-only and excluded from the site artifact; it is not hosted proof.
+
+The additional isolated Huntsville acceptance project is `niyovbgoalulzkhbvebt`. Only it and the pre-existing acceptance project qualify for test-key mode, and only with explicit `acceptance` mode. Production and all unknown projects fail closed. New-project credentials must remain outside repository/public artifacts; only its public publishable key belongs in the branch-scoped browser configuration.
+
+## Isolated email-link callback handling
+
+The login uses the same `ChampionLifeAuth` client with `detectSessionInUrl: true`. It waits on that client's shared initialization promise instead of implementing token parsing, JWT validation or session storage independently. Only the supported direct `email`/`magiclink` token-hash flow and observed implicit session flow are accepted; ambiguous/malformed callbacks fail closed. Callback errors cannot silently authorize a redirect using an older session. Sensitive parameters are scrubbed with `history.replaceState` before successful navigation and on failure, while the strict existing destination sanitizer remains unchanged. Initialization and verification events cannot race into duplicate navigation.
+
+Authentication does not grant organization or campaign authority. Existing downstream authorization, including revoked Huntsville staff denial and scoped export checks, remains unchanged. Tests use fictional credentials/local databases; a new human email-link retest is still required before declaring hosted link acceptance complete.

@@ -1,0 +1,57 @@
+{
+  "nmi": {
+    "private": true,
+    "type": "module",
+    "devDependencies": {
+      "@electric-sql/pglite": "0.5.8",
+      "jsdom": "26.1.0",
+      "pg": "8.23.1"
+    },
+    "scripts": {
+      "test": "node login.dom.mjs && node people-staff.test.mjs && node outreach-gateway.test.mjs && node outreach-cleanup.test.mjs && node outreach-cron.test.mjs && node gateway-http.test.mjs && node outreach-workflow.test.mjs && node outreach-partner-staff.dom.mjs && node outreach-partner.dom.mjs && node site-build.test.mjs && node outreach-people.dom.mjs && node huntsville-registration.test.mjs && node huntsville-registration.dom.mjs && node outreach-registration.dom.mjs && node outreach-registration-gateway.test.mjs && node outreach-registration.test.mjs && node huntsville-minimal-safety.test.mjs && node giving.test.mjs && node giving-adapter.test.mjs && node giving.dom.mjs && node giving-management.test.mjs && node giving-management.dom.mjs && node giving-reports.test.mjs && node giving-reports.dom.mjs && node forms.test.mjs && node forms-gateway.test.mjs && node forms.dom.mjs && node payments.test.mjs && node payments-adapter.test.mjs && node payments.dom.mjs && node payments-upgrade.test.mjs && node payment-ops.test.mjs && node payment-ops-adapter.test.mjs && node payment-ops.dom.mjs && node nmi.test.mjs && node nmi-adapter.test.mjs && node nmi.dom.mjs && node nmi-build.test.mjs && node nmi-gateway.test.mjs && node nmi-integration.test.mjs && node nmi-shell.dom.mjs && node nmi-acceptance-package.test.mjs && node nmi-execution.test.mjs && node nmi-execution-gateway.test.mjs && node nmi-query.test.mjs && node nmi-public.dom.mjs && node nmi-staff.dom.mjs",
+      "test:login": "node login.dom.mjs",
+      "test:concurrency": "node outreach-concurrency.test.mjs",
+      "test:huntsville-native": "TEST_NATIVE_PG=1 node outreach-registration.test.mjs && TEST_NATIVE_PG=1 node huntsville-registration.test.mjs && node huntsville-minimal-concurrency.test.mjs",
+      "test:huntsville-safety": "node huntsville-minimal-safety.test.mjs",
+      "test:giving": "node giving.test.mjs && node giving-adapter.test.mjs && node giving.dom.mjs",
+      "test:giving-concurrency": "node giving-concurrency.test.mjs",
+      "test:giving-management": "node giving-management.test.mjs && node giving-management.dom.mjs",
+      "test:giving-reports": "node giving-reports.test.mjs && node giving-reports.dom.mjs",
+      "test:forms": "node forms.test.mjs && node forms-gateway.test.mjs && node forms.dom.mjs",
+      "test:forms-concurrency": "node forms-concurrency.test.mjs",
+      "test:payments": "node payments.test.mjs && node payments-adapter.test.mjs && node payments.dom.mjs && node payments-upgrade.test.mjs",
+      "test:payments-concurrency": "node payments-concurrency.test.mjs",
+      "test:payment-operations": "node payment-ops.test.mjs && node payment-ops-adapter.test.mjs && node payment-ops.dom.mjs",
+      "test:payment-operations-concurrency": "node payment-ops-concurrency.test.mjs",
+      "test:nmi": "node nmi.test.mjs && node nmi-adapter.test.mjs && node nmi.dom.mjs && node nmi-build.test.mjs && node nmi-gateway.test.mjs",
+      "test:nmi-concurrency": "node nmi-concurrency.test.mjs",
+      "test:nmi-integration": "node nmi-integration.test.mjs",
+      "test:nmi-package": "node nmi-acceptance-package.test.mjs",
+      "test:nmi-execution": "node nmi-execution.test.mjs && node nmi-execution-gateway.test.mjs && node nmi-query.test.mjs && node nmi-public.dom.mjs && node nmi-staff.dom.mjs",
+      "test:nmi-execution-concurrency": "node nmi-execution-concurrency.test.mjs"
+    }
+  },
+  "outreach": {
+    "private": true,
+    "type": "module",
+    "devDependencies": {
+      "@electric-sql/pglite": "0.5.8",
+      "jsdom": "26.1.0",
+      "pg": "8.23.1",
+      "nodemailer": "10.0.16"
+    },
+    "scripts": {
+      "test": "node login.dom.mjs && node people-staff.test.mjs && node outreach-gateway.test.mjs && node outreach-cleanup.test.mjs && node outreach-cron.test.mjs && node gateway-http.test.mjs && node outreach-workflow.test.mjs && node outreach-partner-staff.dom.mjs && node outreach-partner.dom.mjs && node site-build.test.mjs && node outreach-people.dom.mjs && node huntsville-registration.test.mjs && node huntsville-registration.dom.mjs && node outreach-registration.dom.mjs && node outreach-registration-gateway.test.mjs && node outreach-registration.test.mjs && node huntsville-minimal-safety.test.mjs && node unified-staff-workspace.test.mjs && node outreach-partner-pastoral.test.mjs && npm run test:unified && npm run test:accepted",
+      "test:login": "node login.dom.mjs",
+      "test:concurrency": "node outreach-concurrency.test.mjs",
+      "test:huntsville-native": "TEST_NATIVE_PG=1 node outreach-registration.test.mjs && TEST_NATIVE_PG=1 node huntsville-registration.test.mjs && node huntsville-minimal-concurrency.test.mjs",
+      "test:huntsville-safety": "node huntsville-minimal-safety.test.mjs",
+      "test:unified": "node unified-outreach-integration.test.mjs && node unified-outreach-roles.test.mjs && node unified-staff-shell.dom.mjs && node unified-fixture-generator.test.mjs",
+      "test:accepted": "node accepted-activation-adapter.test.mjs && node accepted-activation.test.mjs && node accepted-communications-provider.test.mjs && node accepted-communications.dom.mjs && node accepted-communications.test.mjs && node accepted-outreach-event-day.dom.mjs && node accepted-outreach-event-day.test.mjs && node accepted-outreach-pre-event.dom.mjs && node accepted-outreach-pre-event.test.mjs && node accepted-outreach-prize-operations.test.mjs && node accepted-outreach-prize.dom.mjs && node accepted-outreach-prize.test.mjs && node accepted-outreach-team.dom.mjs && node accepted-outreach-team.test.mjs",
+      "test:unified:native": "TEST_NATIVE_PG=1 node unified-outreach-roles.test.mjs && node unified-registration-concurrency.test.mjs",
+      "test:unified:browser": "node unified-browser.mjs",
+      "test:unified:compatibility": "node unified-nmi-compatibility.test.mjs"
+    }
+  },
+  "resolution": "Retain each module script and baseline suites. Shared shell replaced by Gate0 projection/regression suite. Package test composition is explicit, never last-writer-wins."
+}

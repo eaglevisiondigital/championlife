@@ -15,7 +15,9 @@ assert(migration.includes("Do not contact minors directly") || migration.include
 const shell=read('assets/js/staff-workspace.js');
 assert(shell.includes("'Partner Follow-Up'"));
 assert(shell.includes("'Partner Churches'"));
-assert(shell.includes("outreach_partner_workspace"));
+assert(shell.includes("rpc('shared_platform_context',{})"));
+const shared=read('supabase/migrations/20261019012735_shared_platform_gate0.sql');
+assert(shared.includes("select public.outreach_partner_workspace(''partners''"));
 
 const partner=read('assets/js/staff-outreach-partner.js');
 assert(partner.includes('outreach_partner_workspace'));

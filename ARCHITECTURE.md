@@ -1,15 +1,21 @@
-# Unified Champion Life platform architecture
+# Gate 0 current-head adoption correction — 2026-10-18
 
-Champion Life is tenant one. Outreach is a module in the same staff platform, using the existing Auth, Supabase database, People/Households and permission foundation. SowGo is its public brand. Existing Champion Life/SowGo organization records and financial ownership boundaries remain intact; this package does not merge databases, move to .NET, pool funds or introduce a separate Outreach backend.
+NMI adoption now targets owner-specified `d82ed7fdb049389ae43d50a2ceb1ac300665a7cc`; Outreach remains `bff9612ac9385cf963c5e7e41f9091da7af86cf0`. Earlier3a8317/e39b832 results are historical, not current adoption certification. All newer NMI business work is preserved in source contracts. Independent adoption found missing-Auth, identity/role, branch-pin bypass and composer contamination defects; the bounded shared correction and current-head evidence are detailed in [Gate 0](docs/SHARED-PLATFORM-GATE0.md). Module-owned offline migration plans must explicitly include Gate0; no automatic widening or hosted application. No production/GiveHub/NMI execution/real grants or deployment changes.
 
-The staff shell obtains one server-derived context describing authorized contexts, campaigns and modules. A restricted church user receives only campaign metadata and assigned-record workflows. Central staff use campaign-wide operational RPCs. Every mutation rechecks current database authority. The context selector is a presentation control, never an authorization grant.
+---
 
-Original decision rows stay in `outreach_registrations`. The campaign bridge stores source references, not duplicate contacts. Shared follow-up/worker state lives separately from immutable original decisions. Existing production Huntsville registrations, explicit household attendees, legal snapshots and check-in remain canonical; their production function definitions and gateway files are preserved.
+# Shared Platform Gate 0 — 2026-10-18
 
-Partner churches are campaign-scoped records. Central staff explicitly assign original decisions or registered households. Church-local membership and capability checks govern assignment detail, local workers, shared history, private pastoral history and scoped CSV. No partner is granted general People or finance authority by its membership.
+Bounded reconciliation from production `e3157f0afa3f563ab6560ca64c9049448f02c806`, frozen NMI PR #34 and Outreach PR #35. See [Gate 0 contract, evidence and adoption procedure](docs/SHARED-PLATFORM-GATE0.md) and [canonical scoped registry](config/platform/capabilities.json). This package adds one forward-only local migration, a shared context/navigation contract and upgrade/security/build regression tests. It does not merge the child business packages.
 
-Missing workflow/prize/Host/Event Day/communications dependencies are added forward after the production foundation; overlapping CREATE TABLE statements and the legacy Bessemer seed were excluded. Templates are versioned; external delivery remains unconfigured/disabled. The provider-neutral accepted source is present as dormant code, not an activated service. Native Giving work stays on its separate release train and the original GiveHub destination remains.
+The historical 41-capability failure is reproduced and explained. The frozen Outreach candidate already uses additive lists; Gate 0 preserves and tests that correction in both orders with populated grants. No grant/template rows or existing authorization helpers are changed. Tests use local synthetic databases/browser transport; hosted acceptance and production release are not approved. Both frozen child versions of this document are preserved verbatim in `docs/gate0-source-continuity/`; the production history follows below.
 
-Netlify continues to publish only the explicit `dist/` artifact. Docs, migration staging packages, fixtures, tests and private evidence are excluded. Production public pages, registration header, routing and protected assets remain exact. The standalone historical acceptance route stays separate from the product UI.
+No production change, GiveHub change, payment activation, hosted migration, real-user grant or deployment. Child adoption, later deltas, hosted/provider/operator acceptance and explicit release approval remain gates. Do not start unrelated platform modules.
 
-See [integration inventory](docs/UNIFIED-OUTREACH-INTEGRATION-INVENTORY.md), [source manifest](docs/UNIFIED-OUTREACH-SOURCE-INVENTORY.json), [production ledger mapping](docs/UNIFIED-OUTREACH-PRODUCTION-BASELINE.json) and [hosted gate](docs/UNIFIED-OUTREACH-HOSTED-ACCEPTANCE.md).
+---
+
+# Huntsville isolated architecture
+
+The production baseline remains intact. Public config is anonymous and minimized; guest mutations enter only through the protected Edge Function and service-only registration gateway. Staff operations use the registration workspace RPC with campaign-scoped active/dated authority. Canonical household registrations, explicit attendees and immutable legal snapshots drive counts and separate check-in state. Campaign locking protects idempotency and final-slot capacity.
+
+Phase A identity/audit helpers and the dormant participant identity required by accepted check-in are isolated from generic workflows, travel and prize operations. Exact edges, columns, constraints, origins and exclusions are in [the dependency inventory](docs/HUNTSVILLE-MINIMAL-DEPENDENCIES.md). The current production staff return route is retained; no unpublished platform shell is imported.

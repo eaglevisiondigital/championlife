@@ -3,6 +3,10 @@ import {readFileSync} from 'node:fs';
 const root=new URL('../../',import.meta.url);
 const read=p=>readFileSync(new URL(p,root),'utf8');
 
+// The adopted default is baseline + Gate0; retained module coverage is explicit.
+const ci=read('.github/workflows/outreach-isolation.yml');
+assert(/- run: npm test --prefix tools\/backend-tests\n\s*- run: npm run test:frozen:outreach --prefix tools\/backend-tests\n\s*- run: TEST_POSTGRES_BIN/.test(ci),'CI retains sequential Outreach module coverage before native concurrency');
+
 const home=read('staff-home.html');
 assert(home.includes('data-staff-workspace'));
 assert(home.includes('assets/js/staff-workspace.js'));
@@ -23,8 +27,11 @@ assert(shell.includes("'Current outreach campaign'"));
 assert(shell.includes("'Staff & Access'"));
 assert(shell.includes("'Decisions & Follow-Up'"));
 assert(shell.includes("'Team & Travel'"));
-assert(shell.includes("hasGrant('staff.manage')"));
-assert(shell.includes("unified_outreach_context"));
+assert(shell.includes("hasGrant(s,'staff.manage')"));
+assert(shell.includes("rpc('shared_platform_context',{})"));
+const sharedContext=read('supabase/migrations/20261019012735_shared_platform_gate0.sql');
+assert(sharedContext.includes('language plpgsql security invoker'));
+assert(sharedContext.includes("select public.unified_outreach_context()"));
 
 const huntsville=read('huntsville/index.html');
 assert(huntsville.includes('Huntsville, Alabama Outreach'));

@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "productionCommit": "e3157f0afa3f563ab6560ca64c9049448f02c806",
+  "outreachCommit": "bff9612ac9385cf963c5e7e41f9091da7af86cf0",
+  "gate0SqlCommit": "3439e703ec5186e779f458ab5496afde611cc4aa",
+  "expectedBaselineCount": 25,
+  "expectedForwardCount": 5,
+  "expectedTotalCount": 30,
+  "forwardMigrations": [
+    {
+      "path": "supabase/migrations/20261019004611_unified_outreach_staff_partner.sql",
+      "sourceCommit": "bff9612ac9385cf963c5e7e41f9091da7af86cf0",
+      "sha256": "418862e6e22a5c3280958253ade398a7f9e362f039c312a971d9d063e692749f"
+    },
+    {
+      "path": "supabase/migrations/20261019004612_unified_outreach_workflow_foundation.sql",
+      "sourceCommit": "bff9612ac9385cf963c5e7e41f9091da7af86cf0",
+      "sha256": "3ba064f7900624ca32faa95befa1d1de702ce3e428cc74131aac737581bff0f2"
+    },
+    {
+      "path": "supabase/migrations/20261019004613_unified_outreach_operations.sql",
+      "sourceCommit": "bff9612ac9385cf963c5e7e41f9091da7af86cf0",
+      "sha256": "e6ebf423e395f65cac1d0e60913c6877c78bfdbbd193b714e7d9d56dc870ddfb"
+    },
+    {
+      "path": "supabase/migrations/20261019004614_unified_outreach_security.sql",
+      "sourceCommit": "bff9612ac9385cf963c5e7e41f9091da7af86cf0",
+      "sha256": "a361cff97ec94cad6994d23529d89990f71d772dc2341caa64f63673f9d92030"
+    },
+    {
+      "path": "supabase/migrations/20261019012735_shared_platform_gate0.sql",
+      "sourceCommit": "3439e703ec5186e779f458ab5496afde611cc4aa",
+      "sha256": "826b5d11e2f1a137b2e22445c3c805e59d6ff08ebfda7cef916142ac59593613"
+    }
+  ],
+  "authorization": "Offline preparation only; no application, hosted target, grant or release authorized. Gate0 SQL remains pinned to its original source commit; a later reviewed shared-shell follow-up may leave this SQL byte-identical."
+}
