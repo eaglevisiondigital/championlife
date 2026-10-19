@@ -24,6 +24,7 @@ jobs:
       - run: npm ci --ignore-scripts --prefix tools/nmi-component
       - run: node tools/nmi-component/build.mjs && git diff --exit-code -- assets/js/nmi-component.js
       - run: npm test --prefix tools/backend-tests
+      - run: npm run test:frozen:nmi --prefix tools/backend-tests
       - run: |
           export TEST_POSTGRES_BIN="$(pg_config --bindir)"
           npm run test:giving-concurrency --prefix tools/backend-tests

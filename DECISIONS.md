@@ -1,27 +1,28 @@
-# NMI Giving sandbox execution follow-up — October 18 CDT / 19 UTC, 2026
+# Gate 0 combined-artifact regression contracts — 2026-10-18
 
-Primary authority remains **Align Codex with Champion Life**. This is a bounded Giving follow-up to frozen draft PR #34 head `3a8317fb265c0cabb894133ac169100aaea83622`; no restart, merge or historical SQL rewrite. Production Git main is still `e3157f0afa3f563ab6560ca64c9049448f02c806`. Primary independently confirmed the live 25-row baseline; source attribution and all hashes are in `docs/NMI-CUTOVER-PRODUCTION-BASELINE.json`. No production inspection/write is claimed by this child.
-
-1. Continue accepted PR #34 by forward additions only. The two new execution migrations remain proposed and unapplied; primary owns combined numbering/order.
-2. Keep every new execution path source-pinned, default-disabled and sandbox-only. Preparing a named acceptance target does not authorize creating it, provisioning staff or accessing another acceptance project.
-3. Accept authoritative provider lookup before a successful gift; never post from a browser, mutation response or webhook alone. Use original intent/order identity for recovery; a missing response never authorizes another charge. Account/provider ambiguity remains held pending actual evidence.
-4. Reuse canonical People/Households/ledger/recurring/receipt/Operations. Guest identity stays unlinked until verified; no implicit People creation or pooled Propel funds. Preserve recurring tax classification and organization merchant ownership.
-5. Generate one immutable SANDBOX receipt and held outbox item after terminal successful gifts; primary Communications/legal sender and real delivery acceptance stay gated. No messages were sent.
-6. Preserve current main, all 449 protected blobs and every production function/migration/public GiveHub link. Keep sibling/primary files untouched. Primary Gate 0, actual NMI acceptance, finance worksheet and separately authorized release are still required; Friday does not weaken them.
+Preserved uncommitted NMI d82ed7 and Outreach bff9612 adoption trees before continuing validation. The private composer now identifies exact selected source heads. Standalone module inventories remain strict; combined tests explicitly verify the two Outreach-owned staff-page hashes and all four Outreach SQL hashes. NMI fixtures execute all 42 migrations only after that validation. Test bootstrap ownership prevents duplicate Storage creation. Legacy test RPC calls name their SQL argument types; standalone registration still requires no prize schema, while the combined registration test proves zero drawing numbers and no prize activation. Application business sources, historical SQL, credentials and real grants remain unchanged. Full results and local adoption commits belong in the private integration register; hosted/provider/finance/release gates remain open.
 
 ---
 
-Historical frozen integration/earlier platform checkpoints follow; the execution follow-up above supersedes their held engineering status.
+# Gate 0 visible revocation recovery — 2026-10-18
 
-# NMI Friday candidate decisions — 2026-10-18
+Current-head adoption exposed a shared-shell UX regression: clearing protected content detached module mounts, so module denial messages could render outside the live document. The shared shell now renders a non-sensitive accessible “Access changed” state and dashboard recovery link after clearing. Detached mounts and response-epoch rejection remain intact; stale responses cannot restore protected data. No permission, SQL or module business behavior is widened. Focused shared-shell regression: 80 checks PASS, including visible recovery and late-response denial.
 
-1. Current explicit assignment supersedes the earlier package freeze only for the named isolated NMI integration branch. Use exact production base `e3157f0`, preserve all other checkouts/changes, and do not merge old dependent PRs.
-2. Reuse current production shared prerequisites. Extract nine accepted Giving SQL files byte-identically under new forward versions allocated by Supabase CLI; do not add the old Outreach Phase A–H chain, duplicate campaign identity, seed imports or unrelated operational pages.
-3. Integrate NMI/Operations siblings through safe immutable observation projection, never a second ledger or automatic finalizer/retry. Keep original held provider/execution boundaries and audit/tenant ownership.
-4. Restrict the new module shell to installed destinations and existing production staff return entry. Add original approved Kingdom Propel attribution asset without redesigning production pages.
-5. Preserve exact existing production files via machine-readable blob manifest and regression. Isolated package is prepared offline only. Existing NMI shared-project pin must be replaced with an explicitly approved clean acceptance target in a reviewed follow-up before hosted writes; do not generalize to arbitrary project URLs.
-6. Missing merchant/settlement/receipt/GiveHub facts stay unverified. Required launch capabilities missing from source remain engineering blockers. Friday deadline does not reduce the command document's mandatory acceptance gates. GiveHub stays primary until complete GO package and explicit release authorization.
-7. No production merge/migration/function deployment, real credentials in repo, live payment, public GiveHub link change, recurring cancellation, Authorize.Net/Text-to-Give activation or unrelated page redesign is performed or authorized by this build.
+---
+
+# Gate 0 current-head adoption correction — 2026-10-18
+
+NMI adoption now targets owner-specified `d82ed7fdb049389ae43d50a2ceb1ac300665a7cc`; Outreach remains `bff9612ac9385cf963c5e7e41f9091da7af86cf0`. Earlier3a8317/e39b832 results are historical, not current adoption certification. All newer NMI business work is preserved in source contracts. Independent adoption found missing-Auth, identity/role, branch-pin bypass and composer contamination defects; the bounded shared correction and current-head evidence are detailed in [Gate 0](docs/SHARED-PLATFORM-GATE0.md). Module-owned offline migration plans must explicitly include Gate0; no automatic widening or hosted application. No production/GiveHub/NMI execution/real grants or deployment changes.
+
+---
+
+# Shared Platform Gate 0 — 2026-10-18
+
+Bounded reconciliation from production `e3157f0afa3f563ab6560ca64c9049448f02c806`, frozen NMI PR #34 and Outreach PR #35. See [Gate 0 contract, evidence and adoption procedure](docs/SHARED-PLATFORM-GATE0.md) and [canonical scoped registry](config/platform/capabilities.json). This package adds one forward-only local migration, a shared context/navigation contract and upgrade/security/build regression tests. It does not merge the child business packages.
+
+The historical 41-capability failure is reproduced and explained. The frozen Outreach candidate already uses additive lists; Gate 0 preserves and tests that correction in both orders with populated grants. No grant/template rows or existing authorization helpers are changed. Tests use local synthetic databases/browser transport; hosted acceptance and production release are not approved. Both frozen child versions of this document are preserved verbatim in `docs/gate0-source-continuity/`; the production history follows below.
+
+No production change, GiveHub change, payment activation, hosted migration, real-user grant or deployment. Child adoption, later deltas, hosted/provider/operator acceptance and explicit release approval remain gates. Do not start unrelated platform modules.
 
 ---
 

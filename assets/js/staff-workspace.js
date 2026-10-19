@@ -2,31 +2,38 @@
 (() => {
   'use strict';
   if (!document.body.hasAttribute('data-staff-workspace')) return;
+  // Disabled previews intentionally load no Supabase client. Keep consumers fail-closed.
+  const authAvailable = Boolean(window.ChampionLifeAuth?.client);
+  if (!authAvailable) window.ChampionLifeAuth = {
+    getUser: async () => null, getSession: async () => null, signOut: async () => {},
+    client: { rpc: async () => ({data:null,error:{code:'42501',message:'Workspace unavailable'},status:403}), auth: {onAuthStateChange(){}} }
+  };
   const el = window.OutreachUI.el, auth = window.ChampionLifeAuth;
   const page = location.pathname.split('/').pop().replace(/\.html$/, '');
   let selected = new URLSearchParams(location.search).get('campaign');
   const configuration = [
-    { id: 'home', label: 'HOME', children: [{ label: 'Staff Dashboard', href: 'staff-people.html', capability: 'workspace' }] },
-    { id: 'outreach', label: 'OUTREACH', children: [
-      { label: 'Outreach Overview', href: 'staff-outreach-overview.html', capability: 'outreach' },
-      { label: 'Opportunities & Pre-Event', href: 'staff-outreach-pre-event.html', capability: 'preevent' },
-      { label: 'Campaigns', href: 'staff-outreach-campaigns.html', capability: 'campaigns' },
-      { label: 'Partner Intakes', href: 'staff-outreach-partners.html', capability: 'partners' },
-      { label: 'People & Follow-Up', href: 'staff-people.html', capability: 'people' }
-    ] },
-    { id: 'operations', label: 'EVENT OPERATIONS', children: [
-      { label: 'Team & Travel', href: 'staff-outreach-team.html', capability: 'team' },
-      { label: 'Registration & Check-In', href: 'staff-outreach-registration.html', capability: 'registration' },
-      { label: 'Prize Operations', href: 'staff-outreach-prizes.html', capability: 'prizes' },
-      { label: 'Event Day Command Center', href: 'staff-outreach-event-day.html', capability: 'eventday' }
-    ] }
-    ,{ id: 'communications', label: 'COMMUNICATIONS', children: [
-      {label:'Communications Overview',href:'staff-communications.html',capability:'commview'},
+    {id:'home',label:'HOME',children:[{label:'Staff Dashboard',href:'staff-home.html',capability:'home'}]},
+    {id:'people',label:'PEOPLE',children:[{label:'People & Follow-Up',href:'staff-people.html',capability:'people'},{label:'Staff & Access',href:'staff-access.html',capability:'access'}]},
+    {id:'outreach',label:'OUTREACH',children:[
+      {label:'Outreach Home',href:'staff-outreach-overview.html',capability:'outreach'},
+      {label:'Campaigns',href:'staff-outreach-campaigns.html',capability:'campaigns'},
+      {label:'Decisions & Follow-Up',href:'staff-outreach-decisions.html',capability:'decisions'},
+      {label:'Registration & Check-In',href:'staff-outreach-registration.html',capability:'registration'},
+      {label:'Team & Travel',href:'staff-outreach-team.html',capability:'team'},
+      {label:'Partner Churches',href:'staff-outreach-partner-admin.html',capability:'partneradmin'},
+      {label:'Partner Follow-Up',href:'staff-outreach-partner.html',capability:'partner'},
+      {label:'Host & Preparation',href:'staff-outreach-pre-event.html',capability:'preevent'},
+      {label:'Event Day',href:'staff-outreach-event-day.html',capability:'eventday'},
+      {label:'Giveaways',href:'staff-outreach-prizes.html',capability:'prizes'},
+      {label:'Outreach Giving',href:'staff-outreach-giving.html',capability:'giving'},
+      {label:'Reports',href:'staff-outreach-reports.html',capability:'reports'},
+      {label:'Settings',href:'staff-outreach-settings.html',capability:'settings'}]},
+    {id:'communications',label:'COMMUNICATIONS',children:[
+      {label:'Communications',href:'staff-communications.html',capability:'commview'},
       {label:'Campaign Communications',href:'staff-campaign-communications.html',capability:'commsend'},
       {label:'Templates',href:'staff-communication-templates.html',capability:'commtemplates'},
       {label:'Delivery Activity',href:'staff-communication-activity.html',capability:'commdelivery'},
-      {label:'Provider Settings',href:'staff-communication-providers.html',capability:'commproviders'}
-    ] }
+      {label:'Provider Settings',href:'staff-communication-providers.html',capability:'commproviders'}]}
     ,{ id: 'giving', label: 'GIVING / FINANCE', children: [
       {label:'Overview',href:'staff-giving-overview.html',capability:'financereports'},
       {label:'Gifts',href:'staff-giving-gifts.html',capability:'financegifts'},
@@ -52,7 +59,9 @@
     ,{id:'forms',label:'FORMS',children:[{label:'Forms',href:'staff-forms.html',capability:'formsread'},{label:'Form Builder',href:'staff-form-builder.html',capability:'formsedit'},{label:'Submissions',href:'staff-form-submissions.html',capability:'formssubmissions'}]}
     // Future authorized destinations extend this configuration; no placeholder links.
   ];
-  for (let i=configuration.length-1;i>=0;i--) { if (!['giving','forms'].includes(configuration[i].id)) configuration.splice(i,1); }
+  // Injected from the reviewed public build manifest. Raw source fails closed.
+  const publishedRoutes = /* GATE0_ROUTES */ [];
+  const workspaceHome = ['staff-home.html','staff-people.html'].find(route=>publishedRoutes.includes(route));
   const attribution = Object.freeze({
     label: 'Powered By', logo: 'assets/images/kingdom-propel-logo.png', href: 'https://kingdompropel.com',
     alt: 'Kingdom Propel by EagleVision', accessibleLabel: 'Powered by Kingdom Propel — opens KingdomPropel.com in a new tab'
@@ -60,7 +69,7 @@
   const original = document.querySelector('main');
   const shell = el('div', null, { class: 'staff-shell' });
   const sidebar = el('aside', null, { class: 'staff-sidebar', id: 'staff-navigation', 'aria-label': 'Staff workspace navigation' });
-  const brand = el('a', null, { href: 'staff-people.html', class: 'staff-brand', 'aria-label': 'Champion Life Staff Dashboard' });
+  const brand = el('a', null, { href: workspaceHome || '#staff-main', class: 'staff-brand', 'aria-label': 'Champion Life Staff Dashboard' });
   brand.append(el('img', null, { src: 'assets/images/logo-gold.png', alt: 'Champion Life Church' }));
   const close = el('button', 'Close menu', { type: 'button', class: 'staff-close' });
   const nav = el('nav', null, { 'aria-label': 'Staff Workspace' });
@@ -73,12 +82,18 @@
   const menu = el('button', 'Menu', { type: 'button', class: 'staff-menu', 'aria-controls': 'staff-navigation', 'aria-expanded': 'false' });
   const crumb = el('span', 'CHAMPION LIFE · STAFF WORKSPACE', { class: 'staff-eyebrow' });
   const signout = el('button', 'Sign out', { type: 'button', class: 'staff-session', hidden: '' });
-  top.append(menu, crumb, signout);
+  const contextSelect=el('select',null,{'aria-label':'Platform context',class:'staff-campaign-select'});
+  const campaignSelect=el('select',null,{'aria-label':'Current outreach campaign',class:'staff-campaign-select'});
+  const contextBar=el('div',null,{class:'staff-context'});contextBar.append(contextSelect,campaignSelect);
+  const who=el('span','Checking session…',{class:'staff-user'}),role=el('span','',{class:'staff-role'});
+  const identity=el('div',null,{class:'staff-identity'}),session=el('div',null,{class:'staff-session-wrap'});
+  identity.append(who,role);session.append(identity,signout);
+  top.append(menu, crumb, contextBar, session);
   original.classList.add('staff-main'); original.id = 'staff-main'; original.tabIndex = -1;
   const skip = el('a', 'Skip to workspace', { href: '#staff-main', class: 'staff-skip' });
   column.append(top, original); shell.append(sidebar, backdrop, column); document.body.prepend(skip, shell);
   document.querySelector('.campaign-shell')?.remove();
-  let snapshot = null, epoch = 0, busy = false, again = false, open = false, expanded = {};
+  let snapshot = null, accessVersion=null, responseEpoch=0, epoch = 0, busy = false, again = false, open = false, expanded = {};
   const seenDenials = new WeakSet();
   try { const saved=JSON.parse(localStorage.getItem('staff-nav-groups-v1') || '{}'); if(saved && typeof saved==='object' && !Array.isArray(saved))expanded=saved; } catch { /* Optional preference only. */ }
   const mobile = () => matchMedia('(max-width: 1023px)').matches;
@@ -116,29 +131,46 @@
     if(capability==='workspace'&&(s.giving?.organizations||[]).length)return true;
     const commKeys={commview:'communications.view',commsend:'communications.send',commtemplates:'communications.templates.view',commdelivery:'communications.delivery.view',commproviders:'communications.providers.view'};
     if(commKeys[capability])return (s.communications?.organizations||[]).some(o=>o.permissions.includes(commKeys[capability]))||(s.communications?.campaigns||[]).some(c=>(!selected||c.id===selected)&&c.permissions.includes(commKeys[capability]));
-    if (capability === 'partners') return hasGrant(s, 'outreach.view');
-    if (capability === 'people') return hasGrant(s, 'people.read');
-    if (capability === 'workspace' && ((s.communications?.organizations||[]).length||(s.communications?.campaigns||[]).length))return true;
-    if (capability === 'workspace') return (s.staff?.grants || []).length > 0 || s.organizations.length > 0 || ['campaigns','preevent','team','registration','prizes','eventday'].some(k => (s[k] || []).length);
-    if (capability === 'outreach') return s.organizations.length > 0 || ['campaigns','preevent','team','registration','prizes','eventday'].some(k => rowsFor(s,k).length);
-    if (capability === 'preevent') return s.organizations.length > 0 || rowsFor(s,capability).length > 0;
-    if (capability === 'campaigns') return s.organizations.length > 0 || rowsFor(s,capability).length > 0;
-    return rowsFor(s,capability).length > 0;
+    const staffGrants=s.staff?.grants||[],campaigns=(s.campaigns||[]).filter(c=>!selected||c.id===selected);
+    if(capability==='home'||capability==='workspace')return staffGrants.length>0||s.campaigns.length>0||['giving','forms','payments','communications'].some(k=>(s[k]?.organizations||[]).length>0);
+    if(capability==='people')return staffGrants.some(g=>g.permission==='people.read');
+    if(capability==='access')return hasGrant(s,'staff.manage');
+    if(capability==='outreach')return s.campaigns.length>0;
+    if(capability==='giving'){const org=(s.staff?.organizations||[]).find(o=>o.slug==='sowgo');return org&&staffGrants.some(g=>g.organization_id===org.id&&g.permission==='finance.read'&&!g.department_ids);}
+    if(['reports','settings'].includes(capability))return campaigns.some(c=>c.modules.some(m=>['campaigns','decisions','registration','partneradmin'].includes(m)));
+    return campaigns.some(c=>c.modules.includes(capability));
   }
+
   function href(item, s = snapshot) {
-    if(item.capability.startsWith('payments')){const requested=new URLSearchParams(location.search).get('organization');const scopes=s.payments?.organizations||[];const chosen=scopes.find(o=>o.id===requested)||scopes[0];return item.href+(chosen?'?organization='+encodeURIComponent(chosen.id):'');}
-    if(item.capability.startsWith('forms')){const org=new URLSearchParams(location.search).get('organization');const scopes=s.forms?.organizations||[];const chosen=scopes.find(o=>o.id===org)||scopes[0];return item.href+(chosen?'?organization='+encodeURIComponent(chosen.id):'');}
+    if(item.capability.startsWith('payments')){const requested=new URLSearchParams(location.search).get('organization');const scopes=(s.payments?.organizations||[]).filter(o=>o.permissions.includes('payments.view'));const chosen=scopes.find(o=>o.id===requested)||scopes[0];return item.href+(chosen?'?organization='+encodeURIComponent(chosen.id):'');}
+    if(item.capability.startsWith('forms')){const org=new URLSearchParams(location.search).get('organization');const scopes=(s.forms?.organizations||[]).filter(o=>allowed({user:s.user,forms:{organizations:[o]}},item.capability));const chosen=scopes.find(o=>o.id===org)||scopes[0];return item.href+(chosen?'?organization='+encodeURIComponent(chosen.id):'');}
     if(item.capability.startsWith('finance')){const org=new URLSearchParams(location.search).get('organization');const scopes=s.giving?.organizations||[];const candidates=scopes.filter(o=>allowed({user:s.user,giving:{organizations:[o]}},item.capability));const chosen=candidates.find(o=>o.id===org)||candidates[0];return item.href+(chosen?'?organization='+encodeURIComponent(chosen.id):'');}
-    const rows = item.capability.startsWith('comm') ? (s.communications?.campaigns||[]) : rowsFor(s,item.capability);
-    if (selected && rows.length && !['workspace','outreach','people','partners'].includes(item.capability)) return item.href + '?campaign=' + encodeURIComponent(selected);
-    if (item.capability === 'team' && rows.length) return item.href + '?campaign=' + encodeURIComponent(rows[0].id);
+    if(item.capability==='partner'){
+      const candidates=(s.partners||[]).filter(p=>!selected||p.campaign_id===selected);
+      const requested=new URLSearchParams(location.search).get('partner');
+      const chosen=candidates.find(p=>p.id===requested)||candidates[0];
+      return item.href+(chosen?'?partner='+encodeURIComponent(chosen.id):'');
+    }
+    const rows=(s.campaigns||[]).filter(c=>(!selected||c.id===selected)&&c.modules.includes(item.capability));
+    const chosen=rows.find(c=>c.id===selected)||rows[0];
+    if(chosen&&!['home','people','access'].includes(item.capability))return item.href+'?campaign='+encodeURIComponent(chosen.id);
+    if(selected&&['reports','settings'].includes(item.capability)&&s.campaigns.some(c=>c.id===selected))return item.href+'?campaign='+encodeURIComponent(selected);
     return item.href;
   }
+
   function render(s) {
     nav.replaceChildren(); signout.hidden = !s?.user;
+    who.textContent=s ? (s.user?.email || 'Signed out') : 'Checking session…';
+    role.textContent=s?.user ? (s.role_label || '') : '';
     if (!s) { nav.append(el('p', 'Checking access…', { class: 'staff-nav-status', role: 'status' })); return; }
+    contextSelect.replaceChildren();
+    for(const value of s.contexts||[]){const o=el('option',value==='champion'?'Champion Life':'Outreach / SowGo',{value});o.selected=value===s.platform;contextSelect.append(o);}
+    contextSelect.hidden=!(s.contexts||[]).length;
+    campaignSelect.replaceChildren(el('option','All authorized campaigns',{value:''}));
+    for(const c of s.campaigns||[]){const o=el('option',c.name,{value:c.id});o.selected=c.id===selected;campaignSelect.append(o);}
+    campaignSelect.hidden=!(s.campaigns||[]).length;
     for (const group of configuration) {
-      const items = group.children.filter(item => allowed(s,item.capability)); if (!items.length) continue;
+      const items = group.children.filter(item => publishedRoutes.includes(item.href) && allowed(s,item.capability)); if (!items.length) continue;
       const active = items.some(matches), section = el('section', null, { class: 'staff-group' + (active ? ' is-active' : ''), 'data-group': group.id });
       const button = el('button', group.label, { type: 'button', class: 'staff-group-toggle', 'aria-controls': 'staff-group-' + group.id, 'aria-expanded': String(active || expanded[group.id] !== false) });
       const children = el('div', null, { id: 'staff-group-' + group.id, class: 'staff-children' });
@@ -155,20 +187,37 @@
     }
     if (!nav.children.length) nav.append(el('p', 'No staff sections assigned.', { class: 'staff-nav-status' }));
   }
-  async function read(name, action, payload = {}, campaign = null) {
-    const args = ['giving_workspace','forms_workspace','payments_workspace'].includes(name) ? {p_action:action,p_org:null,p_payload:payload} : name === 'staff_workspace_context' ? {} : { p_action: action, p_campaign: campaign, p_payload: payload };
-    const r = await auth.client.rpc(name,args);
-    if (r.error) {
-      if (['42501','PGRST202','42883'].includes(r.error.code) || [401,403].includes(r.status)) return null;
-      throw Error('Workspace access could not be checked.');
-    }
-    return r.data;
-  }
+  const empty=()=>({user:null,staff:null,organizations:[],campaigns:[],registration:[],decisions:[],team:[],partners:[],contexts:[],selected:null});
   async function discover(user) {
-    const [giving,forms,payments] = await Promise.all([
-      read('giving_workspace','context'), read('forms_workspace','context'), read('payments_workspace','context')
-    ]);
-    return { user,staff:null,communications:null,giving,forms,payments,organizations:[],campaigns:[],preevent:[],registration:[],prizes:[],eventday:[],team:[],available:{} };
+    const r=await auth.client.rpc('shared_platform_context',{});
+    if(r.error||!r.data)throw Error('Access check failed');
+    const raw=r.data,outreach=raw.outreach||{},campaigns=outreach.campaigns||[];
+    const requested=new URLSearchParams(location.search).get('campaign');
+    if(requested&&!selected)selected=requested;
+    if(!campaigns.some(c=>c.id===selected))selected=null;
+    if(!selected&&campaigns.length===1)selected=campaigns[0].id;
+    const contexts=[...(outreach.contexts||[])];
+    if((raw.staff?.grants||[]).length||['giving','forms','payments'].some(k=>(raw[k]?.organizations||[]).length))if(!contexts.includes('champion'))contexts.unshift('champion');
+    return {...empty(),...raw,...outreach,staff:raw.staff,user,campaigns,contexts,selected,
+      platform:page.startsWith('staff-outreach')?'outreach':'champion',
+      registration:campaigns.filter(c=>c.modules.includes('registration')),team:campaigns.filter(c=>c.modules.includes('team')),
+      decisions:raw.decisions||[],partners:raw.partners||[]};
+  }
+  // In-flight business requests must never restore data after a scope/session loss.
+  const originalRpc=auth.client.rpc.bind(auth.client);
+  auth.client.rpc=async(...args)=>{
+    const before=responseEpoch,r=await originalRpc(...args);
+    if(before!==responseEpoch)return{data:null,error:{code:'42501',message:'Access changed'},status:403};
+    if(r.error&&(r.error.code==='42501'||[401,403].includes(r.status))){clearProtected();publish(empty());if(args[0]!=='shared_platform_context')setTimeout(refresh,0);}
+    return r;
+  };
+  function clearProtected(){
+    responseEpoch++;original.replaceChildren();
+    window.dispatchEvent(new CustomEvent('staff-protected-clear'));
+    // Module mounts are detached intentionally: late results cannot restore protected data.
+    // Keep a visible, non-sensitive recovery state in the live document.
+    const target=['staff-home.html',page+'.html','staff-people.html'].find(route=>publishedRoutes.includes(route));
+    state(original,'Access changed','Your session or permissions changed. Reload the workspace to check available access.',target ? (target==='staff-home.html'?'Return to Staff Dashboard':'Reload workspace') : null,target);
   }
 
   function publish(s) { snapshot=s; render(s); window.dispatchEvent(new CustomEvent('staff-workspace-context',{detail:s})); }
@@ -176,17 +225,20 @@
     if (busy) { again=true; return; }
     busy=true; const g=++epoch;
     try {
+      if(!authAvailable){clearProtected();publish(empty());state(original,'Workspace unavailable','Sign-in and database access are disabled because this preview is not configured.');return;}
       const user=await auth?.getUser();
-      if (!user || user.is_anonymous) { if(g===epoch)publish({user:null,organizations:[]}); return; }
+      if (!user || user.is_anonymous) { if(g===epoch){clearProtected();accessVersion=null;publish(empty());} return; }
       const s=await discover(user), current=await auth.getUser();
       if(g!==epoch || current?.id!==user.id) return;
-      publish(s);
-    } catch { if(g===epoch) { publish({user:null,organizations:[]}); nav.replaceChildren(el('p','Access check unavailable. Refresh to try again.',{class:'staff-nav-status',role:'status'})); } }
+      const fingerprint=JSON.stringify({...s,user:{id:user.id}});
+      if(accessVersion&&accessVersion!==fingerprint)clearProtected();
+      accessVersion=fingerprint;publish(s);
+    } catch { if(g===epoch) { clearProtected();publish(empty()); nav.replaceChildren(el('p','Access check unavailable. Refresh to try again.',{class:'staff-nav-status',role:'status'})); } }
     finally { busy=false; if(again) { again=false; setTimeout(refresh,0); } }
   }
-  signout.onclick = async () => { signout.disabled=true; try { await auth.signOut(); } catch { top.querySelector('[role=alert]')?.remove(); top.append(el('p','Unable to sign out. Please try again.',{role:'alert'})); } finally { signout.disabled=false; } };
+  signout.onclick = async () => { signout.disabled=true; clearProtected();publish(empty());try { await auth.signOut(); } catch { top.querySelector('[role=alert]')?.remove(); top.append(el('p','Unable to sign out. Please try again.',{role:'alert'})); } finally { signout.disabled=false; } };
   auth?.client.auth.onAuthStateChange((_event,session) => {
-    if(session?.user?.id!==snapshot?.user?.id) { epoch++; publish({user:null,organizations:[]}); setTimeout(refresh,0); }
+    if(session?.user?.id!==snapshot?.user?.id) { epoch++;clearProtected();accessVersion=null;publish(empty()); setTimeout(refresh,0); }
   });
   window.addEventListener('focus',refresh);
   document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')refresh();});
@@ -197,9 +249,9 @@
     if(action)card.append(el('a',action,{href:target,class:'campaign-button campaign-gold'}));
     root.replaceChildren(card); return card;
   }
-  function denied(root,message='Your current role does not include access to this section.') {
-    const card=state(root,'Access unavailable',message,'Return to Staff Dashboard','staff-people.html');
-    if(root.id!=='staff-dashboard')refresh();
+  function denied(root=original,message='Your current role does not include access to this section.') {
+    responseEpoch++;const card=state(root,'Access unavailable',message,'Return to Staff Dashboard','staff-people.html');
+    // Page-local denials must not form a refresh/denial event loop.
     return card;
   }
   // Skin existing accepted module states without rewriting their copy, clearing, or request flow.
@@ -220,6 +272,9 @@
     }
   });
   observer.observe(original,{subtree:true,childList:true,characterData:true});
-  window.StaffWorkspace={configuration,attribution,allowed,href,refresh,denied,state,selectCampaign(id) { selected=id; if(snapshot)render(snapshot); },get context(){return snapshot;}};
-  render(null); refresh();
+  function selectCampaign(id){selected=(snapshot?.campaigns||[]).some(c=>c.id===id)?id:null;if(snapshot){snapshot={...snapshot,selected};render(snapshot);}}
+  campaignSelect.onchange=()=>{selectCampaign(campaignSelect.value);const item=configuration.flatMap(g=>g.children).find(matches);if(item&&allowed(snapshot,item.capability))location.href=href(item,snapshot);};
+  contextSelect.onchange=()=>{const target=contextSelect.value==='outreach'?'staff-outreach-overview.html':'staff-home.html';if(publishedRoutes.includes(target))location.href=target;};
+  window.StaffWorkspace={get context(){return snapshot;},state,denied,refresh,can:k=>allowed(snapshot,k),href:(base,kind)=>href({href:base,capability:kind},snapshot),campaignById:id=>(snapshot?.campaigns||[]).find(c=>c.id===id),selectCampaign};
+  render(null);refresh();
 })();

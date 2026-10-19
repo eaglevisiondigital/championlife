@@ -1,0 +1,103 @@
+# Shared Platform Gate 0 — implementation and adoption contract
+
+Status: bounded local reconciliation; no hosted or release approval. Base: `e3157f0afa3f563ab6560ca64c9049448f02c806`. Current owner-selected NMI PR #34: `d82ed7fdb049389ae43d50a2ceb1ac300665a7cc`. Original checkpoint results below are historical where explicitly labeled. Frozen Outreach PR #35: `bff9612ac9385cf963c5e7e41f9091da7af86cf0`. Later child work requires a new comparison and regression run.
+
+## Proven root cause
+
+The pre-additive Outreach Operations extraction contained two shared-list replacement blocks inherited from Communications G and H1. Each dropped/recreated `organization_staff_permissions_permission_check` with a narrower fixed list and replaced `private.staff_permission_keys()` accordingly. Neither preserved the already-installed Giving/Forms/Payments vocabulary. Exact full original SQL SHA-256: `69debbb2171c582782c820534c70c533ea79903977e08a144c0848b315186526`, 352254 bytes. Replaying that exact snapshot after NMI locally gives 70 before / 46 after / 41 removed (17 additions explain the net reduction of 24). With an existing `finance.gifts.read` grant, the check recreation raises SQLSTATE `23514` and aborts. This is destructive registry/constraint replacement, not a role-template or shell-projection root cause.
+
+The original private SQL and replay output are preserved in the outer audit workspace. The committed focused regression retains the exact offending G/H statements. The final frozen PR #35 Operations SQL has SHA-256 `e6ebf423e395f65cac1d0e60913c6877c78bfdbbd193b714e7d9d56dc870ddfb` and already corrects those blocks additively. Gate 0 does not rewrite it or falsely label that final head as the old failure.
+
+## Authoritative vocabulary and authority
+
+`config/platform/capabilities.json` is the canonical scoped vocabulary: 87 organization keys, 36 campaign keys and 5 partner keys. Existing module authorizers remain authoritative for data access, prerequisites, dates, active state, organization, campaign and partner boundaries. Vocabulary is not a grant. No organization/campaign/partner scope translation, role expansion or automatic grants occurs.
+
+The forward-only `20261019012735_shared_platform_gate0.sql` unions the organization vocabulary with the installed list, recreates the validated CHECK/function, and adds a non-public private catalog plus authenticated SECURITY INVOKER `shared_platform_context()`. That context delegates to existing authorized RPCs. It neither uses service-role identity nor creates business data, memberships or roles. Optional unavailable modules remain absent; denied optional contexts are null. All existing backend mutations/read authorizers and historical migrations are unchanged.
+
+Future module migrations must preserve the installed union. Every candidate migration is checked for monotonic capability preservation during upgrade tests. This is a tested migration contract, not a claim that a database superuser cannot replace a constraint later. Legacy forms.view/manage does not imply newer Forms editing/payment capabilities.
+
+## Ten overlapping files and final ownership
+
+| Shared path | Gate 0 resolution |
+|---|---|
+| assets/js/staff-workspace.js | Primary composite shell: grouped NMI navigation/accessibility plus Outreach campaign/partner APIs. One shared authorized context, destination-specific permissions and build-manifest route availability; revocation clears protected content and rejects stale RPC results. |
+| assets/css/staff-workspace.css | NMI common base, byte-preserved as the prefix of frozen Outreach CSS, with Outreach-scoped additions and minimal common control styles. Dark/gold active language retained. |
+| tools/site-build/build.mjs | NMI config helpers plus primary candidate-target guard and explicit route injection. Three candidate branches cannot fall back to production or older shared acceptance. Targets remain null pending separate approval. Production configuration and public header bytes retained. |
+| tools/site-build/public-files.json | Production plus common shell only in Gate 0. Child adoption uses explicit reviewed module lists; never filesystem discovery or private files. |
+| tools/backend-tests/package.json | Production full default suite plus Gate 0. Frozen module scripts/dependencies retained in the contract and restored by explicit adoption tooling. No tests silently removed. |
+| CURRENT_BUILD_STATE.md | Primary Gate 0 status prepended to production history. Both frozen child versions archived verbatim under docs/gate0-source-continuity. |
+| ARCHITECTURE.md | Same preservation model; scope-separated context/registry and shared ownership documented here. No second identity, ledger or auth mechanism. |
+| SECURITY_MODEL.md | Same preservation model; grants unchanged, backend enforcement primary, no privilege union. |
+| DECISIONS.md | Same preservation model; bounded reconciliation is not module/release authorization. |
+| docs/CHAMPION-LIFE-UNIFIED-PLATFORM-COMMAND.md | Identical approved source in both frozen candidates, retained once unchanged. |
+
+Full source file hashes (180 NMI / 116 Outreach) are pinned in `config/platform/gate0-sources.json`. Core Auth/login, canonical People/Household code, Supabase connection configuration, public giving links and live Huntsville header are not changed. No business migrations/functions/pages from either child are added to this package. Disposable test composition is not a merged release candidate.
+
+## Upgrade and regression evidence
+
+- Exact old full snapshot reproduces both 41-key loss and populated-grant rejection; focused fixture runs in the normal suite.
+- 82 upgrade assertions across seven Gate-first/between/last orders and both child orders, on PGlite and native PostgreSQL. Each individual child migration must preserve previous capabilities. All production-vocabulary synthetic grants and an existing role template remain JSON-identical. All 87 organization and 36 campaign keys validate in their proper scope; unknown and cross-scope keys fail.
+- Read-only production grant census showed 7 organization key types across 14 grant rows and 5 campaign key types. The synthetic replay covers every baseline-valid organization key, a superset of that census, without copying real identities or modifying grants.
+- 43 unchanged frozen Outreach role checks plus 14 combined finance/Outreach checks, on both engines: dual authority, tenant/campaign isolation, partner boundaries, pastoral denial, Bessemer/Huntsville separation and same-session revocation.
+- 53 shared-shell DOM assertions: permission-filtered routes, safe campaign selection, late-response suppression and sign-out/revocation.
+- 37 composition/build assertions: three module combinations, idempotent adoption manifests, 25 byte-identical historical migrations, explicit public files, private-manifest rejection, unchanged Auth/public header/config, candidate target fail-closed.
+- Full baseline backend/site suite plus Gate 0 passed. Native upgrade is separately wired into CI; baseline CI still runs the existing native concurrency suite.
+- Local Chromium: 42 checks and 16 screenshots at 390/768/1440, five synthetic permission profiles, real local SQL context with fictional Auth transport, keyboard drawer and actual SQL revocation. No console errors or horizontal overflow. This is not hosted acceptance or a fresh real login.
+
+## Effect on children and exact adoption procedure
+
+Both draft PRs remain untouched. Gate 0 is a dependency to reconcile, not permission to merge business packages. Pin the final Gate 0 commit recorded in the PR/handoff as GATE_SHA; do not use a moving branch tip. Before adoption require clean child checkout, the approved production base, exact frozen source checkpoint or a reviewed follow-up delta, and no production deployment hooks firing.
+
+For NMI set MODULE=nmi; for Outreach set MODULE=outreach. On a temporary reconciliation branch from the child's reviewed head:
+
+1. Fetch the exact reviewed Gate 0 history and apply its complete production-base delta with `git diff --binary e3157f0afa3f563ab6560ca64c9049448f02c806 "$GATE_SHA"` followed by `git apply --3way --index` on the child reconciliation worktree. Equivalently apply the complete ordered Gate 0 commit series with no-commit cherry-picks, resolving reviewed conflicts between steps. Cherry-picking only the final follow-up omits required dependencies.
+2. Resolve the ten shared paths using Gate 0's versions, **only those paths**. Retain each child's non-overlapping module code/migrations/tests. Review any additional conflict; never blanket-select one side. The four frozen child continuity documents are preserved verbatim in Gate 0's archive; preserve later child deltas separately before resolution.
+3. Run `node tools/platform/reconcile-manifests.mjs "$MODULE"`. This restores only the explicit module's public entries and scripts/dependencies. Run `npm install --package-lock-only --ignore-scripts --prefix tools/backend-tests`, review the lock diff, then `npm ci --ignore-scripts --prefix tools/backend-tests`.
+4. Run `npm test --prefix tools/backend-tests`, `npm run test:gate0:native --prefix tools/backend-tests`, and the retained `test:frozen:nmi` or `test:frozen:outreach` suite. Existing module-specific security/race/Edge tests remain required. A frozen shared-shell/source-inventory assertion may identify an intentional Gate 0 delta: review and replace that exact expectation with the Gate 0 contract, preserving module/security assertions; do not skip the suite or broadly relax it. Gate 0 does not claim these adopted-child suites already passed.
+5. Recheck protected-file hashes, SQL history, source inventory, organization/campaign/partner negatives, current-session revocation and responsive shell. Return exact reconciliation commit/diff/test evidence to primary before updating the child checkpoint. Do not deploy, migrate remotely, merge, activate payments or grant access.
+
+A later combined disposable test can use `node tools/platform/compose-gate0.mjs /tmp/gate0-REVIEW nmi,outreach`. It requires a fresh directory and frozen hashes. This is a local test artifact only. Public preview targets are deliberately unpinned: target selection/configuration and hosted acceptance require separate authorization. No production auto-deploy is permitted by this contract.
+
+## Current NMI adoption target and correction
+
+Owner corrected the NMI adoption target to `d82ed7fdb049389ae43d50a2ceb1ac300665a7cc`. This supersedes both 3a8317 and e39b832 for adoption; original checkpoint results above are historical. The current source contracts, file hashes, public/test manifests and archived NMI continuity now pin d82ed7. All newer execution, recurring, ledger, receipt, recovery and reconciliation sources are preserved by pinned composition. Outreach stays bff9612.
+
+Outreach adoption independently exposed four shared integration defects: missing-Auth crash; dropped identity/server-role display; preview branch-name bypass; composer treating the adopted child's entire delta/manifest as Gate0. The correction restores the disabled fail-closed adapter and text-only identity/role, requires an explicit actual-source-branch target for every isolated build, and uses explicit Gate0-owned files, production baseline public files and canonical test package. Unknown/reconciliation branches never inherit an older acceptance target. NMI public Giving configuration/CSP hooks from d82ed7 are retained, additionally subject to both platform and module acceptance pins. No actual target is configured.
+
+Current local primary evidence: 82 upgrade assertions / seven orders including both current NMI and frozen Outreach orders; 43+14 scope assertions on PGlite/native; 80 shell DOM checks; 56 build/composition checks including already-adopted roots; 64 Chromium checks/20 screenshots with disabled Auth and identity/role at all widths. Full primary baseline suite passes. Complete adopted NMI regression and explicit offline38-file migration packaging are separately recorded in the private current-head handoff; do not infer them merely from these primary tests.
+
+Module-owned offline packagers must explicitly append Gate0 SQL and hash to their reviewed plan: NMI25+12+1=38, Outreach25+4+1=30. No filesystem-driven widening; all historical SQL/ledger aliases retained; packages remain unapplied. Module source-inventory/shell fixtures must reflect that explicit dependency without dropping security/business assertions. Current NMI adoption uses the updated source contract; never downgrade/reset PR34. Original3439e703 is an intermediate dependency and must be followed by this correction before final adoption tests.
+
+## Remaining gates
+
+Fresh child adoption and CI at exact heads; later NMI engineering delta reconciliation; separately approved clean hosted target and functional hosted acceptance; real provider/merchant/settlement and finance/operator acceptance; receipts/recurring/cutover readiness; live header/Bessemer/GiveHub preservation checks immediately before release; owner-approved rollback and production actions. Gate 0 local passing does not convert either package into a releasable candidate.
+
+Production, GiveHub, NMI execution, real user grants, public routes, hosted migrations and deployments: unchanged by this package. Kids Check-In, Serve Teams and Worship/CCLI are not started.
+
+## Complete registry
+
+### organization
+
+`care.read`, `checkin.manage`, `checkin.view`, `communications.bulk_send`, `communications.delivery.view`, `communications.providers.enable`, `communications.providers.manage`, `communications.providers.test`, `communications.providers.view`, `communications.send`, `communications.templates.manage`, `communications.templates.view`, `communications.view`, `courses.manage`, `discipleship.read`, `dream_team.application.manage`, `dream_team.application.read`, `dream_team.application.restricted`, `dream_team.placement.manage`, `events.manage`, `events.view`, `finance.configure`, `finance.export`, `finance.gifts.adjust`, `finance.gifts.create`, `finance.gifts.read`, `finance.merchant.configure`, `finance.pledges.manage`, `finance.pledges.read`, `finance.read`, `finance.reconciliation.manage`, `finance.reconciliation.read`, `finance.recurring.manage`, `finance.recurring.read`, `finance.refunds.manage`, `finance.reports.export`, `finance.reports.merchant`, `finance.reports.read`, `finance.statements.generate`, `followup.manage`, `followup.read`, `forms.archive`, `forms.create`, `forms.edit`, `forms.manage`, `forms.payment.configure`, `forms.publish`, `forms.read`, `forms.submissions.export`, `forms.submissions.read`, `forms.view`, `households.manage`, `households.read`, `outreach.manage`, `outreach.view`, `payments.configure`, `payments.issue.assign`, `payments.manage`, `payments.method.manage`, `payments.provider.activate`, `payments.reconcile`, `payments.recurring.manage`, `payments.refund`, `payments.refund.approve`, `payments.refund.execute`, `payments.refund.request`, `payments.route`, `payments.view`, `payments.void`, `payments.void.approve`, `payments.void.execute`, `payments.void.request`, `people.create`, `people.export`, `people.notes.manage`, `people.notes.view`, `people.read`, `people.update`, `portal.manage`, `registrations.manage`, `registrations.override`, `registrations.restricted`, `registrations.view`, `staff.manage`, `staff.view`, `tags.manage`, `tags.read`.
+
+### campaign
+
+`checkin.manage`, `communications.bulk_send`, `communications.delivery.view`, `communications.send`, `communications.templates.manage`, `communications.templates.view`, `communications.view`, `decision.manage`, `decision.view`, `decisions`, `documents`, `draw`, `export`, `followup`, `host.respond`, `host.view`, `inventory.manage`, `inventory.view`, `issue.manage`, `ops.manage`, `ops.view`, `preevent.manage`, `preevent.view`, `prize.claim`, `prize.draw`, `prize.manage`, `prize.view`, `registration.export`, `registration.manage`, `registration.view`, `team.manage`, `team.view`, `travel.manage`, `travel.view`, `view`, `workflow`.
+
+### partner
+
+`partner.view`, `partner.followup`, `partner.assign_local`, `partner.export`, `partner.pastoral_notes`.
+
+## Visible revocation recovery follow-up
+
+Current NMI adoption exposed a live-document defect: protected-content clearing detached module mounts, so their later denial cards were invisible. The authoritative shared shell now shows an accessible, non-sensitive Access changed state with a Staff Dashboard recovery link. The detached mounts and late-response rejection are retained. Tests must preserve both data clearing and visible recovery; an empty page is not an acceptable replacement assertion. This UI-only follow-up does not change migration hashes, permissions or module business sources.
+
+Recovery and logo destinations are manifest-qualified: Outreach uses its published Staff Dashboard; NMI-only recovery reloads the current published page, with the existing staff page as fallback. No new module page is imported merely to satisfy a link. Unknown/unpublished routes never become recovery links. Focused shell coverage:86 checks.
+
+## Complete combined validation contract
+
+The composer writes private config/platform/composition.json with exact module selection and source commits. This is test-artifact identity, not release authorization. Module-owned NMI guards retain 449 protected paths and 38 SQL files standalone; combined mode requires the exact two Outreach-owned staff pages at frozen hashes and the exact 42-file SQL inventory. NMI fixtures execute all 42 only after those guards pass. Both full retained suites remain required in a combined artifact with the explicit reviewed child-adoption overlays; composing raw historical child source alone does not include those test adapters.
+
+Two baseline test paths are additionally primary-owned: tools/backend-tests/outreach-workflow.test.mjs uses explicit legacy RPC argument types to avoid ambiguity with the newer valid overload; tools/backend-tests/outreach-registration.test.mjs retains standalone prize-table absence and, only when the reviewed Operations migration is selected, instead requires zero drawing numbers and zero enabled prize settings. These preserve the no-activation requirement without pretending the combined module schema is absent. The ten original overlapping product/document/manifest paths remain unchanged as an ownership set; the explicit primary overlay now contains 40 paths.
+
+Outreach's test fixture uses the existing complete unified bootstrap once; its bytes match the NMI Auth/Storage bootstrap. No business migration is changed. Whole combined validation, original source protections, both Gate-first orders and full module/browser results must pass before bounded local adoption commits. No merge, push of child candidates, hosted migration, project creation, deployment, provider activation or real grant follows automatically.

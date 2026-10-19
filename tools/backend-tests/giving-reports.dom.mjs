@@ -1,3 +1,4 @@
+import {sharedShellFixture,hasAccessibleLabel,hasSharedRecovery} from './nmi-shared-shell-fixture.mjs';
 import assert from "node:assert/strict";
 import { JSDOM, VirtualConsole } from "jsdom";
 import { readFileSync } from "node:fs";
@@ -52,10 +53,13 @@ async function page(name, permissions, prepare) {
     "assets/js/staff-workspace.js",
     "assets/js/giving-utils.js",
     "assets/js/giving-management-utils.js",
-  ])
-    w.eval(read(file));
-  if (permissions) w.givingFixture.permissions = permissions;
-  if (prepare) prepare(w.givingFixture, w);
+  ]){
+    if(file==='assets/js/staff-workspace.js'){
+      if(permissions)w.givingFixture.permissions=permissions;
+      if(prepare)prepare(w.givingFixture,w);
+    }
+    w.eval(file==="assets/js/staff-workspace.js"?sharedShellFixture():read(file));
+  }
   w.eval(read("assets/js/giving-reports.js"));
   await tick();
   return {
@@ -87,7 +91,7 @@ for (const name of pages) {
   );
   ok(h.errors.length === 0, name + " zero console failures");
   for (const input of h.d.querySelectorAll("input,select"))
-    ok(input.closest("label"), name + " label " + input.name);
+    ok(hasAccessibleLabel(input), name + " label " + input.name);
   for (const t of h.d.querySelectorAll("table"))
     ok(t.querySelector("th[scope=col]"), name + " table headings");
   if (!name.startsWith("statement")) {
@@ -153,7 +157,7 @@ h.g.deny = true;
 h.w.dispatchEvent(new h.w.Event("focus"));
 await tick();
 ok(
-  h.d.querySelector(".staff-state") &&
+  hasSharedRecovery(h.d) &&
     !h.d.querySelector("#giving-reports-app table"),
   "same-session report revocation clears content",
 );
@@ -199,7 +203,7 @@ ok(
 h.close();
 h = await page("report", []);
 ok(
-  h.d.querySelector(".staff-state") &&
+  hasSharedRecovery(h.d) &&
     !h.d.querySelector("#giving-reports-app table"),
   "ordinary staff direct report denied",
 );
@@ -265,14 +269,20 @@ h.close();
   h.g.callbacks.forEach((fn) => fn('SIGNED_IN', { user: h.g.user }));
   await tick();
   await tick();
-  ok(h.d.querySelector('#giving-reports-app table'), 'new identity report loaded');
+  ok(hasSharedRecovery(h.d), 'new identity receives visible accessible recovery with a published staff route');
   release();
   await tick();
   ok(
-    h.d.querySelector('#giving-reports-app table') && !h.d.querySelector('.staff-state'),
-    'obsolete report rejection cannot erase current authorized render',
+    hasSharedRecovery(h.d) && !h.d.querySelector('#giving-reports-app table'),
+    'obsolete report rejection cannot erase visible recovery or restore old identity data',
   );
   h.close();
+}
+
+
+{
+ const h=await page('summary',undefined,g=>{g.user={...g.user,id:'replacement-synthetic-account'};});
+ ok(h.d.querySelector('#giving-reports-app table')&&!hasSharedRecovery(h.d),'fresh navigation loads the new authorized identity report');h.close();
 }
 
 {

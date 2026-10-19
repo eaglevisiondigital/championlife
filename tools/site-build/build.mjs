@@ -1,7 +1,6 @@
-import {NMI_GIVING_ACCEPTANCE_PIN,dedicatedAcceptance} from '../../supabase/functions/_shared/payments/acceptance-pin.mjs';
 import { readFile, writeFile, mkdir, copyFile, rm, lstat } from 'node:fs/promises';
 import path from 'node:path';
-import { fileURLToPath } from 'node:url';
+import { fileURLToPath, pathToFileURL } from 'node:url';
 import vm from 'node:vm';
 
 const repository = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
@@ -15,7 +14,7 @@ export function previewConfiguration(env, production) {
       url === production.url ||
       !/^sb_publishable_[A-Za-z0-9_-]+$/.test(publishableKey) ||
       publishableKey === production.publishableKey) return null;
-  if(!['https://bkbmjisprwmkptywtmih.supabase.co','https://niyovbgoalulzkhbvebt.supabase.co'].includes(url)&&!dedicatedAcceptance({project:url,acceptance_pin:NMI_GIVING_ACCEPTANCE_PIN}))return null;
+  if(!['https://bkbmjisprwmkptywtmih.supabase.co','https://niyovbgoalulzkhbvebt.supabase.co'].includes(url))return null;
   return { url, publishableKey, outreachSiteKey:'1x00000000000000000000AA' };
 }
 
@@ -34,7 +33,7 @@ export function nmiPreviewConfiguration(env,isolated,backend){
   return {project:backend.url,environment:'sandbox',enabled:true,organization_id:env.NMI_SANDBOX_ORGANIZATION_ID,gateway_id:env.NMI_SANDBOX_GATEWAY_ID,public_key:env.NMI_SANDBOX_PUBLIC_TOKENIZATION_KEY,merchant_reference:env.NMI_SANDBOX_MERCHANT_REFERENCE};
 }
 
-export function givingPreviewConfiguration(env,isolated,backend){
+export function givingPreviewConfiguration(env,isolated,backend,{NMI_GIVING_ACCEPTANCE_PIN,dedicatedAcceptance}={dedicatedAcceptance:()=>false}){
  if(!isolated||!backend||env.NMI_GIVING_PUBLIC_ENABLED!=='true'||!dedicatedAcceptance({project:backend.url,acceptance_pin:NMI_GIVING_ACCEPTANCE_PIN}))return null;
  const origin=env.DEPLOY_PRIME_URL||'';if(!NMI_GIVING_ACCEPTANCE_PIN.origins.includes(origin)||!/^https:\/\/[a-z0-9-]+--championlifechurch\.netlify\.app$/.test(origin)||!/^[A-Za-z0-9_-]{12,80}$/.test(env.NMI_GIVING_PUBLIC_SITE_KEY||''))throw Error('Invalid dedicated NMI preview configuration.');
  return {enabled:true,project:backend.url,origin,siteKey:env.NMI_GIVING_PUBLIC_SITE_KEY};
@@ -69,14 +68,24 @@ export async function buildSite({ root = repository, env = process.env } = {}) {
   const sourceConfig = await readFile(path.join(root, configPath), 'utf8');
   const sandbox = { window: {} };
   vm.runInNewContext(sourceConfig, sandbox, { timeout: 1000 });
-  const config = isolated ? previewConfiguration(env, sandbox.window.CHAMPION_LIFE_SUPABASE) : null;
+  let config = isolated ? previewConfiguration(env, sandbox.window.CHAMPION_LIFE_SUPABASE) : null;
+  // Candidate pins must be reviewed separately; no shared/prod fallback.
+  if(isolated) {
+    const targets=JSON.parse(await readFile(path.join(root,'config/platform/acceptance-targets.json'),'utf8'));
+    const branch=env.HEAD || env.BRANCH; // PR source takes precedence; unknown names stay disabled.
+    const ref=targets.branches[branch];
+    config=null;
+    if(ref && /^[a-z0-9]{20}$/.test(ref) && !targets.denied.includes(ref) && env.CHAMPION_PREVIEW_SUPABASE_URL===`https://${ref}.supabase.co` && /^sb_publishable_[A-Za-z0-9_-]+$/.test(env.CHAMPION_PREVIEW_SUPABASE_PUBLISHABLE_KEY||'') && env.CHAMPION_PREVIEW_SUPABASE_PUBLISHABLE_KEY!==sandbox.window.CHAMPION_LIFE_SUPABASE.publishableKey) config={url:env.CHAMPION_PREVIEW_SUPABASE_URL,publishableKey:env.CHAMPION_PREVIEW_SUPABASE_PUBLISHABLE_KEY,outreachSiteKey:'1x00000000000000000000AA'};
+  }
   const nmi=nmiPreviewConfiguration(env,isolated,config);
-  const giving=givingPreviewConfiguration(env,isolated,config);
+  const givingModule=files.includes('assets/js/nmi-giving-config.js') ? await import(pathToFileURL(path.join(root,'supabase/functions/_shared/payments/acceptance-pin.mjs')).href) : undefined;
+  const giving=givingPreviewConfiguration(env,isolated,config,givingModule);
   await rm(output, { recursive: true, force: true });
   for (const file of files) {
     const destination = path.join(output, file);
     await mkdir(path.dirname(destination), { recursive: true });
     if(giving&&file==='assets/js/nmi-giving-config.js')await writeFile(destination,'// Public dedicated acceptance config only.\nwindow.CHAMPION_NMI_GIVING = '+JSON.stringify(giving)+';\n');
+    else if(file==='assets/js/staff-workspace.js')await writeFile(destination,(await readFile(path.join(root,file),'utf8')).replace('/* GATE0_ROUTES */ []',JSON.stringify(files.filter(p=>/^staff-[a-z0-9-]+\.html$/.test(p)))));
     else if(nmi&&file==='assets/js/nmi-config.js')await writeFile(destination,'// Isolated sandbox public key only; never a REST credential.\nwindow.CHAMPION_NMI_SANDBOX = '+JSON.stringify(nmi)+';\n');
     else if (isolated && file === configPath) await writeFile(destination, previewScript(config));
     else if(file==='assets/js/forms-config.js'&&env.FORMS_PUBLIC_SITE_KEY){

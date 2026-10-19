@@ -1,0 +1,12 @@
+# Unified Outreach integration decisions — 2026-10-18
+
+1. Execute Issue #33 and PR #31 on the existing requested branch from exact production `e3157f0…`. Preserve other worktrees and uncommitted Giving work. No old dependent branch merge.
+2. Extract PR #29 effective staff/partner/team implementation and only missing workflow/operations dependencies. Preserve the 25 production migration files, production registration definitions and 124 protected source files. Do not reuse the temporary acceptance harness as product UI.
+3. Consolidate the eleven unmerged PR #29 migration files into one new forward migration, followed by workflow foundation, operations and integration security. All four versions follow the actual production ledger. This changes no applied history.
+4. Preserve the live migration version IDs in isolated replay staging. Repository filenames for the three newest baseline migrations differ from the live ledger; one earlier SQL differs only by a final newline. Record the exact mapping/checksums; never repair or reapply production history.
+5. Keep original decisions and legal snapshots exact. Use reference bridges and separate follow-up histories. Partner membership alone never grants a campaign-wide pool, People, finance or private pastoral access.
+6. Leadership access is a profile model in this assignment. Hold the source provisioning RPC against writes, prevent cross-tenant directory enumeration, and remove invitation sending from partner administration. No real grant/send is performed.
+7. Retain accepted workflow, giveaway, Event Day, Host and communications foundations in the candidate. Keep external providers/workers/schedulers disabled; minimum release scope and their individual gates remain distinct.
+8. Use local synthetic fixtures for all automated checks. Production access is read-only aggregate/catalog verification. Do not copy production customer records into Git or test fixtures.
+9. A fresh isolated hosted project is required: the existing Huntsville acceptance stack contains differently versioned PR #29 migrations. Owner organization choice is pending. The new branch's hosted configuration fails closed until the exact new target is approved/configured.
+10. Successful local tests and a draft PR authorize neither merge nor production migrations/functions/deployment, real onboarding, public route/header changes, provider activation or Giving cutover. Next gate: exact-head isolated hosted acceptance of this candidate; then Chat review and separate GO.

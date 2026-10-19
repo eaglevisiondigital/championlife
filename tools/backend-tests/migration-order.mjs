@@ -1,4 +1,5 @@
-// Exact 22 production versions followed only by the two isolated candidates.
+// Explicit historical groups; only exact validated private composition adds sibling SQL.
+import {diskInventory,selectIntegrationMigrationOrder} from './nmi-integration-inventory.mjs';
 export const baselineOrder=[
   "20260923114743_create_course_progress_schema.sql",
   "20260923114822_harden_course_security_and_indexes.sql",
@@ -41,4 +42,8 @@ export const givingOrder=[
 ];
 export const integrationOrder=["20261019003215_nmi_friday_operations_bridge.sql"];
 export const executionOrder=["20261019010048_nmi_sandbox_execution.sql","20261019010932_nmi_sandbox_recovery_reconciliation.sql"];
-export const migrationOrder=[...productionOrder,...givingOrder,...integrationOrder,...executionOrder];
+// Primary-owned dependency, appended after all twelve Giving forward files.
+export const gate0Order=["20261019012735_shared_platform_gate0.sql"];
+export const nmiOrder=[...productionOrder,...givingOrder,...integrationOrder,...executionOrder,...gate0Order];
+// Both NMI database fixtures import this order: 38 standalone, 42 only after all guards pass.
+export const migrationOrder=selectIntegrationMigrationOrder({...diskInventory(new URL('../../',import.meta.url)),nmiOrder});

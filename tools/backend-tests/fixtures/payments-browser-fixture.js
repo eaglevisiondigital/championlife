@@ -167,12 +167,13 @@
     methods,
     calls: [],
     deny: false,
-    user: { id: "synthetic-user" },
+    user: { id: "synthetic-user", email: "payments@example.test" },
     delayAction: null,
     failAction: null,
   });
   const authHandlers = [];
   window.ChampionLifeAuth = {
+    enabled: true,
     getUser: async () => state.user,
     client: {
       auth: {
@@ -187,6 +188,7 @@
           await new Promise((resolve) => {
             state.release = resolve;
           });
+        if(name==='shared_platform_context')return{data:{staff:{organizations:[{id:org,name:'Synthetic Church'}],grants:[]},modules:['payments'],giving:{organizations:[]},payments:{organizations:state.deny?[]:[{id:org,name:'Synthetic Church',permissions:[...state.per]}]},forms:{organizations:[]},communications:{organizations:[],campaigns:[]},outreach:{contexts:state.deny?[]:['champion'],campaigns:[],role_label:'Synthetic payments',access_version:state.deny?'revoked':'active'},decisions:[],partners:[]}};
         if (name === "staff_workspace_context") return { data: { grants: [] } };
         if (!name.startsWith("payments_"))
           return {

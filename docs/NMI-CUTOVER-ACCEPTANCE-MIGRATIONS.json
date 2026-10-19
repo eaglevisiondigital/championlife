@@ -1,8 +1,24 @@
 {
   "production_base": "e3157f0afa3f563ab6560ca64c9049448f02c806",
   "baseline_confirmation": "CONFIRMED_CURRENT_SNAPSHOT",
+  "nmi_source_checkpoint": "d82ed7fdb049389ae43d50a2ceb1ac300665a7cc",
+  "gate0_dependency": {
+    "nmi_source_checkpoint": "d82ed7fdb049389ae43d50a2ceb1ac300665a7cc",
+    "gate0_authoritative_commit": "bbadd2b4adf75a4342b653d57c81fac8aa86e74a",
+    "migration": "20261019012735_shared_platform_gate0.sql",
+    "sha256": "826b5d11e2f1a137b2e22445c3c805e59d6ff08ebfda7cef916142ac59593613",
+    "status": "REVIEWED_PRIMARY_FOLLOWUP",
+    "gate0_prerequisite_commits": [
+      "3439e703ec5186e779f458ab5496afde611cc4aa",
+      "d39fdc84e22a4668b193a3962286a79ae93f2a81",
+      "02459359e10e5338755da411d952042246bd23e7",
+      "60c46eef1fd017db6816ef139910b3492a40a75e"
+    ]
+  },
   "baseline_count": 25,
-  "forward_count": 12,
+  "giving_forward_count": 12,
+  "gate0_count": 1,
+  "forward_count": 13,
   "order": [
     {
       "order": 1,
@@ -336,6 +352,15 @@
       "source_sha256": "181d3e4463f38d00d09dbb057d22a2541195203a82eb573b805650274ab2c707",
       "staged_sha256": "181d3e4463f38d00d09dbb057d22a2541195203a82eb573b805650274ab2c707",
       "staged_sql_md5": "d40b1409279043802ed9435e1aaad202"
+    },
+    {
+      "order": 38,
+      "kind": "shared_platform_gate0",
+      "source": "20261019012735_shared_platform_gate0.sql",
+      "staged": "20261019012735_shared_platform_gate0.sql",
+      "source_sha256": "826b5d11e2f1a137b2e22445c3c805e59d6ff08ebfda7cef916142ac59593613",
+      "staged_sha256": "826b5d11e2f1a137b2e22445c3c805e59d6ff08ebfda7cef916142ac59593613",
+      "staged_sql_md5": "1034c497bda59e64df845b8d3ee13755"
     }
   ]
 }

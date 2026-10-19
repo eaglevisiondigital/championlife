@@ -1,3 +1,4 @@
+import {sharedShellFixture,hasAccessibleLabel,hasSharedRecovery} from './nmi-shared-shell-fixture.mjs';
 import assert from "node:assert/strict";
 import { JSDOM, VirtualConsole } from "jsdom";
 import { readFileSync } from "node:fs";
@@ -32,7 +33,7 @@ async function page(view = "configuration", search = "") {
   w.eval(read("assets/js/outreach-staff-common.js"));
   w.eval(read("assets/js/giving-utils.js"));
   w.eval(read("tools/backend-tests/fixtures/payments-browser-fixture.js"));
-  w.eval(read("assets/js/staff-workspace.js"));
+  w.eval(sharedShellFixture());
   w.eval(read("assets/js/payments.js"));
   await tick();
   await tick();
@@ -81,10 +82,10 @@ for (const view of [
   );
   ok(!h.errors.length, view + " no unexpected console error");
   for (const el of h.d.querySelectorAll(
-    "#payments-app input,#payments-app select",
+    "input,select",
   ))
     ok(
-      h.d.querySelector('label[for="' + el.id + '"]'),
+      hasAccessibleLabel(el),
       view + " controls labelled",
     );
   h.close();
@@ -176,8 +177,8 @@ for (const view of [
   await tick();
   await tick();
   ok(
-    h.d.body.textContent.includes("access is no longer available"),
-    "same-session revocation renders denied",
+    hasSharedRecovery(h.d),
+    "same-session revocation renders accessible shared recovery",
   );
   ok(
     !h.d.body.textContent.includes("USD 385.00") &&
@@ -203,8 +204,8 @@ for (const view of [
   await tick();
   ok(
     !h.d.body.textContent.includes("NMI Gateway") &&
-      h.d.body.textContent.includes("access is no longer available"),
-    "pending data cannot repopulate revoked UI",
+      hasSharedRecovery(h.d),
+    "pending data cannot replace shared recovery or repopulate revoked UI",
   );
   h.close();
 }
