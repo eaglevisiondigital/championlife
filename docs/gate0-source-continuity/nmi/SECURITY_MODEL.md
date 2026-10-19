@@ -1,3 +1,17 @@
+# NMI Giving sandbox execution follow-up — October 18 CDT / 19 UTC, 2026
+
+Primary authority remains **Align Codex with Champion Life**. This is a bounded Giving follow-up to frozen draft PR #34 head `3a8317fb265c0cabb894133ac169100aaea83622`; no restart, merge or historical SQL rewrite. Production Git main is still `e3157f0afa3f563ab6560ca64c9049448f02c806`. Primary independently confirmed the live 25-row baseline; source attribution and all hashes are in `docs/NMI-CUTOVER-PRODUCTION-BASELINE.json`. No production inspection/write is claimed by this child.
+
+All new private tables have RLS and no raw browser/service grants; one guarded service RPC owns execution. Anonymous capability hashes expire after 30 minutes, Turnstile and bounded fingerprint limits protect creation, and idempotency plus unresolved-leg/financial-action locks prevent duplicate handoff. Cross-session duplicate fingerprints stay blocked beyond the short replay window while an original attempt is unresolved or an identical recurring schedule remains active/paused. No PAN/CVV-owned field, browser token persistence, raw response logging, live key or live host. Private results store whitelisted financial scalars only.
+
+New-charge handoff rechecks original organization/fund/destination/gateway/processor route snapshot and frozen private merchant/MID/settlement proof fingerprint, current donor/household linkage and finance/approver permission. Unknown result, mismatched amount/currency/processor, missing/ambiguous query and stale lease never imply absence or permit blind retry. Original financial actions remain audited. Refund principal is reserved/append-only; void has zero captured gift. Subscription creation is not a donation.
+
+New-charge shutdown and narrowly scoped lookup/refund/void/pause/cancel recovery are distinct. Provider subscriptions require separately verified pause/cancel; GiveHub fallback/public links remain intact. Dedicated acceptance source pin remains null/empty with every flag OFF; no target or credentials were configured. Primary-confirmed baseline evidence fixes offline staging only. Shared Platform Gate 0 and actual hosted/provider acceptance remain mandatory; old fingerprinted registry diagnostics are historical evidence, not a verdict on subsequent sibling repairs.
+
+---
+
+Historical frozen integration/earlier platform checkpoints follow; the execution follow-up above supersedes their held engineering status.
+
 # NMI integration security review — 2026-10-18
 
 All 449 protected production source files, including all 25 migrations, existing Edge functions, Supabase configuration, public registration/Auth/legal pages, GiveHub links and redirects, are checked against Git blob hashes at exact base `e3157f0`. No production access or remote configuration/migration was performed.

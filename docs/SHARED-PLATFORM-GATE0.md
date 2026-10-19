@@ -58,9 +58,15 @@ For NMI set MODULE=nmi; for Outreach set MODULE=outreach. On a temporary reconci
 
 A later combined disposable test can use `node tools/platform/compose-gate0.mjs /tmp/gate0-REVIEW nmi,outreach`. It requires a fresh directory and frozen hashes. This is a local test artifact only. Public preview targets are deliberately unpinned: target selection/configuration and hosted acceptance require separate authorization. No production auto-deploy is permitted by this contract.
 
-## Newer NMI head detected at closeout
+## Current NMI adoption target and correction
 
-PR #34 advanced independently to `e39b83205d3086efa86a40d9a68e5306fc7eae8e`. Compared with the accepted checkpoint, it adds `20261019010048_nmi_sandbox_execution.sql` and `20261019010932_nmi_sandbox_recovery_reconciliation.sql` and changes the test package, public manifest and build script. Gate 0 results above are for the frozen checkpoint only. The adoption CLI refuses a newer HEAD rather than dropping its new entries. Reconcile this later delta before adopting on the current NMI branch; do not reset/rewrite that branch to force the guard. Outreach remains at the tested frozen head.
+Owner corrected the NMI adoption target to `d82ed7fdb049389ae43d50a2ceb1ac300665a7cc`. This supersedes both 3a8317 and e39b832 for adoption; original checkpoint results above are historical. The current source contracts, file hashes, public/test manifests and archived NMI continuity now pin d82ed7. All newer execution, recurring, ledger, receipt, recovery and reconciliation sources are preserved by pinned composition. Outreach stays bff9612.
+
+Outreach adoption independently exposed four shared integration defects: missing-Auth crash; dropped identity/server-role display; preview branch-name bypass; composer treating the adopted child's entire delta/manifest as Gate0. The correction restores the disabled fail-closed adapter and text-only identity/role, requires an explicit actual-source-branch target for every isolated build, and uses explicit Gate0-owned files, production baseline public files and canonical test package. Unknown/reconciliation branches never inherit an older acceptance target. NMI public Giving configuration/CSP hooks from d82ed7 are retained, additionally subject to both platform and module acceptance pins. No actual target is configured.
+
+Current local primary evidence: 82 upgrade assertions / seven orders including both current NMI and frozen Outreach orders; 43+14 scope assertions on PGlite/native; 69 shell DOM checks; 56 build/composition checks including already-adopted roots; 63 Chromium checks/19 screenshots with disabled Auth and identity/role at all widths. Full primary baseline suite passes. Complete adopted NMI regression and explicit offline38-file migration packaging are separately recorded in the private current-head handoff; do not infer them merely from these primary tests.
+
+Module-owned offline packagers must explicitly append Gate0 SQL and hash to their reviewed plan: NMI25+12+1=38, Outreach25+4+1=30. No filesystem-driven widening; all historical SQL/ledger aliases retained; packages remain unapplied. Module source-inventory/shell fixtures must reflect that explicit dependency without dropping security/business assertions. Current NMI adoption uses the updated source contract; never downgrade/reset PR34. Original3439e703 is an intermediate dependency and must be followed by this correction before final adoption tests.
 
 ## Remaining gates
 

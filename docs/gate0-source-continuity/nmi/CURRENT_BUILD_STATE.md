@@ -1,3 +1,21 @@
+# NMI Giving sandbox execution follow-up — October 18 CDT / 19 UTC, 2026
+
+Primary authority remains **Align Codex with Champion Life**. This is a bounded Giving follow-up to frozen draft PR #34 head `3a8317fb265c0cabb894133ac169100aaea83622`; no restart, merge or historical SQL rewrite. Production Git main is still `e3157f0afa3f563ab6560ca64c9049448f02c806`. Primary independently confirmed the live 25-row baseline; source attribution and all hashes are in `docs/NMI-CUTOVER-PRODUCTION-BASELINE.json`. No production inspection/write is claimed by this child.
+
+COMPLETED / CHANGED: anonymous canonical NMI sandbox checkout, authoritative result executor and immutable gift posting; consent-bound vault/active recurring/pause/cancel; current maker/checker refund/void execution; Operations lookup jobs without blind retries; canonical SANDBOX receipts with immutable held outbox; bounded Query API transaction and settlement/batch projections with explicit statement reconciliation; scoped unknown recovery; donor success/decline/pending/recovery and current-session staff controls. New forward SQL versions `20261019010048` and `20261019010932`; no accepted source migration changed.
+
+TESTED: complete standard/DOM/migration suite, native PostgreSQL races (including eleven new eight-worker execution/refund races), seven Deno entrypoints, source/build/449 protected-file checks. Exact final result belongs in `docs/NMI-CUTOVER-VALIDATION.md` and PR checks; no real provider/hosted acceptance.
+
+SECURITY: source pin is null, origin allowlist empty, all execution switches OFF, sandbox endpoint only. New charges and safe recovery have separate controls; disabling charges does not stop existing provider subscriptions, so supervised cleanup must confirm pause/cancel. Financial route revisions and private merchant/MID/settlement proof fingerprints, current staff/donor authority and checkout expiry are rechecked before handoff; dispatch is audited before provider I/O. Secrets/tokens/raw provider payloads never enter application logs/storage.
+
+DOCUMENTATION / UNRESOLVED: dedicated new-project baseline/order/hashes/functions/secret names/seed/cleanup/cost and full supervised procedure prepared. Main/Youth/Outreach/Events/Merch merchant facts and GiveHub export/portability/next dates remain UNVERIFIED. Exact normalized GiveHub contract prepared; nothing imported or cancelled. Primary owns Shared Platform Gate 0, shell/permissions/migration reconciliation and Communications delivery/legal sender. The earlier registry diagnostic describes only its fingerprinted snapshot; sibling repairs must be assessed by primary Gate 0, not that old verdict.
+
+NEXT RECOMMENDED BUILD / CHAT HANDOFF: review this exact follow-up and primary Gate 0, obtain finance/NMI worksheet and owner-approved clean dedicated target, then authorize exact source pins and supervised sandbox acceptance. No target was created. Production/GiveHub/live credentials/money changes **NONE**; public cutover **NO-GO pending acceptance and primary approval**.
+
+---
+
+Historical frozen integration/earlier platform checkpoints follow; the execution follow-up above supersedes their held engineering status.
+
 # NMI Friday integration candidate — 2026-10-18
 
 Implemented on `codex/nmi-giving-friday-cutover`, direct production base `e3157f0afa3f563ab6560ca64c9049448f02c806`. This supersedes historical candidate status below only for this isolated Giving package. Production/live schema state has NOT been inspected or changed by this assignment.

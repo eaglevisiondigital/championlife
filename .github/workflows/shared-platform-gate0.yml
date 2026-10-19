@@ -16,7 +16,7 @@ jobs:
           node-version: 22
       - name: Fetch immutable candidate evidence
         run: |
-          git fetch origin 3a8317fb265c0cabb894133ac169100aaea83622
+          git fetch origin d82ed7fdb049389ae43d50a2ceb1ac300665a7cc
           git fetch origin bff9612ac9385cf963c5e7e41f9091da7af86cf0
       - run: npm ci --ignore-scripts --prefix tools/backend-tests
       - run: TEST_POSTGRES_BIN="$(pg_config --bindir)" npm run test:gate0:native --prefix tools/backend-tests

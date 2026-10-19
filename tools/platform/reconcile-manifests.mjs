@@ -8,7 +8,7 @@ const base=JSON.parse(execFileSync('git',['show',pins.production+':tools/site-bu
 const candidates=read('config/platform/public-module-files.json');
 const files=[...new Set([...base,'assets/js/staff-workspace.js','assets/css/staff-workspace.css',...requested.flatMap(m=>candidates[m])])].sort();
 for(const p of files)if(!existsSync(path.join(root,p)))throw Error('Missing reviewed public file: '+p);
-const contracts=read('config/platform/test-package-contract.json'),pkg=read('tools/backend-tests/package.json');
+const contracts=read('config/platform/test-package-contract.json'),pkg=read('config/platform/gate0-package.json');
 for(const m of requested){Object.assign(pkg.devDependencies,contracts[m].devDependencies);for(const[k,v]of Object.entries(contracts[m].scripts)){if(k==='test')pkg.scripts['test:frozen:'+m]=v;else if(!Object.hasOwn(pkg.scripts,k))pkg.scripts[k]=v;else if(pkg.scripts[k]!==v)throw Error('Review script conflict '+k);}}
 writeFileSync(path.join(root,'tools/site-build/public-files.json'),JSON.stringify(files,null,2)+'\n');writeFileSync(path.join(root,'tools/backend-tests/package.json'),JSON.stringify(pkg,null,2)+'\n');
 console.log('Reconciled explicit '+requested.join('+')+' public/test manifests. Regenerate the lockfile with npm install --package-lock-only --ignore-scripts; then run the complete module and Gate0 regressions. No release authorized.');

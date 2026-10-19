@@ -2,6 +2,12 @@
 (() => {
   'use strict';
   if (!document.body.hasAttribute('data-staff-workspace')) return;
+  // Disabled previews intentionally load no Supabase client. Keep consumers fail-closed.
+  const authAvailable = Boolean(window.ChampionLifeAuth?.client);
+  if (!authAvailable) window.ChampionLifeAuth = {
+    getUser: async () => null, getSession: async () => null, signOut: async () => {},
+    client: { rpc: async () => ({data:null,error:{code:'42501',message:'Workspace unavailable'},status:403}), auth: {onAuthStateChange(){}} }
+  };
   const el = window.OutreachUI.el, auth = window.ChampionLifeAuth;
   const page = location.pathname.split('/').pop().replace(/\.html$/, '');
   let selected = new URLSearchParams(location.search).get('campaign');
@@ -78,7 +84,10 @@
   const contextSelect=el('select',null,{'aria-label':'Platform context',class:'staff-campaign-select'});
   const campaignSelect=el('select',null,{'aria-label':'Current outreach campaign',class:'staff-campaign-select'});
   const contextBar=el('div',null,{class:'staff-context'});contextBar.append(contextSelect,campaignSelect);
-  top.append(menu, crumb, contextBar, signout);
+  const who=el('span','Checking session…',{class:'staff-user'}),role=el('span','',{class:'staff-role'});
+  const identity=el('div',null,{class:'staff-identity'}),session=el('div',null,{class:'staff-session-wrap'});
+  identity.append(who,role);session.append(identity,signout);
+  top.append(menu, crumb, contextBar, session);
   original.classList.add('staff-main'); original.id = 'staff-main'; original.tabIndex = -1;
   const skip = el('a', 'Skip to workspace', { href: '#staff-main', class: 'staff-skip' });
   column.append(top, original); shell.append(sidebar, backdrop, column); document.body.prepend(skip, shell);
@@ -150,6 +159,8 @@
 
   function render(s) {
     nav.replaceChildren(); signout.hidden = !s?.user;
+    who.textContent=s ? (s.user?.email || 'Signed out') : 'Checking session…';
+    role.textContent=s?.user ? (s.role_label || '') : '';
     if (!s) { nav.append(el('p', 'Checking access…', { class: 'staff-nav-status', role: 'status' })); return; }
     contextSelect.replaceChildren();
     for(const value of s.contexts||[]){const o=el('option',value==='champion'?'Champion Life':'Outreach / SowGo',{value});o.selected=value===s.platform;contextSelect.append(o);}
@@ -206,6 +217,7 @@
     if (busy) { again=true; return; }
     busy=true; const g=++epoch;
     try {
+      if(!authAvailable){clearProtected();publish(empty());state(original,'Workspace unavailable','Sign-in and database access are disabled because this preview is not configured.');return;}
       const user=await auth?.getUser();
       if (!user || user.is_anonymous) { if(g===epoch){clearProtected();accessVersion=null;publish(empty());} return; }
       const s=await discover(user), current=await auth.getUser();
