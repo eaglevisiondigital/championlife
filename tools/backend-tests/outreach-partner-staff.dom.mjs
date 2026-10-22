@@ -3,7 +3,7 @@ const read=p=>readFileSync(new URL('../../assets/js/'+p,import.meta.url),'utf8')
 const shell='<main class="partner-workspace"><div class="partner-workspace-intro"><h1>Outreach Partner Review</h1></div><div id="outreach-intakes"></div></main>';
 const dom=new JSDOM(shell,{url:'https://preview.example/staff-outreach-partners.html',runScripts:'outside-only'}),w=dom.window;
 let user={id:'staff'},callback,linked=false,task=false,revision=1;const calls=[];
-w.confirm=()=>true;w.ChampionLifeAuth={getUser:async()=>user,getSession:async()=>user?{user}:null,client:{auth:{onAuthStateChange:f=>callback=f},rpc:async(name,p)=>{calls.push({name,p});if(name==='staff_workspace_context')return{data:{organizations:[{id:'org',name:'SowGo'}],grants:['outreach.view','outreach.manage','people.read','people.create','people.update','followup.read','followup.manage'].map(permission=>({organization_id:'org',permission}))}};
+w.confirm=()=>true;w.ChampionLifeAuth={getUser:async()=>user,getSession:async()=>user?{user}:null,client:{auth:{onAuthStateChange:f=>callback=f},rpc:async(name,p)=>{calls.push({name,p});if(name==='staff_workspace_context')return{data:{organizations:[{id:'org',name:'SowGo'}],grants:['finance.read','outreach.view','outreach.manage','people.read','people.create','people.update','followup.read','followup.manage'].map(permission=>({organization_id:'org',permission}))}};
 if(name==='people_workspace')return{data:[{id:'person',first_name:'Reviewed',last_name:'Contact',email:'test@example.test'}]};
 if(p.p_action==='list')return{data:[{id:'intake',first_name:'<script>bad</script>',last_name:'Synthetic',email:'test@example.test',phone:'5555551234',source_site:'sowgo',submitted_at:new Date().toISOString(),status:linked?'linked':'new',commitment_amount:25,commitment_frequency:'Monthly'}]};
 if(p.p_action==='detail')return{data:{id:'intake',revision,status:linked?'linked':'new',raw_submission:{'first-name':'Synthetic',email:'test@example.test'},source_site:'sowgo',source_path:'/outreach-partner.html',person_id:linked?'person':null,followup_task_id:task?'task':null,history:[]}};
@@ -21,7 +21,7 @@ async function denialHarness({initial, noGrant=false}={}) {
  w.ChampionLifeAuth={getUser:async()=>session?.user,getSession:async()=>session,client:{auth:{onAuthStateChange:fn=>authChanged=fn},rpc:async(name,args)=>{
   const action=name==='staff_workspace_context'?'context':args.p_action;calls.push(action);
   if(responses.has(action))return await responses.get(action)();
-  if(action==='context')return {status:200,data:{organizations:[{id:'org',name:'SowGo'}],grants:noGrant?[]:['outreach.view','outreach.manage','people.read'].map(permission=>({organization_id:'org',permission}))}};
+  if(action==='context')return {status:200,data:{organizations:[{id:'org',name:'SowGo'}],grants:noGrant?[]:['finance.read','outreach.view','outreach.manage','people.read'].map(permission=>({organization_id:'org',permission}))}};
   return {status:200,data:action==='list'?[record]:detail};
  }}};
  w.eval(read('outreach-staff-common.js'));w.eval(read('staff-outreach-partners.js'));await tick();
