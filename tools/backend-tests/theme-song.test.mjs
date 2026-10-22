@@ -18,6 +18,14 @@ check(b.window.document.querySelector('meta[name="twitter:card"]').content==='su
 check(b.window.document.querySelector('audio').getAttribute('autoplay')===null,'no autoplay');
 check(b.window.document.querySelector('[data-download]').href.endsWith('.m4a'),'honest original format');
 for(const l of b.window.document.querySelectorAll('[data-give]'))check(l.getAttribute('href')==='/outreach-giving.html','unchanged giving route');
+for(const selector of ['[data-play]','[data-seek]','[data-mute]','[data-volume]','[data-download]','[data-share]','[data-give]']){
+ check(b.window.document.querySelectorAll(selector).length===1,'one accessible control '+selector);
+ check(b.window.document.querySelector('.theme-song-artwork '+selector).getAttribute('aria-label'),'artwork control labeled '+selector);
+}
+check(!b.window.document.querySelector('.theme-song-player,.theme-song-actions,.theme-song-meta,.theme-song-fuel a'),'no duplicate visible or hidden controls');
+check(b.window.document.querySelector('.theme-song-artwork [data-counter] svg[aria-hidden=true]'),'headphones integrated in artwork');
+check(b.window.document.querySelector('[data-total]').textContent==='Plays unavailable','no fabricated initial total');
+check(b.window.document.querySelector('[data-counter]').getAttribute('aria-live')==='polite','accessible counter updates');
 check(read('outreach-giving.html').toString().includes('https://www.community.givehub.com/forms/outreach-main-giving'),'existing outreach form');
 const media={paused:false,seeking:false,ended:false,readyState:4,currentTime:0,playbackRate:1};let m=new PlaybackMeter();
 for(let i=0;i<=20;i++){media.currentTime=i/4;m.sample(media,i*250)}check(m.seconds===5,'five actual elapsed seconds');
