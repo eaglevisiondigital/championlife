@@ -15,3 +15,7 @@
 8. Isolated exact-stack hosted acceptance is accepted as PASS. Cleanup means zero active test registrations, check-ins or grants; closed synthetic records and immutable audit/signature history are intentionally retained.
 9. The production release candidate must be reconciled onto current main `f0d6fe9e07140dab6ed829ed5ccfdbb7af12e2fd` and preserve the live Bessemer mobile registration-flow change unchanged. Backend integration must not alter the approved Huntsville public header.
 10. Current authorization is limited to preparing a draft production release PR and running CI/release checks. No merge, production migration, Edge deployment, grant, waiver publication, registration activation, SowGo route change or message send is authorized. Branded email remains a separate launch gate.
+
+## Theme-song implementation — 2026-10-22
+
+Use the owner's final exact PNG, lossless delivery derivative and original M4A. Display actual audio duration/format; preserve composition rather than regenerate artwork. Responsive controls move below the intact image when overlay targets would be too small. Retain SOUL FUEL wording and existing GiveHub Outreach destination. Use transactional, separately provisioned counter storage; never repurpose restricted acceptance or production ministry databases. Draft/skip-deploy only until explicit release approval. The mentioned implementation ZIP was not available; do not claim it was inspected.

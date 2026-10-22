@@ -43,7 +43,7 @@ export async function buildSite({ root = repository, env = process.env } = {}) {
   for (const file of files) {
     if (typeof file !== 'string' || file.includes('\\') || file.split('/').some(p => !p || p.startsWith('.')) ||
         /^(?:audit|docs|tools|supabase|netlify|HANDOFFS)\//i.test(file) ||
-        !(/\.(?:html|css|js|png|jpe?g|webp|svg|gif|ico|pdf|woff2?|mp[34]|webm)$/i.test(file) || /^assets\/images\/food-outreach-hero-chunks\/0[0-8]\.txt$/.test(file) || file === '_redirects')) {
+        !(/\.(?:html|css|js|png|jpe?g|webp|svg|gif|ico|pdf|woff2?|mp[34]|m4a|webm)$/i.test(file) || /^assets\/images\/food-outreach-hero-chunks\/0[0-8]\.txt$/.test(file) || file === '_redirects')) {
       throw new Error('Non-public file in public manifest.');
     }
     let target = root;

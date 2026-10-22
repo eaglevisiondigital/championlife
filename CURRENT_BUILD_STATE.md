@@ -1,3 +1,9 @@
+# Gospel in the Streets candidate — 2026-10-22
+
+Isolated theme-song implementation from current main `e3157f0afa3f563ab6560ca64c9049448f02c806`. Exact final approved artwork and original AAC preserved. Shared player added after the Outreach introduction and at `/outreach/theme-song`, with SOUL FUEL, existing Outreach giving, social metadata and original download. New transactional play counter is implemented/default-disabled; its dedicated storage and all hosted activation await separate approval. No Supabase, payment or registration changes. See [feature/release contract](docs/THEME-SONG.md) for provenance, tests, configuration and release gates. Draft PR only, with `[skip netlify]` safeguards; no merge/deploy/provisioning.
+
+---
+
 # Isolated Huntsville email-link acceptance fix — 2026-10-17
 
 PR #26 only, based on release head `c083447559d698a44ea7d63aeab2ea310b61f877`. The actual isolated branded template uses Supabase `ConfirmationURL`: `/auth/v1/verify?token=…&type=magiclink&redirect_to=…`, followed by an implicit session/error fragment at the login page. It does not currently use a custom `token_hash` callback or PKCE.

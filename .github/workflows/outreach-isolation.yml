@@ -16,7 +16,9 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
+      - run: npm ci --ignore-scripts
       - run: npm ci --ignore-scripts --prefix tools/backend-tests
       - run: npm test --prefix tools/backend-tests
       - run: TEST_POSTGRES_BIN="$(pg_config --bindir)" npm run test:concurrency --prefix tools/backend-tests
+      - run: TEST_POSTGRES_BIN="$(pg_config --bindir)" npm run test:theme-song-native --prefix tools/backend-tests
       - run: git diff --check

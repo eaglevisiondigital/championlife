@@ -91,6 +91,8 @@ body.outreach-modal-open{overflow:hidden}
  .outreach-modal-newtab{display:none}
 }
 </style>
+<link rel="stylesheet" href="/assets/css/theme-song.css">
+<script type="module" src="/assets/js/theme-song.js"></script>
 </head>
 <body>
   <header class="site-header">
@@ -123,6 +125,26 @@ body.outreach-modal-open{overflow:hidden}
           <a class="btn outline" href="outreach-giving.html">Donate</a>
         </div>
       </div>
+    </section>
+
+    <section class="theme-song" data-theme-song aria-label="Champion Life theme song">
+      <h2 class="theme-song-sr">Champion Life — Gospel in the Streets</h2>
+      <div class="theme-song-art">
+        <picture><source srcset="/assets/images/theme-song/approved-artwork.webp" type="image/webp"><img src="/assets/images/theme-song/approved-artwork.png" width="1672" height="941" alt="Champion Life Theme Song. Pastor Roddy faces a crowd in the streets beneath the Gospel in the Streets and It’s a Street Fight signs. Official outreach theme song: A sound of hope in the streets."></picture>
+        <audio controls preload="metadata" src="/assets/audio/gospel-in-the-streets.m4a" aria-label="Champion Life theme song"></audio>
+        <div class="theme-song-player" role="group" aria-label="Audio player">
+          <button class="theme-song-play" data-play type="button" aria-label="Play theme song" aria-pressed="false"><span aria-hidden="true">▶</span></button>
+          <div class="theme-song-track"><strong>Champion Life</strong><span>Theme Song</span><div class="theme-song-progress"><input data-seek type="range" min="0" max="1" step="0.1" value="0" disabled aria-label="Playback position"><span class="theme-song-time" data-time>0:00 / –:––</span></div></div>
+          <label class="theme-song-volume"><span aria-hidden="true">♪</span><span class="theme-song-sr">Volume (use device controls where required)</span><input data-volume type="range" min="0" max="1" step="0.05" value="1"></label>
+        </div>
+        <div class="theme-song-actions">
+          <a class="theme-song-download" data-download href="/assets/audio/gospel-in-the-streets.m4a" download="Champion Life - Gospel in the Streets.m4a"><svg aria-hidden="true" viewBox="0 0 32 32"><path d="M16 3v19m-7-7 7 7 7-7M5 23v6h22v-6"/></svg><span><strong>Download Song</strong><small>Take the music with you</small></span></a>
+          <button data-share type="button"><svg aria-hidden="true" viewBox="0 0 32 32"><circle cx="7" cy="16" r="4"/><circle cx="24" cy="6" r="4"/><circle cx="24" cy="26" r="4"/><path d="m10 14 11-6M10 18l11 6"/></svg><span><strong>Share</strong><small>Spread the message</small></span></button>
+          <a data-give href="/outreach-giving.html"><svg aria-hidden="true" viewBox="0 0 32 32"><path d="M16 28 4 16C-4 6 9-3 16 7 23-3 36 6 28 16Z"/></svg><span><strong>Give to Outreach</strong><small>Help us reach more people</small></span></a>
+        </div>
+      </div>
+      <div class="theme-song-meta"><p data-total>Play count unavailable</p><p role="status" aria-live="polite" data-status></p><input class="theme-song-copy" data-copy-link hidden readonly aria-label="Song sharing link"><noscript>Use the audio controls to listen. Share: championlifefwb.com/outreach/theme-song</noscript></div>
+      <div class="theme-song-fuel"><p class="fuel-name">SOUL FUEL</p><h3>Help Fuel the Gospel in the Streets!</h3><a data-give href="/outreach-giving.html">Give to Outreach</a></div>
     </section>
 
     <section class="section light outreach-story-section">
