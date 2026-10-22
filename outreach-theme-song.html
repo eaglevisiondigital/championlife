@@ -21,7 +21,19 @@
     <section class="theme-song" data-theme-song aria-label="Champion Life theme song">
       <h2 class="theme-song-sr">Champion Life — Gospel in the Streets</h2>
       <div class="theme-song-art">
+        <div class="theme-song-artwork">
         <picture><source srcset="/assets/images/theme-song/approved-artwork.webp" type="image/webp"><img src="/assets/images/theme-song/approved-artwork.png" width="1672" height="941" alt="Champion Life Theme Song. Pastor Roddy faces a crowd in the streets beneath the Gospel in the Streets and It’s a Street Fight signs. Official outreach theme song: A sound of hope in the streets."></picture>
+          <div class="theme-song-art-controls" role="group" aria-label="Artwork player controls">
+            <button class="song-art-play" data-art-play type="button" aria-label="Play theme song" aria-pressed="false" title="Play or pause the theme song"><span></span></button>
+            <input class="song-art-seek" data-art-seek aria-label="Playback position in artwork" type="range" min="0" max="1" step="0.1" value="0" disabled title="Playback position">
+            <span class="song-art-time" data-art-time>0:00 / –:––</span>
+            <button class="song-art-mute" data-art-mute type="button" aria-label="Mute audio" aria-pressed="false" title="Mute or unmute"><span></span></button>
+            <input class="song-art-volume" data-art-volume aria-label="Volume in artwork" type="range" min="0" max="1" step="0.05" value="1" title="Volume (or use device volume)">
+            <a class="song-art-download" data-art-download aria-label="Download song (M4A)" href="/assets/audio/gospel-in-the-streets.m4a" download="Champion Life - Gospel in the Streets.m4a" title="Download the original song (.m4a)"></a>
+            <button class="song-art-share" data-art-share type="button" aria-label="Share song" title="Share the song"></button>
+            <a class="song-art-give" data-art-give aria-label="Give to Outreach" href="/outreach-giving.html" title="Give to Outreach"></a>
+          </div>
+        </div>
         <audio controls preload="metadata" src="/assets/audio/gospel-in-the-streets.m4a" aria-label="Champion Life theme song"></audio>
         <div class="theme-song-player" role="group" aria-label="Audio player">
           <button class="theme-song-play" data-play type="button" aria-label="Play theme song" aria-pressed="false"><span aria-hidden="true">▶</span></button>

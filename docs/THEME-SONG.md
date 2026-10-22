@@ -12,7 +12,7 @@ Original `Gospel St.m4a` is preserved byte-for-byte:
 `b844032d80a66f41743df01b22c2a7ab4f07d5dcd571467e34c4bbf2e2249c60`.
 Its measured duration is 288.1 seconds (4:48), mono AAC, approximately 577 KiB. The functional player displays this actual duration instead of the illustrative 3:42 in the artwork. The download is honestly named M4A, not mislabeled MP3. No re-encoding or new artwork was performed.
 
-Desktop controls cover the illustrated player/button areas, retaining their placement and gold/dark language. At widths ≤900px, the complete unaltered image remains visible and actual controls move below it to provide usable targets. Native audio controls and download/giving links remain available without JavaScript. No autoplay. Device-level volume controls apply where the browser does not support programmatic volume.
+Desktop controls cover the illustrated player/button areas, retaining their placement and gold/dark language. At widths ≤900px, transparent interactive controls align with the player and action areas pictured in the complete unaltered image. Play/pause, seeking, volume, mute, original-audio download, sharing and existing Outreach giving use the same audio element and actions as the larger controls retained below for touch usability. Current time, actual duration, play and mute states stay synchronized. Both control sets have keyboard semantics, labels and visible focus. Native audio controls and download/giving links remain available without JavaScript. No autoplay. Device-level volume controls apply where the browser does not support programmatic volume.
 
 The identical feature appears immediately after the Outreach introduction and at `/outreach/theme-song`. The sharing page has canonical, Open Graph and Twitter metadata; it is public/unlisted, has no primary-navigation entry and uses `noindex,follow`. Share uses the native share sheet, then clipboard, then a selectable URL. Social crawlers cannot be validated against production until release.
 
@@ -51,7 +51,7 @@ Emergency disable: owner sets `theme_song.installation.enabled=false` (immediate
 
 ## Validation and release gates
 
-Local: existing full backend/site regression; focused HTTP, qualification and asset tests; native PostgreSQL with a non-owner runtime role and concurrent dedup/increment/rate races; Chrome and WebKit at 1440, 768 and 390 px with real supplied AAC, seeking, volume, byte-identical download, clipboard/manual share fallback, error handling and no unexpected external requests. Screenshots and logs remain private in the outer audit workspace, excluded from all builds.
+Local: existing full backend/site regression; focused HTTP, qualification and asset tests; native PostgreSQL with a non-owner runtime role and concurrent dedup/increment/rate races; Chrome and WebKit at 1440, 847, 768 and 390 px with real supplied AAC, seeking, volume, byte-identical download, clipboard/manual share fallback, error handling and no unexpected external requests. Screenshots and logs remain private in the outer audit workspace, excluded from all builds.
 
 Commands:
 

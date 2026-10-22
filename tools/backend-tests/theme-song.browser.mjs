@@ -4,7 +4,7 @@ const evidence=process.env.EVIDENCE_DIR;if(evidence)await mkdir(evidence,{recurs
 const output=[];
 for(const [engine,options] of [[chromium,{channel:'chrome'}],[webkit,{}]]){
  const browser=await engine.launch({headless:true,...options});try{
-  for(const width of [1440,768,390]){
+  for(const width of [1440,847,768,390]){
    const ctx=await browser.newContext({viewport:{width,height:width===390?844:1000},acceptDownloads:true});const p=await ctx.newPage();let errors=[];p.on('pageerror',e=>errors.push(e.message));const blocked=[];
    await ctx.route('**/*',route=>{if(new URL(route.request().url()).origin!==base){blocked.push(new URL(route.request().url()).origin);return route.abort();}return route.continue();});
    await p.goto(base+'/outreach/theme-song');await p.waitForSelector('.theme-song.is-ready');await p.waitForFunction(()=>Number.isFinite(document.querySelector('audio').duration));
@@ -18,6 +18,24 @@ for(const [engine,options] of [[chromium,{channel:'chrome'}],[webkit,{}]]){
    const downloadPromise=p.waitForEvent('download');await p.locator('[data-download]').click();const download=await downloadPromise;const file=await download.path();ok(download.suggestedFilename().endsWith('.m4a')&&createHash('sha256').update(await readFile(file)).digest('hex')==='b844032d80a66f41743df01b22c2a7ab4f07d5dcd571467e34c4bbf2e2249c60','byte-identical download '+width);
    ok((await p.locator('[data-give]').first().getAttribute('href'))==='/outreach-giving.html','existing giving destination');
    await p.evaluate(()=>{Object.defineProperty(navigator,'share',{value:undefined,configurable:true});Object.defineProperty(navigator,'clipboard',{value:{writeText:async text=>{window.copiedLink=text}},configurable:true});});await p.locator('[data-share]').click();ok(await p.evaluate(()=>window.copiedLink==='https://championlifefwb.com/outreach/theme-song'),'copy-link fallback');
+   if(width<=900){
+    // Pointer clicks target the controls actually pictured in the approved artwork.
+    await p.locator('[data-art-play]').click();await p.waitForFunction(()=>!document.querySelector('audio').paused);await p.locator('[data-art-play]').click();
+    ok(await p.locator('audio').evaluate(a=>a.paused),'artwork play/pause '+engine.name()+'/'+width);
+    const artSeek=p.locator('[data-art-seek]'),seekBox=await artSeek.boundingBox();await artSeek.click({position:{x:seekBox.width*.6,y:seekBox.height/2}});
+    await p.waitForFunction(()=>{const a=document.querySelector('audio');return a.currentTime/a.duration>.5&&a.currentTime/a.duration<.7});
+    ok(true,'artwork pointer seeking '+width);
+    const artVolume=p.locator('[data-art-volume]'),volumeBox=await artVolume.boundingBox();await artVolume.click({position:{x:volumeBox.width*.3,y:volumeBox.height/2}});
+    ok(await p.locator('audio').evaluate(a=>a.volume>.1&&a.volume<.5),'artwork pointer volume '+width);
+    await p.locator('[data-art-mute]').click();ok(await p.locator('audio').evaluate(a=>a.muted),'artwork mute '+width);await p.locator('[data-art-mute]').click();ok(await p.locator('audio').evaluate(a=>!a.muted),'artwork unmute '+width);
+    const artDownloadPromise=p.waitForEvent('download');await p.locator('[data-art-download]').click();const artDownload=await artDownloadPromise;
+    ok(createHash('sha256').update(await readFile(await artDownload.path())).digest('hex')==='b844032d80a66f41743df01b22c2a7ab4f07d5dcd571467e34c4bbf2e2249c60','artwork original audio download '+width);
+    await p.evaluate(()=>{window.copiedLink=null});await p.locator('[data-art-share]').click();ok(await p.evaluate(()=>window.copiedLink==='https://championlifefwb.com/outreach/theme-song'),'artwork share '+width);
+    ok(await p.locator('[data-art-give]').getAttribute('href')==='/outreach-giving.html','artwork existing Outreach giving '+width);
+    ok(await p.locator('[data-art-time]').textContent()===await p.locator('[data-time]').textContent(),'artwork time stays synchronized '+width);
+    await p.locator('[data-play]').focus();await p.locator('[data-play]').press('Space');await p.waitForFunction(()=>!document.querySelector('audio').paused);await p.locator('[data-play]').press('Space');ok(await p.locator('[data-play]').evaluate(el=>el===document.activeElement&&getComputedStyle(el).outlineStyle!=='none'),'full-size keyboard controls retain visible focus '+width);
+    if(evidence)await p.screenshot({path:`${evidence}/${engine.name()}-${width}-artwork-active.png`,fullPage:true});
+   }
    ok(errors.length===0&&blocked.length===0,'no JS errors or external API requests');output.push({engine:engine.name(),width,errors,blocked});await ctx.close();
   }
   // Production Outreach markup and registration links preserved; no remote calls allowed.

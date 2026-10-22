@@ -2,6 +2,8 @@
 
 Isolated theme-song implementation from current main `e3157f0afa3f563ab6560ca64c9049448f02c806`. Exact final approved artwork and original AAC preserved. Shared player added after the Outreach introduction and at `/outreach/theme-song`, with SOUL FUEL, existing Outreach giving, social metadata and original download. New transactional play counter is implemented/default-disabled; its dedicated storage and all hosted activation await separate approval. No Supabase, payment or registration changes. See [feature/release contract](docs/THEME-SONG.md) for provenance, tests, configuration and release gates. Draft PR only, with `[skip netlify]` safeguards; no merge/deploy/provisioning.
 
+2026-10-22 artwork-control correction: the illustrated controls now work directly at tablet/mobile widths, including the owner’s 847px preview. Both pages share synchronized playback, seek, volume/mute, download, share and existing giving actions; larger accessible controls remain below. Exact approved image and audio bytes are unchanged. Local browser and regression results are recorded in the private artwork-controls evidence. No deployment or counter activation.
+
 ---
 
 # Isolated Huntsville email-link acceptance fix — 2026-10-17
