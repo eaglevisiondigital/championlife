@@ -1,10 +1,7 @@
 import assert from 'node:assert/strict';
-import { readFileSync } from 'node:fs';
+import { readFileSync, existsSync } from 'node:fs';
 import { createHash } from 'node:crypto';
 import { JSDOM } from 'jsdom';
-import { configuration, createHandler } from '../../netlify/functions/theme-song.mjs';
-import { CounterError } from '../../netlify/lib/theme-song-store.mjs';
-const {PlaybackMeter}=await import('data:text/javascript;base64,'+readFileSync(new URL('../../assets/js/theme-song-meter.js',import.meta.url)).toString('base64'));
 let checks=0;const check=(v,l)=>{assert.ok(v,l);checks++};
 const base=new URL('../../',import.meta.url), read=p=>readFileSync(new URL(p,base)), hash=b=>createHash('sha256').update(b).digest('hex');
 check(hash(read('assets/images/theme-song/approved-artwork.png'))==='78bb4bc738205f0498a4dff4a2614c2eb595d745766bd11062f05d7458ffc89d','final owner artwork exact bytes');
@@ -23,30 +20,19 @@ for(const selector of ['[data-play]','[data-seek]','[data-mute]','[data-volume]'
  check(b.window.document.querySelector('.theme-song-artwork '+selector).getAttribute('aria-label'),'artwork control labeled '+selector);
 }
 check(!b.window.document.querySelector('.theme-song-player,.theme-song-actions,.theme-song-meta,.theme-song-fuel a'),'no duplicate visible or hidden controls');
-check(b.window.document.querySelector('.theme-song-artwork [data-counter] svg[aria-hidden=true]'),'headphones integrated in artwork');
-check(b.window.document.querySelector('[data-total]').textContent==='Plays unavailable','no fabricated initial total');
-check(b.window.document.querySelector('[data-counter]').getAttribute('aria-live')==='polite','accessible counter updates');
 check(read('outreach-giving.html').toString().includes('https://www.community.givehub.com/forms/outreach-main-giving'),'existing outreach form');
-const media={paused:false,seeking:false,ended:false,readyState:4,currentTime:0,playbackRate:1};let m=new PlaybackMeter();
-for(let i=0;i<=20;i++){media.currentTime=i/4;m.sample(media,i*250)}check(m.seconds===5,'five actual elapsed seconds');
-media.paused=true;media.currentTime=99;m.sample(media,6000);check(m.seconds===5,'pause cannot qualify');
-media.paused=false;media.seeking=true;m.sample(media,6250);media.seeking=false;m.sample(media,6500);media.currentTime=200;m.sample(media,6750);check(m.seconds===5,'seek cannot qualify');
-m=new PlaybackMeter();media.currentTime=0;media.playbackRate=2;for(let i=0;i<=12;i++){media.currentTime=i/2;m.sample(media,i*250)}check(m.seconds===3,'2x requires five wall seconds');
-media.readyState=2;m.sample(media,4000);check(m.seconds===3,'buffering excluded');
-const env={THEME_SONG_COUNTER_ENABLED:'true',THEME_SONG_ORIGIN:'https://song.example.test',THEME_SONG_DATABASE_URL:'postgresql://fixture:fictional@db.example.test/champion_theme_song_preview',THEME_SONG_DATABASE_HOST:'db.example.test',THEME_SONG_SESSION_KEY:'synthetic-key-for-local-tests-only-123456789012345',THEME_SONG_INSTALLATION_ID:'aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa',THEME_SONG_SITE_ID:'bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb',THEME_SONG_CONTEXT:'deploy-preview',CONTEXT:'deploy-preview'};
-check(configuration(n=>env[n]),'explicit configured scope');
-for(const change of [{THEME_SONG_COUNTER_ENABLED:'false'},{THEME_SONG_ORIGIN:'https://*.example.test'},{THEME_SONG_ORIGIN:'https://song.example.test/x'},{THEME_SONG_DATABASE_URL:'postgresql://fixture:fictional@db.example.test/champion_theme_song_preview?sslmode=disable'},{THEME_SONG_DATABASE_URL:'postgresql://fixture:fictional@db.supabase.co/champion_theme_song_preview',THEME_SONG_DATABASE_HOST:'db.supabase.co'},{THEME_SONG_SESSION_KEY:'short'},{THEME_SONG_CONTEXT:'production'}]){
- // A wildcard is rejected by URL syntax/hostname validation as well as runtime exact-origin binding.
- check(!configuration(n=>({...env,...change})[n]),'bad config '+Object.keys(change));
+
+check(hash(read('assets/audio/gospel-in-the-streets.m4a'))==='b844032d80a66f41743df01b22c2a7ab4f07d5dcd571467e34c4bbf2e2249c60','original audio exact bytes');
+check(b.window.document.querySelector('.fuel-name').textContent==='SOUL FUEL','campaign name preserved');
+check(b.window.document.querySelector('[data-give]').getAttribute('aria-label')==='Give to Outreach','giving action wording preserved');
+for (const doc of [a,b]) {
+ check(!doc.window.document.querySelector('[data-counter],[data-total],.song-art-total'),'no counter display');
+ check(!/Plays unavailable|qualified plays/.test(doc.window.document.body.textContent),'no counter placeholder');
 }
-let calls=0,fail=0,lastID;const handler=createHandler(n=>env[n],()=>({run:async(kind,id)=>{calls++;lastID=id;if(fail)throw new CounterError(fail);return{plays:'12',session:id||'cccccccc-cccc-4ccc-8ccc-cccccccccccc'}}}));
-const ctx={site:{id:env.THEME_SONG_SITE_ID},deploy:{context:'deploy-preview'},ip:'192.0.2.1'};
-const req=(body={kind:'start'},headers={},method='POST',url=env.THEME_SONG_ORIGIN+'/.netlify/functions/theme-song')=>new Request(url,{method,headers:{origin:env.THEME_SONG_ORIGIN,'content-type':'application/json',...headers},...(method==='POST'?{body:typeof body==='string'?body:JSON.stringify(body)}:{})});
-let r=await handler(req(),ctx);check(r.status===200,'start');const cookie=r.headers.get('set-cookie');check(cookie.includes('Secure; HttpOnly; SameSite=Strict; Path=/'),'secure cookie');check(!JSON.stringify(await r.json()).includes('session'),'no session value exposed in body');
-await handler(req({kind:'play'},{cookie:cookie.split(';')[0]}),ctx);check(lastID==='cccccccc-cccc-4ccc-8ccc-cccccccccccc','signed cookie resumes exact session');
-await handler(req({kind:'play'},{cookie:cookie.split(';')[0].replace('cccccccc','dddddddd')}),ctx);check(lastID===null,'tampered cookie cannot identify a session');
-for(const [request,context,status] of [[req({}, {origin:'https://evil.test'}),ctx,403],[req({}, {},'DELETE'),ctx,405],[req({kind:'bad'}),ctx,400],[req({kind:'play',extra:1}),ctx,400],[req('x'.repeat(65)),ctx,413],[req(),{site:{id:'wrong'},ip:'192.0.2.1'},403],[req(),{site:ctx.site},403],[req({}, {'sec-fetch-site':'cross-site'}),ctx,403],[req({}, {},'POST','https://different.example.test/.netlify/functions/theme-song'),ctx,403]])check((await handler(request,context)).status===status,'request rejected '+status);
-fail=425;check((await handler(req({kind:'play'}),ctx)).status===425,'not mistaken for successful qualification');fail=429;r=await handler(req({kind:'play'}),ctx);check(r.status===429&&r.headers.get('retry-after')==='60','bounded rate response');
-const unavailable=createHandler(()=>null,()=>{throw Error('must never connect')});check((await unavailable(req(),ctx)).status===503,'disabled means no db connection / no fabricated zero');
-check(!JSON.stringify(await r.json()).includes('192.0.2.1'),'no IP in response');
-console.log(`PASS ${checks} theme-song asset, markup, qualification and HTTP/security checks`);
+const script=read('assets/js/theme-song.js').toString();
+check(!/fetch\s*\(|XMLHttpRequest|sendBeacon|WebSocket|document\.cookie|localStorage|sessionStorage|setInterval|PlaybackMeter|THEME_SONG_/.test(script),'static player has no tracking, storage or counter requests');
+for (const path of ['assets/js/theme-song-meter.js','netlify/functions/theme-song.mjs','netlify/lib/theme-song-store.mjs','tools/theme-song/schema.sql','tools/backend-tests/theme-song-native.test.mjs','package.json','package-lock.json']) check(!existsSync(new URL(path,base)),'removed counter-only artifact '+path);
+const manifest=JSON.parse(read('tools/site-build/public-files.json'));
+check(!manifest.includes('assets/js/theme-song-meter.js'),'no removed script in public build');
+check(!read('tools/theme-song/preview.mjs').toString().includes('/.netlify/functions/theme-song'),'preview does not emulate counter API');
+console.log(`PASS ${checks} theme-song asset, markup, static-only and privacy checks`);

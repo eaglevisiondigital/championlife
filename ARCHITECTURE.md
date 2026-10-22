@@ -6,4 +6,4 @@ Phase A identity/audit helpers and the dormant participant identity required by 
 
 ## Isolated theme-song feature
 
-The static Outreach feature and unlisted sharing page use one shared player implementation. A separate default-disabled Netlify Function performs transactional analytics in a proposed dedicated PostgreSQL counter database. No Supabase client, ministry records, auth/permission grants, registration or payment API is involved. Provisioning is manual and separately gated, never part of the site build. See [contract](docs/THEME-SONG.md).
+The Outreach feature and dedicated sharing page use one static HTML audio player and shared control script. No counter service, database, cookie, environment variable or tracking request is required. The exact artwork/audio and existing Outreach giving destination remain unchanged. The public manifest includes only the player, pages and approved media. See [contract](docs/THEME-SONG.md).

@@ -13,7 +13,6 @@
     "test:concurrency": "node outreach-concurrency.test.mjs",
     "test:huntsville-native": "TEST_NATIVE_PG=1 node outreach-registration.test.mjs && TEST_NATIVE_PG=1 node huntsville-registration.test.mjs && node huntsville-minimal-concurrency.test.mjs",
     "test:huntsville-safety": "node huntsville-minimal-safety.test.mjs",
-    "test:theme-song-native": "node theme-song-native.test.mjs",
     "test:theme-song-browser": "node theme-song.browser.mjs"
   }
 }

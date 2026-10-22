@@ -1,5 +1,0 @@
-{
-  "name": "championlife-site-functions",
-  "private": true,
-  "dependencies": { "pg": "8.23.1" }
-}

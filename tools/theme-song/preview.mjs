@@ -1,11 +1,10 @@
-// Local static review only. Does not enable analytics or contact any database.
+// Local static review only. Serves the public build without a backend.
 import http from 'node:http';import {readFile,stat} from 'node:fs/promises';import path from 'node:path';import {fileURLToPath} from 'node:url';
 const root=fileURLToPath(new URL('../../dist/',import.meta.url));
 const types={'.html':'text/html','.js':'text/javascript','.css':'text/css','.png':'image/png','.webp':'image/webp','.jpg':'image/jpeg','.m4a':'audio/mp4','.svg':'image/svg+xml'};
 http.createServer(async(req,res)=>{
  try{
   let url=decodeURIComponent(new URL(req.url,'http://localhost').pathname);
-  if(url==='/.netlify/functions/theme-song'){res.writeHead(503,{'content-type':'application/json','cache-control':'no-store'});res.end('{"error":"Play count unavailable"}');return;}
   if(['/outreach/theme-song','/outreach/theme-song/'].includes(url))url='/outreach-theme-song.html';
   const file=path.resolve(root,'.'+url);if(!file.startsWith(root)||!(await stat(file)).isFile())throw Error();
   const bytes=await readFile(file),headers={'content-type':types[path.extname(file)]||'application/octet-stream','accept-ranges':'bytes'};

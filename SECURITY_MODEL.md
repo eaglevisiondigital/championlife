@@ -14,6 +14,6 @@ The login uses the same `ChampionLifeAuth` client with `detectSessionInUrl: true
 
 Authentication does not grant organization or campaign authority. Existing downstream authorization, including revoked Huntsville staff denial and scoped export checks, remains unchanged. Tests use fictional credentials/local databases; a new human email-link retest is still required before declaring hosted link acceptance complete.
 
-## Theme-song analytics boundary
+## Static theme-song boundary
 
-Counter requests require exact platform site/context, same-origin request and dedicated database installation/environment guards. Signed HttpOnly session cookies, transactional uniqueness, minimum server elapsed time and network rate limits bound duplicates/abuse. The private database has scoped non-owner runtime privileges and RLS, with no ministry data or public database API. No secrets enter the public artifact. Missing configuration returns unavailable; playback/giving continues. Counter storage and activation remain unapproved. See [security/release contract](docs/THEME-SONG.md).
+The theme-song script performs no analytics/API/database requests, sets no cookies or storage, and tracks neither listening nor download/giving clicks. Sharing is user initiated. Counter backend/schema/configuration and runtime database dependencies are removed. No counter resources or secrets were installed. Original media, existing giving page, Supabase permissions and registration/payment integrations remain unchanged. Private audit and obsolete counter-preparation evidence stay outside the public build. See [release contract](docs/THEME-SONG.md).

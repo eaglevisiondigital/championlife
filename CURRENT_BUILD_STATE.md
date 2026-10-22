@@ -1,8 +1,10 @@
-# Gospel in the Streets candidate — 2026-10-22
+# Gospel in the Streets static candidate — 2026-10-22
 
-Isolated theme-song implementation from current main `e3157f0afa3f563ab6560ca64c9049448f02c806`. Exact final approved artwork and original AAC preserved. Shared player added after the Outreach introduction and at `/outreach/theme-song`, with SOUL FUEL, existing Outreach giving, social metadata and original download. New transactional play counter is implemented/default-disabled; its dedicated storage and all hosted activation await separate approval. No Supabase, payment or registration changes. See [feature/release contract](docs/THEME-SONG.md) for provenance, tests, configuration and release gates. Draft PR only, with `[skip netlify]` safeguards; no merge/deploy/provisioning.
+Draft PR #37 uses the exact approved artwork and original AAC on the Outreach page and `/outreach/theme-song`. One in-artwork control set provides play/pause, seeking, volume/mute, download, share and Give to Outreach; SOUL FUEL remains the campaign name. No duplicate visible controls.
 
-2026-10-22 final UI cleanup: the artwork is now the only visible control set at every width. Duplicate player/action markup and the additional SOUL FUEL giving button are removed. Keyboard labels, pressed states, range semantics and focus remain intact. A headphones icon and the existing qualified-play total are integrated inside the player; unconfigured storage displays “Plays unavailable” on both pages without fabricated numbers. Exact approved image/audio bytes, counting backend, giving route and production remain unchanged. Private regression/browser evidence is in final-ui-cleanup. No deployment or counter activation.
+The owner removed the play counter entirely. All counter displays, tracking, cookies, API, schema, database runtime dependencies and environment requirements are removed. No Neon or counter resources were provisioned. Earlier hosted-counter preparation is superseded and must not be executed. See [feature/release contract](docs/THEME-SONG.md).
+
+Final local validation PASS: full backend/site suite, 43 focused static/privacy checks, 201 Chrome/WebKit browser assertions at 1440/847/768/390px, four native concurrency groups, and two identical 401-file public builds. Original media hashes and protected paths remain unchanged. Exact-head CI must pass before the separately authorized production release. Existing ministry backends, giving and registration behavior remain untouched. Production release must use the existing Netlify workflow and include public-site verification and rollback readiness.
 
 ---
 

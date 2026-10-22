@@ -5,7 +5,7 @@ const output=[];
 for(const [engine,options] of [[chromium,{channel:'chrome'}],[webkit,{}]]){
  const browser=await engine.launch({headless:true,...options});try{
   for(const width of [1440,847,768,390]){
-   const ctx=await browser.newContext({viewport:{width,height:width===390?844:1000},acceptDownloads:true});const p=await ctx.newPage();let errors=[];p.on('pageerror',e=>errors.push(e.message));const blocked=[];
+   const ctx=await browser.newContext({viewport:{width,height:width===390?844:1000},acceptDownloads:true});const p=await ctx.newPage();let errors=[];p.on('pageerror',e=>errors.push(e.message));const blocked=[],apiRequests=[];p.on('request',r=>{if(['fetch','xhr','websocket'].includes(r.resourceType())||r.method()!=='GET')apiRequests.push({method:r.method(),url:r.url()})});
    await ctx.route('**/*',route=>{if(new URL(route.request().url()).origin!==base){blocked.push(new URL(route.request().url()).origin);return route.abort();}return route.continue();});
    await p.goto(base+'/outreach/theme-song');await p.waitForSelector('.theme-song.is-ready');await p.waitForFunction(()=>Number.isFinite(document.querySelector('audio').duration));
    ok(await p.locator('audio').evaluate(a=>a.paused&&Math.abs(a.duration-288.1)<1),'original AAC metadata/no autoplay '+engine.name()+'/'+width);
@@ -20,8 +20,8 @@ for(const [engine,options] of [[chromium,{channel:'chrome'}],[webkit,{}]]){
    await p.evaluate(()=>{Object.defineProperty(navigator,'share',{value:undefined,configurable:true});Object.defineProperty(navigator,'clipboard',{value:{writeText:async text=>{window.copiedLink=text}},configurable:true});});await p.locator('[data-share]').click();ok(await p.evaluate(()=>window.copiedLink==='https://championlifefwb.com/outreach/theme-song'),'copy-link fallback');
    ok(await p.locator('[data-theme-song] [data-play]').count()===1&&await p.locator('[data-theme-song] [data-download]').count()===1&&await p.locator('[data-theme-song] [data-share]').count()===1&&await p.locator('[data-theme-song] [data-give]').count()===1,'exactly one control set '+width);
    ok(await p.locator('.theme-song-player,.theme-song-actions,.theme-song-meta,.theme-song-fuel a').count()===0,'duplicate control markup removed '+width);
-   ok(await p.locator('[data-theme-song]').evaluate(root=>{const image=root.querySelector('img').getBoundingClientRect();return [...root.querySelectorAll('button,a,input:not([hidden]),[data-counter]')].every(el=>{const r=el.getBoundingClientRect();return r.top>=image.top&&r.bottom<=image.bottom&&r.left>=image.left&&r.right<=image.right})}),'all visible controls and counter contained in artwork '+width);
-   ok(await p.locator('[data-total]').textContent()==='Plays unavailable'&&await p.locator('[data-counter] svg').isVisible(),'visible headphones counter / no invented total '+width);
+   ok(await p.locator('[data-theme-song]').evaluate(root=>{const image=root.querySelector('img').getBoundingClientRect();return [...root.querySelectorAll('button,a,input:not([hidden])')].every(el=>{const r=el.getBoundingClientRect();return r.top>=image.top&&r.bottom<=image.bottom&&r.left>=image.left&&r.right<=image.right})}),'all visible controls contained in artwork '+width);
+   ok(await p.locator('[data-total],[data-counter],.song-art-total').count()===0,'counter removed '+width);
    const artSeek=p.locator('[data-seek]'),seekBox=await artSeek.boundingBox();await artSeek.click({position:{x:seekBox.width*.6,y:seekBox.height/2}});
    await p.waitForFunction(()=>{const a=document.querySelector('audio');return a.currentTime/a.duration>.5&&a.currentTime/a.duration<.7});ok(true,'pointer seeking on artwork '+width);
    const artVolume=p.locator('[data-volume]'),volumeBox=await artVolume.boundingBox();await artVolume.click({position:{x:volumeBox.width*.3,y:volumeBox.height/2}});
@@ -33,7 +33,7 @@ for(const [engine,options] of [[chromium,{channel:'chrome'}],[webkit,{}]]){
    const volumeBefore=Number(await artVolume.inputValue());await artVolume.press('ArrowRight');ok(Number(await artVolume.inputValue())>volumeBefore,'keyboard volume '+width);
    ok(await p.getByRole('button',{name:'Play theme song',exact:true}).count()===1&&await p.getByRole('button',{name:'Share song',exact:true}).count()===1&&await p.getByRole('link',{name:'Download song (M4A)',exact:true}).count()===1&&await p.getByRole('link',{name:'Give to Outreach',exact:true}).count()===1,'single accessible action set '+width);
    if(evidence)await p.screenshot({path:`${evidence}/${engine.name()}-${width}-artwork-active.png`,fullPage:true});
-   ok(errors.length===0&&blocked.length===0,'no JS errors or external API requests');output.push({engine:engine.name(),width,errors,blocked});await ctx.close();
+   ok(errors.length===0&&blocked.length===0&&apiRequests.length===0,'no JS errors, tracking or API requests');ok((await ctx.cookies()).length===0,'no player cookies');output.push({engine:engine.name(),width,errors,blocked,apiRequests});await ctx.close();
   }
   // Production Outreach markup and registration links preserved; no remote calls allowed.
   for(const width of [1440,390]){
@@ -41,18 +41,23 @@ for(const [engine,options] of [[chromium,{channel:'chrome'}],[webkit,{}]]){
   }
  }finally{await browser.close();}
 }
-// Browser clock uses actual media playback. Counter transport is a labeled local fixture.
+// Both routes remain static after the former qualification threshold and navigation.
 const browser=await chromium.launch({channel:'chrome',headless:true});try{
- const ctx=await browser.newContext();const p=await ctx.newPage();let plays=0,starts=0,requests=[];
- await ctx.route('**/*',route=>{const r=route.request(),u=new URL(r.url());if(u.origin!==base)return route.abort();if(u.pathname==='/.netlify/functions/theme-song'){const kind=r.method()==='POST'?r.postDataJSON().kind:null;requests.push(kind);if(kind==='play')plays++;if(kind==='start')starts++;return route.fulfill({json:{plays:String(plays)}});}return route.continue();});
- await p.goto(base+'/outreach/theme-song');await p.waitForFunction(()=>Number.isFinite(document.querySelector('audio').duration));ok(plays===0&&starts===0,'page view never qualifies');
- await p.locator('[data-play]').click();await p.waitForTimeout(1100);await p.locator('[data-play]').click();ok(plays===0,'one-second click/listen does not qualify');
- await p.locator('[data-seek]').evaluate(el=>{el.value=100;el.dispatchEvent(new Event('input'))});await p.waitForTimeout(500);ok(plays===0,'seeking does not qualify');
- await p.locator('[data-play]').click();await p.waitForFunction(()=>document.querySelector('[data-total]').textContent==='1 Play',{},{timeout:12000});await p.locator('[data-play]').click();await p.locator('[data-play]').click();await p.waitForTimeout(1500);ok(plays===1&&starts===1,'five seconds across pauses counts once');
+ const ctx=await browser.newContext({acceptDownloads:true});const p=await ctx.newPage();const requests=[];
+ await ctx.route('**/*',route=>{const r=route.request(),u=new URL(r.url());if(u.origin!==base)return route.abort();if(['fetch','xhr','websocket'].includes(r.resourceType())||r.method()!=='GET')requests.push({method:r.method(),path:u.pathname});return route.continue();});
+ for(const path of ['/outreach.html','/outreach/theme-song']) {
+  await p.goto(base+path);await p.waitForFunction(()=>Number.isFinite(document.querySelector('[data-theme-song] audio').duration));
+  await p.locator('[data-play]').click();await p.waitForFunction(()=>document.querySelector('[data-theme-song] audio').currentTime>5.5);await p.locator('[data-play]').click();
+  ok(await p.locator('[data-total],[data-counter]').count()===0,'no counter after listening '+path);
+  ok(requests.length===0,'no tracking/API traffic after five seconds '+path);
+  ok((await ctx.cookies()).length===0&&await p.evaluate(()=>localStorage.length===0&&sessionStorage.length===0),'no tracking cookies or browser storage '+path);
+ }
+ await p.evaluate(()=>{Object.defineProperty(navigator,'share',{value:async value=>{window.sharedSong=value},configurable:true})});await p.locator('[data-share]').click();ok(await p.evaluate(()=>window.sharedSong.url==='https://championlifefwb.com/outreach/theme-song'),'native share contract');
+ await p.evaluate(()=>{Object.defineProperty(navigator,'share',{value:async()=>{throw new DOMException('Cancelled','AbortError')},configurable:true})});await p.locator('[data-share]').click();ok(await p.locator('[data-copy-link]').isHidden(),'cancelled share does not show failure');
  await p.evaluate(()=>{Object.defineProperty(navigator,'share',{value:undefined,configurable:true});Object.defineProperty(navigator,'clipboard',{value:{writeText:async()=>{throw Error('denied')}},configurable:true});});await p.locator('[data-share]').click();ok(await p.locator('[data-copy-link]').isVisible(),'manual selectable link if clipboard unavailable');
  await p.locator('audio').evaluate(a=>a.dispatchEvent(new Event('error')));ok((await p.locator('[data-status]').textContent()).includes('could not load'),'visible playback error');
- plays=1247; // Labeled local API fixture only, never production/demo seed data.
- for(const path of ['/outreach.html','/outreach/theme-song']){await p.goto(base+path);await p.waitForFunction(()=>document.querySelector('[data-total]').textContent==='1,247 Plays');ok(await p.locator('[data-counter]').getAttribute('aria-label')==='1,247 qualified plays','same server total and accessible qualification on '+path);}
- output.push({counter:'mock transport only; native PostgreSQL tested separately',requests});await ctx.close();
+ await p.locator('[data-give]').click();await p.waitForURL(base+'/outreach-giving.html');ok(await p.locator('iframe').getAttribute('src')==='https://www.community.givehub.com/forms/outreach-main-giving','giving click reaches unchanged existing page/form; external form not submitted');
+ output.push({privacy:'No counter/API requests, cookies or browser storage on either route',requests});await ctx.close();
+ const noJS=await browser.newContext({javaScriptEnabled:false});const fallback=await noJS.newPage();await noJS.route('**/*',r=>new URL(r.request().url()).origin===base?r.continue():r.abort());await fallback.goto(base+'/outreach/theme-song');ok(await fallback.locator('audio[controls]').isVisible(),'native audio fallback without JavaScript');ok(await fallback.locator('[data-download]').isVisible()&&await fallback.locator('[data-give]').isVisible(),'download and giving remain available without JavaScript');await noJS.close();
 }finally{await browser.close()}
 if(evidence)await writeFile(evidence+'/browser-results.json',JSON.stringify({checks,output},null,2));console.log(`PASS ${checks} browser assertions`);

@@ -25,9 +25,6 @@
 .song-art-download{left:41.7%;top:82.3%;width:16.6%;height:9.1%}
 .song-art-share{left:59.3%;top:82.3%;width:16.4%;height:9.1%}
 .song-art-give{left:76.8%;top:82.3%;width:17%;height:9.1%}
-.song-art-total{position:absolute;left:73.5%;top:67.3%;width:18.5%;margin:0;display:flex;align-items:center;justify-content:flex-end;gap:.4cqw;color:#eee;font-size:clamp(7px,1.05cqw,17px);line-height:1.3;font-variant-numeric:tabular-nums;pointer-events:auto}
-.song-art-total svg{width:1.2em;height:1.2em;flex-shrink:0;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
-.song-art-total span{min-width:0;overflow-wrap:anywhere}
 .theme-song :is(button,a,input):focus-visible{outline:3px solid #fff;outline-offset:3px;box-shadow:0 0 0 5px #14100b}
 .theme-song-feedback.is-notice{position:absolute;left:41.7%;right:6.3%;bottom:1%;padding:6px 8px;border-radius:4px;background:#151515f2;color:#fff;font-size:clamp(10px,1.05cqw,17px);line-height:1.35;z-index:1}
 .theme-song-feedback p{margin:0}
