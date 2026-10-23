@@ -28,9 +28,13 @@
     .partner-access-denied__cta:focus-visible{outline:3px solid #fff;outline-offset:4px}
     @media(max-width:520px){.partner-workspace.is-denied{padding:18px 14px}.partner-access-denied{padding:32px 22px;border-radius:18px}.partner-access-denied__brand{margin-bottom:22px}.partner-access-denied__cta{width:100%;padding-inline:18px}}
   </style>
+ <link rel="stylesheet" href="assets/css/staff-portal.css">
 </head>
-<body>
-  <main class="partner-workspace">
+<body class="staff-portal">
+ <a class="staff-skip" href="#staff-main">Skip to workspace</a>
+ <header class="staff-topbar"><a href="staff-people.html" class="staff-inline-brand"><img src="assets/images/logo-gold.png" alt="Champion Life"><span>Staff portal</span></a><div id="staff-session" class="staff-session" hidden><span class="staff-session-identity"><span>Signed in as</span><span id="staff-session-email"></span></span><button id="staff-logout" type="button">Log Out</button></div></header>
+ <p id="staff-session-message" class="staff-session-message" role="status"></p>
+  <main id="staff-main" class="partner-workspace" tabindex="-1">
     <div class="partner-workspace-intro">
       <a href="staff-people.html">People workspace</a>
       <h1>Outreach Partner Review</h1>
@@ -41,6 +45,7 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="assets/js/supabase-config.js"></script>
   <script src="assets/js/champion-life-auth.js"></script>
+  <script src="assets/js/staff-session.js"></script>
   <script src="assets/js/outreach-staff-common.js"></script>
   <script src="assets/js/staff-outreach-partners.js"></script>
 </body>

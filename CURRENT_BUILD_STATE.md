@@ -1,3 +1,9 @@
+## 2026-10-23 — Staff portal presentation and current-session logout (local candidate)
+
+Based on production source `97f2330c284dcda2108b8e1926bf9f3bd12979af`. People & Follow-up and Registration/Check-In share a scoped charcoal/gold shell; all three current staff HTML pages include authenticated email and visible Log Out. The existing Supabase client signs out only the current session, preserves unrelated storage, clears protected mounts before pending responses can return, and prevents back/forward-cache restoration. No permission, RPC, backend, public registration, theme-song, provider or deployment changes.
+
+Local validation includes the complete repository suite, 282 focused session assertions, 156 operational browser assertions and 68 real-Supabase-SDK browser assertions with fictional sessions/fully controlled HTTP. Chrome/WebKit cover mobile/tablet/desktop. Actual owner email-link login remains unverified: an existing church-account session was visible. Website-only production approval and live account validation remain outstanding. See `docs/STAFF-PORTAL-POLISH.md`.
+
 ## 2026-10-22 — Explicit no-preference prize option (not released)
 
 Owner requested three clear choices: Bicycle, Tablet, No preference. The third option replaces the ambiguous optional placeholder and remains selected by default; its empty value preserves the existing no-prize-selection payload and never blocks registration. Included in the undeployed PR #40 follow-up; no backend, legal, consent or eligibility change.

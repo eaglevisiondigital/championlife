@@ -14,7 +14,7 @@ window.ChampionLifeAuth={getUser:async()=>window.__signedOut?null:{id:user},getS
 window.__calls.push({name,p});if(window.__revoked)return{status:403,error:{code:'42501'}};
 if(name==='staff_workspace_context')return{data:staffContext()};
 if(name==='outreach_partner_workspace')return window.__mode==='finance'?{data:[]}:{status:403,error:{code:'42501'}};
-if(name==='people_workspace')return{data:p.p_action==='list'?[{id:'11111111-1111-4111-8111-111111111111',first_name:'Fictional',last_name:'Volunteer',relationships:['volunteer']}]:{person:{id:p.p_payload.person_id,first_name:'Fictional',last_name:'Volunteer'},relationships:[{relationship:'volunteer',active:true}]}};
+if(name==='people_workspace')return{data:p.p_action==='list'?(p.p_payload.search==='no-match'?[]:[{id:'11111111-1111-4111-8111-111111111111',first_name:'Fictional',last_name:'Volunteer',relationships:['volunteer']}]):{person:{id:p.p_payload.person_id,first_name:'Fictional',last_name:'Volunteer'},relationships:[{relationship:'volunteer',active:true}]}};
 let data=response(name,p);if(p.p_action==='context')data={...data,admin:false,can_manage_access:false,settings:null};
 if(p.p_action==='detail'&&window.__delay){window.__delay=false;return await new Promise(resolve=>window.__finish=()=>resolve({data}))}return{data};
 },from:()=>{const chain={select:()=>chain,eq:()=>chain,order:()=>chain,limit:async()=>({data:[{id:'task',title:'Nonfinancial volunteer call',status:'open',revision:1}]}),update:()=>chain,maybeSingle:async()=>({data:{id:'task'}})};return chain}}};`;
@@ -23,6 +23,8 @@ for(const[engine,options]of[[chromium,{channel:'chrome'}],[webkit,{}]]){
  for(const width of[390,768,1440]){
  const ctx=await browser.newContext({viewport:{width,height:900},acceptDownloads:true}),page=await ctx.newPage(),errors=[],unexpected=[];page.on('pageerror',e=>errors.push(e.message));
  await ctx.route('**/*',async route=>{const u=new URL(route.request().url());if(u.hostname==='cdn.jsdelivr.net'&&u.pathname.startsWith('/npm/@supabase/supabase-js@2'))return route.fulfill({contentType:'text/javascript',body:''});if(u.origin!==origin||route.request().method()!=='GET'){unexpected.push(u.origin+u.pathname);return route.abort()}
+ // Session-header navigation is covered separately by staff-session tests.
+ if(u.pathname==='/assets/js/staff-session.js')return route.fulfill({contentType:'text/javascript',body:'/* module-isolated regression */'});
  if(u.pathname==='/assets/js/champion-life-auth.js')return route.fulfill({contentType:'text/javascript',body:authScript});
  if(u.pathname==='/assets/js/supabase-config.js')return route.fulfill({contentType:'text/javascript',body:'/* offline test: no backend configuration */'});
  const filename=path.resolve(root,'.'+u.pathname);if(!filename.startsWith(root))return route.abort();try{const body=await readFile(filename);const type={'.html':'text/html','.js':'text/javascript','.css':'text/css','.png':'image/png','.svg':'image/svg+xml'}[path.extname(filename)]||'application/octet-stream';return route.fulfill({contentType:type,body})}catch{return route.fulfill({status:404,body:'Not found'})}});
@@ -33,6 +35,10 @@ for(const[engine,options]of[[chromium,{channel:'chrome'}],[webkit,{}]]){
  await page.getByRole('button',{name:'Open household',exact:true}).click();await page.getByText('Alex Fixture',{exact:true}).waitFor();ok(await page.getByRole('button',{name:'Check in attendee',exact:true}).count()>0,'operational attendee controls rendered');
  ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),'no horizontal overflow');
  if(evidence&&engine.name()==='chromium'&&width!==768)await page.screenshot({path:path.join(evidence,'operations-'+width+'.png'),fullPage:true});
+ await page.getByRole('button',{name:'Print backup roster',exact:true}).click();await page.getByRole('button',{name:'Print private roster',exact:true}).waitFor();
+ ok(await page.locator('.registration-print tr').count()===3,'private roster retains both fictional attendees');
+ await page.emulateMedia({media:'print'});ok(!await page.locator('.staff-topbar').isVisible(),'staff topbar excluded from printed roster');
+ ok(await page.locator('.registration-print td').first().evaluate(e=>getComputedStyle(e).color)==='rgb(0, 0, 0)','printed roster remains black on white');await page.emulateMedia({media:'screen'});
  await page.getByRole('button',{name:'Registrations',exact:true}).click();await page.getByText('Household lookup',{exact:true}).waitFor();
  await page.evaluate(()=>window.__delay=true);await page.getByRole('button',{name:'Open household',exact:true}).click();await page.waitForFunction(()=>Boolean(window.__finish));await page.evaluate(()=>{window.__revoked=true;dispatchEvent(new Event('focus'))});await page.getByText('Registration access unavailable',{exact:true}).waitFor();
  await page.evaluate(()=>window.__finish());await page.waitForTimeout(100);ok(!await page.getByText('Alex Fixture',{exact:true}).count(),'late successful response cannot restore revoked records');ok(await page.getByRole('link',{name:'RETURN TO STAFF DASHBOARD',exact:true}).isVisible(),'attached accessible denial return link');
@@ -40,6 +46,19 @@ for(const[engine,options]of[[chromium,{channel:'chrome'}],[webkit,{}]]){
  await page.goto(origin+'/staff-outreach-partners.html');await page.getByText('Outreach Partner Access Removed',{exact:true}).waitFor();ok((await page.evaluate(()=>window.__calls)).every(c=>c.name!=='outreach_partner_workspace'),'operations UI never requests donation-intake list');
  ok(!await page.getByText('Intended commitment:',{exact:false}).count(),'no donor commitment visible');
  await page.goto(origin+'/staff-people.html');await page.getByText('Fictional Volunteer',{exact:true}).waitFor();ok(!await page.locator('#financial-outreach-link').isVisible(),'financial navigation hidden from operations');
+ ok(await page.getByRole('combobox',{name:'Organization',exact:true}).isVisible(),'visible organization selector');
+ ok(await page.getByRole('searchbox',{name:'Search contacts',exact:true}).isVisible(),'labelled contact search');
+ ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),'People results fit viewport');
+ ok(await page.locator('#financial-outreach-link').evaluate(e=>getComputedStyle(e).display)==='none','theme preserves hidden financial navigation');
+ if(evidence&&engine.name()==='chromium'&&width!==768)await page.screenshot({path:path.join(evidence,'people-results-'+width+'.png'),fullPage:true});
+ await page.getByRole('searchbox',{name:'Search contacts',exact:true}).fill('no-match');await page.getByRole('button',{name:'Search',exact:true}).click();
+ await page.getByRole('status').filter({hasText:'No matching contacts.'}).waitFor();
+ ok(await page.getByText('Try a different name or check the selected organization.',{exact:false}).isVisible(),'helpful accessible empty state');
+ ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),'People empty state fits viewport');
+ if(evidence&&engine.name()==='chromium'&&width!==768)await page.screenshot({path:path.join(evidence,'people-empty-'+width+'.png'),fullPage:true});
+ await page.getByRole('searchbox',{name:'Search contacts',exact:true}).fill('');await page.getByRole('button',{name:'Search',exact:true}).click();await page.getByText('Fictional Volunteer',{exact:true}).waitFor();
+ await page.getByRole('link',{name:'Skip to workspace',exact:true}).focus();ok(await page.getByRole('link',{name:'Skip to workspace',exact:true}).evaluate(e=>e.getBoundingClientRect().top>=0),'keyboard skip link visible on focus');
+ await page.keyboard.press('Enter');ok(await page.locator('#staff-main').evaluate(e=>document.activeElement===e),'skip link focuses workspace');
  await page.getByRole('button',{name:'Review Person & follow-up',exact:true}).click();await page.getByText('Nonfinancial volunteer call',{exact:true}).waitFor();ok(true,'People and ordinary follow-up remain available');
  await page.evaluate(()=>{window.__mode='finance';window.__signedOut=true;window.__authChanged('SIGNED_OUT',null)});await page.getByText('Sign in to your workspace',{exact:true}).waitFor();await page.evaluate(()=>{window.__signedOut=false;window.__authChanged('SIGNED_IN',{user:{id:user}})});await page.getByText('Fictional Volunteer',{exact:true}).waitFor();ok(await page.locator('#financial-outreach-link').isVisible(),'finance navigation requires explicit current finance permission');
  ok(errors.length===0,'no browser script errors');ok(unexpected.length===0,'no real backend or unapproved network traffic');await ctx.close();
