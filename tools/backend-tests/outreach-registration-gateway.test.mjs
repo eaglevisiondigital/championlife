@@ -14,3 +14,5 @@ for(const url of ['https://bkbmjisprwmkptywtmih.supabase.co','https://niyovbgoal
  const response=await h(req({turnstile_token:'XXXX.DUMMY.TOKEN.XXXX'}));assert.equal(response.status,allowed?200:503);assert.equal(dbCalls,allowed?1:0);
 }
 console.log('PASS exact acceptance project/mode test-key matrix: 8 combinations; other projects and production fail closed');
+
+for(const code of ['timeout-or-duplicate','invalid-input-response']){let verifyCalls=0,dbCalls=0;const h=createRegistrationHandler(config,async endpoint=>{if(endpoint.includes('siteverify')){verifyCalls++;return new Response(JSON.stringify({success:false,'error-codes':[code]}))}dbCalls++;throw Error('Database must not be called')});const response=await h(req());assert.equal(response.status,400);assert.equal(verifyCalls,1);assert.equal(dbCalls,0);assert(!(await response.text()).includes(code));console.log('PASS expired/replayed/invalid Turnstile rejection reaches no database: '+code);}

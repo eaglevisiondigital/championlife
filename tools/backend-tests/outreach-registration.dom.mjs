@@ -40,5 +40,20 @@ const rejected=await guest('synthetic-rejection',{...config,waiver_required:fals
 for(const [label,value]of Object.entries({'Primary adult first name':'Morgan','Primary adult last name':'Fixture','Email':'synthetic@example.test','Mobile phone':'+15555550100','Address':'Synthetic address','Attendee first name':'Morgan','Attendee last name':'Fixture','Age':'38'}))set(rejected,label,value);
 rejected.w.fetch=async()=>({ok:false,status:400,json:async()=>({accepted:false,message:'Synthetic validation rejection'})});rejected.challenge.callback('synthetic-challenge');rejected.d.querySelector('form').dispatchEvent(new rejected.w.Event('submit',{bubbles:true,cancelable:true}));await tick();
 ok(rejected.resets===1&&rejected.removes===0&&rejected.d.querySelector('form')&&rejected.d.body.textContent.includes('Synthetic validation rejection'),'rejected submission preserves the form and resets the live challenge for a safe retry');rejected.dom.window.close();
+// Incident regression: actual guest handler, no real network or Cloudflare execution.
+for(const failure of ['expired','error','network','timeout']){
+ const x=await guest('synthetic-retry',{...config,waiver_required:false});
+ for(const [label,value]of Object.entries({'Primary adult first name':'Morgan','Primary adult last name':'Fixture','Email':'synthetic@example.test','Mobile phone':'+15555550100','Address':'Synthetic address','Attendee first name':'Morgan','Attendee last name':'Fixture','Age':'38'}))set(x,label,value);
+ const payloads=[];x.w.fetch=async(url,init)=>{payloads.push(JSON.parse(init.body));if(payloads.length===1&&['network','timeout'].includes(failure))throw new x.w.DOMException('Synthetic interrupted request',failure==='timeout'?'TimeoutError':'NetworkError');return{ok:true,status:200,json:async()=>({accepted:true,reference:'R-ABCDEF0123456789',attendee_count:1})}};
+ x.challenge.callback('synthetic-token-before-failure');if(failure==='expired')x.challenge['expired-callback']();if(failure==='error')x.challenge['error-callback']();
+ const send=async()=>{x.d.querySelector('form').dispatchEvent(new x.w.Event('submit',{bubbles:true,cancelable:true}));await tick()};await send();
+ ok(!!x.d.querySelector('form')&&!x.d.body.textContent.includes('REGISTRATION RECEIVED'),'no false confirmation after '+failure);
+ ok(!x.d.querySelector('button[type=submit]').disabled,'submit button recovers after '+failure);
+ if(['expired','error'].includes(failure)){ok(payloads.length===0&&x.d.body.textContent.includes('Complete the security check first.'),failure+' challenge prevents gateway call and explains recovery');}
+ else{ok(payloads.length===1&&x.resets===1,'ambiguous '+failure+' preserves form and resets challenge');set(x,'Primary adult first name','Changed');x.challenge.callback('synthetic-second-token');await send();ok(payloads.length===1&&x.d.body.textContent.includes('pending confirmation'),'changed payload blocked after ambiguous '+failure);set(x,'Primary adult first name','Morgan');}
+ x.challenge.callback('synthetic-fresh-token');await send();ok(x.d.body.textContent.includes('REGISTRATION RECEIVED'),'fresh challenge allows safe '+failure+' recovery');
+ if(payloads.length===2)ok(JSON.stringify(payloads[0].payload)===JSON.stringify(payloads[1].payload),'exact idempotent payload survives '+failure);
+ ok(x.errors.length===0,'guest '+failure+' no console exception');x.dom.window.close();
+}
 const missing=await guest('synthetic-outreach',null);ok(missing.d.body.textContent.includes('Registration is not open.')&&!missing.d.querySelector('form'),'unavailable guest campaign fails closed');missing.dom.window.close();
 console.log(`${count} Phase C DOM checks passed`);

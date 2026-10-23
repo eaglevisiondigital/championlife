@@ -1,3 +1,9 @@
+## 2026-10-22 — Huntsville registration incident hotfix prepared (not released)
+
+Based on production `2d0b6b4fc84322f216329db498840c272b392461` after PR #38. The Huntsville-only form now accepts age 0–120 in every attendee row, explicitly classifies 0–17 as children, projects one optional Bicycle/Tablet preference to the existing interest flags, and records removed messaging choices as false. Guardian and Self-signature checks mirror the existing SQL contract before API submission. Other campaigns retain their controls.
+
+Native PostgreSQL and DOM submission/confirmation coverage passes for ages 0, 5, 12, 17, 18 and 40, mixed and adult-only households. Existing registration, CSV, check-in, audit/security and calendar tests pass. Real-browser local submission uses a disposable database and a synthetic challenge; it is not proof of live Siteverify or production incident recovery. See `docs/HUNTSVILLE-FORM-HOTFIX-RELEASE.md`. No hosted form changes or record writes performed. Separate production release approval required.
+
 ## Consolidated operations security release preparation — 2026-10-22
 
 The existing security candidate now includes reproducible Outreach-only staff / Church-member scope tests alongside the dual-organization operator tests. Runtime UI and SQL bytes remain unchanged from `28bb772e663f2ce8de28d56bff659456184c38d8`; production baseline remains `53beb5d5c0d1ee259155128e4e282d18b4195623`. No account, invitation or permission is seeded. [Controlled release contract](docs/OPERATIONS-ADMIN-RELEASE.md). Production release, independent administrator custody, individual identity verification and access activation are separate gates.
