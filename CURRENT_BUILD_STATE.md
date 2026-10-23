@@ -1,3 +1,7 @@
+## 2026-10-22 — Explicit no-preference prize option (not released)
+
+Owner requested three clear choices: Bicycle, Tablet, No preference. The third option replaces the ambiguous optional placeholder and remains selected by default; its empty value preserves the existing no-prize-selection payload and never blocks registration. Included in the undeployed PR #40 follow-up; no backend, legal, consent or eligibility change.
+
 ## 2026-10-22 — Final Huntsville simplification/error review (not released)
 
 PR #39 was concurrently merged as `eb6a1bef1d819ba5a637a59866c4cf08005ebba5` and deployed as `6adad76db87e9aeee8b04d93` during this review. Its source tree exactly matches the original reviewed `86dc56b8`. This separate follow-up candidate is based on that new production commit and adds only existing-SQL field validation and controlled, actionable Huntsville rejection/retry messages; the two changed runtime assets are the registration form and public handler. HTTP 200 alone cannot render confirmation without accepted=true, a valid reference and matching attendee count. The original reviewed age/guardian, optional prize and explicit-false messaging changes remain. Approved legal/media requirements, backend, Turnstile, rate limits and idempotency are preserved.

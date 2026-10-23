@@ -82,7 +82,7 @@ try{
  await accept(mount([40,5,12],''),[40,5,12],'');
  await accept(mount([40,0],''),[40,0],'');
  const noFields=mount([0]);ok(!noFields.root.textContent.includes('Optional consent')&&!noFields.root.textContent.includes('Marketing communications')&&!noFields.root.textContent.includes('Interested in a bike')&&!noFields.root.textContent.includes('Tablet only'),'no overlapping prize or optional communication controls');
- assert.deepEqual([...label(noFields,'Prize Preference').options].map(o=>o.value),['','bicycle','tablet']);ok(noFields.root.textContent.includes('does not guarantee')&&noFields.root.textContent.includes('Children of any age may register'),'registration independent of prize preference');noFields.dom.window.close();
+ assert.deepEqual([...label(noFields,'Prize Preference').options].map(o=>[o.value,o.textContent]),[['bicycle','Bicycle'],['tablet','Tablet'],['','No preference']]);ok(noFields.root.textContent.includes('does not guarantee')&&noFields.root.textContent.includes('Children of any age may register'),'registration independent of prize preference');noFields.dom.window.close();
  const clientCases=[
   ['missing guardian',t=>{t.editor.rows[0].guardian.value='';}],
   ['minor marked Self',t=>{t.editor.rows[0].relationship.value='self';}],
