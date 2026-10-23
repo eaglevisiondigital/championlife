@@ -1,3 +1,9 @@
+## 2026-10-22 — Final Huntsville simplification/error review (not released)
+
+PR #39 remains isolated from production. The revised candidate adds only existing-SQL field validation and controlled, actionable Huntsville rejection/retry messages; the two changed runtime assets are the registration form and public handler. HTTP 200 alone cannot render confirmation without accepted=true, a valid reference and matching attendee count. The original reviewed age/guardian, optional prize and explicit-false messaging changes remain. Approved legal/media requirements, backend, Turnstile, rate limits and idempotency are preserved.
+
+109 hotfix checks pass in native PostgreSQL and PGlite through the actual Edge handler with injected synthetic Siteverify; 91 DOM checks and the complete repository suite pass. Local real-browser parent+two-children/blank-prize submission, safe contact validation, responsive confirmation and calendar download pass. No production submission or deployment; a revised exact-head release approval is required. See docs/HUNTSVILLE-FORM-HOTFIX-RELEASE.md.
+
 ## 2026-10-22 — Huntsville registration incident hotfix prepared (not released)
 
 Based on production `2d0b6b4fc84322f216329db498840c272b392461` after PR #38. The Huntsville-only form now accepts age 0–120 in every attendee row, explicitly classifies 0–17 as children, projects one optional Bicycle/Tablet preference to the existing interest flags, and records removed messaging choices as false. Guardian and Self-signature checks mirror the existing SQL contract before API submission. Other campaigns retain their controls.
