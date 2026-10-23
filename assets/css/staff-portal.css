@@ -1,0 +1,167 @@
+/* Opt-in staff presentation only. No public form, auth, or data behavior. */
+body.staff-portal {
+ --staff-bg:#101214; --staff-panel:#191c20; --staff-raised:#202429;
+ --staff-line:#3c4147; --staff-muted:#b5bac1; --staff-gold:#e2be73;
+ --campaign-bg:var(--staff-bg); --campaign-ink:#f5f4ef;
+ --campaign-line:var(--staff-line); --campaign-gold:var(--staff-gold);
+ background:var(--staff-bg); color:var(--campaign-ink);
+ font-family:Arial,Helvetica,sans-serif; line-height:1.5;
+}
+.staff-portal [hidden] { display:none!important; }
+.staff-portal .campaign-shell { grid-template-columns:244px minmax(0,1fr); }
+.staff-portal .campaign-sidebar {
+ background:#0b0d0f; border-right:1px solid #303438; padding:34px 22px;
+ gap:42px; position:sticky; top:0; height:100svh;
+}
+.staff-portal .campaign-brand img { width:185px; height:80px; max-width:100%; }
+.staff-portal .eyebrow { color:var(--staff-gold); letter-spacing:.17em; font-size:.7rem; }
+.staff-portal .campaign-sidebar .eyebrow { margin:0 12px 16px; font-size:.65rem; }
+.staff-portal .campaign-sidebar nav { gap:8px; }
+.staff-portal .campaign-sidebar nav a {
+ padding:14px 13px; color:#bbc0c6; font-size:.85rem; line-height:1.5;
+ border:1px solid transparent; border-radius:8px; min-height:48px;
+}
+.staff-portal .campaign-sidebar nav a:hover { background:#191c20; color:#fff; }
+.staff-portal .campaign-sidebar nav a[aria-current] {
+ background:#242119; border-color:#796438; color:#f3d9a2;
+ box-shadow:inset 3px 0 var(--staff-gold);
+}
+.staff-sidebar-footer { margin-top:auto; display:grid; gap:18px; padding:18px 12px 0; border-top:1px solid #303438; }
+.staff-sidebar-footer>span { color:#b5bac1; font-size:.7rem; letter-spacing:.12em; text-transform:uppercase; }
+.staff-sidebar-footer a { color:var(--staff-gold); font-size:.78rem; min-height:44px; display:flex; align-items:center; justify-content:space-between; }
+.staff-body { min-width:0; display:flex; flex-direction:column; }
+.staff-topbar { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px; padding:22px 42px; min-height:76px; border-bottom:1px solid #303438; font-size:.78rem; color:#e7e5de; }
+.staff-topbar-divider { color:#808791; padding:0 14px; }
+.staff-topbar-note { color:var(--staff-muted); font-size:.75rem; }
+.staff-session { display:flex; align-items:center; gap:18px; min-width:0; }
+.staff-session-identity { display:grid; gap:3px; text-align:right; min-width:0; }
+.staff-session-identity>span:first-child { color:var(--staff-muted); font-size:.66rem; letter-spacing:.04em; }
+#staff-session-email { color:#f4f1e9; font-size:.8rem; overflow-wrap:anywhere; }
+.staff-portal #staff-logout { flex:none; color:#f3d9a2; border-color:#a58449; background:#282319; }
+.staff-session-message { margin:0; padding:18px 28px; background:#282319; color:#f3dbad; }
+.staff-session-message:empty { display:none; }
+.staff-inline-brand { display:flex; align-items:center; gap:24px; }
+.staff-inline-brand img { width:150px; height:60px; object-fit:contain; }
+.staff-main { width:100%; max-width:1280px; margin:0 auto; padding:48px 42px 64px; flex:1; min-width:0; }
+.staff-page-heading { margin-bottom:34px; }
+.staff-page-heading .eyebrow { margin:0 0 14px; }
+.staff-portal h1 { color:#f7f6f1; font-size:clamp(2rem,3.5vw,3rem); font-weight:700; letter-spacing:-.045em; line-height:1.15; margin:0 0 18px; }
+.staff-page-heading>p:last-child { color:var(--staff-muted); font-size:1rem; line-height:1.75; margin:0; }
+.staff-portal h2,.staff-portal h3,.staff-portal h4 { color:#f5f4ef; letter-spacing:-.015em; }
+.staff-portal p { overflow-wrap:anywhere; }
+.staff-portal button,.staff-portal .campaign-button {
+ background:#25292e; border:1px solid #656d77; color:#f5f4ef;
+ border-radius:8px; padding:12px 18px; min-height:46px; font-size:.85rem;
+ font-weight:700; transition:background .15s,border-color .15s;
+}
+.staff-portal button:hover,.staff-portal .campaign-button:hover { background:#30353b; border-color:var(--staff-gold); }
+.staff-portal button:disabled { opacity:.6; cursor:not-allowed; }
+.staff-portal button.campaign-gold,.staff-search>button,.staff-portal a.campaign-gold {
+ background:var(--staff-gold); border-color:var(--staff-gold); color:#16130d;
+}
+.staff-portal button.campaign-gold:hover,.staff-search>button:hover { background:#f1d296; border-color:#f1d296; }
+.staff-portal input,.staff-portal select,.staff-portal textarea {
+ color:#f5f4ef; background:#101316; border:1px solid #68717c; border-radius:8px;
+ min-height:46px; padding:12px 14px; font-size:1rem; color-scheme:dark;
+}
+.staff-portal input::placeholder,.staff-portal textarea::placeholder { color:#aeb5be; opacity:1; }
+.staff-portal select { padding-right:34px; }
+.staff-portal label { color:#d9dde1; font-size:.8rem; font-weight:700; line-height:1.6; }
+.staff-portal :focus-visible { outline:3px solid #f3cf83; outline-offset:4px; }
+.staff-portal input:focus-visible,.staff-portal select:focus-visible,.staff-portal textarea:focus-visible { outline-offset:2px; }
+.staff-portal .staff-skip { position:absolute; left:16px; top:12px; transform:translateY(-180%); background:var(--staff-gold); color:#16130d; padding:12px 18px; border-radius:6px; z-index:20; }
+.staff-portal .staff-skip:focus { transform:none; }
+#outreach-people { padding:28px; background:var(--staff-panel); border:1px solid var(--staff-line); border-radius:16px; box-shadow:0 16px 42px #0002; display:flex; flex-direction:column; gap:24px; }
+.staff-organization { display:block; max-width:420px; width:100%; order:0; }
+.staff-content { order:1; min-width:0; }
+.staff-search { display:flex; gap:14px; align-items:flex-end; border-bottom:1px solid var(--staff-line); padding-bottom:26px; margin-bottom:4px; }
+.staff-search label { flex:1; min-width:0; }
+.staff-search button { min-width:112px; }
+.staff-status { margin:0; color:var(--staff-muted); order:2; }
+.staff-status:empty { display:none; }
+.staff-empty { text-align:center; white-space:pre-line; padding:66px 20px; border:1px dashed #51534c; border-radius:12px; background:linear-gradient(135deg,#25231d,#191c20 70%); color:var(--staff-muted); line-height:1.9; }
+.staff-empty::first-line { color:#f5f4ef; font-size:1.15rem; font-weight:700; }
+.staff-content article { border:1px solid var(--staff-line); background:var(--staff-raised); border-radius:12px; padding:24px; margin-top:20px; overflow-wrap:anywhere; }
+.staff-content article h2 { margin:0 0 10px; font-size:1.2rem; }
+.staff-content article p { color:var(--staff-muted); margin:6px 0; font-size:.9rem; }
+.staff-content article button { margin-top:18px; }
+.staff-content>h2 { margin:28px 0 12px; font-size:1.6rem; }
+.staff-content>h3 { margin-top:28px; }
+.staff-content>p { color:var(--staff-muted); }
+.staff-content>button { margin:18px 10px 0 0; }
+.staff-content article label { display:block; margin-top:18px; max-width:420px; }
+#outreach-people>[role=alert] { padding:24px; border:1px solid #a58449; background:#282319; border-radius:12px; margin:0; color:#f3dbad; }
+#outreach-people>a { align-self:flex-start; padding:12px 18px; border:1px solid #a58449; color:#f3d9a2; border-radius:8px; font-weight:700; }
+.staff-portal .campaign-main { flex:1; }
+.staff-portal .registration-app { padding:42px; max-width:1440px; }
+.staff-portal .campaign-heading { align-items:flex-start; }
+.staff-portal .campaign-heading>div:first-child { min-width:0; }
+.staff-portal .campaign-heading h1 { margin-top:12px; font-size:clamp(1.9rem,3vw,2.6rem); }
+.staff-portal .campaign-heading>.registration-actions { max-width:440px; justify-content:flex-end; }
+.staff-portal .campaign-panel,.staff-portal .registration-summary { background:var(--staff-panel); border-color:var(--staff-line); box-shadow:0 12px 32px #0002; }
+.staff-portal .registration-summary { border-top-color:var(--staff-gold); }
+.staff-portal .registration-summary>p,.staff-portal .campaign-muted,.staff-portal .campaign-stat span { color:var(--staff-muted); }
+.staff-portal .campaign-stat,.staff-portal .registration-summary-cards .campaign-stat { background:#22262b; border-color:var(--staff-line); }
+.staff-portal .registration-summary-cards strong,.staff-portal .registration-reference { color:#edcb87; }
+.staff-portal .registration-checkin-summary,.staff-portal .registration-row { border-color:var(--staff-line); }
+.staff-portal .registration-row { padding:24px 0; }
+.staff-portal .registration-row p { color:var(--staff-muted); font-size:.88rem; }
+.staff-portal .registration-member { background:var(--staff-raised); border-color:var(--staff-line); }
+.staff-portal .registration-status,.staff-portal .registration-required { color:#efd49a; }
+.staff-portal .registration-waiver { background:#101316; border-color:#68717c; color:#e2e5e9; }
+.staff-portal .registration-message,.staff-portal .campaign-status,.staff-portal .registration-counts { background:#2c261b; color:#f3dbad; }
+.staff-portal .registration-checkbox input { accent-color:var(--staff-gold); }
+.staff-portal .registration-print th,.staff-portal .registration-print td { border-color:#68717c; }
+.staff-portal .campaign-footer { color:#a6adb6; border-color:#303438; padding:24px 42px; font-size:.72rem; }
+@media(min-width:1100px) {
+ #outreach-people:has(.staff-search) { display:grid; grid-template-columns:minmax(220px,.7fr) minmax(0,1.3fr); gap:24px; }
+ #outreach-people:has(.staff-search) .staff-content { display:contents; }
+ #outreach-people:has(.staff-search) .staff-search { padding:0; margin:0; border:0; grid-column:2; grid-row:1; }
+ #outreach-people:has(.staff-search) .staff-content>article,
+ #outreach-people:has(.staff-search) .staff-content>button,
+ #outreach-people:has(.staff-search) .staff-status { grid-column:1/-1; margin-top:0; }
+}
+@media(max-width:1100px) {
+ .staff-portal .campaign-shell { grid-template-columns:212px minmax(0,1fr); }
+ .staff-portal .campaign-sidebar { padding:28px 18px; }
+ .staff-topbar,.staff-main,.staff-portal .registration-app { padding-left:28px; padding-right:28px; }
+ .staff-topbar-note { display:none; }
+ .staff-portal .campaign-heading { flex-direction:column; }
+ .staff-portal .campaign-heading>.registration-actions { max-width:none; justify-content:flex-start; }
+}
+@media(max-width:700px) {
+ .staff-session { width:100%; justify-content:space-between; gap:12px; }
+ .staff-session-identity { text-align:left; }
+ .staff-portal .campaign-shell { display:block; }
+ .staff-portal .campaign-sidebar { position:static; height:auto; padding:18px 20px; gap:18px; border-right:0; border-bottom:1px solid #303438; }
+ .staff-portal .campaign-brand img { width:160px; height:60px; }
+ .staff-portal .campaign-sidebar .eyebrow,.staff-sidebar-footer { display:none; }
+ .staff-portal .campaign-sidebar nav { display:flex; flex-wrap:wrap; gap:8px; }
+ .staff-portal .campaign-sidebar nav a { font-size:.78rem; padding:11px 12px; min-height:44px; }
+ .staff-topbar { padding:15px 20px; min-height:52px; font-size:.72rem; }
+ .staff-main,.staff-portal .registration-app { padding:30px 18px 40px; }
+ .staff-page-heading { margin-bottom:26px; }
+ .staff-page-heading>p:last-child { font-size:.92rem; }
+ .staff-desktop-break { display:none; }
+ #outreach-people { padding:20px; gap:22px; }
+ .staff-organization { max-width:none; }
+ .staff-search { flex-wrap:wrap; gap:12px; padding-bottom:22px; }
+ .staff-search label { flex-basis:100%; }
+ .staff-search button { width:100%; }
+ .staff-empty { padding:42px 16px; font-size:.88rem; }
+ .staff-content article { padding:20px; }
+ .staff-content article button { width:100%; }
+ .staff-portal .campaign-footer { padding:20px; }
+}
+@media(prefers-reduced-motion:reduce) { .staff-portal * { transition:none!important; } }
+@media(forced-colors:active) { .staff-portal .campaign-sidebar nav a[aria-current] { border:2px solid Highlight; } }
+@media print {
+ body.staff-portal { background:white!important; color:black!important; }
+ .staff-portal .staff-topbar,.staff-portal .staff-skip,.staff-portal .staff-session-message,.staff-portal .campaign-sidebar,.staff-portal .campaign-footer { display:none!important; }
+ .staff-portal .staff-body { display:block; }
+ .staff-portal .registration-app { padding:0; max-width:none; }
+ .staff-portal h1,.staff-portal h2,.staff-portal h3,.staff-portal p { color:black!important; }
+ .staff-portal .campaign-panel,.staff-portal .registration-summary,.staff-portal .campaign-stat,
+ .staff-portal .registration-member { background:white!important; color:black!important; box-shadow:none; }
+ .staff-portal .registration-print th,.staff-portal .registration-print td { color:black; border-color:#777; background:white; }
+}

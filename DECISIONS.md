@@ -1,3 +1,7 @@
+## 2026-10-23 — Bounded staff UI/logout release
+
+Reuse the existing staff authentication client and current production permission model. Show account identity explicitly to avoid confusing an existing church session with a newly requested owner login. Use current-session sign-out rather than terminating unrelated device sessions. Hide the workspace immediately, preserve unrelated browser storage and provide retry on failure. Scope shared styling to the three deployed staff pages; do not import unreleased staff modules or alter public registration behavior. Website release and real-account verification require the separate production approval; no database action is part of this candidate.
+
 ## 2026-10-22 — Final simplification keeps approved legal requirements
 
 Keep the existing published legal/media requirements and safety/contact fields; remove optional messaging and keep prize preference optional. Correct preventable SQL-format rejections at the form and provide safe status-based guidance without exposing internal errors or treating an uncertain submission as definitely unsaved. This expands the website-only candidate to two registration JavaScript assets. The previously reviewed commit is preserved in ancestry; revised exact-head approval is required before release.

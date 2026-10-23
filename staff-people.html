@@ -1,1 +1,42 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="referrer" content="no-referrer"><title>Outreach People &amp; Follow-up</title><link rel="stylesheet" href="assets/css/styles.css"><style>main{max-width:900px;margin:32px auto;padding:20px;overflow-wrap:anywhere}article{padding:24px;border:1px solid #bbb;border-radius:12px;margin:20px 0}button,input,select{padding:12px;margin:6px;max-width:100%;font:inherit}label{display:block}</style></head><body><main><a href="staff-outreach-registration.html">Outreach Registrations</a> <a id="financial-outreach-link" href="staff-outreach-partners.html" hidden>Financial Outreach Review</a><h1>People &amp; Follow-up</h1><p>Review authorized organization contacts and operational follow-up.</p><div id="outreach-people"></div></main><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="assets/js/supabase-config.js"></script><script src="assets/js/champion-life-auth.js"></script><script src="assets/js/outreach-staff-common.js"></script><script src="assets/js/outreach-people.js"></script></body></html>
+<!doctype html>
+<html lang="en">
+<head>
+ <meta charset="utf-8">
+ <meta name="viewport" content="width=device-width,initial-scale=1">
+ <meta name="referrer" content="no-referrer">
+ <meta name="robots" content="noindex,nofollow">
+ <title>People &amp; Follow-up · Champion Life</title>
+ <link rel="icon" type="image/png" href="assets/images/logo-gold.png">
+ <link rel="stylesheet" href="assets/css/outreach-campaigns.css">
+ <link rel="stylesheet" href="assets/css/staff-portal.css">
+</head>
+<body class="staff-portal">
+ <a class="staff-skip" href="#staff-main">Skip to workspace</a>
+ <div class="campaign-shell">
+  <aside class="campaign-sidebar" aria-label="Staff navigation">
+   <a class="campaign-brand" href="/" aria-label="Champion Life home"><img src="assets/images/logo-gold.png" alt="Champion Life"></a>
+   <div><p class="eyebrow">Staff workspace</p><nav aria-label="Staff workspace">
+    <a href="staff-people.html" aria-current="page">People &amp; Follow-up</a>
+    <a href="staff-outreach-registration.html">Registration &amp; Check-In</a>
+    <a id="financial-outreach-link" href="staff-outreach-partners.html" hidden>Financial Outreach Review</a>
+   </nav></div>
+   <div class="staff-sidebar-footer"><span>Raise. Reign. Reach.</span><a href="/">Back to Champion Life <span aria-hidden="true">↗</span></a></div>
+  </aside>
+  <div class="staff-body">
+   <header class="staff-topbar"><span>Champion Life <span class="staff-topbar-divider" aria-hidden="true">/</span> Staff portal</span><div id="staff-session" class="staff-session" hidden><span class="staff-session-identity"><span>Signed in as</span><span id="staff-session-email"></span></span><button id="staff-logout" type="button">Log Out</button></div></header>
+   <p id="staff-session-message" class="staff-session-message" role="status"></p>
+   <main id="staff-main" class="staff-main" tabindex="-1">
+    <header class="staff-page-heading"><p class="eyebrow">People &amp; ministry care</p><h1>People &amp; Follow-up</h1><p>Care for the people connected to your ministry.<br class="staff-desktop-break"> Find contacts and keep their next steps moving.</p></header>
+    <div id="outreach-people"><p class="staff-status" role="status">Loading your workspace…</p></div>
+   </main>
+   <footer class="campaign-footer">Champion Life · Raise. Reign. Reach.</footer>
+  </div>
+ </div>
+ <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+ <script src="assets/js/supabase-config.js"></script>
+ <script src="assets/js/champion-life-auth.js"></script>
+ <script src="assets/js/staff-session.js"></script>
+ <script src="assets/js/outreach-staff-common.js"></script>
+ <script src="assets/js/outreach-people.js"></script>
+</body>
+</html>
