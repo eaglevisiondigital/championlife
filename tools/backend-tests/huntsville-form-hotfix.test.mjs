@@ -7,6 +7,7 @@ import {JSDOM,VirtualConsole} from 'jsdom';
 import {PGlite} from '@electric-sql/pglite';
 import {localPostgres} from './local-postgres.mjs';
 import {migrationOrder} from './migration-order.mjs';
+import {createRegistrationHandler} from '../../supabase/functions/outreach-registration-submit/gateway.mjs';
 const definition=JSON.parse(readFileSync(new URL('../../config/outreach/huntsville-2026.json',import.meta.url)));
 const db=process.env.TEST_NATIVE_PG==='1'?await localPostgres():new PGlite();
 const q=(s,a=[])=>db.query(s,a),admin=uuid(),viewer=uuid();
@@ -15,6 +16,14 @@ const ok=(v,m)=>{assert.ok(v,m);checks++;console.log('PASS '+m)};
 const role=async(r,id='')=>{await db.exec('reset role');await q("select set_config('request.jwt.claim.sub',$1,false)",[id]);await db.exec('set role '+r)};
 const staff=(action,p={})=>q('select outreach_registration_workspace($1,$2,$3) v',[action,c,p]).then(x=>x.rows[0].v);
 const gateway=async p=>{await role('service_role');return (await q('select outreach_registration_gateway($1,$2,$3) v',['huntsville-2026',p,'f'.repeat(64)])).rows[0].v};
+// Run the actual Edge handler with a synthetic Siteverify fixture and native SQL.
+// No request in this test can leave the injected fetcher.
+const endpoint='https://aaaaaaaaaaaaaaaaaaaa.supabase.co';
+const handler=createRegistrationHandler({url:endpoint,serviceKey:'SYNTHETIC_SERVICE',pepper:'x'.repeat(32),turnstileSecret:'SYNTHETIC_SECRET',action:'outreach-registration',hostnames:['synthetic.example.test'],origins:['https://synthetic.example.test']},async(url,init)=>{
+ if(url==='https://challenges.cloudflare.com/turnstile/v0/siteverify'){assert.equal(JSON.parse(init.body).response,'SYNTHETIC_CHALLENGE');return Response.json({success:true,hostname:'synthetic.example.test',action:'outreach-registration'});}
+ assert.equal(url,endpoint+'/rest/v1/rpc/outreach_registration_gateway');const input=JSON.parse(init.body);assert.equal(input.p_slug,'huntsville-2026');return Response.json(await gateway(input.p_payload));
+});
+const submitHttp=async p=>{const r=await handler(new Request(endpoint+'/functions/v1/outreach-registration-submit',{method:'POST',headers:{Origin:'https://synthetic.example.test','Content-Type':'application/json','cf-connecting-ip':'192.0.2.123'},body:JSON.stringify({slug:'huntsville-2026',payload:p,turnstile_token:'SYNTHETIC_CHALLENGE'})}));assert.equal(r.status,200);return r.json();};
 function label(t,name){const l=[...t.d.querySelectorAll('label')].find(x=>[...x.childNodes].filter(n=>n.nodeType===3).map(n=>n.textContent).join('').trim()===name);assert(l,name);return l.querySelector('input,select,textarea')}
 function set(t,name,value){const i=label(t,name);if(i.type==='checkbox')i.checked=value;else i.value=value;i.dispatchEvent(new t.w.Event('change'));return i}
 function mount(ages,preference='',cfg=config){
@@ -35,8 +44,8 @@ async function accept(t,ages,preference){
  assert.deepEqual(p.attendees.map(a=>a.age),ages);
  for(const a of p.attendees){assert.equal(a.prize_participation,!!preference);assert.equal(a.bike_interest,preference==='bicycle');assert.equal(a.tablet_only,preference==='tablet');assert.equal(a.prize_choice,null);}
  assert.deepEqual(p.consents,{ministry_followup:false,communications:false,marketing:false,media:true});
- const receipt=await gateway(p);ok(receipt.accepted===true&&receipt.attendee_count===ages.length,'unchanged backend accepts DOM payload '+ages.join('/')+' '+(preference||'no prize'));
- assert.equal((await gateway(p)).reference,receipt.reference);
+ const receipt=await submitHttp(p);ok(receipt.accepted===true&&receipt.attendee_count===ages.length,'unchanged HTTP gateway and SQL accept DOM payload '+ages.join('/')+' '+(preference||'no prize'));
+ assert.equal((await submitHttp(p)).reference,receipt.reference);
  expectedHouseholds++;expectedAdults+=ages.filter(a=>a>=18).length;expectedKids+=ages.filter(a=>a<18).length;
  await role('authenticated',viewer);const list=await staff('list'),r=list.registrations.find(r=>r.reference===receipt.reference),detail=await staff('detail',{registration_id:r.id});
  assert.deepEqual([list.summary.households,list.summary.adults,list.summary.minors],[expectedHouseholds,expectedAdults,expectedKids]);
@@ -70,6 +79,8 @@ try{
  sample=await accept(mount([40,0,5,12,17,18],'bicycle'),[40,0,5,12,17,18],'bicycle');
  await accept(mount([18,40],'tablet'),[18,40],'tablet');
  await accept(mount([40,5,12],'tablet'),[40,5,12],'tablet');
+ await accept(mount([40,5,12],''),[40,5,12],'');
+ await accept(mount([40,0],''),[40,0],'');
  const noFields=mount([0]);ok(!noFields.root.textContent.includes('Optional consent')&&!noFields.root.textContent.includes('Marketing communications')&&!noFields.root.textContent.includes('Interested in a bike')&&!noFields.root.textContent.includes('Tablet only'),'no overlapping prize or optional communication controls');
  assert.deepEqual([...label(noFields,'Prize Preference').options].map(o=>o.value),['','bicycle','tablet']);ok(noFields.root.textContent.includes('does not guarantee')&&noFields.root.textContent.includes('Children of any age may register'),'registration independent of prize preference');noFields.dom.window.close();
  const clientCases=[
@@ -84,6 +95,16 @@ try{
   ['missing initials',t=>set(t,'Media release initials','')],
  ];
  for(const[name,change]of clientCases){const t=mount([0]);change(t);await t.submit();ok(t.sent.length===0,'before-API denial: '+name);t.dom.window.close();}
+ for(const[name,value,message]of [
+  ['Primary adult first name','   ','first and last name'],
+  ['Mobile phone','555','7–15 digits'],
+  ['Mobile phone','555-555-0100 ext 2','omit extensions'],
+  ['Emergency telephone number','not a phone','7–15 digits'],
+  ['Email','parent@example','complete email address'],
+  ['Typed legal name','  ','full legal name'],
+  ['Media release initials','  ','initials'],
+  ['City','  ','address fields'],
+ ]){const t=mount([40,5,12]);const field=set(t,name,value);await t.submit();assert(t.root.querySelector('[role=alert]').textContent.includes(message));assert.equal(t.d.activeElement,field);ok(t.sent.length===0,'safe focused validation before API: '+name);t.dom.window.close();}
  for(const age of [-1,121,1.5]){const t=mount([age]);await t.submit();ok(t.sent.length===0,'before-API invalid age '+age);t.dom.window.close();}
  for(const ages of [[18,40],[18]]){const t=mount(ages);set(t,'Signer relationship','self');if(ages.length===1)set(t,'Typed legal name','Different Synthetic');await t.submit();ok(t.sent.length===0,'self signature must cover only matching signer');t.dom.window.close();}
  const guardian=mount([0]);set(guardian,'Signer relationship','legal_guardian');await guardian.submit();ok((await gateway(guardian.sent[0])).accepted,'legal guardian remains supported');guardian.dom.window.close();
@@ -98,7 +119,7 @@ try{
   ['missing authority',p=>{p.waiver.authority_acknowledged=false;}],
   ['missing acknowledgment',p=>{p.waiver.acknowledged=false;}],
  ]){const p=structuredClone(sample);p.request_key=uuid();p.waiver.request_key=uuid();change(p);const r=await gateway(p);ok(r.accepted===false&&r.reason==='invalid','unchanged backend rejects '+name);}
- await db.exec('reset role');ok((await q('select count(*)::int n from outreach_event_registrations')).rows[0].n===22,'rejected payloads create no partial household records');
+ await db.exec('reset role');ok((await q('select count(*)::int n from outreach_event_registrations')).rows[0].n===expectedHouseholds+1,'rejected payloads create no partial household records');
  ok(JSON.stringify((await q('select * from outreach_campaigns where id<>$1 order by id',[c])).rows)===otherCampaigns,'all other campaign definitions unchanged');
  const legacy=mount([18],'',{...config,slug:'another-city',prize_choices:[{id:'approved-bike',label:'Approved bike'}]});
  ok(legacy.root.textContent.includes('Optional consent')&&legacy.editor.rows[0].prize&&legacy.editor.rows[0].age.min==='18','other cities retain approved controls and adult-row validation');

@@ -55,5 +55,17 @@ for(const failure of ['expired','error','network','timeout']){
  if(payloads.length===2)ok(JSON.stringify(payloads[0].payload)===JSON.stringify(payloads[1].payload),'exact idempotent payload survives '+failure);
  ok(x.errors.length===0,'guest '+failure+' no console exception');x.dom.window.close();
 }
+// Huntsville-specific errors use locally owned safe copy, never arbitrary server text.
+for(const [failure,expected,definitive] of [[400,'Prize preference is optional',true],[429,'wait at least one minute',true],[403,'sowgo.org/register',true],[503,'information unchanged',false],['network','information unchanged',false],['json','information unchanged',false],['bad-reference','information unchanged',false],['bad-count','information unchanged',false]]){
+ const x=await guest('huntsville-2026',{...config,slug:'huntsville-2026',waiver_required:false});
+ for(const [label,value]of Object.entries({'Primary adult first name':'Morgan','Primary adult last name':'Fixture','Email':'synthetic@example.test','Mobile phone':'+15555550100','Address':'Synthetic address','Attendee first name':'Morgan','Attendee last name':'Fixture','Age':'38'}))set(x,label,value);
+ const sent=[];x.w.fetch=async(url,init)=>{sent.push(JSON.parse(init.body));if(sent.length>1)return{ok:true,status:200,json:async()=>({accepted:true,reference:'R-ABCDEF0123456789',attendee_count:1})};if(failure==='network')throw Error('PRIVATE_NETWORK_DETAIL');return{ok:['json','bad-reference','bad-count'].includes(failure),status:typeof failure==='number'?failure:200,json:async()=>{if(failure==='json')throw Error('PRIVATE_RESPONSE_BODY');return failure==='bad-reference'?{accepted:true,reference:'PRIVATE_BAD_REFERENCE',attendee_count:1}:failure==='bad-count'?{accepted:true,reference:'R-ABCDEF0123456789',attendee_count:99}:{accepted:false,message:'PRIVATE_SERVER_DETAIL'};}};};
+ const send=async()=>{x.challenge.callback('SYNTHETIC');x.d.querySelector('form').dispatchEvent(new x.w.Event('submit',{bubbles:true,cancelable:true}));await tick();};await send();
+ const alert=x.d.querySelector('[role=alert]');ok(alert.textContent.includes(expected)&&!x.d.body.textContent.includes('PRIVATE_'),'safe actionable Huntsville rejection '+failure);
+ ok(x.resets===1&&x.removes===0&&!x.d.querySelector('button[type=submit]').disabled&&!x.d.querySelector('.registration-confirmation'),'no false success and retry controls recover '+failure);
+ set(x,'Primary adult first name','Corrected');await send();
+ if(!definitive){ok(sent.length===1&&x.d.body.textContent.includes('pending confirmation'),'ambiguous '+failure+' freezes original submission');set(x,'Primary adult first name','Morgan');await send();assert.equal(JSON.stringify(sent[0].payload),JSON.stringify(sent[1].payload));}
+ ok(sent.length===2&&!!x.d.querySelector('.registration-confirmation'),(definitive?'definitive rejection permits correction ':'same-payload recovery ')+failure);assert.deepEqual(x.errors,[]);x.dom.window.close();
+}
 const missing=await guest('synthetic-outreach',null);ok(missing.d.body.textContent.includes('Registration is not open.')&&!missing.d.querySelector('form'),'unavailable guest campaign fails closed');missing.dom.window.close();
 console.log(`${count} Phase C DOM checks passed`);

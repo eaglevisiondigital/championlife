@@ -1,3 +1,7 @@
+## 2026-10-22 — Final simplification keeps approved legal requirements
+
+Keep the existing published legal/media requirements and safety/contact fields; remove optional messaging and keep prize preference optional. Correct preventable SQL-format rejections at the form and provide safe status-based guidance without exposing internal errors or treating an uncertain submission as definitely unsaved. This expands the website-only candidate to two registration JavaScript assets. The previously reviewed commit is preserved in ancestry; revised exact-head approval is required before release.
+
 ## 2026-10-22 — Bounded Huntsville registration incident correction
 
 Owner-approved form correction is scoped to the unique configured slug `huntsville-2026`; this is presentation scoping, never an authorization boundary. The backend already supports newborns and distinguishes registration from prize eligibility. Preserve it byte-for-byte. Remove only the erroneous per-button age bounds in Huntsville and validate guardian/Self signature requirements before submission; do not auto-affirm legal authority. Preserve other campaigns and required event/media legal fields.
