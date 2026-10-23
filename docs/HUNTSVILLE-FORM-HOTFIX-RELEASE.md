@@ -1,7 +1,9 @@
 # Huntsville registration hotfix — release gate
 
 Status: locally validated; production execution requires separate owner approval.
-Base: `2d0b6b4fc84322f216329db498840c272b392461` (PR #38 security release).
+Follow-up base: `eb6a1bef1d819ba5a637a59866c4cf08005ebba5` (PR #39 original hotfix, concurrently released during review). Original incident baseline: `2d0b6b4fc84322f216329db498840c272b392461`.
+
+PR #39 merged at the original `86dc56b8dcad7526396e74aec68da9dcfc21f709`, without this follow-up. The deployed form hash was independently verified. This candidate contains only the additional contact-format validation, safe rejection/retry handling, tests and documentation; it must not be described as already deployed.
 Campaign: `338d0b6c-596e-43ea-9878-5b9baeb8aa24`, public slug `huntsville-2026`.
 
 ## Proven defects and scope
@@ -44,7 +46,7 @@ The live campaign has no extra mapped questions and no prize catalog requirement
 
 ## Exact release sequence after approval
 
-1. Pin the reviewed hotfix head and passing exact-head CI. Verify main and Netlify published deployment still correspond to the reviewed base; reconcile and stop on drift. Preserve rollback deployment `6adac9e7c9e4ee71fdec21e1` and base commit.
+1. Pin the reviewed hotfix head and passing exact-head CI. Verify main and Netlify published deployment still correspond to the reviewed base; reconcile and stop on drift. Preserve rollback deployment `6adad76db87e9aeee8b04d93` and base commit.
 2. Reverify public redirect resolves to `https://championlifefwb.com/outreach-register.html?campaign=huntsville-2026`. Record fresh, read-only campaign status/settings, all existing registration/attendee/signature row fingerprints, migration/RLS/ACL/function definitions and reporting access. Keep evidence private. Concurrent legitimate additions are allowed; existing-row changes are not attributable to this website release.
 3. Confirm the deployment diff contains only the two reviewed registration JavaScript assets. No database, configuration, function, grant, secret or route change is permitted.
 4. Remove the hotfix PR's Netlify skip safeguard only under release approval, then merge only this PR with a production-triggering merge message through the existing Champion Life Netlify workflow. Do not merge #34/#35 or trigger another site.
@@ -56,7 +58,7 @@ The live campaign has no extra mapped questions and no prize catalog requirement
 
 Stop on source/head drift, unexpected artifact changes, configuration/permission changes, loss of required legal fields, wrong destination, missing assets, newly observed API errors or record-integrity discrepancy. Do not improvise a backend repair.
 
-For a website regression after publication, republish the preserved production Netlify deployment `6adac9e7c9e4ee71fdec21e1` using the existing deployment rollback workflow, if included in the owner's release approval. Verify its form asset and public routes. No database rollback or record rewrite is needed or authorized. This restores the prior website and also restores its known form limitations; report the incident as unresolved, not recovered.
+For a website regression after publication, republish the preserved production Netlify deployment `6adad76db87e9aeee8b04d93` using the existing deployment rollback workflow, if included in the owner's release approval. Verify its form asset and public routes. No database rollback or record rewrite is needed or authorized. This restores the prior website and also removes the new contact-validation and error-message improvements; report the incident as unresolved, not recovered.
 
 ## Owner authorization requested
 
