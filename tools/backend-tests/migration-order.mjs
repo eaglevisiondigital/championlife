@@ -1,4 +1,4 @@
-// Exact 22 production versions followed only by the two isolated candidates.
+// Preserve the original 22+2 Huntsville contract; append current production and the bounded forward fix.
 export const baselineOrder=[
   "20260923114743_create_course_progress_schema.sql",
   "20260923114822_harden_course_security_and_indexes.sql",
@@ -27,4 +27,5 @@ export const candidateOrder=[
   "20261016201932_huntsville_registration_foundation.sql",
   "20261016201933_huntsville_registration_draft.sql"
 ];
-export const migrationOrder=[...baselineOrder,...candidateOrder];
+export const forwardOrder=['20261018121900_allow_huntsville_decision_registrations.sql','20261022201357_operations_admin_security.sql'];
+export const migrationOrder=[...baselineOrder,...candidateOrder,...forwardOrder];

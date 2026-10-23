@@ -1,3 +1,7 @@
+## Consolidate without repeating implementation — 2026-10-22
+
+Continue the existing isolated security branch; add portable member-versus-operator regression tests and controlled-release documentation only. Preserve the reviewed runtime and single forward SQL. Future full-platform administrator direction remains inactive. Keep owner campaign-only reporting independent of this release, and defer unreleased team/communications/member-portal functions. No role grant, invitation, production release or child-chain merge is authorized by preparation.
+
 # Huntsville isolation decisions — 2026-10-16
 
 1. Start from exact current main rather than merging PR #24 ancestry. Preserve all 22 historical migrations byte-for-byte.
@@ -19,3 +23,8 @@
 ## Theme-song implementation — 2026-10-22
 
 Use the owner's final exact PNG, lossless delivery derivative and original M4A. Preserve one accessible in-artwork control set at every width and SOUL FUEL / Give to Outreach with the unchanged giving destination. The 2026-10-22 final owner decision removes the counter and all tracking/storage requirements entirely; previous counter preparation is superseded, without provisioning any Neon or other database. The final production release is authorized only after static-feature regression/security/browser checks pass; use the existing Netlify workflow and verify the public result, with rollback to the recorded last working deployment if needed. No redesign or ministry-backend changes. The mentioned implementation ZIP was unavailable; do not claim it was inspected.
+
+
+## Operations Administrator preparation — 2026-10-22
+
+Owner authorized local correction/testing only. Reuse the existing 29-key production vocabulary and authentication workflow. Separate two organization assignments; no campaign-admin row for operations. Require finance.read for financial commitments and their linked histories; no automatic finance grants to retain former access. Require independent permission authorizer and prohibit self-target access changes. Reconcile existing People/Household compatibility locally and extend rather than narrow audit vocabulary. No PR #34/#35 wholesale adoption, hosted application, invitation, user or production grant. Activation dates/identity and external provider role verification remain owner/release gates.

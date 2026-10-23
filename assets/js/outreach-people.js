@@ -2,12 +2,14 @@
  'use strict';
  const root=document.getElementById('outreach-people'),auth=window.ChampionLifeAuth,{el}=window.OutreachUI;
  let generation=0,user,org,grants=[],content,status,page=0;
+ const financialLink=document.getElementById('financial-outreach-link');
+ const updateNavigation=()=>{if(financialLink)financialLink.hidden=!(can('outreach.view')&&can('finance.read'))};
  const can=k=>grants.some(g=>g.organization_id===org&&g.permission===k&&!g.department_ids);
  const login=()=>el('a','Sign in to your workspace',{href:'discipleship-login.html?next=%2Fstaff-people.html'});
  function fail(code){
   generation++;grants=[];org=null;content?.replaceChildren();content=null;
-  root.replaceChildren(el('p',code===401?'Your session has expired. Sign in to continue.':'Your access is no longer available. Contact an administrator if you believe you should still have access.',{role:'alert'}));
-  root.append(code===401?login():el('a','Return to Outreach Partner Review',{href:'staff-outreach-partners.html'}));
+  updateNavigation();root.replaceChildren(el('p',code===401?'Your session has expired. Sign in to continue.':'Your access is no longer available. Contact an administrator if you believe you should still have access.',{role:'alert'}));
+  root.append(code===401?login():el('a','Return to Outreach',{href:'outreach.html'}));
  }
  async function request(run){
   const g=generation;
@@ -17,7 +19,7 @@
  }
  const people=(action,payload)=>request(()=>auth.client.rpc('people_workspace',{p_org:org,p_action:action,p_payload:payload}));
  function button(label,action){const g=generation,b=el('button',label,{type:'button'});b.onclick=async()=>{if(g!==generation)return;b.disabled=true;try{await action()}catch{}finally{b.disabled=false}};return b}
- async function refreshPermissions(){const ctx=await request(()=>auth.client.rpc('staff_workspace_context',{}));grants=ctx.grants;if(!can('people.read')){fail(403);throw Error()}}
+ async function refreshPermissions(){const ctx=await request(()=>auth.client.rpc('staff_workspace_context',{}));grants=ctx.grants;updateNavigation();if(!can('people.read')){fail(403);throw Error()}}
  async function list(search=''){
   const g=++generation;content.replaceChildren();status.textContent='Loading…';await refreshPermissions();if(g!==generation)return;
   const rows=await people('list',{search,page});if(g!==generation)return;status.textContent=rows.length?'':'No matching contacts.';
@@ -44,10 +46,10 @@
   }
  }
  async function boot(){const g=++generation;grants=[];content?.replaceChildren();root.replaceChildren();try{user=await auth?.getUser();if(g!==generation)return;if(!user){root.append(login());return}
-  status=el('p','Loading…',{role:'status'});content=el('div');root.append(status);const ctx=await request(()=>auth.client.rpc('staff_workspace_context',{}));if(g!==generation)return;grants=ctx.grants;
+  status=el('p','Loading…',{role:'status'});content=el('div');root.append(status);const ctx=await request(()=>auth.client.rpc('staff_workspace_context',{}));if(g!==generation)return;grants=ctx.grants;updateNavigation();
   const choices=ctx.organizations.filter(o=>grants.some(x=>x.organization_id===o.id&&x.permission==='people.read'&&!x.department_ids));if(!choices.length){fail(403);return}
-  const select=el('select',null,{'aria-label':'Organization'}),params=new URLSearchParams(location.search);for(const o of choices)select.append(el('option',o.name,{value:o.id}));if(choices.some(o=>o.id===params.get('org')))select.value=params.get('org');org=select.value;
-  select.onchange=()=>{org=select.value;page=0;list().catch(()=>{})};root.append(select,content);const person=params.get('person');if(person&&/^[a-f0-9-]{36}$/i.test(person))await detail(person);else await list();
+  const select=el('select',null,{'aria-label':'Organization'}),params=new URLSearchParams(location.search);for(const o of choices)select.append(el('option',o.name,{value:o.id}));if(choices.some(o=>o.id===params.get('org')))select.value=params.get('org');org=select.value;updateNavigation();
+  select.onchange=()=>{org=select.value;updateNavigation();page=0;list().catch(()=>{})};root.append(select,content);const person=params.get('person');if(person&&/^[a-f0-9-]{36}$/i.test(person))await detail(person);else await list();
  }catch{if(g===generation)root.replaceChildren(el('p','Workspace unavailable. Please refresh and try again.',{role:'alert'}))}}
- auth?.client.auth.onAuthStateChange((_event,session)=>{if(session?.user?.id!==user?.id){generation++;root.replaceChildren();grants=[];org=null;setTimeout(boot,0)}});boot();
+ auth?.client.auth.onAuthStateChange((_event,session)=>{if(session?.user?.id!==user?.id){generation++;root.replaceChildren();grants=[];org=null;updateNavigation();setTimeout(boot,0)}});boot();
 })();
