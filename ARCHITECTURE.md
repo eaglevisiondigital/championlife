@@ -1,3 +1,7 @@
+## Consolidated operational scope contracts — 2026-10-22
+
+The same existing eleven-key role supports separately assigned Church/Outreach operations or Outreach-only operations with ordinary Church membership. Membership confers no Church staff permissions and no donor/household ownership. Generic portable tests now cover both compositions; no second permission system or new migration. Preserve child-specific shell and additive test manifests per [release reconciliation](docs/OPERATIONS-ADMIN-RELEASE.md).
+
 # Huntsville isolated architecture
 
 The production baseline remains intact. Public config is anonymous and minimized; guest mutations enter only through the protected Edge Function and service-only registration gateway. Staff operations use the registration workspace RPC with campaign-scoped active/dated authority. Canonical household registrations, explicit attendees and immutable legal snapshots drive counts and separate check-in state. Campaign locking protects idempotency and final-slot capacity.

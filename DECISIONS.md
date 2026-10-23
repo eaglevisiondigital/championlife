@@ -1,3 +1,7 @@
+## Consolidate without repeating implementation — 2026-10-22
+
+Continue the existing isolated security branch; add portable member-versus-operator regression tests and controlled-release documentation only. Preserve the reviewed runtime and single forward SQL. Future full-platform administrator direction remains inactive. Keep owner campaign-only reporting independent of this release, and defer unreleased team/communications/member-portal functions. No role grant, invitation, production release or child-chain merge is authorized by preparation.
+
 # Huntsville isolation decisions — 2026-10-16
 
 1. Start from exact current main rather than merging PR #24 ancestry. Preserve all 22 historical migrations byte-for-byte.
