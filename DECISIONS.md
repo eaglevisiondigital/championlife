@@ -1,3 +1,9 @@
+## 2026-10-22 — Bounded Huntsville registration incident correction
+
+Owner-approved form correction is scoped to the unique configured slug `huntsville-2026`; this is presentation scoping, never an authorization boundary. The backend already supports newborns and distinguishes registration from prize eligibility. Preserve it byte-for-byte. Remove only the erroneous per-button age bounds in Huntsville and validate guardian/Self signature requirements before submission; do not auto-affirm legal authority. Preserve other campaigns and required event/media legal fields.
+
+Native reproduction establishes initial/Add adult minimum-age rejection and default Self-signature rejection. Generic production HTTP 400 metadata does not prove either named person's exact failure or establish Turnstile as the cause. A local PASS is not a production recovery claim. Release only the reviewed website asset after separate owner authorization; no SQL, Edge deployment, real registration test or other PR is included.
+
 ## Consolidate without repeating implementation — 2026-10-22
 
 Continue the existing isolated security branch; add portable member-versus-operator regression tests and controlled-release documentation only. Preserve the reviewed runtime and single forward SQL. Future full-platform administrator direction remains inactive. Keep owner campaign-only reporting independent of this release, and defer unreleased team/communications/member-portal functions. No role grant, invitation, production release or child-chain merge is authorized by preparation.
