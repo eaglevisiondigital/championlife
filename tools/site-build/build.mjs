@@ -2,9 +2,13 @@ import { readFile, writeFile, mkdir, copyFile, rm, lstat } from 'node:fs/promise
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import vm from 'node:vm';
+import { productionOnlyFiles, activationHeaders } from './production-activation.mjs';
 
 const repository = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
 const configPath = 'assets/js/supabase-config.js';
+// Keep these defaults before exact production-only overrides in the same file.
+// A global TOML rule is processed later and would overwrite the stricter values.
+export const defaultHeaders = '/*\n  X-Frame-Options: SAMEORIGIN\n  Referrer-Policy: strict-origin-when-cross-origin\n';
 
 export function previewConfiguration(env, production) {
   const url = env.CHAMPION_PREVIEW_SUPABASE_URL || '';
@@ -53,24 +57,32 @@ export async function buildSite({ root = repository, env = process.env } = {}) {
     }
     if (!(await lstat(target)).isFile()) throw new Error('Manifest entry is not a file.');
   }
+  const activationCount = productionOnlyFiles.filter(file => files.includes(file)).length;
+  if (activationCount && activationCount !== productionOnlyFiles.length) {
+    throw new Error('Incomplete production activation asset pair; refusing to publish.');
+  }
+  const publishActivation = context === 'production' && activationCount === productionOnlyFiles.length;
+  const publishedFiles = files.filter(file => publishActivation || !productionOnlyFiles.includes(file));
   const sourceConfig = await readFile(path.join(root, configPath), 'utf8');
   const sandbox = { window: {} };
   vm.runInNewContext(sourceConfig, sandbox, { timeout: 1000 });
   const config = isolated ? previewConfiguration(env, sandbox.window.CHAMPION_LIFE_SUPABASE) : null;
   await rm(output, { recursive: true, force: true });
-  for (const file of files) {
+  for (const file of publishedFiles) {
     const destination = path.join(output, file);
     await mkdir(path.dirname(destination), { recursive: true });
     if (isolated && file === configPath) await writeFile(destination, previewScript(config));
     else if(file===configPath && env.OUTREACH_PUBLIC_SITE_KEY && !/^[123]x0+/.test(env.OUTREACH_PUBLIC_SITE_KEY))await writeFile(destination,sourceConfig+'\nwindow.CHAMPION_LIFE_SUPABASE.outreachSiteKey='+JSON.stringify(env.OUTREACH_PUBLIC_SITE_KEY)+';\n');
     else await copyFile(path.join(root, file), destination);
   }
+  let headers = defaultHeaders + (publishActivation ? activationHeaders : '');
   if (isolated) {
     // Preview pages are not search results; production output remains byte-for-byte.
-    await writeFile(path.join(output, '_headers'), '/*\n  X-Robots-Tag: noindex, nofollow\n/assets/js/supabase-config.js\n  Cache-Control: no-store\n');
+    headers += '/*\n  X-Robots-Tag: noindex, nofollow\n/assets/js/supabase-config.js\n  Cache-Control: no-store\n';
     await writeFile(path.join(output, 'robots.txt'), 'User-agent: *\nDisallow: /\n');
   }
-  return { files: files.length, context: context || 'local', backend: isolated ? (config ? 'isolated-preview' : 'blocked') : 'unchanged-production-default', output };
+  await writeFile(path.join(output, '_headers'), headers);
+  return { files: publishedFiles.length, context: context || 'local', backend: isolated ? (config ? 'isolated-preview' : 'blocked') : 'unchanged-production-default', output };
 }
 
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
