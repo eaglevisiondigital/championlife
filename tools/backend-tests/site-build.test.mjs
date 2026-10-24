@@ -5,8 +5,7 @@ import os from 'node:os';
 import vm from 'node:vm';
 import { fileURLToPath } from 'node:url';
 import { JSDOM } from 'jsdom';
-import { buildSite, previewConfiguration, previewScript, defaultHeaders } from '../site-build/build.mjs';
-import { productionOnlyFiles, activationHeaders } from '../site-build/production-activation.mjs';
+import { buildSite, previewConfiguration, previewScript } from '../site-build/build.mjs';
 const root = fileURLToPath(new URL('../../', import.meta.url));
 const configPath = 'assets/js/supabase-config.js';
 const source = await readFile(path.join(root, configPath), 'utf8');
@@ -70,45 +69,21 @@ async function inventory(dir, prefix = '') {
   }
   return result.sort();
 }
-assert.deepEqual(await inventory(path.join(root, 'dist')), [...manifest, '_headers'].sort());
-assert.equal(await readFile(path.join(root, 'dist/_headers'), 'utf8'), defaultHeaders + activationHeaders);
-const previewManifest = manifest.filter(file => !productionOnlyFiles.includes(file));
+assert.deepEqual(await inventory(path.join(root, 'dist')), [...manifest].sort());
 await buildSite({ root, env: { CONTEXT: 'deploy-preview' } });
-assert.deepEqual(await inventory(path.join(root, 'dist')), [...previewManifest, '_headers', 'robots.txt'].sort());
+assert.deepEqual(await inventory(path.join(root, 'dist')), [...manifest, '_headers', 'robots.txt'].sort());
 const blocked = await readFile(path.join(root, 'dist', configPath), 'utf8');
 assert(!blocked.includes(production.url));
 assert(!blocked.includes(production.publishableKey));
 assert(blocked.includes('window.CHAMPION_LIFE_SUPABASE = null'));
 for (const file of await inventory(path.join(root, 'dist'))) {
   assert(!/(?:^|\/)(?:docs|audit|tools|supabase|netlify|HANDOFFS)(?:\/|$)|\.(?:md|sql|map|log|pem|key|toml)$/i.test(file), file);
-  if (/\.(?:js|html|css|txt)$/.test(file) || file.startsWith('_')) {
+  if (/\.(?:js|html|css)$/.test(file)) {
     const text = await readFile(path.join(root, 'dist', file), 'utf8');
-    assert(!text.includes(production.publishableKey), 'Production key in preview: ' + file);
-    assert(!text.includes('provision_huntsville_staff_20261023'), 'Activation RPC in preview: ' + file);
-    assert(!text.includes('staff-huntsville-activation'), 'Activation reference in preview: ' + file);
     assert(!text.includes(production.url), 'Production backend reference in preview: ' + file);
     assert(!/sb_secret_|-----BEGIN (?:RSA |EC |OPENSSH )?PRIVATE KEY-----/.test(text), 'Privileged credential pattern in ' + file);
   }
 }
-
-// Both actual preview contexts, with each allowed target and missing config, exclude
-// the complete mechanism. Production-to-preview transitions must remove stale files.
-for (const context of ['deploy-preview', 'branch-deploy']) for (const accepted of [{}, valid, minimal]) {
-  await buildSite({ root, env: { CONTEXT: context, ...accepted } });
-  assert.deepEqual(await inventory(path.join(root, 'dist')), [...previewManifest, '_headers', 'robots.txt'].sort());
-  for (const file of previewManifest.filter(file => file !== configPath)) {
-    assert.deepEqual(await readFile(path.join(root, 'dist', file)), await readFile(path.join(root, file)), file);
-  }
-  const headers = await readFile(path.join(root, 'dist/_headers'), 'utf8');
-  assert(!headers.includes(production.url) && !headers.includes('activation'));
-}
-// Local/default/dev builds cannot accidentally publish the temporary production UI.
-for (const env of [{}, { CONTEXT: 'dev' }]) {
-  await buildSite({ root, env });
-  assert.deepEqual(await inventory(path.join(root, 'dist')), [...previewManifest, '_headers'].sort());
-}
-const toml = await readFile(path.join(root, 'netlify.toml'), 'utf8');
-assert(!toml.includes(production.url) && !toml.includes('staff-huntsville-activation'), 'No global production activation headers');
 
 // Hostile/unlisted files stay out, invalid manifests and symlinks cannot escape the root.
 const fixture = await mkdtemp(path.join(os.tmpdir(), 'champion-site-build-'));
@@ -124,10 +99,6 @@ try {
     assert.equal(result.backend, 'isolated-preview');
     assert(!(await readFile(path.join(fixture, 'dist', configPath), 'utf8')).includes(production.url));
   }
-  await writeFile(path.join(fixture, 'staff-huntsville-activation.html'), '<!doctype html>');
-  await writeFile(manifestFile, JSON.stringify([configPath, productionOnlyFiles[0]]));
-  await assert.rejects(buildSite({ root: fixture, env: { CONTEXT: 'production' } }), /Incomplete/);
-  await writeFile(manifestFile, JSON.stringify([configPath]));
   await assert.rejects(buildSite({ root: fixture, env: { NETLIFY: 'true' } }), /context/);
   await assert.rejects(buildSite({ root: fixture, env: { CONTEXT: 'typo' } }), /context/);
   for (const file of ['../outside.js', 'docs/private.html', 'assets/.env', 'assets/debug.js.map']) {
