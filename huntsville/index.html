@@ -314,7 +314,12 @@
       .bes-next-item span{display:inline-flex;align-items:center;justify-content:center;justify-self:start;padding:7px 10px;border-radius:999px;background:rgba(230,203,120,.12);font-size:.82rem;line-height:1.2}
       .bes-after-copy,.bes-share{padding:26px 22px}
     }
-  </style>
+  
+    .huntsville-language{display:flex;justify-content:flex-end;align-items:center;gap:8px;max-width:1160px;margin:0 auto;padding:12px 20px;color:#fff}
+    .huntsville-language a{display:inline-block;padding:8px 13px;border:1px solid rgba(255,255,255,.55);border-radius:999px;color:#fff;background:#5b0d1d;font-weight:700;text-decoration:none;font-size:14px}
+    .huntsville-language a[aria-current="page"]{background:#f4ecdc;color:#5b0d1d;border-color:#f4ecdc}
+    .huntsville-language a:focus-visible{outline:3px solid #f4ecdc;outline-offset:3px}
+</style>
 </head>
 <body>
 <header class="site-header">
@@ -336,6 +341,7 @@
 </header>
 
 <main class="bes-page">
+  <nav class="huntsville-language" aria-label="Language / Idioma"><a href="/huntsville/" lang="en" hreflang="en" aria-current="page">English</a><a href="/huntsville/es/" lang="es" hreflang="es">Español</a></nav>
   <section class="bes-hero">
     <div class="container bes-hero-grid">
       <div>
