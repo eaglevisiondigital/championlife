@@ -6,9 +6,11 @@
  const canvas=byId('page-canvas'),ctx=canvas.getContext('2d',{alpha:false}),number=byId('page-number');
  const prev=byId('previous-page'),next=byId('next-page'),zoomIn=byId('zoom-in'),zoomOut=byId('zoom-out'),fullscreen=byId('fullscreen');
  const loginLink=byId('login-link'),failure=byId('access-error');
- let pdf=null,current=1,scale=1,renderToken=0,rendering=false,viewer=null,personKey='anonymous',paintChain=Promise.resolve();
+ const licenseAck=byId('book-license-ack'),downloadButton=byId('download-book');
+ let pdf=null,current=1,scale=1,renderToken=0,rendering=false,viewer=null,personKey='anonymous',paintChain=Promise.resolve(),downloadBlob=null;
  const htmlLang=document.documentElement.lang==='es';
  if(htmlLang){document.querySelector(".sidebar-note").textContent="Libro digital gratuito para quienes se registraron en el evento SowGo. La edición del libro está en inglés.";document.querySelector(".sidebar-bottom").textContent="Champion Life Church & SowGo · El amor de Dios nos impulsa a sembrar y a ir.";document.querySelector("#previous-page").textContent="‹ Atrás";document.querySelector("#next-page").textContent="Siguiente ›";document.querySelector("#fullscreen").textContent="Pantalla completa";document.querySelector(".bottom").textContent="Desliza para pasar las páginas • Usa las flechas del teclado • Tu página se recuerda en este dispositivo.";document.querySelector("#access-error strong").textContent="Solo para personas registradas.";document.querySelector("#access-error p").textContent="Inicia sesión con el correo que usaste al registrarte en Bessemer o Huntsville para leer tu regalo.";document.querySelector("#login-link").textContent="Iniciar sesión para leer King Kind";}
+ if(htmlLang){document.querySelector('.reader-license-copy').innerHTML='<strong>Regalo solo para uso personal.</strong> Este libro digital se entrega gratuitamente a quienes se registraron y cumplen los requisitos. Puedes descargar una copia para leerla personalmente. No puedes volver a publicarlo, redistribuirlo, compartirlo, reenviarlo, subirlo a internet, venderlo ni distribuir el libro o el PDF, total o parcialmente, sin autorización previa por escrito del titular de los derechos.';document.querySelector('.license-check span').textContent='Entiendo y acepto que no puedo volver a publicar ni distribuir este libro.';downloadButton.textContent='Descargar PDF para uso personal';document.querySelector('.reader-license').setAttribute('aria-label','Condiciones de uso personal del libro digital');}
  const lang=(en,es)=>htmlLang?es:en;
  const notice=(msg,isError=false)=>{status.textContent=msg;status.classList.toggle('error',isError)};
  const bounds=(n,a,b)=>Math.max(a,Math.min(b,n));
@@ -30,6 +32,15 @@
    if(bytes.byteLength<100000||bytes.byteLength>30000000)throw new Error('Unexpected book file size');
    return new Uint8Array(bytes);
  }
+ licenseAck.addEventListener('change',()=>{downloadButton.disabled=!(pdf&&downloadBlob&&licenseAck.checked)});
+ downloadButton.addEventListener('click',()=>{
+   if(!pdf||!downloadBlob||!licenseAck.checked)return;
+   const url=URL.createObjectURL(downloadBlob),anchor=document.createElement('a');
+   anchor.href=url;anchor.download='King-Kind-Pastor-Roddy-Shaffer-Personal-Use.pdf';
+   document.body.append(anchor);anchor.click();anchor.remove();
+   setTimeout(()=>URL.revokeObjectURL(url),60000);
+   notice(lang('Your personal-use download has started. Do not share or distribute the file.','Comenzó la descarga para uso personal. No compartas ni distribuyas el archivo.'));
+ });
  async function loadPDF(){return privateBook()}
  async function renderPage(){
    if(!pdf)return;
@@ -63,6 +74,8 @@
  try{
    notice(lang('Checking book access…','Verificando acceso al libro…'));
    const bytes=await loadPDF();
+   // Blob snapshots bytes before PDF.js transfers the original buffer to its worker.
+   downloadBlob=new Blob([bytes],{type:'application/pdf'});
    notice(lang('Loading your book…','Cargando tu libro…'));
    const m=await import('https://cdn.jsdelivr.net/npm/pdfjs-dist@4.10.38/build/pdf.mjs');
    m.GlobalWorkerOptions.workerSrc='https://cdn.jsdelivr.net/npm/pdfjs-dist@4.10.38/build/pdf.worker.mjs';
@@ -70,5 +83,6 @@
    if(pdf.numPages!==83)throw Error('Unexpected book page count');
    try{current=bounds(Number(localStorage.getItem(pageKey()))||1,1,pdf.numPages)}catch{current=1}
    breakVisible(false); await render();
- }catch(err){console.warn('King Kind reader: book not opened',err.message);notice(err.message||lang('Unable to open the book.','No se pudo abrir el libro.'),true);breakVisible(true)}
+   licenseAck.disabled=false;downloadButton.disabled=!licenseAck.checked;
+ }catch(err){downloadBlob=null;licenseAck.checked=false;licenseAck.disabled=true;downloadButton.disabled=true;console.warn('King Kind reader: book not opened',err.message);notice(err.message||lang('Unable to open the book.','No se pudo abrir el libro.'),true);breakVisible(true)}
 })();
