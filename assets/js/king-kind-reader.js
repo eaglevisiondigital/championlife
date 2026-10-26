@@ -6,7 +6,7 @@
  const canvas=byId('page-canvas'),ctx=canvas.getContext('2d',{alpha:false}),number=byId('page-number');
  const prev=byId('previous-page'),next=byId('next-page'),zoomIn=byId('zoom-in'),zoomOut=byId('zoom-out'),fullscreen=byId('fullscreen');
  const loginLink=byId('login-link'),failure=byId('access-error');
- let pdf=null,current=1,scale=1,renderToken=0,rendering=false,viewer=null,personKey='anonymous';
+ let pdf=null,current=1,scale=1,renderToken=0,rendering=false,viewer=null,personKey='anonymous',paintChain=Promise.resolve();
  const htmlLang=document.documentElement.lang==='es';
  if(htmlLang){document.querySelector(".sidebar-note").textContent="Libro digital gratuito para quienes se registraron en el evento SowGo. La edición del libro está en inglés.";document.querySelector(".sidebar-bottom").textContent="Champion Life Church & SowGo · El amor de Dios nos impulsa a sembrar y a ir.";document.querySelector("#previous-page").textContent="‹ Atrás";document.querySelector("#next-page").textContent="Siguiente ›";document.querySelector("#fullscreen").textContent="Pantalla completa";document.querySelector(".bottom").textContent="Desliza para pasar las páginas • Usa las flechas del teclado • Tu página se recuerda en este dispositivo.";document.querySelector("#access-error strong").textContent="Solo para personas registradas.";document.querySelector("#access-error p").textContent="Inicia sesión con el correo que usaste al registrarte en Bessemer o Huntsville para leer tu regalo.";document.querySelector("#login-link").textContent="Iniciar sesión para leer King Kind";}
  const lang=(en,es)=>htmlLang?es:en;
@@ -31,7 +31,7 @@
    return new Uint8Array(bytes);
  }
  async function loadPDF(){return privateBook()}
- async function render(){
+ async function renderPage(){
    if(!pdf)return;
    const token=++renderToken; rendering=true;
    current=bounds(current,1,pdf.numPages);number.value=String(current);
@@ -49,6 +49,7 @@
    save();viewer=page;rendering=false;
    notice(lang(`Page ${current} of ${pdf.numPages} · ${Math.round(scale*100)}%`,`Página ${current} de ${pdf.numPages} · ${Math.round(scale*100)}%`));
  }
+ function render(){paintChain=paintChain.catch(()=>{}).then(renderPage).catch(err=>{rendering=false;notice(lang('Unable to display this page. Try again.','No se puede mostrar esta página. Inténtalo de nuevo.'),true);console.warn('PDF render error',err)});return paintChain}
  async function navigate(n){if(!pdf||rendering)return;current=bounds(n,1,pdf.numPages);await render()}
  prev.addEventListener('click',()=>navigate(current-1));next.addEventListener('click',()=>navigate(current+1));
  number.addEventListener('change',()=>navigate(Number.parseInt(number.value,10)||current));
