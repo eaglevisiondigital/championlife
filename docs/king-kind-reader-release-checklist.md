@@ -2,7 +2,7 @@
 
 STATUS: CANDIDATE ONLY. DO NOT MERGE BEFORE REVIEW + PRIVATE PDF UPLOAD + PERMISSIONED TESTS.
 
-Source PDF: 83 pages, 396x612 pt, ~8.3 MB. Image-heavy; preserve original raster pages. PDF SHA-256 to be computed at upload for integrity.
+Source PDF: 83 pages, 396x612 pt, ~8.3 MB. Image-heavy; preserve original raster pages. Approved uploaded PDF SHA-256: e03685328d45a08bc1a3d6b633ded360a3656894ff6f3b0c5d5568ff0a7da98f. Confirm this exact hash at upload.
 Existing approved book cover: `/assets/images/king-kind-cover.svg`.
 
 1. Review production SQL for registration eligibility: Bessemer/Huntsville decision form `outreach_registrations` under confirmed Auth email.
