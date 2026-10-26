@@ -11,6 +11,13 @@
   </aside>
   <section class="reader-area" aria-label="King Kind book reader">
     <nav class="toolbar" id="book-controls" aria-label="Reader controls"><button class="tool" id="previous-page" type="button" aria-label="Previous page">‹ Prev</button><label class="page-field"><span class="hidden">Page</span><input id="page-number" inputmode="numeric" type="number" min="1" value="1" aria-label="Page number"> / <span>83</span></label><button class="tool" id="next-page" type="button" aria-label="Next page">Next ›</button><span class="grow"></span><button class="tool" id="zoom-out" type="button" aria-label="Zoom out">−</button><button class="tool" id="zoom-in" type="button" aria-label="Zoom in">+</button><button class="tool primary" id="fullscreen" type="button">Fullscreen</button></nav>
+    <section class="reader-license" aria-label="Digital book personal-use terms">
+      <p class="reader-license-copy" id="book-license-note"><strong>Personal-use gift only.</strong> This digital book is provided free to eligible registered readers. You may download a copy for your own personal reading. You may not republish, redistribute, share, forward, upload, resell, or otherwise distribute the book or PDF, in whole or in part, without prior written permission from the rights holder.</p>
+      <div class="reader-license-actions">
+        <label class="license-check"><input type="checkbox" id="book-license-ack" disabled> <span>I understand and agree not to republish or distribute this book.</span></label>
+        <button class="tool primary" id="download-book" type="button" disabled aria-describedby="book-license-note">Download personal-use PDF</button>
+      </div>
+    </section>
     <p class="status" id="reader-status" role="status">Preparing reader…</p>
     <div class="error-panel" id="access-error" hidden><strong>Registered guests only.</strong><p>Sign in with the email you used on the Bessemer or Huntsville decision form. Your free book will open here after verification.</p><a id="login-link" href="https://championlifefwb.com/discipleship-login.html?next=%2Fking-kind-reader.html">Sign in to read King Kind</a></div>
     <div class="viewport" id="reader-viewport"><div class="page-wrap" id="page-wrap"><canvas id="page-canvas" aria-label="Book page image"></canvas></div></div>
