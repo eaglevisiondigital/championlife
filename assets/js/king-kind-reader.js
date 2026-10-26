@@ -30,6 +30,9 @@
    if(!res.ok)throw new Error(lang('Book download is temporarily unavailable. Please try again.','La descarga del libro no está disponible en este momento. Inténtalo de nuevo.'));
    const bytes=await res.arrayBuffer();
    if(bytes.byteLength<100000||bytes.byteLength>30000000)throw new Error('Unexpected book file size');
+   // Only display or download the approved personal-use edition with restriction notice.
+   const digest=Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256',bytes)),b=>b.toString(16).padStart(2,'0')).join('');
+   if(digest!=='417f9faa7ff3945fdf4ff62931a233739856d03221c8429e21b768b221b94a54')throw new Error(lang('The book file failed its integrity check. Contact the outreach team.','El archivo del libro no pasó la verificación de integridad. Comunícate con el equipo de alcance.'));
    return new Uint8Array(bytes);
  }
  licenseAck.addEventListener('change',()=>{downloadButton.disabled=!(pdf&&downloadBlob&&licenseAck.checked)});

@@ -11,6 +11,8 @@ assert.equal(manifest.some(s=>/\.pdf$/i.test(s)&&/king.kind/i.test(s)),false,'PD
 assert.match(b,/king-kind-cover\.svg/);
 assert.match(js,/createSignedUrl\('king-kind\/king-kind-english\.pdf',900\)/);
 assert.match(js,/getUser\(\)/);
+assert.match(js,/crypto\.subtle\.digest\('SHA-256',bytes\)/);
+assert.match(js,/417f9faa7ff3945fdf4ff62931a233739856d03221c8429e21b768b221b94a54/);
 assert.doesNotMatch(js,/__KINGKIND_LOCAL_DEMO_PDF__/);
 assert.doesNotMatch(js,/service_role|SUPABASE_SERVICE_ROLE_KEY|localhost.*pdf/i);
 assert.match(css,/\.viewport/);

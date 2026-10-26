@@ -1,6 +1,7 @@
 -- REVIEW-ONLY CANDIDATE. DO NOT APPLY WITHOUT PRODUCTION AUTHORIZATION.
 -- No book bytes stored in public GitHub. Upload verified PDF to the private bucket via authorized Supabase Storage workflow.
 -- Exact object: king-kind-books/king-kind/king-kind-english.pdf
+-- Authorized reader edition SHA-256: 417f9faa7ff3945fdf4ff62931a233739856d03221c8429e21b768b221b94a54; 83 pages; notice on formerly blank page 4.
 begin;
 create schema if not exists app_private;
 revoke all on schema app_private from public;
