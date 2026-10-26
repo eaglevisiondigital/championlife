@@ -14,6 +14,16 @@ assert.match(js,/getUser\(\)/);
 assert.doesNotMatch(js,/__KINGKIND_LOCAL_DEMO_PDF__/);
 assert.doesNotMatch(js,/service_role|SUPABASE_SERVICE_ROLE_KEY|localhost.*pdf/i);
 assert.match(css,/\.viewport/);
+assert.match(b,/id="book-license-ack"[^>]*disabled/);
+assert.match(b,/id="download-book"[^>]*disabled/);
+assert.match(b,/You may not republish, redistribute, share, forward, upload, resell/);
+assert.match(js,/licenseAck\.addEventListener\('change'/);
+assert.match(js,/if\(!pdf\|\|!downloadBlob\|\|!licenseAck\.checked\)return/);
+assert.match(js,/new Blob\(\[bytes\],\{type:'application\/pdf'\}\)/);
+assert.match(js,/anchor\.download='King-Kind-Pastor-Roddy-Shaffer-Personal-Use\.pdf'/);
+assert.match(js,/No puedes volver a publicarlo, redistribuirlo/);
+assert.match(css,/\.reader-license/);
+
 assert.match(sql,/public\.outreach_registrations/);
 assert.match(sql,/r\.source in \('bessemer_al_2026', 'huntsville_al_2026'\)/);
 assert.match(sql,/u\.email_confirmed_at is not null/);
