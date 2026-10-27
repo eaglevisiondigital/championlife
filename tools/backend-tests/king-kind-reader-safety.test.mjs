@@ -45,4 +45,4 @@ assert.doesNotMatch(sql,/grant.*(?:all|insert|update|delete).*to authenticated/i
 for(const path of paths){const s=read(path);assert.match(s,/king-kind-reader\.html/);assert.match(s,/king-kind-cover\.svg/);assert.match(s,/\.from\('outreach_registrations'\)/)}
 assert.match(read('huntsville/es/index.html'),/lang=es/);
 assert.match(read('my-discipleship.html'),/king-kind-reader\.html/);
-console.log('King Kind reader: 21 source/security invariants passed; hosted RLS and mobile acceptance still required.');
+console.log('King Kind reader: source/security/link checks passed; hosted RLS and mobile acceptance still required.');

@@ -73,3 +73,15 @@ Production Champion Life Supabase `exdocjbmylgxssanymjk` was rechecked and remai
 **Current gate:** draft production release PR + CI only. No merge, production migrations, Edge deployment, grants, waiver publication, registration activation, SowGo routing change or live message is authorized. Branded email remains a separate launch gate.
 
 See [dependency graph](docs/HUNTSVILLE-MINIMAL-DEPENDENCIES.md) and [release/containment plan](docs/HUNTSVILLE-MINIMAL-RELEASE.md).
+
+## 2026-10-26 — King Kind final mobile correction candidate
+
+PR #49 remains a reader-only release. The cover now preserves its natural height,
+mobile arrows/page count stay visible, and the reading viewport reserves measured
+space above the controls. Controls remain hidden until book authorization succeeds.
+Approved near-black/charcoal/gold styling, private PDF checksum, registration
+eligibility, personal-use acknowledgment and existing entry links are preserved.
+Local full regression and responsive browser checks pass. Final physical-device
+acceptance and separately approved production Storage/website release remain gates.
+Personal notes/highlights are being prepared on a separate branch and are not part
+of this release. No production migration, upload, merge or deployment performed.

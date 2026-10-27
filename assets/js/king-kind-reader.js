@@ -17,7 +17,7 @@
  const bounds=(n,a,b)=>Math.max(a,Math.min(b,n));
  const pageKey=()=>`kingkind-reader-page-v1:${personKey}`;
  const save=()=>{try{localStorage.setItem(pageKey(),String(current))}catch{}};
- const breakVisible=(yes)=>{failure.hidden=!yes;document.getElementById('book-controls').classList.toggle('hidden',yes);};
+ const breakVisible=(yes)=>{failure.hidden=!yes;document.getElementById('book-controls').classList.toggle('hidden',yes);document.querySelector('.mobile-page-controls').hidden=yes;};
  async function privateBook(){
    const auth=window.ChampionLifeAuth;
    if(!auth){throw new Error(lang('Sign-in service is unavailable.','El servicio de inicio de sesión no está disponible.'))}
@@ -48,6 +48,12 @@
  async function loadPDF(){return privateBook()}
  async function renderPage(){
    if(!pdf)return;
+   // Reserve the visible mobile controls below the actual reading area. The
+   // sidebar/toolbar may wrap differently across phones; do not guess their height.
+   if(window.matchMedia('(max-width:800px), (max-width:1000px) and (max-height:500px)').matches){
+    const nav=document.querySelector('.mobile-page-controls').getBoundingClientRect();
+    view.style.height=`${Math.max(140,nav.top-view.getBoundingClientRect().top-10)}px`;
+   }else view.style.height='';
    const token=++renderToken; rendering=true;
    current=bounds(current,1,pdf.numPages);number.value=String(current);
    prev.disabled=current<=1;next.disabled=current>=pdf.numPages;
