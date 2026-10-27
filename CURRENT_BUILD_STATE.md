@@ -1,3 +1,7 @@
+## 2026-10-26 — King Kind neutral reader palette (owner approved)
+
+Owner approved the near-black/charcoal/gray palette with gold after reviewing the local visual proof. The reader stylesheet now uses near-black, charcoal and neutral gray with the existing gold accents. Only color values and the primary-button hover colors change; layout, responsive breakpoints, JavaScript, authorization and approved PDF remain unchanged. 21 existing source/security checks and contrast checks pass. Prepared for PR49; production remains unchanged. Owner reports both phone reading/download tests work; independent device-session corroboration, desktop download and final sandbox cleanup remain release gates. The loopback visual preview is a static color proof, not a new authenticated acceptance result.
+
 ## 2026-10-23 — Staff portal presentation and current-session logout (local candidate)
 
 Based on production source `97f2330c284dcda2108b8e1926bf9f3bd12979af`. People & Follow-up and Registration/Check-In share a scoped charcoal/gold shell; all three current staff HTML pages include authenticated email and visible Log Out. The existing Supabase client signs out only the current session, preserves unrelated storage, clears protected mounts before pending responses can return, and prevents back/forward-cache restoration. No permission, RPC, backend, public registration, theme-song, provider or deployment changes.
@@ -69,3 +73,15 @@ Production Champion Life Supabase `exdocjbmylgxssanymjk` was rechecked and remai
 **Current gate:** draft production release PR + CI only. No merge, production migrations, Edge deployment, grants, waiver publication, registration activation, SowGo routing change or live message is authorized. Branded email remains a separate launch gate.
 
 See [dependency graph](docs/HUNTSVILLE-MINIMAL-DEPENDENCIES.md) and [release/containment plan](docs/HUNTSVILLE-MINIMAL-RELEASE.md).
+
+## 2026-10-26 — King Kind final mobile correction candidate
+
+PR #49 remains a reader-only release. The cover now preserves its natural height,
+mobile arrows/page count stay visible, and the reading viewport reserves measured
+space above the controls. Controls remain hidden until book authorization succeeds.
+Approved near-black/charcoal/gold styling, private PDF checksum, registration
+eligibility, personal-use acknowledgment and existing entry links are preserved.
+Local full regression and responsive browser checks pass. Final physical-device
+acceptance and separately approved production Storage/website release remain gates.
+Personal notes/highlights are being prepared on a separate branch and are not part
+of this release. No production migration, upload, merge or deployment performed.

@@ -40,7 +40,17 @@ try{
  ok((await q('select count(*) n from outreach_waiver_versions')).rows[0].n===0,'no invented legal publisher or automatic activation');
  ok((await q('select (select count(*) from outreach_campaign_admins)+(select count(*) from outreach_campaign_assignments) n')).rows[0].n===0,'no user grants');
  await rejected(draft,'manual duplicate draft refuses overwrite');assert.deepEqual(await oldData(),dataBefore);ok(true,'every baseline table/data row preserved including existing outreach and giving');
- for(const f of ['index.html','prayer.html','bessemer/index.html','stlucia/index.html','assets/js/supabase-config.js','netlify.toml']){const {execFileSync}=await import('node:child_process');assert.equal(readFileSync(new URL('../../'+f,import.meta.url),'utf8'),execFileSync('git',['show',productionMain+':'+f],{encoding:'utf8'}));ok(true,'production source preserved '+f)}
+ for(const f of ['index.html','prayer.html','stlucia/index.html','assets/js/supabase-config.js','netlify.toml']){const {execFileSync}=await import('node:child_process');assert.equal(readFileSync(new URL('../../'+f,import.meta.url),'utf8'),execFileSync('git',['show',productionMain+':'+f],{encoding:'utf8'}));ok(true,'production source preserved '+f)}
+ // Explicitly verify the only permitted changes to the original Bessemer landing page are the three King Kind reader links.
+ {const {execFileSync}=await import('node:child_process');const original=execFileSync('git',['show',productionMain+':bessemer/index.html'],{encoding:'utf8'});
+  const url='/king-kind-reader.html?source=bessemer';
+  const expected=original
+   .replace('Digital gift • Coming soon',`<a href="${url}" class="bes-status gold">Read the Free Book</a>`)
+   .replace('<span class="bes-resource-disabled">Coming Soon</span>',`<a href="${url}" class="bes-resource-link">Read Book</a>`)
+   .replace('<div class="bes-next-item"><b>King Kind Digital Book</b><span>Digital gift • Coming soon</span></div>',`<a class="bes-next-item" href="${url}"><b>King Kind Digital Book</b><span>Read Free Book →</span></a>`);
+  assert.equal(readFileSync(new URL('../../bessemer/index.html',import.meta.url),'utf8'),expected);
+  ok(true,'Bessemer source preserves exact baseline except three reviewed King Kind reader links');
+ }
  if(process.env.EVIDENCE_DIR){mkdirSync(process.env.EVIDENCE_DIR,{recursive:true});writeFileSync(process.env.EVIDENCE_DIR+'/schema-inventory.json',JSON.stringify({baseline:baselineOrder.map(file=>({file,sha256:createHash('sha256').update(read(file)).digest('hex')})),before,after:final,delta},null,2));}
  console.log(n+' minimal migration safety checks passed');
 }finally{await db.close()}
