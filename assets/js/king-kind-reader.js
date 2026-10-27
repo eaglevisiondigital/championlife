@@ -5,11 +5,12 @@
  const status=byId('reader-status'),view=byId('reader-viewport'),wrap=byId('page-wrap');
  const canvas=byId('page-canvas'),ctx=canvas.getContext('2d',{alpha:false}),number=byId('page-number');
  const prev=byId('previous-page'),next=byId('next-page'),zoomIn=byId('zoom-in'),zoomOut=byId('zoom-out'),fullscreen=byId('fullscreen');
+ const mobilePrev=byId('mobile-previous'),mobileNext=byId('mobile-next'),mobilePage=byId('mobile-page'),fitWidth=byId('fit-width'),mobileFit=byId('mobile-fit-width');
  const loginLink=byId('login-link'),failure=byId('access-error');
  const licenseAck=byId('book-license-ack'),downloadButton=byId('download-book');
  let pdf=null,current=1,scale=1,renderToken=0,rendering=false,viewer=null,personKey='anonymous',paintChain=Promise.resolve(),downloadBlob=null;
  const htmlLang=document.documentElement.lang==='es';
- if(htmlLang){document.querySelector(".sidebar-note").textContent="Libro digital gratuito para quienes se registraron en el evento SowGo. La edición del libro está en inglés.";document.querySelector(".sidebar-bottom").textContent="Champion Life Church & SowGo · El amor de Dios nos impulsa a sembrar y a ir.";document.querySelector("#previous-page").textContent="‹ Atrás";document.querySelector("#next-page").textContent="Siguiente ›";document.querySelector("#fullscreen").textContent="Pantalla completa";document.querySelector(".bottom").textContent="Desliza para pasar las páginas • Usa las flechas del teclado • Tu página se recuerda en este dispositivo.";document.querySelector("#access-error strong").textContent="Solo para personas registradas.";document.querySelector("#access-error p").textContent="Inicia sesión con el correo que usaste al registrarte en Bessemer o Huntsville para leer tu regalo.";document.querySelector("#login-link").textContent="Iniciar sesión para leer King Kind";}
+ if(htmlLang){document.querySelector(".sidebar-note").textContent="Libro digital gratuito para quienes se registraron en el evento SowGo. La edición del libro está en inglés.";document.querySelector(".sidebar-bottom").textContent="Champion Life Church & SowGo · El amor de Dios nos impulsa a sembrar y a ir.";document.querySelector("#previous-page").textContent="‹ Atrás";document.querySelector("#next-page").textContent="Siguiente ›";mobilePrev.textContent="‹ Atrás";mobileNext.textContent="Siguiente ›";mobileFit.textContent="Ajustar";fitWidth.textContent="Ajustar ancho";document.querySelector("#fullscreen").textContent="Pantalla completa";document.querySelector(".bottom").textContent="Desliza para pasar las páginas • Usa las flechas del teclado • Tu página se recuerda en este dispositivo.";document.querySelector("#access-error strong").textContent="Solo para personas registradas.";document.querySelector("#access-error p").textContent="Inicia sesión con el correo que usaste al registrarte en Bessemer o Huntsville para leer tu regalo.";document.querySelector("#login-link").textContent="Iniciar sesión para leer King Kind";}
  if(htmlLang){document.querySelector('.reader-license-copy').innerHTML='<strong>Regalo solo para uso personal.</strong> Este libro digital se entrega gratuitamente a quienes se registraron y cumplen los requisitos. Puedes descargar una copia para leerla personalmente. No puedes volver a publicarlo, redistribuirlo, compartirlo, reenviarlo, subirlo a internet, venderlo ni distribuir el libro o el PDF, total o parcialmente, sin autorización previa por escrito del titular de los derechos.';document.querySelector('.license-check span').textContent='Entiendo y acepto que no puedo volver a publicar ni distribuir este libro.';downloadButton.textContent='Descargar PDF para uso personal';document.querySelector('.reader-license').setAttribute('aria-label','Condiciones de uso personal del libro digital');}
  const lang=(en,es)=>htmlLang?es:en;
  const notice=(msg,isError=false)=>{status.textContent=msg;status.classList.toggle('error',isError)};
@@ -50,6 +51,7 @@
    const token=++renderToken; rendering=true;
    current=bounds(current,1,pdf.numPages);number.value=String(current);
    prev.disabled=current<=1;next.disabled=current>=pdf.numPages;
+   mobilePrev.disabled=current<=1;mobileNext.disabled=current>=pdf.numPages;mobilePage.textContent=`${current} / ${pdf.numPages}`;
    const page=await pdf.getPage(current);if(token!==renderToken)return;
    // Responsive single page, with optional bounded zoom and sharp 2x raster.
    const base=page.getViewport({scale:1}),fit=Math.min(1.65,Math.max(.35,(view.clientWidth-24)/base.width));
@@ -64,11 +66,14 @@
    notice(lang(`Page ${current} of ${pdf.numPages} · ${Math.round(scale*100)}%`,`Página ${current} de ${pdf.numPages} · ${Math.round(scale*100)}%`));
  }
  function render(){paintChain=paintChain.catch(()=>{}).then(renderPage).catch(err=>{rendering=false;notice(lang('Unable to display this page. Try again.','No se puede mostrar esta página. Inténtalo de nuevo.'),true);console.warn('PDF render error',err)});return paintChain}
- async function navigate(n){if(!pdf||rendering)return;current=bounds(n,1,pdf.numPages);await render()}
+ async function navigate(n){if(!pdf||rendering)return;const target=bounds(n,1,pdf.numPages);if(target!==current){current=target;view.scrollTop=0;view.scrollLeft=0;}await render()}
  prev.addEventListener('click',()=>navigate(current-1));next.addEventListener('click',()=>navigate(current+1));
+ mobilePrev.addEventListener('click',()=>navigate(current-1));mobileNext.addEventListener('click',()=>navigate(current+1));
  number.addEventListener('change',()=>navigate(Number.parseInt(number.value,10)||current));
  zoomIn.addEventListener('click',()=>{scale=bounds(scale+.2,.6,2.8);render()});
  zoomOut.addEventListener('click',()=>{scale=bounds(scale-.2,.6,2.8);render()});
+ const fitToWidth=()=>{scale=1;view.scrollLeft=0;view.scrollTop=0;render()};
+ fitWidth.addEventListener('click',fitToWidth);mobileFit.addEventListener('click',fitToWidth);
  fullscreen.addEventListener('click',()=>{if(document.fullscreenElement)document.exitFullscreen?.();else view.requestFullscreen?.()});
  document.addEventListener('keydown',e=>{if(e.target.closest('input,textarea'))return;if(['ArrowRight','PageDown'].includes(e.key)){e.preventDefault();navigate(current+1)}if(['ArrowLeft','PageUp'].includes(e.key)){e.preventDefault();navigate(current-1)}});
  let start=null;view.addEventListener('touchstart',e=>{if(e.touches.length===1)start={x:e.touches[0].clientX,y:e.touches[0].clientY}}, {passive:true});

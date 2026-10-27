@@ -25,6 +25,13 @@ assert.match(js,/new Blob\(\[bytes\],\{type:'application\/pdf'\}\)/);
 assert.match(js,/anchor\.download='King-Kind-Pastor-Roddy-Shaffer-Personal-Use\.pdf'/);
 assert.match(js,/No puedes volver a publicarlo, redistribuirlo/);
 assert.match(css,/\.reader-license/);
+assert.match(b,/id="mobile-page"/);
+assert.match(b,/id="mobile-fit-width"/);
+assert.match(b,/id="fit-width"/);
+assert.match(js,/mobilePrev\.addEventListener/);
+assert.match(js,/fitToWidth/);
+assert.match(css,/\.mobile-page-controls/);
+assert.match(css,/object-fit:contain/);
 
 assert.match(sql,/public\.outreach_registrations/);
 assert.match(sql,/r\.source in \('bessemer_al_2026', 'huntsville_al_2026'\)/);
