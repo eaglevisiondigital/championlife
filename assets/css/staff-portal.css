@@ -29,6 +29,14 @@ body.staff-portal {
 .staff-sidebar-footer { margin-top:auto; display:grid; gap:18px; padding:18px 12px 0; border-top:1px solid #303438; }
 .staff-sidebar-footer>span { color:#b5bac1; font-size:.7rem; letter-spacing:.12em; text-transform:uppercase; }
 .staff-sidebar-footer a { color:var(--staff-gold); font-size:.78rem; min-height:44px; display:flex; align-items:center; justify-content:space-between; }
+.staff-portal .staff-sidebar-footer .staff-propel-credit {
+ display:grid; align-content:center; justify-items:start; gap:7px;
+ min-height:72px; padding:16px 0 0; margin:2px 0 0;
+ border-top:1px solid #303438; color:#d5d8dd; text-decoration:none;
+}
+.staff-portal .staff-propel-credit span { font-size:.67rem; font-weight:700; color:#d5d8dd; letter-spacing:.1em; text-transform:uppercase; }
+.staff-portal .staff-propel-credit img { display:block; width:164px; height:auto; max-width:100%; object-fit:contain; }
+.staff-portal .staff-propel-credit:hover img { opacity:.88; }
 .staff-body { min-width:0; display:flex; flex-direction:column; }
 .staff-topbar { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px; padding:22px 42px; min-height:76px; border-bottom:1px solid #303438; font-size:.78rem; color:#e7e5de; }
 .staff-topbar-divider { color:#808791; padding:0 14px; }
@@ -136,6 +144,9 @@ body.staff-portal {
  .staff-portal .campaign-sidebar { position:static; height:auto; padding:18px 20px; gap:18px; border-right:0; border-bottom:1px solid #303438; }
  .staff-portal .campaign-brand img { width:160px; height:60px; }
  .staff-portal .campaign-sidebar .eyebrow,.staff-sidebar-footer { display:none; }
+ .staff-portal .staff-sidebar-footer { display:grid; margin-top:0; border-top:0; padding:0; gap:0; }
+ .staff-portal .staff-sidebar-footer>span,.staff-portal .staff-sidebar-footer>a:not(.staff-propel-credit) { display:none; }
+ .staff-portal .staff-sidebar-footer .staff-propel-credit { border-top:1px solid #303438; margin-top:0; padding:12px 0 0; min-height:58px; }
  .staff-portal .campaign-sidebar nav { display:flex; flex-wrap:wrap; gap:8px; }
  .staff-portal .campaign-sidebar nav a { font-size:.78rem; padding:11px 12px; min-height:44px; }
  .staff-topbar { padding:15px 20px; min-height:52px; font-size:.72rem; }
