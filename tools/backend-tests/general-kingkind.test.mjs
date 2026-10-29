@@ -24,7 +24,7 @@ check(sql.includes('join public.general_king_kind_registrants'), 'resource regis
 check(page.includes('discipleship-login.html?next=%2Fking-kind-signup.html'), 'existing email auth handoff');
 check(page.includes('king-kind-reader.html'), 'private reader retained');
 check(page.includes('my-discipleship.html'), 'existing course dashboard retained');
-check(!/government (photo )?ID/i.test(page), 'no government ID collection');
+check(page.includes("We don't ask for a phone number, government ID or donation."), 'no ID requested');
 check(ui.includes('auth.client.auth.getUser'), 'session confirmed via provider');
 check(ui.includes("register_general_king_kind_resource"), 'RPC call wired');
 check(ui.includes("currentUserId!==requestedUser"), 'account-change guard');
