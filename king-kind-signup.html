@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow"><meta name="referrer" content="no-referrer">
+<title>Free King Kind Book & Discipleship | Champion Life</title>
+<meta name="description" content="Register for Pastor Roddy Shaffer's free King Kind digital book and Getting a Grip on the Basics discipleship.">
+<link rel="stylesheet" href="assets/css/styles.css">
+<style>
+:root{color-scheme:dark}*{box-sizing:border-box}body{margin:0;background:#101215;color:#f8f6f1;font-family:Arial,Helvetica,sans-serif}
+header{padding:18px 24px;background:#0b0d10;border-bottom:1px solid #37383a}
+header a{display:inline-flex;align-items:center;text-decoration:none;color:#e2cb88}
+header img{max-width:145px;height:auto}
+main{max-width:1000px;margin:auto;padding:62px 24px 88px;display:grid;grid-template-columns:1.3fr .7fr;align-items:center;gap:40px}
+h1{font-size:clamp(2.5rem,5.7vw,4.7rem);line-height:1.07;letter-spacing:-.045em;margin:10px 0 22px}
+.gold{color:#e6c377}.eyebrow{color:#e6c377;text-transform:uppercase;font-weight:bold;font-size:.8rem;letter-spacing:.13em}
+p{line-height:1.65;color:#c7c8c8}.card{background:#1b1e21;border:1px solid #525046;border-radius:18px;padding:24px;margin-top:26px}
+label{display:block;font-size:.92rem;font-weight:bold;margin:15px 0 7px}input{display:block;width:100%;min-height:48px;border:1px solid #80786a;border-radius:7px;padding:11px 12px;color:#171717;background:#fff;font:inherit}
+.formrow{display:grid;grid-template-columns:1fr 1fr;gap:14px}.action{display:inline-flex;justify-content:center;align-items:center;min-height:48px;border:1px solid #b89d66;border-radius:8px;padding:12px 20px;background:#e6c377;color:#181818;font-weight:bold;text-decoration:none;cursor:pointer;font:inherit}
+.action.secondary{background:transparent;color:#f5dfad}.actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:20px}
+button:disabled{opacity:.6;cursor:wait}
+[hidden]{display:none!important}#result{padding:12px 14px;border-radius:8px;background:#25201a;margin-top:14px;color:#ffe3a2}
+.cover{background:linear-gradient(140deg,#242628,#111214);border:1px solid #5c503d;border-radius:22px;padding:30px;text-align:center}
+.cover img{display:block;width:100%;height:auto;max-height:430px;object-fit:contain}
+footer{border-top:1px solid #343638;text-align:center;padding:24px;color:#b7b6b2;font-size:.85rem}
+@media(max-width:750px){main{grid-template-columns:1fr;padding:42px 18px 64px}.cover{max-width:360px;margin:auto}.formrow{grid-template-columns:1fr}.action{width:100%}}
+</style>
+</head>
+<body>
+<header><a href="index.html" aria-label="Champion Life home"><img src="assets/images/logo-gold.png" alt="Champion Life Church"></a></header>
+<main>
+<section>
+<span class="eyebrow">A free gift for everyone joining 6 AM prayer</span>
+<h1>Your free <span class="gold">King Kind</span> book and discipleship.</h1>
+<p>Discover who you are in Christ through Pastor Roddy Shaffer's digital book and the 13-lesson <strong>Getting a Grip on the Basics</strong> course.</p>
+<div class="card" id="loading"><p role="status">Checking your sign-in…</p></div>
+<div class="card" id="signin" hidden>
+<h2>Step 1 — Verify your email</h2>
+<p>Use a one-time email code or secure link. We don't ask for a phone number, government ID or donation.</p>
+<a class="action" href="discipleship-login.html?next=%2Fking-kind-signup.html">Continue With My Email</a>
+</div>
+<form class="card" id="register" hidden>
+<h2>Step 2 — Register for your free resources</h2>
+<p>You are signing up as <strong id="account-email"></strong>. This does not register you for an outreach event or create church membership.</p>
+<div class="formrow">
+<div><label for="first">First Name</label><input id="first" name="first" autocomplete="given-name" maxlength="100" required></div>
+<div><label for="last">Last Name</label><input id="last" name="last" autocomplete="family-name" maxlength="100" required></div>
+</div>
+<div class="actions"><button class="action" type="submit" id="submit">Get My Free Resources</button><a class="action secondary" href="discipleship-login.html?next=%2Fking-kind-signup.html">Switch Account</a></div>
+<p class="small">Your account email is used for resource access, not marketing subscriptions. See our <a href="privacy.html">Privacy Policy</a>.</p>
+</form>
+<div class="card" id="success" hidden>
+<h2>You're registered!</h2><p>Use your verified Champion Life email to open your personal-use copy of King Kind or start the discipleship course.</p>
+<div class="actions"><a class="action" href="king-kind-reader.html">Read King Kind</a><a class="action secondary" href="my-discipleship.html">Open My Discipleship</a></div>
+</div>
+<p id="result" role="alert" hidden></p>
+</section>
+<aside class="cover"><img src="assets/images/king-kind-cover.svg" alt="King Kind digital book cover" width="340" height="512"></aside>
+</main>
+<footer>Champion Life Church &amp; SowGo · Free resources for your spiritual growth.</footer>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.118.0"></script>
+<script src="assets/js/supabase-config.js"></script>
+<script src="assets/js/champion-life-auth.js"></script>
+<script src="assets/js/general-king-kind-signup.js"></script>
+</body>
+</html>
