@@ -61,7 +61,7 @@ await scenario({},async s=>{
  ok(s.requests[0].name==='register_general_king_kind_resource','RPC is resource-only');
  ok(s.requests[0].payload.p_first_name==='First','first name submitted');
  ok(s.requests[0].payload.p_last_name==='Example','last name submitted');
- ok(s.counters.profileCalls===1&&s.counters.enrollmentCalls===1,'existing learner enrollment reused');
+ ok(s.counters.profileCalls===0&&s.counters.enrollmentCalls===0,'no cross-account client writes; enrollment is atomic in RPC');
  ok(!s.document.getElementById('success').hidden,'successful verified account shows resources');
 });
 
