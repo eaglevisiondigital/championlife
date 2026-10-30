@@ -1,0 +1,13 @@
+import { createHash } from 'node:crypto';
+const url='https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.118.0/dist/umd/supabase.js';
+const response=await fetch(url,{redirect:'follow',signal:AbortSignal.timeout(25000)});
+if(!response.ok)throw Error('Pinned SDK CDN retrieval failed: '+response.status);
+const type=response.headers.get('content-type')||'';
+if(!/javascript|octet-stream|text\/plain/i.test(type))throw Error('Unexpected SDK content type: '+type);
+const bytes=Buffer.from(await response.arrayBuffer());
+if(bytes.length<100_000||bytes.length>2_000_000)throw Error('Unexpected SDK byte count: '+bytes.length);
+const sha384='sha384-'+createHash('sha384').update(bytes).digest('base64');
+const sha256=createHash('sha256').update(bytes).digest('hex');
+console.log('Pinned Supabase UMD SDK byte count:',bytes.length);
+console.log('Pinned Supabase UMD SDK SRI:',sha384);
+console.log('Pinned Supabase UMD SDK SHA256:',sha256);
