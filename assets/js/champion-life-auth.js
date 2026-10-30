@@ -27,6 +27,34 @@
     return session?.user || null;
   }
 
+  // UI identity fences supplement RLS; every write still targets this captured UUID.
+  let identityEpoch = 0, observedIdentity = null;
+  client.auth?.onAuthStateChange?.((event, session) => {
+    const next = session?.user?.id || null;
+    if (next !== observedIdentity || event === 'SIGNED_OUT') identityEpoch++;
+    observedIdentity = next;
+  });
+  async function getVerifiedUser() {
+    const epoch = identityEpoch;
+    const {data, error} = await client.auth.getUser();
+    if (error) throw error;
+    if (epoch !== identityEpoch) throw new Error('SESSION_CHANGED');
+    const u = data?.user;
+    return u?.id && u.email_confirmed_at && !u.is_anonymous ? u : null;
+  }
+  async function bindUser(expectedUserId, signal) {
+    const epoch = identityEpoch;
+    const user = await getVerifiedUser();
+    if (!user || (expectedUserId && expectedUserId !== user.id)) throw new Error('SIGN_IN_REQUIRED');
+    const check = async () => {
+      if (signal?.aborted || epoch !== identityEpoch) throw new Error('SESSION_CHANGED');
+      const session = await getSession();
+      if (signal?.aborted || epoch !== identityEpoch || session?.user?.id !== user.id || !session.expires_at || session.expires_at * 1000 <= Date.now()) throw new Error('SESSION_CHANGED');
+    };
+    await check();
+    return {user, check};
+  }
+
   async function getGripCourse() {
     if (courseCache) return courseCache;
     const { data, error } = await client
@@ -39,14 +67,16 @@
     return data;
   }
 
-  async function ensureProfile(values = {}) {
-    const user = await getUser();
-    if (!user) return null;
+  async function ensureProfile(values = {}, binding) {
+    const fence = binding || await bindUser();
+    await fence.check();
+    const {user} = fence;
     const { data:existing } = await client
       .from('profiles')
       .select('first_name,last_name,email,phone,givehub_contact_id')
       .eq('user_id',user.id)
       .maybeSingle();
+    await fence.check();
     const row = {
       user_id: user.id,
       email: user.email || values.email || existing?.email || null,
@@ -62,13 +92,15 @@
       .select()
       .single();
     if (error) throw error;
+    await fence.check();
     return data;
   }
 
-  async function ensureEnrollment() {
-    const user = await getUser();
-    if (!user) return null;
+  async function ensureEnrollment(binding) {
+    const fence = binding || await bindUser();
+    const {user} = fence;
     const course = await getGripCourse();
+    await fence.check();
     const { data, error } = await client
       .from('course_enrollments')
       .upsert(
@@ -78,16 +110,21 @@
       .select()
       .single();
     if (error) throw error;
+    await fence.check();
     return data;
   }
 
-  async function saveLesson({ lessonNumber, answers, status='in_progress', completed=false, profile={} }) {
-    const user = await getUser();
-    if (!user) return { skipped:true };
+  async function saveLesson({ lessonNumber, answers, status='in_progress', completed=false, profile={}, expectedUserId, signal }) {
+    // Callers with editable state must supply its verified owner. Never infer a new owner.
+    if (!expectedUserId) throw new Error('DRAFT_OWNER_REQUIRED');
+    const fence = await bindUser(expectedUserId, signal);
+    const {user} = fence;
     const course = await getGripCourse();
 
-    await ensureProfile(profile);
-    await ensureEnrollment();
+    await fence.check();
+    await ensureProfile(profile, fence);
+    await ensureEnrollment(fence);
+    await fence.check();
 
     const rows = Object.entries(answers || {})
       .filter(([,value]) => String(value ?? '').trim().length)
@@ -107,6 +144,7 @@
       if (answerError) throw answerError;
     }
 
+    await fence.check();
     const { data:existingProgress } = await client
       .from('lesson_progress')
       .select('started_at,completed_at,status')
@@ -114,6 +152,7 @@
       .eq('course_id',course.id)
       .eq('lesson_number',Number(lessonNumber))
       .maybeSingle();
+    await fence.check();
     const now = new Date().toISOString();
     const progressRow = {
       user_id:user.id,
@@ -129,12 +168,13 @@
       .upsert(progressRow, { onConflict:'user_id,course_id,lesson_number' });
     if (progressError) throw progressError;
 
+    await fence.check();
     return { saved:true };
   }
 
-  async function loadLesson(lessonNumber) {
-    const user = await getUser();
-    if (!user) return null;
+  async function loadLesson(lessonNumber, expectedUserId, signal) {
+    const fence = await bindUser(expectedUserId, signal);
+    const {user} = fence;
     const course = await getGripCourse();
 
     const [{ data:answers, error:aerr }, { data:progress, error:perr }, { data:profile, error:profErr }] = await Promise.all([
@@ -158,6 +198,7 @@
     if (aerr) throw aerr;
     if (perr) throw perr;
     if (profErr) throw profErr;
+    await fence.check();
     return { user, course, answers:answers || [], progress:progress || null, profile:profile || null };
   }
 
@@ -169,12 +210,13 @@
     return data === true;
   }
 
-  async function getOutreachRegistration(source='st_lucia_2026') {
-    const user = await getUser();
-    if (!user) return null;
+  async function getOutreachRegistration(source='st_lucia_2026', expectedUserId) {
+    const fence = await bindUser(expectedUserId);
+    const {user} = fence;
     if (source === 'st_lucia_2026') {
       try { await claimStLuciaRegistration(); } catch (_e) {}
     }
+    await fence.check();
     const { data, error } = await client
       .from('outreach_registrations')
       .select('id,source,decision,prayer_request,created_at')
@@ -184,12 +226,13 @@
       .limit(1)
       .maybeSingle();
     if (error) throw error;
+    await fence.check();
     return data || null;
   }
 
-  async function getDashboard() {
-    const user = await getUser();
-    if (!user) return null;
+  async function getDashboard(expectedUserId, signal) {
+    const fence = await bindUser(expectedUserId, signal);
+    const {user} = fence;
     const course = await getGripCourse();
     const [{ data:progress, error:perr }, { data:profile, error:profErr }] = await Promise.all([
       client.from('lesson_progress')
@@ -204,6 +247,7 @@
     ]);
     if (perr) throw perr;
     if (profErr) throw profErr;
+    await fence.check();
     return { user, course, progress:progress || [], profile:profile || null };
   }
 
@@ -216,6 +260,7 @@
     client,
     getSession,
     getUser,
+    getVerifiedUser,
     getGripCourse,
     ensureProfile,
     ensureEnrollment,

@@ -1,0 +1,40 @@
+{
+  "package": "@supabase/supabase-js",
+  "version": "2.118.0",
+  "asset": "assets/vendor/supabase-js-2.118.0.js",
+  "sha256": "bee24fc29228ed5a370f76a2ba1ca3c399549edad2fef23453c80148856a49af",
+  "integrity": "sha384-UagCvVPT5XXA0Hx+nJYUAGBFseHT9zBgpJMSebsAxl9lciTwbT+39j5VfRjdP5Tp",
+  "bytes": 218544,
+  "source": "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.118.0",
+  "license": "MIT",
+  "prior_floating_entrypoints": [
+    "bessemer/index.html",
+    "discipleship-login.html",
+    "getting-a-grip-1.html",
+    "getting-a-grip-2.html",
+    "getting-a-grip-3.html",
+    "getting-a-grip-4.html",
+    "huntsville/es/index.html",
+    "huntsville/index.html",
+    "king-kind-reader.html",
+    "king-kind/index.html",
+    "my-discipleship.html",
+    "outreach-backend-acceptance-2026.html",
+    "outreach-register.html",
+    "staff-outreach-partners.html",
+    "staff-outreach-registration.html",
+    "staff-people.html",
+    "stlucia/index.html"
+  ],
+  "notes_entrypoints": [
+    "getting-a-grip-5.html",
+    "getting-a-grip-6.html",
+    "getting-a-grip-7.html",
+    "getting-a-grip-8.html",
+    "getting-a-grip-9.html",
+    "getting-a-grip-10.html",
+    "getting-a-grip-11.html",
+    "getting-a-grip-12.html",
+    "getting-a-grip-13.html"
+  ]
+}

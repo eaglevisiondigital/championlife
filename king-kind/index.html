@@ -1,0 +1,572 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Free King Kind Book & Online Discipleship | Champion Life & SowGo</title>
+  <meta name="description" content="Register for Pastor Roddy Shaffer’s free King Kind digital book and Getting a Grip on the Basics online discipleship. Open to everyone, wherever you live.">
+  <link rel="canonical" href="https://sowgo.org/king-kind">
+  <meta name="theme-color" content="#101010">
+  <link rel="stylesheet" href="/assets/css/styles.css?v=20260922">
+  <style>
+    :root{
+      --bes-crimson:#d3ad55;
+      --bes-deep:#1b1b1b;
+      --bes-burgundy:#292929;
+      --bes-red:#d8b86b;
+      --bes-cream:#f4ecdc;
+      --bes-ink:#101010;
+      --lockliel-blue:#4773c6;
+    }
+    body{background:var(--bes-ink)}
+    .bes-page{overflow:hidden}
+    .bes-hero{
+      position:relative;
+      min-height:820px;
+      display:flex;
+      align-items:center;
+      padding:150px 0 92px;
+      background:
+        radial-gradient(circle at 78% 20%,rgba(216,184,107,.26),transparent 24%),
+        radial-gradient(circle at 62% 38%,rgba(211,173,85,.22),transparent 34%),
+        linear-gradient(135deg,#0b0b0b 0%,#181818 52%,#292929 100%);
+      isolation:isolate;
+    }
+    .bes-hero:before{
+      content:"";
+      position:absolute;
+      inset:auto -12% -24% 38%;
+      height:64%;
+      border-radius:50% 50% 0 0;
+      background:linear-gradient(145deg,rgba(211,173,85,.22),rgba(216,184,107,.06));
+      transform:rotate(-7deg);
+      z-index:-2;
+    }
+    .bes-hero:after{
+      content:"";
+      position:absolute;
+      width:min(42vw,560px);
+      aspect-ratio:1;
+      right:8vw;
+      top:155px;
+      background:
+        linear-gradient(45deg,transparent 0 39%,rgba(255,255,255,.92) 39% 47%,transparent 47% 100%),
+        linear-gradient(-45deg,transparent 0 39%,rgba(255,255,255,.92) 39% 47%,transparent 47% 100%),
+        linear-gradient(135deg,#d3ad55,#1b1b1b);
+      clip-path:inset(0 round 24px);
+      opacity:.54;
+      filter:drop-shadow(0 34px 70px rgba(0,0,0,.28));
+      z-index:-1;
+    }
+    .bes-hero-grid{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(340px,.6fr);gap:64px;align-items:center}
+    .bes-kicker{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      padding:9px 13px;
+      border:1px solid rgba(255,255,255,.2);
+      border-radius:999px;
+      background:rgba(0,0,0,.18);
+      color:#fff;
+      font-size:.75rem;
+      font-weight:900;
+      letter-spacing:.13em;
+      text-transform:uppercase;
+    }
+    .bes-kicker i{width:9px;height:9px;border-radius:50%;background:var(--gold2);box-shadow:0 0 0 5px rgba(230,203,120,.12)}
+    .bes-hero h1{font-size:clamp(3.4rem,7.5vw,7rem);max-width:920px;margin:20px 0 22px}
+    .bes-hero h1 span{color:var(--bes-crimson)}
+    .bes-hero .lead{color:#f5f5f5;max-width:760px;font-size:clamp(1.12rem,2vw,1.42rem)}
+    .bes-hero .actions{margin-top:34px}
+    .bes-btn-crimson{background:var(--bes-red)!important;color:#141414!important;border-color:var(--bes-red)!important}
+    .bes-btn-crimson:hover{background:var(--bes-crimson)!important;transform:translateY(-2px)}
+    .bes-proof{
+      display:grid;
+      gap:12px;
+      padding:26px;
+      border-radius:24px;
+      background:rgba(20,20,20,.8);
+      border:1px solid rgba(255,255,255,.16);
+      box-shadow:0 28px 70px rgba(0,0,0,.28);
+      backdrop-filter:blur(14px);
+    }
+    .bes-proof-label{color:var(--gold2);font-weight:900;letter-spacing:.12em;text-transform:uppercase;font-size:.72rem}
+    .bes-proof h2{font-size:clamp(2rem,4vw,3.35rem);margin:2px 0 6px}
+    .bes-proof p{color:#dedede;margin:0 0 8px}
+    .bes-proof-row{display:flex;align-items:flex-start;gap:12px;padding:13px 0;border-top:1px solid rgba(255,255,255,.1)}
+    .bes-proof-icon{flex:0 0 34px;width:34px;height:34px;border-radius:50%;display:grid;place-items:center;background:rgba(211,173,85,.14);color:var(--bes-crimson);font-weight:950}
+    .bes-proof-row b{display:block;color:#fff;margin-bottom:2px}
+    .bes-proof-row small{display:block;color:#c8c8c8;line-height:1.45}
+
+    .bes-why{background:var(--bes-cream);color:#101417;padding:82px 0}
+    .bes-section-head{max-width:860px;margin:0 auto 36px;text-align:center}
+    .bes-section-head .eyebrow{color:#9a6f14}
+    .bes-section-head h2{font-size:clamp(2.5rem,5vw,4.8rem);margin:9px 0 15px}
+    .bes-section-head p{color:#53595c;font-size:1.08rem;line-height:1.75}
+    .bes-benefits{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;align-items:stretch}
+    .bes-benefit{
+      position:relative;
+      min-height:0;
+      padding:34px;
+      border-radius:24px;
+      background:#fff;
+      border:1px solid #ded5c5;
+      box-shadow:0 18px 45px rgba(25,34,35,.08);
+      overflow:hidden;
+      display:flex;
+      flex-direction:column;
+    }
+    .bes-benefit:before{content:"";position:absolute;right:-50px;top:-50px;width:150px;height:150px;border-radius:50%;background:rgba(211,173,85,.12)}
+    .bes-benefit-number{display:grid;place-items:center;width:48px;height:48px;border-radius:50%;background:#0a1b20;color:var(--gold2);font-weight:950;margin-bottom:48px;flex:0 0 auto}
+    .bes-benefit-body{display:grid;grid-template-rows:auto auto 1fr auto;min-height:0;flex:1}
+    .bes-benefit .bes-card-kicker{color:#8b6517;font-size:.72rem;font-weight:900;letter-spacing:.12em;text-transform:uppercase}
+    .bes-benefit h3{font-size:clamp(1.65rem,2.5vw,2.35rem);margin:9px 0 16px;color:#111;min-height:2.15em}
+    .bes-benefit p{color:#62686a;line-height:1.68;margin:0}
+    .bes-benefit .bes-status{display:inline-flex;align-self:end;justify-self:start;margin-top:20px;padding:7px 10px;border-radius:999px;background:#f5ecd3;color:#705318;font-size:.72rem;font-weight:900;text-transform:uppercase;letter-spacing:.08em}
+    .bes-benefit .bes-status.gold{background:#f5ecd3;color:#806019}
+    .bes-book-layout{display:grid;grid-template-columns:minmax(0,1fr) 98px;gap:16px;align-items:start;margin-bottom:0}
+    .bes-book-layout p{margin:0}
+    .bes-book-cover{margin:0;position:relative;z-index:1}
+    .bes-book-cover img{display:block;width:100%;height:auto;border-radius:3px;box-shadow:0 16px 30px rgba(0,0,0,.24);transform:rotate(1.5deg);transform-origin:center}
+
+    .bes-register{
+      position:relative;
+      padding:92px 0;
+      background:
+        radial-gradient(circle at 12% 15%,rgba(211,173,85,.16),transparent 28%),
+        linear-gradient(180deg,#101010,#1c1c1c);
+    }
+    .bes-register-grid{display:grid;grid-template-columns:.75fr 1.25fr;gap:38px;align-items:start}
+    .bes-register-copy{position:sticky;top:115px;padding-top:18px}
+    .bes-register-copy h2{font-size:clamp(2.7rem,5vw,5.2rem);margin:8px 0 20px}
+    .bes-register-copy p{color:#d7d7d7;line-height:1.75}
+    .bes-mini-points{display:grid;gap:12px;margin:27px 0 0}
+    .bes-mini-point{display:flex;align-items:flex-start;gap:11px;color:#efefef}
+    .bes-mini-point i{display:grid;place-items:center;flex:0 0 25px;width:25px;height:25px;border-radius:50%;background:var(--bes-crimson);color:#111;font-style:normal;font-weight:950;font-size:.8rem;margin-top:1px}
+    .bes-consent{
+      margin-top:28px;
+      padding:16px 17px;
+      border-radius:14px;
+      background:rgba(255,255,255,.04);
+      border:1px solid rgba(255,255,255,.1);
+      color:#93a4a9!important;
+      font-size:.82rem;
+      line-height:1.6!important;
+    }
+    .bes-form-card{
+      background:#fff;
+      color:#111;
+      border-radius:28px;
+      overflow:hidden;
+      box-shadow:0 30px 80px rgba(0,0,0,.34);
+      border:1px solid rgba(255,255,255,.2);
+    }
+    .bes-form-head{padding:26px 30px 22px;background:#f7f4ee;border-bottom:1px solid #e1dbcf}
+    .bes-form-head small{display:block;color:#8c681c;font-size:.72rem;font-weight:900;letter-spacing:.12em;text-transform:uppercase;margin-bottom:5px}
+    .bes-form-head h3{font-size:clamp(1.8rem,3vw,2.6rem);margin:0 0 7px;color:#111}
+    .bes-form-head p{color:#656565;margin:0}
+    .bes-form-body{padding:28px 30px 32px}
+    .bes-form-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+    .bes-field{display:grid;gap:7px}
+    .bes-field.full{grid-column:1/-1}
+    .bes-field span{font-size:.8rem;font-weight:900;color:#222}
+    .bes-field input,.bes-field select,.bes-field textarea{width:100%;border:1px solid #cfc7b8;border-radius:12px;background:#fff;color:#111;padding:14px;font:inherit;outline:none}
+    .bes-field input,.bes-field select{height:52px}
+    .bes-field textarea{min-height:120px;resize:vertical}
+    .bes-field input:focus,.bes-field select:focus,.bes-field textarea:focus{border-color:#9d7b2d;box-shadow:0 0 0 3px rgba(211,173,79,.15)}
+    .bes-check{display:flex;align-items:flex-start;gap:10px;margin-top:18px;color:#555;font-size:.82rem;line-height:1.55}
+    .bes-check input{width:18px;height:18px;margin-top:2px;flex:0 0 auto}
+    .bes-form-submit{width:100%;margin-top:20px;border:0;cursor:pointer}
+    .bes-form-msg{display:none;margin-top:14px;padding:12px 14px;border-radius:11px;font-size:.87rem}
+    .bes-form-msg.show{display:block}
+    .bes-form-msg.error{background:#fff0f0;color:#7b2020;border:1px solid #efc5c5}
+    .bes-form-msg.success{background:#eef8ec;color:#285f25;border:1px solid #c5e2c1}
+    .bes-registration-success{display:none;padding:30px;background:#fff}
+    .bes-form-card.registered .bes-form-head,.bes-form-card.registered .bes-form-body{display:none}
+    .bes-form-card.registered .bes-registration-success{display:block}
+    .bes-success-icon{width:56px;height:56px;border-radius:50%;display:grid;place-items:center;background:#0d1113;color:var(--gold2);font-size:1.35rem;font-weight:950;margin-bottom:16px}
+    .bes-registration-success h3{font-size:clamp(2rem,4vw,3.2rem);margin:0 0 10px}
+    .bes-registration-success>p{color:#62676a;line-height:1.7}
+    .bes-account-note{padding:15px 16px;border-radius:14px;background:#f5ecd3;border:1px solid #dfc685;color:#554216!important;margin-top:18px!important}
+    .bes-resource-grid{display:grid;gap:12px;margin-top:22px}
+    .bes-resource{display:grid;grid-template-columns:50px 1fr auto;gap:14px;align-items:center;padding:16px;border-radius:16px;background:#0d1113;color:#fff}
+    .bes-resource-icon{width:50px;height:50px;border-radius:14px;display:grid;place-items:center;background:rgba(211,173,85,.14);color:var(--bes-crimson);font-weight:950}
+    .bes-resource b{display:block;margin-bottom:3px}
+    .bes-resource small{display:block;color:#aebdc1;line-height:1.45}
+    .bes-resource a,.bes-resource .bes-resource-disabled{display:inline-flex;align-items:center;justify-content:center;min-height:40px;padding:9px 12px;border-radius:999px;background:var(--gold2);color:#111;font-size:.76rem;font-weight:950;white-space:nowrap}
+    .bes-resource .bes-resource-disabled{background:#2a2d31;color:#aeb3b8}
+    .bes-form-fineprint{margin-top:14px;color:#666;font-size:.75rem;line-height:1.5}
+
+    .bes-after{background:#f5f2ec;color:#111;padding:84px 0}
+    .bes-after-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:28px;align-items:stretch}
+    .bes-after-copy,.bes-share{border-radius:26px;padding:34px;background:#fff;border:1px solid #dfd8cb;box-shadow:0 18px 45px rgba(0,0,0,.07)}
+    .bes-after-copy h2{font-size:clamp(2.3rem,4.5vw,4rem);margin:8px 0 14px}
+    .bes-after-copy p{color:#62676a;line-height:1.75}
+    .bes-next-list{display:grid;gap:10px;margin-top:24px}
+    .bes-next-item{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:15px 17px;border-radius:14px;background:#0d1113;color:#fff}
+    .bes-next-item span{color:var(--gold2);font-weight:900}
+    .bes-share{display:grid;grid-template-columns:1fr 160px;gap:26px;align-items:center;background:linear-gradient(135deg,#101010,#292929);color:#fff;border-color:rgba(211,173,85,.2)}
+    .bes-share h3{font-size:clamp(1.9rem,3vw,2.8rem);margin:7px 0 12px}
+    .bes-share p{color:#d7d7d7;margin:0}
+    .bes-qr{background:#fff;padding:11px;border-radius:15px}
+    .bes-qr img{width:100%;height:auto}
+    .bes-url{display:inline-block;margin-top:16px;color:var(--bes-crimson);font-weight:900}
+    .bes-lockliel-inline{display:flex;justify-content:center;margin-top:28px}
+    .bes-lockliel-inline a{
+      position:relative;
+      display:inline-flex;
+      align-items:center;
+      gap:12px;
+      min-width:min(100%,410px);
+      justify-content:center;
+      padding:11px 16px;
+      border-radius:18px;
+      background:#0b1014;
+      color:#fff;
+      text-decoration:none;
+      border:1px solid rgba(211,173,85,.2);
+      box-shadow:0 14px 34px rgba(0,0,0,.08);
+      overflow:hidden;
+      isolation:isolate;
+    }
+    .bes-lockliel-inline a:before{
+      content:"LOCKLIEL";
+      position:absolute;
+      inset:50% auto auto 50%;
+      transform:translate(-50%,-50%);
+      z-index:-1;
+      font-size:clamp(2.7rem,7vw,4.8rem);
+      font-weight:950;
+      letter-spacing:.08em;
+      color:#fff;
+      opacity:.025;
+      white-space:nowrap;
+    }
+    .bes-lockliel-inline img{width:38px;height:38px;border-radius:10px;object-fit:cover;flex:0 0 auto}
+    .bes-lockliel-inline-copy{display:grid;line-height:1.05;text-align:left}
+    .bes-lockliel-inline-copy small{font-size:.63rem;letter-spacing:.12em;text-transform:uppercase;color:#9ea7ad;font-weight:850;margin-bottom:4px}
+    .bes-lockliel-inline-copy strong{font-size:1rem;color:#fff}
+    .bes-lockliel-inline-copy em{font-style:normal;font-size:.7rem;color:var(--lockliel-blue);margin-top:4px}
+    .bes-lockliel-inline-arrow{color:var(--lockliel-blue);font-weight:900;margin-left:2px}
+
+    .bes-final{
+      padding:80px 0;
+      text-align:center;
+      background:
+        radial-gradient(circle at 50% 100%,rgba(211,173,79,.11),transparent 28%),
+        #050707;
+    }
+    .bes-final-inner{max-width:820px;margin:auto}
+    .bes-final h2{font-size:clamp(2.7rem,5vw,5.1rem);margin:9px 0 17px}
+    .bes-final p{color:#adb9bc;font-size:1.08rem;line-height:1.7}
+    .bes-final strong{color:var(--bes-crimson)}
+
+    @media(max-width:1000px){
+      .bes-hero-grid,.bes-register-grid,.bes-after-grid{grid-template-columns:1fr}
+      .bes-hero:after{right:-10vw;top:175px;width:56vw;opacity:.33}
+      .bes-proof{max-width:720px}
+      .bes-benefits{grid-template-columns:1fr}
+      .bes-benefits{align-items:start}
+      .bes-benefit{min-height:0!important;height:auto!important;align-self:start;padding-bottom:26px}
+      .bes-benefit-body{display:block;flex:none;width:100%}
+      .bes-benefit-number{margin-bottom:26px}
+      .bes-benefit h3{min-height:0;margin-bottom:14px}
+      .bes-benefit p{margin-bottom:0}
+      .bes-benefit .bes-status{margin-top:18px}
+      .bes-register-copy{position:static}
+    }
+    @media(max-width:700px){
+      /* Preserved mobile reference flow:
+         keep desktop unchanged, remove the two explanatory panels,
+         and place registration immediately after the hero before gifts. */
+      .bes-page{display:flex;flex-direction:column}
+      .bes-hero{order:1}
+      .bes-register{order:2}
+      .bes-why{order:3}
+      .bes-after{order:4}
+      .bes-final{order:5}
+      .bes-proof,.bes-register-copy{display:none!important}
+      .bes-register-grid{display:block}
+      .bes-hero{min-height:760px;padding:118px 0 66px}
+      .bes-hero-grid{gap:34px}
+      .bes-hero:after{right:-27vw;top:150px;width:85vw;opacity:.24}
+      .bes-kicker{font-size:.66rem}
+      .bes-hero h1{font-size:clamp(3.2rem,16vw,5rem)}
+      .bes-hero .actions{display:grid;grid-template-columns:1fr}
+      .bes-hero .btn{width:100%}
+      .bes-proof{padding:21px}
+      .bes-why,.bes-register,.bes-after,.bes-final{padding:62px 0}
+      .bes-benefit{padding:25px 25px 22px}
+      .bes-benefit-number{margin-bottom:22px}
+      .bes-book-layout{grid-template-columns:minmax(0,1fr) 88px;gap:14px}
+      .bes-form-card{border-radius:18px}
+      .bes-form-head{padding:22px 20px}
+      .bes-form-body,.bes-registration-success{padding:22px 20px 26px}
+      .bes-form-grid{grid-template-columns:1fr}
+      .bes-field.full{grid-column:auto}
+      .bes-resource{grid-template-columns:44px 1fr}
+      .bes-resource-icon{width:44px;height:44px}
+      .bes-resource a,.bes-resource .bes-resource-disabled{grid-column:2;justify-self:start}
+      .bes-share{grid-template-columns:1fr;text-align:center}
+      .bes-qr{width:170px;margin:0 auto}
+      .bes-next-list{gap:12px}
+      .bes-next-item{display:grid;grid-template-columns:1fr;gap:10px;align-items:start;padding:18px;border-radius:16px}
+      .bes-next-item b{font-size:1rem;line-height:1.35}
+      .bes-next-item span{display:inline-flex;align-items:center;justify-content:center;justify-self:start;padding:7px 10px;border-radius:999px;background:rgba(230,203,120,.12);font-size:.82rem;line-height:1.2}
+      .bes-after-copy,.bes-share{padding:26px 22px}
+    }
+
+    [hidden]{display:none!important}
+    #resource-verification,#resource-switch{margin-top:20px;padding:18px;border:1px solid #ddd;border-radius:12px}
+    #resource-verification .btn,#resource-switch .btn{margin-top:12px}
+    #resource-verification .outline{color:#242424;border-color:#777}
+    .bes-qr img{object-fit:contain}
+</style>
+</head>
+<body>
+<header class="site-header">
+  <div class="container nav">
+    <a class="brand" href="/"><img src="/assets/images/logo-gold.png" alt="Champion Life Church"></a>
+    <button class="menu-btn" aria-label="Open menu">☰</button>
+    <nav class="nav-links">
+      <a href="/">Home</a>
+      <a href="/about.html">About</a>
+      <a href="/watch.html">Watch</a>
+      <a href="/daily-supplements.html">Supplements</a>
+      <a href="/ministries.html">Ministries</a>
+      <a href="/outreach.html">Outreach</a>
+      <a href="/events.html">Events</a>
+      <a href="/next-steps.html">Next Steps</a>
+      <a href="/give.html">Give</a>
+    </nav>
+  </div>
+</header>
+
+<main class="bes-page">
+  <section class="bes-hero">
+    <div class="container bes-hero-grid">
+      <div>
+        <span class="bes-kicker"><i></i> Champion Life &amp; SowGo • 6 a.m. Prayer Resources</span>
+        <h1>Discover <span>King Kind.</span><br>Keep growing in faith.</h1>
+        <p class="lead">Receive the free King Kind digital book by Pastor Roddy Shaffer and explore Getting a Grip on the Basics online discipleship. Everyone is welcome, wherever you live. No event attendance is required.</p>
+        <div class="actions">
+          <a class="btn bes-btn-crimson" href="#register">Get My Free Resources</a>
+          <a class="btn outline" href="#what-you-receive">See What You Receive</a>
+        </div>
+      </div>
+
+      <aside class="bes-proof" aria-label="Why register">
+        <span class="bes-proof-label">It takes about a minute</span>
+        <h2>Register once. Keep growing.</h2>
+        <p>Verify your email and register for your free resources. Use the same account for your book, courses and saved progress.</p>
+        <div class="bes-proof-row">
+          <span class="bes-proof-icon">1</span>
+          <span><b>Free discipleship</b><small>Begin Getting a Grip on the Basics and build a strong foundation in Christ.</small></span>
+        </div>
+        <div class="bes-proof-row">
+          <span class="bes-proof-icon">2</span>
+          <span><b>Prayer connection</b><small>Join Champion Life for 6 AM Prayer and keep building your faith.</small></span>
+        </div>
+        <div class="bes-proof-row">
+          <span class="bes-proof-icon">3</span>
+          <span><b>Your own pace</b><small>Return to My Discipleship whenever you’re ready. Your existing course progress stays with your account.</small></span>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <section class="bes-why" id="what-you-receive">
+    <div class="container">
+      <div class="bes-section-head">
+        <span class="eyebrow">Your next step matters</span>
+        <h2>What you receive when you register.</h2>
+        <p>Build your faith with practical discipleship and a personal-use digital gift. Registration is open to individuals in any city.</p>
+      </div>
+
+      <div class="bes-benefits">
+        <article class="bes-benefit">
+          <div class="bes-benefit-number">01</div>
+          <div class="bes-benefit-body">
+            <span class="bes-card-kicker">Free Discipleship</span>
+            <h3>Getting a Grip on the Basics</h3>
+            <p>Start a practical discipleship journey designed to help you understand your new life in Christ, strengthen your faith, and build biblical foundations you can live from every day.</p>
+            <span class="bes-status">Included with registration</span>
+          </div>
+        </article>
+
+        <article class="bes-benefit">
+          <div class="bes-benefit-number">02</div>
+          <div class="bes-benefit-body">
+            <span class="bes-card-kicker">Pray With Us</span>
+            <h3>Join 6 AM Prayer</h3>
+            <p>Connect with Champion Life Tuesday through Friday at 6:00 AM Central Time for prayer, Scripture, confessions, and faith-filled agreement.</p>
+            <span class="bes-status">Live + replay access</span>
+          </div>
+        </article>
+
+        <article class="bes-benefit">
+          <div class="bes-benefit-number">03</div>
+          <div class="bes-benefit-body">
+            <span class="bes-card-kicker">A Gift From Pastor Roddy</span>
+            <h3>King Kind Digital Book</h3>
+            <div class="bes-book-layout">
+              <p>Pastor Roddy's <em>King Kind</em> reveals who God designed us to be. More than born again, saved, or forgiven, Jesus came to change the kind of life we live by changing the kind of person we are. He came to make us King Kind!</p>
+              <figure class="bes-book-cover"><img src="/assets/images/king-kind-cover.svg?v=20260922" alt="Pastor Roddy Shaffer's book The King Kind"></figure>
+            </div>
+            <span class="bes-status gold"><a href="#register" class="bes-status gold">Read the Free Book</a></span>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="bes-register" id="register">
+    <div class="container bes-register-grid">
+      <div class="bes-register-copy">
+        <span class="eyebrow">Stay connected</span>
+        <h2>Start your next chapter.</h2>
+        <p>Enter your name and email, then verify that email to complete registration. Phone, prayer requests and ministry interests are optional.</p>
+
+        <div class="bes-mini-points">
+          <div class="bes-mini-point"><i>✓</i><span>Receive King Kind for your personal reading.</span></div>
+          <div class="bes-mini-point"><i>✓</i><span>Receive discipleship and prayer resources.</span></div>
+          <div class="bes-mini-point"><i>✓</i><span>Choose your own next step in My Discipleship.</span></div>
+        </div>
+
+        <p class="bes-consent">Your required consent is for resource delivery and account verification only. Ministry updates are separately optional. Optional prayer requests are stored privately; they are not shared with outreach campaign staff through this registration.</p>
+      </div>
+
+      <div class="bes-form-card" id="generalResourceCard">
+        <div class="bes-form-head">
+          <small>Champion Life Church &amp; SowGo</small>
+          <h3>Register for your free resources</h3>
+          <p>Name, email and resource-delivery consent are all you need.</p>
+        </div>
+        <div id="resource-account" style="padding:0 20px" hidden><p id="resource-account-email"></p><div id="resource-switch" hidden><p id="resource-switch-message"></p><button class="btn bes-btn-crimson" id="resource-switch-button" type="button">Switch Account</button></div></div>
+        <div class="bes-form-body">
+          <form id="generalResourceForm">
+            <div class="bes-form-grid">
+              <label class="bes-field full" for="resource-name"><span>Name *</span><input id="resource-name" name="name" autocomplete="name" maxlength="160" required></label>
+              <label class="bes-field full" for="resource-email"><span>Email Address *</span><input id="resource-email" name="email" type="email" autocomplete="email" maxlength="254" required></label>
+              <label class="bes-field full" for="resource-phone"><span>Phone (optional)</span><input id="resource-phone" name="phone" type="tel" autocomplete="tel" maxlength="40" pattern="[+0-9\(\) .\-]{5,40}" title="Enter a phone number with 5–40 digits, spaces or phone punctuation."></label>
+              <label class="bes-field full" for="resource-prayer"><span>Prayer Request (optional)</span><textarea id="resource-prayer" name="prayer" maxlength="2000"></textarea></label>
+              <label class="bes-field full" for="resource-interest"><span>Ministry Interest (optional)</span><select id="resource-interest" name="interest"><option value="">No selection</option><option value="discipleship">Discipleship</option><option value="prayer">Prayer</option><option value="church">Learning about Champion Life</option><option value="serving">Serving</option></select></label>
+            </div>
+            <label class="bes-check"><input id="resource-consent" name="resource-consent" type="checkbox" required><span>I request these free resources and agree to receive the email verification and resource-delivery communications needed to access them. *</span></label>
+            <label class="bes-check"><input id="resource-updates" name="updates" type="checkbox"><span>I would also like optional ministry updates. This is not required to receive the book or course.</span></label>
+            <button class="btn bes-btn-crimson bes-form-submit" id="resource-submit" type="submit">Verify Email &amp; Register</button>
+            <p class="bes-form-fineprint">No ministry decision or event attendance is recorded. Read our <a href="/privacy.html">privacy policy</a>. The book is for personal use only; distribution is not permitted.</p>
+          </form>
+          <div id="resource-verification" hidden>
+            <p>Check your email for a secure sign-in link or verification code. A sent email is not yet a completed registration. Keep this page open to enter the code.</p>
+            <form id="resource-code-form"><label class="bes-field" for="resource-code"><span>Email verification code</span><input id="resource-code" autocomplete="one-time-code" inputmode="numeric" pattern="[0-9]{6,10}" minlength="6" maxlength="10" required></label><button class="btn bes-btn-crimson" type="submit">Verify &amp; Complete Registration</button></form>
+            <button class="btn outline" id="resource-resend" type="button">Resend Verification</button>
+          </div>
+
+          <div class="bes-form-msg" id="resource-message" role="status" aria-live="polite"></div>
+        </div>
+
+        <div class="bes-registration-success">
+          <div class="bes-success-icon">✓</div>
+          <span class="eyebrow">You’re registered</span>
+          <h3>Your next steps are ready.</h3>
+          <p>Your verified resource registration is saved. Choose a resource below. Starting a course is a separate step; registration does not record lesson progress.</p>
+          <p class="bes-account-note" id="generalResourceAccountNote">Your email is verified and your resource registration is saved.</p>
+
+          <div class="bes-resource-grid">
+            <div class="bes-resource">
+              <div class="bes-resource-icon">01</div>
+              <div><b>Getting a Grip on the Basics</b><small>Verify your registered email, then open the course from My Discipleship.</small></div>
+              <a data-discipleship href="/my-discipleship.html">Start Course</a>
+            </div>
+            <div class="bes-resource">
+              <div class="bes-resource-icon">02</div>
+              <div><b>King Kind Digital Book</b><small>Your digital gift from Pastor Roddy. Your verified registration enables private reader access. Personal-use terms apply.</small></div>
+              <a data-discipleship href="/king-kind-reader.html" class="bes-resource-link">Read Book</a>
+            </div>
+            <div class="bes-resource">
+              <div class="bes-resource-icon">03</div>
+              <div><b>Champion Life Morning Prayer</b><small>Join Champion Life for 6 AM Prayer and continue building your faith.</small></div>
+              <a href="https://www.youtube.com/watch?v=0h3vLclegGM&list=PLKjdbTHgDEG_el9TECcH5urdoCWACO9tD" target="_blank" rel="noopener">Join Prayer</a>
+            </div>
+          </div>
+
+          <div class="actions" style="margin-top:22px">
+            <a class="btn dark" data-discipleship href="/my-discipleship.html">My Discipleship</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="bes-after">
+    <div class="container bes-after-grid">
+      <article class="bes-after-copy">
+        <span class="eyebrow">After you register</span>
+        <h2>This is only the beginning.</h2>
+        <p>Keep growing in your relationship with Jesus. Read King Kind for your personal use, and open My Discipleship to start or continue your online course.</p>
+        <div class="bes-next-list">
+          <a class="bes-next-item" href="https://www.youtube.com/watch?v=0h3vLclegGM&list=PLKjdbTHgDEG_el9TECcH5urdoCWACO9tD" target="_blank" rel="noopener"><b>Join Champion Life 6 AM Prayer</b><span>Open →</span></a>
+          <a class="bes-next-item" href="#register"><b>Getting a Grip on the Basics</b><span>Start Course →</span></a>
+          <a class="bes-next-item" href="#register"><b>King Kind Digital Book</b><span>Read Free Book →</span></a>
+        </div>
+      </article>
+
+      <aside class="bes-share">
+        <div>
+          <span class="eyebrow">Help someone connect</span>
+          <h3>Know someone who would enjoy these resources?</h3>
+          <p>Share this page with them so they can register and receive their next-step resources too.</p>
+          <span class="bes-url">sowgo.org/king-kind</span>
+        </div>
+        <div class="bes-qr">
+          <a href="https://sowgo.org/king-kind" aria-label="Open general King Kind registration"><img src="/assets/images/king-kind-cover.svg?v=20260922" alt="King Kind by Pastor Roddy Shaffer"></a>
+        </div>
+      </aside>
+    </div>
+
+    <div class="bes-lockliel-inline">
+      <a href="https://www.lockliel.com" target="_blank" rel="noopener" aria-label="Visit Lockliel">
+        <img src="/assets/images/lockliel-powered-logo.webp" alt="Lockliel">
+        <span class="bes-lockliel-inline-copy">
+          <small>Discipleship powered by</small>
+          <strong>Lockliel</strong>
+          <em>Reach. Teach. Train. Disciple.</em>
+        </span>
+        <span class="bes-lockliel-inline-arrow" aria-hidden="true">↗</span>
+      </a>
+    </div>
+  </section>
+
+  <section class="bes-final">
+    <div class="container bes-final-inner">
+      <span class="eyebrow">Champion Life Church</span>
+      <h2>Grow in faith.<br><strong>Take your next step.</strong></h2>
+      <p>Wherever you call home, we are glad you’re here. Keep growing. Keep praying. Keep walking with Jesus.</p>
+      <div class="actions" style="justify-content:center">
+        <a class="btn bes-btn-crimson" href="#register">Get My Free Resources</a>
+        <a class="btn outline" href="https://www.youtube.com/watch?v=0h3vLclegGM&list=PLKjdbTHgDEG_el9TECcH5urdoCWACO9tD" target="_blank" rel="noopener">Join 6 AM Prayer</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="container footer-container">
+    <div class="footer-grid">
+      <div class="footer-brand-panel"><img class="footer-vision-image" src="/assets/images/footer-raise-reign-reach.png" alt="Champion Life Church – Raise, Reign, Reach"></div>
+      <div class="footer-column"><h4>Explore</h4><a href="/about.html">About</a><a href="/watch.html">Watch</a><a href="/daily-supplements.html">Daily Supplements</a><a href="/ministries.html">Ministries</a><a href="/outreach.html">Outreach</a></div>
+      <div class="footer-column"><h4>Connect</h4><a href="/plan-your-visit.html">Plan Your Visit</a><a href="/next-steps.html">Next Steps</a><a href="/prayer.html">Prayer</a><a href="/contact.html">Contact</a></div>
+      <div class="footer-column footer-contact"><h4>Champion Life Church</h4><address>650 Denton Blvd NW<br>Fort Walton Beach, FL 32547</address><a class="footer-phone" href="tel:+18507785322">(850) 778-5322</a><div class="footer-social"><a href="https://www.facebook.com/ChampionLifeFWB" target="_blank" rel="noopener">Facebook</a><a href="https://www.instagram.com/_championlife_/" target="_blank" rel="noopener">Instagram</a><a href="https://www.youtube.com/@ChampionLifeFWB" target="_blank" rel="noopener">YouTube</a></div></div>
+    </div>
+    <div class="subfooter"><span>© 2026 Champion Life Church</span><span class="subfooter-separator">•</span><span>Legal name: Living Faith</span><nav class="footer-legal" aria-label="Legal"><a href="/privacy.html">Privacy</a><a href="/terms.html">Terms</a></nav></div>
+  </div>
+</footer>
+
+<script src="/assets/js/site.js"></script>
+<script src="/assets/vendor/supabase-js-2.118.0.js" integrity="sha384-UagCvVPT5XXA0Hx+nJYUAGBFseHT9zBgpJMSebsAxl9lciTwbT+39j5VfRjdP5Tp" crossorigin="anonymous"></script>
+<script src="/assets/js/supabase-config.js?v=20260923"></script>
+<script src="/assets/js/champion-life-auth.js?v=20260923b"></script>
+<script src="/assets/js/general-resource-registration.js"></script>
+</body>
+</html>

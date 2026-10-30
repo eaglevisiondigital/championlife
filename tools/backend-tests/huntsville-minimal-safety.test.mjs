@@ -1,4 +1,6 @@
 import assert from 'node:assert/strict';import{PGlite}from'@electric-sql/pglite';import{readFileSync,writeFileSync,mkdirSync}from'node:fs';import{createHash}from'node:crypto';import{baselineOrder,candidateOrder}from'./migration-order.mjs';
+const pin=JSON.parse(readFileSync(new URL('../site-build/supabase-sdk.json',import.meta.url),'utf8'));
+const withPinnedSDK=s=>s.replace('<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>',`<script src="/${pin.asset}" integrity="${pin.integrity}" crossorigin="anonymous"></script>`);
 const productionMain='f0d6fe9e07140dab6ed829ed5ccfdbb7af12e2fd',read=f=>readFileSync(new URL('../../supabase/migrations/'+f,import.meta.url),'utf8'),foundation=read(candidateOrder[0]),draft=read(candidateOrder[1]),db=new PGlite(),q=(s,p=[])=>db.query(s,p);let n=0;const ok=(x,l)=>{assert.ok(x,l);n++;console.log('PASS '+l)};
 const expectedTables=['private.outreach_registration_rate',...['campaign_admins','campaigns','campaign_assignments','campaign_registrants','campaign_audit','campaign_events','prize_participants','registration_settings','waiver_versions','event_registrations','event_attendees','waiver_signatures','waiver_corrections'].map(x=>'public.outreach_'+x)].sort();
 const expectedFunctions=[...['verified','admin','audit','event','immutable','csv_cell','registration_address','registration_can','registration_open','registration_config','registration_public_config','registration_coverage','registration_answers','registration_attendee','registration_sign','registration_submit','registration_gateway','registration_detail','registration_workspace'].map(x=>'private.outreach_'+x),...['config','gateway','workspace'].map(x=>'public.outreach_registration_'+x)].sort();
@@ -40,7 +42,7 @@ try{
  ok((await q('select count(*) n from outreach_waiver_versions')).rows[0].n===0,'no invented legal publisher or automatic activation');
  ok((await q('select (select count(*) from outreach_campaign_admins)+(select count(*) from outreach_campaign_assignments) n')).rows[0].n===0,'no user grants');
  await rejected(draft,'manual duplicate draft refuses overwrite');assert.deepEqual(await oldData(),dataBefore);ok(true,'every baseline table/data row preserved including existing outreach and giving');
- for(const f of ['index.html','prayer.html','stlucia/index.html','assets/js/supabase-config.js','netlify.toml']){const {execFileSync}=await import('node:child_process');assert.equal(readFileSync(new URL('../../'+f,import.meta.url),'utf8'),execFileSync('git',['show',productionMain+':'+f],{encoding:'utf8'}));ok(true,'production source preserved '+f)}
+ for(const f of ['index.html','prayer.html','stlucia/index.html','assets/js/supabase-config.js','netlify.toml']){const {execFileSync}=await import('node:child_process');assert.equal(readFileSync(new URL('../../'+f,import.meta.url),'utf8'),withPinnedSDK(execFileSync('git',['show',productionMain+':'+f],{encoding:'utf8'})));ok(true,'production source preserved except exact SDK pin '+f)}
  // Explicitly verify the only permitted changes to the original Bessemer landing page are the three King Kind reader links.
  {const {execFileSync}=await import('node:child_process');const original=execFileSync('git',['show',productionMain+':bessemer/index.html'],{encoding:'utf8'});
   const url='/king-kind-reader.html?source=bessemer';
@@ -48,8 +50,8 @@ try{
    .replace('Digital gift • Coming soon',`<a href="${url}" class="bes-status gold">Read the Free Book</a>`)
    .replace('<span class="bes-resource-disabled">Coming Soon</span>',`<a href="${url}" class="bes-resource-link">Read Book</a>`)
    .replace('<div class="bes-next-item"><b>King Kind Digital Book</b><span>Digital gift • Coming soon</span></div>',`<a class="bes-next-item" href="${url}"><b>King Kind Digital Book</b><span>Read Free Book →</span></a>`);
-  assert.equal(readFileSync(new URL('../../bessemer/index.html',import.meta.url),'utf8'),expected);
-  ok(true,'Bessemer source preserves exact baseline except three reviewed King Kind reader links');
+  assert.equal(readFileSync(new URL('../../bessemer/index.html',import.meta.url),'utf8'),withPinnedSDK(expected));
+  ok(true,'Bessemer source preserves exact baseline except three reviewed King Kind reader links and exact SDK pin');
  }
  if(process.env.EVIDENCE_DIR){mkdirSync(process.env.EVIDENCE_DIR,{recursive:true});writeFileSync(process.env.EVIDENCE_DIR+'/schema-inventory.json',JSON.stringify({baseline:baselineOrder.map(file=>({file,sha256:createHash('sha256').update(read(file)).digest('hex')})),before,after:final,delta},null,2));}
  console.log(n+' minimal migration safety checks passed');

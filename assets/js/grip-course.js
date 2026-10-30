@@ -4,10 +4,10 @@
   if (!form) return;
 
   const lesson = form.dataset.lesson || '1';
-  const storageKey = 'championlife-grip-lesson-' + lesson + '-draft-v1';
-  const progressKey = 'championlife-grip-progress-v1';
-  const learnerKey = 'championlife-grip-learner-id-v1';
-
+  const courseIdentity = 'getting-a-grip-on-the-basics';
+  const draftKey = id => `championlife-grip-v2:${id}:${courseIdentity}:lesson:${lesson}`;
+  const progressKey = id => `championlife-grip-v2:${id}:${courseIdentity}:progress`;
+  // Legacy unowned v1 records remain untouched, quarantined from automatic restoration.
   const saveStatus = document.querySelector('[data-grip-save-status]');
   const answeredEl = document.querySelector('[data-grip-answered]');
   const progressFill = document.querySelector('[data-grip-progress-fill]');
@@ -24,21 +24,33 @@
   const emailBtn = document.querySelector('[data-grip-email]');
   const auth = window.ChampionLifeAuth || null;
 
-  let cloudUser = null;
-  let remoteSaveTimer = null;
-
-  function localLearnerId() {
-    let id = localStorage.getItem(learnerKey);
-    if (!id) {
-      id = (window.crypto && crypto.randomUUID) ? crypto.randomUUID() :
-        'grip-' + Date.now().toString(36) + '-' + Math.random().toString(36).slice(2, 12);
-      localStorage.setItem(learnerKey, id);
-    }
-    return id;
-  }
-
+  let pageActive = true;
+  let cloudUser = null, generation = 0, controller = new AbortController();
+  let remoteSaveTimer = null, expiryTimer = null;
   const learnerField = form.querySelector('[name="learner-id"]');
-  if (learnerField) learnerField.value = localLearnerId();
+  const submitText = form.querySelector('[type=submit]')?.textContent;
+  const originals = new Map([...form.elements].map(el => [el, el.disabled]));
+  const privateActions = [clearBtn, printBtn, downloadBtn, emailBtn];
+  function enable(value) {
+    originals.forEach((disabled, el) => { el.disabled = !value || disabled; });
+    privateActions.forEach(el => { if (el) el.disabled = !value; });
+  }
+  function invalidate() {
+    generation++; controller.abort(); controller = new AbortController();
+    clearTimeout(remoteSaveTimer); clearTimeout(expiryTimer);
+    cloudUser = null;
+    form.reset();
+    if(form.querySelector('[type=submit]'))form.querySelector('[type=submit]').textContent=submitText;
+    form.querySelectorAll('textarea,input:not([type="hidden"]),select').forEach(el => {
+      if (['checkbox','radio'].includes(el.type)) el.checked = false;
+      else el.value = '';
+    });
+    if (learnerField) learnerField.value = '';
+    card?.classList.remove('completed'); clearMessage(); enable(false); updateProgress();
+    if (saveStatus) saveStatus.textContent = 'Sign in to view your private worksheet.';
+    renderCloudState();
+  }
+  const current = (stamp, id) => stamp === generation && cloudUser?.id === id && !controller.signal.aborted;
 
   function fieldsToObject() {
     const data = {};
@@ -97,25 +109,27 @@
   }
 
   function saveDraft() {
+    if (!cloudUser) return;
     const payload = {
-      lesson,
+      owner: cloudUser.id, course: courseIdentity, lesson,
       savedAt: new Date().toISOString(),
       values: fieldsToObject()
     };
-    localStorage.setItem(storageKey, JSON.stringify(payload));
+    try { localStorage.setItem(draftKey(cloudUser.id), JSON.stringify(payload)); } catch (_) { if(saveStatus) saveStatus.textContent = 'Device storage unavailable; keep this page open until cloud save succeeds.'; return; }
     localSaveLabel(cloudUser ? 'Saved locally' : 'Saved on this device');
     updateProgress();
   }
 
   function restoreDraft() {
     try {
-      const raw = localStorage.getItem(storageKey);
+      const raw = localStorage.getItem(draftKey(cloudUser.id));
       if (!raw) return;
       const payload = JSON.parse(raw);
+      if(payload.owner !== cloudUser.id || payload.course !== courseIdentity || payload.lesson !== lesson) return;
       const values = payload.values || {};
       Object.entries(values).forEach(([name, value]) => {
         const el = form.elements.namedItem(name);
-        if (!el || el instanceof RadioNodeList) return;
+        if (!el || el instanceof RadioNodeList || el.type === 'hidden') return;
         el.value = value;
       });
       if (saveStatus && payload.savedAt) {
@@ -127,14 +141,15 @@
   }
 
   function updateCourseProgressLocal() {
+    if (!cloudUser) return;
     let progress = {};
-    try { progress = JSON.parse(localStorage.getItem(progressKey) || '{}'); } catch(e) {}
+    try { progress = JSON.parse(localStorage.getItem(progressKey(cloudUser.id)) || '{}'); } catch(e) {}
     progress[lesson] = {
       completed: true,
       completedAt: new Date().toISOString(),
-      learnerId: cloudUser?.id || localLearnerId()
+      learnerId: cloudUser?.id
     };
-    localStorage.setItem(progressKey, JSON.stringify(progress));
+    try { localStorage.setItem(progressKey(cloudUser.id), JSON.stringify(progress)); } catch (_) {}
   }
 
   function cloudStateBox() {
@@ -161,7 +176,7 @@
       const next = encodeURIComponent(location.pathname.split('/').pop() || ('getting-a-grip-' + lesson + '.html'));
       box.className = 'grip-cloud-state';
       box.innerHTML =
-        '<div><strong>Want your progress on every device?</strong><span>Your work is safe on this device now. Sign in to also save it to your Champion Life account.</span></div>' +
+        '<div><strong>Want your progress on every device?</strong><span>Sign in to open your private worksheet. Older unassigned device drafts are preserved but will not be attached to an account automatically.</span></div>' +
         '<a href="discipleship-login.html?next=' + next + '">Sign In / Sync</a>';
     }
   }
@@ -174,21 +189,25 @@
 
   async function syncRemote(completed=false) {
     if (!auth || !cloudUser) return;
+    const stamp = generation, id = cloudUser.id, signal = controller.signal;
     try {
-      if (learnerField) learnerField.value = cloudUser.id;
+      if (learnerField) learnerField.value = id;
       await auth.saveLesson({
-        lessonNumber:Number(lesson),
+        expectedUserId:id, signal, lessonNumber:Number(lesson),
         answers:answerObject(),
         status: completed ? 'completed' : 'in_progress',
         completed,
         profile:profileObject()
       });
+      if (!current(stamp,id)) return false;
       if (saveStatus) {
         const time = new Date().toLocaleTimeString([], {hour:'numeric', minute:'2-digit'});
         saveStatus.textContent = completed ? 'Submitted & synced · ' + time : 'Cloud saved · ' + time;
       }
+      return true;
     } catch (e) {
-      if (saveStatus) saveStatus.textContent = 'Saved locally · cloud retry needed';
+      if (current(stamp,id)) { invalidate(); if(saveStatus) saveStatus.textContent = 'Your account draft is preserved. Verify your session again before continuing.'; }
+      return false;
     }
   }
 
@@ -198,55 +217,43 @@
     remoteSaveTimer = setTimeout(() => syncRemote(false), 1000);
   }
 
-  let localTimer;
   function scheduleSave() {
-    clearTimeout(localTimer);
-    localTimer = setTimeout(() => {
-      saveDraft();
-      scheduleRemoteSave();
-    }, 350);
+    if (!cloudUser) return;
+    // Capture unfinished edits immediately under their current owner before any transition.
+    saveDraft(); scheduleRemoteSave();
   }
 
   async function restoreRemote() {
-    if (!auth) {
-      renderCloudState();
-      return;
-    }
+    invalidate();
+    const stamp = generation, signal = controller.signal;
+    if (!pageActive || !auth?.getVerifiedUser) return;
     try {
-      cloudUser = await auth.getUser();
-      renderCloudState();
-      if (!cloudUser) return;
-
-      if (learnerField) learnerField.value = cloudUser.id;
-      const data = await auth.loadLesson(Number(lesson));
-      if (!data) return;
-
+      const u = await auth.getVerifiedUser();
+      if (stamp !== generation || !u) return;
+      const data = await auth.loadLesson(Number(lesson), u.id, signal);
+      if (stamp !== generation || data?.user?.id !== u.id) return;
+      const session = await auth.getSession();
+      if (stamp !== generation) return;
+      if (session?.user?.id !== u.id || !session.expires_at || session.expires_at * 1000 <= Date.now()) { invalidate(); return; }
+      cloudUser = u;
+      if (learnerField) learnerField.value = u.id;
+      restoreDraft();
       const profile = data.profile || {};
-      const map = {
-        'first-name': profile.first_name || '',
-        'last-name': profile.last_name || '',
-        'email': profile.email || data.user.email || '',
-        'phone': profile.phone || ''
-      };
+      const map = {'first-name':profile.first_name || '', 'last-name':profile.last_name || '', email:u.email || '', phone:profile.phone || ''};
       Object.entries(map).forEach(([name,value]) => {
-        const el = form.querySelector('[name="' + name + '"]');
-        if (el && !el.value.trim() && value) el.value = value;
+        const el = form.elements.namedItem(name);
+        if (el && !el.value.trim()) el.value = value;
       });
-
       (data.answers || []).forEach(row => {
-        const input = form.querySelector('[name="q' + row.question_number + '"]');
+        const input = form.elements.namedItem('q' + row.question_number);
         if (input && !input.value.trim()) input.value = row.answer || '';
       });
-
-      if (data.progress?.status === 'completed' && card) {
-        card.classList.add('completed');
-      }
-
-      saveDraft();
-      updateProgress();
-      if (saveStatus) saveStatus.textContent = 'Cloud progress loaded';
-    } catch (e) {
-      renderCloudState();
+      if (data.progress?.status === 'completed') card?.classList.add('completed');
+      renderCloudState(); updateProgress(); enable(true);
+      if (saveStatus) saveStatus.textContent = 'Your private worksheet is ready';
+      expiryTimer = setTimeout(() => restoreRemote(), Math.min(2147483647, session.expires_at * 1000 - Date.now()));
+    } catch (_) {
+      if (stamp === generation) invalidate();
     }
   }
 
@@ -277,6 +284,7 @@
   }
 
   function downloadAnswers() {
+    if (!cloudUser) return;
     const blob = new Blob([qaText()], {type:'text/plain;charset=utf-8'});
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
@@ -289,6 +297,7 @@
   }
 
   function emailAnswers() {
+    if (!cloudUser) return;
     const email = (form.querySelector('[name="email"]')?.value || '').trim();
     if (!email) {
       setMessage('error', 'Enter your email address first so we can prepare your email copy.');
@@ -304,6 +313,8 @@
 
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
+    if (!cloudUser) return;
+    const stamp = generation, id = cloudUser.id, signal = controller.signal;
     clearMessage();
     if (!form.reportValidity()) {
       setMessage('error', 'Please complete your contact information and all 20 lesson questions before submitting.');
@@ -322,15 +333,18 @@
     }
 
     try {
+      const verified = await auth.getVerifiedUser();
+      if (!current(stamp,id) || verified?.id !== id) { if(stamp === generation) invalidate(); return; }
       const body = new URLSearchParams(new FormData(form)).toString();
       const res = await fetch('/', {
-        method:'POST',
+        method:'POST', signal,
         headers:{'Content-Type':'application/x-www-form-urlencoded'},
         body
       });
       if (!res.ok) throw new Error('Submission failed');
 
-      if (cloudUser) await syncRemote(true);
+      if (!current(stamp,id)) return;
+      if (!await syncRemote(true) || !current(stamp,id)) return;
       updateCourseProgressLocal();
       saveDraft();
       if (card) card.classList.add('completed');
@@ -339,9 +353,10 @@
       setMessage('success', 'Lesson ' + lesson + ' has been submitted and saved to ' + where + '.');
       document.querySelector('.grip-complete')?.scrollIntoView({behavior:'smooth', block:'center'});
     } catch (err) {
+      if (!current(stamp,id)) return;
       setMessage('error', 'We could not submit the lesson right now. Your answers are still saved on this device. Please try again.');
     } finally {
-      if (submit) {
+      if (submit && current(stamp,id)) {
         submit.disabled = false;
         submit.textContent = original;
       }
@@ -369,20 +384,29 @@
 
   clearBtn?.addEventListener('click', () => {
     if (!confirm('Clear the saved answers for this lesson on this device? Cloud-saved answers will remain in your account.')) return;
-    localStorage.removeItem(storageKey);
+    if (!cloudUser) return;
+    clearTimeout(remoteSaveTimer);
+    try { localStorage.removeItem(draftKey(cloudUser.id)); } catch (_) {}
     form.reset();
-    if (learnerField) learnerField.value = cloudUser?.id || localLearnerId();
+    if (learnerField) learnerField.value = cloudUser?.id;
     if (card) card.classList.remove('completed');
     clearMessage();
     if (saveStatus) saveStatus.textContent = cloudUser ? 'Cloud copy still available' : 'New draft';
     updateProgress();
   });
 
-  printBtn?.addEventListener('click', () => window.print());
+  printBtn?.addEventListener('click', () => { if(cloudUser) window.print(); });
   downloadBtn?.addEventListener('click', downloadAnswers);
   emailBtn?.addEventListener('click', emailAnswers);
 
-  restoreDraft();
-  updateProgress();
+  auth?.client?.auth.onAuthStateChange?.(() => {
+    invalidate(); // Synchronous clear; never await Supabase inside its auth callback lock.
+    setTimeout(restoreRemote, 0);
+  });
+  window.addEventListener('pagehide', () => { pageActive=false; invalidate(); });
+  window.addEventListener('pageshow', () => { pageActive=true; restoreRemote(); });
+  window.addEventListener('champion-auth-invalid', invalidate);
+  window.addEventListener('storage', e => { if (e.key?.startsWith('sb-') || e.key === null) { invalidate(); setTimeout(restoreRemote, 0); } });
+  document.addEventListener('visibilitychange', () => { pageActive=!document.hidden; if(!pageActive) invalidate(); else restoreRemote(); });
   restoreRemote();
 })();

@@ -2,6 +2,7 @@ import { readFile, writeFile, mkdir, copyFile, rm, lstat } from 'node:fs/promise
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import vm from 'node:vm';
+import {verifySupabaseSDK} from './verify-supabase-sdk.mjs';
 
 const repository = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
 const configPath = 'assets/js/supabase-config.js';
@@ -43,7 +44,7 @@ export async function buildSite({ root = repository, env = process.env } = {}) {
   for (const file of files) {
     if (typeof file !== 'string' || file.includes('\\') || file.split('/').some(p => !p || p.startsWith('.')) ||
         /^(?:audit|docs|tools|supabase|netlify|HANDOFFS)\//i.test(file) ||
-        !(/\.(?:html|css|js|png|jpe?g|webp|svg|gif|ico|pdf|woff2?|mp[34]|m4a|webm)$/i.test(file) || /^assets\/images\/food-outreach-hero-chunks\/0[0-8]\.txt$/.test(file) || file === '_redirects')) {
+        !(/\.(?:html|css|js|png|jpe?g|webp|svg|gif|ico|pdf|woff2?|mp[34]|m4a|webm)$/i.test(file) || /^assets\/images\/food-outreach-hero-chunks\/0[0-8]\.txt$/.test(file) || file === '_redirects' || file === 'assets/vendor/supabase-js-LICENSE.txt')) {
       throw new Error('Non-public file in public manifest.');
     }
     let target = root;
@@ -53,6 +54,7 @@ export async function buildSite({ root = repository, env = process.env } = {}) {
     }
     if (!(await lstat(target)).isFile()) throw new Error('Manifest entry is not a file.');
   }
+  await verifySupabaseSDK(root, files);
   const sourceConfig = await readFile(path.join(root, configPath), 'utf8');
   const sandbox = { window: {} };
   vm.runInNewContext(sourceConfig, sandbox, { timeout: 1000 });
