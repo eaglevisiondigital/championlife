@@ -32,8 +32,13 @@ try{
  for(const [id,source]of[[legacyH,'huntsville_al_2026'],[legacyB,'bessemer_al_2026']])await q("insert into outreach_registrations(first_name,last_name,email,source,consent,phone,decision)values('Fictional','Legacy',$1,$2,true,'5555550100','learn_more')",[id+'@example.test',source]);
  await q("insert into storage.objects(bucket_id,name)values('king-kind-books','king-kind/king-kind-english.pdf'),('king-kind-books','unrelated-private.pdf'),('other-private','king-kind/king-kind-english.pdf')");
  // Snapshot whole legacy rows (synthetic only) including signatures/history when present.
- const tables=(await q("select tablename from pg_tables where schemaname='public' and (tablename like '%registration%' or tablename like '%waiver%' or tablename in ('lesson_progress','course_enrollments','profiles','organization_staff_permissions'))")).rows.map(r=>r.tablename);
+ const tables=(await q("select tablename from pg_tables where schemaname='public' and (tablename like '%registration%' or tablename like '%waiver%' or tablename in ('lesson_progress','lesson_answers','profiles','organization_staff_permissions'))")).rows.map(r=>r.tablename);
  const snapshot=async()=>{const result={};for(const t of tables)result[t]=(await q(`select coalesce(jsonb_agg(to_jsonb(t) order by to_jsonb(t)::text),'[]') v from public.${t} t`)).rows[0].v;return result};
+ const course=(await q("select id from courses where slug='getting-a-grip-on-the-basics'")).rows[0].id;
+ await q("insert into course_enrollments(user_id,course_id,started_at,completed_at)values($1,$2,'2020-01-01','2021-01-01')",[bob,course]);
+ await q("insert into lesson_progress(user_id,course_id,lesson_number,status)values($1,$2,1,'completed')",[bob,course]);
+ await q("insert into lesson_answers(user_id,course_id,lesson_number,question_number,answer)values($1,$2,1,1,'Existing fictional private answer')",[bob,course]);
+ const enrollmentBefore=(await q('select * from course_enrollments where user_id=$1',[bob])).rows;
  const before=await snapshot();
  for(const id of [legacyH,legacyB]){await as(id);ok((await book()).join()==='king-kind/king-kind-english.pdf','legacy outreach reader retained');}
  for(const id of[unknown,unverified,anonymous]){await as(id);ok((await book()).length===0,'unregistered/unverified/anonymous identity has no book');}
@@ -42,10 +47,11 @@ try{
  await as(alice);ok(!(await call('status')).registered,'unregistered status honest');
  for(const [change,label]of[[{resource_consent:false},'required consent'],[{resource_consent:'true'},'string consent'],[{email:bob+'@example.test'},'other verified email'],[{name:' '},'empty name'],[{phone:'not-a-phone'},'invalid telephone'],[{campaign_id:uuid()},'campaign injection'],[{user_id:bob},'actor injection'],[{ministry_updates:'true'},'marketing coercion'],[{prayer:{text:'invalid'}},'nontext prayer'],[{interest:'salvation'},'fabricated decision'],[{request_id:'invalid'},'invalid idempotency key']])await denied(()=>call('register',payload(alice,change)),label+' rejected','22023');
  const original=payload(alice,{prayer:'Private synthetic prayer'}),first=await call('register',original);
- ok(first.registered&&!first.existing,'verified general registration accepted');
+ ok(first.registered&&first.enrolled&&!first.existing,'verified general registration and enrollment accepted atomically');
+ ok((await q('select * from course_enrollments')).rows.every(r=>r.user_id===alice)&&(await q('select * from course_enrollments')).rows.length===1,'caller sees exactly one same-account enrollment');
  ok((await call('register',original)).reference===first.reference,'same-request retry returns same receipt');
  ok((await call('register',payload(alice,{ministry_updates:true}))).reference===first.reference,'reload retry cannot duplicate or change consent');
- ok((await call('status')).reference===first.reference,'own safe status receipt');
+ ok((await call('status')).reference===first.reference&&(await call('status')).enrolled,'own safe status receipt confirms persisted enrollment');
  ok((await book()).join()==='king-kind/king-kind-english.pdf','general registrant can retrieve only approved private object');
  await denied(()=>q('select * from app_private.general_resource_registrations'),'direct personal/contact/prayer enumeration denied');
  await denied(()=>q('select * from app_private.general_resource_audit'),'audit enumeration denied');
@@ -56,6 +62,8 @@ try{
  await denied(()=>call('register',payload(bob,{request_id:original.request_id})),'cross-account request collision denied','22023');
  ok((await call('register',payload(bob,{phone:'+1 (555) 555-0100',interest:'discipleship',ministry_updates:true}))).registered,'optional phone and separate ministry consent accepted');
  await db.exec('reset role');
+ assert.deepEqual((await q('select * from course_enrollments where user_id=$1',[bob])).rows,enrollmentBefore);ok(true,'existing enrollment ID and start/completion timestamps unchanged');
+ ok(await count('course_enrollments')===2,'retries create no duplicate enrollment');
  ok(await count('app_private.general_resource_registrations')===2,'only two identities persisted');
  ok(await count('app_private.general_resource_audit')===2,'one immutable attributable audit per identity');
  const row=(await q('select * from app_private.general_resource_registrations where user_id=$1',[alice])).rows[0];
@@ -67,18 +75,47 @@ try{
  await db.exec("create function public.fail_resource_audit()returns trigger language plpgsql as $$begin raise exception 'synthetic audit failure';end$$;create trigger test_audit_failure before insert on app_private.general_resource_audit for each row execute function public.fail_resource_audit()");
  await as(atomic);await assert.rejects(()=>call('register',payload(atomic)));await db.exec('reset role');
  ok(!(await q('select 1 from app_private.general_resource_registrations where user_id=$1',[atomic])).rows.length,'audit failure rolls back registration atomically');
+ ok(!(await q('select 1 from course_enrollments where user_id=$1',[atomic])).rows.length,'audit failure rolls back enrollment atomically');
  await db.exec('drop trigger test_audit_failure on app_private.general_resource_audit;drop function public.fail_resource_audit()');
+ // Missing course, enrollment failure and suppressed insertion cannot report partial success.
+ await q("update courses set slug='temporarily-unavailable' where id=$1",[course]);
+ await as(atomic);await denied(()=>call('register',payload(atomic)),'missing fixed course fails closed','55000');await db.exec('reset role');
+ ok(!(await q('select 1 from app_private.general_resource_registrations where user_id=$1',[atomic])).rows.length,'missing course rolls back registration');
+ await q("update courses set slug='getting-a-grip-on-the-basics' where id=$1",[course]);
+ for(const body of ["raise exception 'synthetic enrollment failure';",'return null;']){
+  await db.exec("create function public.fail_enrollment()returns trigger language plpgsql as $$begin "+body+"end$$;create trigger test_enrollment_failure before insert on course_enrollments for each row execute function public.fail_enrollment()");
+  await as(atomic);await assert.rejects(()=>call('register',payload(atomic)));await db.exec('reset role');
+  ok(!(await q('select 1 from app_private.general_resource_registrations where user_id=$1',[atomic])).rows.length,'failed/suppressed enrollment leaves no registration');
+  ok(!(await q('select 1 from app_private.general_resource_audit where actor_id=$1',[atomic])).rows.length,'failed/suppressed enrollment leaves no success audit');
+  await db.exec('drop trigger test_enrollment_failure on course_enrollments;drop function public.fail_enrollment()');
+ }
+ // Existing pre-correction registrant: status is honest/read-only; retry safely fills only missing enrollment.
+ await q('delete from course_enrollments where user_id=$1',[alice]);
+ await as(alice);ok((await call('status')).registered&&!(await call('status')).enrolled,'status distinguishes existing registration from missing enrollment');
+ ok((await q('select 1 from course_enrollments')).rows.length===0,'status never silently enrolls');
+ ok((await call('register',original)).enrolled,'same verified registrant retry repairs missing enrollment');await db.exec('reset role');
+ ok(await count('app_private.general_resource_audit')===2,'repair preserves original one registration audit');
  if(native){
+  // Authority is re-read under the identity lock, not cached before a concurrent verification change.
+  const locker=await db.connect(),waiter=await db.connect();await locker.query('begin');
+  await locker.query('select 1 from auth.users where id=$1 for update',[atomic]);await as(atomic,'authenticated',waiter);
+  const pending=call('register',payload(atomic),waiter).then(()=>({accepted:true}),e=>({code:e.code}));
+  await new Promise(r=>setTimeout(r,80));await locker.query('update auth.users set email_confirmed_at=null where id=$1',[atomic]);await locker.query('commit');
+  ok((await pending).code==='42501','verification removed during lock wait denies registration');
+  ok(!(await q('select 1 from course_enrollments where user_id=$1',[atomic])).rows.length,'stale identity cannot leave enrollment');
+  await locker.end();await waiter.end();
   const clients=await Promise.all(Array.from({length:6},()=>db.connect()));
   await Promise.all(clients.map(c=>as(concurrent,'authenticated',c)));
   const p=payload(concurrent),results=await Promise.all(clients.map(c=>call('register',p,c)));
+  ok(results.every(r=>r.enrolled),'concurrent responses confirm enrollment');
+  ok((await q('select count(*)::int n from course_enrollments where user_id=$1',[concurrent])).rows[0].n===1,'six concurrent requests create one enrollment');
   ok(new Set(results.map(r=>r.reference)).size===1,'six real concurrent connections produce one receipt');
   ok((await q('select count(*)::int n from app_private.general_resource_audit where actor_id=$1',[concurrent])).rows[0].n===1,'concurrent retries create exactly one audit');
  }
  await q('update app_private.general_resource_registrations set revoked_at=now()where user_id=$1',[alice]);
  await as(alice);ok((await book()).length===0,'revocation denies new Storage access');ok(!(await call('status')).registered,'revoked status hides receipt');await denied(()=>call('register',original),'retry cannot restore revoked access');
  await as(null);await denied(()=>call('status'),'cleared subject denied');
- await db.exec('reset role');assert.deepEqual(await snapshot(),before);ok(true,'all legacy registration/waiver/staff/course rows unchanged');
+ await db.exec('reset role');assert.deepEqual(await snapshot(),before);ok(true,'all legacy registration/waiver/staff/progress/answer rows unchanged');
  ok(!(await q("select public from storage.buckets where id='king-kind-books'")).rows[0].public,'bucket remains private');
  const retained=await count('app_private.general_resource_registrations'),audited=await count('app_private.general_resource_audit');
  await db.exec(read('supabase/release/general-king-kind-resources-containment.sql'));

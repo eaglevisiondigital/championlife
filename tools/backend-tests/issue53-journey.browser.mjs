@@ -101,7 +101,7 @@ for(const[engine,options]of[[chromium,{channel:'chrome'}],[webkit,{}]]){
    if(width===390){await page.locator('#resource-code').fill('12345678');lost=true;await page.locator('#resource-code-form button').click();await page.getByText('Registration could not be confirmed.',{exact:false}).waitFor();ok(!await page.locator('.bes-registration-success').isVisible(),'uncertain committed response not shown as success');await page.locator('#resource-submit').click();}
    else{const s=session(users[0]);await page.goto('about:blank');await page.goto(origin+'/king-kind/#'+new URLSearchParams({access_token:s.access_token,refresh_token:s.refresh_token,expires_in:'3600',token_type:'bearer',type:'signup'}));await page.locator('#resource-account-email').waitFor({state:'visible'});ok(!page.url().includes('access_token'),'fictional email link scrubbed');await fill();await page.locator('#resource-submit').click()}
    await page.locator('#generalResourceCard.registered').waitFor();ok(await count('app_private.general_resource_registrations')===1&&await count('app_private.general_resource_audit')===1,'one registration and immutable audit after retry/link');
-   ok(await count('course_enrollments')===0&&await count('lesson_progress')===0,'resource signup creates no implied enrollment or completion');
+   ok(await count('course_enrollments')===1&&await count('lesson_progress')===0,'resource signup atomically enrolls without fabricating lesson completion');
    await page.reload();await page.locator('#generalResourceCard.registered').waitFor();ok(true,'returning verified registrant resumes');
    await page.goto(origin+'/king-kind-reader.html');await page.waitForFunction(()=>!document.querySelector('#book-license-ack').disabled);ok(await page.locator('#download-book').isDisabled(),'actual database eligible reader requires license acknowledgment');
    ok(await page.evaluate(()=>document.querySelector('#page-canvas').width>0),'real PDF.js rendered authorized book');await page.locator('#book-license-ack').check();const downloaded=page.waitForEvent('download');await page.locator('#download-book').click();ok(sha(await readFile(await(await downloaded).path()))===pdfHash,'private download exact approved PDF');
@@ -113,7 +113,7 @@ for(const[engine,options]of[[chromium,{channel:'chrome'}],[webkit,{}]]){
     else ok(await page.evaluate(n=>Object.keys(localStorage).some(k=>k.includes('aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa')&&k.endsWith('lesson:'+n)),n),'lesson '+n+' private owned device note');
     lessons.push(n);
    }
-   ok(await count('course_enrollments')===1,'first worksheet creates exactly one own-account enrollment');ok(await count('lesson_progress')===4,'only four actually started cloud worksheets counted');
+   ok(await count('course_enrollments')===1,'first worksheet preserves the one automatic own-account enrollment');ok(await count('lesson_progress')===4,'only four actually started cloud worksheets counted');
    await page.goto(origin+'/my-discipleship.html');await page.locator('#dashLessons:not([hidden])').waitFor();ok((await page.locator('#dashProgressText').innerText()).includes('0 of 13'),'draft answers do not imply completion');
    await page.goto(origin+'/getting-a-grip-1.html');await page.waitForFunction(()=>document.querySelector('[name=q1]').value==='A PRIVATE LESSON 1');
    // Observe the pre-existing progress-policy gap without implementing a new policy.

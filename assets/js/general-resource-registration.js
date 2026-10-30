@@ -43,10 +43,10 @@
     switchPanel.hidden=false;verification.hidden=true;
   };
   const accepted=(data,u)=>{
-    if(data?.registered!==true||typeof data.reference!=='string'||!/^[a-f0-9-]{36}$/i.test(data.reference))throw Error('UNCONFIRMED');
+    if(data?.registered!==true||data.enrolled!==true||typeof data.reference!=='string'||!/^[a-f0-9-]{36}$/i.test(data.reference))throw Error('UNCONFIRMED');
     if(callbackBlocked)return;
     card.classList.add('registered');verification.hidden=true;showAccount(u);
-    document.getElementById('generalResourceAccountNote').textContent=`Registered with verified email ${u.email}. Reference: ${data.reference}. Your book opens through the private reader; course enrollment and progress remain separate.`;
+    document.getElementById('generalResourceAccountNote').textContent=`Registered with verified email ${u.email}. Reference: ${data.reference}. You are enrolled in Getting a Grip on the Basics. Your book opens through the private reader; lesson progress is recorded separately.`;
     // Sensitive optional fields are never persisted in browser storage.
     form.elements.namedItem('prayer').value='';document.getElementById('resource-code').value='';
   };
@@ -115,7 +115,7 @@
       if(stamp!==generation)return;
       const current=await user();if(stamp!==generation||!verified(current)||current.id!==u.id){if(stamp===generation)clearPrivate();return}
       if(email()&&email()!==current.email.toLowerCase()){mismatch(current);return}
-      if(!r.error&&r.data?.registered===true)accepted(r.data,current);
+      if(!r.error&&r.data?.registered===true&&r.data.enrolled===true)accepted(r.data,current);
       else {card.classList.remove('registered');tell(`Signed in as ${u.email}. Complete the form to register for your resources.`)}
     }catch{if(stamp===generation){clearPrivate();tell('We could not verify your current session. Sign in again before accessing your resources.',true)}}
   }

@@ -10,7 +10,7 @@ ok(doc.querySelector('link[rel=canonical]').href==='https://sowgo.org/king-kind'
 ok([...doc.querySelectorAll('#generalResourceForm [required]')].map(e=>e.name).sort().join()==='email,name,resource-consent','only three requested required fields');
 for(const name of['phone','prayer','interest','updates'])ok(!doc.querySelector(`[name="${name}"]`).required,name+' optional');
 ok(!doc.querySelector('#resource-consent').checked&&!doc.querySelector('#resource-updates').checked,'no prechecked consent');
-ok(!/localStorage|sessionStorage|\.from\(|ensureEnrollment|ensureProfile|claimStLucia/.test(js),'no PII persistence, legacy table writes or automatic enrollment');
+ok(!/localStorage|sessionStorage|\.from\(|ensureEnrollment|ensureProfile|claimStLucia/.test(js),'no PII persistence, legacy table writes or browser-side enrollment');
 ok(!/innerHTML|insertAdjacentHTML/.test(js),'responses rendered as text');
 ok(/getUser\(\)/.test(js)&&/scope:'local'/.test(js),'authoritative identity verification and supported local signout');
 ok(/onAuthStateChange/.test(js)&&/pageshow/.test(js),'session/logout and Back revalidation');

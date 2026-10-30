@@ -32,15 +32,21 @@ revoke all on function app_private.general_resource_audit_immutable() from publi
 
 create function app_private.general_resource_registration(action text,payload jsonb)
 returns jsonb language plpgsql security definer set search_path='' as $$
-declare u auth.users;r app_private.general_resource_registrations; rid uuid; n text; e text; p text; prayer_text text; interest_text text;
+declare u auth.users;r app_private.general_resource_registrations; rid uuid; n text; e text; p text; prayer_text text; interest_text text; target_course_id bigint; was_existing boolean;
 begin
- select * into u from auth.users where id=auth.uid();
- if u.id is null or u.email_confirmed_at is null or coalesce(u.is_anonymous,false) then raise exception 'Verified account required' using errcode='42501';end if;
+ -- Serialize registration with identity changes before validating the verified account.
+ if action='register' then
+  select * into u from auth.users where id=auth.uid() for update;
+ else
+  select * into u from auth.users where id=auth.uid();
+ end if;
+ if u.id is null or u.email_confirmed_at is null or nullif(btrim(u.email),'') is null or coalesce(u.is_anonymous,false) then raise exception 'Verified account required' using errcode='42501';end if;
  if action is null or action not in('register','status') or payload is null or jsonb_typeof(payload)<>'object' then raise exception 'Invalid request' using errcode='22023';end if;
  if action='status' then
   if payload<>'{}'::jsonb then raise exception 'Invalid request' using errcode='22023';end if;
   select * into r from app_private.general_resource_registrations where user_id=u.id;
-  return jsonb_build_object('registered',r.id is not null and r.revoked_at is null,'reference',case when r.revoked_at is null then r.id end);
+  return jsonb_build_object('registered',r.id is not null and r.revoked_at is null,'reference',case when r.revoked_at is null then r.id end,
+   'enrolled',r.id is not null and r.revoked_at is null and exists(select 1 from public.course_enrollments ce join public.courses c on c.id=ce.course_id where ce.user_id=u.id and c.slug='getting-a-grip-on-the-basics'));
  end if;
  if exists(select 1 from jsonb_object_keys(payload) k where k not in('request_id','name','email','phone','prayer','interest','resource_consent','ministry_updates','consent_version'))then raise exception 'Invalid fields' using errcode='22023';end if;
  if jsonb_typeof(payload->'name') is distinct from 'string' or jsonb_typeof(payload->'email') is distinct from 'string' or payload->'resource_consent' is distinct from 'true'::jsonb or payload->>'consent_version' is distinct from 'general-resources-v1' or (payload ? 'ministry_updates' and jsonb_typeof(payload->'ministry_updates')<>'boolean')then raise exception 'Required fields missing' using errcode='22023';end if;
@@ -49,19 +55,29 @@ begin
  if length(n) not between 1 and 160 or length(e)>254 or e<>lower(btrim(u.email)) or length(p)>40 or (p<>''and p !~ '^[+0-9() .-]{5,40}$')or length(prayer_text)>2000 or interest_text not in('','discipleship','prayer','church','serving') then raise exception 'Invalid registration' using errcode='22023';end if;
  begin rid=(payload->>'request_id')::uuid;exception when invalid_text_representation then raise exception 'Invalid request key' using errcode='22023';end;
  if rid is null then raise exception 'Request key required' using errcode='22023';end if;
- -- Lock a genuine identity, not a caller-supplied actor or email. Serializes retries.
- perform 1 from auth.users where id=u.id for update;
- select * into r from app_private.general_resource_registrations where user_id=u.id;
- if found then
+ -- Registration, enrollment and attributable audit share this transaction.
+ select * into r from app_private.general_resource_registrations where user_id=u.id for update;
+ was_existing=found;
+ if was_existing then
   if r.revoked_at is not null then raise exception 'Resource access unavailable' using errcode='42501';end if;
-  return jsonb_build_object('registered',true,'reference',r.id,'existing',true);
+ else
+  -- Cross-account request collision returns a generic rejection, never another receipt.
+  if exists(select 1 from app_private.general_resource_registrations where request_id=rid)then raise exception 'Invalid request key' using errcode='22023';end if;
+  insert into app_private.general_resource_registrations(user_id,request_id,name,verified_email,phone,prayer,interest,resource_consent,ministry_updates,consent_version)
+  values(u.id,rid,n,e,p,prayer_text,interest_text,true,coalesce((payload->>'ministry_updates')::boolean,false),'general-resources-v1') returning * into r;
  end if;
- -- Cross-account request collision returns a generic rejection, never another receipt.
- if exists(select 1 from app_private.general_resource_registrations where request_id=rid)then raise exception 'Invalid request key' using errcode='22023';end if;
- insert into app_private.general_resource_registrations(user_id,request_id,name,verified_email,phone,prayer,interest,resource_consent,ministry_updates,consent_version)
- values(u.id,rid,n,e,p,prayer_text,interest_text,true,coalesce((payload->>'ministry_updates')::boolean,false),'general-resources-v1') returning * into r;
- insert into app_private.general_resource_audit(registration_id,actor_id,action)values(r.id,u.id,'registered');
- return jsonb_build_object('registered',true,'reference',r.id,'existing',false);
+ select c.id into target_course_id from public.courses c where c.slug='getting-a-grip-on-the-basics' for share;
+ if target_course_id is null then raise exception 'Resource course unavailable' using errcode='55000';end if;
+ -- Never overwrite enrollment timestamps, completion, answers or lesson progress.
+ insert into public.course_enrollments(user_id,course_id) values(u.id,target_course_id)
+ on conflict on constraint course_enrollments_user_id_course_id_key do nothing;
+ if not exists(select 1 from public.course_enrollments ce where ce.user_id=u.id and ce.course_id=target_course_id) then
+  raise exception 'Resource enrollment unavailable' using errcode='55000';
+ end if;
+ if not was_existing then
+  insert into app_private.general_resource_audit(registration_id,actor_id,action)values(r.id,u.id,'registered');
+ end if;
+ return jsonb_build_object('registered',true,'enrolled',true,'reference',r.id,'existing',was_existing);
 end$$;
 revoke all on function app_private.general_resource_registration(text,jsonb) from public,anon;
 grant execute on function app_private.general_resource_registration(text,jsonb) to authenticated;

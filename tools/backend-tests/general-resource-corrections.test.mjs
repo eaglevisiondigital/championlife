@@ -45,7 +45,7 @@ function deferred(){let resolve;const promise=new Promise(r=>resolve=r);return{p
 for(const kind of ['expired','consumed','invalid','sdk-error','stale-token','malformed','valid','returning']){
  const hash=['expired','consumed','invalid'].includes(kind)?'#error=access_denied&error_code=otp_expired':kind==='malformed'?'?token=invalid&type=magiclink':kind==='returning'?'':'#access_token=fresh&refresh_token=private';
  const d=dom('king-kind/index.html','king-kind/'+hash),w=d.window;let active=A,calls=0,events=[],logoutFail=false;
- w.ChampionLifeAuth={client:{auth:{initialize:async()=>({error:kind==='sdk-error'?Error('failure'):null}),getUser:async()=>({data:{user:active}}),getSession:async()=>({data:{session:{user:active,access_token:kind==='stale-token'?'OLD':'fresh'}}}),onAuthStateChange:f=>events.push(f),signOut:async()=>{if(logoutFail)return{error:Error('failure')};active=null;events.forEach(f=>f('SIGNED_OUT',null));return{}},signInWithOtp:async()=>({}),verifyOtp:async()=>({})},rpc:async()=>{calls++;return{data:{registered:true,reference:'cccccccc-cccc-4ccc-8ccc-cccccccccccc'}}}}};
+ w.ChampionLifeAuth={client:{auth:{initialize:async()=>({error:kind==='sdk-error'?Error('failure'):null}),getUser:async()=>({data:{user:active}}),getSession:async()=>({data:{session:{user:active,access_token:kind==='stale-token'?'OLD':'fresh'}}}),onAuthStateChange:f=>events.push(f),signOut:async()=>{if(logoutFail)return{error:Error('failure')};active=null;events.forEach(f=>f('SIGNED_OUT',null));return{}},signInWithOtp:async()=>({}),verifyOtp:async()=>({})},rpc:async()=>{calls++;return{data:{registered:true,enrolled:true,reference:'cccccccc-cccc-4ccc-8ccc-cccccccccccc'}}}}};
  w.eval(read('assets/js/general-resource-registration.js'));await flush();
  const accepted=w.document.querySelector('#generalResourceCard').classList.contains('registered');
  ok(accepted===['valid','returning'].includes(kind),kind+' callback/session success classification');
@@ -63,7 +63,7 @@ for(const kind of ['expired','consumed','invalid','sdk-error','stale-token','mal
 // A failed link can recover through a freshly verified OTP, without trusting the old session.
 {
  const d=dom('king-kind/index.html','king-kind/#error=access_denied&error_code=otp_expired'),w=d.window;let sends=0,writes=0;
- w.ChampionLifeAuth={client:{auth:{initialize:async()=>({error:Error('expired')}),getUser:async()=>({data:{user:A}}),onAuthStateChange:()=>{},signInWithOtp:async()=>{sends++;return{}},verifyOtp:async()=>({data:{user:A},error:null})},rpc:async args=>{writes++;return{data:{registered:true,reference:'cccccccc-cccc-4ccc-8ccc-cccccccccccc'}}}}};
+ w.ChampionLifeAuth={client:{auth:{initialize:async()=>({error:Error('expired')}),getUser:async()=>({data:{user:A}}),onAuthStateChange:()=>{},signInWithOtp:async()=>{sends++;return{}},verifyOtp:async()=>({data:{user:A},error:null})},rpc:async args=>{writes++;return{data:{registered:true,enrolled:true,reference:'cccccccc-cccc-4ccc-8ccc-cccccccccccc'}}}}};
  w.eval(read('assets/js/general-resource-registration.js'));await flush();
  const form=w.document.querySelector('#generalResourceForm');form.elements.namedItem('name').value='Fictional A';form.elements.namedItem('email').value=A.email;form.elements.namedItem('resource-consent').checked=true;
  form.dispatchEvent(new w.Event('submit',{cancelable:true}));await flush();ok(sends===1&&writes===0,'failed callback requires fresh verification even with old matching account');

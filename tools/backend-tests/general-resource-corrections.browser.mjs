@@ -9,7 +9,7 @@ const mock=`(()=>{
  const session=()=>({user:users[key],expires_at:Date.now()/1000+3600,access_token:'fresh'});
  const client={auth:{initialize:async()=>({}),getUser:async()=>({data:{user:users[key]}}),getSession:async()=>({data:{session:session()}}),onAuthStateChange:f=>listeners.push(f),signOut:async()=>{window.__test.switch(null);return{}},signInWithOtp:async()=>{throw Error('Email forbidden')},verifyOtp:async()=>{throw Error('OTP forbidden')}}};
  window.ChampionLifeAuth={client,getVerifiedUser:async()=>{if(expired)throw Error('Expired');return users[key]||null},getSession:async()=>session(),loadLesson:async()=>{const d=snapshot();if(delayed)return new Promise(r=>{resolve=()=>r(d)});return d},saveLesson:async p=>{saves.push(p);return{saved:true}},getDashboard:async()=>snapshot(),getOutreachRegistration:async()=>null,signOut:async()=>client.auth.signOut()};
- client.rpc=async()=>({data:{registered:true,reference:'cccccccc-cccc-4ccc-8ccc-cccccccccccc'}});
+ client.rpc=async()=>({data:{registered:true,enrolled:true,reference:'cccccccc-cccc-4ccc-8ccc-cccccccccccc'}});
  window.__test={switch:k=>{key=k;listeners.forEach(f=>f(k?'SIGNED_IN':'SIGNED_OUT',k?session():null))},slow:()=>{delayed=true},finish:()=>{delayed=false;resolve?.()},expire:()=>{expired=true},saves,clearExpiry:()=>{expired=false}};
 })();`;
 if(process.env.EVIDENCE_DIR)await mkdir(process.env.EVIDENCE_DIR,{recursive:true});

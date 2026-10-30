@@ -8,7 +8,7 @@ Reuse accepted Resource Registrant chain 7be32ed → a9bed1e → 6d5730b and rea
 ## One registration flow
 SowGo PR #6 `/king-kind/` links to Champion Life `/king-kind-signup.html`, an additive compatibility entry to `/king-kind/`. The accepted form collects name, email and required resource-delivery consent, with separate optional ministry updates, phone, prayer and interests. The current approved charcoal/gold design remains. General registration never asserts a ministry decision or event attendance and creates no church, partner, staff or People relationship.
 
-The draft `general_king_kind_registrants` migration, draft JavaScript and its superficial test are removed locally. Only `supabase/release/general-king-kind-resources-candidate.sql` is proposed for a later reviewed forward migration; it has not been applied. Its containment companion preserves records and audits. Existing private Storage exact-object RLS remains unchanged. Course enrollment/progress is a separate action; all 13 routes remain, cloud worksheets are lessons 1–4, device notes are lessons 5–13, and videos 11–13 are forthcoming.
+The draft `general_king_kind_registrants` migration, draft JavaScript and its superficial test are removed locally. Only `supabase/release/general-king-kind-resources-candidate.sql` is proposed for a later reviewed forward migration; it has not been applied. Its containment companion preserves records and audits. Existing private Storage exact-object RLS remains unchanged. Verified registration atomically creates/preserves the same account’s existing Getting a Grip course enrollment; progress remains separate. all 13 routes remain, cloud worksheets are lessons 1–4, device notes are lessons 5–13, and videos 11–13 are forthcoming.
 
 All accepted account-isolation, reader session clearing and same-origin Supabase 2.118.0 SRI bytes are reused. The production Powered by Propel CSS/logo/sidebar markup is retained. No advanced Huntsville follow-up, adult-evidence or recovery package is imported.
 
@@ -34,7 +34,7 @@ including the frozen reader correction, rather than deploying the competing publ
 remain identical to the accepted local composition. New work is an integrated local
 native-PostgreSQL/real-SDK/PDF.js browser acceptance harness and reconciliation records.
 
-Two contracts are not silently adopted from the remote draft:
+Historical integration review (superseded for enrollment by the correction below):
 
 - Remote registration atomically enrolls the user in Getting a Grip. Accepted local
   registration records resource delivery consent and keeps course enrollment separate;
@@ -60,3 +60,13 @@ PDF ZIP, cached exact PDF.js 4.10.38 and a new private EVIDENCE_DIR. It uses dis
 Unix-socket PostgreSQL and intercepts every browser request: Auth, Storage signing
 and lesson form receipt are fictional. No provider, hosted session retirement,
 mailbox delivery, Netlify form notification or physical phone acceptance is implied.
+
+## Issue #53 automatic enrollment correction (October 29)
+
+Owner resolved the enrollment decision above. The same private Resource Registrant RPC now validates and locks the actual Auth identity, locks any current registration, inserts/preserves the fixed course enrollment using its existing unique constraint, and records the new-registration audit in one transaction. No caller-selected course/user or second schema. Existing enrollment timestamps, completion, lesson answers/progress and consents remain unchanged on retries. Read-only status reports both registered and enrolled; incomplete old records can use the same verified registration retry. Rejected or failed registration does not produce a new enrollment, registration or successful audit. A missing course fails closed. Success is displayed only on an explicit complete response followed by same-account verification. Start Course stays a navigation link.
+
+The earlier enrollment product decision is closed; independent local review of this correction and the operational/provider gates above remain mandatory. Issue #56's 95% actual-watch/answer-to-complete implementation is separately tracked and unchanged. Do not advertise it as enforced, all 13 lessons as completed, or 13 working cloud worksheets. This limitation does not block separate review of general signup/private-book readiness.
+
+Local tests must cover atomic rollback (including enrollment and audit failures), duplicate/concurrent retries, existing progress, missing enrollment repair, wrong/unverified/revoked identity, delayed UI responses and account switches. Native SQL tests use disposable PostgreSQL; browser tests intercept synthetic Auth/Storage. They do not establish genuine-provider token retirement or successful email delivery.
+
+Containment and rollback preserve enrollment as well as registration/audit and legitimate learner progress. Never delete enrollments to undo a website release. Keep accepted reader/privacy/SDK fixes in any rollback artifact. Production preflight must inspect actual course schema/unique key/seed and any enrollment triggers before generating the reviewed forward migration. No historical migration is rewritten or applied by this package.
