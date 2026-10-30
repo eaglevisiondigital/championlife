@@ -25,13 +25,15 @@ declare
   email_now text;
   given text := btrim(coalesce(p_first_name,''));
   family text := btrim(coalesce(p_last_name,''));
+  course_id bigint;
 begin
   if subject is null then
     raise exception 'Verified sign-in required' using errcode='42501';
   end if;
   select lower(btrim(u.email)) into email_now
     from auth.users u
-   where u.id=subject and u.email_confirmed_at is not null and u.email is not null;
+   where u.id=subject and u.email_confirmed_at is not null and u.email is not null
+     and not coalesce(u.is_anonymous,false);
   if email_now is null or char_length(email_now) not between 5 and 320 then
     raise exception 'Verified email required' using errcode='42501';
   end if;
@@ -45,6 +47,15 @@ begin
          last_name=excluded.last_name,
          verified_email=excluded.verified_email,
          updated_at=now();
+  -- Enroll this same authenticated individual atomically; never accept a learner ID
+  -- supplied by the browser or run profile/enrollment work after an account switch.
+  select c.id into course_id from public.courses c
+    where c.slug='getting-a-grip-on-the-basics' limit 1;
+  if course_id is null then
+    raise exception 'Discipleship course unavailable' using errcode='22023';
+  end if;
+  insert into public.course_enrollments(user_id,course_id) values(subject,course_id)
+    on conflict(user_id,course_id) do nothing;
   return jsonb_build_object('registered',true);
 end
 $$;
@@ -72,6 +83,7 @@ as $$
     join public.general_king_kind_registrants as g
       on g.user_id=u.id and g.verified_email=lower(btrim(u.email))
     where u.id=auth.uid() and u.email_confirmed_at is not null
+      and not coalesce(u.is_anonymous,false)
   )
 $$;
 revoke all on function app_private.can_read_king_kind() from public, anon;
