@@ -25,7 +25,7 @@ declare
   email_now text;
   given text := btrim(coalesce(p_first_name,''));
   family text := btrim(coalesce(p_last_name,''));
-  course_id bigint;
+  grip_course_id bigint;
 begin
   if subject is null then
     raise exception 'Verified sign-in required' using errcode='42501';
@@ -49,12 +49,12 @@ begin
          updated_at=now();
   -- Enroll this same authenticated individual atomically; never accept a learner ID
   -- supplied by the browser or run profile/enrollment work after an account switch.
-  select c.id into course_id from public.courses c
+  select c.id into grip_course_id from public.courses c
     where c.slug='getting-a-grip-on-the-basics' limit 1;
-  if course_id is null then
+  if grip_course_id is null then
     raise exception 'Discipleship course unavailable' using errcode='22023';
   end if;
-  insert into public.course_enrollments(user_id,course_id) values(subject,course_id)
+  insert into public.course_enrollments(user_id,course_id) values(subject,grip_course_id)
     on conflict(user_id,course_id) do nothing;
   return jsonb_build_object('registered',true);
 end
