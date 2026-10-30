@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import {createHash} from 'node:crypto';
 import { readFile, readdir, mkdtemp, mkdir, writeFile, rm, symlink } from 'node:fs/promises';
 import path from 'node:path';
 import os from 'node:os';
@@ -81,7 +82,13 @@ for (const file of await inventory(path.join(root, 'dist'))) {
   if (/\.(?:js|html|css)$/.test(file)) {
     const text = await readFile(path.join(root, 'dist', file), 'utf8');
     assert(!text.includes(production.url), 'Production backend reference in preview: ' + file);
-    assert(!/sb_secret_|-----BEGIN (?:RSA |EC |OPENSSH )?PRIVATE KEY-----/.test(text), 'Privileged credential pattern in ' + file);
+    // The exact reviewed SDK contains a literal key-type prefix, not a credential.
+    let credentialText=text;
+    if(file==='assets/vendor/supabase-js-2.118.0.js'){
+      assert.equal(createHash('sha256').update(text).digest('hex'),'bee24fc29228ed5a370f76a2ba1ca3c399549edad2fef23453c80148856a49af');
+      credentialText=text.replace('`sb_secret_`','`SDK_KEY_TYPE_PREFIX`');
+    }
+    assert(!/sb_secret_|-----BEGIN (?:RSA |EC |OPENSSH )?PRIVATE KEY-----/.test(credentialText), 'Privileged credential pattern in ' + file);
   }
 }
 

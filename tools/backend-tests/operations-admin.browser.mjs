@@ -22,7 +22,7 @@ for(const[engine,options]of[[chromium,{channel:'chrome'}],[webkit,{}]]){
  const browser=await engine.launch({headless:true,...options});try{
  for(const width of[390,768,1440]){
  const ctx=await browser.newContext({viewport:{width,height:900},acceptDownloads:true}),page=await ctx.newPage(),errors=[],unexpected=[];page.on('pageerror',e=>errors.push(e.message));
- await ctx.route('**/*',async route=>{const u=new URL(route.request().url());if(u.hostname==='cdn.jsdelivr.net'&&u.pathname.startsWith('/npm/@supabase/supabase-js@2'))return route.fulfill({contentType:'text/javascript',body:''});if(u.origin!==origin||route.request().method()!=='GET'){unexpected.push(u.origin+u.pathname);return route.abort()}
+ await ctx.route('**/*',async route=>{const u=new URL(route.request().url());if(u.origin!==origin||route.request().method()!=='GET'){unexpected.push(u.origin+u.pathname);return route.abort()}
  // Session-header navigation is covered separately by staff-session tests.
  if(u.pathname==='/assets/js/staff-session.js')return route.fulfill({contentType:'text/javascript',body:'/* module-isolated regression */'});
  if(u.pathname==='/assets/js/champion-life-auth.js')return route.fulfill({contentType:'text/javascript',body:authScript});

@@ -1,3 +1,14 @@
+## 2026-10-29 — General prayer resource integration, LOCAL ONLY
+Reconciled PR #54 with the accepted Resource Registrant and reader chain through 5c84a42. Reused the completed implementation; removed the duplicate draft general signup backend. Additive `/king-kind-signup.html` entry points to the accepted form; all 26 SDK pins and current Powered by Propel branding are preserved. General registrations remain separate from outreach decisions, membership, staff and financial authority. See docs/GENERAL-PRAYER-SIGNUP-LAUNCH-CHECKLIST.md for exact next gates. No hosted testing, migration, message, permission change, push or deployment authorized or performed. Original packages unchanged.
+
+## 2026-10-28 — Final local privacy and dependency correction
+
+Known local notes-isolation findings corrected: initially locked fields, verified owner/session checks, immediate UI invalidation and generation guards across account changes, expiry, tabs and history. Unowned legacy notes are never attributed. Browser storage is not encrypted and is not protected from device/profile administrators. No SQL/RLS or cloud data deletion. Exact Supabase 2.118.0 bytes and per-page SRI are enforced by builds/browser; actual provider Auth/Storage/recovery remains unverified. See docs/GENERAL-RESOURCE-FINAL-CORRECTIONS.md.
+
+## 2026-10-28 — General-resource candidate security boundary
+
+No anonymous resource writes; verified nonanonymous Auth UUID plus matching verified email required. RLS tables have no direct authenticated/anonymous grants, including operational staff. Fixed-search-path RPC, immutable actor-attributed audit and identity-row locking serialize retries. Reject caller-supplied campaign/actor fields and implicit/string consents. Optional prayer stays private and never flows to campaign staff or course reporting. No broad Storage policies or staff grants; private PDF checksum/licensing and 900-second signed URLs unchanged. Existing signed URLs can remain valid until expiry after revocation. Prepared containment preserves all rows/audits and restores only legacy eligibility. Local simulated Auth is not hosted proof; provider mailbox/redirect, private Storage and independently authorized acceptance remain gates.
+
 ## 2026-10-23 — Staff logout boundary
 
 The staff header calls the existing Supabase client's supported `auth.signOut({scope:'local'})`, then confirms the local session is absent before replacing navigation with the fixed staff login. It never clears all browser storage; SDK session cleanup and the application return hint are the only removals. A failed logout leaves protected content detached and displays a safe retry state, without claiming server retirement succeeded. Account changes and external sign-out clear the workspace. Pagehide clears protected snapshots; persisted pageshow reloads while hidden.
@@ -42,3 +53,13 @@ The theme-song script performs no analytics/API/database requests, sets no cooki
 ## Operations Administrator candidate — local only, 2026-10-22
 
 Donation-intake access requires outreach.view AND finance.read. Restrictive RLS protects linked follow-up tasks/events and financial partner relationship audit; People RPC projections and filters enforce the same boundary. Permission management requires independent staff.manage plus campaign admin; self-target changes are denied. Organization registration operations never confer admin/configuration or finance privileges. Household audit kinds extend the original check and retain actor/history. Existing registry, policies for other domains and function ACLs remain intact. Exact baseline guards reject incompatible child functions. See docs/OPERATIONS-ADMIN-SECURITY.md for release impact, withheld capabilities, account verification and revocation.
+
+
+## 2026-10-28 — General resource release correction candidate
+
+General-resource correction: stale callback sessions cannot imply link verification; explicit SDK/callback failure and token matching gates precede success. Learner drafts cannot migrate between users; legacy unowned local records are quarantined intact. Auth/logout/expiry/Back transitions clear private UI and invalidate pending work. Saves require expected owner and retain RLS-owned UUID throughout. No cloud-answer deletion or RLS relaxation. Simulated provider tests do not establish genuine hosted token retirement or Storage access.
+
+
+## 2026-10-28 — Local King Kind reader session correction
+
+Separate successor to sealed 6d5730bf0034bbb138999ce8cab97ce150d525fe. Reader invalidates retained PDF/Blob/canvas/license state synchronously on Auth/storage/history/expiry changes; deferred authorization avoids SDK callback-lock deadlock. Generation-bound requests and detached rendering prevent stale completion from restoring prior-user content. Each personal-use download freshly checks identity and exact-object Storage eligibility. No design, SDK, PDF, SQL/RLS, general registration, lesson, recovery or Issue50/51 changes. Local regression and intercepted real-browser/real-renderer evidence are recorded privately; genuine-provider acceptance remains untested. See docs/KING-KIND-SESSION-CORRECTION.md. Stop at independent review; no hosted authorization, deployment or access grants.

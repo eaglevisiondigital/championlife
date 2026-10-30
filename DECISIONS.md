@@ -1,3 +1,14 @@
+## 2026-10-29 — General prayer resource integration, LOCAL ONLY
+Reconciled PR #54 with the accepted Resource Registrant and reader chain through 5c84a42. Reused the completed implementation; removed the duplicate draft general signup backend. Additive `/king-kind-signup.html` entry points to the accepted form; all 26 SDK pins and current Powered by Propel branding are preserved. General registrations remain separate from outreach decisions, membership, staff and financial authority. See docs/GENERAL-PRAYER-SIGNUP-LAUNCH-CHECKLIST.md for exact next gates. No hosted testing, migration, message, permission change, push or deployment authorized or performed. Original packages unchanged.
+
+## 2026-10-28 — Final local privacy and dependency correction
+
+Keep the approved design and existing general Resource Registrant separation. Scope the final correction to owned local notes for lessons 5–13 and a vendored exact Supabase SDK; do not expand nine lessons into cloud worksheets or auto-link People/organization memberships. No hosted approval inferred from local PASS. Preserve earlier seals, use a separately identified correction and independent review before sandbox authorization. See docs/GENERAL-RESOURCE-FINAL-CORRECTIONS.md.
+
+## 2026-10-28 — General resources remain separate from event/decision intake
+
+Owner authorizes local general-resource development and Champion Life colors. Reuse approved Huntsville layout/assets without city/event requirements. Verify email before persisting registration; do not fabricate ministry decisions, silently link People, enroll courses or grant staff permissions. Required resource consent and optional ministry updates are distinct. Do not persist form/prayer/OTP in browser storage; a magic-link return without an existing receipt requires completion of the short form. No new sending provider, hosted tests or deployment authorized. Review privacy/retention, route ownership and genuine provider acceptance before a separately scoped launch.
+
 ## 2026-10-23 — Bounded staff UI/logout release
 
 Reuse the existing staff authentication client and current production permission model. Show account identity explicitly to avoid confusing an existing church session with a newly requested owner login. Use current-session sign-out rather than terminating unrelated device sessions. Hide the workspace immediately, preserve unrelated browser storage and provide retry on failure. Scope shared styling to the three deployed staff pages; do not import unreleased staff modules or alter public registration behavior. Website release and real-account verification require the separate production approval; no database action is part of this candidate.
@@ -42,3 +53,13 @@ Use the owner's final exact PNG, lossless delivery derivative and original M4A. 
 ## Operations Administrator preparation — 2026-10-22
 
 Owner authorized local correction/testing only. Reuse the existing 29-key production vocabulary and authentication workflow. Separate two organization assignments; no campaign-admin row for operations. Require finance.read for financial commitments and their linked histories; no automatic finance grants to retain former access. Require independent permission authorizer and prohibit self-target access changes. Reconcile existing People/Household compatibility locally and extend rather than narrow audit vocabulary. No PR #34/#35 wholesale adoption, hosted application, invitation, user or production grant. Activation dates/identity and external provider role verification remain owner/release gates.
+
+
+## 2026-10-28 — General resource release correction candidate
+
+Implement only the four confirmed general-resource launch corrections in a separate local candidate. Preserve approved charcoal/gold design, original seals and all historical data. Require verified identity for private worksheets rather than attributing unowned drafts automatically. Keep old unowned drafts for a separately reviewed recovery path. Maintain accurate 1–4 cloud worksheet availability. Reuse the independent dashboard reader concept without merging Issue51. Separate genuine sandbox and production release approvals remain required.
+
+
+## 2026-10-28 — Local King Kind reader session correction
+
+Separate successor to sealed 6d5730bf0034bbb138999ce8cab97ce150d525fe. Reader invalidates retained PDF/Blob/canvas/license state synchronously on Auth/storage/history/expiry changes; deferred authorization avoids SDK callback-lock deadlock. Generation-bound requests and detached rendering prevent stale completion from restoring prior-user content. Each personal-use download freshly checks identity and exact-object Storage eligibility. No design, SDK, PDF, SQL/RLS, general registration, lesson, recovery or Issue50/51 changes. Local regression and intercepted real-browser/real-renderer evidence are recorded privately; genuine-provider acceptance remains untested. See docs/KING-KIND-SESSION-CORRECTION.md. Stop at independent review; no hosted authorization, deployment or access grants.

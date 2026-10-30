@@ -1,3 +1,16 @@
+## 2026-10-29 — General prayer resource integration, LOCAL ONLY
+Reconciled PR #54 with the accepted Resource Registrant and reader chain through 5c84a42. Reused the completed implementation; removed the duplicate draft general signup backend. Additive `/king-kind-signup.html` entry points to the accepted form; all 26 SDK pins and current Powered by Propel branding are preserved. General registrations remain separate from outreach decisions, membership, staff and financial authority. See docs/GENERAL-PRAYER-SIGNUP-LAUNCH-CHECKLIST.md for exact next gates. No hosted testing, migration, message, permission change, push or deployment authorized or performed. Original packages unchanged.
+
+## 2026-10-28 — Final local privacy and dependency correction
+
+Local final general-resource correction: all thirteen lesson privacy boundaries covered; lessons 5–13 now use verified-owner device-only notes. Supabase 2.118.0 is vendored with SRI across 26 entry points and enforced by build checks. Original candidate and sealed evidence preserved. Complete regression, focused notes/pin, native database and isolated browser checks pass; reproducible builds pass. No genuine hosted acceptance or production release. See docs/GENERAL-RESOURCE-FINAL-CORRECTIONS.md.
+
+## 2026-10-28 — General King Kind resources (local candidate only)
+
+New isolated candidate from 734c9811e92219509a25b174b0d5bfd5850c5315 adds /king-kind/ using the approved outreach layout and Champion Life black/charcoal/gold. Verified-identity registration is separate from all campaign decisions. Name/email/resource consent required; optional phone/prayer/interest and independent marketing opt-in. Private RLS tables, atomic identity-bound idempotency/audit, and a narrow reader eligibility extension are prepared, not applied. Existing reader runtime is unchanged apart from explanatory eligibility copy. No course enrollment/progress or staff grants are created.
+
+Local: full repository regression PASS; 55 native PostgreSQL checks (including six-client concurrency and non-destructive containment), 53 PGlite equivalents, 108 Chrome/WebKit desktop/mobile assertions through actual SQL with synthetic Auth, 19 package/contract checks. Real provider Auth/email, hosted Storage and physical-device acceptance remain untested. No production or hosted changes. See docs/GENERAL-KING-KIND-RESOURCES.md for release/rollback requirements. Issue #50/#51 and recovery work remain separate.
+
 ## 2026-10-26 — King Kind neutral reader palette (owner approved)
 
 Owner approved the near-black/charcoal/gray palette with gold after reviewing the local visual proof. The reader stylesheet now uses near-black, charcoal and neutral gray with the existing gold accents. Only color values and the primary-button hover colors change; layout, responsive breakpoints, JavaScript, authorization and approved PDF remain unchanged. 21 existing source/security checks and contrast checks pass. Prepared for PR49; production remains unchanged. Owner reports both phone reading/download tests work; independent device-session corroboration, desktop download and final sandbox cleanup remain release gates. The loopback visual preview is a static color proof, not a new authenticated acceptance result.
@@ -85,3 +98,26 @@ Local full regression and responsive browser checks pass. Final physical-device
 acceptance and separately approved production Storage/website release remain gates.
 Personal notes/highlights are being prepared on a separate branch and are not part
 of this release. No production migration, upload, merge or deployment performed.
+
+
+## 2026-10-28 — General resource release correction candidate
+
+General-resource G1–G4 correction overlay implemented locally on sealed base 7be32edf540844a24583fee72fbe8cc106125a8c. Verified-user course drafts and asynchronous save fences; callback failures fail closed; persistent account email/switch; independent dashboard private-reader link. No page redesign, SQL/Storage/RLS/reader asset change, hosted execution, real sends, push/merge/deploy. Original application/recovery packages remain unchanged. Focused/security/full/browser/native evidence and new seal live only in the private outer audit workspace. Genuine provider/device acceptance and independently reviewed sandbox authorization remain required. See docs/GENERAL-RESOURCE-CORRECTIONS.md.
+
+
+## 2026-10-28 — Local King Kind reader session correction
+
+Separate successor to sealed 6d5730bf0034bbb138999ce8cab97ce150d525fe. Reader invalidates retained PDF/Blob/canvas/license state synchronously on Auth/storage/history/expiry changes; deferred authorization avoids SDK callback-lock deadlock. Generation-bound requests and detached rendering prevent stale completion from restoring prior-user content. Each personal-use download freshly checks identity and exact-object Storage eligibility. No design, SDK, PDF, SQL/RLS, general registration, lesson, recovery or Issue50/51 changes. Local regression and intercepted real-browser/real-renderer evidence are recorded privately; genuine-provider acceptance remains untested. See docs/KING-KIND-SESSION-CORRECTION.md. Stop at independent review; no hosted authorization, deployment or access grants.
+
+
+## 2026-10-29 — Issue #53 latest PR54 integration, LOCAL ONLY
+
+Reconciled PR54 373868a against accepted local a892b2b / Resource Registrant6d5730b /
+reader5c84a42. Reused the single private registration contract, frozen reader, all13
+lesson privacy and26 vendored SDK pins without runtime changes. Added native-backed
+Chromium/WebKit journey acceptance and launch contract comparison. Automatic course
+enrollment differs from accepted resource-only registration, and watch-to-advance
+is not implemented by the current course. These remain explicit release decisions/
+implementation gaps. Genuine provider, recovery, custody, maintenance and separate
+hosted/release approval remain blocked. No hosted execution, messages or deployment.
+See docs/GENERAL-PRAYER-SIGNUP-LAUNCH-CHECKLIST.md and private Issue53 evidence.

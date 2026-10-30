@@ -8,7 +8,7 @@ import path from 'node:path';
 import assert from 'node:assert/strict';
 import * as fixture from './fixtures/outreach-registration-ui.mjs';
 const root=fileURLToPath(new URL('../../',import.meta.url));
-const sdk=await readFile(process.env.SUPABASE_SDK_PATH);
+const sdk=await readFile(path.join(root,'assets/vendor/supabase-js-2.118.0.js'));
 assert.equal(createHash('sha256').update(sdk).digest('hex'),'bee24fc29228ed5a370f76a2ba1ca3c399549edad2fef23453c80148856a49af');
 const origin='https://staff.local.test',backend='https://synthetic-auth.supabase.co',key='sb-synthetic-auth-auth-token';
 const evidence=process.env.EVIDENCE_DIR;if(evidence)await mkdir(evidence,{recursive:true});
@@ -22,7 +22,6 @@ for(const[engine,options]of[[chromium,{channel:'chrome'}],[webkit,{}]]){
   page.on('pageerror',e=>errors.push(e.message));
   await ctx.route('**/*',async route=>{
    const req=route.request(),u=new URL(req.url());
-   if(u.hostname==='cdn.jsdelivr.net'&&u.pathname==='/npm/@supabase/supabase-js@2'&&req.method()==='GET')return route.fulfill({contentType:'text/javascript',body:sdk});
    if(u.origin===backend){
     if(u.pathname==='/auth/v1/logout'&&req.method()==='POST'){logoutCalls.push(u.searchParams.get('scope'));return route.fulfill({status:204,body:''})}
     if(u.pathname.startsWith('/rest/v1/rpc/')&&req.method()==='POST'){

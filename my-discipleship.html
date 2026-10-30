@@ -56,11 +56,16 @@
       <p>Your St. Lucia registration is connected to this Champion Life account. These resources are here whenever you come back.</p>
       <div class="dash-resource-grid">
         <div class="dash-resource"><strong>Getting a Grip on the Basics</strong><small>Continue your discipleship course and keep your progress synced across devices.</small><a href="getting-a-grip-1.html">Open Course</a></div>
-        <div class="dash-resource"><strong>King Kind Digital Book</strong><small>Enjoy Pastor Roddy’s free 83-page book. Your sign-in must match your Bessemer or Huntsville outreach registration email.</small><a href="king-kind-reader.html">Read Book</a></div>
+
         <div class="dash-resource"><strong>Morning Prayer</strong><small>Join Champion Life for 6 AM Prayer and continue building your faith.</small><a href="prayer.html">Join Prayer</a></div>
       </div>
     </section>
 
+  <section class="dash-outreach" id="readerResources">
+    <span class="eyebrow">Your Reading Resources</span><h2>King Kind Digital Book</h2>
+    <p>For verified general-resource, Bessemer and Huntsville registrants. The private reader checks your eligibility before opening the book.</p>
+    <div class="dash-resource"><a href="king-kind-reader.html">Open Private Reader</a></div>
+  </section>
   <section class="dash-course">
     <div class="dash-course-head">
       <span class="eyebrow">Current Course</span>
@@ -78,16 +83,25 @@
 </main>
 <footer class="footer"><div class="container footer-container"><div class="footer-grid"><div class="footer-brand-panel"><img class="footer-vision-image" src="assets/images/footer-raise-reign-reach.png" alt="Champion Life Church - Raise, Reign, Reach"></div><div class="footer-column"><h4>Explore</h4><a href="about.html">About</a><a href="watch.html">Watch</a><a href="ministries.html">Ministries</a><a href="outreach.html">Outreach</a></div><div class="footer-column"><h4>Connect</h4><a href="plan-your-visit.html">Plan Your Visit</a><a href="next-steps.html">Next Steps</a><a href="prayer.html">Prayer</a><a href="contact.html">Contact</a></div><div class="footer-column footer-contact"><h4>Champion Life Church</h4><address>650 Denton Blvd NW<br>Fort Walton Beach, FL 32547</address><a class="footer-phone" href="tel:+18507785322">(850) 778-5322</a></div></div><div class="subfooter"><span>© 2026 Champion Life Church</span><span class="subfooter-separator">•</span><span>Legal name: Living Faith</span></div></div></footer>
 <script src="assets/js/site.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="/assets/vendor/supabase-js-2.118.0.js" integrity="sha384-UagCvVPT5XXA0Hx+nJYUAGBFseHT9zBgpJMSebsAxl9lciTwbT+39j5VfRjdP5Tp" crossorigin="anonymous"></script>
 <script src="assets/js/supabase-config.js?v=20260923"></script>
 <script src="assets/js/champion-life-auth.js?v=20260923d"></script>
 <script>
 (async () => {
   const auth=window.ChampionLifeAuth;
   if(!auth){location.href='discipleship-login.html?next=my-discipleship.html';return}
-  const session=await auth.getSession();
-  if(!session){location.href='discipleship-login.html?next=my-discipleship.html';return}
-
+  let generation=0, activeId=null, expiryTimer, pageActive=true;
+  const login='discipleship-login.html?next=my-discipleship.html';
+  function clear(){
+    generation++;activeId=null;clearTimeout(expiryTimer);
+    for(const id of ['dashName','dashEmail','dashAvatar','dashProgressText','dashLessons'])document.getElementById(id).textContent='';
+    document.getElementById('dashProgressBar').style.width='0%';
+    document.getElementById('dashLessons').hidden=true;
+    document.getElementById('dashLoading').hidden=false;
+    document.getElementById('dashLoading').textContent='Verifying your account...';
+    document.getElementById('stLuciaResources').classList.remove('show');
+    document.getElementById('readerResources').classList.remove('show');
+  }
   const lessons=[
     'How to Become a Christian',
     'How to Be Sure You Are a Christian',
@@ -104,9 +118,21 @@
     'How to Serve God'
   ];
 
+  async function load(){
+  clear();const stamp=generation;
+  if(!pageActive)return;
   try{
-    const outreach=auth.getOutreachRegistration ? await auth.getOutreachRegistration('st_lucia_2026') : null;
-    const data=await auth.getDashboard();
+    const u=await auth.getVerifiedUser();
+    if(stamp!==generation)return;
+    if(!u){location.href=login;return}
+    activeId=u.id;
+    const outreach=auth.getOutreachRegistration ? await auth.getOutreachRegistration('st_lucia_2026',u.id) : null;
+    const data=await auth.getDashboard(u.id);
+    if(stamp!==generation||data?.user?.id!==u.id)return;
+    const session=await auth.getSession();
+    if(stamp!==generation)return;
+    if(session?.user?.id!==u.id||!session.expires_at||session.expires_at*1000<=Date.now()){clear();return}
+    document.getElementById('readerResources').classList.add('show');
     const profile=data?.profile||{};
     if(outreach) document.getElementById('stLuciaResources')?.classList.add('show');
     const name=((profile.first_name||'')+' '+(profile.last_name||'')).trim() || 'Champion Life Learner';
@@ -125,20 +151,31 @@
       const label=status==='completed'?'Complete':status==='in_progress'?'In Progress':'Not Started';
       const cls=status==='completed'?'complete':status==='in_progress'?'progress':'';
       const href='getting-a-grip-'+n+'.html';
-      const extra=n<=4?'Interactive worksheet + cloud save':(n<=10?'Video + workbook':'Course page');
+      const extra=n<=4?'Interactive worksheet + cloud save':(n<=10?'Video + workbook':'Workbook · video coming soon');
       return '<a class="dash-lesson" href="'+href+'"><span class="dash-num">'+String(n).padStart(2,'0')+'</span><span><strong>'+title+'</strong><small>'+extra+'</small></span><span class="dash-status '+cls+'">'+label+'</span></a>';
     }).join('');
     document.getElementById('dashLessons').innerHTML=html;
     document.getElementById('dashLessons').hidden=false;
     document.getElementById('dashLoading').hidden=true;
+    expiryTimer=setTimeout(load,Math.min(2147483647,session.expires_at*1000-Date.now()));
   }catch(e){
+    if(stamp!==generation)return;clear();
     document.getElementById('dashLoading').textContent='We could not load your progress right now. Please refresh and try again.';
   }
 
+  }
   document.getElementById('signOutBtn').addEventListener('click',async()=>{
-    await auth.signOut();
-    location.href='discipleship-login.html';
+    clear();
+    try{await auth.signOut();location.href='discipleship-login.html'}
+    catch{document.getElementById('dashLoading').textContent='Sign out failed. Please retry; private content is hidden.'}
   });
+  auth.client?.auth.onAuthStateChange?.(()=>{clear();setTimeout(load,0)});
+  window.addEventListener('pagehide',()=>{pageActive=false;clear()});
+  window.addEventListener('pageshow',()=>{pageActive=true;load()});
+  window.addEventListener('champion-auth-invalid',clear);
+  window.addEventListener('storage',e=>{if(e.key?.startsWith('sb-')||e.key===null){clear();setTimeout(load,0)}});
+  document.addEventListener('visibilitychange',()=>{pageActive=!document.hidden;if(!pageActive)clear();else load()});
+  await load();
 })();
 </script>
 </body>
