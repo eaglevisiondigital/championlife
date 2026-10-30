@@ -36,9 +36,9 @@
       if(token!==generation||currentUserId!==requestedUser)return;
       const {data:confirm,error:confirmError}=await auth.client.auth.getUser();
       if(confirmError||confirm?.user?.id!==requestedUser){await refresh();return;}
-      // Course enrollment is learner-owned; a temporary enrollment error does not
-      // revoke the already completed free resource registration.
-      try {await auth.ensureProfile({firstName:first,lastName:last});await auth.ensureEnrollment();} catch(_e) {}
+      // Course enrollment is performed by the registration RPC in one transaction,
+      // bound to auth.uid(). Never issue separate client-side writes after a response,
+      // because the user may have changed accounts while the request was pending.
       if(token!==generation||currentUserId!==requestedUser)return;
       byId('first').value='';byId('last').value='';
       show('success');
