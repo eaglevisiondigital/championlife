@@ -71,8 +71,9 @@ await scenario({rpc:async()=>({data:null,error:{message:'private provider secret
  ok(!s.document.getElementById('result').textContent.includes('private provider secret'),'provider failure text not leaked');
 });
 
+let checksOfUser=0;
 await scenario({user:{id:'person-A',email:'person-a@example.test'},
-verify:async()=>({data:{user:{id:'person-B',email:'person-b@example.test'}},error:null})},async s=>{
+verify:async()=>({data:{user:++checksOfUser===1?{id:'person-A',email:'person-a@example.test'}:{id:'person-B',email:'person-b@example.test'}},error:null})},async s=>{
  await s.submit();
  ok(s.requests.length===0,'account mismatch prevents registration RPC');
  ok(s.document.getElementById('success').hidden,'account mismatch never claims success');
