@@ -1,0 +1,388 @@
+{
+  "generated_for": "current-main source conflict inventory, no merge or production changes",
+  "inventory_date": "2026-10-31",
+  "main_sha": "bfb7af214707db73a3a3164bc96ccafae7de8ccf",
+  "sources": [
+    {
+      "number": 34,
+      "label": "NMI-giving",
+      "head_sha": "4e463f792bf9a2af03345e8854433e2d00863729",
+      "base_sha": "e3157f0afa3f563ab6560ca64c9049448f02c806",
+      "count": 250
+    },
+    {
+      "number": 35,
+      "label": "Unified-outreach",
+      "head_sha": "76c328c507460406218f4aff279d3ce3467c9710",
+      "base_sha": "e3157f0afa3f563ab6560ca64c9049448f02c806",
+      "count": 150
+    },
+    {
+      "number": 36,
+      "label": "Shared-Gate0",
+      "head_sha": "bbadd2b4adf75a4342b653d57c81fac8aa86e74a",
+      "base_sha": "e3157f0afa3f563ab6560ca64c9049448f02c806",
+      "count": 40
+    },
+    {
+      "number": 57,
+      "label": "King-kind-accepted",
+      "head_sha": "3f03fd4b46f405cb8d5926519a8fa573242a7d1b",
+      "base_sha": "bfb7af214707db73a3a3164bc96ccafae7de8ccf",
+      "count": 71
+    }
+  ],
+  "source_overlap_paths": [
+    {
+      "path": ".github/workflows/shared-platform-gate0.yml",
+      "prs": [
+        34,
+        35,
+        36
+      ]
+    },
+    {
+      "path": "ARCHITECTURE.md",
+      "prs": [
+        34,
+        35,
+        36,
+        57
+      ]
+    },
+    {
+      "path": "assets/css/staff-workspace.css",
+      "prs": [
+        34,
+        35,
+        36
+      ]
+    },
+    {
+      "path": "assets/js/staff-workspace.js",
+      "prs": [
+        34,
+        35,
+        36
+      ]
+    },
+    {
+      "path": "config/platform/acceptance-targets.json",
+      "prs": [
+        34,
+        35,
+        36
+      ]
+    },
+    {
+      "path": "config/platform/capabilities.json",
+      "prs": [
+        34,
+        35,
+        36
+      ]
+    },
+    {
+      "path": "config/platform/gate0-owned-files.json",
+      "prs": [
+        34,
+        35,
+        36
+      ]
+    },
+    {
+      "path": "config/platform/gate0-package.json",
+      "prs": [
+        34,
+        35,
+        36
+      ]
+    },
+    {
+      "path": "config/platform/gate0-sources.json",
+      "prs": [
+        34,
+        35,
+        36
+      ]
+    },
+    {
+      "path": "config/platform/public-module-files.json",
+      "prs": [
+        34,
+        35,
+        36
+      ]
+    },
+    {
+      "path": "config/platform/test-package-contract.json",
+      "prs": [
+        34,
+        35,
+        36
+      ]
+    },
+    {
+      "path": "CURRENT_BUILD_STATE.md",
+      "prs": [
+        34,
+        35,
+        36,
+        57
+      ]
+    },
+    {
+      "path": "DECISIONS.md",
+      "prs": [
+        34,
+        35,
+        36,
+        57
+      ]
+    },
+    {
+      "path": "docs/CHAMPION-LIFE-UNIFIED-PLATFORM-COMMAND.md",
+      "prs": [
+        34,
+        35,
+        36
+      ]
+    },
+    {
+      "path": "docs/gate0-source-continuity/nmi/ARCHITECTURE.md",
+      "prs": [
+        34,
+        35,
+        36
+      ]
+    },
+    {
+      "path": "docs/gate0-source-continuity/nmi/CURRENT_BUILD_STATE.md",
+      "prs": [
+        34,
+        35,
+        36
+      ]
+    },
+    {
+      "path": "docs/gate0-source-continuity/nmi/DECISIONS.md",
+      "prs": [
+        34,
+        35,
+        36
+      ]
+    },
+    {
+      "path": "docs/gate0-source-continuity/nmi/SECURITY_MODEL.md",
+      "prs": [
+        34,
+        35,
+        36
+      ]
+    },
+    {
+      "path": "docs/gate0-source-continuity/outreach/ARCHITECTURE.md",
+      "prs": [
+        34,
+        35,
+        36
+      ]
+    },
+    {
+      "path": "docs/gate0-source-continuity/outreach/CURRENT_BUILD_STATE.md",
+      "prs": [
+        34,
+        35,
+        36
+      ]
+    },
+    {
+      "path": "docs/gate0-source-continuity/outreach/DECISIONS.md",
+      "prs": [
+        34,
+        35,
+        36
+      ]
+    },
+    {
+      "path": "docs/gate0-source-continuity/outreach/SECURITY_MODEL.md",
+      "prs": [
+        34,
+        35,
+        36
+      ]
+    },
+    {
+      "path": "docs/SHARED-PLATFORM-GATE0.md",
+      "prs": [
+        34,
+        35,
+        36
+      ]
+    },
+    {
+      "path": "SECURITY_MODEL.md",
+      "prs": [
+        34,
+        35,
+        36,
+        57
+      ]
+    },
+    {
+      "path": "staff-outreach-registration.html",
+      "prs": [
+        35,
+        57
+      ]
+    },
+    {
+      "path": "staff-people.html",
+      "prs": [
+        35,
+        57
+      ]
+    },
+    {
+      "path": "supabase/migrations/20261019012735_shared_platform_gate0.sql",
+      "prs": [
+        34,
+        35,
+        36
+      ]
+    },
+    {
+      "path": "tools/backend-tests/fixtures/gate0-old-registry.sql",
+      "prs": [
+        34,
+        35,
+        36
+      ]
+    },
+    {
+      "path": "tools/backend-tests/gate0-browser.mjs",
+      "prs": [
+        34,
+        35,
+        36
+      ]
+    },
+    {
+      "path": "tools/backend-tests/gate0-build.test.mjs",
+      "prs": [
+        34,
+        35,
+        36
+      ]
+    },
+    {
+      "path": "tools/backend-tests/gate0-security.test.mjs",
+      "prs": [
+        34,
+        35,
+        36
+      ]
+    },
+    {
+      "path": "tools/backend-tests/gate0-shell.dom.mjs",
+      "prs": [
+        34,
+        35,
+        36
+      ]
+    },
+    {
+      "path": "tools/backend-tests/gate0-upgrade.test.mjs",
+      "prs": [
+        34,
+        35,
+        36
+      ]
+    },
+    {
+      "path": "tools/backend-tests/gate0.fixture.mjs",
+      "prs": [
+        34,
+        35,
+        36
+      ]
+    },
+    {
+      "path": "tools/backend-tests/outreach-registration.test.mjs",
+      "prs": [
+        34,
+        35,
+        36
+      ]
+    },
+    {
+      "path": "tools/backend-tests/outreach-workflow.test.mjs",
+      "prs": [
+        34,
+        35,
+        36
+      ]
+    },
+    {
+      "path": "tools/backend-tests/package.json",
+      "prs": [
+        34,
+        35,
+        36,
+        57
+      ]
+    },
+    {
+      "path": "tools/backend-tests/site-build.test.mjs",
+      "prs": [
+        34,
+        35,
+        36,
+        57
+      ]
+    },
+    {
+      "path": "tools/platform/compose-gate0.mjs",
+      "prs": [
+        34,
+        35,
+        36
+      ]
+    },
+    {
+      "path": "tools/platform/reconcile-manifests.mjs",
+      "prs": [
+        34,
+        35,
+        36
+      ]
+    },
+    {
+      "path": "tools/site-build/build.mjs",
+      "prs": [
+        34,
+        35,
+        36,
+        57
+      ]
+    },
+    {
+      "path": "tools/site-build/public-files.json",
+      "prs": [
+        34,
+        35,
+        36,
+        57
+      ]
+    }
+  ],
+  "overlap_count": 42,
+  "priority_rules": [
+    "PR #57 is frozen for support review; no substitution or retry",
+    "Gate 0 permission vocabulary first, then reconcile NMI/Outreach child code without wholesale merge",
+    "Production already has newer main than older child PR #34-36 base: build exact forward diff against main and reconcile 26-30 migrations actually applied",
+    "Shared staff shell, build allowlist, test package and docs must have a single source owner",
+    "NMI financial module and Outreach partner/care module retain separate immutable audit, finance/PII scopes",
+    "All preview acceptance flags off, no production grants or provider calls"
+  ]
+}
