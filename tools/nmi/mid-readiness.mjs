@@ -90,7 +90,7 @@ function selftest() {
   check(!evaluate(bad4).valid,'duplicate/extra route rejected');
   const bad5=structuredClone(t);bad5.controls.owner_finance_release='yes';
   check(!evaluate(bad5).valid,'approval must be boolean');
-  const pilot=clone(), s=pilot.mid_slots[0];
+  const pilot=structuredClone(t), s=pilot.mid_slots[0];
   s.merchant_organization='Champion Life';s.gateway_group_alias='GATEWAY-A';
   for(const k of ['legal_recipient_status','processor_status','settlement_owner_status','test_access_status'])s[k]=GOOD;
   s.verified_by='synthetic-reviewer';s.verified_at='2026-11-02T12:00:00Z';
