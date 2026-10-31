@@ -1,3 +1,7 @@
+## 2026-10-31 — Unified shell authorization lifetime
+
+Fresh remote user verification and existing server scope discovery precede module loading. Explicit denial, session identity change, logout and navigation retirement clear protected state and invalidate detached handlers; permission projections are refreshed on focus/visibility and every 20 seconds. Auth callbacks only invalidate synchronously, avoiding SDK lock reentry. Backend RLS/RPC checks remain authoritative; UI polling does not promise instantaneous remote revocation or cancellation of already submitted requests. No permission vocabulary, grant, SQL or private learner/King Kind policy changed. See [the complete contract and local/provider distinction](docs/UNIFIED-STAFF-SHELL.md).
+
 ## 2026-10-23 — Staff logout boundary
 
 The staff header calls the existing Supabase client's supported `auth.signOut({scope:'local'})`, then confirms the local session is absent before replacing navigation with the fixed staff login. It never clears all browser storage; SDK session cleanup and the application return hint are the only removals. A failed logout leaves protected content detached and displays a safe retry state, without claiming server retirement succeeded. Account changes and external sign-out clear the workspace. Pagehide clears protected snapshots; persisted pageshow reloads while hidden.

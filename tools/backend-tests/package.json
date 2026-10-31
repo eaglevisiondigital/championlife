@@ -17,6 +17,8 @@
     "test:operations-native": "TEST_NATIVE_PG=1 node operations-admin.test.mjs",
     "test:operations-browser": "node operations-admin.browser.mjs",
     "test:operations-member-native": "TEST_NATIVE_PG=1 node operations-member-scope.test.mjs",
-    "test:staff-session-browser": "node staff-session.browser.mjs"
+    "test:staff-session-browser": "node staff-session.browser.mjs",
+    "test:staff-workspace-browser": "node staff-workspace.browser.mjs",
+    "test:staff-workspace-native": "node staff-workspace.native.mjs"
   }
 }
