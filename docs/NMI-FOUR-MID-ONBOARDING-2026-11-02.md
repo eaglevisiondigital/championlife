@@ -49,7 +49,11 @@ SowGo settlement must not be inferred from a fund label alone. If its merchant b
 
 `node tools/nmi/mid-readiness.mjs` prints a factual `HOLD_NOT_BOARDING_VERIFIED` status for the unboarded template.
 
-`node tools/nmi/mid-readiness.mjs docs/nmi-four-mid-readiness.template.json --require-ready` fails until all required owner/provider proofs are recorded. This is a **static contract validation**, not proof the gateway/bank is connected. Production checkout must remain disabled until live provider and financial authorization.
+`node tools/nmi/mid-readiness.mjs docs/nmi-four-mid-readiness.template.json --require-ready` validates **full five-route readiness** and remains held while any route is unverified.
+
+`node tools/nmi/mid-readiness.mjs docs/nmi-four-mid-readiness.template.json --require-pilot-route=Main` validates a **single approved one-time checkout pilot**. Other unused routes and their MIDs can stay held, and an uncompleted GiveHub recurring-token migration does not block a separate new one-time gift. The selected route still needs validated merchant ownership, settled recipient, hosted checkout, webhook, financial release and rollback evidence; recurring functionality requires a separately verified vault/legacy inventory.
+
+These are **static contract validations**, not proof the gateway/bank is connected. Production checkout remains disabled until genuine provider and financial acceptance.
 
 ## 5. Actions for Monday or Tuesday
 
