@@ -1,0 +1,113 @@
+{
+  "schema_version": 1,
+  "readiness_status": "PENDING_PROVIDER_BOARDING",
+  "expected_mid_count": 4,
+  "evidence_policy": "All actual MIDs, banking, merchant agreements, gateway tokens, secrets, and provider credentials are kept in an owner-controlled private vault; this repository records only non-secret aliases and verification states.",
+  "mid_slots": [
+    {
+      "slot": "MID-01",
+      "merchant_organization": "UNVERIFIED",
+      "legal_recipient_status": "PENDING",
+      "gateway_group_alias": "UNVERIFIED",
+      "processor_status": "PENDING",
+      "settlement_owner_status": "PENDING",
+      "recurring_vault_status": "PENDING",
+      "test_access_status": "PENDING",
+      "verified_by": "",
+      "verified_at": ""
+    },
+    {
+      "slot": "MID-02",
+      "merchant_organization": "UNVERIFIED",
+      "legal_recipient_status": "PENDING",
+      "gateway_group_alias": "UNVERIFIED",
+      "processor_status": "PENDING",
+      "settlement_owner_status": "PENDING",
+      "recurring_vault_status": "PENDING",
+      "test_access_status": "PENDING",
+      "verified_by": "",
+      "verified_at": ""
+    },
+    {
+      "slot": "MID-03",
+      "merchant_organization": "UNVERIFIED",
+      "legal_recipient_status": "PENDING",
+      "gateway_group_alias": "UNVERIFIED",
+      "processor_status": "PENDING",
+      "settlement_owner_status": "PENDING",
+      "recurring_vault_status": "PENDING",
+      "test_access_status": "PENDING",
+      "verified_by": "",
+      "verified_at": ""
+    },
+    {
+      "slot": "MID-04",
+      "merchant_organization": "UNVERIFIED",
+      "legal_recipient_status": "PENDING",
+      "gateway_group_alias": "UNVERIFIED",
+      "processor_status": "PENDING",
+      "settlement_owner_status": "PENDING",
+      "recurring_vault_status": "PENDING",
+      "test_access_status": "PENDING",
+      "verified_by": "",
+      "verified_at": ""
+    }
+  ],
+  "checkout_routes": [
+    {
+      "route": "Main",
+      "organization": "Champion Life",
+      "purpose": "contribution",
+      "mid_slot": null,
+      "enabled": false,
+      "boarded_purpose_approved": false
+    },
+    {
+      "route": "Youth",
+      "organization": "Champion Life",
+      "purpose": "contribution",
+      "mid_slot": null,
+      "enabled": false,
+      "boarded_purpose_approved": false
+    },
+    {
+      "route": "Outreach",
+      "organization": "SowGo",
+      "purpose": "contribution",
+      "mid_slot": null,
+      "enabled": false,
+      "boarded_purpose_approved": false
+    },
+    {
+      "route": "Events",
+      "organization": "UNVERIFIED",
+      "purpose": "mixed_event_fee_or_contribution",
+      "mid_slot": null,
+      "enabled": false,
+      "boarded_purpose_approved": false
+    },
+    {
+      "route": "Merch",
+      "organization": "UNVERIFIED",
+      "purpose": "purchase",
+      "mid_slot": null,
+      "enabled": false,
+      "boarded_purpose_approved": false
+    }
+  ],
+  "controls": {
+    "provider_sandbox_verified": false,
+    "canonical_ledger_reconciled": false,
+    "tokenized_checkout_verified": false,
+    "webhook_replay_verified": false,
+    "refund_recovery_verified": false,
+    "merchant_authority_verified": false,
+    "givehub_recurring_inventory_reviewed": false,
+    "owner_finance_release": false
+  },
+  "source": {
+    "champion_pr34": "4e463f792bf9a2af03345e8854433e2d00863729",
+    "gate0_pr36": "bbadd2b4adf75a4342b653d57c81fac8aa86e74a",
+    "source_date": "2026-10-31"
+  }
+}
