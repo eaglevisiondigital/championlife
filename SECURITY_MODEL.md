@@ -1,3 +1,7 @@
+## Unified shell discovery correction — 2026-10-31
+
+Process every discovery response independently: an explicit denial must immediately invalidate the workspace even if a concurrent discovery RPC remains pending. Late responses cannot reverse terminal invalidation. Canonical comparison treats organization, campaign, grant and department arrays as unordered sets; an actual change still retires access. No change to authoritative PostgreSQL authorization or session-retirement requirements. Synthetic browser proof is not provider-backed revocation evidence.
+
 ## 2026-10-31 — Unified shell authorization lifetime
 
 Fresh remote user verification and existing server scope discovery precede module loading. Explicit denial, session identity change, logout and navigation retirement clear protected state and invalidate detached handlers; permission projections are refreshed on focus/visibility and every 20 seconds. Auth callbacks only invalidate synchronously, avoiding SDK lock reentry. Backend RLS/RPC checks remain authoritative; UI polling does not promise instantaneous remote revocation or cancellation of already submitted requests. No permission vocabulary, grant, SQL or private learner/King Kind policy changed. See [the complete contract and local/provider distinction](docs/UNIFIED-STAFF-SHELL.md).

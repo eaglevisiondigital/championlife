@@ -62,3 +62,19 @@ After review, request a separately scoped isolated acceptance authorization with
 Production approval must separately identify the reviewed website commit and build, applicable CI, current-main drift, real-session acceptance and rollback artifact. Rollback restores the prior website build; there is no SQL reversal or data cleanup for this shell. No push, merge, hosted acceptance, staff activation, deployment or messages were performed by local implementation.
 
 NMI PR #59 remains independently ready for the planned November 2–3 four-MID boarding checks; this slice does not attest provider boarding or activate payments. Global Propel PR #3 remains independent. The blocked King Kind PR #57 migration and advanced Outreach/adult-evidence packages remain unchanged and unexecuted.
+
+## Independent review correction — 2026-10-31
+
+The original 53-payload seal and original acceptance results above describe `e18062467c8a2a2e6af7239f12e2a3ca7d035e1d`, not the corrected build. Fresh independently authored Chromium/WebKit tests reproduced two issues: explicit discovery denial remained unprocessed while a sibling RPC was pending, and reordered equivalent permission arrays incorrectly stopped an authorized workspace. The correction changes only `staff-workspace.js` runtime behavior. Each discovery failure now invalidates immediately; canonical comparison ignores set order but detects real scope changes. The original failure reproduction is retained privately alongside a new integrity record.
+
+Permanent focused regression (fictional adapter; no real provider session):
+
+```sh
+SUPABASE_SDK_PATH=/absolute/path/to/accepted/supabase-js-2.118.0.js \
+  EVIDENCE_DIR=/absolute/private/evidence/path \
+  node tools/backend-tests/staff-workspace-discovery.browser.mjs
+```
+
+The correction adds this test file and updates this contract, CURRENT_BUILD_STATE.md and SECURITY_MODEL.md. Public runtime/allowlist scope stays eight files plus the allowlist. No unrelated build output, SQL or configuration changes are intended. The accepted original King Kind, NMI and Global Propel candidates are not imported.
+
+Draft publication uses `[skip netlify]` in the correction commit and draft PR title to prevent an unapproved Netlify deploy while allowing GitHub CI. Current production and original seals must be checked again after publication. A passing local review permits the authorized draft PR only; genuine-provider isolated acceptance, recovery/custody/maintenance readiness and an exact website-only production approval remain outstanding.

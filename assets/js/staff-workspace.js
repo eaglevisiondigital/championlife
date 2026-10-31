@@ -11,6 +11,8 @@
  let epoch=0,identity=null,active=false,stopped=false,checking=false,fingerprint='',timer;
  const denied=r=>[401,403].includes(r?.status)||[401,403].includes(r?.error?.status)||['42501','PGRST301','PGRST302','PGRST303'].includes(r?.error?.code);
  const reject=()=>({data:null,error:{code:'42501',message:'Staff access must be verified again.'},status:403});
+ // Discovery arrays are unordered sets. Canonicalize comparison, not display order.
+ const canonical=value=>Array.isArray(value)?value.map(canonical).sort((a,b)=>JSON.stringify(a).localeCompare(JSON.stringify(b))):value&&typeof value==='object'?Object.fromEntries(Object.keys(value).sort().map(key=>[key,canonical(value[key])])):value;
  function drawer(open){sidebar.classList.toggle('staff-drawer-open',open);menu.setAttribute('aria-expanded',String(open));sidebar.inert=mobile.matches&&!open;document.querySelector('.staff-body').inert=mobile.matches&&open;if(open)sidebar.querySelector('a')?.focus()}
  function stop(reason){
   if(stopped)return;stopped=true;active=false;epoch++;clearInterval(timer);
@@ -87,14 +89,23 @@
    const result=await auth.client.auth.getUser();if(stopped||generation!==epoch)return;
    const user=result.data?.user;if(result.error||!user?.id||!user.email_confirmed_at||user.is_anonymous)throw Error('Verified sign-in required');
    if(identity&&identity!==user.id){stop('Your account changed.');return}identity=user.id;
-   const [staff,registration]=await Promise.all([originalRpc('staff_workspace_context',{}),originalRpc('outreach_registration_workspace',{p_action:'campaigns',p_campaign:null,p_payload:{}})]);
+   const discover=async(...args)=>{
+    const response=await originalRpc(...args);
+    // Process each denial immediately; a pending sibling must not retain access.
+    if(response.error||denied(response)){
+     if(generation===epoch&&!stopped)stop('Access is no longer available.');
+     throw Error('Permission discovery failed');
+    }
+    return response;
+   };
+   const [staff,registration]=await Promise.all([discover('staff_workspace_context',{}),discover('outreach_registration_workspace',{p_action:'campaigns',p_campaign:null,p_payload:{}})]);
    if(stopped||generation!==epoch)return;
    if(staff.error||registration.error||denied(staff)||denied(registration))throw Error('Permission discovery failed');
    const session=await auth.getSession();if(stopped||generation!==epoch)return;if(session?.user?.id!==identity)throw Error('Session changed');
    const grants=staff.data?.grants,organizations=staff.data?.organizations,campaigns=registration.data;
    if(!Array.isArray(grants)||!Array.isArray(organizations)||!Array.isArray(campaigns))throw Error('Invalid context');
    const snapshot={grants,organizations:organizations.filter(o=>grants.some(g=>g.organization_id===o.id&&g.permission==='people.read'&&!g.department_ids)),campaigns};
-   const current=JSON.stringify(snapshot);
+   const current=JSON.stringify(canonical(snapshot));
    if(!initial&&current!==fingerprint){stop('Your permissions changed. Verify access again.');return}
    if(initial){show(snapshot);fingerprint=current;active=true;main.hidden=false;message.textContent='';
     const modules={people:'assets/js/outreach-people.js',registration:'assets/js/outreach-registration-staff.js'};
