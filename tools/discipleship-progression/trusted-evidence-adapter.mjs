@@ -50,7 +50,8 @@ export async function reviewTrustedProgression(input, ports, {signal, now = Date
         ...target, revision:current.revision, sessionActive:current.sessionActive,
         enrolled:current.enrolled, videoApproved:current.videoApproved,
         videoRevision:current.videoRevision, durationMs:current.durationMs,
-        watchReceipts:checked, answerReceipt:current.answerReceipt
+        watchReceipts:checked, answerReceipt:current.answerReceipt,
+        enrollmentId:current.enrollmentId, worksheetRevision:current.worksheetRevision
       })},{signal});
       if (signal?.aborted || checked.some(p => p.validUntil <= now())) result = deny();
     },{signal});

@@ -21,3 +21,13 @@ The existing 95% union-of-eligible-intervals rule is unchanged. Duplicate receip
 5. Only then implement/review an atomic 95%-watch plus valid-answer completion transaction. Every current review still returns `canCommit:false`. Lessons 5–13 lack cloud worksheets and videos 11–13 are unavailable; neither is fabricated.
 
 No SQL, RLS, public site, SDK, existing worksheet transaction, learner answer, King Kind PR57, or production configuration is changed. Existing native database checks remain in CI; no new database claim is made by this crypto-only package. Real provider acceptance, cleanup/recovery and a separately authorized release remain mandatory.
+
+## Opaque worksheet receipt integration — November 1 successor
+
+The review-only progression evaluator now accepts the owned worksheet RPC's UUID response shape through a discriminated, **server-owned** `answerReceipt` projection with `source: owned_worksheet_transaction_v1`. The serialized ledger supplies the current `enrollmentId` and `worksheetRevision`; the projection must bind the same learner, current session and enrollment. Its nested `receipt` must have the exact current UUID token, course, lesson, available status, 20 required/20 saved nonblank answers, strict completion-count flag, and the RPC's false `canComplete`/`canCommit` fields. No UUID is converted into a sequence or exposed in review results.
+
+A raw browser RPC receipt is deliberately insufficient: it has no verified ownership binding. The future server repository must derive the binding from Auth and the locked owned enrollment/version rows, never from browser data or a client-added wrapper. The current provider/ledger ports remain uninstalled. This source change resolves the response-format mismatch, **not** the outstanding durable backend completion transaction or provider acceptance requirement in item 4 above. An isolated source review result remains `canCommit: false` and is not an authorization token.
+
+The existing serialized ledger equality checks cover enrollment replacement, receipt/token changes and session changes during playback verification. The legacy numeric disconnected contract is preserved only when the receipt has no discriminator; malformed/unknown discriminated receipts cannot fall back to it. Lessons5–13 cannot receive cloud worksheet completion credit. No SQL, public page, SDK, RLS or King Kind code changes.
+
+Local suite: 293 PASS, including 49 new opaque-receipt integration cases. Genuine provider, cross-process serialization, installed backend and course-completion writes remain untested/disabled. Existing native worksheet and browser evidence is preserved; exact-head CI remains required after independent source review.

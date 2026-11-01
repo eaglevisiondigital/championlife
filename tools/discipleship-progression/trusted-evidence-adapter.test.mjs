@@ -31,3 +31,26 @@ test('proof expires before lock callback',async()=>{const f=fixture();let now=10
 
 for(const field of ['userId','sessionId','course','lesson']) test('wrong durable ledger '+field,async()=>{const f=fixture();f.ledger[field]='other';assert.equal((await run(f)).advanceEvidence,false);});
 test('request mutated during auth cannot redirect lesson',async()=>{const f=fixture(),r={...request};f.ports.authenticate=async()=>{r.lesson=2;return f.principal;};assert.equal((await run(f,r)).completionEvidence,true);});
+
+// Actual owned_worksheet_transaction response shape; ownership is supplied only
+// by the server ledger under its existing serialization contract.
+const tokenA='00000000-0000-4000-8000-000000000001';
+const tokenB='00000000-0000-4000-8000-000000000002';
+function worksheetFixture() {
+ const f=fixture();
+ f.ledger.enrollmentId='enrollment-a';f.ledger.worksheetRevision=tokenA;
+ f.ledger.answerReceipt={source:'owned_worksheet_transaction_v1',userId:'learner-a',sessionId:'session-a',enrollmentId:'enrollment-a',receipt:{status:'available',course:COURSE,lesson:1,revision:tokenA,requiredQuestions:20,savedNonblankAnswers:20,allRequiredAnswersSaved:true,canComplete:false,canCommit:false}};
+ return f;
+}
+test('opaque worksheet receipt composes without converting token or allowing writes',async()=>{const r=await run(worksheetFixture());assert.equal(r.completionEvidence,true);assert.equal(r.canCommit,false);assert.equal(JSON.stringify(r).includes(tokenA),false);});
+for(const [field,value] of Object.entries({userId:'learner-b',sessionId:'session-b',enrollmentId:'enrollment-b',source:'browser_receipt'})) test('opaque ownership rejects '+field,async()=>{const f=worksheetFixture();f.ledger.answerReceipt[field]=value;assert.equal((await run(f)).completionEvidence,false);});
+for(const [field,value] of Object.entries({status:'failed',course:'other',lesson:2,revision:tokenB,requiredQuestions:19,savedNonblankAnswers:19,allRequiredAnswersSaved:'true',canComplete:true,canCommit:true})) test('opaque receipt rejects '+field,async()=>{const f=worksheetFixture();f.ledger.answerReceipt.receipt[field]=value;assert.equal((await run(f)).completionEvidence,false);});
+for(const value of [null,undefined,1,'1','',{},'00000000-0000-1000-8000-000000000001','00000000-0000-4000-7000-000000000001']) test('invalid opaque token '+JSON.stringify(value),async()=>{const f=worksheetFixture();f.ledger.worksheetRevision=value;f.ledger.answerReceipt.receipt.revision=value;assert.equal((await run(f)).completionEvidence,false);});
+for(const field of ['source','userId','sessionId','enrollmentId','receipt']) test('missing opaque binding '+field,async()=>{const f=worksheetFixture();delete f.ledger.answerReceipt[field];assert.equal((await run(f)).completionEvidence,false);});
+for(const field of ['status','course','lesson','revision','requiredQuestions','savedNonblankAnswers','allRequiredAnswersSaved','canComplete','canCommit']) test('missing opaque receipt '+field,async()=>{const f=worksheetFixture();delete f.ledger.answerReceipt.receipt[field];assert.equal((await run(f)).completionEvidence,false);});
+test('browser RPC summary alone is not owned answer evidence',async()=>{const f=worksheetFixture();f.ledger.answerReceipt=f.ledger.answerReceipt.receipt;assert.equal((await run(f)).completionEvidence,false);});
+test('failed opaque receipt cannot downgrade through legacy fields',async()=>{const f=worksheetFixture();Object.assign(f.ledger.answerReceipt,fixture().ledger.answerReceipt);f.ledger.answerReceipt.receipt.revision=tokenB;assert.equal((await run(f)).completionEvidence,false);});
+for(const field of ['worksheetRevision','enrollmentId','answerReceipt']) test('opaque state changed during observer wait '+field,async()=>{const f=worksheetFixture();f.ports.verifyPlayback=async()=>{f.ledger[field]=null;return f.proof;};assert.equal((await run(f)).completionEvidence,false);});
+test('changed receipt under ledger callback cannot complete',async()=>{const f=worksheetFixture();let n=0;f.ports.verifyPlayback=async()=>{if(++n===2)f.ledger.answerReceipt.receipt.revision=tokenB;return f.proof;};assert.equal((await run(f)).completionEvidence,false);});
+test('new enrollment with old receipt cannot complete',async()=>{const f=worksheetFixture();f.ledger.enrollmentId='replacement-enrollment';assert.equal((await run(f)).completionEvidence,false);});
+for(let lesson=5;lesson<=10;lesson++) test('opaque receipt cannot invent worksheet '+lesson,async()=>{const f=worksheetFixture();f.ledger.lesson=lesson;f.proof.lesson=lesson;f.ledger.answerReceipt.receipt.lesson=lesson;assert.equal((await run(f,{...request,lesson})).completionEvidence,false);});

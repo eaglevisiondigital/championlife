@@ -2,6 +2,19 @@
 export const COURSE = 'getting-a-grip-on-the-basics';
 const id = value => typeof value === 'string' && /^[A-Za-z0-9_-]{1,100}$/.test(value);
 const integer = value => Number.isSafeInteger(value) && value >= 0;
+const uuid = value => typeof value === 'string' && /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/.test(value);
+
+// Only the serialized server ledger may supply this binding. The public worksheet
+// RPC response intentionally omits ownership and is insufficient on its own.
+function ownedWorksheetComplete(a, s, target) {
+  const r = a.receipt;
+  return a.userId === target.userId && a.sessionId === target.sessionId &&
+    id(s.enrollmentId) && a.enrollmentId === s.enrollmentId &&
+    uuid(s.worksheetRevision) && r?.revision === s.worksheetRevision &&
+    r.status === 'available' && r.course === COURSE && r.lesson === target.lesson &&
+    r.requiredQuestions === 20 && r.savedNonblankAnswers === 20 &&
+    r.allRequiredAnswersSaved === true && r.canComplete === false && r.canCommit === false;
+}
 const denied = reason => Object.freeze({reason, watchThresholdMet:false, answerRequirementMet:false, advanceEvidence:false, completionEvidence:false, canCommit:false});
 
 /** Port must serialize its snapshot with enrollment, session and evidence changes.
@@ -38,7 +51,11 @@ export async function reviewProgression(request, port, {signal} = {}) {
       const watch = BigInt(watched) * 100n >= BigInt(s.durationMs) * 95n;
       const a = s.answerReceipt;
       // Lessons 5–13 device notes are not durable cloud worksheet evidence.
-      const answers = target.lesson <= 4 && a?.durable === true && a?.complete === true && id(a.id) && a.userId === target.userId && a.course === COURSE && a.lesson === target.lesson && integer(a.revision);
+      const answers = target.lesson <= 4 && (a?.source === 'owned_worksheet_transaction_v1'
+        ? ownedWorksheetComplete(a, s, target)
+        // Preserve the older disconnected review contract, but never downgrade a
+        // malformed or unknown discriminated receipt to that legacy shape.
+        : a && !Object.hasOwn(a, 'source') && a.durable === true && a.complete === true && id(a.id) && a.userId === target.userId && a.course === COURSE && a.lesson === target.lesson && integer(a.revision));
       return Object.freeze({reason:'reviewed',watchThresholdMet:watch,answerRequirementMet:!!answers,advanceEvidence:watch,completionEvidence:watch && !!answers,canCommit:false});
     });
     if (!called || signal?.aborted) return denied('unavailable');
