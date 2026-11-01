@@ -1,0 +1,25 @@
+name: Outreach summary mounted in synthetic Chrome and WebKit
+on:
+  pull_request:
+    paths:
+      - 'tools/outreach/**'
+      - '.github/workflows/outreach-summary-browser-review.yml'
+permissions:
+  contents: read
+jobs:
+  synthetic-browser:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install locked test dependencies
+        run: npm ci --ignore-scripts --prefix tools/backend-tests
+      - name: Install isolated browsers
+        run: node tools/backend-tests/node_modules/playwright/cli.js install --with-deps chromium webkit
+      - name: Verify frozen PR61 actual browser mount (no real provider)
+        run: node tools/outreach/church-outreach-summary-staff.browser.mjs
+      - name: Verify clean diff
+        run: git diff --check
