@@ -270,6 +270,15 @@ for(const [engine,settings] of [[chromium,{channel:'chrome'}],[webkit,{}]]){
      check(result.cleared,engine.name()+' '+width+' '+mode+' immediately clears held-request totals');
      check(result.rejected&&result.requests===0&&result.remainedClear,
        engine.name()+' '+width+' '+mode+' late response and detached controls issue zero new RPCs');
+     // The frozen staff-session correctly schedules location.replace(login) at
+     // the next macrotask for a changed account. Complete that navigation
+     // before loading the next fictional staff session, or the old document's
+     // zero-delay redirect can win the race against login().
+     if(mode==='account-change') {
+       await page.waitForURL('**/discipleship-login.html*');
+       check(page.url().includes('/discipleship-login.html'),
+         engine.name()+' '+width+' changed-account redirect completes before new login');
+     }
    }
 
    await login();await mount();
