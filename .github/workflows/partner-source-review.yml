@@ -39,6 +39,7 @@ jobs:
       - run: node tools/partner-platform/assigned-backend.browser.mjs
       - run: TEST_POSTGRES_BIN="$(pg_config --bindir)" node tools/partner-platform/assigned-backend.native.mjs
       - run: TEST_POSTGRES_BIN="$(pg_config --bindir)" node tools/partner-platform/authority-serialization.native.mjs
+      - run: TEST_POSTGRES_BIN="$(pg_config --bindir)" node tools/partner-platform/canonical-repository.native.mjs
       - run: TEST_POSTGRES_BIN="$(pg_config --bindir)" node tools/partner-platform/private-revocation.native.mjs
       - run: TEST_POSTGRES_BIN="$(pg_config --bindir)" node tools/partner-platform/private-issuance.native.mjs
       - run: git diff --check

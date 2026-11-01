@@ -5,7 +5,7 @@ export const IDENTITY_SOURCE_HASHES=Object.freeze({
  b1:'578fd9fa7eb6786eea79345039bc4eec0c11a2b779875759b770627eda727f6a',
  b2:'46d29ac81d565f17b34e41571d47c2b016fe1b2f54242bf8c632562e5b9d7754'
 });
-const uuid=x=>typeof x==='string'&&/^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/.test(x);
+const uuid=x=>typeof x==='string'&&x.length===36&&/^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/.test(x);
 const rev=x=>Number.isSafeInteger(x)&&x>0;
 const capability=(values,required)=>Array.isArray(values)&&values.every(value=>typeof value==='string')&&values.includes(required);
 const hash=x=>typeof x==='string'&&/^[a-f0-9]{64}$/.test(x);

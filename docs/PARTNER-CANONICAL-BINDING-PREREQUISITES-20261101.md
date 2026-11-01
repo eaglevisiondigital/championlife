@@ -40,3 +40,7 @@ Local result: 22 PGlite assertions and 255 existing Partner/shared-backend Node 
 ## Release boundary
 
 No old or new migration, grants, API exposure, account creation, real staff access, public mount, hosted database, message, payment, deployment or merge. All current metadata remains null/unverified. Independent source review, exact-head Linux native CI, complete identity-stack provenance, genuine Auth/revocation acceptance and separately authorized release remain gates.
+
+## Subsequent source candidate
+
+The [unmounted canonical repository](PARTNER-CANONICAL-REPOSITORY-20261101.md) now exercises an exact selected Issue50 fixture and positive existing-row locking, using existing account/source uniqueness to prevent replacement. It does not install the historical stack or approve a runtime mount. The original current-baseline missing-schema observation and provider/release gates remain valid.
