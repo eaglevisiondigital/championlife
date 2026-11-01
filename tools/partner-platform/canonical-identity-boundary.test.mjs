@@ -39,3 +39,5 @@ test('two callback snapshots cannot substitute identity',async()=>{const f=fixtu
 test('source provenance changed after snapshot denies',async()=>{const f=fixture();f.setHook(async cb=>{cb(f.snapshot);f.repository.sourceHashes.b2='0'.repeat(64)});assert.equal((await f.boundary.read(f.args)).personId,null)});
 
 test('conflicting canonical owner rejected',async()=>{const f=fixture();f.snapshot.person.user_id=f.ids.actor;assert.equal((await f.boundary.read(f.args)).personId,null)});
+
+for(const field of ['campaignGrant','partnerGrant'])for(const malformed of ['view','partner.view','notview','notpartner.view',null,0,true,{},['view',null],['partner.view',42]])test(`malformed capability proof ${field} ${JSON.stringify(malformed)}`,async()=>{const f=fixture();f.snapshot[field].capabilities=malformed;assert.deepEqual(await f.boundary.read(f.args),{identityStatus:'unverified',personId:null})});

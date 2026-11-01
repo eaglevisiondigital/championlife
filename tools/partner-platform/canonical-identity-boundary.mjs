@@ -7,6 +7,7 @@ export const IDENTITY_SOURCE_HASHES=Object.freeze({
 });
 const uuid=x=>typeof x==='string'&&/^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/.test(x);
 const rev=x=>Number.isSafeInteger(x)&&x>0;
+const capability=(values,required)=>Array.isArray(values)&&values.every(value=>typeof value==='string')&&values.includes(required);
 const hash=x=>typeof x==='string'&&/^[a-f0-9]{64}$/.test(x);
 const at=x=>typeof x==='string'&&Number.isFinite(Date.parse(x))?Date.parse(x):NaN;
 const active=(x,n)=>x?.active===true&&at(x.effective_at)<=n&&(x.expires_at===null||n<at(x.expires_at));
@@ -39,8 +40,8 @@ export function createCanonicalPartnerIdentityBoundary({getPrincipal,repository,
     requireValue(campaign?.id===request.campaignId&&campaign.organization_id===request.organizationId);
     requireValue(partner?.active===true&&uuid(partner.id)&&partner.campaign_id===campaign.id);
     requireValue(assignment?.id===request.assignmentId&&assignment.campaign_id===campaign.id&&assignment.partner_church_id===partner.id&&assignment.assigned_worker_user_id===actor.id&&assignment.status==='active'&&assignment.event_registration_id===null&&rev(assignment.revision));
-    requireValue(active(campaignGrant,n)&&campaignGrant.campaign_id===campaign.id&&campaignGrant.user_id===actor.id&&campaignGrant.capabilities?.includes('view'));
-    requireValue(active(partnerGrant,n)&&partnerGrant.campaign_id===campaign.id&&partnerGrant.partner_church_id===partner.id&&partnerGrant.user_id===actor.id&&partnerGrant.capabilities?.includes('partner.view'));
+    requireValue(active(campaignGrant,n)&&campaignGrant.campaign_id===campaign.id&&campaignGrant.user_id===actor.id&&capability(campaignGrant.capabilities,'view'));
+    requireValue(active(partnerGrant,n)&&partnerGrant.campaign_id===campaign.id&&partnerGrant.partner_church_id===partner.id&&partnerGrant.user_id===actor.id&&capability(partnerGrant.capabilities,'partner.view'));
     requireValue(uuid(source?.id)&&source.id===assignment.decision_registration_id&&source.consent===true&&uuid(source.user_id)&&hash(s.currentSourceHash));
     requireValue(uuid(registrant?.id)&&registrant.campaign_id===campaign.id&&registrant.organization_id===campaign.organization_id&&registrant.legacy_registration_id===source.id&&uuid(registrant.person_id)&&rev(registrant.revision));
     requireValue(review?.campaign_id===campaign.id&&review.source_id===source.id&&review.outcome==='linked'&&rev(review.revision)&&review.registrant_revision===registrant.revision&&review.source_hash===s.currentSourceHash);
