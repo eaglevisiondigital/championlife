@@ -27,3 +27,16 @@ The independent source replay reproduced two earlier-write gaps in the original 
 Immediately before `create`, `prepare` or `operation_job`, the gateway rechecks its server configuration, including after authentication/challenge waits. This is a defensive in-process kill switch; database handoff and permission checks remain authoritative, and a request already sent is not claimed to be canceled. No environment flags, SQL permissions, source acceptance pin or provider configuration are activated.
 
 The dedicated workflow runs both executor and gateway negative tests. Additional local regression executes the existing real disposable SQL pipeline using fictional HTTP responses, covering accepted/declined/UNKNOWN results, authoritative recovery lookup, idempotency, webhook replay, ledger and receipt holds. These are provider-independent checks, not hosted or merchant acceptance.
+
+## Webhook boolean correction — November 1 follow-up
+
+The exact reviewed webhook used JavaScript truthiness for `enabled`. Independent
+local reproduction confirmed string `"false"`, string `"true"`, `1`, `[]` and `{}`
+could pass into secret reading and signed-event RPC ingestion while checkout was
+intended disabled. This did not demonstrate a charge or bypass of database scope.
+
+The webhook now requires `config.enabled === true` before reading the request body,
+secrets or invoking any RPC. Recovery-only does not implicitly enable this separate
+webhook ingress. 28 malformed/default-off combinations plus three valid-true
+signature/merchant checks preserve the original authorized ingestion behavior.
+No production settings, SQL, payment transport or database permissions change.

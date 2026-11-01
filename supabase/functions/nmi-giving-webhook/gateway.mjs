@@ -5,7 +5,7 @@ const uuid=x=>/^[a-f0-9]{8}-[a-f0-9-]{27}$/i.test(x||'');
 export function createGivingWebhook(config,fetcher=fetch,readSecret=(_name)=> ''){
  return async req=>{
   const reply=(status,x)=>new Response(JSON.stringify(x),{status,headers:{'Content-Type':'application/json','Cache-Control':'no-store'}});
-  if(req.method!=='POST')return reply(405,{accepted:false});if(!dedicatedAcceptance(config)||!config.enabled||!config.serviceKey)return reply(503,{accepted:false});
+  if(req.method!=='POST')return reply(405,{accepted:false});if(!dedicatedAcceptance(config)||config.enabled!==true||!config.serviceKey)return reply(503,{accepted:false});
   try{
    const u=new URL(req.url),org=u.searchParams.get('organization'),gateway=u.searchParams.get('gateway');if(!uuid(org)||!uuid(gateway))throw Error();
    const rpc=async(action,o,p)=>{const r=await fetcher(config.project+'/rest/v1/rpc/nmi_giving_service',{method:'POST',headers:{'Content-Type':'application/json',apikey:config.serviceKey,Authorization:'Bearer '+config.serviceKey},body:JSON.stringify({p_action:action,p_org:o,p_payload:p}),signal:AbortSignal.timeout(10000)});if(!r.ok)throw Error();return r.json()};
