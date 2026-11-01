@@ -6,12 +6,13 @@ import {mountSummaryInVerifiedStaffWorkspace} from './church-outreach-summary-st
 const installations=new WeakMap();
 const failure=code=>Object.assign(new Error(code),{code});
 
-export function installStaffOutreachSummary({window:win}={}){
+export function installStaffOutreachSummary({window:win,isolatedBackend}={}){
  if(!win?.document||typeof win.MutationObserver!=='function')
   throw new TypeError('A browser window is required');
  // A module is installed once per document. A stopped instance is not restarted:
  // returning from history or changing identity requires the shell's fresh page.
  if(installations.has(win.document))return installations.get(win.document);
+ isolatedBackend=isolatedBackend===undefined?undefined:Object.freeze({...isolatedBackend});
  const doc=win.document,abort=new win.AbortController();
  let phase='waiting',root=null,view=null,observer=null,authSubscription=null;
  const dispose=()=>{
@@ -63,7 +64,7 @@ export function installStaffOutreachSummary({window:win}={}){
   root=doc.createElement('section');
   root.setAttribute('data-staff-outreach-summary','');
   main.append(root);
-  mountSummaryInVerifiedStaffWorkspace({window:win,root,signal:abort.signal}).then(result=>{
+  mountSummaryInVerifiedStaffWorkspace({window:win,root,signal:abort.signal,isolatedBackend}).then(result=>{
    if(phase==='closed'){result.close();return}
    view=result;phase='ready';inspect();
   }).catch(()=>{

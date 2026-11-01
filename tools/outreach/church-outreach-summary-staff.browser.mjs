@@ -54,7 +54,10 @@ window.ChampionLifeAuth={
  getSession:async()=>fixture.changeSession?{user:{id:'40000000-0000-4000-8000-000000000004'},access_token:'new-fixture'}:{user:fixture.user(),access_token:fixture.activeToken},
  getUser:async()=>fixture.user(),
  client:{
+  supabaseUrl:'https://abcdefghijklmnopqrst.supabase.co',
+  rest:{url:'https://abcdefghijklmnopqrst.supabase.co/rest/v1'},
   auth:{
+    url:'https://abcdefghijklmnopqrst.supabase.co/auth/v1',
     getUser:async()=>({data:{user:fixture.user()},error:null}),
     onAuthStateChange:fn=>{fixture.listeners.add(fn);return{data:{subscription:{unsubscribe:()=>fixture.listeners.delete(fn)}}}},
     signOut:async()=>{fixture.emit('SIGNED_OUT');return{error:null}}
@@ -354,6 +357,28 @@ for(const [engine,settings] of [[chromium,{channel:'chrome'}],[webkit,{}]]){
        document.querySelectorAll('[data-staff-outreach-summary]').length===0;
    });
    check(abortedMount,engine.name()+' '+width+' pending initial authorization cannot restore an aborted entry');
+
+   await login();
+   await page.evaluate(async()=>{
+     const {installStaffOutreachSummary}=await import('/tools/outreach/church-outreach-summary-entry.mjs');
+     window.entry=installStaffOutreachSummary({window,isolatedBackend:{projectRef:'abcdefghijklmnopqrst',supabaseUrl:'https://abcdefghijklmnopqrst.supabase.co'}});
+   });
+   await page.waitForFunction(()=>entry.state()==='ready');
+   check(await page.locator('[data-summary-metric]').count()===5,engine.name()+' '+width+' pinned SDK-shaped backend composes actual shell entry');
+   await page.evaluate(()=>{fixture.pending='list';window.pendingRefresh=entry.refresh().catch(()=>false)});
+   await page.waitForFunction(()=>typeof fixture.release==='function');
+   await page.evaluate(async()=>{ChampionLifeAuth.client.rest.url='https://other.supabase.co/rest/v1';fixture.release();await pendingRefresh});
+   check(await page.evaluate(()=>entry.state()==='closed'&&document.querySelectorAll('[data-summary-metric]').length===0),engine.name()+' '+width+' endpoint drift during read clears pinned entry');
+
+   await login();
+   const rejectedPin=await page.evaluate(async()=>{
+     const {installStaffOutreachSummary}=await import('/tools/outreach/church-outreach-summary-entry.mjs');
+     const before=fixture.requestLog.length;
+     window.entry=installStaffOutreachSummary({window,isolatedBackend:{projectRef:'exdocjbmylgxssanymjk',supabaseUrl:'https://exdocjbmylgxssanymjk.supabase.co'}});
+     await new Promise(r=>setTimeout(r,0));
+     return entry.state()==='closed'&&fixture.requestLog.length===before;
+   });
+   check(rejectedPin,engine.name()+' '+width+' production pin denied before summary request');
 
    check(unexpected.length===0,engine.name()+' '+width+' blocks all external/unauthorized network activity');
    check(jsErrors.length===0,engine.name()+' '+width+' no browser exceptions: '+jsErrors.join('; '));
