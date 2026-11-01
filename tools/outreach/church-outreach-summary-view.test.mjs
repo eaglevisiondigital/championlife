@@ -167,3 +167,13 @@ test('no public controls for payment, member export, role grant or unsafe HTML i
  assert.deepEqual(Object.keys(f.view).sort(),['close','refresh','revoke','select']);
  f.view.close();
 });
+
+test('compromised campaign UI hint containing trailing LF/CRLF is not accepted',()=>{
+ for(const suffix of ['\n','\r\n']){
+  const f=fixture(),malformed=A+suffix;
+  f.setAllowed([malformed]);
+  assert.throws(()=>f.view.select(malformed),{code:'CAMPAIGN_NOT_ALLOWED'});
+  assert.equal(f.calls.length,0);
+  f.view.close();
+ }
+});
