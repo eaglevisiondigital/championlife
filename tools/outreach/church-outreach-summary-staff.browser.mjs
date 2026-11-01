@@ -7,7 +7,7 @@ import path from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {chromium,webkit} from '../backend-tests/node_modules/playwright/index.mjs';
 
-const ROOT=fileURLToPath(new URL('../../',import.meta.url));
+const ROOT=path.resolve(fileURLToPath(new URL('../../',import.meta.url)));
 const ORIGIN='https://champion-staff-review.invalid';
 const A='10000000-0000-4000-8000-000000000001';
 const B='20000000-0000-4000-8000-000000000002';
