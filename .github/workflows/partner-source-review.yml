@@ -3,6 +3,8 @@ on:
   pull_request:
     paths:
       - 'tools/partner-platform/**'
+      - 'tools/outreach/shared-staff-backend*'
+      - 'supabase/migrations/20261101154618_partner_assigned_metadata_boundary.sql'
       - '.github/workflows/partner-source-review.yml'
 permissions:
   contents: read
@@ -19,4 +21,6 @@ jobs:
       - run: node --test tools/partner-platform/*.test.mjs tools/outreach/shared-staff-backend.test.mjs
       - run: npx --prefix tools/backend-tests playwright install --with-deps chromium webkit
       - run: node tools/partner-platform/staff-intake-review.browser.mjs
+      - run: node tools/partner-platform/assigned-backend.browser.mjs
+      - run: TEST_POSTGRES_BIN="$(pg_config --bindir)" node tools/partner-platform/assigned-backend.native.mjs
       - run: git diff --check

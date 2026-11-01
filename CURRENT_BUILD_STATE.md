@@ -93,3 +93,7 @@ Local full regression and responsive browser checks pass. Final physical-device
 acceptance and separately approved production Storage/website release remain gates.
 Personal notes/highlights are being prepared on a separate branch and are not part
 of this release. No production migration, upload, merge or deployment performed.
+
+## 2026-11-01 — Assigned Partner metadata backend candidate
+
+Local source only: explicit campaign/Partner/worker assignment, locked active Auth session and metadata-only read RPC. No issuer or automatic People identity claim; `personId` remains null pending independently reviewed linkage. Existing financial intake authority and website PR61 are separate. See [implementation boundary and release gates](docs/PARTNER-ASSIGNED-METADATA-20261101.md). No migration, staff grant, public runtime activation or hosted acceptance has occurred.
