@@ -1,0 +1,19 @@
+name: Partner isolated source review
+on:
+  pull_request:
+    paths:
+      - 'tools/partner-platform/**'
+      - '.github/workflows/partner-source-review.yml'
+permissions:
+  contents: read
+jobs:
+  source-contract:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: node --test tools/partner-platform/*.test.mjs
+      - run: git diff --check
