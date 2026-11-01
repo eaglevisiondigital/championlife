@@ -4,6 +4,7 @@
 import {createChurchOutreachSummaryComposition} from './church-outreach-summary-composition.mjs';
 
 const UUID=/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+const isUuid=value=>typeof value==='string'&&value.length===36&&UUID.test(value);
 const failure=code=>Object.assign(new Error(code),{code});
 
 export function createChurchOutreachAuthBinding({
@@ -33,7 +34,7 @@ export function createChurchOutreachAuthBinding({
    // Provider-verified user must be confirmed, nonanonymous, and match the
    // current access token's session subject. Neither metadata nor a UI claim grants access.
    const {data,error}=await auth.client.auth.getUser();
-   if(error||!data?.user?.id||!UUID.test(data.user.id)||
+   if(error||!data?.user?.id||!isUuid(data.user.id)||
       !data.user.email_confirmed_at||data.user.is_anonymous)return null;
    const session=await auth.getSession();
    if(closed||current!==generation||!workspace.active()||
@@ -80,7 +81,7 @@ export function createChurchOutreachAuthBinding({
  return Object.freeze({
   select(campaignId){
    ensureActive();
-   if(typeof campaignId!=='string'||!UUID.test(campaignId)||!permitted(campaignId)){
+   if(!isUuid(campaignId)||!permitted(campaignId)){
     revoke();throw failure('CAMPAIGN_NOT_ALLOWED');
    }
    selected=campaignId;

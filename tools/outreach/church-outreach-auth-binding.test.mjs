@@ -194,3 +194,20 @@ test('binding exposes no financial operations, exports, grants, account keys or 
  assert.deepEqual(Object.keys(f.binding).sort(),['close','refresh','revoke','select','snapshot']);
  f.binding.close();
 });
+
+test('provider identity with a trailing newline is rejected even if session matches',async()=>{
+ const f=fixture();const malformed=USER+'\n';
+ f.setUser(malformed);f.setSessionUser(malformed);
+ f.binding.select(A);
+ await assert.rejects(f.binding.refresh(),{code:'UNAUTHENTICATED'});
+ assert.equal(f.calls.length,0);
+ f.binding.close();
+});
+
+test('newline-suffixed campaign is invalid even when listed by a compromised UI scope',()=>{
+ const f=fixture(),malformed=A+'\n';
+ f.setAuthorized([malformed]);
+ assert.throws(()=>f.binding.select(malformed),{code:'CAMPAIGN_NOT_ALLOWED'});
+ assert.equal(f.calls.length,0);
+ f.binding.close();
+});
