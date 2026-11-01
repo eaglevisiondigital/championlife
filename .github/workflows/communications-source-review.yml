@@ -3,6 +3,7 @@ on:
   pull_request:
     paths:
       - 'tools/communications-policy/**'
+      - 'supabase/functions/_shared/communications/providers.mjs'
       - '.github/workflows/communications-source-review.yml'
 permissions:
   contents: read
@@ -16,4 +17,5 @@ jobs:
         with:
           node-version: '22'
       - run: node --test tools/communications-policy/*.test.mjs
+      - run: node tools/backend-tests/communications-provider.test.mjs
       - run: git diff --check
