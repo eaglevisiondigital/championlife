@@ -16,6 +16,6 @@ jobs:
         with:
           node-version: '22'
       - run: npm ci --ignore-scripts --prefix tools/backend-tests
-      - run: node --test tools/outreach/campaign-summary.test.mjs tools/outreach/campaign-summary.review.test.mjs tools/outreach/campaign-summary-lifecycle.test.mjs
+      - run: node --test tools/outreach/campaign-summary.test.mjs tools/outreach/campaign-summary.review.test.mjs tools/outreach/campaign-summary-lifecycle.test.mjs tools/outreach/campaign-summary-lifecycle.review.test.mjs
       - run: TEST_POSTGRES_BIN="$(pg_config --bindir)" node tools/outreach/campaign-summary.native.mjs
       - run: git diff --check
