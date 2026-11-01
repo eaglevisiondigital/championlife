@@ -16,8 +16,8 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - name: Load exact reviewed PR34 executor source (no deployment)
-        run: git fetch --no-tags --depth=1 origin 4e463f792bf9a2af03345e8854433e2d00863729
+      - name: Load exact reviewed PR78 executor and gateway source (no deployment)
+        run: git fetch --no-tags --depth=1 origin 84b2d9ab398bb8046570019da26a5db67fe77467
       - name: Test four-MID default-off and merchant-isolation contract
         run: node tools/nmi/mid-readiness.mjs --selftest
       - name: Test disabled checkout route planning

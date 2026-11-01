@@ -1,6 +1,6 @@
 // Source-only proof of the existing executor's disabled boundary. Not an endpoint or payment service.
 import { reviewFictionalPilot } from './fictional-pilot-review.mjs';
-import { loadPinnedExecutor } from './pinned-executor.mjs';
+import { loadPinnedExecutor, loadPinnedGateway } from './pinned-executor.mjs';
 
 const keys = ['document', 'receipt', 'binding', 'authority', 'intent', 'journal', 'observations', 'now'];
 const result = (reason, executorInvoked = false, calls = []) => Object.freeze({
@@ -21,27 +21,41 @@ export async function probeDisabledExecutor(input) {
   let executorInvoked = false;
   try {
     const execute = await loadPinnedExecutor();
-    // The canonical claim path is exercised, but every RPC is CLOSED in-memory state.
-    // Do not pass a runtime/client config or map synthetic MID aliases to real gateway IDs.
+    // The reviewed guard must reject before ANY durable operation or credential IO.
+    // Keep all ports closed; this probe cannot be connected to a database service.
     const organization_id = '00000000-0000-4000-8000-000000000001';
-    const gateway_id = '00000000-0000-4000-8000-000000000002';
-    const session_id = 'synthetic-session', id = 'synthetic-operation', lease = 'synthetic-lease';
-    const rpc = async (action, org, args) => {
-      if (org !== organization_id || args.session_id !== session_id || args.id !== id) throw Error('SCOPE');
-      if (action === 'claim' && calls.length === 0) {
-        calls.push(action);
-        return { claimed: true, operation: 'sale', lease, scope: { organization_id, gateway_id, provider: 'nmi', environment: 'sandbox', secret_version: 1 } };
-      }
-      if (action === 'release' && calls.join(',') === 'claim' && args.lease === lease) { calls.push(action); return {}; }
-      throw Error('FORBIDDEN_RPC');
-    };
+    const session_id = 'synthetic-session', id = 'synthetic-operation';
+    const rpc = async action => { calls.push(action); throw Error('FORBIDDEN_RPC'); };
     const rejectIO = () => { calls.push('FORBIDDEN_IO'); throw Error('DISCONNECTED_ONLY'); };
     executorInvoked = true;
     const output = await execute({
       config: Object.freeze({ enabled: false, recoveryEnabled: false, project: null, acceptance_pin: null }),
       organization_id, session_id, id, payment_token: undefined, rpc, fetcher: rejectIO, readSecret: rejectIO,
     });
-    if (output.status !== 'held' || output.retry_automatically !== false || calls.join(',') !== 'claim,release') return result('DISABLED_BOUNDARY_FAILED', true, calls);
+    if (output.status !== 'held' || output.retry_automatically !== false || calls.length !== 0) return result('DISABLED_BOUNDARY_FAILED', true, calls);
     return result('EXISTING_EXECUTOR_HELD', true, calls);
   } catch { return result('EXECUTOR_PROBE_FAILED', executorInvoked, calls); }
+}
+
+/** Review the same plan through the actual pinned gateway; caller cannot arm it. */
+export async function probeDisabledGateway(input) {
+  const execution = await probeDisabledExecutor(input);
+  if (execution.reason !== 'EXISTING_EXECUTOR_HELD') return execution;
+  const calls=[];
+  try {
+    const createHandler=await loadPinnedGateway();
+    const project='https://cccccccccccccccccccc.supabase.co';
+    const origin='https://fictional--championlifechurch.netlify.app';
+    const config=Object.freeze({enabled:false,recoveryEnabled:false,project,
+      acceptance_pin:Object.freeze({name:'champion-life-nmi-giving-acceptance',project,origins:[origin]}),
+      origins:[origin],serviceKey:'FICTIONAL_NOT_A_CREDENTIAL',publicKey:'FICTIONAL_NOT_A_CREDENTIAL'});
+    const rejectIO=()=>{calls.push('FORBIDDEN_IO');throw Error('DISCONNECTED_ONLY');};
+    const handler=createHandler(config,rejectIO,rejectIO);
+    for(const action of ['create','execute','job']) {
+      const response=await handler(new Request('https://fictional.invalid',{method:'POST',headers:{Origin:origin,'Content-Type':'application/json'},
+        body:JSON.stringify({action,organization_id:'00000000-0000-4000-8000-000000000001',operation:'sale'})}));
+      if(response.status!==503||(await response.json()).status!=='held'||calls.length) return result('GATEWAY_BOUNDARY_FAILED',true,calls);
+    }
+    return Object.freeze({...result('EXISTING_GATEWAY_HELD',true,calls),gatewayInvoked:true});
+  } catch { return result('GATEWAY_PROBE_FAILED',true,calls); }
 }

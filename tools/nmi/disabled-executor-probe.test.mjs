@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
-import { probeDisabledExecutor } from './disabled-executor-probe.mjs';
+import { probeDisabledExecutor, probeDisabledGateway } from './disabled-executor-probe.mjs';
 import { loadPinnedExecutor } from './pinned-executor.mjs';
 
 const NOW = '2026-11-02T15:00:00Z';
@@ -38,7 +38,7 @@ async function probe(f) {
   return r;
 }
 for (const org of ['SowGo','Champion Life']) test(`actual pinned executor holds ${org} fictional green route`,async()=>{
- const r=await probe(fixture(org)); assert.equal(r.reason,'EXISTING_EXECUTOR_HELD'); assert.equal(r.executorInvoked,true); assert.deepEqual(r.simulatedRpcCalls,['claim','release']);
+ const r=await probe(fixture(org)); assert.equal(r.reason,'EXISTING_EXECUTOR_HELD'); assert.equal(r.executorInvoked,true); assert.deepEqual(r.simulatedRpcCalls,[]);
 });
 for (const status of ['accepted','rejected','unknown']) test(`prior ${status} blocks executor and any repeated provider attempt`,async()=>{
  const r=await probe(attempted(fixture(),status)); assert.equal(r.executorInvoked,false); assert.deepEqual(r.simulatedRpcCalls,[]);
@@ -64,7 +64,7 @@ test('input snapshot cannot change during source loading',async()=>{
 });
 test('concurrent duplicate probes never hand off, complete, post a ledger or read a secret',async()=>{
  const results=await Promise.all(Array.from({length:20},()=>probe(fixture())));
- for(const r of results){assert.equal(r.reason,'EXISTING_EXECUTOR_HELD');assert.deepEqual(r.simulatedRpcCalls,['claim','release']);}
+ for(const r of results){assert.equal(r.reason,'EXISTING_EXECUTOR_HELD');assert.deepEqual(r.simulatedRpcCalls,[]);}
 });
 test('unverified real boarding template holds even when a fictional receipt is complete',async()=>{
  const f=fixture();f.document=JSON.parse(readFileSync(new URL('../../docs/nmi-four-mid-readiness.template.json',import.meta.url))); assert.equal((await probe(f)).executorInvoked,false);
@@ -76,10 +76,23 @@ for(const operation of ['sale','authorize','capture','transaction','refund','voi
  const r=await execute({config:{enabled:false,recoveryEnabled:false,project:null},organization_id:'fictional-org',session_id:'fictional-session',id:'fictional-op',
   rpc:async(action)=>{calls.push(action);if(action==='claim')return{claimed:true,operation,scope:{gateway_id:'fictional-gateway'},lease:'fictional-lease'};if(action==='release')return{};throw Error('forbidden mutation');},
   fetcher:()=>{throw Error('forbidden fetch');},readSecret:()=>{throw Error('forbidden secret');}});
- assert.deepEqual(r,{status:'held',retry_automatically:false});assert.deepEqual(calls,['claim','release']);
+ assert.deepEqual(r,{status:'held',retry_automatically:false});assert.deepEqual(calls,[]);
 });
-test('unclaimed canonical request remains pending without automatic retry or transport',async()=>{
+test('unclaimed canonical request remains held without automatic retry or transport',async()=>{
  const execute=await loadPinnedExecutor(),calls=[];
  const r=await execute({config:{enabled:false},organization_id:'fictional-org',session_id:'fictional-session',id:'fictional-op',rpc:async(action)=>{calls.push(action);return{claimed:false};},fetcher:()=>assert.fail('fetch'),readSecret:()=>assert.fail('secret')});
- assert.deepEqual(r,{status:'pending',retry_automatically:false});assert.deepEqual(calls,['claim']);
+ assert.deepEqual(r,{status:'held',retry_automatically:false});assert.deepEqual(calls,[]);
+});
+
+for(const organization of ['SowGo','Champion Life']) test(`actual pinned gateway rejects all claims for ${organization}`,async()=>{
+ const r=await probeDisabledGateway(fixture(organization));assert.equal(r.reason,'EXISTING_GATEWAY_HELD');assert.equal(r.gatewayInvoked,true);assert.deepEqual(r.simulatedRpcCalls,[]);assert.equal(r.canSubmit,false);
+});
+for(const status of ['accepted','rejected','unknown'])test(`gateway prior ${status} never reaches source execution`,async()=>{
+ const r=await probeDisabledGateway(attempted(fixture(),status));assert.equal(r.executorInvoked,false);assert.notEqual(r.gatewayInvoked,true);assert.deepEqual(r.simulatedRpcCalls,[]);
+});
+for(const key of ['config','rpc','fetcher','readSecret','enabled','recoveryEnabled','acceptance_pin'])test(`gateway cannot accept caller ${key}`,async()=>{
+ const f=fixture();f[key]={enabled:true};const r=await probeDisabledGateway(f);assert.equal(r.reason,'INVALID_PROBE_INPUT');assert.equal(r.executorInvoked,false);
+});
+test('concurrent gateway probes cannot create sessions or claim jobs',async()=>{
+ const results=await Promise.all(Array.from({length:20},()=>probeDisabledGateway(fixture())));for(const r of results){assert.equal(r.reason,'EXISTING_GATEWAY_HELD');assert.deepEqual(r.simulatedRpcCalls,[]);}
 });

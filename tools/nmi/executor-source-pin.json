@@ -1,11 +1,11 @@
 {
   "repository": "eaglevisiondigital/championlife",
-  "pr": 34,
-  "commit": "4e463f792bf9a2af03345e8854433e2d00863729",
+  "pr": 78,
+  "commit": "84b2d9ab398bb8046570019da26a5db67fe77467",
   "files": {
     "nmi-executor.mjs": {
       "path": "supabase/functions/_shared/payments/nmi-executor.mjs",
-      "sha256": "1936675b44a0983d2a8f450e0b792ef0c3b0ef830ec202b8a26c308b6331291d"
+      "sha256": "293f92384225a85bc4842185aec2ad1f084d5f3fefb4b752dd8ea10a75d1f7b5"
     },
     "nmi.mjs": {
       "path": "supabase/functions/_shared/payments/nmi.mjs",
@@ -22,6 +22,16 @@
     "acceptance-pin.mjs": {
       "path": "supabase/functions/_shared/payments/acceptance-pin.mjs",
       "sha256": "3ba2eab519396665af5e02a276aeeba2be20b7b65cd72d2b25b6dfa54546393b"
+    },
+    "gateway.mjs": {
+      "path": "supabase/functions/nmi-giving/gateway.mjs",
+      "sha256": "6434a273b947f0a45cf9aec492dd0ba1bf8e48061d1514b8f71dcdb9df83c5a9"
+    },
+    "nmi-executor-batch.mjs": {
+      "path": "supabase/functions/_shared/payments/nmi-executor-batch.mjs",
+      "sha256": "4a0ae570db7f6cff92cfdf025515bbbee79c68ebe318f791479f0cf7c18f96df"
     }
-  }
+  },
+  "base_pr34": "4e463f792bf9a2af03345e8854433e2d00863729",
+  "gate0_pr36": "bbadd2b4adf75a4342b653d57c81fac8aa86e74a"
 }
