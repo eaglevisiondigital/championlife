@@ -4,6 +4,7 @@
 import {createChurchOutreachAuthBinding} from './church-outreach-auth-binding.mjs';
 
 const FULL_UUID=/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+const isUuid=value=>typeof value==='string'&&value.length===36&&FULL_UUID.test(value);
 const METRICS=Object.freeze([
  ['households','Registered households'],['adults','Adults'],
  ['minors','Children'],['attendees','Total attending'],['checked_in','Checked in']
@@ -61,7 +62,7 @@ export function mountChurchOutreachSummaryView({
  const select=campaignId=>{
   ensure();version++;selected=null;
   hide('Checking selected campaign…');button.disabled=true;
-  if(typeof campaignId!=='string'||!FULL_UUID.test(campaignId)){
+  if(!isUuid(campaignId)){
    binding.revoke();hide();throw reject('CAMPAIGN_NOT_ALLOWED');
   }
   try{
