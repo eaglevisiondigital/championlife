@@ -32,3 +32,8 @@ Local source only: explicit campaign/Partner/worker assignment, locked active Au
 ## 2026-11-01 — Partner current-base integration and private revocation
 
 Exact reviewed Outreach ancestry is reconciled into the Partner draft without changing accepted runtime bytes. A separate private-only revocation primitive prepares locked authority, expected revision, idempotency and immutable audit rollback; no application role can execute it and no Partner issuer policy is inferred. People linking remains null/unverified pending complete unreleased Issue50 receipt/review provenance. See [scope and gates](docs/PARTNER-PRIVATE-REVOCATION-20261101.md). Local source only; no production migration, grant, website activation or public endpoint.
+
+
+## 2026-11-01 — Private Partner issuance and provenance continuation
+
+Partner assignment preparation reuses existing three Partner tables and campaign audit; it adds no Person/account store and no public issuer. The optional canonical identity adapter jointly validates current source, receipt, review, audit and account binding through a trusted serialized repository that is not yet installed. Source fingerprint pins are dependency provenance, not deployed proof.

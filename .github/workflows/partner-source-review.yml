@@ -1,7 +1,7 @@
 name: Partner isolated source review
 on:
-  # Head-only evidence while the stacked PR has an unresolved add/add conflict.
-  # This does not establish merge compatibility or authorize integration/release.
+  # Exact source-branch checks supplement current-base pull-request checks.
+  # No workflow installs a hosted migration or activates application grants.
   push:
     branches:
       - 'codex/publish-partner-20261101'
@@ -10,6 +10,7 @@ on:
       - 'tools/outreach/shared-staff-backend*'
       - 'supabase/migrations/20261101154618_partner_assigned_metadata_boundary.sql'
       - 'supabase/migrations/20261101164328_partner_private_revocation_preparation.sql'
+      - 'supabase/migrations/20261101214027_prepare_private_partner_assignment_issuance.sql'
       - '.github/workflows/partner-source-review.yml'
   pull_request:
     paths:
@@ -17,6 +18,7 @@ on:
       - 'tools/outreach/shared-staff-backend*'
       - 'supabase/migrations/20261101154618_partner_assigned_metadata_boundary.sql'
       - 'supabase/migrations/20261101164328_partner_private_revocation_preparation.sql'
+      - 'supabase/migrations/20261101214027_prepare_private_partner_assignment_issuance.sql'
       - '.github/workflows/partner-source-review.yml'
 permissions:
   contents: read
@@ -36,4 +38,5 @@ jobs:
       - run: node tools/partner-platform/assigned-backend.browser.mjs
       - run: TEST_POSTGRES_BIN="$(pg_config --bindir)" node tools/partner-platform/assigned-backend.native.mjs
       - run: TEST_POSTGRES_BIN="$(pg_config --bindir)" node tools/partner-platform/private-revocation.native.mjs
+      - run: TEST_POSTGRES_BIN="$(pg_config --bindir)" node tools/partner-platform/private-issuance.native.mjs
       - run: git diff --check
