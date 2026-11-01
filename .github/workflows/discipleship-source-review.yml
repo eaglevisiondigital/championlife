@@ -15,5 +15,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
+      - run: npm ci --ignore-scripts --prefix tools/backend-tests
       - run: node --test tools/discipleship-progression/*.test.mjs
+      - run: TEST_POSTGRES_BIN="$(pg_config --bindir)" node tools/discipleship-progression/worksheet-source.native.mjs
       - run: git diff --check
