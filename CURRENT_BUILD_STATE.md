@@ -106,3 +106,6 @@ Exact reviewed Outreach ancestry is reconciled into the Partner draft without ch
 ## 2026-11-01 — Private Partner issuance and provenance continuation
 
 Prepared private-only Partner access issuance and exact decision assignment/reassignment with current authority locks, CAS and immutable audit. No application role can execute it. Added an unwired server-only canonical provenance adapter; absent accepted Issue50 provider keeps current metadata null/unverified. Native Mac launch is blocked by IPC capacity; actual disposable SQL tests are delegated to existing GitHub CI before security acceptance. See docs/PARTNER-ISSUANCE-PROVENANCE-20261101.md.
+## 2026-11-01 — Partner canonical binding prerequisite verification
+
+Preserved accepted issuance and identity adapter; added actual-schema sequential denial and native authority serialization coverage. The replayed baseline lacks Issue50 identity request/review/care tables, so canonical repository wiring remains held and metadata stays null/unverified. Local 22 PGlite checks and 255 Partner/shared-backend Node tests PASS. Native concurrency is prepared for independent review and Linux CI, not executed on the IPC-limited Mac. No runtime, migration, grant, public or hosted changes. See [source mapping and remaining gates](docs/PARTNER-CANONICAL-BINDING-PREREQUISITES-20261101.md).

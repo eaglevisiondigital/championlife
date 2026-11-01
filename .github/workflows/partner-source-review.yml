@@ -33,10 +33,12 @@ jobs:
           node-version: '22'
       - run: npm ci --ignore-scripts --prefix tools/backend-tests
       - run: node --test tools/partner-platform/*.test.mjs tools/outreach/shared-staff-backend.test.mjs
+      - run: node tools/partner-platform/authority-denials.pglite.mjs
       - run: npx --prefix tools/backend-tests playwright install --with-deps chromium webkit
       - run: node tools/partner-platform/staff-intake-review.browser.mjs
       - run: node tools/partner-platform/assigned-backend.browser.mjs
       - run: TEST_POSTGRES_BIN="$(pg_config --bindir)" node tools/partner-platform/assigned-backend.native.mjs
+      - run: TEST_POSTGRES_BIN="$(pg_config --bindir)" node tools/partner-platform/authority-serialization.native.mjs
       - run: TEST_POSTGRES_BIN="$(pg_config --bindir)" node tools/partner-platform/private-revocation.native.mjs
       - run: TEST_POSTGRES_BIN="$(pg_config --bindir)" node tools/partner-platform/private-issuance.native.mjs
       - run: git diff --check
