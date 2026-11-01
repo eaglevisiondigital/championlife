@@ -1,22 +1,32 @@
 import {dedicatedAcceptance} from '../_shared/payments/acceptance-pin.mjs';
 import {inputOnly} from '../_shared/payments/nmi.mjs';
 import {executeNmiGiving} from '../_shared/payments/nmi-executor.mjs';
+// Configuration comes only from the server. Do not treat truthy strings as approval.
+const armed=config=>config?.enabled===true||config?.recoveryEnabled===true;
+const mayExecute=(config,data)=>config?.enabled===true||(config?.recoveryEnabled===true&&data.action==='execute'&&['transaction','refund','void','recurring_cancel','recurring_pause'].includes(data.operation));
 const uuid=x=>typeof x==='string'&&/^[a-f0-9]{8}-[a-f0-9-]{27}$/i.test(x);
 const hex=async bytes=>Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256',bytes)),x=>x.toString(16).padStart(2,'0')).join('');
 export function createGivingHandler(config,fetcher=fetch,readSecret=(_name)=> ''){
  return async req=>{
   const origin=req.headers.get('Origin'),headers={'Content-Type':'application/json','Cache-Control':'no-store','Vary':'Origin'};
   const reply=(status,x)=>new Response(JSON.stringify(x),{status,headers});
-  if(!dedicatedAcceptance(config)||!config.acceptance_pin.origins.includes(origin)||!config.origins.includes(origin)||!/^https:\/\/[a-z0-9-]+--championlifechurch\.netlify\.app$/.test(origin||''))return reply(503,{status:'held',fallback_path:'/outreach-giving.html'});
+  if(!config||!dedicatedAcceptance(config)||!config.acceptance_pin.origins.includes(origin)||!config.origins.includes(origin)||!/^https:\/\/[a-z0-9-]+--championlifechurch\.netlify\.app$/.test(origin||''))return reply(503,{status:'held',fallback_path:'/outreach-giving.html'});
   headers['Access-Control-Allow-Origin']=origin;headers['Access-Control-Allow-Headers']='authorization,apikey,content-type,x-client-info';headers['Access-Control-Allow-Methods']='POST,OPTIONS';
   if(req.method==='OPTIONS')return new Response(null,{status:204,headers});if(req.method!=='POST')return reply(405,{status:'held'});
-  if((!config.enabled&&!config.recoveryEnabled)||!config.serviceKey||!config.publicKey)return reply(503,{status:'held',fallback_path:'/outreach-giving.html'});
+  if(!armed(config)||!config.serviceKey||!config.publicKey)return reply(503,{status:'held',fallback_path:'/outreach-giving.html'});
   try{
    const reader=req.body?.getReader();if(!reader)throw Error();let n=0;const parts=[];for(;;){const r=await reader.read();if(r.done)break;n+=r.value.length;if(n>8192){await reader.cancel();throw Error()}parts.push(r.value)}const bytes=new Uint8Array(n);let at=0;for(const p of parts){bytes.set(p,at);at+=p.length}
    const data=inputOnly(JSON.parse(new TextDecoder().decode(bytes)),['action','organization_id','form_id','request_key','capability','receipt_email','donor_name','frequency','starts_on','lines','challenge_token','session_id','leg_id','operation','refund_id','instruction_id','parent_attempt_id','save_method','payment_token','reason','gateway_id','route_id','batch_reference','date','job_id','fee_minor','net_minor','deposit_minor','statement_reference']);
    if(!uuid(data.organization_id)||!['form','create','status','execute','shutdown','batch','operations','job','reconcile'].includes(data.action))throw Error();
-   if(!config.enabled&&!(['status','shutdown','batch','operations','job','reconcile'].includes(data.action)||(data.action==='execute'&&['transaction','refund','void','recurring_cancel','recurring_pause'].includes(data.operation))))throw Error();
-   const rpc=async(action,org,payload)=>{const r=await fetcher(config.project+'/rest/v1/rpc/nmi_giving_service',{method:'POST',headers:{'Content-Type':'application/json',apikey:config.serviceKey,Authorization:'Bearer '+config.serviceKey},body:JSON.stringify({p_action:action,p_org:org,p_payload:payload}),signal:AbortSignal.timeout(10000)});if(!r.ok)throw Error('rpc');return r.json()};
+   // A job's operation is unknown before its durable claim. Recovery-only mode
+   // must use the explicit operation path instead of claiming an opaque job.
+   if(config.enabled!==true&&!(['status','shutdown','batch','operations','reconcile'].includes(data.action)||mayExecute(config,data)))return reply(503,{status:'held',retry_automatically:false});
+   const rpc=async(action,org,payload)=>{
+    // Recheck immediately before the earlier durable writes, including a flag
+    // change while authentication, body parsing or challenge verification waited.
+    if((action==='create'||action==='operation_job')&&config.enabled!==true)throw Error('disabled');
+    if(action==='prepare'&&!mayExecute(config,data))throw Error('disabled');
+    const r=await fetcher(config.project+'/rest/v1/rpc/nmi_giving_service',{method:'POST',headers:{'Content-Type':'application/json',apikey:config.serviceKey,Authorization:'Bearer '+config.serviceKey},body:JSON.stringify({p_action:action,p_org:org,p_payload:payload}),signal:AbortSignal.timeout(10000)});if(!r.ok)throw Error('rpc');return r.json()};
    let actor=null;const bearer=req.headers.get('Authorization');
    if(bearer){if(!/^Bearer [A-Za-z0-9_.-]{20,4096}$/.test(bearer))throw Error();const r=await fetcher(config.project+'/auth/v1/user',{headers:{apikey:config.publicKey,Authorization:bearer},signal:AbortSignal.timeout(5000)});if(!r.ok)throw Error();const user=await r.json();if(!uuid(user.id)||!user.email_confirmed_at||user.is_anonymous)throw Error();actor=user.id;}
    if(data.action==='form'){if(!uuid(data.form_id))throw Error();return reply(200,await rpc('form',data.organization_id,{form_id:data.form_id}));}

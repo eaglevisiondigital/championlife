@@ -19,3 +19,11 @@ Existing disconnected PR #73 intentionally pinned the **old** PR #34 source and 
 Before a real release, review gateway `operation_job` behavior and outer `prepare` / `operation_job` writes when disabled: those callers may still mutate durable state **before entering** `executeNmiGiving`. A truly disabled live endpoint must prevent those operations as well, with SQL/provider negative tests. Existing protected release gates for legal merchant, NMI four-MID boarding/settlement, genuine Auth, cleanup and recovery, real sandbox provider proof and exact owner GO remain.
 
 No merges, production deploys/migrations, actual claims, payments, SMS, email or staff grants authorized.
+
+## Gateway integration correction (November 1 successor)
+
+The independent source replay reproduced two earlier-write gaps in the original PR #78 gateway: truthy `enabled: "true"` could reach `prepare`, and recovery-only mode could acquire an opaque `operation_job` before knowing whether its operation was permitted. The executor guard is retained unchanged. The gateway now requires exact booleans and rejects unarmed requests before authentication/network IO. Recovery-only mode may use the existing explicit operation-specific recovery path; it cannot claim opaque jobs or create checkout sessions. Its status, shutdown and existing reconciliation paths remain available under their existing backend authority.
+
+Immediately before `create`, `prepare` or `operation_job`, the gateway rechecks its server configuration, including after authentication/challenge waits. This is a defensive in-process kill switch; database handoff and permission checks remain authoritative, and a request already sent is not claimed to be canceled. No environment flags, SQL permissions, source acceptance pin or provider configuration are activated.
+
+The dedicated workflow runs both executor and gateway negative tests. Additional local regression executes the existing real disposable SQL pipeline using fictional HTTP responses, covering accepted/declined/UNKNOWN results, authoritative recovery lookup, idempotency, webhook replay, ledger and receipt holds. These are provider-independent checks, not hosted or merchant acceptance.

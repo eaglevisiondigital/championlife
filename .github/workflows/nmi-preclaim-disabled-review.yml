@@ -4,6 +4,8 @@ on:
     paths:
       - 'supabase/functions/_shared/payments/nmi-executor.mjs'
       - 'tools/backend-tests/nmi-preclaim-disabled.test.mjs'
+      - 'tools/backend-tests/nmi-gateway-preclaim.test.mjs'
+      - 'supabase/functions/nmi-giving/gateway.mjs'
       - 'docs/NMI-PRECLAIM-DISABLED-GUARD.md'
       - '.github/workflows/nmi-preclaim-disabled-review.yml'
 permissions:
@@ -18,6 +20,6 @@ jobs:
         with:
           node-version: '22'
       - name: Enforce disabled NMI executor with zero operation claims
-        run: node --test tools/backend-tests/nmi-preclaim-disabled.test.mjs
+        run: node --test tools/backend-tests/nmi-preclaim-disabled.test.mjs tools/backend-tests/nmi-gateway-preclaim.test.mjs
       - name: Verify diff formatting
         run: git diff --check
