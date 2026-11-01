@@ -2,6 +2,11 @@ import {createNmiAdapter,credential,NmiFailure} from './nmi.mjs';
 import {dedicatedAcceptance} from './acceptance-pin.mjs';
 import {createNmiQuery} from './nmi-query.mjs';
 export async function executeNmiGiving({config,organization_id,session_id,id,payment_token,rpc,fetcher=fetch,readSecret}){
+ // Reject an unarmed executor BEFORE acquiring or releasing a durable operation.
+ // Recovery-only access still requires a dedicated, independently pinned project;
+ // its operation-specific authorization is checked again after claim.
+ if(config?.enabled!==true&&!(config?.recoveryEnabled===true&&dedicatedAcceptance(config)))
+  return {status:'held',retry_automatically:false};
  let claim=await rpc('claim',organization_id,{session_id,id});if(!claim.claimed)return {status:'pending',retry_automatically:false};
  const recovery=['transaction','refund','void','recurring_cancel','recurring_pause'].includes(claim.operation);
  const scoped={...config,enabled:config.enabled===true||(dedicatedAcceptance(config)&&config.recoveryEnabled===true&&recovery),organization_id,gateway_id:claim.scope.gateway_id};
