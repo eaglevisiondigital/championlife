@@ -1,3 +1,7 @@
+# 2026-10-31 — Outreach summary read slice (local only)
+
+Unregistered campaign-specific summary composition prepared on production main; 20 focused tests and 11 native PostgreSQL checks pass. No SQL or public runtime edits. See docs/OUTREACH-CAMPAIGN-READ-SLICE.md. Hosted Auth remains separate.
+
 ## 2026-10-26 — King Kind neutral reader palette (owner approved)
 
 Owner approved the near-black/charcoal/gray palette with gold after reviewing the local visual proof. The reader stylesheet now uses near-black, charcoal and neutral gray with the existing gold accents. Only color values and the primary-button hover colors change; layout, responsive breakpoints, JavaScript, authorization and approved PDF remain unchanged. 21 existing source/security checks and contrast checks pass. Prepared for PR49; production remains unchanged. Owner reports both phone reading/download tests work; independent device-session corroboration, desktop download and final sandbox cleanup remain release gates. The loopback visual preview is a static color proof, not a new authenticated acceptance result.
