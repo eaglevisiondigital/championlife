@@ -30,3 +30,7 @@ Each read invalidates older work. Verified user ID, session ID and generation mu
 Commands: `node --test tools/outreach/campaign-summary.test.mjs`; `node tools/outreach/campaign-summary.native.mjs`. Full browser suites were not repeated because no browser runtime or public-build input changed. Existing website, registration, check-in, King Kind, giving and branding are unchanged.
 
 Next smallest package: independent source review, then a separately reviewed provider/session binding and shell mount against frozen PR61. Genuine Auth and shared-backend acceptance still require approved custody and cleanup prerequisites. No new hosted project, real grant, account or message was created.
+
+## Independent draft-publication review — November 1
+
+Reviewed original 3310a9610d63b17d11d01351a2d0ee4ce6aa479e. All 20 existing focused tests and 11 native PostgreSQL checks pass. Ten new independently authored cases cover late stale denial after a newer campaign result, A/B/A generation changes, aborted list/logout, final-context denial, sanitized network recovery, invalid counts and immutable field minimization. No implementation defect found within this unregistered adapter's documented boundary. Actual provider authentication, consumer event wiring and aggregate-only backend optimization remain separate integration gates. Runtime source, migrations, public allowlist and all public inputs are unchanged. This draft is source review only; Netlify previews must stay skipped.

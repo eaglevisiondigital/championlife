@@ -1,3 +1,7 @@
+## 2026-11-01 — Independent summary-adapter review PASS
+
+Original 3310a961 preserved; runtime unchanged. 20 existing focused + 10 independent adversarial + 11 native PostgreSQL checks PASS. Added repeatable review tests and dedicated nonproduction CI. Draft publication authorized; no merge, deploy, real grants or hosted acceptance. See docs/OUTREACH-CAMPAIGN-READ-SLICE.md.
+
 # 2026-10-31 — Outreach summary read slice (local only)
 
 Unregistered campaign-specific summary composition prepared on production main; 20 focused tests and 11 native PostgreSQL checks pass. No SQL or public runtime edits. See docs/OUTREACH-CAMPAIGN-READ-SLICE.md. Hosted Auth remains separate.
