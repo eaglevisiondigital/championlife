@@ -19,7 +19,10 @@ const lit=s=>"'"+String(s).replaceAll("'","''")+"'";
 let started=false,checks=0;
 const eq=(a,b,label)=>{assert.deepEqual(a,b,label);checks++;console.log('PASS '+label)};
 const rejects=async(fn,label)=>{await assert.rejects(fn);checks++;console.log('PASS '+label)};
-const worker=(action,payload={})=>JSON.parse(sql(`set role service_role;select communications_provider_service(${lit(action)},'${f.org}',${lit(JSON.stringify(payload))});`));
+let contextEnabled=false;
+const callbackContext=()=>JSON.parse(sql(`select json_build_object('profile_id',c.profile_id,'organization_id',c.organization_id,'environment',c.environment,'project_ref',c.project_ref,'provider',s.provider,'channel',s.channel,'from_address',s.from_address,'reply_to',s.reply_to) from communication_provider_controls c join communication_sender_profiles s on s.id=c.profile_id where c.profile_id='${h.profile}'`));
+const bound=(action,payload)=>contextEnabled&&['callback_external','reconcile_external','keyword_external'].includes(action)&&!Object.hasOwn(payload,'callback_context')?{...payload,callback_context:callbackContext()}:payload;
+const worker=(action,payload={})=>JSON.parse(sql(`set role service_role;select communications_provider_service(${lit(action)},'${f.org}',${lit(JSON.stringify(bound(action,payload)))});`));
 const staff=(action,payload={})=>JSON.parse(sql(`set request.jwt.claim.sub='${f.user}';set role authenticated;select communications_provider_workspace(${lit(action)},'${f.org}',${lit(JSON.stringify({organization_id:f.org,...payload}))});`));
 const row=id=>JSON.parse(sql(`select row_to_json(m) from communication_outbox m where id=${lit(id)}`));
 const attempts=id=>Number(sql(`select count(*) from communication_attempts where message_id=${lit(id)}`));
@@ -57,6 +60,7 @@ try {
  await rejects(async()=>worker('callback_external',{...delivery,outcome:'failed'}),'AFTER conflicting same event rejected');
  eq(row(first).status,'delivered','original delivered status preserved');
  eq(worker('callback_external',delivery).duplicate,true,'exact old callback replay remains idempotent');
+ sql(readFileSync(new URL('../../supabase/migrations/20261101231457_communications_callback_context.sql',import.meta.url),'utf8'));contextEnabled=true;
  let seq=0;
  async function unknown(){isolate();sql(`update communication_provider_controls set enabled=true,mode='test_only',consecutive_failures=0 where profile_id='${h.profile}'`);const id=queue();await run(rpc,async()=>({send:async()=>{throw {failure:'uncertain'}}}));const m=row(id);const a=JSON.parse(sql(`select row_to_json(x) from communication_attempts x where message_id=${lit(id)}`));return{id:h.profile,event_id:'receipt-'+(++seq),provider:'smtp_transport',environment:runtime.environment,project_ref:h.ref,message_id:id,attempt_id:a.id,idempotency_key:m.idempotency_key,provider_message_id:'accepted-'+id,outcome:'sent'}}
  const reconcile=p=>worker('reconcile_external',p);
@@ -84,9 +88,18 @@ try {
  await rejects(async()=>reconcile(p),'audit failure aborts receipt transaction');eq(row(p.message_id).failure_class,'uncertain','audit failure rolls back status');eq(Number(sql(`select count(*) from communication_callbacks where event_id=${lit(p.event_id)}`)),0,'audit failure rolls back callback evidence');
  sql('drop trigger fail_receipt_audit on communication_audit;drop function private.fail_receipt_audit();');
  // Two independent PostgreSQL sessions, same exact signed event.
- const concurrent=payload=>new Promise((resolve,reject)=>execFile(exe('psql'),[...args,'-c',`set role service_role;select communications_provider_service('reconcile_external','${f.org}',${lit(JSON.stringify(payload))});`],{encoding:'utf8'},(e,out)=>e?reject(e):resolve(JSON.parse(out.trim()))));
+ const concurrent=payload=>new Promise((resolve,reject)=>execFile(exe('psql'),[...args,'-c',`set role service_role;select communications_provider_service('reconcile_external','${f.org}',${lit(JSON.stringify(bound('reconcile_external',payload)))});`],{encoding:'utf8'},(e,out)=>e?reject(e):resolve(JSON.parse(out.trim()))));
  const pair=await Promise.all([concurrent(p),concurrent(p)]);eq(pair.filter(x=>x.recorded).length,1,'concurrent receipt exactly one winner');eq(pair.filter(x=>x.duplicate).length,1,'concurrent receipt one duplicate');eq(audit(p.message_id,'provider.reconciled'),1,'concurrent receipt one immutable audit');
  p=await unknown();const competing=await Promise.allSettled([concurrent(p),concurrent({...p,outcome:'rejected',provider_message_id:null})]);eq(competing.filter(x=>x.status==='fulfilled').length,1,'contradictory concurrent receipts one winner');eq(competing.filter(x=>x.status==='rejected').length,1,'contradictory concurrent receipt denied');eq(audit(p.message_id,'provider.reconciled'),1,'contradictory race one audit');
+ // Genuine independently connected context change holds the existing authority lock.
+ p=await unknown();p.callback_context=callbackContext();
+ const change=new Promise((resolve,reject)=>execFile(exe('psql'),[...args,'-c',`begin;select private.comm_external_lock('${f.org}');update communication_sender_profiles set from_address='changed@example.test' where id='${h.profile}';select pg_sleep(1);commit;`],{encoding:'utf8'},(e)=>e?reject(e):resolve()));
+ let held=false;for(let i=0;i<100;i++){held=Number(sql("select count(*) from pg_stat_activity where query like 'begin;select private.comm_external_lock%' and wait_event='PgSleep'"))>0;if(held)break;await new Promise(r=>setTimeout(r,10))}
+ eq(held,true,'separate sender change owns external authority lock');
+ await rejects(()=>concurrent(p),'callback waiting on context change rejects stale profile after lock');await change;
+ eq(row(p.message_id).failure_class,'uncertain','stale context lock race retains UNKNOWN');eq(audit(p.message_id,'provider.reconciled'),0,'stale context race produces no successful reconciliation audit');
+ sql(`update communication_sender_profiles set from_address=${lit(p.callback_context.from_address)} where id='${h.profile}'`);
+ eq(reconcile(p).outcome,'sent','fresh matching context can reconcile after rejected stale attempt');
  console.log(JSON.stringify({status:'PASS',checks,transport:'fictional H1 adapter only',schema:'existing H1 plus local reconciliation migration',hosted:false}));
 
 } finally {

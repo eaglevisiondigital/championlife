@@ -7,6 +7,7 @@ on:
       - 'supabase/functions/_shared/communications/activation.mjs'
       - 'supabase/functions/_shared/communications/activation-service.ts'
       - 'supabase/migrations/20261101214121_communications_receipt_reconciliation.sql'
+      - 'supabase/migrations/20261101231457_communications_callback_context.sql'
       - 'tools/backend-tests/package*.json'
       - '.github/workflows/communications-source-review.yml'
 permissions:
@@ -22,6 +23,7 @@ jobs:
           node-version: '22'
       - run: npm ci --ignore-scripts --prefix tools/backend-tests
       - run: node tools/communications-policy/reconciliation.pglite.mjs
+      - run: node tools/communications-policy/callback-context.database.mjs
       - run: node --test tools/communications-policy/*.test.mjs
       - run: node tools/backend-tests/communications-provider.test.mjs
       - run: TEST_POSTGRES_BIN="$(pg_config --bindir)" node tools/communications-policy/worker-durable.native.mjs

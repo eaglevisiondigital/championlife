@@ -16,7 +16,9 @@ function fixture() {
 async function run(f,verifier=async()=>f.event) {
  const result=await verifiedProviderEvent('{}',new Headers(),f.profile,f.binding,verifier);
  assert.ok(!JSON.stringify(result).includes('FICTIONAL_ONLY'));
- assert.ok(!JSON.stringify(result).includes(organizationId));
+ assert.equal(result.payload.callback_context.organization_id,organizationId);
+ assert.ok(!JSON.stringify(result).includes('verifier_key'));
+ assert.deepEqual(Object.keys(result.payload.callback_context).sort(),['channel','environment','from_address','organization_id','profile_id','project_ref','provider','reply_to']);
  return result;
 }
 const changes={
