@@ -1,3 +1,7 @@
+## 2026-11-01 — NMI strict-boolean correction and review PASS
+
+Preserved original fe20f735 and PR59. Route-purpose approval rejects nonbooleans globally and per pilot; receipt confirmation now distinguishes invalid inputs from boolean false. All outputs remain payment-disabled.41 preserved checks +238 new cases PASS; independent429 cases /2983 assertions /130 CLI invocations PASS. Separate draft publication authorized; no provider connection, deployment or payment activation. See docs/NMI-DISABLED-ROUTING.md.
+
 # 2026-10-31 — NMI disabled routing (local only)
 
 Local planner and boarding evidence binding prepared; 30 new tests plus 11 existing checks pass. All outputs remain disabled. See docs/NMI-DISABLED-ROUTING.md. No payment activation, deployment or push.

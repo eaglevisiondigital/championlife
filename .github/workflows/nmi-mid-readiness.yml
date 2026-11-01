@@ -19,7 +19,7 @@ jobs:
       - name: Test four-MID default-off and merchant-isolation contract
         run: node tools/nmi/mid-readiness.mjs --selftest
       - name: Test disabled checkout route planning
-        run: node --test tools/nmi/disabled-routing.test.mjs
+        run: node --test tools/nmi/disabled-routing.test.mjs tools/nmi/strict-approval.test.mjs
       - name: Evaluate readiness without activating payments
         run: node tools/nmi/mid-readiness.mjs docs/nmi-four-mid-readiness.template.json
       - name: Ensure no conflicting diff formatting

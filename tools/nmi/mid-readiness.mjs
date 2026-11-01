@@ -39,12 +39,13 @@ export function evaluate(document) {
     if (typeof route.enabled!=='boolean') errors.push(route.route+' missing enabled flag');
     const slot=slots?.find(s=>s.slot===route.mid_slot);
     if (!route.mid_slot) blockers.push(route.route+' route not mapped');
-    if (!route.boarded_purpose_approved) blockers.push(route.route+' purpose not boarded/approved');
+    if (typeof route.boarded_purpose_approved!=='boolean') errors.push(route.route+' invalid purpose approval');
+    if (route.boarded_purpose_approved!==true) blockers.push(route.route+' purpose not boarded/approved');
     if (route.enabled) {
       if (!slot) errors.push(route.route+' ENABLED without verified MID route');
       if (slot && slot.merchant_organization!==route.organization) errors.push(route.route+' illegal cross-organization merchant assignment');
       if (slot && ['legal_recipient_status','processor_status','settlement_owner_status','test_access_status'].some(p=>slot[p]!==GOOD)) errors.push(route.route+' ENABLED without merchant/settlement evidence');
-      if (!route.boarded_purpose_approved) errors.push(route.route+' ENABLED without onboarded transaction purpose');
+      if (route.boarded_purpose_approved!==true) errors.push(route.route+' ENABLED without onboarded transaction purpose');
       if (!PILOT_CONTROLS.every(k=>controls?.[k]===true)) errors.push(route.route+' ENABLED without one-time checkout controls');
     }
   }
@@ -68,7 +69,7 @@ export function evaluatePilot(document, routeName) {
     }
     if(!slot.gateway_group_alias || slot.gateway_group_alias==='UNVERIFIED')blockers.push('Pilot gateway grouping unverified');
   }
-  if(!route?.boarded_purpose_approved)blockers.push('Pilot purpose not approved by boarded merchant');
+  if(route?.boarded_purpose_approved!==true)blockers.push('Pilot purpose not approved by boarded merchant');
   for(const key of PILOT_CONTROLS)if(document?.controls?.[key]!==true)blockers.push('Pilot '+key+' not accepted');
   return {valid:all.valid,ready:all.valid && blockers.length===0,errors:all.errors,blockers};
 }

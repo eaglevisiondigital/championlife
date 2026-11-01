@@ -19,7 +19,9 @@ export function prepareDisabledRoute(document, routeName, receipt, now) {
   for(const k of ['evidenceRef','legalMerchantAlias','settlementOwnerAlias','receiptOwnerAlias','verifiedBy','independentReviewer'])if(!ref(receipt[k]))return held('EVIDENCE_INCOMPLETE');
   if(receipt.verifiedBy===receipt.independentReviewer)return held('INDEPENDENT_REVIEW_REQUIRED');
   if(!validTime(receipt.verifiedAt)||!validTime(receipt.expiresAt)||Date.parse(receipt.verifiedAt)>Date.parse(now)||Date.parse(receipt.expiresAt)<=Date.parse(now)||Date.parse(receipt.expiresAt)<=Date.parse(receipt.verifiedAt))return held('EVIDENCE_NOT_CURRENT');
-  for(const k of ['legalMerchantConfirmed','settlementOwnershipConfirmed','receiptOwnershipConfirmed','providerPurposeConfirmed'])if(receipt[k]!==true)return held('EVIDENCE_NOT_CONFIRMED');
+  const approvals=['legalMerchantConfirmed','settlementOwnershipConfirmed','receiptOwnershipConfirmed','providerPurposeConfirmed'];
+  if(approvals.some(k=>typeof receipt[k]!=='boolean'))return held('INVALID_EVIDENCE_APPROVAL');
+  if(approvals.some(k=>receipt[k]!==true))return held('EVIDENCE_NOT_CONFIRMED');
   // Do not return customer data, merchant numbers, bank records or arbitrary receipt fields.
   return Object.freeze({mode:'disabled',canSubmit:false,readyForReview:true,route:routeName,organization:route.organization,purpose:route.purpose,midSlot:slot.slot,gatewayGroupAlias:slot.gateway_group_alias,evidenceRef:receipt.evidenceRef,recurring:'separate-review-required'});
  } catch { return held('INVALID_BOARDING_DOCUMENT'); }
