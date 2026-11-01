@@ -36,19 +36,39 @@ export function smsAdapter(contract,binding){
   const r=await contract.send({binding,idempotencyKey:job.idempotency_key,to:job.address_snapshot,senderServiceId:binding.sender_service_id,text});if(!r?.id||normalizeOutcome('sms',r.status)!=='sent')throw Error('SMS receipt required');return{id:String(r.id),status:'sent',segments:r.segments??null,cost:r.cost??null};
  },verifyCallback:(raw,headers)=>contract.verifyCallback(raw,headers,binding)};
 }
-/** @param {{enabled?: boolean, runtime?: {environment: string, project_ref: string}, messageId?: string}} options */
-export async function runExternalWorker(rpc,organization,resolve,{enabled=false,runtime={environment:'',project_ref:''},messageId=''}={}){
- if(!enabled)return{mode:'disabled',processed:0};
+/** @param {{enabled?: boolean, runtime?: {environment: string, project_ref: string}, messageId?: string, signal?: AbortSignal}} options */
+export async function runExternalWorker(rpc,organization,resolve,{enabled=false,runtime={environment:'',project_ref:''},messageId='',signal}={}){
+ // Match the Core G worker: malformed flags never claim or authorize delivery.
+ if(enabled!==true)return{mode:'disabled',processed:0};
+ const cancelled=()=>signal?.aborted===true;
+ if(cancelled())return{mode:'cancelled',processed:0};
  const call=(a,p={})=>rpc(a,organization,p),claimed=await call('claim_external',messageId?{message_id:messageId}:{});
  if(claimed.environment!==runtime?.environment||claimed.project_ref!==runtime?.project_ref)throw Error('Environment binding mismatch');
  let processed=0;
  for(const job of claimed.messages){let adapter;
-  try{adapter=await resolve(job.sender);}catch{const auth=await call('authorize_external',{message_id:job.id,lease_token:job.lease_token});if(auth.authorized){await call('result_external',{message_id:job.id,lease_token:job.lease_token,outcome:'permanent'});}continue;}
-  const auth=await call('authorize_external',{message_id:job.id,lease_token:job.lease_token});if(!auth.authorized)continue;
-  // This transaction is the handoff linearization point. Already handed-off SMTP cannot be recalled.
-  let result;try{const sent=await adapter.send(job);result={outcome:'sent',provider_message_id:sent.id};}catch(e){result={outcome:e.failure||classifyFailure(e)};}
+  if(cancelled())break;
+  try{adapter=await resolve(job.sender);}catch{
+   if(cancelled())break;
+   const auth=await call('authorize_external',{message_id:job.id,lease_token:job.lease_token});
+   if(cancelled())break;
+   if(auth?.authorized===true)await call('result_external',{message_id:job.id,lease_token:job.lease_token,outcome:'permanent'});
+   continue;
+  }
+  if(cancelled())break;
+  const auth=await call('authorize_external',{message_id:job.id,lease_token:job.lease_token});
+  if(cancelled())break;
+  if(auth?.authorized!==true)continue;
+  // The existing database transaction is the handoff linearization point.
+  // After handoff cancellation cannot recall SMTP: persist the actual outcome,
+  // without a cancelled signal, then stop before another message. A failed
+  // result acknowledgement propagates; never send again in this invocation.
+  let result;try{
+   const sent=await adapter.send(job);
+   if(!sent||sent.status!=='sent'||!safeHeader(sent.id,200)||!sent.id.trim())throw Error('Provider send receipt required');
+   result={outcome:'sent',provider_message_id:sent.id};
+  }catch(e){result={outcome:['transient','permanent','uncertain'].includes(e?.failure)?e.failure:classifyFailure(e)};}
   await call('result_external',{message_id:job.id,lease_token:job.lease_token,...result});processed++;
- }return{mode:claimed.mode,processed};
+ }return{mode:cancelled()?'cancelled':claimed.mode,processed};
 }
 export async function boundedBody(req){const reader=req.body?.getReader();if(!reader)throw Error('Missing body');let size=0;const chunks=[];for(;;){const{done,value}=await reader.read();if(done)break;size+=value.length;if(size>8192){await reader.cancel();throw Error('Body too large');}chunks.push(value);}const all=new Uint8Array(size);let offset=0;for(const c of chunks){all.set(c,offset);offset+=c.length;}return new TextDecoder('utf-8',{fatal:true}).decode(all);}
 // Contract verifier is supplied by the selected vendor. There is no invented generic SMTP webhook.

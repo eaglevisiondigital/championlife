@@ -4,6 +4,7 @@ on:
     paths:
       - 'tools/communications-policy/**'
       - 'supabase/functions/_shared/communications/providers.mjs'
+      - 'supabase/functions/_shared/communications/activation.mjs'
       - '.github/workflows/communications-source-review.yml'
 permissions:
   contents: read
@@ -19,4 +20,5 @@ jobs:
       - run: node --test tools/communications-policy/*.test.mjs
       - run: node tools/backend-tests/communications-provider.test.mjs
       - run: TEST_POSTGRES_BIN="$(pg_config --bindir)" node tools/communications-policy/worker-durable.native.mjs
+      - run: TEST_POSTGRES_BIN="$(pg_config --bindir)" node tools/communications-policy/external-worker.native.mjs
       - run: git diff --check
