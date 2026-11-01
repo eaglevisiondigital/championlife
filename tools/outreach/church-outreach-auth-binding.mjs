@@ -44,8 +44,9 @@ export function createChurchOutreachAuthBinding({
   }catch{return null}
  };
  const subscribeEvent=(name,handler)=>{
-  eventTarget.addEventListener(name,handler);
-  return()=>eventTarget.removeEventListener(name,handler);
+  const guarded=event=>{try{handler(event)}finally{close()}};
+  eventTarget.addEventListener(name,guarded);
+  return()=>eventTarget.removeEventListener(name,guarded);
  };
  const composition=createChurchOutreachSummaryComposition({
   getVerifiedSession,rpc:(...args)=>auth.client.rpc(...args),
