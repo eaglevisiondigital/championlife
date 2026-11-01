@@ -61,7 +61,7 @@ const types={'.html':'text/html','.js':'text/javascript','.mjs':'text/javascript
 for(const [engine,settings] of [[chromium,{channel:'chrome'}],[webkit,{}]]){
  const browser=await engine.launch({headless:true,...settings});
  try{
-  for(const width of [390,1440]){
+  for(const width of [390,768,1440]){
    const context=await browser.newContext({viewport:{width,height:1000}}),page=await context.newPage(),unexpected=[],jsErrors=[];
    page.on('pageerror',e=>jsErrors.push(e.message));
    await context.route('**/*',async route=>{
@@ -103,6 +103,32 @@ for(const [engine,settings] of [[chromium,{channel:'chrome'}],[webkit,{}]]){
    check(!/SECRET PERSON|person@private.invalid|SECRET PAYMENT ACCOUNT/.test(await page.locator('body').textContent()),engine.name()+' '+width+' private rows/finances never enter DOM');
    check((await page.evaluate(()=>fixture.requestLog.filter(x=>x.action==='context'||x.action==='list').map(x=>x.action))).join(',')==='context,list,context',engine.name()+' '+width+' original caller-scoped RPC reauthorization sequence');
    check(await page.locator('#outreach-summary-preview button').isEnabled(),engine.name()+' '+width+' authorized refresh enabled');
+   const a11y=await page.evaluate(()=>{
+     const section=document.querySelector('#outreach-summary-preview section');
+     const status=section?.querySelector('[role="status"]');
+     const dl=section?.querySelector('dl');
+     const credit=document.querySelector('#staff-sidebar .staff-propel-credit');
+     const img=credit?.querySelector('img');
+     return {label:section?.getAttribute('aria-label'),role:status?.getAttribute('aria-live'),
+       status:status?.textContent,totalsVisible:!dl?.hidden,
+       propelHref:credit?.getAttribute('href'),propelLogoLoaded:!!(img?.complete&&img?.naturalWidth),
+       propelAlt:img?.getAttribute('alt')};
+   });
+   check(a11y.label==='Campaign registration summary'&&a11y.role==='polite'&&
+     a11y.status==='Authorized campaign totals'&&a11y.totalsVisible,
+     engine.name()+' '+width+' accessible named summary, live status and visible totals');
+   check(a11y.propelHref==='https://kingdompropel.com/'&&a11y.propelLogoLoaded&&
+     a11y.propelAlt==='Propel by Eagle Vision',
+     engine.name()+' '+width+' original Powered by Propel brand/link/logo preserved');
+   const refreshButton=page.locator('#outreach-summary-preview button');
+   await refreshButton.focus();
+   check(await refreshButton.evaluate(e=>document.activeElement===e),
+     engine.name()+' '+width+' keyboard focus reaches Refresh');
+   const beforeKeyboard=await page.evaluate(()=>fixture.requestLog.filter(x=>x.action==='list').length);
+   await refreshButton.press('Enter');
+   await page.waitForFunction(n=>fixture.requestLog.filter(x=>x.action==='list').length>n,beforeKeyboard);
+   check(await page.locator('[data-summary-metric]').count()===5,
+     engine.name()+' '+width+' Enter refresh preserves only authorized counts');
    await page.evaluate(()=>{fixture.revoked=true});
    await page.locator('#outreach-summary-preview button').click();
    await page.waitForFunction(()=>document.querySelectorAll('[data-summary-metric]').length===0);
@@ -127,6 +153,29 @@ for(const [engine,settings] of [[chromium,{channel:'chrome'}],[webkit,{}]]){
    await page.evaluate(()=>fixture.emit('TOKEN_REFRESHED'));
    check(await page.locator('[data-summary-metric]').count()===0,engine.name()+' '+width+' token refresh synchronously invalidates displayed counts');
    check(await page.locator('#outreach-summary-preview button').isDisabled(),engine.name()+' '+width+' refresh disabled after Auth invalidation');
+
+   for(const invalidity of ['unconfirmed','anonymous','wrong-session']){
+     await login();
+     await mount();
+     const prior=await page.evaluate(()=>fixture.requestLog.length);
+     await page.evaluate(mode=>{
+       if(mode==='unconfirmed')fixture.verified=false;
+       if(mode==='anonymous')fixture.anonymous=true;
+       if(mode==='wrong-session')fixture.changeSession=true;
+     },invalidity);
+     await page.locator('#outreach-summary-preview button').click();
+     await page.waitForFunction(()=>document.querySelectorAll('[data-summary-metric]').length===0);
+     check(await page.locator('#outreach-summary-preview button').isDisabled(),
+       engine.name()+' '+width+' '+invalidity+' auth failure clears and disables summary');
+     check((await page.evaluate(()=>fixture.requestLog.length))===prior,
+       engine.name()+' '+width+' '+invalidity+' is rejected before campaign RPC');
+   }
+
+   await login();
+   await mount();
+   await page.evaluate(()=>window.dispatchEvent(new Event('staff-protected-clear')));
+   check(await page.locator('#outreach-summary-preview').count()===0,
+     engine.name()+' '+width+' explicit staff-protected-clear destroys protected summary');
 
    await login();
    await mount();
