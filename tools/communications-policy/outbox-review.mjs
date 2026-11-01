@@ -21,7 +21,7 @@ export async function reviewExistingOutbox(input,ports,{signal}={}) {
   for(const method of ['authenticate','loadOutbox','lookupReceipt','verifyReceipt','withCurrentOutbox'])if(typeof ports?.[method]!=='function')return result('unavailable');
   const principal=copy(await ports.authenticate({signal}));
   if(!id(principal.actorId)||!id(principal.sessionId)||principal.active!==true||principal.verified!==true||signal?.aborted)return result('denied');
-  const target=Object.freeze({...request,actorId:principal.actorId,sessionId:principal.sessionId});
+  const target=Object.freeze({messageId:request.messageId,organizationId:request.organizationId,campaignId:request.campaignId,actorId:principal.actorId,sessionId:principal.sessionId});
   const snapshot=copy(await ports.loadOutbox(target,{signal}));
   const m=snapshot.message;
   if(!m||m.id!==target.messageId||m.organization_id!==target.organizationId||m.campaign_id!==target.campaignId||!id(m.recipient_key)||!id(m.idempotency_key)||!id(m.sender_profile_id)||!id(m.provider)||!int(m.attempts)||!int(snapshot.revision)||!Array.isArray(snapshot.callbacks))return result('scope_mismatch');
