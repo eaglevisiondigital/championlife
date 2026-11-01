@@ -1,12 +1,33 @@
 // Source-only proof of the existing executor's disabled boundary. Not an endpoint or payment service.
 import { reviewFictionalPilot } from './fictional-pilot-review.mjs';
 import { loadPinnedExecutor, loadPinnedGateway } from './pinned-executor.mjs';
+import { prepareFourMidHandoff } from './boarding-handoff.mjs';
 
 const keys = ['document', 'receipt', 'binding', 'authority', 'intent', 'journal', 'observations', 'now'];
 const result = (reason, executorInvoked = false, calls = []) => Object.freeze({
   mode: 'disabled', canSubmit: false, canRetry: false, canPostLedger: false, providerVerified: false,
   reason, executorInvoked, simulatedRpcCalls: Object.freeze([...calls]),
 });
+
+/** Compose the complete boarding handoff with the existing closed pilot/gateway probe.
+ * This is an optional offline full-boarding review, not a new prerequisite for a
+ * separately reviewed single-route pilot. No receipt, source or config override.
+ */
+export async function probeFourMidGateway(input) {
+  const handoffKeys = ['document', 'slotReviews', 'routeReceipts', 'binding', 'authority', 'intent', 'journal', 'observations', 'now'];
+  try {
+    // Capture once before asynchronous source loading. Never reuse a caller's
+    // precomputed ready flag or independently supplied selected-route receipt.
+    const f = structuredClone(input);
+    if (!f || Array.isArray(f) || Object.keys(f).length !== handoffKeys.length || handoffKeys.some(k => !Object.hasOwn(f, k))) return result('INVALID_HANDOFF_PROBE_INPUT');
+    const handoff = prepareFourMidHandoff(f.document, f.slotReviews, f.routeReceipts, f.now);
+    if (!handoff.readyForPrivateReview) return result(handoff.reason);
+    const receipt = f.routeReceipts.find(r => r.route === f.binding?.route);
+    if (!receipt) return result('SELECTED_ROUTE_NOT_REVIEWED');
+    return await probeDisabledGateway({document: f.document, receipt, binding: f.binding,
+      authority: f.authority, intent: f.intent, journal: f.journal, observations: f.observations, now: f.now});
+  } catch { return result('INVALID_HANDOFF_PROBE_INPUT'); }
+}
 
 /** Inputs are fictional review data only. No caller-provided RPC, transport, configuration or secret port. */
 export async function probeDisabledExecutor(input) {

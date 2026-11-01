@@ -18,4 +18,16 @@ This all-four handoff does not change the existing ability to prepare a narrowly
 
 ## Validation
 
-42 new focused tests cover five routes/four slots, digest mutation, malformed approvals, stale/revoked evidence, duplicate and missing entries, cross-organization ownership, raw extra-field rejection and no-output leakage. Full lane Node suite:664 PASS; existing readiness self-test:11 PASS. SQL/executor/public runtime are unchanged; prior accepted native evidence is reused and CI retains its native jobs. No provider contacted.
+The original 42 focused tests cover five routes/four slots, digest mutation, malformed approvals, stale/revoked evidence, duplicate and missing entries, cross-organization ownership, raw extra-field rejection and no-output leakage. Their accepted baseline was 664 lane Node tests and 11 readiness assertions.
+
+## Disabled gateway composition — November 1 successor
+
+`probeFourMidGateway` in the existing `disabled-executor-probe.mjs` connects this full boarding handoff to the existing one-time pilot review and pinned PR78 gateway/executor. Previously these checks accepted independent receipt inputs. The composition now clones one input snapshot, validates every slot/route receipt against the document digest, and derives the selected receipt from that same validated collection. It accepts no separate receipt, cached ready flag, source override, runtime configuration, secret or transport port.
+
+The existing pilot contract still checks the exact merchant/fund/intent, current fictional finance authority and prior-attempt journal. UNKNOWN and other prior attempts cannot reach execution. A selected or unused merchant review that is expired/revoked blocks this optional full-boarding composition. The existing single-route pilot remains unchanged and does not acquire an all-four boarding prerequisite.
+
+Successful fictional review reaches the actual hash-checked PR78 source at `b59e1afcbe2978d16e27883750ce20adb7d3a23d` through its existing loader. The executor and gateway retain their fixed disabled configurations; the gateway exercises create/execute/job rejection. Zero prepare/claim/job RPCs, credential reads or network calls are permitted. Every output remains `canSubmit=false`, `canRetry=false`, `canPostLedger=false`, `providerVerified=false`. A captured snapshot is only historical offline review evidence: it cannot authorize later execution, establish live revocation freshness or prove provider acceptance.
+
+35 additional integration tests cover Main/Outreach success through the disabled gateway, stale digest, source/gateway drift, unused-slot expiry/revocation, selected receipt/pilot mismatch, malformed approval, UNKNOWN, caller configuration/source/receipt injection and snapshot isolation. Existing CI static-contract selection: **699 PASS**; readiness self-test: **11 PASS**. No SQL or runtime source changed. Native PostgreSQL was not restarted on the Mac because its environment remains blocked; prior exact-base CI evidence is retained, and the unchanged native CI jobs remain required for a published successor. New-head remote CI and independent review are pending.
+
+Actual merchant evidence remains **0/4 independently provider-verified**. GiveHub, recurring, PR59, PR78 and hosted systems are unchanged. No browser validation, real provider acceptance, production installation or release approval is claimed.
