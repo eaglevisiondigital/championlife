@@ -127,6 +127,7 @@ for(const [engine,settings] of [[chromium,{channel:'chrome'}],[webkit,{}]]){
    const beforeKeyboard=await page.evaluate(()=>fixture.requestLog.filter(x=>x.action==='list').length);
    await refreshButton.press('Enter');
    await page.waitForFunction(n=>fixture.requestLog.filter(x=>x.action==='list').length>n,beforeKeyboard);
+   await page.waitForFunction(()=>document.querySelectorAll('#outreach-summary-preview [data-summary-metric]').length===5);
    check(await page.locator('[data-summary-metric]').count()===5,
      engine.name()+' '+width+' Enter refresh preserves only authorized counts');
    await page.evaluate(()=>{fixture.revoked=true});
