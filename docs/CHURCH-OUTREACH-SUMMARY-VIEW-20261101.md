@@ -21,3 +21,9 @@
 ## Next bounded task
 
 After independent review of this new renderer, prepare a **separate reviewed preview/browser mount** and real-browser synthetic acceptance based on frozen PR #61 using the exact preapproved host/Auth config and site build. Hosted genuine Auth still requires its own operational rehearsal and explicit owner website-only release authorization. Do not confuse a synthetic DOM PASS with hosted authentication or production-readiness.
+
+## Independent source review correction: strict UUID length
+
+Review found that JavaScript's dollar end anchor can match immediately before a final line break. Consequently a 36-character ID followed by LF/CRLF could be accepted by an otherwise anchored regex in the PR #68 Auth/selection contract. The draft **preserves original PR #68** and additionally checks `value.length===36` for each provider identity UUID and campaign UUID before accepting the regex, both in the Auth binding and in the renderer. Added malicious UI hint and matched provider/session newline regressions. The check is structural only; the actual authorization still belongs to the provider and registration RPC.
+
+This change must be included in independent review of the stacked draft; it is NOT a retrofit to frozen PR #61 or a production release.
