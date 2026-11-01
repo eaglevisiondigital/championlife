@@ -18,4 +18,5 @@ jobs:
           node-version: '22'
       - run: node --test tools/communications-policy/*.test.mjs
       - run: node tools/backend-tests/communications-provider.test.mjs
+      - run: TEST_POSTGRES_BIN="$(pg_config --bindir)" node tools/communications-policy/worker-durable.native.mjs
       - run: git diff --check
