@@ -112,7 +112,9 @@ for(const [engine,settings] of [[chromium,{channel:'chrome'}],[webkit,{}]]){
    await mount();
    check(await page.locator('[data-summary-metric]').count()===5,engine.name()+' '+width+' fresh navigation revalidates a new synthetic session');
    await page.evaluate(()=>fixture.emit('SIGNED_OUT'));
-   await page.waitForFunction(()=>!window.StaffWorkspace.active());
+   await page.waitForFunction(()=>!window.StaffWorkspace?.active());
+   // The original staff-session script also redirects asynchronously on signout.
+   await page.waitForURL('**/discipleship-login.html*');
    check(await page.locator('[data-summary-metric]').count()===0,engine.name()+' '+width+' signout clears protected DOM');
    check(await page.locator('#outreach-summary-preview').count()===0,engine.name()+' '+width+' protected-clear removes mounted view');
 
