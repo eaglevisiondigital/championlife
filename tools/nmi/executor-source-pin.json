@@ -1,7 +1,7 @@
 {
   "repository": "eaglevisiondigital/championlife",
   "pr": 78,
-  "commit": "84b2d9ab398bb8046570019da26a5db67fe77467",
+  "commit": "b59e1afcbe2978d16e27883750ce20adb7d3a23d",
   "files": {
     "nmi-executor.mjs": {
       "path": "supabase/functions/_shared/payments/nmi-executor.mjs",

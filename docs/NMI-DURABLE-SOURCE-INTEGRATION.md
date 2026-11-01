@@ -93,3 +93,34 @@ webhooks, refund/void and emergency stop); four legitimate merchant/settlement
 proofs; then separately approved bounded one-time pilot. Recurring and replacement
 of GiveHub remain outside this source-only package. No production migration,
 transaction, deployment or staff grant is authorized by local PASS.
+
+## Authoritative recovery pipeline successor
+
+The next focused native suite (`durable-recovery.native.mjs`) uses the existing
+corrected webhook handler and the existing gateway, executor and XML query parser
+with actual native PostgreSQL RPCs. The additional webhook source pin is hash
+verified before import. The seven existing dependency bytes remain unchanged;
+the source commit advances to the reviewed webhook strict-boolean correction.
+The 43 SQL/fixture source pins and original 62-check evidence are preserved.
+
+Every intercepted query is restricted to the documented read-only query URL; any
+sale, authorize, refund, void or recurring provider transport causes test failure.
+Original operation IDs bind UNKNOWN lookups; wrong amount, processor, currency,
+order, absent/ambiguous results and timeouts cannot post. No automatic recharge is
+allowed. The signed-webhook test uses an in-memory handler with literal `true` only
+to exercise existing ingress, then permits query transport only. This is not a
+configured or deployed webhook and creates no external request. Runtime checkout
+configuration stays false. Native SQL fixture rows are fictional as above.
+
+The webhook correction closes a confirmed JavaScript truthiness defect. Strings
+such as `"false"` no longer pass into secret reading or durable event ingestion.
+Only literal `true` is accepted; no extra recovery ingress authority is introduced.
+Unknown outcomes remain held for independently approved recovery; a signed event
+alone is not proof of payment or permission to retry a charge.
+
+New-charge shutdown and complete recovery shutdown are distinct existing controls.
+The former preserves explicitly enabled, scoped original-state lookup so uncertain
+prior payments can be reconciled safely; setting `recoveryEnabled=false` as well
+rejects all recovery before claims, secret reads and query transport. The native
+suite checks both boundaries. Neither control is a substitute for separately
+reviewed provider credential revocation or independent operational recovery.
