@@ -3,13 +3,14 @@ on:
   pull_request:
     paths:
       - 'tools/discipleship-progression/**'
+      - 'supabase/migrations/20261101165620_prepare_owned_worksheet_transactions.sql'
       - '.github/workflows/discipleship-source-review.yml'
 permissions:
   contents: read
 jobs:
   source-contract:
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -18,4 +19,7 @@ jobs:
       - run: npm ci --ignore-scripts --prefix tools/backend-tests
       - run: node --test tools/discipleship-progression/*.test.mjs
       - run: TEST_POSTGRES_BIN="$(pg_config --bindir)" node tools/discipleship-progression/worksheet-source.native.mjs
+      - run: TEST_POSTGRES_BIN="$(pg_config --bindir)" node tools/discipleship-progression/worksheet-transactions.native.mjs
+      - run: tools/backend-tests/node_modules/.bin/playwright install --with-deps chromium webkit
+      - run: node tools/discipleship-progression/worksheet-transactions.browser.mjs
       - run: git diff --check

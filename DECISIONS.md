@@ -66,3 +66,8 @@ Implement only the four confirmed general-resource launch corrections in a separ
 ## 2026-10-28 — Local King Kind reader session correction
 
 Separate successor to sealed 6d5730bf0034bbb138999ce8cab97ce150d525fe. Reader invalidates retained PDF/Blob/canvas/license state synchronously on Auth/storage/history/expiry changes; deferred authorization avoids SDK callback-lock deadlock. Generation-bound requests and detached rendering prevent stale completion from restoring prior-user content. Each personal-use download freshly checks identity and exact-object Storage eligibility. No design, SDK, PDF, SQL/RLS, general registration, lesson, recovery or Issue50/51 changes. Local regression and intercepted real-browser/real-renderer evidence are recorded privately; genuine-provider acceptance remains untested. See docs/KING-KIND-SESSION-CORRECTION.md. Stop at independent review; no hosted authorization, deployment or access grants.
+
+
+## 2026-11-01 — Durable worksheet transaction preparation
+
+Prepare durable worksheet transactions over existing answers using private server-owned version metadata; do not add a duplicate answer store or infer trusted watch evidence. Limit the new RPC to existing lessons1–4 question manifests; keep progression flags false. Conservative cross-course mutation serialization is documented pending performance review. No installation or public activation is approved.
