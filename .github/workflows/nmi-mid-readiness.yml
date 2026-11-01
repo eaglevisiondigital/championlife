@@ -1,0 +1,26 @@
+name: NMI four-MID readiness contract (nonproduction)
+on:
+  pull_request:
+    paths:
+      - 'docs/nmi-four-mid-readiness.template.json'
+      - 'docs/NMI-FOUR-MID-ONBOARDING-2026-11-02.md'
+      - 'tools/nmi/**'
+      - '.github/workflows/nmi-mid-readiness.yml'
+permissions:
+  contents: read
+jobs:
+  static-contract:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Test four-MID default-off and merchant-isolation contract
+        run: node tools/nmi/mid-readiness.mjs --selftest
+      - name: Test disabled checkout route planning
+        run: node --test tools/nmi/disabled-routing.test.mjs
+      - name: Evaluate readiness without activating payments
+        run: node tools/nmi/mid-readiness.mjs docs/nmi-four-mid-readiness.template.json
+      - name: Ensure no conflicting diff formatting
+        run: git diff --check
