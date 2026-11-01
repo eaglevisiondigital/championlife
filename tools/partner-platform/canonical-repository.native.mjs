@@ -1,6 +1,7 @@
 // Linux CI only while the Mac's native PostgreSQL IPC allocation is unavailable.
 // Genuine independent sessions; no hosted URL, port or credential is accepted.
 import assert from 'node:assert/strict';
+import {diagnoseCanonicalFixtureCatalog} from './canonical-catalog-diagnostics.mjs';
 import {localPostgres} from '../backend-tests/local-postgres.mjs';
 import {canonicalSourceFixture} from './canonical-source-fixture.mjs';
 import {createCanonicalPartnerRepository} from './canonical-repository.mjs';
@@ -9,6 +10,11 @@ const db=await localPostgres();let n=0;
 const check=(value,label)=>{assert.ok(value,label);n++;console.log('PASS '+label)};
 try{
  const f=await canonicalSourceFixture(db),reader=await db.connect(),writer=await db.connect(),foreign=await db.connect();
+ // Emit only disposable schema diagnostics before the public boundary conceals
+ // the denial reason. A mismatch remains a failing assertion; no pin changes.
+ const catalogReport=await diagnoseCanonicalFixtureCatalog(db);
+ console.log('CANONICAL_CATALOG_DIAGNOSTICS '+JSON.stringify(catalogReport));
+ assert.equal(catalogReport.mismatches.length,0,'native catalog must match reviewed provenance');
  await writer.query("set lock_timeout='150ms'");await foreign.query("set lock_timeout='150ms'");
  const principal={userId:f.actor,sessionId:f.session,verified:true,expiresAt:new Date(Date.now()+3600000).toISOString()};
  const request={organizationId:f.org,campaignId:f.campaign,assignmentId:f.assignment};

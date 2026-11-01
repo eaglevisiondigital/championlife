@@ -1,3 +1,7 @@
+## 2026-11-01 — Canonical native CI failure diagnostic
+
+The canonical repository candidate `34197a6bc4acde93d192889534d9748a65058136` passed 322 local focused checks but native CI run `41362035208` failed its first positive read as null/unverified. Native serialization acceptance is FAILED/INCOMPLETE. The accepted PGlite fixture reports PostgreSQL 18.3; native version/catalog differences are not yet established. Added test-only version and catalog-field diagnostics before the boundary conceals the denial reason. Runtime source and committed provenance pins are unchanged; diagnostic mismatch remains a test failure. No native Mac server, provider action or runtime mount.
+
 ## 2026-11-01 — Unmounted canonical Partner repository
 
 Added a server-only transactional reader that reuses exact accepted Issue50 A/B/B2 identity receipts/reviews and the existing canonical adapter. Positive reads lock existing source/map, review/receipt/audit, Person/account and authority rows; missing/changed provenance remains unverified. The disposable fixture generates evidence through the accepted writer. No migration, connection/role or public mount; current metadata stays null. Synthetic Auth catalog pins deliberately prevent claiming real-provider readiness. PGlite and focused Node validation are recorded in [the source contract](docs/PARTNER-CANONICAL-REPOSITORY-20261101.md); native Linux contention CI and independent review remain gates.
