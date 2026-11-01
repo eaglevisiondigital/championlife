@@ -51,3 +51,7 @@ The optional worksheet transaction API serializes existing legacy DML and revisi
 ## 2026-11-01 — Playback authority source boundary
 
 The playback verifier accepts only exact domain-separated signed envelope bytes and an injected current observer/key/policy repository. Existing ledger composition re-verifies observer revision after its serialization wait. Actual registry, durable ingestion and atomic completion bindings remain unimplemented; existing worksheet storage is unchanged.
+
+## 2026-11-01 — Existing ledger read integration
+
+`owned_progression_snapshot(p_lesson)` is an invoker wrapper around a private owner-bound database repository. It calls the unchanged `owned_worksheet_transaction` and retains its Auth user/session, course/enrollment, private version locks and shared legacy-write mutex until transaction completion. It projects exactly the existing progression evaluator's discriminated `answerReceipt`, using opaque worksheet UUID tokens; the private allocation counter is never exposed. No second evidence store or progression state is introduced. This is a point-in-time worksheet read; it does not implement the `withCurrentLedger` lifetime across an external provider call. A future completion transaction still needs accepted playback authority and compatible serialization. See docs/DISCIPLESHIP-OWNED-PROGRESSION-SNAPSHOT.md.

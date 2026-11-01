@@ -4,6 +4,7 @@ on:
     paths:
       - 'tools/discipleship-progression/**'
       - 'supabase/migrations/20261101165620_prepare_owned_worksheet_transactions.sql'
+      - 'supabase/migrations/20261101231330_owned_progression_snapshot.sql'
       - '.github/workflows/discipleship-source-review.yml'
 permissions:
   contents: read
@@ -17,6 +18,8 @@ jobs:
         with:
           node-version: '22'
       - run: npm ci --ignore-scripts --prefix tools/backend-tests
+      - run: node tools/discipleship-progression/progression-snapshot.database.mjs
+      - run: TEST_NATIVE_PG=1 TEST_POSTGRES_BIN="$(pg_config --bindir)" node tools/discipleship-progression/progression-snapshot.database.mjs
       - run: node --test tools/discipleship-progression/*.test.mjs
       - run: TEST_POSTGRES_BIN="$(pg_config --bindir)" node tools/discipleship-progression/worksheet-source.native.mjs
       - run: TEST_POSTGRES_BIN="$(pg_config --bindir)" node tools/discipleship-progression/worksheet-transactions.native.mjs

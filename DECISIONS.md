@@ -76,3 +76,7 @@ Prepare durable worksheet transactions over existing answers using private serve
 ## 2026-11-01 — Bounded playback verifier implementation
 
 Implement only the missing cryptographic observer interface and current-ledger recheck in this source package. Preserve approved 95% unique-watch and answer rules, all worksheet/King Kind source, and truthful lesson availability. Defer the UUID worksheet bridge and completion writer to their own reviewed package; do not silently convert opaque versions.
+
+## 2026-11-01 — Finish the existing receipt binding before provider activation
+
+Reuse the accepted worksheet transaction for the durable owner/session/enrollment projection; retain source-only status and the exact prior migration. Do not fabricate a media registry, observer, monotonic progression ledger or completion write to make an incomplete course appear verified. Keep missing worksheets5–13 and videos11–13 visible as separate work. No major architecture or provider selection is made by this repository read.

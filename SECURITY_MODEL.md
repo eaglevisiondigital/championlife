@@ -73,3 +73,7 @@ Worksheet transaction preparation derives learner identity exclusively from Auth
 ## 2026-11-01 — Playback authenticity is not completion authority
 
 A valid Ed25519 signature does not prove actual viewing. Source-review provenance must be independently accepted in a trusted repository; browser keys and flags cannot grant authority. Observer revocation requires compatible serialization with ledger evaluation. All outputs remain review-only, with no completion commit or actual provider acceptance.
+
+## 2026-11-01 — Database-owned answer receipt provenance
+
+The snapshot accepts lesson only. Current Auth/session and same-owner enrollment derive from the accepted worksheet transaction, with expiration rechecked before return. Cross-account, revoked/missing/foreign/expired sessions and lessons5–13 deny. Public and private function execution is limited to authenticated; both paths enforce the same identity checks. No raw answers, shared revision counter or new table rights escape. A browser can copy a receipt but cannot make it completion authority: source consumers must load it from the database in their own authorized transaction. New native contention coverage remains CI-pending; local PGlite does not prove process concurrency.
