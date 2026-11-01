@@ -172,6 +172,19 @@ for(const [engine,settings] of [[chromium,{channel:'chrome'}],[webkit,{}]]){
        engine.name()+' '+width+' '+invalidity+' is rejected before campaign RPC');
    }
 
+   // A pending provider response is not authorization after token invalidation.
+   // The old request is released deliberately AFTER the synchronous clear.
+   await login();
+   await mount();
+   await page.evaluate(()=>{fixture.pending='list'});
+   await page.locator('#outreach-summary-preview button').click();
+   await page.waitForFunction(()=>typeof fixture.release==='function');
+   await page.evaluate(()=>{fixture.emit('TOKEN_REFRESHED');fixture.release()});
+   check(await page.locator('[data-summary-metric]').count()===0,
+     engine.name()+' '+width+' pending list cannot repaint after token refresh');
+   check(await page.locator('#outreach-summary-preview button').isDisabled(),
+     engine.name()+' '+width+' pending request remains disabled after scope invalidation');
+
    await login();
    await mount();
    await page.evaluate(()=>window.dispatchEvent(new Event('staff-protected-clear')));
