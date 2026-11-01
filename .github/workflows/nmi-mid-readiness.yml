@@ -21,8 +21,23 @@ jobs:
       - name: Test four-MID default-off and merchant-isolation contract
         run: node tools/nmi/mid-readiness.mjs --selftest
       - name: Test disabled checkout route planning
-        run: node --test tools/nmi/disabled-routing.test.mjs tools/nmi/strict-approval.test.mjs tools/nmi/merchant-boundary.review.test.mjs tools/nmi/fictional-lookup-review.test.mjs tools/nmi/fictional-pilot-review.test.mjs tools/nmi/disabled-executor-probe.test.mjs
+        run: node --test tools/nmi/disabled-routing.test.mjs tools/nmi/strict-approval.test.mjs tools/nmi/merchant-boundary.review.test.mjs tools/nmi/fictional-lookup-review.test.mjs tools/nmi/fictional-pilot-review.test.mjs tools/nmi/disabled-executor-probe.test.mjs tools/nmi/durable-pilot-review.test.mjs
       - name: Evaluate readiness without activating payments
         run: node tools/nmi/mid-readiness.mjs docs/nmi-four-mid-readiness.template.json
       - name: Ensure no conflicting diff formatting
         run: git diff --check
+
+  native-durable-integration:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Fetch only exact reviewed source compositions
+        run: |
+          git fetch --no-tags --depth=1 origin bfb7af214707db73a3a3164bc96ccafae7de8ccf
+          git fetch --no-tags --depth=1 origin 84b2d9ab398bb8046570019da26a5db67fe77467
+      - run: npm ci --ignore-scripts --prefix tools/backend-tests
+      - name: Exercise real disposable PostgreSQL with fictional outcomes only
+        run: TEST_POSTGRES_BIN="$(pg_config --bindir)" node tools/nmi/durable-pilot.native.mjs
