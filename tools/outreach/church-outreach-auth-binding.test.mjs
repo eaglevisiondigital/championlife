@@ -169,7 +169,7 @@ test('identity switch mid-request rejects late result, even if context earlier p
  await new Promise(resolve=>setImmediate(resolve));
  f.setSessionUser(OTHER);
  slow.resolve({data:{capabilities:['registration.view']}});
- await assert.rejects(pending,{code:'UNAUTHENTICATED'});
+ await assert.rejects(pending,{code:'STALE_SCOPE'});
  assert.equal(f.binding.snapshot(),null);
  assert.equal(f.snapshots.filter(Boolean).length,0);
  f.binding.close();
