@@ -1,0 +1,21 @@
+name: Campaign summary adapter (local synthetic data)
+on:
+  pull_request:
+    paths:
+      - 'tools/outreach/**'
+      - '.github/workflows/outreach-summary-review.yml'
+permissions:
+  contents: read
+jobs:
+  summary:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm ci --ignore-scripts --prefix tools/backend-tests
+      - run: node --test tools/outreach/campaign-summary.test.mjs tools/outreach/campaign-summary.review.test.mjs tools/outreach/campaign-summary-lifecycle.test.mjs tools/outreach/campaign-summary-lifecycle.review.test.mjs tools/outreach/church-outreach-summary-composition.test.mjs
+      - run: TEST_POSTGRES_BIN="$(pg_config --bindir)" node tools/outreach/campaign-summary.native.mjs
+      - run: git diff --check
