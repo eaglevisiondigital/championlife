@@ -33,7 +33,7 @@ export function mountChurchOutreachSummaryView({
  };
  const accept=value=>{
   if(closed)return;
-  if(!value){hide('Totals cleared. Verify campaign access.');return}
+  if(!value){button.disabled=true;hide('Totals cleared. Verify campaign access.');return}
   if(!selected||value.campaignId!==selected||value.kind!=='event-registration-summary'){
    hide();return;
   }
@@ -46,7 +46,7 @@ export function mountChurchOutreachSummaryView({
    const row=element('div'),term=element('dt',label),number=element('dd',String(counts[key]));
    number.setAttribute('data-summary-metric',key);row.append(term,number);fragment.append(row);
   }
-  totals.replaceChildren(fragment);totals.hidden=false;
+  totals.replaceChildren(fragment);totals.hidden=false;button.disabled=false;
   status.textContent='Authorized campaign totals';
  };
  try {
