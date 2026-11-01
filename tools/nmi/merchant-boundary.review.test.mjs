@@ -69,7 +69,7 @@ test('Main route cannot masquerade as SowGo even if slot and purpose are indepen
 test('receipt must exactly match route, legal merchant and gateway evidence',()=>{
  const doc=fixture();
  const mutations=[
-  x=>x.midSlot='MID-04',x=>x.route='Youth',x=>x.organization='SowGo',
+  x=>x.midSlot='MID-04',x=>x.route='Youth',x=>x.organization='Champion Life',
   x=>x.purpose='purchase',x=>x.gatewayGroupAlias='SyntheticOther'
  ];
  for(const change of mutations){
