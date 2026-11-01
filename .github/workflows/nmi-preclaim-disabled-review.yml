@@ -1,0 +1,23 @@
+name: NMI disabled executor preclaim review (nonproduction)
+on:
+  pull_request:
+    paths:
+      - 'supabase/functions/_shared/payments/nmi-executor.mjs'
+      - 'tools/backend-tests/nmi-preclaim-disabled.test.mjs'
+      - 'docs/NMI-PRECLAIM-DISABLED-GUARD.md'
+      - '.github/workflows/nmi-preclaim-disabled-review.yml'
+permissions:
+  contents: read
+jobs:
+  disabled-preclaim:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Enforce disabled NMI executor with zero operation claims
+        run: node --test tools/backend-tests/nmi-preclaim-disabled.test.mjs
+      - name: Verify diff formatting
+        run: git diff --check
