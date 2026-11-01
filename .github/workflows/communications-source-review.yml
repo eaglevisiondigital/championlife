@@ -5,6 +5,9 @@ on:
       - 'tools/communications-policy/**'
       - 'supabase/functions/_shared/communications/providers.mjs'
       - 'supabase/functions/_shared/communications/activation.mjs'
+      - 'supabase/functions/_shared/communications/activation-service.ts'
+      - 'supabase/migrations/20261101214121_communications_receipt_reconciliation.sql'
+      - 'tools/backend-tests/package*.json'
       - '.github/workflows/communications-source-review.yml'
 permissions:
   contents: read
@@ -17,8 +20,11 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
+      - run: npm ci --ignore-scripts --prefix tools/backend-tests
+      - run: node tools/communications-policy/reconciliation.pglite.mjs
       - run: node --test tools/communications-policy/*.test.mjs
       - run: node tools/backend-tests/communications-provider.test.mjs
       - run: TEST_POSTGRES_BIN="$(pg_config --bindir)" node tools/communications-policy/worker-durable.native.mjs
       - run: TEST_POSTGRES_BIN="$(pg_config --bindir)" node tools/communications-policy/external-worker.native.mjs
+      - run: TEST_POSTGRES_BIN="$(pg_config --bindir)" node tools/communications-policy/reconciliation.native.mjs
       - run: git diff --check

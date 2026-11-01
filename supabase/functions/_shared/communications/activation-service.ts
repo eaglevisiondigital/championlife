@@ -1,4 +1,4 @@
-import nodemailer from 'npm:nodemailer@10.0.16';
+import nodemailer from 'npm:nodemailer@10.1.4';
 import {bindingFor,smtpAdapter} from './activation.mjs';
 export function runtime(){const environment=Deno.env.get('COMMUNICATIONS_ENVIRONMENT'),ref=Deno.env.get('COMMUNICATIONS_PROJECT_REF'),url=Deno.env.get('SUPABASE_URL');if(!environment||!['acceptance','production'].includes(environment)||!ref||url!=='https://'+ref+'.supabase.co'||(environment==='acceptance')!==(ref==='bkbmjisprwmkptywtmih'))throw Error('Environment unavailable');return{environment,project_ref:ref};}
 export function enabled(){try{runtime();return Deno.env.get('COMMUNICATIONS_RUNTIME_ENABLED')==='true';}catch{return false;}}

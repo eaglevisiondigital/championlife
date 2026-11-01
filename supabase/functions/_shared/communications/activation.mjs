@@ -76,6 +76,12 @@ export async function verifiedProviderEvent(raw,headers,profile,binding,verifier
  if(!verifier||!profile.structured_callbacks)throw Error('Provider callbacks not configured');
  const e=await verifier(raw,headers,binding); // MUST verify signature, provider timestamp/replay envelope before returning.
  if(!e||!safeHeader(e.event_id,200)||!e.event_id||e.provider!==profile.sender.provider||e.organization_id||e.profile_id)throw Error('Invalid provider event');
+ if(e.type==='reconciliation'){
+  const uuid=s=>typeof s==='string'&&/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/.test(s);
+  if(!uuid(e.message_id)||!uuid(e.attempt_id)||!safeHeader(e.idempotency_key,500)||!e.idempotency_key||e.environment!==binding.environment||e.project_ref!==binding.project_ref||!['sent','rejected','uncertain'].includes(e.status))throw Error('Authoritative request receipt required');
+  if(e.status==='sent'?(!safeHeader(e.provider_message_id,200)||!e.provider_message_id.trim()):e.provider_message_id!=null)throw Error('Accepted provider receipt required');
+  return {action:'reconcile_external',payload:{event_id:e.event_id,provider:e.provider,environment:e.environment,project_ref:e.project_ref,message_id:e.message_id,attempt_id:e.attempt_id,idempotency_key:e.idempotency_key,provider_message_id:e.provider_message_id??null,outcome:e.status}};
+ }
  if(e.type==='delivery'){if(!safeHeader(e.provider_message_id,200)||!e.provider_message_id||!/^[a-f0-9-]{36}$/.test(e.attempt_id||''))throw Error('Receipt binding required');return{action:'callback_external',payload:{event_id:e.event_id,provider:e.provider,provider_message_id:e.provider_message_id,attempt_id:e.attempt_id,outcome:normalizeOutcome(profile.sender.channel,e.status)}};}
  if(e.type==='preference'&&profile.sender.channel==='sms'&&['STOP','START','HELP'].includes(e.keyword)&&/^\+[1-9][0-9]{7,14}$/.test(e.address))return{action:'keyword_external',payload:{event_id:e.event_id,provider:e.provider,keyword:e.keyword,address:e.address}};
  throw Error('Invalid provider event');
