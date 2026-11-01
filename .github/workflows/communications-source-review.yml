@@ -1,0 +1,19 @@
+name: Communications isolated source review
+on:
+  pull_request:
+    paths:
+      - 'tools/communications-policy/**'
+      - '.github/workflows/communications-source-review.yml'
+permissions:
+  contents: read
+jobs:
+  source-contract:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: node --test tools/communications-policy/*.test.mjs
+      - run: git diff --check
