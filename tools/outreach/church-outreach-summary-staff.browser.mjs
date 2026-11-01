@@ -2,7 +2,7 @@
 // All network is intercepted: fictional Auth/RPC responses and local source only.
 // No Supabase or Netlify project, live user, API key, real email or external fetch.
 import assert from 'node:assert/strict';
-import {readFile} from 'node:fs/promises';
+import {readFile,mkdir} from 'node:fs/promises';
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {chromium,webkit} from '../backend-tests/node_modules/playwright/index.mjs';
@@ -13,6 +13,8 @@ const A='10000000-0000-4000-8000-000000000001';
 const B='20000000-0000-4000-8000-000000000002';
 const USER='30000000-0000-4000-8000-000000000003';
 const COUNTS={households:2,adults:3,minors:2,attendees:5,checked_in:1};
+const EVIDENCE=process.env.LANE_A_EVIDENCE_DIR;
+if(EVIDENCE)await mkdir(EVIDENCE,{recursive:true});
 let passes=0;
 const check=(test,description)=>{assert.ok(test,description);passes++;console.log('PASS '+description)};
 
@@ -20,7 +22,7 @@ const authFixture=`
 window.fixture={
   userId:'${USER}',verified:true,anonymous:false,revoked:false,
   pending:null,release:null,requestLog:[],listeners:new Set(),activeToken:'fictional-a',
-  checkedIn:1,changeSession:false,unexpected:[],
+  checkedIn:1,changeSession:false,unexpected:[],allowB:false,denyAfterList:false,
   emit(event){for(const fn of [...this.listeners])fn(event,{user:this.user()})},
   user(){return{id:this.userId,email:'test@fixture.invalid',email_confirmed_at:this.verified?'2026-01-01T00:00:00Z':null,is_anonymous:this.anonymous}},
   async rpc(name,params){
@@ -32,14 +34,16 @@ window.fixture={
     if(this.pending===params.p_action){
       this.pending=null;await new Promise(resolve=>this.release=resolve);
     }
-    if(this.revoked || params.p_campaign==='${B}')
+    if(this.revoked || (!this.allowB&&params.p_campaign==='${B}'))
       return{error:{code:'42501',message:'Synthetic denied'},status:403};
     if(params.p_action==='context')return{data:{capabilities:['registration.view']}};
-    if(params.p_action==='list')return{data:{
-      summary:{households:2,adults:3,minors:2,attendees:5,checked_in:this.checkedIn},
+    if(params.p_action==='list'){
+      if(this.denyAfterList)this.revoked=true;
+      return{data:{
+      summary:{households:2,adults:3,minors:2,attendees:5,checked_in:params.p_campaign==='${B}'?4:this.checkedIn},
       registrations:[{name:'SECRET PERSON',email:'person@private.invalid'}],
       donor:'SECRET PAYMENT ACCOUNT'
-    }};
+    }};}
     throw Error('Unexpected action');
   }
 };
@@ -64,6 +68,7 @@ for(const [engine,settings] of [[chromium,{channel:'chrome'}],[webkit,{}]]){
   for(const width of [390,768,1440]){
    const context=await browser.newContext({viewport:{width,height:1000}}),page=await context.newPage(),unexpected=[],jsErrors=[];
    page.on('pageerror',e=>jsErrors.push(e.message));
+   const browserLog=[];page.on('console',msg=>browserLog.push(msg.text()));
    await context.route('**/*',async route=>{
     const url=new URL(route.request().url());
     if(url.hostname==='cdn.jsdelivr.net')
@@ -120,6 +125,29 @@ for(const [engine,settings] of [[chromium,{channel:'chrome'}],[webkit,{}]]){
    check(a11y.propelHref==='https://kingdompropel.com/'&&a11y.propelLogoLoaded&&
      a11y.propelAlt==='Propel by Eagle Vision',
      engine.name()+' '+width+' original Powered by Propel brand/link/logo preserved');
+   if(width<1024){
+     await page.locator('#staff-menu').focus();
+     await page.keyboard.press('Enter');
+     check(await page.locator('#staff-menu').getAttribute('aria-expanded')==='true',
+       engine.name()+' '+width+' keyboard opens staff drawer');
+   }
+   const geometry=await page.locator('#staff-sidebar .staff-propel-credit img').evaluate(img=>{
+     const r=img.getBoundingClientRect(),parent=img.closest('aside').getBoundingClientRect();
+     return {within:r.left>=parent.left&&r.right<=parent.right&&r.top>=parent.top&&r.bottom<=parent.bottom,
+       positive:r.width>0&&r.height>0,ratio:r.width/r.height,natural:img.naturalWidth/img.naturalHeight,
+       overflow:document.documentElement.scrollWidth>window.innerWidth};
+   });
+   check(geometry.within&&geometry.positive&&Math.abs(geometry.ratio/geometry.natural-1)<.03,
+     engine.name()+' '+width+' official logo fits sidebar without distortion or clipping');
+   check(!geometry.overflow,engine.name()+' '+width+' document has no horizontal overflow');
+   if(EVIDENCE)await page.screenshot({path:path.join(EVIDENCE,engine.name()+'-'+width+'-authorized.png'),fullPage:true});
+   if(width<1024){
+     await page.keyboard.press('Escape');
+     check(await page.locator('#staff-menu').getAttribute('aria-expanded')==='false'&&
+       await page.locator('#staff-menu').evaluate(el=>document.activeElement===el),
+       engine.name()+' '+width+' Escape closes drawer and returns keyboard focus');
+   }
+   if(EVIDENCE)await page.screenshot({path:path.join(EVIDENCE,engine.name()+'-'+width+'-summary.png'),fullPage:true});
    const refreshButton=page.locator('#outreach-summary-preview button');
    await refreshButton.focus();
    check(await refreshButton.evaluate(e=>document.activeElement===e),
@@ -184,6 +212,75 @@ for(const [engine,settings] of [[chromium,{channel:'chrome'}],[webkit,{}]]){
      engine.name()+' '+width+' pending list cannot repaint after token refresh');
    check(await page.locator('#outreach-summary-preview button').isDisabled(),
      engine.name()+' '+width+' pending request remains disabled after scope invalidation');
+
+   // The same renderer's in-page selection API is exercised independently of
+   // the shell's full-document navigation: overlap A and B on one real DOM.
+   await login();
+   await page.evaluate(async campaign=>{
+     fixture.allowB=true;
+     const root=document.createElement('section');root.id='outreach-summary-preview';
+     document.querySelector('#staff-main').append(root);
+     const {mountChurchOutreachSummaryView}=await import('/tools/outreach/church-outreach-summary-view.mjs');
+     window.raceView=mountChurchOutreachSummaryView({root,auth:ChampionLifeAuth,
+       workspace:StaffWorkspace,eventTarget:window,getAllowedCampaigns:()=>[campaign,
+       '20000000-0000-4000-8000-000000000002']});
+     raceView.select(campaign);await raceView.refresh();
+     fixture.pending='list';window.oldRefresh=raceView.refresh().then(()=>false,()=>true);
+   },A);
+   await page.waitForFunction(()=>typeof fixture.release==='function');
+   await page.evaluate(async campaign=>{raceView.select(campaign);await raceView.refresh()},B);
+   check((await page.locator('[data-summary-metric]').allTextContents()).join(',')==='2,3,2,5,4',
+     engine.name()+' '+width+' B renders independently while A list is held');
+   const staleRejected=await page.evaluate(async()=>{fixture.release();return await oldRefresh});
+   check(staleRejected&&(await page.locator('[data-summary-metric]').allTextContents()).join(',')==='2,3,2,5,4',
+     engine.name()+' '+width+' late A rejects and cannot replace B totals');
+   await page.evaluate(async campaign=>{raceView.select(campaign);await raceView.refresh()},A);
+   check((await page.locator('[data-summary-metric]').allTextContents()).join(',')==='2,3,2,5,1',
+     engine.name()+' '+width+' A to B to A requires and passes fresh authorization');
+
+   for(const mode of ['account-change','token-change','server-denial']){
+     await login();await mount();
+     await page.evaluate(()=>{
+       fixture.pending='list';window.detachedButton=document.querySelector('#outreach-summary-preview button');
+       window.detachedRefresh=preview.refresh;
+       window.heldRefresh=preview.refresh().then(()=>false,()=>true);
+     });
+     await page.waitForFunction(()=>typeof fixture.release==='function');
+     // Capture synchronous clear and all already-queued microtasks in one
+     // evaluation, before staff-session's correct zero-delay login navigation.
+     const result=await page.evaluate(async mode=>{
+       if(mode==='server-denial'){
+         fixture.revoked=true;
+         await ChampionLifeAuth.client.rpc('outreach_registration_workspace',{p_action:'context',
+           p_campaign:'10000000-0000-4000-8000-000000000001',p_payload:{}});
+       }else{
+         if(mode==='account-change')fixture.userId='40000000-0000-4000-8000-000000000004';
+         else fixture.activeToken='fictional-b';
+         fixture.emit(mode==='account-change'?'SIGNED_IN':'TOKEN_REFRESHED');
+       }
+       const cleared=document.querySelectorAll('[data-summary-metric]').length===0;
+       const before=fixture.requestLog.length;
+       fixture.release();const rejected=await heldRefresh;
+       detachedButton.dispatchEvent(new Event('click'));
+       try{await detachedRefresh()}catch{}
+       await Promise.resolve();
+       return {cleared,rejected,requests:fixture.requestLog.length-before,
+         remainedClear:document.querySelectorAll('[data-summary-metric]').length===0};
+     },mode);
+     check(result.cleared,engine.name()+' '+width+' '+mode+' immediately clears held-request totals');
+     check(result.rejected&&result.requests===0&&result.remainedClear,
+       engine.name()+' '+width+' '+mode+' late response and detached controls issue zero new RPCs');
+   }
+
+   await login();await mount();
+   await page.evaluate(()=>{fixture.denyAfterList=true});
+   await page.locator('#outreach-summary-preview button').click();
+   await page.waitForFunction(()=>!StaffWorkspace.active());
+   check(await page.locator('[data-summary-metric]').count()===0,
+     engine.name()+' '+width+' denial at post-list context blocks rendering');
+   if(EVIDENCE)await page.screenshot({path:path.join(EVIDENCE,engine.name()+'-'+width+'-denied.png'),fullPage:true});
+   check(!/SECRET PERSON|person@private.invalid|SECRET PAYMENT ACCOUNT|fictional-[ab]/.test(browserLog.join('\n')),
+     engine.name()+' '+width+' browser logs contain no synthetic sensitive rows or tokens');
 
    await login();
    await mount();
