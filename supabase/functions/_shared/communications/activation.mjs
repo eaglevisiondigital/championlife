@@ -74,7 +74,25 @@ export async function boundedBody(req){const reader=req.body?.getReader();if(!re
 // Contract verifier is supplied by the selected vendor. There is no invented generic SMTP webhook.
 export async function verifiedProviderEvent(raw,headers,profile,binding,verifier){
  if(typeof verifier!=='function'||profile?.structured_callbacks!==true)throw Error('Provider callbacks not configured');
- const e=await verifier(raw,headers,binding); // MUST verify signature, provider timestamp/replay envelope before returning.
+ // Bind the verifier's private registry entry to the actual service profile.
+ // Sending enablement/consent is intentionally not callback authority: receipts
+ // may reconcile an already handed-off message after outbound delivery stops.
+ const p=structuredClone(profile),b=structuredClone(binding),sender=p?.sender;
+ const uuid=s=>typeof s==='string'&&/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/.test(s);
+ if(!uuid(p.profile_id)||!uuid(p.organization_id)||sender?.id!==p.profile_id||sender?.organization_id!==p.organization_id||
+  !['acceptance','production'].includes(p.environment)||!safeHeader(p.project_ref,100)||!p.project_ref||
+  ![['sms','sms_transport'],['email','smtp_transport']].some(([channel,provider])=>sender.channel===channel&&sender.provider===provider)||
+  !safeHeader(sender.from_address,320)||!sender.from_address||
+  b?.profile_id!==p.profile_id||b?.organization_id!==p.organization_id||b?.environment!==p.environment||b?.project_ref!==p.project_ref||
+  b?.provider!==sender.provider||b?.from!==sender.from_address||(b?.reply_to??null)!==(sender.reply_to??null))throw Error('Provider callback binding mismatch');
+ const context=x=>JSON.stringify([x?.structured_callbacks,x?.profile_id,x?.organization_id,x?.environment,x?.project_ref,
+  x?.sender?.id,x?.sender?.organization_id,x?.sender?.provider,x?.sender?.channel,x?.sender?.from_address,x?.sender?.reply_to??null]);
+ const profileSnapshot=context(p),bindingSnapshot=JSON.stringify(b);
+ const e=await verifier(raw,headers,b); // MUST verify signature, provider account and timestamp/replay envelope before returning.
+ // A local snapshot is not durable authority. Detect in-process drift here;
+ // the existing final RPC still rechecks current profile/outbox/attempt under its lock.
+ if(context(profile)!==profileSnapshot||JSON.stringify(binding)!==bindingSnapshot||JSON.stringify(b)!==bindingSnapshot)throw Error('Provider callback context changed');
+ profile=p;binding=b;
  if(!e||!safeHeader(e.event_id,200)||!e.event_id||e.provider!==profile.sender.provider||e.organization_id||e.profile_id)throw Error('Invalid provider event');
  if(e.type==='reconciliation'){
   const uuid=s=>typeof s==='string'&&/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/.test(s);

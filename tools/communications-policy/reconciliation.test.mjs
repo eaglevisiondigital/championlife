@@ -1,6 +1,6 @@
 import test from 'node:test';import assert from 'node:assert/strict';import {createHmac,timingSafeEqual} from 'node:crypto';
 import {verifiedProviderEvent} from '../../supabase/functions/_shared/communications/activation.mjs';
-const binding={environment:'acceptance',project_ref:'fictional-only'},profile={structured_callbacks:true,sender:{provider:'sms_transport',channel:'sms'}};
+const binding={profile_id:'33333333-3333-4333-8333-333333333333',organization_id:'44444444-4444-4444-8444-444444444444',provider:'sms_transport',from:'+15555550100',reply_to:null,environment:'acceptance',project_ref:'fictional-only'},profile={profile_id:binding.profile_id,organization_id:binding.organization_id,environment:binding.environment,project_ref:binding.project_ref,structured_callbacks:true,sender:{id:binding.profile_id,organization_id:binding.organization_id,provider:'sms_transport',channel:'sms',from_address:binding.from,reply_to:null}};
 const key=Buffer.from('fictional-signature-test-key-not-a-credential');
 const event={type:'reconciliation',event_id:'evt-1',provider:'sms_transport',message_id:'11111111-1111-4111-8111-111111111111',attempt_id:'22222222-2222-4222-8222-222222222222',idempotency_key:'provider-test:fictional',environment:binding.environment,project_ref:binding.project_ref,status:'sent',provider_message_id:'receipt-1'};
 const sign=raw=>createHmac('sha256',key).update(raw).digest('hex');

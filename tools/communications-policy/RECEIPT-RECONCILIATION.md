@@ -33,6 +33,39 @@ Receipt processing records an already completed handoff even if consent was
 subsequently revoked; it never grants consent, removes suppression or authorizes
 another send. Cancellation cannot recall an accepted external message.
 
+## Registry-to-profile callback binding correction — November 1 successor
+
+The existing callback helper previously passed a registry binding to the verifier
+without first matching its profile, organization and provider to the SQL profile.
+A disconnected reproducer with all three mismatched still produced a reconciliation
+payload. `verifiedProviderEvent` now checks the registry against the SQL control
+and sender identity, environment/project, channel/provider, From and Reply-To
+before invoking verification. It snapshots the context and rejects local identity,
+callback-capability or registry changes while verification is pending. The verifier
+receives an isolated binding copy; changing that copy also rejects the receipt.
+
+These in-process checks are not durable provider authority or a substitute for
+the vendor's actual account-bound signature/replay verification. The existing
+final service RPC remains authoritative under `comm_external_lock`: it rechecks
+current profile/environment/provider, canonical message/current attempt and
+idempotency key, then records the receipt/audit atomically. No SQL changed.
+
+Outbound enablement, sender activity and consent are intentionally not prerequisites
+for recording genuine previously handed-off receipts. A disabled sender can still
+reconcile UNKNOWN, and revoked consent is never restored by receipt processing.
+No new outbound action, provider selection or verifier installation is introduced.
+The real verifier registry remains empty and callbacks remain unavailable by default.
+
+55 new tests cover registry/control/sender mismatches, missing identity, changes
+during verification, isolated verifier input, disabled-send receipt processing and
+the existing delivery/STOP mappings. Local Node suite: **297 PASS**; separate
+Phase G adapter regression: **14 PASS**; unchanged PGlite receipt transaction checks:
+**18 PASS** (not native concurrency). Initial missing local Nodemailer dependency
+failure is preserved privately; the matching accepted lockfile's installed modules
+were reused read-only for the passing run. Native PostgreSQL was not started on
+the blocked Mac; its prior 110-check evidence and unchanged CI jobs are preserved.
+New-head CI, independent source review and real provider acceptance remain pending.
+
 ## Dependency security correction
 
 Nodemailer is pinned to **10.1.4**, the minimum patched release for the three
