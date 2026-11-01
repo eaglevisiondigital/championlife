@@ -55,7 +55,7 @@ export function createSerializedPartnerReader({getPrincipal, repository, now = D
       let record, validUntil, used = false;
       try {
         // Exact input contract rejects identity, grant, tag and client evidence injection.
-        requireValue(selection && Object.keys(selection).length === keys.length && keys.every(k => uuid(selection[k])));
+        requireValue(selection && Object.keys(selection).length === keys.length && keys.every(k => Object.hasOwn(selection, k) && uuid(selection[k])));
         const request = Object.freeze(Object.fromEntries(keys.map(k => [k, selection[k]])));
         const caller = structuredClone(getPrincipal());
         const current = () => epoch === generation && !signal?.aborted && principal(getPrincipal(), now()) && same(caller, getPrincipal(), identity);
