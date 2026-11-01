@@ -24,11 +24,22 @@ function minimalSummary(value,id){
 export function createCampaignSummaryLifecycle({reader,onSnapshot=()=>{}}={}){
  if(!reader||typeof reader.read!=='function'||typeof reader.invalidate!=='function'||typeof onSnapshot!=='function')
   throw new TypeError('A trusted reader and snapshot callback are required');
- let epoch=0,selected=null,visible=null,closed=false;
- const clear=()=>{epoch++;selected=null;visible=null;reader.invalidate();onSnapshot(null)};
+ let epoch=0,selected=null,visible=null,closed=false,clearing=false;
+ const clear=()=>{
+  epoch++;selected=null;visible=null;
+  // Clear the consumer's protected view before any fallible transport cancellation.
+  // A synchronous nested revoke/close must not recurse through the callback.
+  if(clearing){reader.invalidate();return}
+  clearing=true;
+  try{onSnapshot(null)}
+  finally{clearing=false;reader.invalidate()}
+ };
  function select(campaignId){
   if(closed)throw fail('WORKSPACE_CLOSED');
+  if(clearing)throw fail('STALE_SCOPE');
+  const before=epoch;
   clear(); // A permission or campaign change clears visible information first.
+  if(closed||epoch!==before+1)throw fail('STALE_SCOPE');
   if(typeof campaignId!=='string'||!UUID.test(campaignId))throw fail('INVALID_CAMPAIGN');
   selected=campaignId;
  }
@@ -54,6 +65,6 @@ export function createCampaignSummaryLifecycle({reader,onSnapshot=()=>{}}={}){
   }
  }
  function revoke(){if(!closed)clear()}
- function close(){if(!closed){clear();closed=true}}
+ function close(){if(!closed){closed=true;clear()}}
  return Object.freeze({select,refresh,revoke,close,snapshot:()=>visible});
 }
