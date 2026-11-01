@@ -1,11 +1,14 @@
 -- SOURCE CANDIDATE ONLY: not installed; leaves original answer store/RLS intact.
 -- Revisions describe worksheet answers, never verified playback or completion.
+-- Internal sequence values never leave private storage. Random UUID receipt
+-- tokens prevent clients from inferring unrelated worksheet mutation counts.
 create schema if not exists private;
 create sequence private.worksheet_version_seq as bigint;
 create table private.worksheet_versions (
  enrollment_id bigint not null references public.course_enrollments(id) on delete cascade,
  lesson_number integer not null check (lesson_number between 1 and 4),
  revision bigint not null default nextval('private.worksheet_version_seq') check (revision>0),
+ token uuid not null default gen_random_uuid(),
  primary key(enrollment_id,lesson_number)
 );
 alter table private.worksheet_versions enable row level security;
@@ -59,11 +62,11 @@ create function private.worksheet_answer_version() returns trigger
 declare u uuid; c bigint; l integer;
 begin
  if tg_op='TRUNCATE' then
-  update private.worksheet_versions set revision=nextval('private.worksheet_version_seq');return null;
+  update private.worksheet_versions set revision=nextval('private.worksheet_version_seq'),token=gen_random_uuid();return null;
  end if;
  if tg_op='DELETE' then u:=old.user_id;c:=old.course_id;l:=old.lesson_number;
  else u:=new.user_id;c:=new.course_id;l:=new.lesson_number;end if;
- update private.worksheet_versions v set revision=nextval('private.worksheet_version_seq')
+ update private.worksheet_versions v set revision=nextval('private.worksheet_version_seq'),token=gen_random_uuid()
  from public.course_enrollments e where v.enrollment_id=e.id and e.user_id=u and e.course_id=c and v.lesson_number=l;
  -- Legacy owner writes without enrollment remain possible under existing RLS.
  -- They have no receipt; a later enrollment receives entirely fresh versions.
@@ -78,7 +81,7 @@ create function private.owned_worksheet_transaction(p_lesson integer,p_expected_
  returns jsonb language plpgsql security definer set search_path='' set lock_timeout='2s' as $$
 declare
  actor uuid:=auth.uid(); sid uuid; deadline timestamptz; course bigint; enrollment bigint;
- version bigint; item jsonb; q integer; count_saved integer;
+ version uuid; item jsonb; q integer; count_saved integer;
 begin
  if actor is null then raise exception 'Learner unavailable' using errcode='42501';end if;
  if p_lesson is null or p_lesson not between 1 and 4 then raise exception 'Cloud worksheet unavailable' using errcode='22023';end if;
@@ -95,10 +98,10 @@ begin
  select id into course from public.courses where slug='getting-a-grip-on-the-basics' for share;
  select id into enrollment from public.course_enrollments where user_id=actor and course_id=course for share;
  if not found then raise exception 'Enrollment unavailable' using errcode='42501';end if;
- select revision into version from private.worksheet_versions where enrollment_id=enrollment and lesson_number=p_lesson for update;
+ select token into version from private.worksheet_versions where enrollment_id=enrollment and lesson_number=p_lesson for update;
  if not found then raise exception 'Worksheet version unavailable' using errcode='42501';end if;
  if p_answers is not null then
-  if p_expected_revision is null or p_expected_revision !~ '^[1-9][0-9]{0,18}$' or p_expected_revision<>version::text then
+  if p_expected_revision is null or p_expected_revision !~ '^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$' or p_expected_revision<>version::text then
    raise exception 'Worksheet changed; reload before saving' using errcode='40001';end if;
   if jsonb_typeof(p_answers)<>'array' then raise exception 'Answer list required' using errcode='22023';end if;
   if jsonb_array_length(p_answers) not between 1 and 20 then raise exception 'Answer list required' using errcode='22023';end if;
@@ -117,7 +120,7 @@ begin
     values(actor,course,p_lesson,q,item->>'answer',clock_timestamp())
     on conflict(user_id,course_id,lesson_number,question_number) do update set answer=excluded.answer,updated_at=excluded.updated_at;
   end loop;
-  select revision into version from private.worksheet_versions where enrollment_id=enrollment and lesson_number=p_lesson;
+  select token into version from private.worksheet_versions where enrollment_id=enrollment and lesson_number=p_lesson;
  elsif p_expected_revision is not null then
   raise exception 'Read does not accept a revision' using errcode='22023';
  end if;

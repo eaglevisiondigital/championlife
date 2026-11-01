@@ -24,7 +24,7 @@ try{
  await db.query("insert into lesson_progress(user_id,course_id,lesson_number,status) values($1,1,1,'in_progress')",[a]);
  await db.exec(sql('../../supabase/migrations/20261101165620_prepare_owned_worksheet_transactions.sql'));
  const c=await session(),other=await session(b,sb);
- let r=await rpc(c);ok(r.status==='available'&&r.savedNonblankAnswers===1&&/^\d+$/.test(r.revision),'existing enrolled answers receive server version');
+ let r=await rpc(c);ok(r.status==='available'&&r.savedNonblankAnswers===1&&/^[0-9a-f-]{36}$/.test(r.revision),'existing enrolled answers receive server version');
  ok(!JSON.stringify(r).includes('preserved')&&r.canComplete===false&&r.canCommit===false,'receipt excludes raw answers and completion');
  const initial=r.revision; r=await rpc(c,1,initial,[answer(2)]);ok(r.savedNonblankAnswers===2&&r.revision!==initial,'atomic owner save preserves prior question');
  ok((await db.query('select answer from lesson_answers where user_id=$1 and question_number=1',[b])).rows[0].answer==='preserved B','other account answers unchanged');
@@ -59,7 +59,7 @@ try{
  ok(results.filter(x=>x.status==='fulfilled').length===1&&results.filter(x=>x.status==='rejected'&&x.reason.code==='40001').length===1,'concurrent same-version writes have one winner');
  // Privileged legacy mutation blocks the RPC before it observes the revision.
  const holder=await db.connect();await holder.query('begin');await holder.query("update lesson_answers set answer='held legacy' where user_id=$1 and question_number=1",[a]);
- const current=(await db.query('select revision::text r from private.worksheet_versions v join course_enrollments e on e.id=v.enrollment_id where e.user_id=$1 and lesson_number=1',[a])).rows[0].r;
+ const current=(await db.query('select token::text r from private.worksheet_versions v join course_enrollments e on e.id=v.enrollment_id where e.user_id=$1 and lesson_number=1',[a])).rows[0].r;
  const pid=await blocked(c);const pending=rpc(c,1,current,[answer(5)]).then(v=>({v}),e=>({e}));await waitLock(pid);await holder.query('commit');ok((await pending).e?.code==='40001','RPC waiter rejects after committed legacy update');
  // Session expiry while waiting is evaluated at completion, not transaction start.
  await db.query("update auth.sessions set not_after=clock_timestamp()+interval '250 milliseconds' where id=$1",[sa]);
@@ -88,5 +88,15 @@ try{
  await holder.query('begin');await holder.query('select pg_advisory_xact_lock(261101,56001)');
  await deny(()=>rpc(c,1,(fresh),[answer(7)]),'55P03','contention times out safely before answer mutation');await holder.query('rollback');
  ok((await db.query('select count(*)::int n from lesson_answers where user_id=$1 and course_id=1 and question_number=7',[a])).rows[0].n===0,'timeout cannot partially write answers');
+ // Cross-learner activity must not be countable from exposed receipt versions.
+ const ownBefore=(await rpc(c)).revision, bBefore=(await rpc(other)).revision;
+ await rpc(other,1,bBefore,Array.from({length:20},(_,i)=>answer(i+1,'other learner fixture')));
+ ok((await rpc(c)).revision===ownBefore,'unrelated writes do not change own opaque receipt token');
+ const opaque=await rpc(c,1,ownBefore,[answer(8,'own fixture')]);
+ ok(/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/.test(opaque.revision),'exposed revision is random UUID not shared allocation count');
+ ok(!JSON.stringify(opaque).includes('sequence')&&!JSON.stringify(opaque).includes('token')&&Object.keys(opaque).sort().join(',')==='allRequiredAnswersSaved,canCommit,canComplete,course,lesson,requiredQuestions,revision,savedNonblankAnswers,status','receipt contains only exact safe projection');
+ const internal=(await db.query('select revision::text r,token::text t from private.worksheet_versions v join course_enrollments e on e.id=v.enrollment_id where e.user_id=$1 and lesson_number=1',[a])).rows[0];
+ ok(internal.t===opaque.revision&&internal.r!==opaque.revision,'monotonic private counter is never the external revision');
+ await deny(()=>rpc(c,1,internal.r,[answer(9)]),'40001','private numeric counter cannot substitute for opaque receipt');
  console.log(`${checks} native worksheet transaction checks PASS`);
 }finally{await db.close()}

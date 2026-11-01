@@ -1,7 +1,7 @@
 import {WORKSHEET_QUESTIONS} from './worksheet-source.mjs';
 import {COURSE} from './evidence-review.mjs';
 const uuid=x=>typeof x==='string'&&/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(x);
-const revision=x=>typeof x==='string'&&/^[1-9][0-9]{0,18}$/.test(x);
+const revision=x=>typeof x==='string'&&/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/.test(x);
 const plain=x=>x&&Object.getPrototypeOf(x)===Object.prototype;
 const result=status=>Object.freeze({status,canComplete:false,canCommit:false});
 

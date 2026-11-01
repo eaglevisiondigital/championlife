@@ -7,7 +7,7 @@ const origin='https://worksheet.local.test',ref='abcdefghijklmnopqrst',backend=`
 const a='11111111-1111-4111-8111-111111111111',b='22222222-2222-4222-8222-222222222222';
 const token=id=>Buffer.from(JSON.stringify({alg:'HS256',typ:'JWT'})).toString('base64url')+'.'+Buffer.from(JSON.stringify({sub:id,role:'authenticated',aud:'authenticated',exp:Math.floor(Date.now()/1000)+3600})).toString('base64url')+'.c3ludGhldGlj';
 const user=id=>({id,email:id===a?'a@example.test':'b@example.test',email_confirmed_at:'2026-01-01',aud:'authenticated',role:'authenticated'});
-const receipt={status:'available',course:'getting-a-grip-on-the-basics',lesson:1,revision:'12',requiredQuestions:20,savedNonblankAnswers:1,allRequiredAnswersSaved:false,canComplete:false,canCommit:false};
+const receipt={status:'available',course:'getting-a-grip-on-the-basics',lesson:1,revision:'cccccccc-cccc-4ccc-8ccc-cccccccccccc',requiredQuestions:20,savedNonblankAnswers:1,allRequiredAnswersSaved:false,canComplete:false,canCommit:false};
 let checks=0;const ok=(v,m)=>{assert.ok(v,m);checks++;console.log('PASS '+m)};
 for(const [engine,launch]of [[chromium,process.env.CI?{}:{channel:'chrome'}],[webkit,{}]]){
  const browser=await engine.launch({headless:true,...launch});
@@ -37,7 +37,7 @@ for(const [engine,launch]of [[chromium,process.env.CI?{}:{channel:'chrome'}],[we
      window.client=supabase.createClient('${backend}','fictional-publishable-key',{auth:{persistSession:false,autoRefreshToken:false,detectSessionInUrl:false}});
      window.adapter=createIsolatedWorksheetTransactions({client,projectRef:'${ref}',onClear(){document.querySelector('#state').textContent=''}});
      window.show=async p=>{const r=await p;if(r.status==='available')document.querySelector('#state').textContent='Owned worksheet receipt';return r};
-     window.input=()=>({lesson:1,revision:'11',answers:[{question:1,answer:'private fictional draft'}]});window.ready=true;
+     window.input=()=>({lesson:1,revision:'dddddddd-dddd-4ddd-8ddd-dddddddddddd',answers:[{question:1,answer:'private fictional draft'}]});window.ready=true;
     </script>`});
    }
    unexpected.push(r.url());return route.abort();
