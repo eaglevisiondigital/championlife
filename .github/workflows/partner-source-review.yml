@@ -39,7 +39,24 @@ jobs:
       - run: node tools/partner-platform/assigned-backend.browser.mjs
       - run: TEST_POSTGRES_BIN="$(pg_config --bindir)" node tools/partner-platform/assigned-backend.native.mjs
       - run: TEST_POSTGRES_BIN="$(pg_config --bindir)" node tools/partner-platform/authority-serialization.native.mjs
-      - run: TEST_POSTGRES_BIN="$(pg_config --bindir)" node tools/partner-platform/canonical-repository.native.mjs
       - run: TEST_POSTGRES_BIN="$(pg_config --bindir)" node tools/partner-platform/private-revocation.native.mjs
       - run: TEST_POSTGRES_BIN="$(pg_config --bindir)" node tools/partner-platform/private-issuance.native.mjs
+      # Install/select PostgreSQL 18 only after the existing native suites, so
+      # their pg_config default cannot change. PGlite provenance uses PG 18.3.
+      - name: Canonical repository native acceptance (PostgreSQL 18)
+        shell: bash
+        run: |
+          if [ ! -x /usr/lib/postgresql/18/bin/postgres ]; then
+            sudo /usr/share/postgresql-common/pgdg/apt.postgresql.org.sh -y
+            sudo mkdir -p /etc/postgresql-common/createcluster.d
+            printf 'create_main_cluster = false\n' | sudo tee /etc/postgresql-common/createcluster.d/partner-ci.conf > /dev/null
+            sudo apt-get install --yes --no-install-recommends postgresql-18
+          fi
+          canonical_pg_version="$(/usr/lib/postgresql/18/bin/postgres --version)"
+          printf '%s\n' "$canonical_pg_version"
+          case "$canonical_pg_version" in
+            'postgres (PostgreSQL) 18.'*) ;;
+            *) exit 1 ;;
+          esac
+          TEST_POSTGRES_BIN=/usr/lib/postgresql/18/bin node tools/partner-platform/canonical-repository.native.mjs
       - run: git diff --check

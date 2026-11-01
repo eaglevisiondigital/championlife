@@ -1,3 +1,7 @@
+## 2026-11-01 — Canonical native PostgreSQL version correction
+
+Diagnostic CI `41362490783` confirmed PGlite PostgreSQL 18.3 versus native PostgreSQL 16.15. All 17 relation differences are standalone NOT NULL entries in `pg_constraint`; column nullability and function/ACL/policy/index contracts agree. The Partner workflow now explicitly installs/selects PostgreSQL 18 only for the canonical native suite, after the other native suites complete. Runtime verifier, SQL and all provenance pins remain byte-identical. Workflow syntax/static validation passes locally; corrected native execution remains pending CI. No Mac PostgreSQL, provider or production action.
+
 ## 2026-11-01 — Canonical native CI failure diagnostic
 
 The canonical repository candidate `34197a6bc4acde93d192889534d9748a65058136` passed 322 local focused checks but native CI run `41362035208` failed its first positive read as null/unverified. Native serialization acceptance is FAILED/INCOMPLETE. The accepted PGlite fixture reports PostgreSQL 18.3; native version/catalog differences are not yet established. Added test-only version and catalog-field diagnostics before the boundary conceals the denial reason. Runtime source and committed provenance pins are unchanged; diagnostic mismatch remains a test failure. No native Mac server, provider action or runtime mount.
