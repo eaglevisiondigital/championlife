@@ -46,3 +46,8 @@ Separate successor to sealed 6d5730bf0034bbb138999ce8cab97ce150d525fe. Reader in
 ## 2026-11-01 — Durable worksheet transaction preparation
 
 The optional worksheet transaction API serializes existing legacy DML and revision-bound saves through a transaction-scoped mutex, private per-enrollment/lesson metadata and current Auth/session locks. It returns counts/revision, never answers or completion authority. No duplicate learner store or public frontend mount. See docs/DISCIPLESHIP-WORKSHEET-TRANSACTIONS.md.
+
+
+## 2026-11-01 — Playback authority source boundary
+
+The playback verifier accepts only exact domain-separated signed envelope bytes and an injected current observer/key/policy repository. Existing ledger composition re-verifies observer revision after its serialization wait. Actual registry, durable ingestion and atomic completion bindings remain unimplemented; existing worksheet storage is unchanged.

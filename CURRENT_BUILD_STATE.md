@@ -129,3 +129,8 @@ See docs/GENERAL-PRAYER-SIGNUP-LAUNCH-CHECKLIST.md and private Issue53 evidence.
 ## 2026-11-01 — Durable worksheet transaction preparation
 
 Implemented a separate, uninstalled durable worksheet transaction candidate for PR76. Existing answer/enrollment tables are reused; private server-owned revision metadata enables owner/current-session CAS saves. Public pages and the King Kind hold remain unchanged. Native and intercepted SDK/browser tests are local evidence only; independent source review and separately authorized genuine acceptance remain required.
+
+
+## 2026-11-01 — Playback verifier source preparation
+
+Implemented an Ed25519 envelope verifier against a server-owned current observer registry and repeated verification inside serialized ledger review. Fictional crypto/authorization tests only; no observer is installed and canCommit remains false. The opaque UUID worksheet receipt versus legacy numeric progression receipt bridge remains an explicit next integration task. See docs/DISCIPLESHIP-PLAYBACK-ENVELOPE-VERIFIER.md.

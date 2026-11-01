@@ -71,3 +71,8 @@ Separate successor to sealed 6d5730bf0034bbb138999ce8cab97ce150d525fe. Reader in
 ## 2026-11-01 — Durable worksheet transaction preparation
 
 Prepare durable worksheet transactions over existing answers using private server-owned version metadata; do not add a duplicate answer store or infer trusted watch evidence. Limit the new RPC to existing lessons1–4 question manifests; keep progression flags false. Conservative cross-course mutation serialization is documented pending performance review. No installation or public activation is approved.
+
+
+## 2026-11-01 — Bounded playback verifier implementation
+
+Implement only the missing cryptographic observer interface and current-ledger recheck in this source package. Preserve approved 95% unique-watch and answer rules, all worksheet/King Kind source, and truthful lesson availability. Defer the UUID worksheet bridge and completion writer to their own reviewed package; do not silently convert opaque versions.

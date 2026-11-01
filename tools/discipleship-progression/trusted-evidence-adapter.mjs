@@ -12,7 +12,9 @@ const equal = (a,b) => JSON.stringify(a) === JSON.stringify(b);
  * learner-owned durable source records. verifyPlayback() validates a reviewed
  * provider's independent observation, NOT a signature over client telemetry.
  * withCurrentLedger() reauthenticates and serializes its one callback with every
- * session/enrollment/media/receipt/answer change; revisions must be monotonic.
+ * session/enrollment/media/receipt/answer AND observer-key/policy change; revisions
+ * must be monotonic. Observer verification and ledger locks must share a reviewed
+ * ordering; rechecking alone does not replace provider/database serialization.
  * No production implementations of those ports or progress writes are included.
  */
 export async function reviewTrustedProgression(input, ports, {signal, now = Date.now} = {}) {
@@ -37,6 +39,12 @@ export async function reviewTrustedProgression(input, ports, {signal, now = Date
     await ports.withCurrentLedger(target, async current => {
       if (++count !== 1) throw Error('repeated callback');
       if (!equal(ledger,copy(current)) || signal?.aborted || checked.some(p => p.validUntil <= now())) { result = deny(); return; }
+      // Revalidate observer authority under the ledger's required serialization,
+      // not just before waiting for it. A key/policy downgrade invalidates proof.
+      for (let i=0;i<current.receipts.length;i++) {
+        const fresh=copy(await ports.verifyPlayback(current.receipts[i].envelope,{signal}));
+        if (!equal(ledger,copy(current)) || !equal({...fresh,providerValidated:true},checked[i]) || signal?.aborted || checked[i].validUntil<=now()) {result=deny();return;}
+      }
       // Build only from the freshly serialized durable ledger. Raw answers never leave it.
       result = await reviewProgression(target,{withCurrentEvidence:async(_,read)=>read({
         ...target, revision:current.revision, sessionActive:current.sessionActive,

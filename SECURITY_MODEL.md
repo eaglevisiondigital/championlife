@@ -68,3 +68,8 @@ Separate successor to sealed 6d5730bf0034bbb138999ce8cab97ce150d525fe. Reader in
 ## 2026-11-01 — Durable worksheet transaction preparation
 
 Worksheet transaction preparation derives learner identity exclusively from Auth, checks current confirmed user/session rows, pins the browser bearer and rejects stale CAS revisions. Private versions cannot be caller-updated; direct legacy writes participate in revision invalidation. Session expiration, rollback and account-switch tests remain fictional. Existing legacy worksheet RLS is preserved; new RPC session protection does not claim public deployment.
+
+
+## 2026-11-01 — Playback authenticity is not completion authority
+
+A valid Ed25519 signature does not prove actual viewing. Source-review provenance must be independently accepted in a trusted repository; browser keys and flags cannot grant authority. Observer revocation requires compatible serialization with ledger evaluation. All outputs remain review-only, with no completion commit or actual provider acceptance.
