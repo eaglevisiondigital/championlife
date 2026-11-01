@@ -175,8 +175,9 @@ for(const [engine,settings] of [[chromium,{channel:'chrome'}],[webkit,{}]]){
    await login();
    await mount();
    await page.evaluate(()=>window.dispatchEvent(new Event('staff-protected-clear')));
-   check(await page.locator('#outreach-summary-preview').count()===0,
-     engine.name()+' '+width+' explicit staff-protected-clear destroys protected summary');
+   check(await page.locator('#outreach-summary-preview').count()===1 &&
+     await page.locator('#outreach-summary-preview').evaluate(el=>el.childElementCount===0),
+     engine.name()+' '+width+' explicit staff-protected-clear empties mounted summary root');
 
    await login();
    await mount();
