@@ -1,5 +1,15 @@
 name: Partner isolated source review
 on:
+  # Head-only evidence while the stacked PR has an unresolved add/add conflict.
+  # This does not establish merge compatibility or authorize integration/release.
+  push:
+    branches:
+      - 'codex/publish-partner-20261101'
+    paths:
+      - 'tools/partner-platform/**'
+      - 'tools/outreach/shared-staff-backend*'
+      - 'supabase/migrations/20261101154618_partner_assigned_metadata_boundary.sql'
+      - '.github/workflows/partner-source-review.yml'
   pull_request:
     paths:
       - 'tools/partner-platform/**'
