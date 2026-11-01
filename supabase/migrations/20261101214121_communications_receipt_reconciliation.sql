@@ -10,6 +10,7 @@ declare m public.communication_outbox;a public.communication_attempts;c public.c
  g public.communication_external_control;s public.communication_sender_profiles;e public.communication_callbacks;
  b jsonb;outcome text;receipt text;
 begin
+ if action is null then raise exception 'Provider service action required';end if;
  if action not in ('reconcile_external','callback_external') then return private.comm_provider_service_h1(action,o,p);end if;
  perform private.comm_external_lock(o);
  if jsonb_typeof(p) is distinct from 'object' or octet_length(p::text)>8192 then raise exception 'Receipt envelope required';end if;
