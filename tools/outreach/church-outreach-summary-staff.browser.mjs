@@ -27,7 +27,10 @@ window.fixture={
   user(){return{id:this.userId,email:'test@fixture.invalid',email_confirmed_at:this.verified?'2026-01-01T00:00:00Z':null,is_anonymous:this.anonymous}},
   async rpc(name,params){
     this.requestLog.push({name,action:params.p_action,campaign:params.p_campaign});
-    if(name==='staff_workspace_context')return{data:{organizations:[],grants:[]}};
+    if(name==='staff_workspace_context'){
+      if(this.holdWorkspace)await new Promise(resolve=>this.releaseWorkspace=resolve);
+      return{data:{organizations:[],grants:[]}};
+    }
     if(name!=='outreach_registration_workspace')throw Error('Unexpected RPC');
     if(params.p_action==='campaigns')return{data:[
       {id:'${A}',name:'Synthetic Huntsville'},{id:'${B}',name:'Synthetic Other City'}]};
@@ -69,6 +72,7 @@ for(const [engine,settings] of [[chromium,{channel:'chrome'}],[webkit,{}]]){
    const context=await browser.newContext({viewport:{width,height:1000}}),page=await context.newPage(),unexpected=[],jsErrors=[];
    page.on('pageerror',e=>jsErrors.push(e.message));
    const browserLog=[];page.on('console',msg=>browserLog.push(msg.text()));
+   let holdWorkspace=false;
    await context.route('**/*',async route=>{
     const url=new URL(route.request().url());
     if(url.hostname==='cdn.jsdelivr.net')
@@ -77,7 +81,7 @@ for(const [engine,settings] of [[chromium,{channel:'chrome'}],[webkit,{}]]){
      unexpected.push(route.request().method()+' '+url.origin+url.pathname);return route.abort();
     }
     if(url.pathname==='/assets/js/champion-life-auth.js')
-     return route.fulfill({body:authFixture,contentType:'text/javascript'});
+     return route.fulfill({body:authFixture+'\nfixture.holdWorkspace='+JSON.stringify(holdWorkspace)+';',contentType:'text/javascript'});
     if(url.pathname==='/assets/js/supabase-config.js')
      return route.fulfill({body:'window.CHAMPION_LIFE_SUPABASE={url:"https://synthetic.invalid",publishableKey:"fixture-only"};',contentType:'text/javascript'});
     if(url.pathname==='/favicon.ico')return route.fulfill({status:404,body:''});
@@ -302,6 +306,55 @@ for(const [engine,settings] of [[chromium,{channel:'chrome'}],[webkit,{}]]){
    await mount();
    await page.evaluate(()=>window.dispatchEvent(new Event('pagehide')));
    check(await page.locator('#outreach-summary-preview').count()===0,engine.name()+' '+width+' pagehide destroys view and subscriptions');
+   // Integration entrypoint starts before real shell discovery completes.
+   // No synthetic readiness signal or second Auth client is introduced.
+   holdWorkspace=true;
+   await page.goto(ORIGIN+'/staff-home.html?context=outreach');
+   await page.waitForFunction(()=>typeof fixture.releaseWorkspace==='function');
+   await page.evaluate(async()=>{
+     window.originalAuth=ChampionLifeAuth;
+     const {installStaffOutreachSummary}=await import('/tools/outreach/church-outreach-summary-entry.mjs');
+     window.entry=installStaffOutreachSummary({window});
+     window.sameEntry=installStaffOutreachSummary({window})===entry;
+   });
+   check(await page.evaluate(()=>entry.state()==='waiting'&&sameEntry&&
+     fixture.requestLog.every(x=>!['context','list'].includes(x.action))),
+     engine.name()+' '+width+' integration entry waits for actual shell authorization without duplicate install');
+   await page.evaluate(()=>fixture.releaseWorkspace());
+   await page.waitForFunction(()=>entry.state()==='ready');
+   check(await page.evaluate(()=>ChampionLifeAuth===originalAuth&&
+     document.querySelectorAll('[data-staff-outreach-summary]').length===1&&
+     document.querySelectorAll('[data-summary-metric]').length===5),
+     engine.name()+' '+width+' entry automatically composes existing mount using one original Auth client');
+   await page.evaluate(()=>{fixture.pending='list';window.entryRefresh=entry.refresh().catch(()=>false)});
+   await page.waitForFunction(()=>typeof fixture.release==='function');
+   const stopped=await page.evaluate(async()=>{
+     const button=document.querySelector('[data-staff-outreach-summary] button');
+     entry.close();const before=fixture.requestLog.length;
+     fixture.release();await entryRefresh;button.dispatchEvent(new Event('click'));
+     try{await entry.refresh()}catch{}
+     return entry.state()==='closed'&&document.querySelectorAll('[data-summary-metric]').length===0&&
+       fixture.requestLog.length===before;
+   });
+   check(stopped,engine.name()+' '+width+' entry aborts pending mount/refresh and detached controls issue zero RPCs');
+   holdWorkspace=false;
+
+   // Teardown during the first asynchronous mount must not wait for its result.
+   await login();
+   await page.evaluate(async()=>{
+     fixture.pending='context';
+     const {installStaffOutreachSummary}=await import('/tools/outreach/church-outreach-summary-entry.mjs');
+     window.entry=installStaffOutreachSummary({window});
+   });
+   await page.waitForFunction(()=>typeof fixture.release==='function');
+   const abortedMount=await page.evaluate(async()=>{
+     entry.close();const before=fixture.requestLog.length;fixture.release();
+     await new Promise(r=>setTimeout(r,0));
+     return entry.state()==='closed'&&fixture.requestLog.length===before&&
+       document.querySelectorAll('[data-staff-outreach-summary]').length===0;
+   });
+   check(abortedMount,engine.name()+' '+width+' pending initial authorization cannot restore an aborted entry');
+
    check(unexpected.length===0,engine.name()+' '+width+' blocks all external/unauthorized network activity');
    check(jsErrors.length===0,engine.name()+' '+width+' no browser exceptions: '+jsErrors.join('; '));
    await context.close();

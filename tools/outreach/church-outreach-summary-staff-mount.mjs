@@ -9,8 +9,9 @@ const isUuid=v=>typeof v==='string'&&v.length===36&&UUID.test(v);
 const denied=code=>Object.assign(new Error(code),{code});
 
 export async function mountSummaryInVerifiedStaffWorkspace({
- window:win, root, autoRefresh=true
+ window:win, root, autoRefresh=true, signal
 }={}){
+ if(signal?.aborted)throw denied('STALE_SCOPE');
  const doc=win?.document;
  if(!doc || !root || root.ownerDocument!==doc || !doc.getElementById('staff-main')?.contains(root))
   throw new TypeError('Mount target must be inside the verified staff workspace');
@@ -35,12 +36,14 @@ export async function mountSummaryInVerifiedStaffWorkspace({
  control.addEventListener('change',onChange,{capture:true});
  win.addEventListener('staff-protected-clear',onProtected);
  win.addEventListener('pagehide',onProtected);
+ signal?.addEventListener('abort',onProtected,{once:true});
  function close(){
   if(closed)return;
   closed=true;
   control.removeEventListener('change',onChange,{capture:true});
   win.removeEventListener('staff-protected-clear',onProtected);
   win.removeEventListener('pagehide',onProtected);
+  signal?.removeEventListener('abort',onProtected);
   view.close();
  }
  try{
