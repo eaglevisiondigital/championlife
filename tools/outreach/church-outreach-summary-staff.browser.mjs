@@ -5,7 +5,7 @@ import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
-import {chromium,webkit} from 'playwright';
+import {chromium,webkit} from '../backend-tests/node_modules/playwright/index.mjs';
 
 const ROOT=fileURLToPath(new URL('../../',import.meta.url));
 const ORIGIN='https://champion-staff-review.invalid';
