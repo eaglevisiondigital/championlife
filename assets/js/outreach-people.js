@@ -1,20 +1,22 @@
 (() => {
  'use strict';
  const root=document.getElementById('outreach-people'),auth=window.ChampionLifeAuth,{el}=window.OutreachUI;
+ if(!root||(window.StaffWorkspace&&!window.StaffWorkspace.active()))return;
  let generation=0,user,org,grants=[],content,status,page=0;
  const financialLink=document.getElementById('financial-outreach-link');
  const updateNavigation=()=>{if(financialLink)financialLink.hidden=!(can('outreach.view')&&can('finance.read'))};
  const can=k=>grants.some(g=>g.organization_id===org&&g.permission===k&&!g.department_ids);
  const login=()=>el('a','Sign in to your workspace',{href:'discipleship-login.html?next=%2Fstaff-people.html'});
- function fail(code){
+ function fail(code){if(window.StaffWorkspace)window.dispatchEvent(new Event('staff-access-denied'));
   generation++;grants=[];org=null;content?.replaceChildren();content=null;
   updateNavigation();root.replaceChildren(el('p',code===401?'Your session has expired. Sign in to continue.':'Your access is no longer available. Contact an administrator if you believe you should still have access.',{role:'alert'}));
   root.append(code===401?login():el('a','Return to Outreach',{href:'outreach.html'}));
  }
  async function request(run){
   const g=generation;
+  if(window.StaffWorkspace&&!window.StaffWorkspace.active())throw Error("Staff access unavailable");
   try{const session=await auth.getSession();if(g!==generation)throw Error();if(!session||session.user.id!==user?.id){fail(401);throw Error()}
-   const r=await run();if(g!==generation)throw Error();if(r.error||r.status===401||r.status===403){if(r.status===401||r.status===403||r.error?.code==='42501')fail(r.status===401?401:403);else status.textContent='Unable to complete this request. Please refresh and try again.';throw Error()}return r.data;
+   if(window.StaffWorkspace&&!window.StaffWorkspace.active())throw Error("Staff access unavailable");const r=await run();if(g!==generation)throw Error();if(r.error||r.status===401||r.status===403){if(r.status===401||r.status===403||r.error?.code==='42501')fail(r.status===401?401:403);else status.textContent='Unable to complete this request. Please refresh and try again.';throw Error()}return r.data;
   }catch(e){if(g===generation&&status)status.textContent='Unable to complete this request. Please refresh and try again.';throw e}
  }
  const people=(action,payload)=>request(()=>auth.client.rpc('people_workspace',{p_org:org,p_action:action,p_payload:payload}));
@@ -49,7 +51,8 @@
   status=el('p','Loading…',{role:'status',class:'staff-status'});content=el('div',null,{class:'staff-content'});root.append(status);const ctx=await request(()=>auth.client.rpc('staff_workspace_context',{}));if(g!==generation)return;grants=ctx.grants;updateNavigation();
   const choices=ctx.organizations.filter(o=>grants.some(x=>x.organization_id===o.id&&x.permission==='people.read'&&!x.department_ids));if(!choices.length){fail(403);return}
   const select=el('select',null,{'aria-label':'Organization'}),params=new URLSearchParams(location.search);for(const o of choices)select.append(el('option',o.name,{value:o.id}));if(choices.some(o=>o.id===params.get('org')))select.value=params.get('org');org=select.value;updateNavigation();
-  select.onchange=()=>{org=select.value;updateNavigation();page=0;list().catch(()=>{})};const organizationField=el('label','Organization',{class:'staff-organization'});organizationField.append(select);root.append(organizationField,content);const person=params.get('person');if(person&&/^[a-f0-9-]{36}$/i.test(person))await detail(person);else await list();
+  select.onchange=()=>{if(window.StaffWorkspace){window.StaffWorkspace.navigate('staff-people.html?org='+encodeURIComponent(select.value));return}org=select.value;updateNavigation();page=0;list().catch(()=>{})};const organizationField=el('label','Organization',{class:'staff-organization'});organizationField.append(select);root.append(organizationField,content);const person=params.get('person');if(person&&/^[a-f0-9-]{36}$/i.test(person))await detail(person);else await list();
  }catch{if(g===generation)root.replaceChildren(el('p','Workspace unavailable. Please refresh and try again.',{role:'alert'}))}}
+ window.addEventListener('staff-protected-clear',()=>{generation++;grants=[];org=null;content?.replaceChildren();content=null;root.replaceChildren();updateNavigation()});
  auth?.client.auth.onAuthStateChange((_event,session)=>{if(session?.user?.id!==user?.id){generation++;root.replaceChildren();grants=[];org=null;updateNavigation();setTimeout(boot,0)}});boot();
 })();

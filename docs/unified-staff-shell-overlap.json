@@ -1,0 +1,762 @@
+{
+  "base": "bfb7af214707db73a3a3164bc96ccafae7de8ccf",
+  "inventory_pr60": "ff08ec43f492362893cba9a0ae89a615dda98630",
+  "sources": [
+    {
+      "number": 34,
+      "label": "NMI-giving",
+      "head_sha": "4e463f792bf9a2af03345e8854433e2d00863729",
+      "base_sha": "e3157f0afa3f563ab6560ca64c9049448f02c806",
+      "count": 250
+    },
+    {
+      "number": 35,
+      "label": "Unified-outreach",
+      "head_sha": "76c328c507460406218f4aff279d3ce3467c9710",
+      "base_sha": "e3157f0afa3f563ab6560ca64c9049448f02c806",
+      "count": 150
+    },
+    {
+      "number": 36,
+      "label": "Shared-Gate0",
+      "head_sha": "bbadd2b4adf75a4342b653d57c81fac8aa86e74a",
+      "base_sha": "e3157f0afa3f563ab6560ca64c9049448f02c806",
+      "count": 40
+    },
+    {
+      "number": 57,
+      "label": "King-kind-accepted",
+      "head_sha": "3f03fd4b46f405cb8d5926519a8fa573242a7d1b",
+      "base_sha": "bfb7af214707db73a3a3164bc96ccafae7de8ccf",
+      "count": 71
+    }
+  ],
+  "paths": [
+    {
+      "path": ".github/workflows/shared-platform-gate0.yml",
+      "source_prs": [
+        34,
+        35,
+        36
+      ],
+      "source_git_blobs": {
+        "34": "0ca7c557554c42921e8621c94fffc8b39a1f79db",
+        "35": "0ca7c557554c42921e8621c94fffc8b39a1f79db",
+        "36": "0ca7c557554c42921e8621c94fffc8b39a1f79db"
+      },
+      "identical_across_sources": true,
+      "current_main_blob": null,
+      "decision": "Not imported. Retain main version if present; defer historical module/migration/config/test changes to their separately reviewed packages.",
+      "category": "test/build"
+    },
+    {
+      "path": "ARCHITECTURE.md",
+      "source_prs": [
+        34,
+        35,
+        36,
+        57
+      ],
+      "source_git_blobs": {
+        "34": "b6ee42cbb0d7f60d80c03ff0b7abc46b0b7bedc0",
+        "35": "b6ee42cbb0d7f60d80c03ff0b7abc46b0b7bedc0",
+        "36": "b6ee42cbb0d7f60d80c03ff0b7abc46b0b7bedc0",
+        "57": "1bdbcf35aa5354dc6ca46efbd5d35c112f9add99"
+      },
+      "identical_across_sources": false,
+      "current_main_blob": "cfb28a7dd6194b4d87e6be4854c0aefea16e00f3",
+      "decision": "Append current slice status; do not replace with historical branch documents.",
+      "category": "documentation"
+    },
+    {
+      "path": "assets/css/staff-workspace.css",
+      "source_prs": [
+        34,
+        35,
+        36
+      ],
+      "source_git_blobs": {
+        "34": "30e26ad6d1935959e17164b144fd3a2ae6629090",
+        "35": "30e26ad6d1935959e17164b144fd3a2ae6629090",
+        "36": "30e26ad6d1935959e17164b144fd3a2ae6629090"
+      },
+      "identical_across_sources": true,
+      "current_main_blob": null,
+      "decision": "Adapt shared-shell UX/lifecycle patterns to existing main RPCs; do not import unavailable shared_platform_context or unreleased destinations.",
+      "category": "runtime/configuration"
+    },
+    {
+      "path": "assets/js/staff-workspace.js",
+      "source_prs": [
+        34,
+        35,
+        36
+      ],
+      "source_git_blobs": {
+        "34": "fbdc6bb84ed5675857bab6b9f91351447e300f96",
+        "35": "fbdc6bb84ed5675857bab6b9f91351447e300f96",
+        "36": "fbdc6bb84ed5675857bab6b9f91351447e300f96"
+      },
+      "identical_across_sources": true,
+      "current_main_blob": null,
+      "decision": "Adapt shared-shell UX/lifecycle patterns to existing main RPCs; do not import unavailable shared_platform_context or unreleased destinations.",
+      "category": "runtime/configuration"
+    },
+    {
+      "path": "config/platform/acceptance-targets.json",
+      "source_prs": [
+        34,
+        35,
+        36
+      ],
+      "source_git_blobs": {
+        "34": "bee0c1c9aa7782a1a653870afccc5b6f1fe65c26",
+        "35": "bee0c1c9aa7782a1a653870afccc5b6f1fe65c26",
+        "36": "bee0c1c9aa7782a1a653870afccc5b6f1fe65c26"
+      },
+      "identical_across_sources": true,
+      "current_main_blob": null,
+      "decision": "Not imported. Retain main version if present; defer historical module/migration/config/test changes to their separately reviewed packages.",
+      "category": "runtime/configuration"
+    },
+    {
+      "path": "config/platform/capabilities.json",
+      "source_prs": [
+        34,
+        35,
+        36
+      ],
+      "source_git_blobs": {
+        "34": "5b5db634b677137c1f2965ba1f7d944a327d57b9",
+        "35": "5b5db634b677137c1f2965ba1f7d944a327d57b9",
+        "36": "5b5db634b677137c1f2965ba1f7d944a327d57b9"
+      },
+      "identical_across_sources": true,
+      "current_main_blob": null,
+      "decision": "Not imported. Retain main version if present; defer historical module/migration/config/test changes to their separately reviewed packages.",
+      "category": "runtime/configuration"
+    },
+    {
+      "path": "config/platform/gate0-owned-files.json",
+      "source_prs": [
+        34,
+        35,
+        36
+      ],
+      "source_git_blobs": {
+        "34": "98123cf79cf33e350736253446ca0ac1cbb91242",
+        "35": "98123cf79cf33e350736253446ca0ac1cbb91242",
+        "36": "98123cf79cf33e350736253446ca0ac1cbb91242"
+      },
+      "identical_across_sources": true,
+      "current_main_blob": null,
+      "decision": "Not imported. Retain main version if present; defer historical module/migration/config/test changes to their separately reviewed packages.",
+      "category": "runtime/configuration"
+    },
+    {
+      "path": "config/platform/gate0-package.json",
+      "source_prs": [
+        34,
+        35,
+        36
+      ],
+      "source_git_blobs": {
+        "34": "d737cfdc3ca15506ca77c2b6cd456ee165b0051e",
+        "35": "d737cfdc3ca15506ca77c2b6cd456ee165b0051e",
+        "36": "d737cfdc3ca15506ca77c2b6cd456ee165b0051e"
+      },
+      "identical_across_sources": true,
+      "current_main_blob": null,
+      "decision": "Not imported. Retain main version if present; defer historical module/migration/config/test changes to their separately reviewed packages.",
+      "category": "runtime/configuration"
+    },
+    {
+      "path": "config/platform/gate0-sources.json",
+      "source_prs": [
+        34,
+        35,
+        36
+      ],
+      "source_git_blobs": {
+        "34": "2cda156217ed758d71de35af4d78b62fe9ea0848",
+        "35": "2cda156217ed758d71de35af4d78b62fe9ea0848",
+        "36": "2cda156217ed758d71de35af4d78b62fe9ea0848"
+      },
+      "identical_across_sources": true,
+      "current_main_blob": null,
+      "decision": "Not imported. Retain main version if present; defer historical module/migration/config/test changes to their separately reviewed packages.",
+      "category": "runtime/configuration"
+    },
+    {
+      "path": "config/platform/public-module-files.json",
+      "source_prs": [
+        34,
+        35,
+        36
+      ],
+      "source_git_blobs": {
+        "34": "fca8a5692f5700ece3809a18d14f443a63da6106",
+        "35": "fca8a5692f5700ece3809a18d14f443a63da6106",
+        "36": "fca8a5692f5700ece3809a18d14f443a63da6106"
+      },
+      "identical_across_sources": true,
+      "current_main_blob": null,
+      "decision": "Not imported. Retain main version if present; defer historical module/migration/config/test changes to their separately reviewed packages.",
+      "category": "runtime/configuration"
+    },
+    {
+      "path": "config/platform/test-package-contract.json",
+      "source_prs": [
+        34,
+        35,
+        36
+      ],
+      "source_git_blobs": {
+        "34": "d2b59575bfedb5f71f4291565d05201b975d9c29",
+        "35": "d2b59575bfedb5f71f4291565d05201b975d9c29",
+        "36": "d2b59575bfedb5f71f4291565d05201b975d9c29"
+      },
+      "identical_across_sources": true,
+      "current_main_blob": null,
+      "decision": "Not imported. Retain main version if present; defer historical module/migration/config/test changes to their separately reviewed packages.",
+      "category": "runtime/configuration"
+    },
+    {
+      "path": "CURRENT_BUILD_STATE.md",
+      "source_prs": [
+        34,
+        35,
+        36,
+        57
+      ],
+      "source_git_blobs": {
+        "34": "d78708f14e6337200be1374b63e4959a8e729d99",
+        "35": "d78708f14e6337200be1374b63e4959a8e729d99",
+        "36": "d78708f14e6337200be1374b63e4959a8e729d99",
+        "57": "6ec842c7bc993a2398dde873d35599e5ea0cddba"
+      },
+      "identical_across_sources": false,
+      "current_main_blob": "60394bf1b464c7a709bbe606d79c3e40805b28d8",
+      "decision": "Append current slice status; do not replace with historical branch documents.",
+      "category": "documentation"
+    },
+    {
+      "path": "DECISIONS.md",
+      "source_prs": [
+        34,
+        35,
+        36,
+        57
+      ],
+      "source_git_blobs": {
+        "34": "f9d3cae51079bac3f48e44a37cb16923f8840617",
+        "35": "f9d3cae51079bac3f48e44a37cb16923f8840617",
+        "36": "f9d3cae51079bac3f48e44a37cb16923f8840617",
+        "57": "92353493cc4cc0e7eb5c3ed917b0d24417ce6930"
+      },
+      "identical_across_sources": false,
+      "current_main_blob": "35f3598ec71df07ff702d48dd869dec8da78716f",
+      "decision": "Append current slice status; do not replace with historical branch documents.",
+      "category": "documentation"
+    },
+    {
+      "path": "docs/CHAMPION-LIFE-UNIFIED-PLATFORM-COMMAND.md",
+      "source_prs": [
+        34,
+        35,
+        36
+      ],
+      "source_git_blobs": {
+        "34": "a715d5d9faae4e867e670c570daff55fcae1ddd4",
+        "35": "a715d5d9faae4e867e670c570daff55fcae1ddd4",
+        "36": "a715d5d9faae4e867e670c570daff55fcae1ddd4"
+      },
+      "identical_across_sources": true,
+      "current_main_blob": null,
+      "decision": "Not imported. Retain main version if present; defer historical module/migration/config/test changes to their separately reviewed packages.",
+      "category": "documentation"
+    },
+    {
+      "path": "docs/gate0-source-continuity/nmi/ARCHITECTURE.md",
+      "source_prs": [
+        34,
+        35,
+        36
+      ],
+      "source_git_blobs": {
+        "34": "b625df129976d116455fb0f865f9896850833c47",
+        "35": "b625df129976d116455fb0f865f9896850833c47",
+        "36": "b625df129976d116455fb0f865f9896850833c47"
+      },
+      "identical_across_sources": true,
+      "current_main_blob": null,
+      "decision": "Not imported. Retain main version if present; defer historical module/migration/config/test changes to their separately reviewed packages.",
+      "category": "documentation"
+    },
+    {
+      "path": "docs/gate0-source-continuity/nmi/CURRENT_BUILD_STATE.md",
+      "source_prs": [
+        34,
+        35,
+        36
+      ],
+      "source_git_blobs": {
+        "34": "b8e1e58a85e1dbc3c138416728101a5ee3c2c9c0",
+        "35": "b8e1e58a85e1dbc3c138416728101a5ee3c2c9c0",
+        "36": "b8e1e58a85e1dbc3c138416728101a5ee3c2c9c0"
+      },
+      "identical_across_sources": true,
+      "current_main_blob": null,
+      "decision": "Not imported. Retain main version if present; defer historical module/migration/config/test changes to their separately reviewed packages.",
+      "category": "documentation"
+    },
+    {
+      "path": "docs/gate0-source-continuity/nmi/DECISIONS.md",
+      "source_prs": [
+        34,
+        35,
+        36
+      ],
+      "source_git_blobs": {
+        "34": "79360b3ba16a8334d6b15ee49c9c9b457923af0c",
+        "35": "79360b3ba16a8334d6b15ee49c9c9b457923af0c",
+        "36": "79360b3ba16a8334d6b15ee49c9c9b457923af0c"
+      },
+      "identical_across_sources": true,
+      "current_main_blob": null,
+      "decision": "Not imported. Retain main version if present; defer historical module/migration/config/test changes to their separately reviewed packages.",
+      "category": "documentation"
+    },
+    {
+      "path": "docs/gate0-source-continuity/nmi/SECURITY_MODEL.md",
+      "source_prs": [
+        34,
+        35,
+        36
+      ],
+      "source_git_blobs": {
+        "34": "becf9c8673bf6062e7be0e81de62daf62edafb3d",
+        "35": "becf9c8673bf6062e7be0e81de62daf62edafb3d",
+        "36": "becf9c8673bf6062e7be0e81de62daf62edafb3d"
+      },
+      "identical_across_sources": true,
+      "current_main_blob": null,
+      "decision": "Not imported. Retain main version if present; defer historical module/migration/config/test changes to their separately reviewed packages.",
+      "category": "documentation"
+    },
+    {
+      "path": "docs/gate0-source-continuity/outreach/ARCHITECTURE.md",
+      "source_prs": [
+        34,
+        35,
+        36
+      ],
+      "source_git_blobs": {
+        "34": "3c84cdd7ca3d35d66e2b7d9a2f09dd31d42a45fc",
+        "35": "3c84cdd7ca3d35d66e2b7d9a2f09dd31d42a45fc",
+        "36": "3c84cdd7ca3d35d66e2b7d9a2f09dd31d42a45fc"
+      },
+      "identical_across_sources": true,
+      "current_main_blob": null,
+      "decision": "Not imported. Retain main version if present; defer historical module/migration/config/test changes to their separately reviewed packages.",
+      "category": "documentation"
+    },
+    {
+      "path": "docs/gate0-source-continuity/outreach/CURRENT_BUILD_STATE.md",
+      "source_prs": [
+        34,
+        35,
+        36
+      ],
+      "source_git_blobs": {
+        "34": "f189a45872d5734b83b45168aa75586753a12771",
+        "35": "f189a45872d5734b83b45168aa75586753a12771",
+        "36": "f189a45872d5734b83b45168aa75586753a12771"
+      },
+      "identical_across_sources": true,
+      "current_main_blob": null,
+      "decision": "Not imported. Retain main version if present; defer historical module/migration/config/test changes to their separately reviewed packages.",
+      "category": "documentation"
+    },
+    {
+      "path": "docs/gate0-source-continuity/outreach/DECISIONS.md",
+      "source_prs": [
+        34,
+        35,
+        36
+      ],
+      "source_git_blobs": {
+        "34": "104797374eefabdab26bbd2832f651e0f62ab537",
+        "35": "104797374eefabdab26bbd2832f651e0f62ab537",
+        "36": "104797374eefabdab26bbd2832f651e0f62ab537"
+      },
+      "identical_across_sources": true,
+      "current_main_blob": null,
+      "decision": "Not imported. Retain main version if present; defer historical module/migration/config/test changes to their separately reviewed packages.",
+      "category": "documentation"
+    },
+    {
+      "path": "docs/gate0-source-continuity/outreach/SECURITY_MODEL.md",
+      "source_prs": [
+        34,
+        35,
+        36
+      ],
+      "source_git_blobs": {
+        "34": "860512feabdbc69bb3cb2a3857426f99c039b271",
+        "35": "860512feabdbc69bb3cb2a3857426f99c039b271",
+        "36": "860512feabdbc69bb3cb2a3857426f99c039b271"
+      },
+      "identical_across_sources": true,
+      "current_main_blob": null,
+      "decision": "Not imported. Retain main version if present; defer historical module/migration/config/test changes to their separately reviewed packages.",
+      "category": "documentation"
+    },
+    {
+      "path": "docs/SHARED-PLATFORM-GATE0.md",
+      "source_prs": [
+        34,
+        35,
+        36
+      ],
+      "source_git_blobs": {
+        "34": "733c09f2637cca69bcb5d40c36670794b9300f1e",
+        "35": "733c09f2637cca69bcb5d40c36670794b9300f1e",
+        "36": "733c09f2637cca69bcb5d40c36670794b9300f1e"
+      },
+      "identical_across_sources": true,
+      "current_main_blob": null,
+      "decision": "Not imported. Retain main version if present; defer historical module/migration/config/test changes to their separately reviewed packages.",
+      "category": "documentation"
+    },
+    {
+      "path": "SECURITY_MODEL.md",
+      "source_prs": [
+        34,
+        35,
+        36,
+        57
+      ],
+      "source_git_blobs": {
+        "34": "629f4410982a2ba19a7446d0108c5d33cd2686a0",
+        "35": "629f4410982a2ba19a7446d0108c5d33cd2686a0",
+        "36": "629f4410982a2ba19a7446d0108c5d33cd2686a0",
+        "57": "43cf33c3884dab4a138b7f020cec903bc7b15d16"
+      },
+      "identical_across_sources": false,
+      "current_main_blob": "78b895183f50a0d74c943134848db38f7ba4c488",
+      "decision": "Append current slice status; do not replace with historical branch documents.",
+      "category": "documentation"
+    },
+    {
+      "path": "staff-outreach-registration.html",
+      "source_prs": [
+        35,
+        57
+      ],
+      "source_git_blobs": {
+        "35": "fcfba6ded7747140211c0343391fa961681d202b",
+        "57": "55a8636589c73c50a3f71f788485ef06f16fc3ba"
+      },
+      "identical_across_sources": false,
+      "current_main_blob": "c0da7f779484f1f44adb925d7927ebadd42d1d08",
+      "decision": "Edit current-main page only; preserve branded sidebar and existing module. Add shared shell hooks and accepted SDK pin.",
+      "category": "runtime/configuration"
+    },
+    {
+      "path": "staff-people.html",
+      "source_prs": [
+        35,
+        57
+      ],
+      "source_git_blobs": {
+        "35": "09555b75762763a626496e2f6b8fbd707b70a584",
+        "57": "3b8e84d17b4ad1a202770a937c04a9e81fc6f693"
+      },
+      "identical_across_sources": false,
+      "current_main_blob": "10d56968e2135cf0cea3dab7ef702867a184301c",
+      "decision": "Edit current-main page only; preserve branded sidebar and existing module. Add shared shell hooks and accepted SDK pin.",
+      "category": "runtime/configuration"
+    },
+    {
+      "path": "supabase/migrations/20261019012735_shared_platform_gate0.sql",
+      "source_prs": [
+        34,
+        35,
+        36
+      ],
+      "source_git_blobs": {
+        "34": "a86b6b7fee20f6c5eb861d4d55d74708060b255c",
+        "35": "a86b6b7fee20f6c5eb861d4d55d74708060b255c",
+        "36": "a86b6b7fee20f6c5eb861d4d55d74708060b255c"
+      },
+      "identical_across_sources": true,
+      "current_main_blob": null,
+      "decision": "Not imported. Retain main version if present; defer historical module/migration/config/test changes to their separately reviewed packages.",
+      "category": "runtime/configuration"
+    },
+    {
+      "path": "tools/backend-tests/fixtures/gate0-old-registry.sql",
+      "source_prs": [
+        34,
+        35,
+        36
+      ],
+      "source_git_blobs": {
+        "34": "54550ed74c5d36385a106b38733808563126009d",
+        "35": "54550ed74c5d36385a106b38733808563126009d",
+        "36": "54550ed74c5d36385a106b38733808563126009d"
+      },
+      "identical_across_sources": true,
+      "current_main_blob": null,
+      "decision": "Not imported. Retain main version if present; defer historical module/migration/config/test changes to their separately reviewed packages.",
+      "category": "test/build"
+    },
+    {
+      "path": "tools/backend-tests/gate0-browser.mjs",
+      "source_prs": [
+        34,
+        35,
+        36
+      ],
+      "source_git_blobs": {
+        "34": "44916df0eaad2b45e132fee3f1aa6fd29d1a4068",
+        "35": "44916df0eaad2b45e132fee3f1aa6fd29d1a4068",
+        "36": "44916df0eaad2b45e132fee3f1aa6fd29d1a4068"
+      },
+      "identical_across_sources": true,
+      "current_main_blob": null,
+      "decision": "Not imported. Retain main version if present; defer historical module/migration/config/test changes to their separately reviewed packages.",
+      "category": "test/build"
+    },
+    {
+      "path": "tools/backend-tests/gate0-build.test.mjs",
+      "source_prs": [
+        34,
+        35,
+        36
+      ],
+      "source_git_blobs": {
+        "34": "aadb4663ce80d4aa4219479cdc7f792ec38f07f1",
+        "35": "aadb4663ce80d4aa4219479cdc7f792ec38f07f1",
+        "36": "aadb4663ce80d4aa4219479cdc7f792ec38f07f1"
+      },
+      "identical_across_sources": true,
+      "current_main_blob": null,
+      "decision": "Not imported. Retain main version if present; defer historical module/migration/config/test changes to their separately reviewed packages.",
+      "category": "test/build"
+    },
+    {
+      "path": "tools/backend-tests/gate0-security.test.mjs",
+      "source_prs": [
+        34,
+        35,
+        36
+      ],
+      "source_git_blobs": {
+        "34": "f161398508560d0f3880cfd84d9532bdfef12d50",
+        "35": "f161398508560d0f3880cfd84d9532bdfef12d50",
+        "36": "f161398508560d0f3880cfd84d9532bdfef12d50"
+      },
+      "identical_across_sources": true,
+      "current_main_blob": null,
+      "decision": "Not imported. Retain main version if present; defer historical module/migration/config/test changes to their separately reviewed packages.",
+      "category": "test/build"
+    },
+    {
+      "path": "tools/backend-tests/gate0-shell.dom.mjs",
+      "source_prs": [
+        34,
+        35,
+        36
+      ],
+      "source_git_blobs": {
+        "34": "2abb2712caa208bdd5b3618584ca754934401dd7",
+        "35": "2abb2712caa208bdd5b3618584ca754934401dd7",
+        "36": "2abb2712caa208bdd5b3618584ca754934401dd7"
+      },
+      "identical_across_sources": true,
+      "current_main_blob": null,
+      "decision": "Not imported. Retain main version if present; defer historical module/migration/config/test changes to their separately reviewed packages.",
+      "category": "test/build"
+    },
+    {
+      "path": "tools/backend-tests/gate0-upgrade.test.mjs",
+      "source_prs": [
+        34,
+        35,
+        36
+      ],
+      "source_git_blobs": {
+        "34": "5118f97c9846d4e5c5beb96ec415c8607592a7d8",
+        "35": "5118f97c9846d4e5c5beb96ec415c8607592a7d8",
+        "36": "5118f97c9846d4e5c5beb96ec415c8607592a7d8"
+      },
+      "identical_across_sources": true,
+      "current_main_blob": null,
+      "decision": "Not imported. Retain main version if present; defer historical module/migration/config/test changes to their separately reviewed packages.",
+      "category": "test/build"
+    },
+    {
+      "path": "tools/backend-tests/gate0.fixture.mjs",
+      "source_prs": [
+        34,
+        35,
+        36
+      ],
+      "source_git_blobs": {
+        "34": "f2b7de24148eee21e513e2da5c2b902e6d94551a",
+        "35": "f2b7de24148eee21e513e2da5c2b902e6d94551a",
+        "36": "f2b7de24148eee21e513e2da5c2b902e6d94551a"
+      },
+      "identical_across_sources": true,
+      "current_main_blob": null,
+      "decision": "Not imported. Retain main version if present; defer historical module/migration/config/test changes to their separately reviewed packages.",
+      "category": "test/build"
+    },
+    {
+      "path": "tools/backend-tests/outreach-registration.test.mjs",
+      "source_prs": [
+        34,
+        35,
+        36
+      ],
+      "source_git_blobs": {
+        "34": "740de547a32305d20521fdfd8344df0f4032475a",
+        "35": "740de547a32305d20521fdfd8344df0f4032475a",
+        "36": "740de547a32305d20521fdfd8344df0f4032475a"
+      },
+      "identical_across_sources": true,
+      "current_main_blob": "19038da00d8331269001d534e1ce6b9a4ca9d25b",
+      "decision": "Not imported. Retain main version if present; defer historical module/migration/config/test changes to their separately reviewed packages.",
+      "category": "test/build"
+    },
+    {
+      "path": "tools/backend-tests/outreach-workflow.test.mjs",
+      "source_prs": [
+        34,
+        35,
+        36
+      ],
+      "source_git_blobs": {
+        "34": "c416bbc5e6e1760bb10bce9d042f888376a21151",
+        "35": "c416bbc5e6e1760bb10bce9d042f888376a21151",
+        "36": "c416bbc5e6e1760bb10bce9d042f888376a21151"
+      },
+      "identical_across_sources": true,
+      "current_main_blob": "27feaef0f995167b06705567ab50e6b40de63b2a",
+      "decision": "Not imported. Retain main version if present; defer historical module/migration/config/test changes to their separately reviewed packages.",
+      "category": "test/build"
+    },
+    {
+      "path": "tools/backend-tests/package.json",
+      "source_prs": [
+        34,
+        35,
+        36,
+        57
+      ],
+      "source_git_blobs": {
+        "34": "46c6f350e9c2618f47c3f39b4b59688bff02d8cb",
+        "35": "53a4c711a995bff31b12370ccf0a971cc025d414",
+        "36": "d737cfdc3ca15506ca77c2b6cd456ee165b0051e",
+        "57": "c79089974fa5dc71e34a9088ed2b302250790422"
+      },
+      "identical_across_sources": false,
+      "current_main_blob": "59197595a0b2590fdcaea51e2e4d6ac09dfc020c",
+      "decision": "Preserve main suite; add shell acceptance commands only.",
+      "category": "test/build"
+    },
+    {
+      "path": "tools/backend-tests/site-build.test.mjs",
+      "source_prs": [
+        34,
+        35,
+        36,
+        57
+      ],
+      "source_git_blobs": {
+        "34": "3506ce04ed9148b305c53a665a98006a503feede",
+        "35": "3506ce04ed9148b305c53a665a98006a503feede",
+        "36": "3506ce04ed9148b305c53a665a98006a503feede",
+        "57": "eec041f2c323dc460b3e15489f6b981e4e454cf7"
+      },
+      "identical_across_sources": false,
+      "current_main_blob": "7b45c784503f053d28b5caf9221555eca648b1d0",
+      "decision": "Not imported. Retain main version if present; defer historical module/migration/config/test changes to their separately reviewed packages.",
+      "category": "test/build"
+    },
+    {
+      "path": "tools/platform/compose-gate0.mjs",
+      "source_prs": [
+        34,
+        35,
+        36
+      ],
+      "source_git_blobs": {
+        "34": "e655585577ea6c9021bc63aff4c0018e8f930b7e",
+        "35": "e655585577ea6c9021bc63aff4c0018e8f930b7e",
+        "36": "e655585577ea6c9021bc63aff4c0018e8f930b7e"
+      },
+      "identical_across_sources": true,
+      "current_main_blob": null,
+      "decision": "Not imported. Retain main version if present; defer historical module/migration/config/test changes to their separately reviewed packages.",
+      "category": "test/build"
+    },
+    {
+      "path": "tools/platform/reconcile-manifests.mjs",
+      "source_prs": [
+        34,
+        35,
+        36
+      ],
+      "source_git_blobs": {
+        "34": "82c703a6f9262031cd3ba34dabb493f87d7107af",
+        "35": "82c703a6f9262031cd3ba34dabb493f87d7107af",
+        "36": "82c703a6f9262031cd3ba34dabb493f87d7107af"
+      },
+      "identical_across_sources": true,
+      "current_main_blob": null,
+      "decision": "Not imported. Retain main version if present; defer historical module/migration/config/test changes to their separately reviewed packages.",
+      "category": "test/build"
+    },
+    {
+      "path": "tools/site-build/build.mjs",
+      "source_prs": [
+        34,
+        35,
+        36,
+        57
+      ],
+      "source_git_blobs": {
+        "34": "dfb38f039d0d99fcff08cf6ed3fb5f9cad77ecac",
+        "35": "dfb38f039d0d99fcff08cf6ed3fb5f9cad77ecac",
+        "36": "dfb38f039d0d99fcff08cf6ed3fb5f9cad77ecac",
+        "57": "4f0518420fb83f73605c80969db09ff2e44b8ab6"
+      },
+      "identical_across_sources": false,
+      "current_main_blob": "616878f00bf0c5707ea2f43d644a9a18c33de06e",
+      "decision": "Not imported. Retain main version if present; defer historical module/migration/config/test changes to their separately reviewed packages.",
+      "category": "test/build"
+    },
+    {
+      "path": "tools/site-build/public-files.json",
+      "source_prs": [
+        34,
+        35,
+        36,
+        57
+      ],
+      "source_git_blobs": {
+        "34": "4a29a496496eb1afd439c363522e8c8898b70b26",
+        "35": "2ae014781221680ae80d8a35f6a13a8f152aec57",
+        "36": "a874ed7088e7bee73667e50ece726ad5e613440f",
+        "57": "4c761ecfafb609272e6944f54c3027a9ccfc9bef"
+      },
+      "identical_across_sources": false,
+      "current_main_blob": "802493793662b134d9c1e72d2ab73c91be79f8a0",
+      "decision": "Add only staff-home.html and two shell assets to current allowlist.",
+      "category": "test/build"
+    }
+  ]
+}

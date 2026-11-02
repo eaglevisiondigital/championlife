@@ -8,7 +8,7 @@
  const main=document.getElementById('staff-main');
  const auth=window.ChampionLifeAuth;
  if(!account||!email||!logout||!message||!main||!auth?.client?.auth)return;
- const login='discipleship-login.html?next=%2Fstaff-people.html';
+ const login='discipleship-login.html?next='+encodeURIComponent(document.body.hasAttribute('data-staff-workspace')?'/staff-home.html':'/staff-people.html');
  let currentId=null,revision=0,leaving=false,signingOut=false;
  // Detach module mounts, so pending responses can only update detached elements.
  function clearWorkspace(){

@@ -22,8 +22,9 @@ for(const[engine,options]of[[chromium,{channel:'chrome'}],[webkit,{}]]){
   page.on('pageerror',e=>errors.push(e.message));
   await ctx.route('**/*',async route=>{
    const req=route.request(),u=new URL(req.url());
-   if(u.hostname==='cdn.jsdelivr.net'&&u.pathname==='/npm/@supabase/supabase-js@2'&&req.method()==='GET')return route.fulfill({contentType:'text/javascript',body:sdk});
+   if(u.hostname==='cdn.jsdelivr.net'&&['/npm/@supabase/supabase-js@2','/npm/@supabase/supabase-js@2.118.0/dist/umd/supabase.js'].includes(u.pathname)&&req.method()==='GET')return route.fulfill({contentType:'text/javascript',body:sdk,headers:{'access-control-allow-origin':'*'}});
    if(u.origin===backend){
+    if(u.pathname==='/auth/v1/user'){const token=req.headers().authorization?.replace('Bearer ','');const user=identities.find(i=>{try{return JSON.parse(Buffer.from(token.split('.')[1],'base64url').toString()).sub===i.id}catch{return false}});return route.fulfill(user?{json:makeSession(user).user}:{status:401,json:{message:'Synthetic session expired'}})}
     if(u.pathname==='/auth/v1/logout'&&req.method()==='POST'){logoutCalls.push(u.searchParams.get('scope'));return route.fulfill({status:204,body:''})}
     if(u.pathname.startsWith('/rest/v1/rpc/')&&req.method()==='POST'){
      const payload=req.postDataJSON(),name=u.pathname.split('/').pop();
@@ -52,18 +53,20 @@ for(const[engine,options]of[[chromium,{channel:'chrome'}],[webkit,{}]]){
   ok(!await page.locator('#financial-outreach-link').isVisible(),'Church fixture has no finance navigation');
   await page.goto(origin+'/staff-outreach-registration.html?campaign='+fixture.campaign);await page.getByText('Household lookup',{exact:true}).waitFor();
   ok(await page.locator('#staff-session-email').textContent()===identities[0].email,'shared registration identity');
-  await page.getByRole('button',{name:'Log Out',exact:true}).click();await page.waitForURL('**/discipleship-login.html?next=%2Fstaff-people.html');
+  await page.getByRole('button',{name:'Log Out',exact:true}).click();await page.waitForURL('**/discipleship-login.html?next=%2Fstaff-home.html');
   ok(logoutCalls.length===1&&logoutCalls[0]==='local','SDK submits current-session logout only');
   ok(await page.evaluate(key=>localStorage.getItem(key)===null,key),'SDK removes its stored session');
   ok(await page.evaluate(()=>localStorage.getItem('unrelated-setting')==='preserve'&&sessionStorage.getItem('unrelated-draft')==='preserve'),'SDK preserves unrelated local/session storage');
-  await page.goBack();await page.getByRole('link',{name:'Sign in to your workspace',exact:true}).waitFor();
+  await page.goBack();await page.getByRole('link',{name:'Sign in',exact:true}).waitFor();
   ok(!await page.getByText('Church Fixture',{exact:true}).count(),'browser Back cannot restore protected People data');
   ok(!await page.getByRole('button',{name:'Log Out',exact:true}).isVisible(),'Back cannot restore prior identity header');
   await page.evaluate(({key,session})=>localStorage.setItem(key,JSON.stringify(session)),{key,session:makeSession(identities[1])});
   await page.reload();await page.getByText('Owner Fixture',{exact:true}).waitFor();
   ok(await page.locator('#staff-session-email').textContent()===identities[1].email,'switch to owner session displays owner email');
   ok(!await page.getByText('Church Fixture',{exact:true}).count(),'old account content absent after switch');
+  if(width<1024)await page.getByRole('button',{name:'Menu',exact:true}).click();
   ok(await page.locator('#financial-outreach-link').isVisible(),'new account uses its own permissions');
+  if(width<1024)await page.getByRole('button',{name:'Close menu'}).click();
   ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),'account header and content fit viewport');
   if(evidence&&engine.name()==='chromium')await page.screenshot({path:path.join(evidence,'staff-people-'+width+'.png'),fullPage:true});
   await page.getByRole('searchbox',{name:'Search contacts'}).fill('no-match');await page.getByRole('button',{name:'Search',exact:true}).click();await page.getByRole('status').filter({hasText:'No matching contacts.'}).waitFor();
