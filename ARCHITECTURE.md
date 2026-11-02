@@ -1,3 +1,7 @@
+## November 2 — disconnected Resend host composition
+
+Added an unmounted fixed HTTPS transport, bounded raw-byte callback, exact persisted-ID service lookup and guarded forward-only SQL. Existing H1 worker/outbox/consent/suppression/audit and accepted adapter remain unchanged. Flags default false, no ambient fetch or live provider installation. Native tests distinguish late database commit from HTTP cancellation and preserve UNKNOWN holds. See [source boundary](tools/communications-policy/RESEND-HOST-SOURCE.md). Provider/account/sender/custody/host/recovery acceptance remains separately held; Network Solutions/Auth SMTP unchanged.
+
 ## November 2 — Resend host composition remains uninstalled
 
 The [separate provider acceptance packet](tools/communications-policy/RESEND-PROVIDER-ACCEPTANCE.md) maps the existing full stack and its held installation boundary. The current generic callback endpoint consumes text and generic event actions; Resend requires bounded raw bytes, `resendReceipt`, trusted persisted-provider-ID lookup and the existing `resend_receipt` SQL action. No production endpoint/resolver/provisioning path is added. Receipt processing must be proved independently operable after outbound shutdown in the eventual approved host. Existing H1 canonical data and authority remain the only implementation; no parallel queue, identity store or configuration platform.

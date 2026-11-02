@@ -3,7 +3,8 @@ on:
   pull_request:
     paths:
       - 'tools/communications-policy/**'
-      - 'supabase/functions/_shared/communications/resend.mjs'
+      - 'supabase/functions/_shared/communications/resend*.mjs'
+      - 'supabase/migrations/20261102154214_communications_resend_host_lookup.sql'
       - 'supabase/migrations/20261102150100_communications_resend_source.sql'
       - 'supabase/functions/_shared/communications/providers.mjs'
       - 'supabase/functions/_shared/communications/activation.mjs'
@@ -32,4 +33,5 @@ jobs:
       - run: TEST_POSTGRES_BIN="$(pg_config --bindir)" node tools/communications-policy/external-worker.native.mjs
       - run: TEST_POSTGRES_BIN="$(pg_config --bindir)" node tools/communications-policy/reconciliation.native.mjs
       - run: TEST_POSTGRES_BIN="$(pg_config --bindir)" node tools/communications-policy/resend.native.mjs
+      - run: TEST_POSTGRES_BIN="$(pg_config --bindir)" node tools/communications-policy/resend-host.native.mjs
       - run: git diff --check

@@ -1,3 +1,7 @@
+## November 2 — disconnected Resend host composition
+
+Added an unmounted fixed HTTPS transport, bounded raw-byte callback, exact persisted-ID service lookup and guarded forward-only SQL. Existing H1 worker/outbox/consent/suppression/audit and accepted adapter remain unchanged. Flags default false, no ambient fetch or live provider installation. Native tests distinguish late database commit from HTTP cancellation and preserve UNKNOWN holds. See [source boundary](tools/communications-policy/RESEND-HOST-SOURCE.md). Provider/account/sender/custody/host/recovery acceptance remains separately held; Network Solutions/Auth SMTP unchanged.
+
 ## November 2 — separately reviewable Resend acceptance planning
 
 The latest Issue #58 work order authorizes full source scrutiny and a separate provider account/cost/sender/endpoint/secret/rotation acceptance package. [The packet](tools/communications-policy/RESEND-PROVIDER-ACCEPTANCE.md) records pending values instead of selecting a provider or inventing custody. Its 12-send rehearsal ceiling is a proposal, not send permission. Runtime installation, exact isolated target, genuine provider acceptance and production selection/activation remain separate gates. Preserve accepted adapter/SQL and prior passing evidence; no duplicate validator is justified by a missing real account/host decision.

@@ -1,3 +1,7 @@
+## November 2 — disconnected Resend host composition
+
+Added an unmounted fixed HTTPS transport, bounded raw-byte callback, exact persisted-ID service lookup and guarded forward-only SQL. Existing H1 worker/outbox/consent/suppression/audit and accepted adapter remain unchanged. Flags default false, no ambient fetch or live provider installation. Native tests distinguish late database commit from HTTP cancellation and preserve UNKNOWN holds. See [source boundary](tools/communications-policy/RESEND-HOST-SOURCE.md). Provider/account/sender/custody/host/recovery acceptance remains separately held; Network Solutions/Auth SMTP unchanged.
+
 ## November 2 — provider custody and acceptance boundary
 
 [Resend acceptance packet](tools/communications-policy/RESEND-PROVIDER-ACCEPTANCE.md) requires separately witnessed account/domain ownership, exact server-side sender/profile binding, domain-restricted sending-key verification, per-endpoint signing-secret custody/rotation, isolated host authorization and independent teardown. Sending access does not imply retrieval/admin access; no full-access key is installed to bypass this distinction. Provider test-address events are simulations, delivered is recipient-server acceptance, and neither proves reading. UNKNOWN lacking a durable provider ID remains held even after an authentic callback or an expired idempotency window. No account data/secrets, hosted grants or runtime changes are included.

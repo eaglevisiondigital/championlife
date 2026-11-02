@@ -1,3 +1,7 @@
+## November 2 — disconnected Resend host composition
+
+Added an unmounted fixed HTTPS transport, bounded raw-byte callback, exact persisted-ID service lookup and guarded forward-only SQL. Existing H1 worker/outbox/consent/suppression/audit and accepted adapter remain unchanged. Flags default false, no ambient fetch or live provider installation. Native tests distinguish late database commit from HTTP cancellation and preserve UNKNOWN holds. See [source boundary](tools/communications-policy/RESEND-HOST-SOURCE.md). Provider/account/sender/custody/host/recovery acceptance remains separately held; Network Solutions/Auth SMTP unchanged.
+
 ## November 2 — separate Resend provider acceptance packet
 
 Reviewed the full H1/Resend source chain at `2fd5d95ca177938a4ca2b6ece81ebcec539bd94a` and preserved its runtime/SQL/tests. Added [provider acceptance packet](tools/communications-policy/RESEND-PROVIDER-ACCEPTANCE.md): exact account/sender/domain/custody/host/permissions/cost evidence, genuine provider rehearsal and independent cleanup plan. No additional runtime defect was confirmed; no duplicate configuration validator or redundant full-suite rerun was introduced. Prior author 349 Node/59 native and independent 100 Node/59 native PASS evidence belongs to the unchanged base, not a new provider test.
