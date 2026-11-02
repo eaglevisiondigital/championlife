@@ -98,3 +98,18 @@ Actual local Chromium/WebKit page tests at 390px and 1440px reproduced 20 broken
 link resolutions and local 404 responses before correction. The focused test
 checks navigation to the existing resources with external requests blocked and
 no form submissions. Source acceptance and draft CI do not authorize deployment.
+
+## 2026-11-02 — Public mobile navigation keyboard/state correction
+
+The existing menu disclosure now announces its expanded/collapsed state and the
+navigation it controls. English and Spanish open/close labels remain localized.
+Escape from the open navigation returns focus to its toggle; other controls and
+modal focus are not intercepted. Delegated link closure also covers Supplements,
+which the same shared script inserts after initializing the menu. No focus trap,
+CSS, imagery, public destinations, staff shell, authentication or payment changes.
+
+The original defect was reproduced in actual local Chromium/WebKit pages at
+390px/768px. Isolated regression covers desktop navigation and pointer/keyboard
+activation, ordinary link navigation and existing partner interception. All
+provider/network interactions are blocked in these fixtures. Source review and
+CI remain separate from production approval.
