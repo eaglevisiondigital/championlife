@@ -150,3 +150,8 @@ PR76 now prepares an owner-only completion transaction over the existing current
 ## 2026-11-02 — Lessons 6–8 private worksheet source extension
 
 Added exact existing workbook section responses for Lessons 6 (7 groups), 7 (7 groups) and 8 (6 groups) using the accepted owner-only worksheet transaction and answer store. Lesson 7's destroy-on-paper personal exercise is intentionally not collected. The guarded forward migration serializes provenance review/version initialization with legacy writes; it is uninstalled. No completion/watch credit, new identity/answer schema, RLS/grant, media, King Kind or hosted change. Targeted local database/browser evidence and independent review are required before draft publication. See docs/DISCIPLESHIP-LESSONS-SIX-EIGHT-WORKSHEETS.md.
+
+
+## 2026-11-02 — Lessons 9–13 private worksheet source
+
+Added private source worksheets9–13 using exact selected original material and the existing account-owned transaction. New uninstalled forward migration preserves Auth/CAS/legacy-writer serialization and does not grant completion. Videos11–13 and genuine playback/hosted acceptance remain unavailable. See docs/DISCIPLESHIP-LESSONS-NINE-THIRTEEN-WORKSHEETS.md.

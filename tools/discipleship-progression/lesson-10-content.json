@@ -1,0 +1,34 @@
+{
+  "lesson": 10,
+  "worksheet": "lesson-10-workbook-sections-v1",
+  "source": "assets/downloads/grip/getting-a-grip-lesson-10-how-to-grow-and-develop-your-faith.pdf",
+  "sha256": "e4233168a5da2b0b58e9b86495c4c5e4ace44341a4466093beb045354f642592",
+  "responseGroups": [
+    {
+      "id": 1,
+      "prompt": "FAITH IS VERY IMPORTANT",
+      "page": 1
+    },
+    {
+      "id": 2,
+      "prompt": "WHAT IS FAITH?",
+      "page": 1
+    },
+    {
+      "id": 3,
+      "prompt": "WE RECEIVE THINGS FROM GOD BY FAITH",
+      "page": 2
+    },
+    {
+      "id": 4,
+      "prompt": "OUR FAITH CAN GROW",
+      "page": 3
+    },
+    {
+      "id": 5,
+      "prompt": "RELEASING OUR FAITH AND RECEIVING FROM GOD",
+      "page": 3
+    }
+  ],
+  "excludedActivities": "Personal application and group exercises remain in the original PDF and are intentionally not collected in the cloud. Record study responses only; do not include private experiences or information about other people."
+}

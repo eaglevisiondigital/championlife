@@ -1,7 +1,7 @@
 // Actual Chromium/WebKit + pinned SDK; all Auth/RPC traffic fictional/intercepted.
 import{chromium,webkit}from'../backend-tests/node_modules/playwright/index.mjs';import{readFile,mkdir}from'node:fs/promises';import{fileURLToPath}from'node:url';import path from'node:path';import assert from'node:assert/strict';import{randomUUID}from'node:crypto';
 const root=fileURLToPath(new URL('../../',import.meta.url)),origin='https://worksheet.local.test',backend='https://abcdefghijklmnopqrst.supabase.co';
-const lesson=Number(process.env.WORKSHEET_LESSON||5),required=({5:10,6:7,7:7,8:6})[lesson];if(!required)throw Error('unsupported test lesson');
+const lesson=Number(process.env.WORKSHEET_LESSON||5),required=({5:10,6:7,7:7,8:6,9:5,10:5,11:4,12:3,13:4})[lesson];if(!required)throw Error('unsupported test lesson');
 const A='11111111-1111-4111-8111-111111111111',B='22222222-2222-4222-8222-222222222222';
 const token=id=>Buffer.from(JSON.stringify({alg:'HS256',typ:'JWT'})).toString('base64url')+'.'+Buffer.from(JSON.stringify({sub:id,role:'authenticated',aud:'authenticated',exp:Math.floor(Date.now()/1000)+3600})).toString('base64url')+'.ZmljdGlvbmFs';
 const user=id=>({id,email:id===A?'a@example.test':'b@example.test',email_confirmed_at:'2026-01-01',aud:'authenticated',role:'authenticated'});

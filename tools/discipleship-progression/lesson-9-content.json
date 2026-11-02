@@ -1,0 +1,34 @@
+{
+  "lesson": 9,
+  "worksheet": "lesson-9-workbook-sections-v1",
+  "source": "assets/downloads/grip/getting-a-grip-lesson-9-how-to-be-sure-you-are-filled-with-the-spirit.pdf",
+  "sha256": "5dd0921fd20b2f0c1f603c1983eaa84b18672187f3e00c06c4f0dd911690e391",
+  "responseGroups": [
+    {
+      "id": 1,
+      "prompt": "WHAT SHOULD I EXPECT?",
+      "page": 1
+    },
+    {
+      "id": 2,
+      "prompt": "DIFFERENT KINDS OF TONGUES",
+      "page": 1
+    },
+    {
+      "id": 3,
+      "prompt": "WHAT IS THE PURPOSE OF SPEAKING IN TONGUES?",
+      "page": 2
+    },
+    {
+      "id": 4,
+      "prompt": "WHAT ARE THE BENEFITS OF SPEAKING IN TONGUES?",
+      "page": 2
+    },
+    {
+      "id": 5,
+      "prompt": "COMMON MISUNDERSTANDINGS CONCERNING TONGUES",
+      "page": 4
+    }
+  ],
+  "excludedActivities": "Personal application and group exercises remain in the original PDF and are intentionally not collected in the cloud. Record study responses only; do not include private experiences or information about other people."
+}

@@ -1,9 +1,9 @@
-// Approved workbook response groups for lessons 5–8. Reuses existing owner-bound worksheet RPC.
+// Approved workbook response groups for lessons 5–13. Reuses existing owner-bound worksheet RPC.
 // No local answer storage, enrollment, profile writes or completion mutations.
 (() => {
  'use strict';
  const root=document.querySelector('[data-grip-worksheet]');if(!root)return;
- const lesson=Number(root.dataset.gripWorksheet),required=({5:10,6:7,7:7,8:6})[lesson];if(!required)return;
+ const lesson=Number(root.dataset.gripWorksheet),required=({5:10,6:7,7:7,8:6,9:5,10:5,11:4,12:3,13:4})[lesson];if(!required)return;
  const worksheet=`lesson-${lesson}-workbook-sections-v1`;
  const form=root.querySelector('[data-worksheet-form]'),fields=root.querySelector('[data-worksheet-fields]'),status=root.querySelector('[data-worksheet-status]'),load=root.querySelector('[data-worksheet-load]');
  const answers=[...root.querySelectorAll('[data-worksheet-answer]')],client=window.ChampionLifeAuth?.client;

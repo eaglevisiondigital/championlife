@@ -66,3 +66,8 @@ Reuse existing lesson_answers/version/RPC rather than a second course platform. 
 ## 2026-11-02 — Reused worksheet path for Lessons 6–8
 
 The existing owned worksheet transaction now has a separately reviewable uninstalled extension for Lessons 6–8, with exact PDF section catalogs and fixed cardinalities. Browser rendering remains a single account/session-bound client; durable answers and opaque revisions remain in the accepted stores. Installation takes the existing legacy-writer mutex before provenance checks and version seeding. No new permission surface or trusted completion boundary is introduced. See docs/DISCIPLESHIP-LESSONS-SIX-EIGHT-WORKSHEETS.md.
+
+
+## 2026-11-02 — Lessons 9–13 private worksheet source
+
+Extended the same worksheet client/answer store to9–13, with five/five/four/three/four selected response groups. No duplicate platform or new privilege surface. The guarded migration serializes provenance review/version initialization against legacy writes. Private answers never become course-completion authority. See docs/DISCIPLESHIP-LESSONS-NINE-THIRTEEN-WORKSHEETS.md.
