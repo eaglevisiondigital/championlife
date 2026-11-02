@@ -1,3 +1,7 @@
+## 2026-11-02 — Reconcile Partner dependencies without activating grants
+
+Implement the authorized test-only current-schema composition using exact accepted private writer bodies; preserve original historical guards and runtime provenance pins. Withhold the two historical application writer grants and keep the canonical runtime unverified. A future stricter provenance profile and host credential/principal contract require independent source review; do not restore broad grants merely to satisfy old fingerprints. No production installation or new product permission policy is selected. [Concrete candidate and remaining contract](docs/PARTNER-CURRENT-SCHEMA-COMPOSITION-20261102.md).
+
 ## 2026-11-02 — Preserve Partner boundaries after complete-source replay
 
 No new policy or host architecture is selected. Exact accepted B1/B2 reconstruction exposes current-base incompatibilities and broader wrapper/grant dependencies; it does not authorize installing them. Record the actionable integration contract instead of adding a provider stub or another parallel repository. [Dependency findings and continuation assignment](docs/PARTNER-HOST-INTEGRATION-GAP-20261102.md).

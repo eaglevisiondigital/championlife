@@ -1,3 +1,7 @@
+## 2026-11-02 — Test-only current-schema Partner dependency composition
+
+Reuses original Issue50 source/writers and existing People/account identity, adding no authentication or Person store. The new disposable fixture reconciles all 27 persistent current-main application sources, preserving the released King Kind reader, plus the existing Partner metadata candidate. No public wrappers or host are installed. Withheld writer privileges deliberately prevent the unchanged canonical runtime verifier from authorizing. [Source and host contract](docs/PARTNER-CURRENT-SCHEMA-COMPOSITION-20261102.md).
+
 ## 2026-11-02 — Partner host dependency graph verified
 
 The complete accepted B1 composition includes the operations-security correction already in the current replay, plus A/B public wrappers and grants; B2 requires the full preceding installation. Both fail closed on the current Partner baseline. Browser SDK verification, public submission gateways and the disposable pg binding do not form a trusted private server ingress. No replacement architecture or runtime was added. [Exact source and component graph](docs/PARTNER-HOST-INTEGRATION-GAP-20261102.md).

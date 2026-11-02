@@ -2,12 +2,12 @@
 import {readFileSync} from 'node:fs';
 import {createHash,randomUUID} from 'node:crypto';
 import {partnerAuthorityFixture} from './authority-fixture.mjs';
-export async function canonicalSourceFixture(db){
+export async function canonicalSourceFixture(db,{installIssue50}={}){
  const f=await partnerAuthorityFixture(db);
  const sql=readFileSync(new URL('./fixtures/issue50-identity-source.sql',import.meta.url),'utf8');
  const manifest=JSON.parse(readFileSync(new URL('./fixtures/issue50-identity-source.json',import.meta.url),'utf8'));
  if(createHash('sha256').update(sql).digest('hex')!==manifest.fixtureSha256)throw Error('Fixture provenance mismatch');
- await db.exec(sql);
+ if(installIssue50)await installIssue50(db);else await db.exec(sql);
  await db.query('insert into outreach_campaign_sources(source,campaign_id)values($1,$2)',['fictional_source',f.campaign]);
  await db.query('update outreach_registrations set user_id=$1,consent=true where id=$2',[f.subject,f.decision]);
  await db.query('update outreach_campaign_registrants set person_id=null where id=$1',[f.registrant]);

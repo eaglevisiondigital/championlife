@@ -1,3 +1,7 @@
+## 2026-11-02 — Grant-free Partner composition remains unmounted
+
+The new test-only composer installs exact selected private dependencies with all application EXECUTE/data access revoked, omitting two historical authenticated writer grants. Existing public registration administration still rejects expanded capability keys and cannot widen care_scope; existing trusted service-role assignment DML remains an explicit installation review boundary. New baseline/shape guards roll back drift while original runtime pins remain unchanged and fail closed. Native lock, committed revocation and cancellation checks pass. No approved real host credential or provider principal is inferred. [Security contract and limits](docs/PARTNER-CURRENT-SCHEMA-COMPOSITION-20261102.md).
+
 ## 2026-11-02 — Partner integration compatibility remains enforced
 
 Full-source reconstruction and disposable rollback probes confirm that the historical B1/B2 packages cannot silently install on the current Partner baseline. Do not remove their guards, replay historical public-wrapper grants, reuse a public gateway service credential or promote browser verification into server principal authority. Existing provenance pins, restricted NOLOGIN envelope and current-row locks remain byte-identical. [Evidence and required host contract](docs/PARTNER-HOST-INTEGRATION-GAP-20261102.md).

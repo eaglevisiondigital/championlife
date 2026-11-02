@@ -1,0 +1,6 @@
+{
+  "purpose": "Test-only selected catalog preflight: 26 checkout migrations plus exact released King Kind reader (27 persistent application SQL sources), existing Partner metadata boundary and synthetic Auth/Storage. Not production catalog parity or a runtime provenance replacement.",
+  "sourceBase": "3cf0a144c357c5294972e23beada68910a61efef",
+  "catalogSha256": "6127ccb7b298b8a32024a478c6c92a7cb30ba001fe14533c08f496bf984a21a9",
+  "assignmentAfterSha256": "90f5236f449ed778333ecd997e23f032ea68c0ba45568c7622360e5e4091e6fa"
+}
