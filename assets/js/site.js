@@ -1,4 +1,19 @@
-const btn=document.querySelector('.menu-btn');const links=document.querySelector('.nav-links');if(btn&&links){btn.addEventListener('click',()=>links.classList.toggle('open'));links.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>links.classList.remove('open')))}
+// Ordinary public navigation disclosure: keep state and keyboard behavior in sync.
+const btn=document.querySelector('.menu-btn');const links=document.querySelector('.nav-links');
+if(btn&&links){
+ const openLabel=btn.getAttribute('aria-label')||'Open menu';
+ const closeLabel=document.documentElement.lang.toLowerCase().startsWith('es')?'Cerrar menú':'Close menu';
+ if(!links.id){let id='site-navigation',suffix=1;while(document.getElementById(id))id='site-navigation-'+suffix++;links.id=id;}
+ btn.setAttribute('aria-controls',links.id);
+ const setOpen=open=>{links.classList.toggle('open',open);btn.setAttribute('aria-expanded',String(open));btn.setAttribute('aria-label',open?closeLabel:openLabel);};
+ setOpen(links.classList.contains('open'));
+ btn.addEventListener('click',()=>setOpen(!links.classList.contains('open')));
+ // Delegation also covers Supplements, which is inserted later by this script.
+ links.addEventListener('click',event=>{if(event.target.closest('a'))setOpen(false);});
+ document.addEventListener('keydown',event=>{
+  if(event.key==='Escape'&&links.classList.contains('open')&&(event.target===btn||links.contains(event.target))){event.preventDefault();setOpen(false);btn.focus();}
+ });
+}
 const io=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting){e.target.animate([{opacity:0,transform:'translateY(18px)'},{opacity:1,transform:'none'}],{duration:650,easing:'ease-out',fill:'both'});io.unobserve(e.target)}}),{threshold:.12});document.querySelectorAll('.card,.split,.stat,.section h2').forEach(el=>io.observe(el));
 
 
@@ -18,7 +33,7 @@ const io=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecti
 
 // Champion Life Sermon Notes experience
 (() => {
-  const SERMON_URL = 'sermon-notes.html';
+  const SERMON_URL = '/sermon-notes.html';
   if (document.documentElement.dataset.sermonNotesReady === 'true') return;
   document.documentElement.dataset.sermonNotesReady = 'true';
 
@@ -125,7 +140,7 @@ const io=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecti
 
 // Champion Life Daily Supplements global navigation
 (() => {
-  const href='daily-supplements.html';
+  const href='/daily-supplements.html';
   const nav=document.querySelector('.nav-links');
   if(nav && !nav.querySelector('a[href*="daily-supplements"]')){
     const link=document.createElement('a');link.href=href;link.textContent='Supplements';link.className='supplements-global-link';
