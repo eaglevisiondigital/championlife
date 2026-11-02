@@ -52,6 +52,15 @@ test('separate fixed execution role preserves pins, denies excess authority and 
    ['owned schema','create schema foreign_data authorization partner_identity_host_login','drop schema foreign_data cascade'],
   ];
   for(const [name,change,undo]of mutations)await t.test('profile drift fails closed: '+name,async()=>{await owner();await db.exec(change);await caller();await assert.rejects(()=>verifyCanonicalExecutionHostEnvelope(db));assert.deepEqual(await read(),unknown);await owner();await db.exec(undo);assert.deepEqual(await read(),verified)});
+  for(const schema of ['pgx_sensitive','pg0_sensitive','pgX_sensitive'])await t.test('ordinary near-system namespace '+schema+' cannot hide privileges',async()=>{
+   // PostgreSQL LIKE pg_% matches pgx too. Only literal pg_ is reserved.
+   const q='"'+schema+'"';await owner();await db.exec(`create schema ${q};create function ${q}.owner_probe() returns text language sql security definer as 'select current_user::text';grant usage on schema ${q} to public`);
+   await caller();assert.equal((await db.query(`select ${q}.owner_probe() owner`)).rows[0].owner,'postgres');
+   await assert.rejects(()=>verifyCanonicalExecutionHostEnvelope(db));assert.deepEqual(await read(),unknown);
+   await owner();await db.exec(`drop function ${q}.owner_probe();create table ${q}.hidden(id int);grant select on ${q}.hidden to public`);
+   await caller();await assert.rejects(()=>verifyCanonicalExecutionHostEnvelope(db));assert.deepEqual(await read(),unknown);
+   await owner();await db.exec(`drop schema ${q} cascade`);assert.deepEqual(await read(),verified);
+  });
   await t.test('SET-only membership is mandatory; missing or non-SET edge fails closed',async()=>{for(const [change,undo]of[
    ['revoke partner_canonical_reader from partner_identity_host_login','grant partner_canonical_reader to partner_identity_host_login with admin false, inherit false, set true'],
    ['grant partner_canonical_reader to partner_identity_host_login with set false','grant partner_canonical_reader to partner_identity_host_login with set true']

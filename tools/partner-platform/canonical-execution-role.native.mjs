@@ -21,6 +21,12 @@ try{
  for(const sql of ['set role postgres','set role authenticated','set role service_role','set session authorization postgres','create temp table bad(id int)','create schema bad','select * from auth.users','select * from portal_account_links']){
   await assert.rejects(()=>c.query(sql),e=>e.code==='42501');pass('actual credential denied '+sql);
  }
+ for(const schema of ['pgx_sensitive','pgX_sensitive']){
+  const q='"'+schema+'"';await owner.query(`create schema ${q};create function ${q}.owner_probe() returns text language sql security definer as 'select current_user::text';grant usage on schema ${q} to public`);
+  assert.equal((await c.query(`select ${q}.owner_probe() owner`)).rows[0].owner,'postgres');await assert.rejects(()=>verifyCanonicalExecutionHostEnvelope(c));pass('ordinary '+schema+' PUBLIC definer is rejected');
+  await owner.query(`drop function ${q}.owner_probe();create table ${q}.hidden(id int);grant select on ${q}.hidden to public`);await assert.rejects(()=>verifyCanonicalExecutionHostEnvelope(c));pass('ordinary '+schema+' PUBLIC table is rejected');
+  await owner.query(`drop schema ${q} cascade`);await verifyCanonicalExecutionHostEnvelope(c);
+ }
  await c.query('reset role');await assert.rejects(()=>c.query('select * from partner_identity_host.current_snapshot(null,null,null,null,null)'),e=>e.code==='42501');await c.query('set role partner_canonical_reader');pass('RESET ROLE cannot use definer');
  const signer=signedHostFixture(f),request={organizationId:f.org,campaignId:f.campaign,assignmentId:f.assignment,accessToken:signer.token()};
  let beforeCommit=false,reached,release;

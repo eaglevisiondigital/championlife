@@ -25,6 +25,8 @@ Required database identity:
 - Both identities have no database CREATE/TEMP, schema CREATE, relation/column/
   sequence privileges or ownership. Checks include all non-system schemas and
   effective PUBLIC privileges, not just the 23 function / 17 relation pins.
+  Only the literal reserved `pg_` prefix is excluded; ordinary `pgx` / `pgX`
+  schemas cannot hide relations or owner-executing definers from these checks.
 - Login cannot execute reachable security-definer routines; reader can execute
   only the exact accepted canonical snapshot envelope. RESET ROLE restores only
   the limited login. Actual native login tests deny SET ROLE postgres,

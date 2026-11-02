@@ -24,7 +24,7 @@ export async function verifyCanonicalExecutionRole(c){
  // Check every non-system schema so finance/extension/other-app objects cannot
  // be reached by RESET ROLE or an accidental grant outside the pinned catalogs.
  const broad=(await c.query(`with roles as(select oid,rolname from pg_roles where rolname in($1,$2)),
- namespaces as(select oid,nspname,nspowner from pg_namespace where nspname not like 'pg_%' and nspname<>'information_schema')
+ namespaces as(select oid,nspname,nspowner from pg_namespace where left(nspname,3)<>'pg_' and nspname<>'information_schema')
  select 1 from roles r where
  exists(select 1 from pg_database where datdba=r.oid)
  or has_database_privilege(r.oid,current_database(),'CREATE,TEMP')
