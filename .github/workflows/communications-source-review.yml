@@ -4,6 +4,7 @@ on:
     paths:
       - 'tools/communications-policy/**'
       - 'supabase/functions/_shared/communications/resend*.mjs'
+      - 'supabase/migrations/20261102193138_communications_resend_suppressed.sql'
       - 'supabase/migrations/20261102154214_communications_resend_host_lookup.sql'
       - 'supabase/migrations/20261102150100_communications_resend_source.sql'
       - 'supabase/functions/_shared/communications/providers.mjs'

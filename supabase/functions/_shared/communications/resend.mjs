@@ -45,7 +45,7 @@ function unbase64(value) {
  if (typeof value !== 'string' || !/^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$/.test(value)) fail();
  return Uint8Array.from(atob(value), c=>c.charCodeAt(0));
 }
-const outcomes=Object.freeze({'email.sent':'sent','email.delivered':'delivered','email.bounced':'hard_bounce','email.complained':'complaint','email.failed':'failed','email.delivery_delayed':'sent'});
+const outcomes=Object.freeze({'email.sent':'sent','email.delivered':'delivered','email.bounced':'hard_bounce','email.complained':'complaint','email.suppressed':'provider_suppressed','email.failed':'failed','email.delivery_delayed':'sent'});
 export async function verifyResendWebhook(raw,headers,binding,{now=Date.now()}={}) {
  const b=structuredClone(binding);context(b);
  if (b.structured_callbacks!==true || !(raw instanceof Uint8Array) || !raw.length || raw.length>8192 || !Number.isFinite(now)) fail();

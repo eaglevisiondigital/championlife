@@ -6,7 +6,7 @@
     "supabase/migrations/20261101231457_communications_callback_context.sql": "45ac5eec6784b30a5cc12c84b73dc51e1c681908d6b5a41fc1d57bfa5fbfda2b",
     "supabase/migrations/20261102150100_communications_resend_source.sql": "919ee86e5d557985ecf6456a916493d66fe9b7914adf34b94f40af85108e0720",
     "supabase/functions/_shared/communications/activation.mjs": "1d7b60e66f92063ddefecffddefd12a44b91c33abd2fd7a9aeb18b51af2eb109",
-    "supabase/functions/_shared/communications/resend.mjs": "017c171bbfb50c89379af3c064a9559916bfc20c14d1063fedd2a51cd39ce47f",
+    "supabase/functions/_shared/communications/resend.mjs": "e6ce00a983b973f649d0724203d778d48b11b8f04961d153464eb0e165db338a",
     "supabase/functions/_shared/communications/activation-service.ts": "dbbc752c04200c20878ab642d4f04df1e4922149e909e5e809fbfbc339e7feb1",
     "tools/backend-tests/migration-order.mjs": "773b517bcae03dbc5fd671c626c9398f8865e5b18c332581ff699fd220e8ea9d",
     "supabase/bootstrap/automatic-rls.sql": "8387dc646df9fef987d725a9a45ff9e3f77f692a22eb0421909cb58a642e46e6",
@@ -41,6 +41,8 @@
     "supabase/migrations/20261007213000_outreach_phase_e_event_day.sql": "72d7065aea277f0b13d81d41083d1a9ab61dc13214bede73d889afd686c8d678",
     "supabase/migrations/20261007221218_outreach_phase_e_template_clone_version.sql": "00e22b863895883b58fc326529352079e43c8b0ee9d3cd59430d65a942ad374f",
     "supabase/migrations/20261008134746_outreach_phase_f_pre_event_automation.sql": "17c8f84a07eacb71c317ed299234bafba9d795f3c4cda644b18bfbbf4bcea94d",
-    "supabase/migrations/20261009154725_outreach_phase_g_communications_core.sql": "e48d66d1ffbf7fdd7b0aa6c01a41c15079b6460ae47ef22ccd71236d021c0341"
-  }
+    "supabase/migrations/20261009154725_outreach_phase_g_communications_core.sql": "e48d66d1ffbf7fdd7b0aa6c01a41c15079b6460ae47ef22ccd71236d021c0341",
+    "supabase/migrations/20261102193138_communications_resend_suppressed.sql": "33ebed434a045746eb8435adff86aa3c2b1e3f1303f125da5f16eddb606b3be0"
+  },
+  "correctionBase": "66a838c69031fbf08c4fc5d98b51c802c6031228"
 }

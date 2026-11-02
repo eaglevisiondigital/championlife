@@ -50,7 +50,7 @@ try {
  const rpc=async(a,o,p)=>{assert.equal(o,f.org);calls++;return worker(a,p)};
  const resolve=async()=>({send:async job=>{sends++;return{id:'h1:'+job.id,status:'sent'}}});
  const run=(r=rpc,res=resolve,extra={})=>runExternalWorker(r,f.org,res,{enabled:true,runtime,...extra});
- for(const file of ['20261101214121_communications_receipt_reconciliation.sql','20261101231457_communications_callback_context.sql','20261102150100_communications_resend_source.sql'])sql(readFileSync(new URL('../../supabase/migrations/'+file,import.meta.url),'utf8'));
+ for(const file of ['20261101214121_communications_receipt_reconciliation.sql','20261101231457_communications_callback_context.sql','20261102150100_communications_resend_source.sql','20261102154214_communications_resend_host_lookup.sql','20261102193138_communications_resend_suppressed.sql'])sql(readFileSync(new URL('../../supabase/migrations/'+file,import.meta.url),'utf8'));
  // Only fictional fixture installation; no host provisioning route is introduced.
  sql(`update communication_sender_profiles set provider='resend_email' where id='${h.profile}';update communication_provider_controls set structured_callbacks=true,resend_account_id='fictional-account' where profile_id='${h.profile}'`);
  const profile=worker('profile',{id:h.profile});
@@ -84,6 +84,33 @@ try {
  const concurrent=payload=>new Promise((resolve,reject)=>execFile(exe('psql'),[...args,'-c',`set role service_role;select communications_provider_service('resend_receipt','${f.org}',${lit(JSON.stringify(payload))});`],{encoding:'utf8'},(e,out)=>e?reject(e):resolve(JSON.parse(out.trim()))));
  const pair=await Promise.all([concurrent(p),concurrent(p)]);eq(pair.filter(x=>x.recorded).length,1,'separate connection receipt exactly one commit');eq(pair.filter(x=>x.duplicate).length,1,'separate connection receipt duplicate');eq(audit(id,'provider.resend_receipt'),1,'concurrent single immutable audit');
  id=await accepted();p=await receipt(id);const race=await Promise.allSettled([concurrent(p),concurrent({...p,body_sha256:'0'.repeat(64)})]);eq(race.filter(x=>x.status==='fulfilled').length,1,'conflicting race one commit');eq(race.filter(x=>x.status==='rejected').length,1,'conflicting race one denial');
+ // Suppressed is its own provider hold, never fabricated unsubscribe/bounce/complaint.
+ id=await accepted();p=await receipt(id,'email.suppressed');
+ const suppressionCount=()=>Number(sql("select count(*) from communication_suppressions where reason='provider_suppressed' and active"));
+ const consentBefore=sql(`select coalesce(jsonb_agg(to_jsonb(c) order by c.id)::text,'[]') from communication_consents c`);
+ await rejects(async()=>ingest({...p,recipient:'other@example.test'}),'suppression cannot target another recipient');eq(audit(id,'provider.resend_receipt'),0,'invalid suppression binding creates no audit');
+ const suppressedPair=await Promise.all([concurrent(p),concurrent(p)]);
+ eq(suppressedPair.filter(x=>x.recorded).length,1,'concurrent suppressed exactly one commit');
+ eq(suppressedPair.filter(x=>x.duplicate).length,1,'concurrent suppressed one duplicate');
+ eq(row(id).status,'suppressed','provider-suppressed message held');eq(row(id).failure_class,'provider_suppressed','distinct failure class');
+ eq(suppressionCount(),1,'one provider suppression');eq(sql(`select last_callback_at is not null from communication_provider_controls where profile_id='${h.profile}'`),'t','canonical callback health timestamp preserved');eq(audit(id,'provider.resend_receipt'),1,'one suppression receipt audit');
+ eq(sql(`select coalesce(jsonb_agg(to_jsonb(c) order by c.id)::text,'[]') from communication_consents c`),consentBefore,'provider hold does not change consent');
+ eq(Number(sql("select count(*) from communication_suppressions where reason in ('stop','unsubscribe','hard_bounce','complaint') and active")),0,'suppression does not invent unsubscribe bounce or complaint');
+ for(const type of ['email.sent','email.delivery_delayed','email.delivered','email.failed']){ingest(await receipt(id,type));eq(row(id).status,'suppressed','later '+type+' cannot restore suppressed message');eq(suppressionCount(),1,'later event cannot remove provider hold');}
+ eq(audit(id,'delivery.delayed'),1,'delayed receipt auditable without terminal downgrade');
+ await rejects(async()=>ingest({...p,body_sha256:'f'.repeat(64)}),'suppressed replay conflict denied');
+ await rejects(async()=>queue(),'provider hold denies future enqueue');
+ const sendBeforeSuppressed=requests;await run(rpc,async()=>adapter);eq(requests,sendBeforeSuppressed,'suppressed never resent');
+ sql("update communication_suppressions set active=false where reason='provider_suppressed';");
+ id=await accepted();ingest(await receipt(id));ingest(await receipt(id,'email.suppressed'));eq(row(id).status,'delivered','suppression after delivery preserves recorded delivery history');eq(suppressionCount(),1,'suppression after delivery blocks future sends');
+ sql("update communication_suppressions set active=false where reason='provider_suppressed';");
+ id=await accepted();const sp=await receipt(id,'email.suppressed'),fp=await receipt(id,'email.failed');
+ await Promise.all([concurrent(sp),concurrent(fp)]);eq(row(id).status,'suppressed','competing failure and suppression converge to hold');eq(suppressionCount(),1,'concurrent failure cannot erase hold');eq(audit(id,'provider.resend_receipt'),2,'different signed events retain two accurate audits');sql("update communication_suppressions set active=false where reason='provider_suppressed';");
+ id=await accepted();p=await receipt(id,'email.suppressed');
+ sql(`create function private.fail_suppressed_audit()returns trigger language plpgsql as $$begin if new.kind='provider.resend_receipt' then raise exception 'injected failure';end if;return new;end$$;create trigger fail_suppressed_audit before insert on communication_audit for each row execute function private.fail_suppressed_audit();`);
+ await rejects(async()=>ingest(p),'suppression audit failure rejects whole transaction');eq(row(id).status,'sent','suppression failure rolls back state');eq(suppressionCount(),0,'suppression failure rolls back hold');eq(Number(sql(`select count(*) from communication_callbacks where event_id=${lit(p.event_id)}`)),0,'suppression failure rolls back receipt');eq(audit(id,'delivery.provider_suppressed'),0,'suppression failure rolls back intermediate audit');
+ sql('drop trigger fail_suppressed_audit on communication_audit;drop function private.fail_suppressed_audit();');
+ id=await accepted();ingest(await receipt(id,'email.failed'));const failedSends=requests;await run(rpc,async()=>adapter);eq(requests,failedSends,'known provider failure never automatically retried');ingest(await receipt(id,'email.delivery_delayed'));eq(row(id).status,'failed','late delay cannot restore failed message');eq(row(id).failure_class,'failed','late delay does not overwrite terminal reason');
  // A reply-to/profile change committed while callback waits invalidates old envelope.
  id=await accepted();p=await receipt(id);
  const change=new Promise((resolve,reject)=>execFile(exe('psql'),[...args,'-c',`begin;select private.comm_external_lock('${f.org}');update communication_sender_profiles set reply_to='changed@example.test' where id='${h.profile}';select pg_sleep(1);commit;`],{encoding:'utf8'},e=>e?reject(e):resolve()));
