@@ -9,7 +9,7 @@
   if(c?.enabled!==true||c.project!==window.CHAMPION_LIFE_SUPABASE?.url||c.origin!==location.origin||!/^https:\/\/[a-z0-9]{20}\.supabase\.co$/.test(c.project)||['exdocjbmylgxssanymjk','niyovbgoalulzkhbvebt','bkbmjisprwmkptywtmih'].includes(new URL(c.project).hostname.split('.')[0]))throw Error('Giving is unavailable.');
   const project=c.project,origin=c.origin,publicKey=window.CHAMPION_LIFE_SUPABASE.publishableKey;
   const headers={'Content-Type':'application/json',apikey:publicKey},auth=window.ChampionLifeAuth?.client?.auth;
-  const session=await readSession(auth);knownUser=session?.user?.id??null;if(session?.expires_at!==undefined&&(!Number.isFinite(session.expires_at)||session.expires_at*1000<=Date.now()))throw changed();
+  const session=await readSession(auth),sessionUser=session?.user?.id??null;if(knownUser!==undefined&&knownUser!==sessionUser)throw changed();knownUser=sessionUser;if(session?.expires_at!==undefined&&(!Number.isFinite(session.expires_at)||session.expires_at*1000<=Date.now()))throw changed();
   const unchanged=()=>stamp===generation&&!signal?.aborted&&C()?.enabled===true&&C().project===project&&C().origin===origin&&window.CHAMPION_LIFE_SUPABASE?.url===project&&window.CHAMPION_LIFE_SUPABASE?.publishableKey===publicKey;
   if(!unchanged())throw changed();
   if(session?.access_token)headers.Authorization='Bearer '+session.access_token;

@@ -12,7 +12,7 @@ const check=(value,label)=>{assert.ok(value,label);checks++;console.log('PASS '+
 for(const [name,engine] of Object.entries({chromium,webkit})){
  const executablePath=process.env['NMI_'+name.toUpperCase()+'_EXECUTABLE'];const browser=await engine.launch(executablePath?{executablePath}:{});console.log(name+' version '+browser.version());
  try{
-  async function setup(enabled=true,initialDelay=null){
+  async function setup(enabled=true,initialDelay=null,loadPage=true){
    const page=await browser.newPage();await page.route('**/*',r=>r.fulfill({body:'<div id="nmi-giving-app"></div>',contentType:'text/html'}));
    await page.goto('https://fictional.example.test/nmi-giving.html?organization=synthetic-org&form=synthetic-form');
    await page.evaluate(({enabled,initialDelay})=>{
@@ -28,7 +28,7 @@ for(const [name,engine] of Object.entries({chromium,webkit})){
     window.response={status:'success',session_id:'fictional-session',currency:'USD',legs:[{id:'fictional-leg',component_key:'fictional-key',merchant_reference:'fictional-merchant',amount_minor:2500}],receipt:{total_minor:2500,currency:'USD',funds:[{fund:'Private-A-receipt',amount_minor:2500}]},recurring:[],fallback_path:'/give.html'};
     window.fetch=async(_,init)=>{const payload=JSON.parse(init.body);calls.push(payload);if(window.denyStatus&&payload.action==='status')return Response.json({error:'denied'},{status:403});if(delay===payload.action)await new Promise(r=>pending[payload.action]=r);if(payload.action==='execute'&&failExecute)throw Error('fictional unknown');return Response.json(payload.action==='form'?{available:true,label:'Fictional Giving',funds:[{id:'fund',label:'Fictional'}],recurring_allowed:false}:response);};
    },{enabled,initialDelay});
-   await page.addScriptTag({content:client});await page.addScriptTag({content:pageSource});return page;
+   await page.addScriptTag({content:client});if(loadPage)await page.addScriptTag({content:pageSource});return page;
   }
   async function ready(page){await page.waitForFunction(()=>document.querySelector('form')?.onsubmit);await page.evaluate(()=>{document.querySelector('[name=name]').value='Fictional';document.querySelector('[name=email]').value='fictional@example.test';document.querySelector('[name=amount]').value='25.00';});}
   async function create(page){await ready(page);await page.evaluate(()=>document.querySelector('form').dispatchEvent(new Event('submit',{cancelable:true})));}
@@ -36,6 +36,7 @@ for(const [name,engine] of Object.entries({chromium,webkit})){
   async function execute(page){await payment(page);await page.getByRole('button',{name:'Give in sandbox',exact:true}).click();}
   async function cleared(page,label){await page.waitForFunction(()=>document.body.textContent.includes('Your giving session changed'));check(!await page.locator('body').textContent().then(x=>x.includes('Private-A-receipt')),name+' '+label+' no private receipt');check(await page.locator('button,form').count()===0,name+' '+label+' no retained controls');}
   if(baseline){const p=await setup();await execute(p);await p.getByText('Private-A-receipt',{exact:false}).waitFor();await p.evaluate(()=>{window.retained=document.querySelector('button').onclick;event('SIGNED_OUT',null);});check((await p.locator('body').textContent()).includes('Private-A-receipt'),name+' ORIGINAL receipt remains after logout');const n=await p.evaluate(()=>calls.length);await p.evaluate(()=>retained());await p.waitForTimeout(20);check(await p.evaluate(()=>calls.length)===n+1,name+' ORIGINAL detached status request after logout');await p.close();continue;}
+  for(const eventName of ['INITIAL_SESSION','TOKEN_REFRESHED']){const p=await setup(true,'auth',false);await p.evaluate(()=>{window.result=NmiGivingClient.call({action:'execute',operation:'sale'}).then(()=> 'unexpected',()=> 'rejected');});await p.waitForFunction(()=>Boolean(pending.auth));await p.evaluate(eventName=>{event(eventName,'fictional-B');delay=null;pending.auth();},eventName);check(await p.evaluate(()=>result)==='rejected',name+' first '+eventName+' conflicting principal rejected');check(await p.evaluate(()=>calls.length)===0,name+' first '+eventName+' conflict submits zero mutation');await p.close();}
   for(const stage of ['form','auth']){const p=await setup(true,stage);await p.waitForFunction(stage=>Boolean(pending[stage]),stage);const n=await p.evaluate(()=>calls.length);await p.evaluate(()=>event('SIGNED_OUT',null));await p.evaluate(stage=>pending[stage](),stage);await p.waitForTimeout(20);await cleared(p,stage+' pending startup');check(await p.evaluate(()=>calls.length)===n,name+' '+stage+' no new request after logout');await p.close();}
   for(const enabled of [false,'true','false',1,null]){const p=await setup(enabled);check((await p.evaluate(()=>calls.length))===0,name+' malformed/disabled configuration performs zero calls');await p.close();}
   for(const stage of ['create','token','execute','status']){
