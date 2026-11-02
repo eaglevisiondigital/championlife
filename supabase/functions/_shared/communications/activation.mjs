@@ -70,7 +70,10 @@ export async function runExternalWorker(rpc,organization,resolve,{enabled=false,
   await call('result_external',{message_id:job.id,lease_token:job.lease_token,...result});processed++;
  }return{mode:cancelled()?'cancelled':claimed.mode,processed};
 }
-export async function boundedBody(req){const reader=req.body?.getReader();if(!reader)throw Error('Missing body');let size=0;const chunks=[];for(;;){const{done,value}=await reader.read();if(done)break;size+=value.length;if(size>8192){await reader.cancel();throw Error('Body too large');}chunks.push(value);}const all=new Uint8Array(size);let offset=0;for(const c of chunks){all.set(c,offset);offset+=c.length;}return new TextDecoder('utf-8',{fatal:true}).decode(all);}
+export async function boundedBody(req){const reader=req.body?.getReader();if(!reader)throw Error('Missing body');let size=0;const chunks=[];for(;;){const{done,value}=await reader.read();if(done)break;size+=value.length;if(size>8192){await reader.cancel();throw Error('Body too large');}chunks.push(value);}const all=new Uint8Array(size);let offset=0;for(const c of chunks){all.set(c,offset);offset+=c.length;}
+ // Keep BOM bytes in the signed string; default decoding silently strips them.
+ return new TextDecoder('utf-8',{fatal:true,ignoreBOM:true}).decode(all);
+}
 // Contract verifier is supplied by the selected vendor. There is no invented generic SMTP webhook.
 export async function verifiedProviderEvent(raw,headers,profile,binding,verifier){
  if(typeof verifier!=='function'||profile?.structured_callbacks!==true)throw Error('Provider callbacks not configured');

@@ -57,3 +57,8 @@ The anonymous display RPC is an intentional fixed-search-path projection and ret
 ## 2026-11-01 — Receipt context race correction
 
 An independently authenticated provider receipt must also match the server profile used during verification at final commit. Exact callback context is now required inside the existing SQL authority lock for reconciliation/delivery/preference callbacks; missing, extra or changed context fails before a successful audit/state transition. The context is constructed from the database profile, never the vendor body. Enablement and consent are excluded: disabling outbound delivery does not invalidate evidence of an already completed handoff or grant a new send. This is configuration binding, not proof of provider-account ownership; no real verifier is configured. Sender credential/account custody still needs independent acceptance.
+
+
+## 2026-11-02 — Preserve callback signature bytes
+
+The shared bounded raw-body reader uses fatal UTF-8 decoding with BOM preservation. A signature over an ordinary body must not authenticate a different request with a prepended BOM; malformed UTF-8 still rejects and the byte cap remains8192. No parsing, trimming or normalization occurs before the configured verifier. The empty production verifier registry and existing exact profile/attempt/context/UNKNOWN controls are unchanged. Synthetic HMAC tests validate this ingress boundary only; no vendor acceptance or sending is implied.
