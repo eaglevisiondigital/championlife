@@ -1,3 +1,7 @@
+## 2026-11-02 — Reuse the existing Auth SDK for unmounted trusted ingress
+
+Use the official 2.118.0 Auth SDK verifier with explicitly supplied public ES256 key custody and strict no-network fallback, rather than accepting caller principal booleans. Connect it to the existing restricted canonical repository without changing catalog pins or roles. This is an authorized source integration, not selection of a production signing algorithm, host, login membership or rotation policy; actual installation remains separately held. [Source scope and installation decisions](docs/PARTNER-SIGNED-HOST-INGRESS-20261102.md).
+
 ## 2026-11-02 — Prefer explicit restrictive profile over restoring historical grants
 
 Continue owner-authorized source integration by sharing the accepted catalog checks under a fixed stricter profile. Preserve historical profile/SQL and do not widen application permissions to make old fingerprints pass. Actual host, provider provenance, credential custody and production installation remain separately reviewed gates. [Scope](docs/PARTNER-RESTRICTED-CANONICAL-PROFILE-20261102.md).

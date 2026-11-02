@@ -1,3 +1,7 @@
+## 2026-11-02 — Signed ingress retains current database authority
+
+Verified signature, exact issuer/audience and current token lifetime are prerequisites, not Partner permission. Subject/session must still pass the locked current canonical join; caller actor fields and metadata cannot substitute. Unknown keys, unsupported algorithms, network fallback, stale config mutation, cancellation and retired ingress instances fail closed. Historical 23-function/17-relation pins and the no-members NOLOGIN envelope remain unchanged. Fictional issuer acceptance does not prove real provider/credential custody. [Validation and remaining controls](docs/PARTNER-SIGNED-HOST-INGRESS-20261102.md).
+
 ## 2026-11-02 — Restricted canonical profile denies broader execution
 
 Historical source manifest is SHA-pinned and preserved; the new factory refuses either previously broad authenticated writer grant and all existing provenance/envelope drift. Read locks, current authority, transaction rollback and private-data projection remain unchanged. Fictional Auth pins/owner SET ROLE do not authorize a hosted principal. [Exact security boundary](docs/PARTNER-RESTRICTED-CANONICAL-PROFILE-20261102.md).

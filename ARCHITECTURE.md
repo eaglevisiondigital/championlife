@@ -1,3 +1,7 @@
+## 2026-11-02 — Compose official signature verification with canonical People authority
+
+A server-only unmounted ingress uses Supabase Auth SDK 2.118.0 with a trusted public key and no network/session fallback, then creates a request-local strict repository and existing identity adapter. Database session/account/assignment and accepted Issue50 review/audit rows remain authoritative; only minimized Person linkage is returned. No authentication store, new SQL or host installation. [Composition and lifetime contract](docs/PARTNER-SIGNED-HOST-INGRESS-20261102.md).
+
 ## 2026-11-02 — Reuse canonical repository with restrictive source profile
 
 A private verifier closure reuses the complete original function/relation checks. An explicit restricted routine factory requires absence of exactly two historical application writer privileges and always enforces the existing host envelope; no caller-configurable profile or fallback. No duplicate People store or new SQL. [Integration contract](docs/PARTNER-RESTRICTED-CANONICAL-PROFILE-20261102.md).

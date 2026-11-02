@@ -1,3 +1,7 @@
+## 2026-11-02 — Unmounted Partner signed-token ingress
+
+The official pinned Supabase Auth SDK now verifies an explicitly trusted public ES256 issuer key before binding subject/session to the existing strict canonical repository and People adapter. Request-local lifetimes, transport abort, expiry and permanent issuer retirement preserve current DB authority and private projection. 64 new / 529 affected Node checks and 22 authority denials PASS; native PostgreSQL17 verifies incompatible catalog denial. New 13-check native PostgreSQL18 CI and independent review remain pending. No SQL, pin, grant, host, provider, public mount or production change. [Contract and held installation dependencies](docs/PARTNER-SIGNED-HOST-INGRESS-20261102.md).
+
 ## 2026-11-02 — Explicit restricted Partner canonical profile
 
 Added a fixed unmounted repository factory for the grant-free current-schema composition. All historical catalog pins/default factories remain behaviorally unchanged; only the new profile requires both application writer grants absent. 66 new / 465 total affected Node checks PASS. PostgreSQL17 verifies fail-closed catalog mismatch; new 30-check PG18 positive/concurrency suite awaits exact-head CI. No SQL, credentials, host mount or production authority. [Contract and gates](docs/PARTNER-RESTRICTED-CANONICAL-PROFILE-20261102.md).
