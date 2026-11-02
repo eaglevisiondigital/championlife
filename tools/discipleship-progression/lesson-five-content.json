@@ -1,0 +1,58 @@
+{
+  "lesson": 5,
+  "worksheet": "lesson-5-workbook-sections-v1",
+  "source": "assets/downloads/grip/getting-a-grip-lesson-5-how-to-hear-from-god.pdf",
+  "sha256": "1bbdad8553334d10bf550f67bfad39aaa3da57ccc9324f21a537c5403f6ab917",
+  "responseGroups": [
+    {
+      "id": 1,
+      "prompt": "Who wrote the Bible?",
+      "page": 1
+    },
+    {
+      "id": 2,
+      "prompt": "How reliable is the Bible?",
+      "page": 1
+    },
+    {
+      "id": 3,
+      "prompt": "Why did God give us the Bible?",
+      "page": 2
+    },
+    {
+      "id": 4,
+      "prompt": "What does God's Word do in our lives?",
+      "page": 2
+    },
+    {
+      "id": 5,
+      "prompt": "How does God's Word help us grow?",
+      "page": 3
+    },
+    {
+      "id": 6,
+      "prompt": "What is our responsibility?",
+      "page": 3
+    },
+    {
+      "id": 7,
+      "prompt": "What are the results of hearing God's Word?",
+      "page": 4
+    },
+    {
+      "id": 8,
+      "prompt": "Who helps us understand the Word?",
+      "page": 4
+    },
+    {
+      "id": 9,
+      "prompt": "God's Word is one of our weapons.",
+      "page": 5
+    },
+    {
+      "id": 10,
+      "prompt": "Do you have a daily Bible reading plan?",
+      "page": 5
+    }
+  ]
+}

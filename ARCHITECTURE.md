@@ -59,3 +59,6 @@ The playback verifier accepts only exact domain-separated signed envelope bytes 
 ## 2026-11-01 — Completion transaction boundary
 
 The new uninstalled private completion function reuses existing worksheet/auth/enrollment locks, adds exact profile/receipt serialization via the same mutation mutex, and atomically writes the existing progress projection with private immutable completion audit. No duplicate answer or identity store is introduced. Provider ingestion/host privileges remain absent and the registry starts empty. Lessons1–4 only; accepted multi-part media policies and5–13cloud worksheets are still required. Historical audits are not perpetual unlock tokens.
+
+## Lesson5 worksheet extension (2026-11-02, source only)
+Reuse existing lesson_answers/version/RPC rather than a second course platform. Ten workbook section responses are saved separately from legacy device notes and never counted as trusted completion. Exact source catalog, guarded installation and remaining1–13 scope: docs/DISCIPLESHIP-LESSON-FIVE-WORKSHEET.md.

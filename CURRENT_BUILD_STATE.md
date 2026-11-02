@@ -1,3 +1,7 @@
+## 2026-11-02 — Lesson5 cloud workbook response groups, source only
+
+Added an actual private save/load worksheet using ten source-exact groups from the existing Lesson5 PDF and the existing owner-bound RPC/answer store. Guarded forward migration refuses source drift or unmapped existing Lesson5 answers; no new tables, grants, RLS or progress/completion writes. Other device notes and approved media preserved. Lesson6–13 structured worksheets, videos11–13 and genuine95% watch evidence remain unfinished. See docs/DISCIPLESHIP-LESSON-FIVE-WORKSHEET.md; tests/evidence are local, no hosted installation or release.
+
 ## 2026-11-01 — Owned progression snapshot, source only
 
 New forward migration `20261101231330_owned_progression_snapshot.sql` derives the existing opaque worksheet evidence binding inside the actual owned worksheet transaction. Auth user/session, enrollment and revision come from locked database records; no browser wrapper supplies ownership. There is no additional answer or learner store, watch provider, completion writer, public mounting or hosted migration. Lessons1–4 only; `observer_unconfigured`, `canComplete:false`, `canCommit:false` remain explicit. Focused PGlite36 checks and existing Node293 tests PASS. Independent reviewer18 additional SQL checks PASS. Native session/legacy-write contention tests are wired to CI but not run on the IPC-exhausted Mac. See docs/DISCIPLESHIP-OWNED-PROGRESSION-SNAPSHOT.md. Exact-head CI, real provider, hosted/release acceptance remain pending.
