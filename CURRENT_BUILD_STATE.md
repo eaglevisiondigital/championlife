@@ -1,3 +1,7 @@
+## 2026-11-02 — Actual Partner provider installability
+
+Actual bounded read-only provider metadata now establishes two concrete Partner installation blockers: managed Auth tables differ from the exact fictional fixture pins, and effective PUBLIC TEMP conflicts with the restricted execution role. Offline assessment reports NO_GO without changing pins or runtime; 19 new focused checks pass. No provider row reads, credentials, grants, installation or host mount. [Scope and next technical gate](tools/partner-platform/PROVIDER-INSTALLABILITY.md).
+
 ## 2026-11-02 — Partner execution-role composition (source only)
 
 Separate fixed execution-role ingress connects the accepted signature/canonical People boundary to a least-privilege login profile. Original zero-membership reader behavior, 23 function/17 relation pins and all migrations remain unchanged. New 41 PGlite checks PASS; 17 native PostgreSQL17 role checks PASS with canonical-positive/concurrency explicitly skipped until PG18 CI. Independent review found a near-system schema wildcard gap in the initial successor; literal prefix handling and permanent malicious-schema tests correct it before publication. No hosted role, credential or mount. [Exact contract and held provider prerequisites](tools/partner-platform/EXECUTION-ROLE-READINESS.md).

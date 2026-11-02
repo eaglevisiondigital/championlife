@@ -1,3 +1,7 @@
+## 2026-11-02 — Actual Partner provider installability
+
+A dedicated application DB alone cannot preserve the accepted live Auth/assignment/People transaction merely by copying sessions. A complete isolated acceptance project is conditional on its own exact managed-Auth profile and independent gates; it is not a second production login. New offline metadata assessment has no authorization or installation capability. [Scope and next technical gate](tools/partner-platform/PROVIDER-INSTALLABILITY.md).
+
 ## 2026-11-02 — Partner execution-role composition (source only)
 
 A source-selected execution repository reuses the accepted restricted catalog verifier, snapshot envelope, SDK ingress and current session/assignment/People locks. It substitutes only a stricter explicit login/membership profile for the original disconnected zero-membership envelope. No alternative identity store, provider host or migration is introduced. [Exact contract and held provider prerequisites](tools/partner-platform/EXECUTION-ROLE-READINESS.md).

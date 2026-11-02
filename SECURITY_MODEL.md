@@ -1,3 +1,7 @@
+## 2026-11-02 — Actual Partner provider installability
+
+Original 23-function/17-relation pins remain untouched. Actual managed Auth metadata does not match local minimal fixture definitions; PUBLIC TEMP is inherited by any login. Do not weaken pins, replace Auth tables, copy stale sessions, use owner/service-role credentials, or alter shared ACLs to obtain a pass. [Scope and next technical gate](tools/partner-platform/PROVIDER-INSTALLABILITY.md).
+
 ## 2026-11-02 — Partner execution-role composition (source only)
 
 The new execution profile requires a fixed LOGIN identity and exactly one SET-only reader membership, no inheritance/delegation/admin edge, privileged role flags, database CREATE/TEMP, relation/column/sequence access or additional reachable definer routines. Effective PUBLIC privileges and RESET ROLE are checked. Original envelope remains default. PUBLIC TEMP denial is a real installation blocker; no global production revocation is authorized. [Exact contract and held provider prerequisites](tools/partner-platform/EXECUTION-ROLE-READINESS.md).

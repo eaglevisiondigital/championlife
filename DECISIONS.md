@@ -1,3 +1,7 @@
+## 2026-11-02 — Actual Partner provider installability
+
+Document actual provider incompatibility and prepare a separately reviewed provider-profile requirement; do not infer that a new empty project or per-role REVOKE resolves it. This is read-only/source preparation, not approval of a new target, profile, role, public mount or shared-production ACL change. [Scope and next technical gate](tools/partner-platform/PROVIDER-INSTALLABILITY.md).
+
 ## 2026-11-02 — Partner execution-role composition (source only)
 
 Prepare a separate fixed least-privilege execution profile rather than borrowing postgres credentials or loosening the accepted default reader. Test-only role creation and PUBLIC TEMP revocation are not deployment instructions. Actual provider privilege reconciliation, shared-workload impact, custody and release remain separate decisions. [Exact contract and held provider prerequisites](tools/partner-platform/EXECUTION-ROLE-READINESS.md).

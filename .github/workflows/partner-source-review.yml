@@ -64,4 +64,5 @@ jobs:
           TEST_POSTGRES_BIN=/usr/lib/postgresql/18/bin node tools/partner-platform/restricted-canonical-profile.native.mjs
           TEST_POSTGRES_BIN=/usr/lib/postgresql/18/bin node tools/partner-platform/canonical-host-ingress.native.mjs
           TEST_POSTGRES_BIN=/usr/lib/postgresql/18/bin node tools/partner-platform/canonical-execution-role.native.mjs
+          TEST_POSTGRES_BIN=/usr/lib/postgresql/18/bin node tools/partner-platform/provider-database-isolation.native.mjs
       - run: git diff --check
