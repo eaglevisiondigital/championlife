@@ -1,3 +1,7 @@
+## 2026-11-02 — Partner host dependency graph verified
+
+The complete accepted B1 composition includes the operations-security correction already in the current replay, plus A/B public wrappers and grants; B2 requires the full preceding installation. Both fail closed on the current Partner baseline. Browser SDK verification, public submission gateways and the disposable pg binding do not form a trusted private server ingress. No replacement architecture or runtime was added. [Exact source and component graph](docs/PARTNER-HOST-INTEGRATION-GAP-20261102.md).
+
 ## 2026-11-01 — Private Partner canonical execution envelope
 
 The existing canonical repository can execute its unchanged locking query through one unexposed fixed routine under a restricted NOLOGIN role. It keeps the existing transaction/provenance checks and identity adapter; no duplicate People or authentication store. The disposable driver/native harness now exercise that path. Complete Issue50 installation, real Auth catalog, trusted principal ingress and credential custody remain prerequisites to a deployable host. [Source contract](docs/PARTNER-HOST-ENVELOPE-20261101.md).

@@ -1,3 +1,7 @@
+## 2026-11-02 — Partner full-source dependency reconciliation
+
+Reproduced complete historical Issue50 B1/B2 compositions from their exact accepted inputs. Fresh current-base disposable replay confirms six missing relations; B1 rejects its capability baseline and B2 rejects the absent follow-up dependency, with clean rollback. 16 new dependency assertions PASS; the existing 101 canonical repository/envelope tests also pass. No runtime defect or valid existing server principal/credential binding was established, so this successor changes documentation only. No SQL, pins, grants, host mount or production action. [Exact graph, evidence and narrow continuation contract](docs/PARTNER-HOST-INTEGRATION-GAP-20261102.md).
+
 ## 2026-11-01 — Restricted Partner canonical host source envelope
 
 Implemented a single nonpublic fixed-query routine and restricted NOLOGIN caller source contract, integrated with the existing canonical repository, disposable pg driver and PG18 native suite. Caller has no direct data grants; accepted provenance pins remain unchanged. 376 focused Partner/shared-backend checks (including 37 envelope checks) and 22 authority checks pass locally. Independent cross-review reports no material findings and 13 additional PGlite checks pass; exact-head native execution remains pending. No migration, hosted role, credential, provider, public mount or production change. Synthetic claims/owner SET ROLE are not deployed principal/credential proof. See [host boundary, dependencies and gates](docs/PARTNER-HOST-ENVELOPE-20261101.md).

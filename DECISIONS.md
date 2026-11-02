@@ -1,3 +1,7 @@
+## 2026-11-02 — Preserve Partner boundaries after complete-source replay
+
+No new policy or host architecture is selected. Exact accepted B1/B2 reconstruction exposes current-base incompatibilities and broader wrapper/grant dependencies; it does not authorize installing them. Record the actionable integration contract instead of adding a provider stub or another parallel repository. [Dependency findings and continuation assignment](docs/PARTNER-HOST-INTEGRATION-GAP-20261102.md).
+
 ## 2026-11-01 — Source-only Partner host envelope
 
 Contain row-lock privileges within one fixed nonpublic routine and a restricted NOLOGIN caller source contract; do not grant broad UPDATE/private-table access to the host. Reuse accepted metadata authorization, query bytes, provenance pins and canonical adapter. No release migration or real execution membership until complete Issue50/provider/ingress and credential custody are independently reviewed. Synthetic principal claims remain test evidence only. [Implementation contract](docs/PARTNER-HOST-ENVELOPE-20261101.md).

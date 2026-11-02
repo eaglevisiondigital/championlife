@@ -1,3 +1,7 @@
+## 2026-11-02 — Partner integration compatibility remains enforced
+
+Full-source reconstruction and disposable rollback probes confirm that the historical B1/B2 packages cannot silently install on the current Partner baseline. Do not remove their guards, replay historical public-wrapper grants, reuse a public gateway service credential or promote browser verification into server principal authority. Existing provenance pins, restricted NOLOGIN envelope and current-row locks remain byte-identical. [Evidence and required host contract](docs/PARTNER-HOST-INTEGRATION-GAP-20261102.md).
+
 ## 2026-11-01 — Partner host privilege containment candidate
 
 A fixed empty-search-path owner-definer routine contains the required row-lock privilege; its dedicated caller receives no direct table/column/sequence grants or other application definer execution. Runtime checks pin routine/ACL/role/schema state before and after the read while preserving existing identity-source pins. Owner privilege is explicitly trusted; SQL claim equality is not cryptographic authentication. The local owner SET ROLE fixture is not a production credential. No hosted role/grant or public endpoint is installed. [Evidence and gates](docs/PARTNER-HOST-ENVELOPE-20261101.md).
