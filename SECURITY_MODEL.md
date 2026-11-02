@@ -77,3 +77,7 @@ A valid Ed25519 signature does not prove actual viewing. Source-review provenanc
 ## 2026-11-01 — Database-owned answer receipt provenance
 
 The snapshot accepts lesson only. Current Auth/session and same-owner enrollment derive from the accepted worksheet transaction, with expiration rechecked before return. Cross-account, revoked/missing/foreign/expired sessions and lessons5–13 deny. Public and private function execution is limited to authenticated; both paths enforce the same identity checks. No raw answers, shared revision counter or new table rights escape. A browser can copy a receipt but cannot make it completion authority: source consumers must load it from the database in their own authorized transaction. New native contention coverage remains CI-pending; local PGlite does not prove process concurrency.
+
+## 2026-11-01 — Disabled trusted-completion source
+
+No API role can execute the new private SECURITY INVOKER writer or read/write its RLS evidence tables. It derives principal from the existing current Auth snapshot and binds every receipt to current session/enrollment/profile/media/policy/worksheet UUID. Profile replacement/revocation shares the worksheet mutex; deadlines are rechecked after progress-row waits. Immutable audit failure rolls back progress. Existing legacy progress writes create no trusted audit. Provider identity/eligible-watch evidence, least-privileged ingestion, retention and genuine recovery are unresolved activation gates; synthetic owner-role fixtures are not provider proof or a production credential model.

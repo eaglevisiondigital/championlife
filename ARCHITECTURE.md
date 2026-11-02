@@ -55,3 +55,7 @@ The playback verifier accepts only exact domain-separated signed envelope bytes 
 ## 2026-11-01 — Existing ledger read integration
 
 `owned_progression_snapshot(p_lesson)` is an invoker wrapper around a private owner-bound database repository. It calls the unchanged `owned_worksheet_transaction` and retains its Auth user/session, course/enrollment, private version locks and shared legacy-write mutex until transaction completion. It projects exactly the existing progression evaluator's discriminated `answerReceipt`, using opaque worksheet UUID tokens; the private allocation counter is never exposed. No second evidence store or progression state is introduced. This is a point-in-time worksheet read; it does not implement the `withCurrentLedger` lifetime across an external provider call. A future completion transaction still needs accepted playback authority and compatible serialization. See docs/DISCIPLESHIP-OWNED-PROGRESSION-SNAPSHOT.md.
+
+## 2026-11-01 — Completion transaction boundary
+
+The new uninstalled private completion function reuses existing worksheet/auth/enrollment locks, adds exact profile/receipt serialization via the same mutation mutex, and atomically writes the existing progress projection with private immutable completion audit. No duplicate answer or identity store is introduced. Provider ingestion/host privileges remain absent and the registry starts empty. Lessons1–4 only; accepted multi-part media policies and5–13cloud worksheets are still required. Historical audits are not perpetual unlock tokens.

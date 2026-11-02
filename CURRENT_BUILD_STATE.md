@@ -138,3 +138,7 @@ Implemented a separate, uninstalled durable worksheet transaction candidate for 
 ## 2026-11-01 — Playback verifier source preparation
 
 Implemented an Ed25519 envelope verifier against a server-owned current observer registry and repeated verification inside serialized ledger review. Fictional crypto/authorization tests only; no observer is installed and canCommit remains false. The opaque UUID worksheet receipt versus legacy numeric progression receipt bridge remains an explicit next integration task. See docs/DISCIPLESHIP-PLAYBACK-ENVELOPE-VERIFIER.md.
+
+## 2026-11-01 — Uninstalled atomic completion source
+
+PR76 now prepares an owner-only completion transaction over the existing current Auth/worksheet snapshot and existing lesson_progress. Empty disabled observer configuration, exact private receipts and immutable audit bind95%unique eligible intervals plus twenty saved answers. Local fictional SQL tests pass; no genuine provider is installed, no API grants/public wrapper exist, and legacy progress is not trusted proof. Native concurrency remains exact-head CI pending at this checkpoint. See docs/DISCIPLESHIP-ATOMIC-COMPLETION.md. Existing King Kind hold, public course design and all historical packages remain unchanged.

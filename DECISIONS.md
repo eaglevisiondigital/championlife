@@ -80,3 +80,7 @@ Implement only the missing cryptographic observer interface and current-ledger r
 ## 2026-11-01 — Finish the existing receipt binding before provider activation
 
 Reuse the accepted worksheet transaction for the durable owner/session/enrollment projection; retain source-only status and the exact prior migration. Do not fabricate a media registry, observer, monotonic progression ledger or completion write to make an incomplete course appear verified. Keep missing worksheets5–13 and videos11–13 visible as separate work. No major architecture or provider selection is made by this repository read.
+
+## 2026-11-01 — Implement atomic source without inventing provider proof
+
+Prepare the missing SQL completion transaction behind no API grants and an empty observer registry. Preserve the existing answer store, opaque UUID evidence and95%unique-watch rule. Do not infer human viewing from YouTube browser telemetry or signatures, treat existing browser progress as trusted, seed a real provider, implement retention policy implicitly, or activate public gating. Separate provider selection, ingestion/host authorization, retention and recovery acceptance remain required.
