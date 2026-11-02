@@ -19,4 +19,6 @@ jobs:
       - run: npm ci --ignore-scripts --prefix tools/backend-tests
       - run: npm test --prefix tools/backend-tests
       - run: TEST_POSTGRES_BIN="$(pg_config --bindir)" npm run test:concurrency --prefix tools/backend-tests
+      - run: TEST_POSTGRES_BIN="$(pg_config --bindir)" npm run test:general-kingkind-native --prefix tools/backend-tests
+      - run: node tools/backend-tests/general-kingkind-sdk-integrity.mjs
       - run: git diff --check
