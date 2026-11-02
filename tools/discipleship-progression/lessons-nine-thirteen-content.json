@@ -375,9 +375,10 @@
           "title": "GETTING A GRIP ON THE BASICS - WEEK 7 (Lesson 6 PT1)"
         }
       ],
-      "completionPolicy": "unapproved",
+      "completionPolicy": "required-media-binding-unconfigured",
       "durationsMs": null,
-      "requiredParts": null
+      "requiredParts": null,
+      "minimumUniqueEligibleWatchPercent": 95
     },
     {
       "lesson": 8,
@@ -392,9 +393,10 @@
           "title": "Chapter 8 | Lesson 1: How to Be Filled with the Spirit - Part 2"
         }
       ],
-      "completionPolicy": "unapproved",
+      "completionPolicy": "required-media-binding-unconfigured",
       "durationsMs": null,
-      "requiredParts": null
+      "requiredParts": null,
+      "minimumUniqueEligibleWatchPercent": 95
     },
     {
       "lesson": 9,
@@ -409,9 +411,10 @@
           "title": "Chapter 9 | Ln 1: How to Be Sure You are Filled w/ the Spirit - Pt 2"
         }
       ],
-      "completionPolicy": "unapproved",
+      "completionPolicy": "required-media-binding-unconfigured",
       "durationsMs": null,
-      "requiredParts": null
+      "requiredParts": null,
+      "minimumUniqueEligibleWatchPercent": 95
     }
   ]
 }

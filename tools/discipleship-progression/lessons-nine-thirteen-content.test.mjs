@@ -50,7 +50,8 @@ for (const lesson of catalog.lessons) {
 for(const part of catalog.multipartMedia) test(`Lesson ${part.lesson}: exact listed multipart media, no invented durations or requirements`,()=>{
   assert.deepEqual(media(part.lesson),part.videos);
   assert.equal(part.videos.length,2);
-  assert.equal(part.completionPolicy,'unapproved');
+  assert.equal(part.completionPolicy,'required-media-binding-unconfigured');
+  assert.equal(part.minimumUniqueEligibleWatchPercent,95);
   assert.equal(part.durationsMs,null);
   assert.equal(part.requiredParts,null);
 });

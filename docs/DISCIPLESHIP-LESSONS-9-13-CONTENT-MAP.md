@@ -38,7 +38,7 @@ The catalog records the existing HTML, not current remote availability, duration
 - Lesson 10 lists `5-1B6IouUNk`.
 - Lessons 11–13 have “Video coming soon” and no embed. Approved videos, media identity/version, rights and verified duration are missing. The available PDFs are not substitutes for viewing evidence.
 
-For lessons 6/8/9, the content owner must approve the exact required parts, order if relevant, canonical media revisions and durations, and how the accepted 95% unique eligible-watch rule applies to the required set. No rule is implemented here. Do not let a watched short part stand in for an unwatched required part, count overlaps/replays twice, or infer a lesson policy from the “Video 1/2” labels. Each approved part needs its own binding and eligible-interval evidence before any aggregate gate can be independently accepted.
+For lessons 6/8/9, the content owner must approve the exact required parts, order if relevant, canonical media revisions and durations, so the existing 95% unique eligible-watch requirement can be bound to the actual required media. The threshold is already approved and is not being reopened. No multipart execution policy is installed here. Do not let a watched short part stand in for an unwatched required part, count overlaps/replays twice, or infer a lesson policy from the “Video 1/2” labels. Each approved part needs its own binding and eligible-interval evidence before any aggregate gate can be independently accepted.
 
 ## Exact provider and retention gaps
 
@@ -46,7 +46,7 @@ The [YouTube IFrame API](https://developers.google.com/youtube/iframe_api_refere
 
 The approved source contracts already exist; do not create another verifier prototype. Before wiring an actual source, the provider/content owner and security reviewer must supply and accept:
 
-1. Exact authorized media, version, duration and approved multipart policy; media hosting/measurement rights.
+1. Exact authorized media, version, duration and required-part binding under the existing 95% rule; media hosting/measurement rights.
 2. Independently trustworthy observation semantics: verified learner/session binding, eligible intervals, seek/replay/speed/background treatment, receipt uniqueness and server timing. A signature alone does not prove the underlying observation or human attention.
 3. Verified raw receipt/envelope format, key identity/custody/rotation, replay and late-receipt behavior, source review hash, revocation and authoritative reconciliation; no client-provided source-approval flag.
 4. Least-privilege ingester/host binding and fresh serialized session/enrollment/answer/profile validation through the existing completion transaction. Existing provider registry stays empty and completion unsupported outside its reviewed scope.
