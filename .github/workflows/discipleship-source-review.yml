@@ -5,6 +5,10 @@ on:
       - 'tools/discipleship-progression/**'
       - 'assets/js/grip-worksheet.js'
       - 'getting-a-grip-5.html'
+      - 'getting-a-grip-6.html'
+      - 'getting-a-grip-7.html'
+      - 'getting-a-grip-8.html'
+      - 'supabase/migrations/20261102200549_lessons_six_to_eight_owned_worksheets.sql'
       - 'supabase/migrations/20261102193245_lesson_five_owned_worksheet.sql'
       - 'supabase/migrations/20261101165620_prepare_owned_worksheet_transactions.sql'
       - 'supabase/migrations/20261101231330_owned_progression_snapshot.sql'
@@ -22,8 +26,8 @@ jobs:
         with:
           node-version: '22'
       - run: npm ci --ignore-scripts --prefix tools/backend-tests
-      - run: node tools/discipleship-progression/completion.database.mjs
-      - run: TEST_NATIVE_PG=1 TEST_POSTGRES_BIN="$(pg_config --bindir)" node tools/discipleship-progression/completion.database.mjs
+      - run: WORKSHEET_EXTENSIONS=1 node tools/discipleship-progression/completion.database.mjs
+      - run: WORKSHEET_EXTENSIONS=1 TEST_NATIVE_PG=1 TEST_POSTGRES_BIN="$(pg_config --bindir)" node tools/discipleship-progression/completion.database.mjs
       - run: node tools/discipleship-progression/progression-snapshot.database.mjs
       - run: TEST_NATIVE_PG=1 TEST_POSTGRES_BIN="$(pg_config --bindir)" node tools/discipleship-progression/progression-snapshot.database.mjs
       - run: node --test tools/discipleship-progression/*.test.mjs
@@ -34,4 +38,9 @@ jobs:
       - run: node tools/discipleship-progression/lesson-five.database.mjs
       - run: TEST_POSTGRES_BIN="$(pg_config --bindir)" TEST_NATIVE_PG=1 node tools/discipleship-progression/lesson-five.database.mjs
       - run: node tools/discipleship-progression/lesson-five.browser.mjs
+      - run: node tools/discipleship-progression/lessons-six-eight.database.mjs
+      - run: TEST_POSTGRES_BIN="$(pg_config --bindir)" TEST_NATIVE_PG=1 node tools/discipleship-progression/lessons-six-eight.database.mjs
+      - run: WORKSHEET_LESSON=6 node tools/discipleship-progression/lesson-five.browser.mjs
+      - run: WORKSHEET_LESSON=7 node tools/discipleship-progression/lesson-five.browser.mjs
+      - run: WORKSHEET_LESSON=8 node tools/discipleship-progression/lesson-five.browser.mjs
       - run: git diff --check

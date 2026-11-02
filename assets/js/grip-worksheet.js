@@ -1,10 +1,13 @@
-// Lesson5 workbook response groups. Reuses existing owner-bound worksheet RPC.
+// Approved workbook response groups for lessons 5–8. Reuses existing owner-bound worksheet RPC.
 // No local answer storage, enrollment, profile writes or completion mutations.
 (() => {
  'use strict';
- const root=document.querySelector('[data-grip-worksheet="5"]');if(!root)return;
+ const root=document.querySelector('[data-grip-worksheet]');if(!root)return;
+ const lesson=Number(root.dataset.gripWorksheet),required=({5:10,6:7,7:7,8:6})[lesson];if(!required)return;
+ const worksheet=`lesson-${lesson}-workbook-sections-v1`;
  const form=root.querySelector('[data-worksheet-form]'),fields=root.querySelector('[data-worksheet-fields]'),status=root.querySelector('[data-worksheet-status]'),load=root.querySelector('[data-worksheet-load]');
  const answers=[...root.querySelectorAll('[data-worksheet-answer]')],client=window.ChampionLifeAuth?.client;
+ if(answers.length!==required||answers.some((a,i)=>Number(a.dataset.worksheetAnswer)!==i+1))return;
  const auth=client?.auth,rpc=client?.rpc,origin=client?.supabaseUrl,rest=client?.rest;
  const pinned=()=>client?.auth===auth&&client?.rpc===rpc&&client?.rest===rest&&client?.supabaseUrl===origin;
  let epoch=0,controller=new AbortController(),binding=null,version=null,busy=false,active=true,timer;
@@ -26,10 +29,10 @@
   return {id:session.user.id,token:session.access_token,email:u.data.user.email,expires:latest.data.session.expires_at*1000};
  }
  function validate(r){
-  if(r?.status!=='available'||r.course!=='getting-a-grip-on-the-basics'||r.lesson!==5||r.worksheet!=='lesson-5-workbook-sections-v1'||!uuid(r.revision)||r.requiredQuestions!==10||r.canComplete!==false||r.canCommit!==false||!Array.isArray(r.answers)||r.answers.length>10)throw Error('invalid');
+  if(r?.status!=='available'||r.course!=='getting-a-grip-on-the-basics'||r.lesson!==lesson||r.worksheet!==worksheet||!uuid(r.revision)||r.requiredQuestions!==required||r.canComplete!==false||r.canCommit!==false||!Array.isArray(r.answers)||r.answers.length>required)throw Error('invalid');
   const seen=new Set();let nonblank=0;
-  for(const a of r.answers){if(!Number.isInteger(a.question)||a.question<1||a.question>10||seen.has(a.question)||typeof a.answer!=='string'||a.answer.length>20000)throw Error('invalid');seen.add(a.question);if(a.answer.trim())nonblank++}
-  if(r.savedNonblankAnswers!==nonblank||r.allRequiredAnswersSaved!==(nonblank===10))throw Error('invalid');
+  for(const a of r.answers){if(!Number.isInteger(a.question)||a.question<1||a.question>required||seen.has(a.question)||typeof a.answer!=='string'||a.answer.length>20000)throw Error('invalid');seen.add(a.question);if(a.answer.trim())nonblank++}
+  if(r.savedNonblankAnswers!==nonblank||r.allRequiredAnswersSaved!==(nonblank===required))throw Error('invalid');
  }
  async function request(write){
   if(!active||busy)return;
@@ -39,7 +42,7 @@
   const g=epoch,signal=controller.signal;busy=true;fields.disabled=true;load.disabled=true;let issued=false;
   try{
    const user=await verified(g,captured);if(!current(g))return;
-   const query=rpc.call(client,'owned_worksheet_transaction',{p_lesson:5,p_expected_revision:expected,p_answers:payload});
+   const query=rpc.call(client,'owned_worksheet_transaction',{p_lesson:lesson,p_expected_revision:expected,p_answers:payload});
    if(!query?.setHeader||!query.retry||!query.abortSignal)throw Error('unavailable');
    issued=write;
    const response=await query.setHeader('Authorization',`Bearer ${user.token}`).retry(false).abortSignal(signal);
@@ -52,7 +55,7 @@
    binding=fresh;version=response.data.revision;
    answers.forEach(a=>{a.value=response.data.answers.find(v=>v.question===Number(a.dataset.worksheetAnswer))?.answer??''});
    fields.disabled=false;busy=false;load.disabled=false;
-   status.textContent=`${write?'Saved':'Loaded'} for ${fresh.email}. ${response.data.savedNonblankAnswers} of 10 response groups saved. This does not certify watching or lesson completion.`;
+   status.textContent=`${write?'Saved':'Loaded'} for ${fresh.email}. ${response.data.savedNonblankAnswers} of ${required} response groups saved. This does not certify watching or lesson completion.`;
    clearTimeout(timer);timer=setTimeout(()=>clear('Session expired. Sign in and load your worksheet again.'),Math.min(2147483647,fresh.expires-Date.now()));
   }catch{if(current(g))clear(issued?'Save outcome is unknown. Load saved responses to reconcile; no automatic retry was made.':'Private worksheet unavailable. Sign in and load again.');}
  }

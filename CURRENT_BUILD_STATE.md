@@ -146,3 +146,7 @@ Implemented an Ed25519 envelope verifier against a server-owned current observer
 ## 2026-11-01 — Uninstalled atomic completion source
 
 PR76 now prepares an owner-only completion transaction over the existing current Auth/worksheet snapshot and existing lesson_progress. Empty disabled observer configuration, exact private receipts and immutable audit bind95%unique eligible intervals plus twenty saved answers. Local fictional SQL tests pass; no genuine provider is installed, no API grants/public wrapper exist, and legacy progress is not trusted proof. Native concurrency remains exact-head CI pending at this checkpoint. See docs/DISCIPLESHIP-ATOMIC-COMPLETION.md. Existing King Kind hold, public course design and all historical packages remain unchanged.
+
+## 2026-11-02 — Lessons 6–8 private worksheet source extension
+
+Added exact existing workbook section responses for Lessons 6 (7 groups), 7 (7 groups) and 8 (6 groups) using the accepted owner-only worksheet transaction and answer store. Lesson 7's destroy-on-paper personal exercise is intentionally not collected. The guarded forward migration serializes provenance review/version initialization with legacy writes; it is uninstalled. No completion/watch credit, new identity/answer schema, RLS/grant, media, King Kind or hosted change. Targeted local database/browser evidence and independent review are required before draft publication. See docs/DISCIPLESHIP-LESSONS-SIX-EIGHT-WORKSHEETS.md.

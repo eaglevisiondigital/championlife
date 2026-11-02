@@ -62,3 +62,7 @@ The new uninstalled private completion function reuses existing worksheet/auth/e
 
 ## Lesson5 worksheet extension (2026-11-02, source only)
 Reuse existing lesson_answers/version/RPC rather than a second course platform. Ten workbook section responses are saved separately from legacy device notes and never counted as trusted completion. Exact source catalog, guarded installation and remaining1–13 scope: docs/DISCIPLESHIP-LESSON-FIVE-WORKSHEET.md.
+
+## 2026-11-02 — Reused worksheet path for Lessons 6–8
+
+The existing owned worksheet transaction now has a separately reviewable uninstalled extension for Lessons 6–8, with exact PDF section catalogs and fixed cardinalities. Browser rendering remains a single account/session-bound client; durable answers and opaque revisions remain in the accepted stores. Installation takes the existing legacy-writer mutex before provenance checks and version seeding. No new permission surface or trusted completion boundary is introduced. See docs/DISCIPLESHIP-LESSONS-SIX-EIGHT-WORKSHEETS.md.
