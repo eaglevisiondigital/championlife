@@ -1,3 +1,7 @@
+## 2026-11-02 — Prefer explicit restrictive profile over restoring historical grants
+
+Continue owner-authorized source integration by sharing the accepted catalog checks under a fixed stricter profile. Preserve historical profile/SQL and do not widen application permissions to make old fingerprints pass. Actual host, provider provenance, credential custody and production installation remain separately reviewed gates. [Scope](docs/PARTNER-RESTRICTED-CANONICAL-PROFILE-20261102.md).
+
 ## 2026-11-02 — Reconcile Partner dependencies without activating grants
 
 Implement the authorized test-only current-schema composition using exact accepted private writer bodies; preserve original historical guards and runtime provenance pins. Withhold the two historical application writer grants and keep the canonical runtime unverified. A future stricter provenance profile and host credential/principal contract require independent source review; do not restore broad grants merely to satisfy old fingerprints. No production installation or new product permission policy is selected. [Concrete candidate and remaining contract](docs/PARTNER-CURRENT-SCHEMA-COMPOSITION-20261102.md).

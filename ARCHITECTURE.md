@@ -1,3 +1,7 @@
+## 2026-11-02 — Reuse canonical repository with restrictive source profile
+
+A private verifier closure reuses the complete original function/relation checks. An explicit restricted routine factory requires absence of exactly two historical application writer privileges and always enforces the existing host envelope; no caller-configurable profile or fallback. No duplicate People store or new SQL. [Integration contract](docs/PARTNER-RESTRICTED-CANONICAL-PROFILE-20261102.md).
+
 ## 2026-11-02 — Test-only current-schema Partner dependency composition
 
 Reuses original Issue50 source/writers and existing People/account identity, adding no authentication or Person store. The new disposable fixture reconciles all 27 persistent current-main application sources, preserving the released King Kind reader, plus the existing Partner metadata candidate. No public wrappers or host are installed. Withheld writer privileges deliberately prevent the unchanged canonical runtime verifier from authorizing. [Source and host contract](docs/PARTNER-CURRENT-SCHEMA-COMPOSITION-20261102.md).

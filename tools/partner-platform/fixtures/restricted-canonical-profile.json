@@ -1,0 +1,8 @@
+{
+  "id": "partner-current-schema-restricted-v1",
+  "historicalManifestSha256": "97dd8e074f8484e5e9770ccb2d1f517c78a36c749c499ef7a55f3e475da9ef07",
+  "withheldAuthenticatedExecution": [
+    "private.city_decision_reconcile(uuid,jsonb)",
+    "private.city_care_workspace(uuid,text,jsonb)"
+  ]
+}

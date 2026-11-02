@@ -1,3 +1,7 @@
+## 2026-11-02 — Restricted canonical profile denies broader execution
+
+Historical source manifest is SHA-pinned and preserved; the new factory refuses either previously broad authenticated writer grant and all existing provenance/envelope drift. Read locks, current authority, transaction rollback and private-data projection remain unchanged. Fictional Auth pins/owner SET ROLE do not authorize a hosted principal. [Exact security boundary](docs/PARTNER-RESTRICTED-CANONICAL-PROFILE-20261102.md).
+
 ## 2026-11-02 — Grant-free Partner composition remains unmounted
 
 The new test-only composer installs exact selected private dependencies with all application EXECUTE/data access revoked, omitting two historical authenticated writer grants. Existing public registration administration still rejects expanded capability keys and cannot widen care_scope; existing trusted service-role assignment DML remains an explicit installation review boundary. New baseline/shape guards roll back drift while original runtime pins remain unchanged and fail closed. Native lock, committed revocation and cancellation checks pass. No approved real host credential or provider principal is inferred. [Security contract and limits](docs/PARTNER-CURRENT-SCHEMA-COMPOSITION-20261102.md).

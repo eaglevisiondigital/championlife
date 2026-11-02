@@ -60,4 +60,5 @@ jobs:
           esac
           TEST_POSTGRES_BIN=/usr/lib/postgresql/18/bin node tools/partner-platform/canonical-repository.native.mjs
           TEST_POSTGRES_BIN=/usr/lib/postgresql/18/bin node tools/partner-platform/current-schema-composition.native.mjs
+          TEST_POSTGRES_BIN=/usr/lib/postgresql/18/bin node tools/partner-platform/restricted-canonical-profile.native.mjs
       - run: git diff --check

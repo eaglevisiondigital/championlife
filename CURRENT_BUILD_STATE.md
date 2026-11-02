@@ -1,3 +1,7 @@
+## 2026-11-02 — Explicit restricted Partner canonical profile
+
+Added a fixed unmounted repository factory for the grant-free current-schema composition. All historical catalog pins/default factories remain behaviorally unchanged; only the new profile requires both application writer grants absent. 66 new / 465 total affected Node checks PASS. PostgreSQL17 verifies fail-closed catalog mismatch; new 30-check PG18 positive/concurrency suite awaits exact-head CI. No SQL, credentials, host mount or production authority. [Contract and gates](docs/PARTNER-RESTRICTED-CANONICAL-PROFILE-20261102.md).
+
 ## 2026-11-02 — Narrow Partner current-schema composition (test-only)
 
 Implemented the six missing Issue50 dependencies and exact accepted private writers on a disposable 27-source current-main application replay plus existing Partner metadata. Preserves operations security, original B1/B2 guards, canonical pins and King Kind reader; no new migration or public wrapper. Two historical authenticated writer grants are deliberately omitted, so the unchanged canonical repository correctly stays null/unverified. 399 focused tests (23 new), 22 authority denials, 16 historical dependency assertions and 12 native PostgreSQL17 lock/revocation/cancellation checks PASS. Independent review reports no blocking findings with 48 additional checks PASS; PG18 exact-head CI remains pending. No host/provider/credential/production activation. [Exact composition, privilege conflict and next contract](docs/PARTNER-CURRENT-SCHEMA-COMPOSITION-20261102.md).

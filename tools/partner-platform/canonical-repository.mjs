@@ -5,14 +5,23 @@ import {readFileSync} from 'node:fs';
 import {createHash} from 'node:crypto';
 import {verifyCanonicalHostEnvelope} from './canonical-host-envelope.mjs';
 import {IDENTITY_SOURCE_HASHES} from './canonical-identity-boundary.mjs';
-const expected=JSON.parse(readFileSync(new URL('./fixtures/issue50-installed-provenance.json',import.meta.url),'utf8'));
+const provenanceBytes=readFileSync(new URL('./fixtures/issue50-installed-provenance.json',import.meta.url));
+const expected=JSON.parse(provenanceBytes);
+const restrictedProfile=JSON.parse(readFileSync(new URL('./fixtures/restricted-canonical-profile.json',import.meta.url),'utf8'));
+if(createHash('sha256').update(provenanceBytes).digest('hex')!==restrictedProfile.historicalManifestSha256)throw Error('Restricted profile historical source changed');
+const restrictedExpected=structuredClone(expected);
+// Source-selected profile only: no request/configuration may supply pins or ACLs.
+for(const signature of restrictedProfile.withheldAuthenticatedExecution){
+ if(JSON.stringify(expected.functions[signature]?.privileges)!=='[false,true,false]')throw Error('Restricted profile source privileges changed');
+ restrictedExpected.functions[signature].privileges=[false,false,false];
+}
 const sql=readFileSync(new URL('./canonical-repository.sql',import.meta.url),'utf8');
 const uuid=x=>typeof x==='string'&&x.length===36&&/^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/.test(x);
 const fields=['organizationId','campaignId','assignmentId','userId','sessionId'];
 const unavailable=()=>{throw Error('Canonical identity unavailable')};
 // No caller-provided fingerprints. This manifest derives from the selected
 // accepted definitions and existing canonical schema, never a client snapshot.
-export async function verifyCanonicalRepositoryProvenance(connection){
+function provenanceVerifier(expected){return async function verifyCanonicalRepositoryProvenance(connection){
  for(const [signature,definition] of Object.entries(expected.functions)){
   const {rows}=await connection.query(`select encode(sha256(convert_to(p.prosrc,'UTF8')),'hex') hash,
    p.prosecdef definer,p.provolatile volatility,p.proconfig config,l.lanname language,pg_get_userbyid(p.proowner) owner, jsonb_build_array(has_function_privilege('anon',p.oid,'execute'),has_function_privilege('authenticated',p.oid,'execute'),has_function_privilege('service_role',p.oid,'execute')) privileges
@@ -29,9 +38,13 @@ export async function verifyCanonicalRepositoryProvenance(connection){
   if(rows.length!==1||createHash('sha256').update(JSON.stringify(rows[0].definition)).digest('hex')!==definition)unavailable();
  }
 }
+}
+export const verifyCanonicalRepositoryProvenance=provenanceVerifier(expected);
+export const verifyRestrictedCanonicalRepositoryProvenance=provenanceVerifier(restrictedExpected);
+export function createRestrictedCanonicalPartnerRoutineRepository({acquire}){return repositoryFor(acquire,true,verifyRestrictedCanonicalRepositoryProvenance)}
 export function createCanonicalPartnerRepository({acquire}){return repositoryFor(acquire,false)}
 export function createCanonicalPartnerRoutineRepository({acquire}){return repositoryFor(acquire,true)}
-function repositoryFor(acquire,routine){
+function repositoryFor(acquire,routine,verifyProvenance=verifyCanonicalRepositoryProvenance){
  if(typeof acquire!=='function')throw TypeError('Trusted private database connection required');
  return Object.freeze({sourceHashes:IDENTITY_SOURCE_HASHES,async withCurrentIdentity(request,consume){
   if(!request||Object.getPrototypeOf(request)!==Object.prototype||Reflect.ownKeys(request).length!==fields.length||!fields.every(k=>uuid(request[k]))||typeof consume!=='function')unavailable();
@@ -41,7 +54,7 @@ function repositoryFor(acquire,routine){
    await c.query('set local search_path=pg_catalog,public');
    await c.query("set local lock_timeout='750ms'");await c.query("set local statement_timeout='3s'");
    await c.query("select set_config('request.jwt.claim.sub',$1,true),set_config('request.jwt.claims',$2,true)",[request.userId,JSON.stringify({session_id:request.sessionId})]);
-   await verifyCanonicalRepositoryProvenance(c);
+   await verifyProvenance(c);
    // Reuse exact accepted Partner authorization/locks before reading identity.
    if(routine)await verifyCanonicalHostEnvelope(c);
    if(!routine){
@@ -52,7 +65,7 @@ function repositoryFor(acquire,routine){
    if(rows.length!==1)unavailable();
    // Catalog definition changes deny; normal application writers cannot alter
    // schema/functions. DDL owners are a trusted maintenance boundary, not users.
-   await verifyCanonicalRepositoryProvenance(c);
+   await verifyProvenance(c);
    if(routine)await verifyCanonicalHostEnvelope(c);
    const returned=consume(rows[0].snapshot);
    if(returned&&typeof returned.then==='function')unavailable();
