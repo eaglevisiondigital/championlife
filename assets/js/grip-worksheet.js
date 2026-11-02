@@ -10,10 +10,10 @@
  if(answers.length!==required||answers.some((a,i)=>Number(a.dataset.worksheetAnswer)!==i+1))return;
  const auth=client?.auth,rpc=client?.rpc,origin=client?.supabaseUrl,rest=client?.rest;
  const pinned=()=>client?.auth===auth&&client?.rpc===rpc&&client?.rest===rest&&client?.supabaseUrl===origin;
- let epoch=0,controller=new AbortController(),binding=null,version=null,busy=false,active=true,timer;
+ let epoch=0,controller=new AbortController(),binding=null,version=null,busy=false,active=true,timer,savedValues=null,cleanMessage='';
  const uuid=x=>typeof x==='string'&&/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/.test(x);
  function clear(message='Sign in, then load your private cloud worksheet.'){
-  epoch++;controller.abort();controller=new AbortController();clearTimeout(timer);binding=null;version=null;busy=false;
+  epoch++;controller.abort();controller=new AbortController();clearTimeout(timer);binding=null;version=null;busy=false;savedValues=null;cleanMessage='';
   answers.forEach(a=>{a.value='';a.defaultValue=''});fields.disabled=true;load.disabled=false;status.textContent=message;
  }
  const current=g=>active&&epoch===g&&!controller.signal.aborted&&pinned();
@@ -34,10 +34,24 @@
   for(const a of r.answers){if(!Number.isInteger(a.question)||a.question<1||a.question>required||seen.has(a.question)||typeof a.answer!=='string'||a.answer.length>20000)throw Error('invalid');seen.add(a.question);if(a.answer.trim())nonblank++}
   if(r.savedNonblankAnswers!==nonblank||r.allRequiredAnswersSaved!==(nonblank===required))throw Error('invalid');
  }
+ const dirty=()=>binding&&savedValues&&answers.some((a,i)=>a.value!==savedValues[i]);
+ function editStatus(){
+  if(!binding||fields.disabled)return;
+  if(!active||!pinned()||binding.expires<=Date.now()){clear();return}
+  status.textContent=dirty()?'Unsaved changes. Save responses before loading another copy. Changes are cleared when you leave or your session changes.':cleanMessage;
+ }
  async function request(write){
   if(!active||busy)return;
+  if(binding&&(!pinned()||binding.expires<=Date.now())){clear();return}
   if(write&&(!binding||!version||fields.disabled||binding.expires<=Date.now())){clear();return}
   const captured=write?binding:null,expected=write?version:null,payload=write?answers.map(a=>({question:Number(a.dataset.worksheetAnswer),answer:a.value})):null;
+  if(!write&&dirty()){
+   const observed=epoch,owner=binding;
+   const discard=window.confirm('Load the saved worksheet and discard your unsaved changes?');
+   // A confirmation is never authorization; account/session invalidation wins.
+   if(!current(observed)||binding!==owner||owner.expires<=Date.now()){clear();return}
+   if(!discard)return;
+  }
   if(!write)clear('Loading your private worksheet…');
   const g=epoch,signal=controller.signal;busy=true;fields.disabled=true;load.disabled=true;let issued=false;
   try{
@@ -55,10 +69,13 @@
    binding=fresh;version=response.data.revision;
    answers.forEach(a=>{a.value=response.data.answers.find(v=>v.question===Number(a.dataset.worksheetAnswer))?.answer??''});
    fields.disabled=false;busy=false;load.disabled=false;
-   status.textContent=`${write?'Saved':'Loaded'} for ${fresh.email}. ${response.data.savedNonblankAnswers} of ${required} response groups saved. This does not certify watching or lesson completion.`;
+   savedValues=answers.map(a=>a.value);
+   cleanMessage=status.textContent=`${write?'Saved':'Loaded'} for ${fresh.email}. ${response.data.savedNonblankAnswers} of ${required} response groups saved. This does not certify watching or lesson completion.`;
    clearTimeout(timer);timer=setTimeout(()=>clear('Session expired. Sign in and load your worksheet again.'),Math.min(2147483647,fresh.expires-Date.now()));
   }catch{if(current(g))clear(issued?'Save outcome is unknown. Load saved responses to reconcile; no automatic retry was made.':'Private worksheet unavailable. Sign in and load again.');}
  }
+ form.addEventListener('input',editStatus);
+ form.addEventListener('change',editStatus);
  form.addEventListener('submit',e=>{e.preventDefault();void request(true)});
  load.addEventListener('click',()=>void request(false));
  auth?.onAuthStateChange?.(()=>clear()); // Synchronous clearing only: no Auth callback lock re-entry.

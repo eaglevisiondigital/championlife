@@ -8,6 +8,7 @@ const user=id=>({id,email:id===A?'a@example.test':'b@example.test',email_confirm
 let checks=0;const ok=(x,m)=>{assert.ok(x,m);checks++;console.log('PASS '+m)};
 for(const[engine,options]of[[chromium,process.env.CI?{}:{channel:'chrome'}],[webkit,{}]]){
  const browser=await engine.launch({headless:true,...options});try{for(const width of[390,1440]){
+  console.log(`CONFIG ${engine.name()} ${width} lesson${lesson}`);
   const ctx=await browser.newContext({viewport:{width,height:900}}),page=await ctx.newPage(),calls=[],errors=[],records=new Map();let mode='',hold=false,release,started;
   const row=id=>{if(!records.has(id))records.set(id,{revision:randomUUID(),answers:[]});return records.get(id)};
   page.on('pageerror',e=>errors.push(e.message));
@@ -35,12 +36,24 @@ for(const[engine,options]of[[chromium,process.env.CI?{}:{channel:'chrome'}],[web
   });
   await page.goto(origin+`/getting-a-grip-${lesson}.html`);
   const sign=async id=>page.evaluate(async access_token=>{await ChampionLifeAuth.client.auth.setSession({access_token,refresh_token:'fictional'})},token(id));
-  const load=async()=>{await page.locator('[data-worksheet-load]').click();await page.waitForFunction(()=>!document.querySelector('[data-worksheet-fields]').disabled)};
+  const load=async()=>{await page.locator('[data-worksheet-load]').click();try{await page.waitForFunction(()=>!document.querySelector('[data-worksheet-fields]').disabled)}catch(e){console.error(JSON.stringify({loadFailure:await page.evaluate(()=>({status:document.querySelector('[data-worksheet-status]').textContent,hidden:document.hidden,disabled:document.querySelector('[data-worksheet-load]').disabled})),lastCalls:calls.slice(-2),errors}));throw e}};
   const field=page.locator('[data-worksheet-answer="1"]'),status=page.locator('[data-worksheet-status]'),save=page.locator('[data-worksheet-form] [type=submit]');
   ok(await field.isDisabled(),'signed-out worksheet locked');await sign(A);await load();ok(await field.inputValue()==='','fresh A has no imported device notes');
   await field.fill('A private response');await save.click();await page.waitForFunction(()=>document.querySelector('[data-worksheet-status]').textContent.startsWith('Saved'));
   ok(calls.at(-1).id===A&&calls.at(-1).p.p_answers[0].answer==='A private response','actual SDK save bound to A');
   await page.reload();await load();ok(await field.inputValue()==='A private response','durable response reload');
+  await field.fill('saved baseline');await save.click();await page.waitForFunction(()=>document.querySelector('[data-worksheet-status]').textContent.startsWith('Saved'));
+  await field.fill('unsaved edit');ok((await status.textContent()).startsWith('Unsaved changes'),'editing no longer announces stale Saved success');
+  await field.fill('saved baseline');ok((await status.textContent()).startsWith('Saved'),'undo to exact saved values restores accurate status');
+  await field.fill('unsaved edit');const beforeCancel=calls.length;
+  page.once('dialog',d=>d.dismiss());await page.locator('[data-worksheet-load]').click();
+  ok(await field.inputValue()==='unsaved edit'&&!await field.isDisabled()&&calls.length===beforeCancel,'cancel reload preserves draft with zero RPCs');
+  page.once('dialog',d=>d.accept());await load();
+  ok(await field.inputValue()==='saved baseline'&&calls.length===beforeCancel+1&&!calls.at(-1).p.p_answers,'confirmed reload reads current cloud copy without writing');
+  await field.fill('invalidated during confirmation');const beforeInvalid=calls.length;
+  await page.evaluate(()=>{const original=window.confirm;window.confirm=()=>{dispatchEvent(new Event('champion-auth-invalid'));return true};document.querySelector('[data-worksheet-load]').click();window.confirm=original});
+  await page.waitForTimeout(30);ok(await field.isDisabled()&&await field.inputValue()===''&&calls.length===beforeInvalid,'auth invalidation during confirmation clears and issues zero RPCs');
+  await load();await field.fill('A private response');await save.click();await page.waitForFunction(()=>document.querySelector('[data-worksheet-status]').textContent.startsWith('Saved'));
   await sign(B);ok(await field.inputValue()===''&&await field.isDisabled(),'account event clears immediately');await load();ok(await field.inputValue()==='','B cannot see A');await sign(A);await load();ok(await field.inputValue()==='A private response','A returns to only own response');
   await field.fill('pending A');hold=true;const waiting=new Promise(r=>started=r);await save.click();await waiting;const sent=calls.filter(c=>c.p.p_answers).length;
   await sign(B);release();await page.waitForTimeout(100);ok(await field.inputValue()===''&&await field.isDisabled(),'delayed A save cannot display under B');
@@ -62,7 +75,7 @@ for(const[engine,options]of[[chromium,process.env.CI?{}:{channel:'chrome'}],[web
   await page.clock.install({time:new Date()});await page.evaluate(()=>{window.savedGetSession=ChampionLifeAuth.client.auth.getSession;const deadline=Date.now()/1000+30;ChampionLifeAuth.client.auth.getSession=async function(){const r=await savedGetSession.call(this);return r.data.session?{...r,data:{...r.data,session:{...r.data.session,expires_at:deadline}}}:r}});await load();await page.clock.fastForward(31000);ok(await field.isDisabled()&&await field.inputValue()==='','session deadline clears private answers without SDK event');await page.evaluate(()=>{ChampionLifeAuth.client.auth.getSession=window.savedGetSession});await load();
 
   mode='wrong-lesson';await page.locator('[data-worksheet-load]').click();await page.waitForFunction(()=>document.querySelector('[data-worksheet-status]').textContent.includes('unavailable'));ok(await field.isDisabled()&&await field.inputValue()==='','wrong lesson response never renders');mode='';await load();
-  hold=true;const doubleWait=new Promise(r=>started=r),beforeDouble=calls.filter(c=>c.p.p_answers).length;await field.fill('one intentional submit');await save.click();await doubleWait;await page.evaluate(()=>document.querySelector('[data-worksheet-form]').dispatchEvent(new Event('submit',{bubbles:true,cancelable:true})));await page.waitForTimeout(30);ok(calls.filter(c=>c.p.p_answers).length===beforeDouble+1,'pending double submit issues exactly one mutation');release();await page.waitForFunction(()=>document.querySelector('[data-worksheet-status]').textContent.startsWith('Saved'));
+  hold=true;const doubleWait=new Promise(r=>started=r),beforeDouble=calls.filter(c=>c.p.p_answers).length;await field.fill('one intentional submit');await save.click();await doubleWait;ok(await field.isDisabled(),'pending save prevents user edits');await page.evaluate(()=>{document.querySelector('[data-worksheet-answer="1"]').value='unsubmitted scripted change'});await page.evaluate(()=>document.querySelector('[data-worksheet-form]').dispatchEvent(new Event('submit',{bubbles:true,cancelable:true})));await page.waitForTimeout(30);ok(calls.filter(c=>c.p.p_answers).length===beforeDouble+1,'pending double submit issues exactly one mutation');release();await page.waitForFunction(()=>document.querySelector('[data-worksheet-status]').textContent.startsWith('Saved'));ok(await field.inputValue()==='one intentional submit'&&calls.at(-1).p.p_answers[0].answer==='one intentional submit','saved baseline uses committed response rather than pending DOM edits');
 
   if(process.env.EVIDENCE_DIR){await mkdir(process.env.EVIDENCE_DIR,{recursive:true});await page.locator('[data-grip-worksheet]').scrollIntoViewIfNeeded();await page.evaluate(()=>scrollBy(0,-100));await page.screenshot({path:path.join(process.env.EVIDENCE_DIR,`lesson${lesson}-${engine.name()}-${width}.png`)})}
   await ctx.close();

@@ -1,3 +1,7 @@
+## 2026-11-02 — Private worksheet reload safety (local source only)
+
+Lessons 5–13 now show unsaved changes accurately and require confirmation before an intentional reload replaces them. Cancel issues no RPC. Confirmation rechecks the current session/generation; privacy invalidations still clear immediately without prompting or persistence. Existing owner/revision transaction, content, SQL, SDK, enrollment and completion controls are unchanged. See docs/DISCIPLESHIP-WORKSHEET-RELOAD-SAFETY.md. Isolated Chromium/WebKit regression evidence is recorded separately; no hosted release or provider acceptance is implied.
+
 ## 2026-11-02 — Lesson5 cloud workbook response groups, source only
 
 Added an actual private save/load worksheet using ten source-exact groups from the existing Lesson5 PDF and the existing owner-bound RPC/answer store. Guarded forward migration refuses source drift or unmapped existing Lesson5 answers; no new tables, grants, RLS or progress/completion writes. Other device notes and approved media preserved. Lesson6–13 structured worksheets, videos11–13 and genuine95% watch evidence remain unfinished. See docs/DISCIPLESHIP-LESSON-FIVE-WORKSHEET.md; tests/evidence are local, no hosted installation or release.
