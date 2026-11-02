@@ -1,3 +1,7 @@
+## November 2 — separately reviewable Resend acceptance planning
+
+The latest Issue #58 work order authorizes full source scrutiny and a separate provider account/cost/sender/endpoint/secret/rotation acceptance package. [The packet](tools/communications-policy/RESEND-PROVIDER-ACCEPTANCE.md) records pending values instead of selecting a provider or inventing custody. Its 12-send rehearsal ceiling is a proposal, not send permission. Runtime installation, exact isolated target, genuine provider acceptance and production selection/activation remain separate gates. Preserve accepted adapter/SQL and prior passing evidence; no duplicate validator is justified by a missing real account/host decision.
+
 ## November 2 — Resend source-only integration
 
 Owner approved source-only Resend email adapter development on November 2. This authorizes no provider selection/migration, credentials, DNS, sender/webhook activation, real sending, Supabase Auth SMTP change or production SQL. Network Solutions remains unchanged. Separate provider acceptance and explicit activation approval remain required.

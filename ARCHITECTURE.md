@@ -1,3 +1,7 @@
+## November 2 — Resend host composition remains uninstalled
+
+The [separate provider acceptance packet](tools/communications-policy/RESEND-PROVIDER-ACCEPTANCE.md) maps the existing full stack and its held installation boundary. The current generic callback endpoint consumes text and generic event actions; Resend requires bounded raw bytes, `resendReceipt`, trusted persisted-provider-ID lookup and the existing `resend_receipt` SQL action. No production endpoint/resolver/provisioning path is added. Receipt processing must be proved independently operable after outbound shutdown in the eventual approved host. Existing H1 canonical data and authority remain the only implementation; no parallel queue, identity store or configuration platform.
+
 ## November 2 — Resend source-only integration
 
 Resend uses the existing H1 outbox/attempt/callback/audit/consent structure, with an explicit resend_email discriminator and existing service-role/comm_external_lock boundary. No parallel communications platform or Global Propel data migration. Source migration 20261102150100 is not applied or added to historical production replay.

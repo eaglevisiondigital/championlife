@@ -1,3 +1,9 @@
+## November 2 — separate Resend provider acceptance packet
+
+Reviewed the full H1/Resend source chain at `2fd5d95ca177938a4ca2b6ece81ebcec539bd94a` and preserved its runtime/SQL/tests. Added [provider acceptance packet](tools/communications-policy/RESEND-PROVIDER-ACCEPTANCE.md): exact account/sender/domain/custody/host/permissions/cost evidence, genuine provider rehearsal and independent cleanup plan. No additional runtime defect was confirmed; no duplicate configuration validator or redundant full-suite rerun was introduced. Prior author 349 Node/59 native and independent 100 Node/59 native PASS evidence belongs to the unchanged base, not a new provider test.
+
+Remaining source-to-host gaps are explicit: byte-oriented Resend ingress and `resend_receipt` action cannot be installed by merely enabling the generic callback verifier; persisted-ID resolver, transport/custody, provisioning and exact isolated-target approval are absent. Flags remain false, verifier map empty, runtime/provision reject Resend; UNKNOWN held, Network Solutions/Auth SMTP unchanged. This package is documentation-only: no hosted SQL, account/DNS/secrets/webhook, grant, send, paid resource or deploy; genuine provider/browser acceptance and production approval remain outstanding.
+
 ## November 2 — Resend source-only integration
 
 Resend source-only adapter now joins the existing H1 worker/outbox with durable exact handoff binding and signed raw-byte receipt reconciliation. Runtime registry/configuration remain disabled and no provider installation occurs. See tools/communications-policy/RESEND-SOURCE.md. Local and independent acceptance are distinct from genuine provider activation.

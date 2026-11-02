@@ -1,5 +1,9 @@
 # Resend email adapter — source only, November 2
 
+The separately reviewable [provider acceptance packet](RESEND-PROVIDER-ACCEPTANCE.md)
+records exact uninstalled host composition, account/cost/sender/custody decisions,
+genuine rehearsal and independent cleanup requirements. It preserves this source.
+
 The owner authorized development, not provider selection or activation. Network
 Solutions and Supabase Auth SMTP remain unchanged. No deployed function imports
 this adapter. The runtime registry is unchanged; `RESEND_SOURCE_DEFAULTS` has
