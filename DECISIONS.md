@@ -1,3 +1,7 @@
+## 2026-11-01 — Source-only Partner host envelope
+
+Contain row-lock privileges within one fixed nonpublic routine and a restricted NOLOGIN caller source contract; do not grant broad UPDATE/private-table access to the host. Reuse accepted metadata authorization, query bytes, provenance pins and canonical adapter. No release migration or real execution membership until complete Issue50/provider/ingress and credential custody are independently reviewed. Synthetic principal claims remain test evidence only. [Implementation contract](docs/PARTNER-HOST-ENVELOPE-20261101.md).
+
 ## 2026-10-31 — Unified shell first slice uses installed contracts
 
 Owner authorized local implementation, not another planning-only report or a historical PR-chain merge. Reconciled Issue #58/PR #60 and implemented the smallest staff shell against current-main RPCs. No Gate 0 migration is required for this slice; broader NMI/Outreach catalogs and modules remain separate release units. Exact SDK bytes are reused for the three shell entry points without changing the blocked PR #57 migration. Independent review, applicable isolated acceptance and an exact website release authorization remain required. No real staff is activated.

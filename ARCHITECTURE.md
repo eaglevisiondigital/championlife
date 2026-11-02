@@ -1,3 +1,7 @@
+## 2026-11-01 — Private Partner canonical execution envelope
+
+The existing canonical repository can execute its unchanged locking query through one unexposed fixed routine under a restricted NOLOGIN role. It keeps the existing transaction/provenance checks and identity adapter; no duplicate People or authentication store. The disposable driver/native harness now exercise that path. Complete Issue50 installation, real Auth catalog, trusted principal ingress and credential custody remain prerequisites to a deployable host. [Source contract](docs/PARTNER-HOST-ENVELOPE-20261101.md).
+
 ## 2026-11-01 — Unmounted canonical Partner repository
 
 Added a server-only transactional reader that reuses exact accepted Issue50 A/B/B2 identity receipts/reviews and the existing canonical adapter. Positive reads lock existing source/map, review/receipt/audit, Person/account and authority rows; missing/changed provenance remains unverified. The disposable fixture generates evidence through the accepted writer. No migration, connection/role or public mount; current metadata stays null. Synthetic Auth catalog pins deliberately prevent claiming real-provider readiness. PGlite and focused Node validation are recorded in [the source contract](docs/PARTNER-CANONICAL-REPOSITORY-20261101.md); native Linux contention CI and independent review remain gates.

@@ -5,7 +5,7 @@ import {createRequire} from 'node:module';
 import {realpathSync} from 'node:fs';
 import {tmpdir} from 'node:os';
 import {basename,dirname,isAbsolute,join} from 'node:path';
-import {createCanonicalPartnerRepository} from './canonical-repository.mjs';
+import {createCanonicalPartnerRoutineRepository} from './canonical-repository.mjs';
 const require=createRequire(new URL('../backend-tests/package.json',import.meta.url));
 const {Client}=require('pg');
 const unavailable=()=>{throw Error('Canonical identity unavailable')};
@@ -19,7 +19,7 @@ export function createCanonicalPartnerPgRepository(options){
   host=realpathSync(socketDirectory);
   if(host!==join(realpathSync(tmpdir()),basename(dirname(host)),'socket')||!/^huntsville-minimal-pg-[A-Za-z0-9]+$/.test(basename(dirname(host))))unavailable();
  }catch{unavailable()}
- const repo=createCanonicalPartnerRepository({acquire:async()=>{
+ const repo=createCanonicalPartnerRoutineRepository({acquire:async()=>{
   if(signal.aborted)unavailable();
   // A fresh constructor for EVERY read makes pre-existing transactions and pool
   // identity reuse impossible. The raw client is never returned to the caller.
@@ -39,6 +39,9 @@ export function createCanonicalPartnerPgRepository(options){
   try{
    await client.connect();
    if(closed||signal.aborted||client.getTransactionStatus()!=='I')unavailable();
+   // Disposable owner connection drops into the envelope's caller role before
+   // any repository operation. This is role acceptance, not a hosted credential.
+   await client.query('set role partner_canonical_reader');
    return Object.freeze({
     async query(text,values){
      if(closed||signal.aborted||busy)unavailable();

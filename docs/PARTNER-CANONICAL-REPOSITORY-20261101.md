@@ -79,3 +79,7 @@ repository tests PASS (80 total). Fourteen new real-driver native scenarios are
 prepared in the existing PostgreSQL18 job; their actual execution is CI-pending.
 Historical source hashes and the existing four-file PR61 rehearsal packet remain
 unchanged. No new PR61 packet or repeated owner questions are needed.
+
+## Restricted routine source successor
+
+The disposable connection now uses the integrated restricted role/routine described in [the host-envelope contract](PARTNER-HOST-ENVELOPE-20261101.md). It no longer runs canonical reads under its owner current_user. This supplies the source-only fixed-operation privilege prerequisite; it does not supply a genuine hosted login credential or provider principal. Earlier broad-grant/SELECT-only limitations remain valid, and no accepted provenance pin changed.

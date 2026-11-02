@@ -1,16 +1,19 @@
 // Linux CI only while the Mac's native PostgreSQL IPC allocation is unavailable.
 // Genuine independent sessions; no hosted URL, port or credential is accepted.
 import assert from 'node:assert/strict';
+import {readFileSync} from 'node:fs';
 import {checkCanonicalOwnedConnections} from './canonical-pg-repository.native.mjs';
 import {diagnoseCanonicalFixtureCatalog} from './canonical-catalog-diagnostics.mjs';
 import {localPostgres} from '../backend-tests/local-postgres.mjs';
 import {canonicalSourceFixture} from './canonical-source-fixture.mjs';
-import {createCanonicalPartnerRepository} from './canonical-repository.mjs';
+import {createCanonicalPartnerRoutineRepository} from './canonical-repository.mjs';
 import {createCanonicalPartnerIdentityBoundary} from './canonical-identity-boundary.mjs';
 const db=await localPostgres();let n=0;
 const check=(value,label)=>{assert.ok(value,label);n++;console.log('PASS '+label)};
 try{
  const f=await canonicalSourceFixture(db),reader=await db.connect(),writer=await db.connect(),foreign=await db.connect();
+ await db.exec(readFileSync(new URL('./canonical-host-envelope.sql',import.meta.url),'utf8'));
+ await reader.query('set role partner_canonical_reader');
  // Emit only disposable schema diagnostics before the public boundary conceals
  // the denial reason. A mismatch remains a failing assertion; no pin changes.
  const catalogReport=await diagnoseCanonicalFixtureCatalog(db);
@@ -20,13 +23,20 @@ try{
  const principal={userId:f.actor,sessionId:f.session,verified:true,expiresAt:new Date(Date.now()+3600000).toISOString()};
  const request={organizationId:f.org,campaignId:f.campaign,assignmentId:f.assignment};
  let reached,release,hold=false;
- const repository=createCanonicalPartnerRepository({acquire:async()=>({
+ const repository=createCanonicalPartnerRoutineRepository({acquire:async()=>({
   async query(sql,args){if(sql==='commit'&&hold){reached();await new Promise(r=>release=r)}return reader.query(sql,args)},
   async release(){}
  })});
  const boundary=createCanonicalPartnerIdentityBoundary({getPrincipal:()=>principal,repository});
  const read=()=>boundary.read(request),verified={identityStatus:'verified',personId:f.person},unknown={identityStatus:'unverified',personId:null};
- assert.deepEqual(await read(),verified);check(true,'native exact accepted writer provenance integrates');
+ assert.deepEqual(await read(),verified);check(true,'native exact accepted writer provenance integrates through restricted role');
+ for(const statement of ['select * from auth.users','select * from private.city_identity_requests','update outreach_partner_assignments set status=status','select private.partner_assigned_metadata(null,null)']){
+  await assert.rejects(()=>reader.query(statement),e=>e.code==='42501');check(true,'restricted native role denies '+statement);
+ }
+ await assert.rejects(()=>repository.withCurrentIdentity({...request,userId:f.actor,sessionId:f.session},()=>{throw Error('Synthetic callback failure')}));
+ await writer.query('update outreach_partner_assignments set revision=revision where id=$1',[f.assignment]);
+ await writer.query('update portal_account_links set active=active where person_id=$1',[f.person]);
+ check(true,'routine callback failure rolls back authority/account locks');
  const mutations=[
   ['source mapping','update outreach_campaign_sources set campaign_id=$1 where source=$2',[f.foreignCampaign,'fictional_source'],'update outreach_campaign_sources set campaign_id=$1 where source=$2',[f.campaign,'fictional_source']],
   ['source revision',"update outreach_registrations set first_name='Changed' where id=$1",[f.decision],"update outreach_registrations set first_name='CHILD SECRET' where id=$1",[f.decision]],

@@ -1,3 +1,7 @@
+## 2026-11-01 — Partner host privilege containment candidate
+
+A fixed empty-search-path owner-definer routine contains the required row-lock privilege; its dedicated caller receives no direct table/column/sequence grants or other application definer execution. Runtime checks pin routine/ACL/role/schema state before and after the read while preserving existing identity-source pins. Owner privilege is explicitly trusted; SQL claim equality is not cryptographic authentication. The local owner SET ROLE fixture is not a production credential. No hosted role/grant or public endpoint is installed. [Evidence and gates](docs/PARTNER-HOST-ENVELOPE-20261101.md).
+
 ## 2026-11-01 — Unmounted canonical Partner repository
 
 Added a server-only transactional reader that reuses exact accepted Issue50 A/B/B2 identity receipts/reviews and the existing canonical adapter. Positive reads lock existing source/map, review/receipt/audit, Person/account and authority rows; missing/changed provenance remains unverified. The disposable fixture generates evidence through the accepted writer. No migration, connection/role or public mount; current metadata stays null. Synthetic Auth catalog pins deliberately prevent claiming real-provider readiness. PGlite and focused Node validation are recorded in [the source contract](docs/PARTNER-CANONICAL-REPOSITORY-20261101.md); native Linux contention CI and independent review remain gates.

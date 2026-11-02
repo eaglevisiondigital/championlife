@@ -1,3 +1,7 @@
+## 2026-11-01 — Restricted Partner canonical host source envelope
+
+Implemented a single nonpublic fixed-query routine and restricted NOLOGIN caller source contract, integrated with the existing canonical repository, disposable pg driver and PG18 native suite. Caller has no direct data grants; accepted provenance pins remain unchanged. 376 focused Partner/shared-backend checks (including 37 envelope checks) and 22 authority checks pass locally. Independent cross-review reports no material findings and 13 additional PGlite checks pass; exact-head native execution remains pending. No migration, hosted role, credential, provider, public mount or production change. Synthetic claims/owner SET ROLE are not deployed principal/credential proof. See [host boundary, dependencies and gates](docs/PARTNER-HOST-ENVELOPE-20261101.md).
+
 ## 2026-11-01 — Canonical native PostgreSQL version correction
 
 Diagnostic CI `41362490783` confirmed PGlite PostgreSQL 18.3 versus native PostgreSQL 16.15. All 17 relation differences are standalone NOT NULL entries in `pg_constraint`; column nullability and function/ACL/policy/index contracts agree. The Partner workflow now explicitly installs/selects PostgreSQL 18 only for the canonical native suite, after the other native suites complete. Runtime verifier, SQL and all provenance pins remain byte-identical. Workflow syntax/static validation passes locally; corrected native execution remains pending CI. No Mac PostgreSQL, provider or production action.

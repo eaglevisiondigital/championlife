@@ -3,6 +3,7 @@
 // server configuration. Browser values may never supply a connection or principal.
 import {readFileSync} from 'node:fs';
 import {createHash} from 'node:crypto';
+import {verifyCanonicalHostEnvelope} from './canonical-host-envelope.mjs';
 import {IDENTITY_SOURCE_HASHES} from './canonical-identity-boundary.mjs';
 const expected=JSON.parse(readFileSync(new URL('./fixtures/issue50-installed-provenance.json',import.meta.url),'utf8'));
 const sql=readFileSync(new URL('./canonical-repository.sql',import.meta.url),'utf8');
@@ -28,7 +29,9 @@ export async function verifyCanonicalRepositoryProvenance(connection){
   if(rows.length!==1||createHash('sha256').update(JSON.stringify(rows[0].definition)).digest('hex')!==definition)unavailable();
  }
 }
-export function createCanonicalPartnerRepository({acquire}){
+export function createCanonicalPartnerRepository({acquire}){return repositoryFor(acquire,false)}
+export function createCanonicalPartnerRoutineRepository({acquire}){return repositoryFor(acquire,true)}
+function repositoryFor(acquire,routine){
  if(typeof acquire!=='function')throw TypeError('Trusted private database connection required');
  return Object.freeze({sourceHashes:IDENTITY_SOURCE_HASHES,async withCurrentIdentity(request,consume){
   if(!request||Object.getPrototypeOf(request)!==Object.prototype||Reflect.ownKeys(request).length!==fields.length||!fields.every(k=>uuid(request[k]))||typeof consume!=='function')unavailable();
@@ -40,13 +43,17 @@ export function createCanonicalPartnerRepository({acquire}){
    await c.query("select set_config('request.jwt.claim.sub',$1,true),set_config('request.jwt.claims',$2,true)",[request.userId,JSON.stringify({session_id:request.sessionId})]);
    await verifyCanonicalRepositoryProvenance(c);
    // Reuse exact accepted Partner authorization/locks before reading identity.
+   if(routine)await verifyCanonicalHostEnvelope(c);
+   if(!routine){
    const metadata=(await c.query('select private.partner_assigned_metadata($1,$2) value',[request.campaignId,request.assignmentId])).rows[0]?.value;
    if(metadata?.length!==1||metadata[0].organizationId!==request.organizationId||metadata[0].status!=='active')unavailable();
-   const {rows}=await c.query(sql,fields.map(k=>request[k]));
+   }
+   const {rows}=await c.query(routine?'select snapshot from partner_identity_host.current_snapshot($1,$2,$3,$4,$5)':sql,fields.map(k=>request[k]));
    if(rows.length!==1)unavailable();
    // Catalog definition changes deny; normal application writers cannot alter
    // schema/functions. DDL owners are a trusted maintenance boundary, not users.
    await verifyCanonicalRepositoryProvenance(c);
+   if(routine)await verifyCanonicalHostEnvelope(c);
    const returned=consume(rows[0].snapshot);
    if(returned&&typeof returned.then==='function')unavailable();
    await c.query('commit');committed=true;
