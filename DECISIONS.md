@@ -1,3 +1,7 @@
+## November 2 — provider metadata and bounded owner choice
+
+Read-only Resend metadata confirms the existing authentication domain and current 50,000-monthly/10-domain limits; it does not establish a dedicated communications sender, legal account custody, actual billing or webhook capacity. Added a concise [owner-choice delta](tools/communications-policy/RESEND-OWNER-CHOICE-2026-11-02.md) with one-organization sender options, exact isolated host/custody gates, zero unapproved incremental cost and a proposed—not authorized—12-send ceiling. Accepted host, SQL, tests and disabled configuration remain byte-identical. Network Solutions receipt support remains unverified; no provider changes or test sends.
+
 ## November 2 — disconnected Resend host composition
 
 Added an unmounted fixed HTTPS transport, bounded raw-byte callback, exact persisted-ID service lookup and guarded forward-only SQL. Existing H1 worker/outbox/consent/suppression/audit and accepted adapter remain unchanged. Flags default false, no ambient fetch or live provider installation. Native tests distinguish late database commit from HTTP cancellation and preserve UNKNOWN holds. See [source boundary](tools/communications-policy/RESEND-HOST-SOURCE.md). Provider/account/sender/custody/host/recovery acceptance remains separately held; Network Solutions/Auth SMTP unchanged.
