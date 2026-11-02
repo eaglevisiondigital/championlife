@@ -63,7 +63,7 @@ export async function runExternalWorker(rpc,organization,resolve,{enabled=false,
   // without a cancelled signal, then stop before another message. A failed
   // result acknowledgement propagates; never send again in this invocation.
   let result;try{
-   const sent=await adapter.send(job);
+   const sent=await adapter.send(job,auth);
    if(!sent||sent.status!=='sent'||!safeHeader(sent.id,200)||!sent.id.trim())throw Error('Provider send receipt required');
    result={outcome:'sent',provider_message_id:sent.id};
   }catch(e){result={outcome:['transient','permanent','uncertain'].includes(e?.failure)?e.failure:classifyFailure(e)};}

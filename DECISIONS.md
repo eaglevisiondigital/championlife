@@ -1,3 +1,7 @@
+## November 2 — Resend source-only integration
+
+Owner approved source-only Resend email adapter development on November 2. This authorizes no provider selection/migration, credentials, DNS, sender/webhook activation, real sending, Supabase Auth SMTP change or production SQL. Network Solutions remains unchanged. Separate provider acceptance and explicit activation approval remain required.
+
 ## October 9 — Authorized H1 build only
 
 Chat accepted G at `10a15402f059c605d883ec8b4517d3dfdf9cd850` and authorized the dependent H1 foundation. Retain Supabase Edge/canonical G boundaries and use a real SMTP adapter without touching Auth mail; no silent SMS vendor selection. Configuration/verification/enablement/message authorization remain distinct. All automated/bulk external work stays held; no real email/SMS during build. Network Solutions workload/structured telemetry/account DNS remain evidence gates, not guessed support. No prerequisite merges/production deployment, PR #10 changes or H2. [H1 decision and activation runbooks](docs/COMMUNICATIONS-PHASE-H1-PROVIDER-ACTIVATION.md).

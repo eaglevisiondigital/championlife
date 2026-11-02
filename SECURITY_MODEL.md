@@ -1,3 +1,7 @@
+## November 2 — Resend source-only integration
+
+Source-only Resend handoff records original provider-account/context/content binding under the existing authority lock; callback receipt requires the same binding and known provider ID. Raw bytes are cryptographically verified before parsing; event ID/body hash conflicts and account drift fail closed. UNKNOWN without ID cannot be recovered by recipient guessing or automatically resent. Runtime installation, credentials and live sending remain unapproved.
+
 ## October 9 — H1 provider safety boundary
 
 Four explicit organization provider permissions govern metadata, verification, tests and enablement; communications.send alone confers none. Global kill control additionally requires an independently approved, active/unexpired Super Admin registry entry, initially empty. Secret bindings are tenant/environment/profile/approved-From exact; browser/raw tables cannot read credentials or promote provider status. Exact expiring allowlist, canonical adult Person, current initiating authority, purpose consent and suppression are rechecked at claim and committed handoff. Pre-handoff revocation stops delivery; already handed-off SMTP cannot be recalled. Unknown acceptance/lease outcome never blindly retries. Unselected vendor callbacks fail closed; only vendor-verified attempt-bound receipts can promote delivery. Local-only build, no grants/config/production changes. [Contract](docs/COMMUNICATIONS-PHASE-H1-PROVIDER-ACTIVATION.md).

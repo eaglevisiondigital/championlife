@@ -1,3 +1,7 @@
+## November 2 — Resend source-only integration
+
+Resend uses the existing H1 outbox/attempt/callback/audit/consent structure, with an explicit resend_email discriminator and existing service-role/comm_external_lock boundary. No parallel communications platform or Global Propel data migration. Source migration 20261102150100 is not applied or added to historical production replay.
+
 ## October 9 — H1 provider activation build
 
 The accepted G canonical outbox/attempt/consent/audit remains the only delivery system. H1 adds environment-bound metadata controls and exact test authorizations, with separate global/org/channel/profile and message gates. A new default-off SMTP worker owns only explicitly confirmed tests; existing G sink processing excludes those rows, including lease recovery. Secret registry is server-only and must match tenant/profile/From/environment. No hosted migration, provider deployment, real message, automatic/bulk activation or Auth SMTP change. SMS and real signature verifiers remain selection/integration gates. [Contract](docs/COMMUNICATIONS-PHASE-H1-PROVIDER-ACTIVATION.md).
