@@ -1,3 +1,7 @@
+## 2026-11-02 — Partner execution-role composition (source only)
+
+The new execution profile requires a fixed LOGIN identity and exactly one SET-only reader membership, no inheritance/delegation/admin edge, privileged role flags, database CREATE/TEMP, relation/column/sequence access or additional reachable definer routines. Effective PUBLIC privileges and RESET ROLE are checked. Original envelope remains default. PUBLIC TEMP denial is a real installation blocker; no global production revocation is authorized. [Exact contract and held provider prerequisites](tools/partner-platform/EXECUTION-ROLE-READINESS.md).
+
 ## 2026-11-02 — Signed ingress retains current database authority
 
 Verified signature, exact issuer/audience and current token lifetime are prerequisites, not Partner permission. Subject/session must still pass the locked current canonical join; caller actor fields and metadata cannot substitute. Unknown keys, unsupported algorithms, network fallback, stale config mutation, cancellation and retired ingress instances fail closed. Historical 23-function/17-relation pins and the no-members NOLOGIN envelope remain unchanged. Fictional issuer acceptance does not prove real provider/credential custody. [Validation and remaining controls](docs/PARTNER-SIGNED-HOST-INGRESS-20261102.md).

@@ -3,7 +3,7 @@
 // server configuration. Browser values may never supply a connection or principal.
 import {readFileSync} from 'node:fs';
 import {createHash} from 'node:crypto';
-import {verifyCanonicalHostEnvelope} from './canonical-host-envelope.mjs';
+import {verifyCanonicalHostEnvelope,verifyCanonicalExecutionHostEnvelope} from './canonical-host-envelope.mjs';
 import {IDENTITY_SOURCE_HASHES} from './canonical-identity-boundary.mjs';
 const provenanceBytes=readFileSync(new URL('./fixtures/issue50-installed-provenance.json',import.meta.url));
 const expected=JSON.parse(provenanceBytes);
@@ -41,10 +41,11 @@ function provenanceVerifier(expected){return async function verifyCanonicalRepos
 }
 export const verifyCanonicalRepositoryProvenance=provenanceVerifier(expected);
 export const verifyRestrictedCanonicalRepositoryProvenance=provenanceVerifier(restrictedExpected);
+export function createExecutionCanonicalPartnerRoutineRepository({acquire}){return repositoryFor(acquire,true,verifyRestrictedCanonicalRepositoryProvenance,verifyCanonicalExecutionHostEnvelope)}
 export function createRestrictedCanonicalPartnerRoutineRepository({acquire}){return repositoryFor(acquire,true,verifyRestrictedCanonicalRepositoryProvenance)}
 export function createCanonicalPartnerRepository({acquire}){return repositoryFor(acquire,false)}
 export function createCanonicalPartnerRoutineRepository({acquire}){return repositoryFor(acquire,true)}
-function repositoryFor(acquire,routine,verifyProvenance=verifyCanonicalRepositoryProvenance){
+function repositoryFor(acquire,routine,verifyProvenance=verifyCanonicalRepositoryProvenance,verifyEnvelope=verifyCanonicalHostEnvelope){
  if(typeof acquire!=='function')throw TypeError('Trusted private database connection required');
  return Object.freeze({sourceHashes:IDENTITY_SOURCE_HASHES,async withCurrentIdentity(request,consume){
   if(!request||Object.getPrototypeOf(request)!==Object.prototype||Reflect.ownKeys(request).length!==fields.length||!fields.every(k=>uuid(request[k]))||typeof consume!=='function')unavailable();
@@ -56,7 +57,7 @@ function repositoryFor(acquire,routine,verifyProvenance=verifyCanonicalRepositor
    await c.query("select set_config('request.jwt.claim.sub',$1,true),set_config('request.jwt.claims',$2,true)",[request.userId,JSON.stringify({session_id:request.sessionId})]);
    await verifyProvenance(c);
    // Reuse exact accepted Partner authorization/locks before reading identity.
-   if(routine)await verifyCanonicalHostEnvelope(c);
+   if(routine)await verifyEnvelope(c);
    if(!routine){
    const metadata=(await c.query('select private.partner_assigned_metadata($1,$2) value',[request.campaignId,request.assignmentId])).rows[0]?.value;
    if(metadata?.length!==1||metadata[0].organizationId!==request.organizationId||metadata[0].status!=='active')unavailable();
@@ -66,7 +67,7 @@ function repositoryFor(acquire,routine,verifyProvenance=verifyCanonicalRepositor
    // Catalog definition changes deny; normal application writers cannot alter
    // schema/functions. DDL owners are a trusted maintenance boundary, not users.
    await verifyProvenance(c);
-   if(routine)await verifyCanonicalHostEnvelope(c);
+   if(routine)await verifyEnvelope(c);
    const returned=consume(rows[0].snapshot);
    if(returned&&typeof returned.then==='function')unavailable();
    await c.query('commit');committed=true;

@@ -1,3 +1,7 @@
+## 2026-11-02 — Partner execution-role composition (source only)
+
+Separate fixed execution-role ingress connects the accepted signature/canonical People boundary to a least-privilege login profile. Original zero-membership reader behavior, 23 function/17 relation pins and all migrations remain unchanged. New 38 PGlite checks PASS; 13 native PostgreSQL17 role checks PASS with canonical-positive/concurrency explicitly skipped until PG18 CI. No hosted role, credential or mount. [Exact contract and held provider prerequisites](tools/partner-platform/EXECUTION-ROLE-READINESS.md).
+
 ## 2026-11-02 — Unmounted Partner signed-token ingress
 
 The official pinned Supabase Auth SDK now verifies an explicitly trusted public ES256 issuer key before binding subject/session to the existing strict canonical repository and People adapter. Request-local lifetimes, transport abort, expiry and permanent issuer retirement preserve current DB authority and private projection. 64 new / 529 affected Node checks and 22 authority denials PASS; native PostgreSQL17 verifies incompatible catalog denial. New 13-check native PostgreSQL18 CI and independent review remain pending. No SQL, pin, grant, host, provider, public mount or production change. [Contract and held installation dependencies](docs/PARTNER-SIGNED-HOST-INGRESS-20261102.md).

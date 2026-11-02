@@ -2,13 +2,16 @@
 // Its dedicated caller has no application-table privilege or role membership.
 import {readFileSync} from 'node:fs';
 import {createHash} from 'node:crypto';
+import {verifyCanonicalExecutionRole} from './canonical-execution-role.mjs';
 const sql=readFileSync(new URL('./canonical-host-envelope.sql',import.meta.url),'utf8');
 const body=sql.split('$envelope$')[1];
 const digest=createHash('sha256').update(body).digest('hex');
 export const CANONICAL_HOST_ROLE='partner_canonical_reader';
 export const CANONICAL_HOST_SIGNATURE='partner_identity_host.current_snapshot(uuid,uuid,uuid,uuid,uuid)';
 const unavailable=()=>{throw Error('Canonical identity unavailable')};
-export async function verifyCanonicalHostEnvelope(c){
+export async function verifyCanonicalHostEnvelope(c){return verifyEnvelope(c,false)}
+export async function verifyCanonicalExecutionHostEnvelope(c){return verifyEnvelope(c,true)}
+async function verifyEnvelope(c,execution){
  const {rows}=await c.query(`select encode(sha256(convert_to(p.prosrc,'UTF8')),'hex') hash,
   p.prosecdef definer,p.provolatile volatility,p.proconfig config,l.lanname language,
   pg_get_userbyid(p.proowner) owner,p.proretset returns_set,p.prorettype::regtype::text result,
@@ -20,7 +23,8 @@ export async function verifyCanonicalHostEnvelope(c){
  const role=(await c.query(`select current_user name,rolcanlogin,rolsuper,rolcreatedb,rolcreaterole,rolinherit,rolreplication,rolbypassrls,
   exists(select 1 from pg_auth_members where member=r.oid or roleid=r.oid) membership
   from pg_roles r where rolname=$1`,[CANONICAL_HOST_ROLE])).rows[0];
- if(!role||role.name!==CANONICAL_HOST_ROLE||Object.entries(role).some(([key,value])=>key!=='name'&&value!==false))unavailable();
+ if(!role||role.name!==CANONICAL_HOST_ROLE||Object.entries(role).some(([key,value])=>key!=='name'&&!(execution&&key==='membership')&&value!==false))unavailable();
+ if(execution)await verifyCanonicalExecutionRole(c);
  const {rows:excess}=await c.query(`select c.oid from pg_class c join pg_namespace n on n.oid=c.relnamespace
   where n.nspname in ('public','private','auth','partner_identity_host') and c.relkind in ('r','p','v','m','S','f') and
   (case when c.relkind='S' then has_sequence_privilege($1,c.oid,'USAGE,SELECT,UPDATE') else

@@ -1,3 +1,7 @@
+## 2026-11-02 — Partner execution-role composition (source only)
+
+A source-selected execution repository reuses the accepted restricted catalog verifier, snapshot envelope, SDK ingress and current session/assignment/People locks. It substitutes only a stricter explicit login/membership profile for the original disconnected zero-membership envelope. No alternative identity store, provider host or migration is introduced. [Exact contract and held provider prerequisites](tools/partner-platform/EXECUTION-ROLE-READINESS.md).
+
 ## 2026-11-02 — Compose official signature verification with canonical People authority
 
 A server-only unmounted ingress uses Supabase Auth SDK 2.118.0 with a trusted public key and no network/session fallback, then creates a request-local strict repository and existing identity adapter. Database session/account/assignment and accepted Issue50 review/audit rows remain authoritative; only minimized Person linkage is returned. No authentication store, new SQL or host installation. [Composition and lifetime contract](docs/PARTNER-SIGNED-HOST-INGRESS-20261102.md).

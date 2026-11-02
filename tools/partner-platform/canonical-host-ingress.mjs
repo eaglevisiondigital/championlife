@@ -2,7 +2,7 @@
 // Issuer/public key and acquire are trusted host configuration, NEVER request data.
 import {AuthClient} from '@supabase/auth-js';
 import {createPublicKey,randomUUID} from 'node:crypto';
-import {createRestrictedCanonicalPartnerRoutineRepository} from './canonical-repository.mjs';
+import {createRestrictedCanonicalPartnerRoutineRepository,createExecutionCanonicalPartnerRoutineRepository} from './canonical-repository.mjs';
 import {createCanonicalPartnerIdentityBoundary} from './canonical-identity-boundary.mjs';
 
 const unavailable=()=>{throw Error('Canonical identity unavailable')};
@@ -13,7 +13,9 @@ const record=value=>value&&Object.getPrototypeOf(value)===Object.prototype&&Refl
 const exact=(value,keys)=>record(value)&&Reflect.ownKeys(value).length===keys.length&&keys.every(key=>Object.hasOwn(value,key));
 const requestKeys=['accessToken','organizationId','campaignId','assignmentId'];
 
-export function createCanonicalPartnerHostIngress(options){
+export function createCanonicalPartnerHostIngress(options){return ingressFor(options,createRestrictedCanonicalPartnerRoutineRepository)}
+export function createCanonicalPartnerExecutionIngress(options){return ingressFor(options,createExecutionCanonicalPartnerRoutineRepository)}
+function ingressFor(options,repositoryFactory){
  requireValue(exact(options,['issuer','publicJwk','acquire']));
  const {issuer,acquire}=options;
  requireValue(typeof issuer==='string'&&typeof acquire==='function'&&globalThis.crypto?.subtle);
@@ -63,7 +65,7 @@ export function createCanonicalPartnerHostIngress(options){
     // Each request owns this immutable principal; no ambient/shared session.
     const principal=Object.freeze({userId:claims.sub,sessionId:claims.session_id,verified:true,expiresAt:new Date(claims.exp*1000).toISOString()});
     const current=()=>{live();requireValue(Date.now()<claims.exp*1000)};
-    const repository=createRestrictedCanonicalPartnerRoutineRepository({acquire:async()=>{
+    const repository=repositoryFactory({acquire:async()=>{
      current();const connection=await acquire(Object.freeze({signal:controller.signal}));
      let closed=false,disposal;
      const close=discard=>{closed=true;return disposal??=Promise.resolve().then(()=>connection.release(discard))};
