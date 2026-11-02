@@ -1,6 +1,7 @@
 // Linux CI only while the Mac's native PostgreSQL IPC allocation is unavailable.
 // Genuine independent sessions; no hosted URL, port or credential is accepted.
 import assert from 'node:assert/strict';
+import {checkCanonicalOwnedConnections} from './canonical-pg-repository.native.mjs';
 import {diagnoseCanonicalFixtureCatalog} from './canonical-catalog-diagnostics.mjs';
 import {localPostgres} from '../backend-tests/local-postgres.mjs';
 import {canonicalSourceFixture} from './canonical-source-fixture.mjs';
@@ -60,4 +61,5 @@ try{
  }
  hold=false;release();assert.deepEqual(await pending,verified);
  console.log(n+' native canonical repository checks PASS');
+ await checkCanonicalOwnedConnections(db,f);
 }finally{await db.close()}

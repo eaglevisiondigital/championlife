@@ -41,3 +41,41 @@ The accepted PGlite fixture is PostgreSQL 18.3. `canonical-catalog-diagnostics.m
 Diagnostic CI `41362490783` established PostgreSQL 16.15 on the native runner versus the reviewed PGlite 18.3 catalog. All 17 relation differences are standalone NOT NULL constraint entries; the column nullability and other catalog fields match. The workflow now selects `/usr/lib/postgresql/18/bin` for this canonical check, installing the supported `postgresql-18` package through the PostgreSQL project's packaged PGDG setup script when needed. Automatic package-created main clusters are disabled; the existing disposable Unix-socket harness owns its own cluster. Other native checks run before this installation and keep their existing binary selection. The selected major/version is printed and checked.
 
 This is a CI reproducibility correction, not PostgreSQL 16 runtime compatibility approval. No security field is omitted or normalized, and no provenance manifest is regenerated. All existing checks still must pass on native PostgreSQL 18. Package installation/native execution remains pending Linux CI; no Mac package/server action was taken. Installation follows the [PostgreSQL Ubuntu instructions](https://www.postgresql.org/download/linux/ubuntu/).
+
+## Fresh owned PostgreSQL connection acceptance binding
+
+The repository's idle, exclusive connection assumption now has an executable
+`canonical-pg-repository.mjs` binding for the existing disposable Unix-socket
+harness. It instantiates the already-pinned pg 8.23.1 Client for each read, checks
+the protocol's idle transaction status before handing it to the repository, and
+always closes it. There is no supplied pool, supplied client, connection URL,
+remote hostname, password, environment fallback, module-load connection or
+website mount. Only the canonical temporary-directory/socket path created by the
+existing `localPostgres()` harness is accepted. `postgres` is the disposable
+fixture owner, explicitly **not an approved hosted execution role**.
+
+A host-controlled AbortSignal retires that repository lifetime, closes active
+connections and prevents late query results or later reads from authorizing.
+Callbacks remain synchronous; failures, transport errors and close failures
+return only the existing safe unavailable result. The connection cannot commit a
+transaction belonging to its caller or retain another request's JWT settings.
+Native tests observe real blocked backends and their disappearance following
+abort/termination. This is local driver/session evidence, not Supabase Auth
+session retirement or independent operational recovery.
+
+Least-privilege remains a real deployment gate. PostgreSQL SELECT FOR SHARE also
+requires UPDATE privilege on at least one column. Raw SELECT-only access cannot
+execute this locking repository, while table-wide UPDATE/private-table grants or
+an owner/service-role credential would overgrant its host. The fixture explicitly
+tests the SELECT-only rejection. No grant workaround is supplied. Before a hosted
+mount, independently review a narrow, nonpublic routine/role execution envelope
+that retains the exact locks, principal validation, installed-source pins and
+minimized projection while denying arbitrary table queries/writes. The complete
+Issue50 installation and actual provider Auth catalog must separately match an
+approved manifest; the fictional catalog is never promoted into production truth.
+
+Local validation: 16 new connection/configuration tests and 64 existing canonical
+repository tests PASS (80 total). Fourteen new real-driver native scenarios are
+prepared in the existing PostgreSQL18 job; their actual execution is CI-pending.
+Historical source hashes and the existing four-file PR61 rehearsal packet remain
+unchanged. No new PR61 packet or repeated owner questions are needed.

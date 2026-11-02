@@ -121,3 +121,15 @@ Prepared private-only Partner access issuance and exact decision assignment/reas
 ## 2026-11-01 — Partner canonical binding prerequisite verification
 
 Preserved accepted issuance and identity adapter; added actual-schema sequential denial and native authority serialization coverage. The replayed baseline lacks Issue50 identity request/review/care tables, so canonical repository wiring remains held and metadata stays null/unverified. Local 22 PGlite checks and 255 Partner/shared-backend Node tests PASS. Native concurrency is prepared for independent review and Linux CI, not executed on the IPC-limited Mac. No runtime, migration, grant, public or hosted changes. See [source mapping and remaining gates](docs/PARTNER-CANONICAL-BINDING-PREREQUISITES-20261101.md).
+
+## 2026-11-01 — Partner owned PostgreSQL acceptance connection
+
+Source-only follow-on to c6026cb6. New unmounted disposable-socket pg8.23.1 binding
+owns one fresh idle connection per identity read and closes it on every outcome;
+caller transactions, pooled identity reuse and late abort results cannot survive
+that lifetime. 16 new local checks plus 64 existing repository checks pass; 14
+native driver/session checks prepared for the existing PG18 CI harness. Runtime
+SQL, provenance manifests, website and shared staff source unchanged. Hosted
+least-privilege execution remains held: row locks require more than SELECT, and
+broad private-table owner/grants are not an acceptable binding. No live role,
+provider, migration or PR61 change. See canonical repository documentation.
