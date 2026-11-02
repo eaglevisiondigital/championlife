@@ -18,7 +18,7 @@ const io=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecti
 
 // Champion Life Sermon Notes experience
 (() => {
-  const SERMON_URL = 'sermon-notes.html';
+  const SERMON_URL = '/sermon-notes.html';
   if (document.documentElement.dataset.sermonNotesReady === 'true') return;
   document.documentElement.dataset.sermonNotesReady = 'true';
 
@@ -125,7 +125,7 @@ const io=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecti
 
 // Champion Life Daily Supplements global navigation
 (() => {
-  const href='daily-supplements.html';
+  const href='/daily-supplements.html';
   const nav=document.querySelector('.nav-links');
   if(nav && !nav.querySelector('a[href*="daily-supplements"]')){
     const link=document.createElement('a');link.href=href;link.textContent='Supplements';link.className='supplements-global-link';
