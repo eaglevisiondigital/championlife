@@ -1,0 +1,21 @@
+name: Non-executable assignment governance review
+on:
+  pull_request:
+    paths:
+      - 'tools/outreach/assignment-governance-review*'
+      - 'tools/outreach/campaign-assignment-contract.mjs'
+      - 'docs/CAMPAIGN-ASSIGNMENT-GOVERNANCE-20261103.md'
+      - '.github/workflows/assignment-governance-review.yml'
+permissions:
+  contents: read
+jobs:
+  review-contract:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: node tools/outreach/assignment-governance-review.test.mjs
+      - run: git diff --check
