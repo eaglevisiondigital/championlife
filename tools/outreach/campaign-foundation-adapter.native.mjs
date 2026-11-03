@@ -1,0 +1,42 @@
+// Narrow source-matched consumer-boundary tests; not a repeat of the PR80 full suite.
+import assert from 'node:assert/strict';
+import {randomUUID} from 'node:crypto';
+import {createCampaignFoundationTestHost} from './campaign-foundation-test-host.mjs';
+const h=await createCampaignFoundationTestHost();let count=0;
+const check=(v,m)=>{assert.ok(v,m);console.log('PASS '+(++count)+' '+m)};
+const rpc=(action,payload={},user='worker',org=h.orgId,campaign=h.campaignId)=>h.rpc(h.users[user].token,{p_action:action,p_org:org,p_campaign:campaign,p_payload:payload});
+const deny=async(fn,m,code='42501')=>{await assert.rejects(fn,e=>e.code===code);check(true,m)};
+try {
+ const context=await rpc('context');check(context.scope==='assigned'&&context.capabilities.includes('followup.manage'),'exact RPC context exposes assigned operational scope');
+ const list=await rpc('list');check(list.registrations.length===2&&list.registrations.every(x=>[h.records.a,h.records.b].includes(x.registration_id)),'source-mapped list includes only two owned records');
+ check(!JSON.stringify(list).includes('PRIVATE')&&list.registrations.every(x=>x.contact_allowed===false),'HTTP transport never carries contact or prayer');
+ await deny(()=>rpc('detail',{registration_id:h.records.eventOnly}),'event registration excluded');
+ await deny(()=>rpc('detail',{registration_id:h.records.c}),'other worker record excluded');
+ await deny(()=>rpc('detail',{registration_id:h.records.mismapped}),'mismapped source excluded despite assignment');
+ await deny(()=>rpc('context',{},'worker',h.orgId,h.otherCampaignId),'unassigned campaign excluded');
+ await deny(()=>rpc('context',{},'worker',h.foreignOrgId,h.campaignId),'foreign organization excluded');
+ await deny(()=>rpc('context',{},'unverified'),'fictional unverified identity denied by SQL');
+ const detail=await rpc('detail',{registration_id:h.records.a});
+ check(detail.person_id===null&&detail.identity_status==='not_linked'&&detail.book==='not_instrumented','no fabricated People linkage or book activity');
+ const save={registration_id:h.records.a,revision:detail.revision,status:'in_progress',next_contact_on:null,request_id:randomUUID()};
+ const saved=await rpc('followup_save',save);check(saved.saved&&saved.revision===detail.revision+1,'authorized same-record revision save succeeds');
+ check((await h.audit()).length===1,'successful SQL write creates exactly one audit');
+ await rpc('followup_save',save);check((await h.audit()).length===1,'transport retry preserves one committed audit');
+ await h.consent(h.records.a,false);await deny(()=>rpc('followup_save',{...save,revision:saved.revision,request_id:randomUUID()}),'withdrawn consent blocks workflow mutation');
+ check((await h.audit()).length===1,'denied consent creates no audit');
+ await h.reset();await h.revoke(h.users.worker.id);await deny(()=>rpc('detail',{registration_id:h.records.a}),'current campaign revocation denies exact transport');
+ await h.reset();await h.retire(h.users.worker.id);await deny(()=>rpc('context'),'retired synthetic session denies exact transport');
+ await h.reset();await h.mapSource(false);await deny(()=>rpc('context'),'inactive source mapping denies exact transport');
+ await h.reset();await h.reassign(h.records.a,h.users.other.id);await deny(()=>rpc('detail',{registration_id:h.records.a}),'reassigned record immediately denied to former worker');
+ check((await rpc('detail',{registration_id:h.records.a},'other')).registration_id===h.records.a,'independently assigned worker gains exact record only');
+ const ro=await rpc('detail',{registration_id:h.records.readOnly},'reader');await deny(()=>rpc('followup_save',{...save,registration_id:ro.registration_id,revision:ro.revision,request_id:randomUUID()},'reader'),'read-only assignment cannot write');
+ for(const action of ['export','contact','communications.send','assign'])await deny(()=>rpc(action),'unsupported '+action+' transport rejected','22023');
+ const before=h.requests.length;await assert.rejects(()=>h.rpc('0'.repeat(64),{p_action:'context',p_org:h.orgId,p_campaign:h.campaignId,p_payload:{}}),e=>e.code==='42501');check(h.requests.length===before,'unknown fixture token never reaches SQL');
+ const response=await fetch(h.url+'/rpc',{method:'POST',headers:{Origin:'https://untrusted.example',Authorization:'Bearer '+h.users.worker.token},body:'{}'});check(response.status===403,'external browser origin blocked');
+ check((await h.audit()).length===1,'all denied and unsupported requests preserve audit state');
+ await h.reset();await h.seedAssigned(49);
+ const page0=await rpc('list',{page:0}),page1=await rpc('list',{page:1});
+ check(page0.registrations.length===50&&page1.registrations.length===1,'exact SQL pagination reaches all 51 owned records');
+ check(new Set([...page0.registrations,...page1.registrations].map(r=>r.registration_id)).size===51,'page boundaries do not repeat or omit assigned registrations');
+ console.log(count+' campaign adapter native checks PASS; synthetic Auth only');
+}finally{await h.close()}
