@@ -7,6 +7,7 @@
 <meta name="description" content="Champion Life discipleship dashboard for saved lesson activity and private worksheets.">
 <link rel="stylesheet" href="assets/css/styles.css">
 <style>
+#dashResume[hidden],#dashResumeLink[hidden]{display:none}
 .dash-hero{min-height:0;padding:132px 0 54px;background:linear-gradient(135deg,#090a0d,#171a20)}
 .dash-hero h1{font-size:clamp(3rem,7vw,6rem);margin:8px 0 12px}.dash-hero .lead{color:#d4d6db}
 .dash-main{background:#f4f2ed;color:#111;padding:58px 0 90px}
@@ -73,6 +74,10 @@
       <h2>Getting a Grip on the Basics</h2>
       <p>Private cloud worksheets are available for all 13 lessons. Lessons 1–4 save drafts automatically; Lessons 5–13 use Load responses and Save responses. Device notes remain separate and do not sync.</p>
       <p>Saved activity does not verify video watching or lesson completion. Worksheets saved in Lessons 5–13 may not appear in this activity summary; open the lesson to load your responses. No activity record does not mean you have not studied the lesson.</p>
+      <div id="dashResume" hidden aria-label="Return to your saved lesson activity" style="margin-top:20px">
+        <p id="dashResumeStatus"></p>
+        <a id="dashResumeLink" class="btn gold" hidden></a>
+      </div>
       <div class="dash-progress-meta"><span>Saved lesson activity</span><span id="dashProgressText">Loading activity...</span></div>
       <div class="dash-progress"><span id="dashProgressBar"></span></div>
     </div>
@@ -98,6 +103,10 @@
     generation++;activeId=null;clearTimeout(expiryTimer);
     for(const id of ['dashName','dashEmail','dashAvatar','dashProgressText','dashLessons'])document.getElementById(id).textContent='';
     document.getElementById('dashProgressBar').style.width='0%';
+    document.getElementById('dashResume').hidden=true;
+    document.getElementById('dashResumeStatus').textContent='';
+    const resume=document.getElementById('dashResumeLink');
+    resume.hidden=true;resume.textContent='';resume.removeAttribute('href');resume.onclick=null;
     document.getElementById('dashLessons').hidden=true;
     document.getElementById('dashLoading').hidden=false;
     document.getElementById('dashLoading').textContent='Verifying your account...';
@@ -120,6 +129,16 @@
     'How to Be an Overcomer',
     'How to Serve God'
   ];
+
+  function activityTime(value){
+    if(typeof value!=='string')return null;
+    const parts=/^(\d{4})-(\d{2})-(\d{2})T\d{2}:\d{2}:\d{2}(?:\.\d{1,6})?(?:Z|[+-]\d{2}:\d{2})$/.exec(value);
+    if(!parts)return null;
+    const [,year,month,day]=parts.map(Number);
+    if(month<1||month>12||day<1||day>new Date(Date.UTC(year,month,0)).getUTCDate())return null;
+    const time=Date.parse(value);
+    return Number.isFinite(time)&&time<=Date.now()?time:null;
+  }
 
   async function load(){
   clear();const stamp=generation;
@@ -153,6 +172,22 @@
     const progressMap=new Map((Array.isArray(data.progress)?data.progress:[])
       .filter(p=>p && Number.isInteger(p.lesson_number) && p.lesson_number>=1 && p.lesson_number<=lessons.length && ['in_progress','completed'].includes(p.status))
       .map(p=>[p.lesson_number,p]));
+    // This owner-scoped, current-course projection is a navigation hint only.
+    // Never infer the next lesson, watching, worksheet saves or completion from it.
+    const datedActivity=data.course?.slug==='getting-a-grip-on-the-basics'
+      ? [...progressMap.values()].map(p=>({lesson:p.lesson_number,time:activityTime(p.updated_at)}))
+          .filter(p=>p.time!==null).sort((a,b)=>b.time-a.time||a.lesson-b.lesson)
+      : [];
+    const latest=datedActivity[0],resume=document.getElementById('dashResumeLink');
+    document.getElementById('dashResume').hidden=false;
+    document.getElementById('dashResumeStatus').textContent=latest
+      ? 'Most recently dated saved activity: Lesson '+latest.lesson+'. This is a return link, not verified viewing or completion. You can open any lesson below.'
+      : 'No dated saved activity is available to choose a return lesson. Open any lesson below; this does not mean you have not studied.';
+    if(latest){
+      resume.textContent='Return to Lesson '+latest.lesson;
+      resume.href='getting-a-grip-'+latest.lesson+'.html';resume.hidden=false;
+      resume.onclick=e=>{if(stamp!==generation||activeId!==u.id||!pageActive||session.expires_at*1000<=Date.now()){e.preventDefault();clear()}};
+    }
     const recorded=progressMap.size;
     document.getElementById('dashProgressText').textContent=recorded+' of 13 with activity records';
     document.getElementById('dashProgressBar').style.width=((recorded/13)*100)+'%';

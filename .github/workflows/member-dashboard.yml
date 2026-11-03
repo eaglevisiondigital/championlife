@@ -4,6 +4,7 @@ on:
     paths:
       - 'my-discipleship.html'
       - 'tools/backend-tests/member-dashboard.browser.mjs'
+      - 'tools/backend-tests/member-return-to-study.browser.mjs'
       - 'tools/backend-tests/member-outreach-isolation.browser.mjs'
       - '.github/workflows/member-dashboard.yml'
 permissions:
@@ -21,4 +22,5 @@ jobs:
       - run: tools/backend-tests/node_modules/.bin/playwright install --with-deps chromium webkit
       - run: node tools/backend-tests/member-dashboard.browser.mjs
       - run: node tools/backend-tests/member-outreach-isolation.browser.mjs
+      - run: node tools/backend-tests/member-return-to-study.browser.mjs
       - run: git diff --check

@@ -71,3 +71,8 @@ The existing owned worksheet transaction now has a separately reviewable uninsta
 ## 2026-11-02 — Lessons 9–13 private worksheet source
 
 Extended the same worksheet client/answer store to9–13, with five/five/four/three/four selected response groups. No duplicate platform or new privilege surface. The guarded migration serializes provenance review/version initialization against legacy writes. Private answers never become course-completion authority. See docs/DISCIPLESHIP-LESSONS-NINE-THIRTEEN-WORKSHEETS.md.
+
+
+## 2026-11-03 — Member return-to-study source increment
+
+My Discipleship derives a fixed-course return route from its existing owner-scoped progress response; no second activity store or People/member model. Only the page changes publicly. See docs/MEMBER-RETURN-TO-STUDY.md.
