@@ -3,10 +3,11 @@ import assert from 'node:assert/strict';
 import {readFileSync,mkdirSync} from 'node:fs';
 import {join} from 'node:path';
 import {execFileSync} from 'node:child_process';
+const replacementReproduction=process.argv.includes('--client-replacement-reproduction');
 const baseline=process.argv.includes('--baseline-reproduction');
 const initializationReproduction=process.argv.includes('--initialization-reproduction');
 import {chromium,webkit} from '../backend-tests/node_modules/playwright/index.mjs';
-const source=path=>(baseline||initializationReproduction)?execFileSync('git',['show',(initializationReproduction?'eb350f8aaefe123e747d2c0b5e70b50b0e69bdaf':'84b2d9ab398bb8046570019da26a5db67fe77467')+':'+path],{encoding:'utf8'}):readFileSync(new URL('../../'+path,import.meta.url),'utf8');
+const source=path=>(baseline||initializationReproduction||replacementReproduction)?execFileSync('git',['show',(replacementReproduction?'505e9dae9baf9cff71d00ca872f5e7b013015f13':initializationReproduction?'eb350f8aaefe123e747d2c0b5e70b50b0e69bdaf':'84b2d9ab398bb8046570019da26a5db67fe77467')+':'+path],{encoding:'utf8'}):readFileSync(new URL('../../'+path,import.meta.url),'utf8');
 const client=source('assets/js/nmi-giving-client.js');
 const pageSource=source('assets/js/nmi-public-giving.js');
 let checks=0;
@@ -37,6 +38,29 @@ for(const [name,engine] of Object.entries({chromium,webkit})){
   async function payment(page){await create(page);await page.waitForFunction(()=>window.widgetCallbacks);await page.evaluate(()=>widgetCallbacks.onChange({complete:true,token:'fictional-token'}));}
   async function execute(page){await payment(page);await page.getByRole('button',{name:'Give in sandbox',exact:true}).click();}
   async function cleared(page,label){await page.waitForFunction(()=>document.body.textContent.includes('Your giving session changed'));check(!await page.locator('body').textContent().then(x=>x.includes('Private-A-receipt')),name+' '+label+' no private receipt');check(await page.locator('button,form').count()===0,name+' '+label+' no retained controls');}
+  async function replaceAuth(page,mode='client') {await page.evaluate(mode=>{const auth={getSession:async()=>({data:{session:{user:{id:'fictional-B'},access_token:'fictional-B-token'}}}),onAuthStateChange:()=>{}};if(mode==='auth')ChampionLifeAuth.client.auth=auth;else if(mode==='removed')delete window.ChampionLifeAuth;else if(mode==='same-auth')ChampionLifeAuth.client={auth:ChampionLifeAuth.client.auth};else ChampionLifeAuth.client={auth};},mode);}
+  if(!baseline&&!initializationReproduction){
+   for(const stage of ['auth','create','execute','status','token']){
+    const p=await setup();
+    if(stage==='create'||stage==='token'){await ready(p);await p.evaluate(stage=>delay=stage,stage);await create(p);}
+    else if(stage==='status'){await execute(p);await p.getByText('Private-A-receipt',{exact:false}).waitFor();await p.evaluate(()=>delay='status');await p.getByRole('button',{name:'Check current status'}).click();}
+    else{await payment(p);await p.evaluate(stage=>delay=stage,stage);await p.getByRole('button',{name:'Give in sandbox',exact:true}).click();}
+    await p.waitForFunction(stage=>Boolean(pending[stage]),stage);const n=await p.evaluate(()=>calls.length);await replaceAuth(p);await p.evaluate(stage=>{delay=null;pending[stage]();},stage);await p.waitForTimeout(40);
+    if(replacementReproduction){
+     if(stage==='auth'){check(await p.evaluate(()=>calls.length)===n+1,name+' ORIGINAL detached Auth lookup submits old bearer sale');check(await p.evaluate(()=>authHeaders.at(-1))==='Bearer fictional-token',name+' ORIGINAL old A bearer sent after B client replacement');}
+     if(stage==='execute'||stage==='status'||stage==='auth')check((await p.locator('body').textContent()).includes('Private-A-receipt'),name+' ORIGINAL '+stage+' old receipt rendered after client replacement');
+     if(stage==='create'||stage==='token')check(await p.getByRole('button',{name:'Give in sandbox',exact:true}).count()===1,name+' ORIGINAL '+stage+' old payment controls retained after replacement');
+    }else{await cleared(p,stage+' client replacement');check(await p.evaluate(()=>calls.length)===n,name+' '+stage+' replacement no further request');check(await p.getByRole('button',{name:'Give in sandbox',exact:true}).count()===0,name+' '+stage+' replacement no stale payment controls');}
+    await p.close();
+   }
+   if(replacementReproduction)continue;
+   for(const mode of ['client','auth','same-auth','removed']){
+    const p=await setup();await payment(p);await p.evaluate(()=>window.retained=[...document.querySelectorAll('button')].find(b=>b.textContent==='Give in sandbox').onclick);const n=await p.evaluate(()=>calls.length);await replaceAuth(p,mode);await p.evaluate(()=>retained());await cleared(p,mode+' retained payment control');check(await p.evaluate(()=>calls.length)===n,name+' '+mode+' retained payment control zero requests');await p.close();
+   }
+   for(const lifecycle of ['focus','visibilitychange']){const p=await setup();await execute(p);await p.getByText('Private-A-receipt',{exact:false}).waitFor();await replaceAuth(p);await p.evaluate(lifecycle=>lifecycle==='focus'?dispatchEvent(new Event(lifecycle)):document.dispatchEvent(new Event(lifecycle)),lifecycle);await cleared(p,lifecycle+' replacement');await p.close();}
+   for(const mode of ['client','auth','same-auth','removed']){const p=await setup(true,null,false);await p.evaluate(()=>{window.originalClient=ChampionLifeAuth.client;window.originalAuth=ChampionLifeAuth.client.auth;});await replaceAuth(p,mode);const result=await p.evaluate(()=>NmiGivingClient.call({action:'execute',operation:'sale'}).then(()=>'unexpected',e=>e.code));check(result==='SESSION_CHANGED',name+' '+mode+' direct client call denied');check(await p.evaluate(()=>calls.length)===0,name+' '+mode+' direct client zero requests');await p.evaluate(()=>{window.ChampionLifeAuth={client:originalClient};originalClient.auth=originalAuth;});check(await p.evaluate(()=>NmiGivingClient.call({action:'execute',operation:'sale'}).then(()=>'unexpected',e=>e.code))==='SESSION_CHANGED',name+' '+mode+' restored detached client stays retired');check(await p.evaluate(()=>calls.length)===0,name+' '+mode+' restored client zero requests');await p.close();}
+   {const p=await setup();await execute(p);await p.getByText('Private-A-receipt',{exact:false}).waitFor();await replaceAuth(p);await p.evaluate(()=>widgetCallbacks.onChange({complete:true,token:'fictional-token'}));await cleared(p,'stale-generation widget detects replacement');await p.close();}
+  }
   if(baseline){const p=await setup();await execute(p);await p.getByText('Private-A-receipt',{exact:false}).waitFor();await p.evaluate(()=>{window.retained=document.querySelector('button').onclick;event('SIGNED_OUT',null);});check((await p.locator('body').textContent()).includes('Private-A-receipt'),name+' ORIGINAL receipt remains after logout');const n=await p.evaluate(()=>calls.length);await p.evaluate(()=>retained());await p.waitForTimeout(20);check(await p.evaluate(()=>calls.length)===n+1,name+' ORIGINAL detached status request after logout');await p.close();continue;}
   for(const stage of ['load','initialize','merchant','currency','mode','mount']){
    const p=await setup();await ready(p);await p.evaluate(stage=>{window.sdkFailure=stage;if(stage==='load')delete window.NmiSandboxComponent;},stage);await create(p);

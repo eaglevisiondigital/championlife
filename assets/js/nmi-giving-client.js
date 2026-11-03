@@ -1,16 +1,19 @@
 (()=>{'use strict';
- const C=()=>window.CHAMPION_NMI_GIVING;
+ const C=()=>window.CHAMPION_NMI_GIVING,client=window.ChampionLifeAuth?.client,auth=client?.auth;
+ let retired=false;
+ const attached=()=>{if(window.ChampionLifeAuth?.client!==client||client?.auth!==auth)retired=true;return !retired;};
  let generation=0,knownUser;
  const changed=()=>Object.assign(Error('Giving session changed.'),{code:'SESSION_CHANGED'});
  async function readSession(auth){try{const value=auth?await auth.getSession():null;if(value?.error)throw changed();return value?.data?.session;}catch{throw changed();}}
- window.ChampionLifeAuth?.client?.auth.onAuthStateChange((event,session)=>{const id=session?.user?.id??null;if((event!=='INITIAL_SESSION'&&event!=='TOKEN_REFRESHED')||(knownUser!==undefined&&knownUser!==id))generation++;knownUser=id;});
+ auth?.onAuthStateChange((event,session)=>{const id=session?.user?.id??null;if((event!=='INITIAL_SESSION'&&event!=='TOKEN_REFRESHED')||(knownUser!==undefined&&knownUser!==id))generation++;knownUser=id;});
  async function call(payload,{signal}={}){
+  if(!attached())throw changed();
   const c=C(),stamp=generation;
   if(c?.enabled!==true||c.project!==window.CHAMPION_LIFE_SUPABASE?.url||c.origin!==location.origin||!/^https:\/\/[a-z0-9]{20}\.supabase\.co$/.test(c.project)||['exdocjbmylgxssanymjk','niyovbgoalulzkhbvebt','bkbmjisprwmkptywtmih'].includes(new URL(c.project).hostname.split('.')[0]))throw Error('Giving is unavailable.');
   const project=c.project,origin=c.origin,publicKey=window.CHAMPION_LIFE_SUPABASE.publishableKey;
-  const headers={'Content-Type':'application/json',apikey:publicKey},auth=window.ChampionLifeAuth?.client?.auth;
+  const headers={'Content-Type':'application/json',apikey:publicKey};
   const session=await readSession(auth),sessionUser=session?.user?.id??null;if(knownUser!==undefined&&knownUser!==sessionUser)throw changed();knownUser=sessionUser;if(session?.expires_at!==undefined&&(!Number.isFinite(session.expires_at)||session.expires_at*1000<=Date.now()))throw changed();
-  const unchanged=()=>stamp===generation&&!signal?.aborted&&C()?.enabled===true&&C().project===project&&C().origin===origin&&window.CHAMPION_LIFE_SUPABASE?.url===project&&window.CHAMPION_LIFE_SUPABASE?.publishableKey===publicKey;
+  const unchanged=()=>attached()&&stamp===generation&&!signal?.aborted&&C()?.enabled===true&&C().project===project&&C().origin===origin&&window.CHAMPION_LIFE_SUPABASE?.url===project&&window.CHAMPION_LIFE_SUPABASE?.publishableKey===publicKey;
   if(!unchanged())throw changed();
   if(session?.access_token)headers.Authorization='Bearer '+session.access_token;
   const r=await fetch(project+'/functions/v1/nmi-giving',{method:'POST',headers,body:JSON.stringify(payload),credentials:'omit',cache:'no-store',signal});
