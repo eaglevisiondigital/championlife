@@ -1,0 +1,31 @@
+name: Partner organization handoff
+on:
+  push:
+    branches: ['codex/publish-partner-20261101']
+    paths:
+      - 'assets/js/staff-outreach-partners.js'
+      - 'tools/partner-platform/org-handoff*'
+      - '.github/workflows/partner-org-handoff.yml'
+  pull_request:
+    paths:
+      - 'assets/js/staff-outreach-partners.js'
+      - 'tools/partner-platform/org-handoff*'
+      - '.github/workflows/partner-org-handoff.yml'
+permissions:
+  contents: read
+jobs:
+  scoped-journey:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm ci --ignore-scripts --prefix tools/backend-tests
+      - run: node --test tools/partner-platform/org-handoff.test.mjs
+      - run: node tools/backend-tests/outreach-partner-staff.dom.mjs
+      - run: tools/backend-tests/node_modules/.bin/playwright install --with-deps chromium webkit
+      - run: TEST_POSTGRES_BIN="$(pg_config --bindir)" node tools/partner-platform/org-handoff.browser.mjs
+      - run: node tools/backend-tests/site-build.test.mjs
+      - run: git diff --check

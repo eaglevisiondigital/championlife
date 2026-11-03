@@ -57,6 +57,21 @@
  }
  async function boot(){const g=++generation;workspace?.classList.remove('is-denied');root.replaceChildren();content?.replaceChildren();content=null;context=null;org=null;offset=0;const nextUser=await auth?.getUser();if(g!==generation)return;user=nextUser;if(!user){root.append(signIn());return;}
  status=el('p',null,{role:'status'});content=el('div');root.append(status);
- try{const nextContext=await rpc('staff_workspace_context',{});if(g!==generation)return;context=nextContext;const orgs=context.organizations.filter(o=>['outreach.view','finance.read'].every(key=>context.grants.some(g=>g.organization_id===o.id&&g.permission===key&&!g.department_ids)));if(!orgs.length){failure(403);return;}const select=el('select',null,{'aria-label':'Organization'});for(const o of orgs)select.append(el('option',o.name,{value:o.id}));org=select.value;select.onchange=()=>{org=select.value;offset=0;list().catch(()=>{/* rpc handles the active failure. */})};root.append(select,content);await list();}catch{/* rpc handles the active failure. */}}
+ try{const nextContext=await rpc('staff_workspace_context',{});if(g!==generation)return;context=nextContext;const orgs=context.organizations.filter(o=>['outreach.view','finance.read'].every(key=>context.grants.some(g=>g.organization_id===o.id&&g.permission===key&&!g.department_ids)));if(!orgs.length){failure(403);return;}const requested=new URLSearchParams(location.search).getAll('org');
+ // A handoff is a selection hint, never an authorization grant or fallback request.
+ if(requested.length>1||(requested.length===1&&!orgs.some(o=>o.id===requested[0]))){failure(403);return;}
+ const select=el('select',null,{'aria-label':'Organization'});for(const o of orgs)select.append(el('option',o.name,{value:o.id}));
+ if(requested.length)select.value=requested[0];
+ const selectionContext=context,selectionUserId=user.id,selectionClient=auth.client;
+ root.append(select,content);
+ const selectOrganization=()=>{
+  if(window.ChampionLifeAuth!==auth||auth.client!==selectionClient||context!==selectionContext||user?.id!==selectionUserId||!select.isConnected||!root.contains(select))return false;
+  if(!orgs.some(o=>o.id===select.value)){failure(403);return false;}
+  org=select.value;offset=0;
+  const url=new URL(location.href);url.searchParams.set('org',org);history.replaceState(null,'',url.href);
+  return true;
+ };
+ if(!selectOrganization())return;
+ select.onchange=()=>{if(selectOrganization())list().catch(()=>{/* rpc handles the active failure. */})};await list();}catch{/* rpc handles the active failure. */}}
  auth?.client.auth.onAuthStateChange((_e,s)=>{if(s?.user?.id!==user?.id){generation++;root.replaceChildren();setTimeout(boot,0)}});boot();
 })();
