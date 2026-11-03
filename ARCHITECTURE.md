@@ -20,3 +20,7 @@ The Outreach feature and dedicated sharing page use one static HTML audio player
 ## Organization operations candidate — 2026-10-22
 
 The bounded production-baseline security package projects existing registrations.view/manage and people.export into campaign operations only, using each campaign's exact organization. It preserves the per-campaign model and separates staff.manage from campaign configuration/operations. Financial intake, linked follow-up and relationship history have additional server-side finance boundaries. Two tenant assignments remain separate; no all-organization role or unaccepted unified module is introduced. See docs/OPERATIONS-ADMIN-SECURITY.md. Local only; full child-package integration remains separately reviewed.
+
+
+## First website-only backoffice composition — November 3
+The shared staff shell is composed from reviewed PR #61 with the later exact PR #72 People and event-registration runtime blobs on current main. Public site navigation remains current main. Organization People/tasks and campaign registration remain separate permission domains. The campaign-decision foundation/adapter/discovery and assignment issuer are outside this composition. No SQL or parallel identity system is introduced; provenance and release holds are recorded in docs/FIRST-BACKOFFICE-COMPOSITION-20261103.md.

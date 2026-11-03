@@ -113,3 +113,7 @@ The original defect was reproduced in actual local Chromium/WebKit pages at
 activation, ordinary link navigation and existing partner interception. All
 provider/network interactions are blocked in these fixtures. Source review and
 CI remain separate from production approval.
+
+
+## November 3: first backoffice composition (local source candidate)
+Current main plus frozen PR #61 shell and exact PR #72 eb7ad80 People/registration runtimes are composed on a separate branch. PR #61 remains frozen. Current PR #79 public navigation and all SQL/provider configuration remain unchanged. New selected-source verification and parallel focused CI accompany existing regression coverage. No hosted authentication, recovery rehearsal or release is claimed. See docs/FIRST-BACKOFFICE-COMPOSITION-20261103.md.

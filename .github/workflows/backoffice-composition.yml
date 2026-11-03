@@ -1,0 +1,71 @@
+name: Composed backoffice acceptance
+on:
+  pull_request:
+    paths:
+      - 'assets/js/outreach-people.js'
+      - 'assets/js/outreach-registration-staff.js'
+      - 'assets/js/staff-session.js'
+      - 'assets/js/staff-workspace.js'
+      - 'assets/css/staff-workspace.css'
+      - 'staff-*.html'
+      - 'tools/backoffice-composition/**'
+      - 'tools/outreach/**'
+      - 'tools/backend-tests/**'
+      - 'tools/site-build/**'
+      - '.github/workflows/backoffice-composition.yml'
+permissions:
+  contents: read
+jobs:
+  browser:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        group: [shell, people, registration]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm ci --ignore-scripts --prefix tools/backend-tests
+      - run: tools/backend-tests/node_modules/.bin/playwright install --with-deps chromium webkit chrome
+      - name: Verify exact accepted SDK for offline browser routes
+        run: |
+          curl --fail --silent --show-error --location 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.118.0' --output "$RUNNER_TEMP/supabase.js"
+          echo "bee24fc29228ed5a370f76a2ba1ca3c399549edad2fef23453c80148856a49af  $RUNNER_TEMP/supabase.js" | sha256sum --check
+          echo "SUPABASE_SDK_PATH=$RUNNER_TEMP/supabase.js" >> "$GITHUB_ENV"
+      - run: node tools/backoffice-composition/source.test.mjs
+      - if: matrix.group == 'shell'
+        run: |
+          node tools/backoffice-composition/sdk-artifact.browser.mjs
+          node tools/backend-tests/staff-workspace.browser.mjs
+          node tools/backend-tests/staff-workspace-discovery.browser.mjs
+          node tools/backend-tests/staff-session.browser.mjs
+      - if: matrix.group == 'people'
+        run: |
+          node tools/outreach/people-followup-create.browser.mjs
+          node tools/outreach/people-navigation.browser.mjs
+          node tools/outreach/people-identity-race.browser.mjs
+      - if: matrix.group == 'registration'
+        run: |
+          node tools/outreach/registration-navigation.browser.mjs
+          node tools/outreach/registration-print-roster.browser.mjs
+          node tools/outreach/walkup-retry.browser.mjs
+      - run: git diff --check
+  native:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm ci --ignore-scripts --prefix tools/backend-tests
+      - name: Existing source-matched PostgreSQL permissions and audit checks
+        run: |
+          export TEST_POSTGRES_BIN="$(pg_config --bindir)"
+          node tools/backend-tests/staff-workspace.native.mjs
+          node tools/outreach/people-followup-create.native.mjs
+          node tools/outreach/registration-print-roster.native.mjs
+          node tools/outreach/walkup-retry.native.mjs

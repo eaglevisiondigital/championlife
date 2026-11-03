@@ -1,0 +1,306 @@
+{
+  "productionBase": "999f4a75eeb8e4a05580dc603dda39ba64eb0409",
+  "frozenStaff": "fe0cc5b4219b17d18867c4d2a588f2f42ac82ae3",
+  "outreach": "eb7ad80c322fe3664273c38f56d176b1e28e1583",
+  "selectedFiles": [
+    {
+      "path": "assets/css/staff-workspace.css",
+      "source": "fe0cc5b4219b17d18867c4d2a588f2f42ac82ae3",
+      "sha256": "dacb4b0cddc15e624690f7c6ad16fa2867d6b4a9997e06ad445472874b39e28b"
+    },
+    {
+      "path": "assets/js/staff-session.js",
+      "source": "fe0cc5b4219b17d18867c4d2a588f2f42ac82ae3",
+      "sha256": "ae6533b1f63eb66f1870117bc429673bbed4179038087f6f6f1670b4f9bb7307"
+    },
+    {
+      "path": "assets/js/staff-workspace.js",
+      "source": "fe0cc5b4219b17d18867c4d2a588f2f42ac82ae3",
+      "sha256": "4429fb59c41d8c8a53230f98814ca95bae12053998d2afe624e1177e02076b49"
+    },
+    {
+      "path": "staff-home.html",
+      "source": "fe0cc5b4219b17d18867c4d2a588f2f42ac82ae3",
+      "sha256": "fe8898e9638d91bd310bdd9db831c99ed45b6a92a9e8d76a88e78d6dfa2489fb",
+      "originalSha256": "59c075f6434bd0b3a25cde4a7a30b108a0f7941b47a415b45a8902e26ec078b2",
+      "derivation": "SDK URL only: bind accepted 2.118.0 package-root artifact to unchanged integrity; tests restrict interception to that exact URL."
+    },
+    {
+      "path": "staff-outreach-registration.html",
+      "source": "fe0cc5b4219b17d18867c4d2a588f2f42ac82ae3",
+      "sha256": "0e4d671dbfa4b02d1aa97d7a4745aa5c4e09b07738951e1b0249fe95635db9a8",
+      "originalSha256": "031b411e8b6148bf36ed9afbcc28a0e0cacda7d05484aae30851be6061036e09",
+      "derivation": "SDK URL only: bind accepted 2.118.0 package-root artifact to unchanged integrity; tests restrict interception to that exact URL."
+    },
+    {
+      "path": "staff-people.html",
+      "source": "fe0cc5b4219b17d18867c4d2a588f2f42ac82ae3",
+      "sha256": "44db0908beb05103fb1fff753daf9cff1af9eee72dd7d040019c3289548373b8",
+      "originalSha256": "774b3581f84685e38608b5c06da986e9701c9b364e063b09184cf6c3774970cd",
+      "derivation": "SDK URL only: bind accepted 2.118.0 package-root artifact to unchanged integrity; tests restrict interception to that exact URL."
+    },
+    {
+      "path": "tools/site-build/public-files.json",
+      "source": "fe0cc5b4219b17d18867c4d2a588f2f42ac82ae3",
+      "sha256": "26ea5ae0c5bec1ad2b070865bf256a7228bfa94fd8b3846c431e021791e19c04"
+    },
+    {
+      "path": "tools/backend-tests/login.dom.mjs",
+      "source": "fe0cc5b4219b17d18867c4d2a588f2f42ac82ae3",
+      "sha256": "9050d377e70521d5744a079e5d41766c432cc29da8313397c300ca9ff46999e8"
+    },
+    {
+      "path": "tools/backend-tests/package.json",
+      "source": "fe0cc5b4219b17d18867c4d2a588f2f42ac82ae3",
+      "sha256": "b5e36860ab9e58e8c44fb4cf04500d6e5acb7d56e465cd239d3f474ae8562b0c"
+    },
+    {
+      "path": "tools/backend-tests/staff-session.browser.mjs",
+      "source": "fe0cc5b4219b17d18867c4d2a588f2f42ac82ae3",
+      "sha256": "6ba01c39bd9e3ba11d668e1472f9ad94c700f4b2015af590e14ac90198406bd1",
+      "originalSha256": "0e2d7ddadf371085d7e354ad5d0e9b3a8a7a0fd9db6cb660117f8ef924ee320f",
+      "derivation": "SDK URL only: bind accepted 2.118.0 package-root artifact to unchanged integrity; tests restrict interception to that exact URL. Unchanged legacy partner-page regression retains its original @2 fixture only for that page."
+    },
+    {
+      "path": "tools/backend-tests/staff-session.dom.mjs",
+      "source": "fe0cc5b4219b17d18867c4d2a588f2f42ac82ae3",
+      "sha256": "adefc2aae4087a78bb3c01387c87730fb55bd74d00694c0e318e6254f50248e7"
+    },
+    {
+      "path": "tools/backend-tests/staff-workspace-discovery.browser.mjs",
+      "source": "fe0cc5b4219b17d18867c4d2a588f2f42ac82ae3",
+      "sha256": "8534bd091d517a8518114d8832d59f50861f221dec0f2a6cfb8490b5701cc8f2",
+      "originalSha256": "4725123bda30409012bb7b0464b81128064e5ef083815c33f8f09190ab7a6395",
+      "derivation": "SDK URL only: bind accepted 2.118.0 package-root artifact to unchanged integrity; tests restrict interception to that exact URL."
+    },
+    {
+      "path": "tools/backend-tests/staff-workspace.browser.mjs",
+      "source": "fe0cc5b4219b17d18867c4d2a588f2f42ac82ae3",
+      "sha256": "64a3308dac7561d569b82cca989f83258686d5af5bb99c780d1980f166206410",
+      "originalSha256": "7d6671041a72993a4b1e051d073388b7053297c80d595b5980632d474412ceeb",
+      "derivation": "SDK URL only: bind accepted 2.118.0 package-root artifact to unchanged integrity; tests restrict interception to that exact URL."
+    },
+    {
+      "path": "tools/backend-tests/staff-workspace.native.mjs",
+      "source": "fe0cc5b4219b17d18867c4d2a588f2f42ac82ae3",
+      "sha256": "4bc490b2e3b1e34191819e21eeab436fba3533fad6a0dc4ea9b38ba010362e62"
+    },
+    {
+      "path": "assets/js/outreach-people.js",
+      "source": "eb7ad80c322fe3664273c38f56d176b1e28e1583",
+      "sha256": "bd356fd7252074a660ef2cd5283e69d94fbe593362e21f5abe27a6c630328138"
+    },
+    {
+      "path": "assets/js/outreach-registration-staff.js",
+      "source": "eb7ad80c322fe3664273c38f56d176b1e28e1583",
+      "sha256": "f5adfa9f3c63319da3ee2465a8d9127bf38370d2a136a7dc52ccc85ffba77284"
+    },
+    {
+      "path": "tools/outreach/people-followup-create.browser.mjs",
+      "source": "eb7ad80c322fe3664273c38f56d176b1e28e1583",
+      "sha256": "47f5fdf052794ee7b7591217c6fc696e6da135504a306f27800ab45ef1a9e848"
+    },
+    {
+      "path": "tools/outreach/people-followup-create.native.mjs",
+      "source": "eb7ad80c322fe3664273c38f56d176b1e28e1583",
+      "sha256": "2cf370e473988d2c619fb986ee60aac8beff49c4e239766144969567e8367bb6"
+    },
+    {
+      "path": "tools/outreach/people-identity-race.browser.mjs",
+      "source": "eb7ad80c322fe3664273c38f56d176b1e28e1583",
+      "sha256": "809e79fdd29fdeb29c262029a2fc5c33a37158831da3d6f56f27060ea1019267"
+    },
+    {
+      "path": "tools/outreach/people-navigation.browser.mjs",
+      "source": "eb7ad80c322fe3664273c38f56d176b1e28e1583",
+      "sha256": "e4690fe32c55819f4926520b9b2af3ede84ee4e6d2069fb07c678bbde4166c53"
+    },
+    {
+      "path": "tools/outreach/registration-navigation.browser.mjs",
+      "source": "eb7ad80c322fe3664273c38f56d176b1e28e1583",
+      "sha256": "cc75d705b67680d15edc4e662c4c2692a28422a83a2d8df9d39a726a6b9df31a"
+    },
+    {
+      "path": "tools/outreach/registration-print-roster.browser.mjs",
+      "source": "eb7ad80c322fe3664273c38f56d176b1e28e1583",
+      "sha256": "0e6aec942de8ae07a8a070951728b0e51a95825394d2130c2b2a62723a42ec91"
+    },
+    {
+      "path": "tools/outreach/registration-print-roster.native.mjs",
+      "source": "eb7ad80c322fe3664273c38f56d176b1e28e1583",
+      "sha256": "c079ed4442ef6799c7dc17becff1e9a4d12397b386d477fd6458ec8d00534994"
+    },
+    {
+      "path": "tools/outreach/walkup-retry.browser.mjs",
+      "source": "eb7ad80c322fe3664273c38f56d176b1e28e1583",
+      "sha256": "0568239168e2e4b493308ab26cef5c0ff4f8ca50333ed551fb9e0d5d248fbb44"
+    },
+    {
+      "path": "tools/outreach/walkup-retry.native.mjs",
+      "source": "eb7ad80c322fe3664273c38f56d176b1e28e1583",
+      "sha256": "a150af1d995ea5774db1cf99ca19e8ba7e7a2df889ba93b1a200aa0c1f8fb357"
+    }
+  ],
+  "preservedFiles": [
+    {
+      "path": "assets/js/site.js",
+      "sha256": "a4f08ab924d80fa577f922b5517c2456e85b3101d1115ddcd84edd231a29a0e1"
+    },
+    {
+      "path": "netlify.toml",
+      "sha256": "cfcd55aabfe05c87eb3e283232cabf247250fab54341288ef8c496912135c0e6"
+    },
+    {
+      "path": "assets/js/supabase-config.js",
+      "sha256": "df1645963771760944d8bb4d26292537e4eb3e98850dcb187a3d81a59c592a37"
+    },
+    {
+      "path": "tools/site-build/build.mjs",
+      "sha256": "9a7086fc6e1bf1329b852f8ee0c7fba2e1fba6fd3aba6f08eff2c6d4ff7d8287"
+    },
+    {
+      "path": "tools/backend-tests/migration-order.mjs",
+      "sha256": "0771c0f24299bc0632fb09fe4eae84e608a64ec270789efd106795774f619050"
+    },
+    {
+      "path": "supabase/bootstrap/automatic-rls.sql",
+      "sha256": "8387dc646df9fef987d725a9a45ff9e3f77f692a22eb0421909cb58a642e46e6"
+    },
+    {
+      "path": "supabase/functions/outreach-partner-submit/gateway.mjs",
+      "sha256": "777b213061db4123d393f976f511a218925e2595f09939eb583674e9ff884250"
+    },
+    {
+      "path": "supabase/functions/outreach-partner-submit/index.ts",
+      "sha256": "15af6d1cec78391decb3e718966d2b7cd305df9a2baf1d52964b76350b6d8218"
+    },
+    {
+      "path": "supabase/functions/outreach-registration-submit/gateway.mjs",
+      "sha256": "10d70a49c21d153d481bbe2ab650401645305293b799b5215b1a62be99b074f4"
+    },
+    {
+      "path": "supabase/functions/outreach-registration-submit/index.ts",
+      "sha256": "a4f99f27565701c5760dfa07c3ad1fa28e2e7cf6591483c7d80d87cad8c5a453"
+    },
+    {
+      "path": "supabase/migrations/20260923114743_create_course_progress_schema.sql",
+      "sha256": "c42d6a9a7f213558170e389f011e0f0b1972d065efd8fb9dc30644349b901f72"
+    },
+    {
+      "path": "supabase/migrations/20260923114822_harden_course_security_and_indexes.sql",
+      "sha256": "9becd4c0e52b1787bf7ecf066683359aaced0b27c5b71123da066dd8a09193fb"
+    },
+    {
+      "path": "supabase/migrations/20260923115114_revoke_public_rls_helper_execution.sql",
+      "sha256": "a8c9d9e0044ea4f8ac6b6bf726b7b28370ddf9ade493eaceaaef319dcf741ee9"
+    },
+    {
+      "path": "supabase/migrations/20260923115706_grant_authenticated_course_api_access.sql",
+      "sha256": "83998f15a0236a4765dd83803a34166854a278fc2888073d28b4eee5b9a7dd26"
+    },
+    {
+      "path": "supabase/migrations/20260923115732_restrict_authenticated_course_privileges.sql",
+      "sha256": "5f53a377265a3b68231e32f75b4c99f656bea74900ec4fbdffc346f03473b103"
+    },
+    {
+      "path": "supabase/migrations/20260923121707_add_st_lucia_registration_and_account_linking.sql",
+      "sha256": "225e352e966e466068649b30885a6003e44964237218f99dcbc678ccfffbcf71"
+    },
+    {
+      "path": "supabase/migrations/20260923122017_secure_st_lucia_registration_claim_after_login.sql",
+      "sha256": "a0636bf90aacd1eb1c8ac05aed9170527c46aba56b2e4b0c619dd6412702fcde"
+    },
+    {
+      "path": "supabase/migrations/20260925200310_organization_foundation.sql",
+      "sha256": "3d26adbdb35e0aa657a08af6f175fc108fe9e49bc9ad01117314441b953d0d8c"
+    },
+    {
+      "path": "supabase/migrations/20260925200318_harden_outreach_claim.sql",
+      "sha256": "55160b1ce86006a8acfcb8608f39689b3916eaaaf905587a7bbeec86dff37a4b"
+    },
+    {
+      "path": "supabase/migrations/20260925202633_lesson_notes.sql",
+      "sha256": "774a2b1a345ab7efa4952d0aef9ecceda2952b21fdc91c146fde2d110d973d48"
+    },
+    {
+      "path": "supabase/migrations/20260926000821_followup_tasks.sql",
+      "sha256": "db3fa4c4869fc6efff84133e300ee162697558d2d64c6c37abd68c1ff4748f74"
+    },
+    {
+      "path": "supabase/migrations/20260926022613_staff_access_and_people.sql",
+      "sha256": "5245c90b63fe289b929f6210c294c36f300deeec3786aa22866c7b59141aca4c"
+    },
+    {
+      "path": "supabase/migrations/20260926024742_household_records.sql",
+      "sha256": "9da11eb6ff58e3df63e4d5e6ccd961f1a3e14db234e6eeca8c49cb73c66a93e1"
+    },
+    {
+      "path": "supabase/migrations/20260926032026_department_tags.sql",
+      "sha256": "ca8dbaa58b0a8f7d8e5ac25e221b9fe7b77886befb843c23b8c67440b105bffe"
+    },
+    {
+      "path": "supabase/migrations/20260926034222_tag_workflows.sql",
+      "sha256": "caa052c1bfc892c93291753afd9435d76e974859147010e955c2752d00dac678"
+    },
+    {
+      "path": "supabase/migrations/20260926035410_giving_configuration.sql",
+      "sha256": "3fddb322a99c478bf13784bde14deb62ae05257dff1d899a279611edc08ffef4"
+    },
+    {
+      "path": "supabase/migrations/20260926040812_participant_portals.sql",
+      "sha256": "a9189d02e8723da20ac05acd061f7278d2b4ca4c293b338165f410f272f4f921"
+    },
+    {
+      "path": "supabase/migrations/20260928172557_people_staff_v1.sql",
+      "sha256": "0c00fe4f50f2bc92f1d9a4896125f9143a56e7ea37e3317540954cdb52cadc07"
+    },
+    {
+      "path": "supabase/migrations/20261004055336_outreach_partner_intake_v1.sql",
+      "sha256": "c2feb7c1675b973da4f3e0f5cf3a18aaf97dacdc59aca7a7e01a029d5ca84351"
+    },
+    {
+      "path": "supabase/migrations/20261004154340_allow_bessemer_outreach_registrations.sql",
+      "sha256": "9919250f0df4280a311baf929e8c2eb5d97770285bc3ea93f204752d213a462a"
+    },
+    {
+      "path": "supabase/migrations/20261004230453_outreach_partner_gateway.sql",
+      "sha256": "25802f89d285d86fc3783b454132e6f0378b93f74c4802435d6bf7369dc29a67"
+    },
+    {
+      "path": "supabase/migrations/20261005161946_outreach_network_limit_120.sql",
+      "sha256": "6159ef5ac6fff5a5480f4a71acc45ece4a0298144e1a4078fb114d1ded0f4f0e"
+    },
+    {
+      "path": "supabase/migrations/20261016201932_huntsville_registration_foundation.sql",
+      "sha256": "365ade7c6995541ad99f32135c3775b4e03c52d9a9bde95cc8f70da844f10a09"
+    },
+    {
+      "path": "supabase/migrations/20261016201933_huntsville_registration_draft.sql",
+      "sha256": "961187b9a667c021909019a0ba77dd83b140c590de56b21a1111eeb039689952"
+    },
+    {
+      "path": "supabase/migrations/20261018121900_allow_huntsville_decision_registrations.sql",
+      "sha256": "af9abe5821e299b53457ca6c1ec516f402e63c0dc757b6b617570783bd3efda1"
+    },
+    {
+      "path": "supabase/migrations/20261022201357_operations_admin_security.sql",
+      "sha256": "a5cb9ad66faf87db263414c80a89b76a7498025188661691e1d9e196b603304a"
+    },
+    {
+      "path": "supabase/release/king-kind-reader-private-storage-candidate.sql",
+      "sha256": "aac5ec4ee74a8b59b8b8bb1bd5ec1f4254fd6f0585fcc2fe1f63942c8dce4fb1"
+    },
+    {
+      "path": "supabase/release/outreach-cron-enable.sql",
+      "sha256": "ed77c773389a804518fbc46524a18a485d4b942b8ab499281b5af7465357abde"
+    },
+    {
+      "path": "supabase/release/outreach-cron-unschedule.sql",
+      "sha256": "855116b4d12b4a4104683830e7261a4b0aa032c60910b542a4fe64e16f363d00"
+    },
+    {
+      "path": "supabase/release/outreach-cron-verify.sql",
+      "sha256": "35424c0d5003b5f214327e2befb433fea6e8e68445ef12e16bbd89e9014617a5"
+    }
+  ]
+}

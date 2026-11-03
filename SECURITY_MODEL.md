@@ -42,3 +42,7 @@ The theme-song script performs no analytics/API/database requests, sets no cooki
 ## Operations Administrator candidate — local only, 2026-10-22
 
 Donation-intake access requires outreach.view AND finance.read. Restrictive RLS protects linked follow-up tasks/events and financial partner relationship audit; People RPC projections and filters enforce the same boundary. Permission management requires independent staff.manage plus campaign admin; self-target changes are denied. Organization registration operations never confer admin/configuration or finance privileges. Household audit kinds extend the original check and retain actor/history. Existing registry, policies for other domains and function ACLs remain intact. Exact baseline guards reject incompatible child functions. See docs/OPERATIONS-ADMIN-SECURITY.md for release impact, withheld capabilities, account verification and revocation.
+
+
+## First backoffice composition boundary — November 3
+Later PR #72 navigation-generation, identity, permission-denial, stale-handler and printing authorization protections replace the two older frozen-shell runtime blobs verbatim. People task creation uses existing current organization permissions and does not grant campaign decision authority. Synthetic browser/native acceptance is distinct from genuine Auth and independent recovery. No grants, SQL or protected-preview target changes are included. See docs/FIRST-BACKOFFICE-COMPOSITION-20261103.md.
