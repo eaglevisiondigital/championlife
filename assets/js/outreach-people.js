@@ -2,13 +2,14 @@
  'use strict';
  const root=document.getElementById('outreach-people'),auth=window.ChampionLifeAuth,{el}=window.OutreachUI;
  if(!root||(window.StaffWorkspace&&!window.StaffWorkspace.active()))return;
- let generation=0,user,org,grants=[],content,status,page=0;
+ let generation=0,user,org,grants=[],content,status,page=0,search='';
+ const resetList=()=>{page=0;search=''};
  const financialLink=document.getElementById('financial-outreach-link');
  const updateNavigation=()=>{if(financialLink)financialLink.hidden=!(can('outreach.view')&&can('finance.read'))};
  const can=k=>grants.some(g=>g.organization_id===org&&g.permission===k&&!g.department_ids);
  const login=()=>el('a','Sign in to your workspace',{href:'discipleship-login.html?next=%2Fstaff-people.html'});
  function fail(code){if(window.StaffWorkspace)window.dispatchEvent(new Event('staff-access-denied'));
-  generation++;grants=[];org=null;content?.replaceChildren();content=null;
+  generation++;resetList();grants=[];org=null;content?.replaceChildren();content=null;
   updateNavigation();root.replaceChildren(el('p',code===401?'Your session has expired. Sign in to continue.':'Your access is no longer available. Contact an administrator if you believe you should still have access.',{role:'alert'}));
   root.append(code===401?login():el('a','Return to Outreach',{href:'outreach.html'}));
  }
@@ -22,10 +23,10 @@
  const people=(action,payload)=>request(()=>auth.client.rpc('people_workspace',{p_org:org,p_action:action,p_payload:payload}));
  function button(label,action){const g=generation,b=el('button',label,{type:'button',class:'staff-action'});b.onclick=async()=>{if(g!==generation)return;b.disabled=true;try{await action()}catch{}finally{b.disabled=false}};return b}
  async function refreshPermissions(){const ctx=await request(()=>auth.client.rpc('staff_workspace_context',{}));grants=ctx.grants;updateNavigation();if(!can('people.read')){fail(403);throw Error()}}
- async function list(search=''){
-  const g=++generation;content.replaceChildren();status.textContent='Loading…';await refreshPermissions();if(g!==generation)return;
+ async function list(nextSearch=search){
+  search=nextSearch;const g=++generation;content.replaceChildren();status.textContent='Loading…';await refreshPermissions();if(g!==generation)return;
   const rows=await people('list',{search,page});if(g!==generation)return;status.textContent=rows.length?'':'No matching contacts.\nTry a different name or check the selected organization.';status.className=rows.length?'staff-status':'staff-status staff-empty';
-  const filter=el('div',null,{class:'staff-search'}),label=el('label','Search contacts'),input=el('input',null,{type:'search',maxlength:'100',placeholder:'Search by name, email or phone'});input.value=search;label.append(input);filter.append(label,button('Search',()=>{page=0;return list(input.value)}));content.append(filter);
+  const filter=el('form',null,{class:'staff-search'}),label=el('label','Search contacts'),input=el('input',null,{type:'search',maxlength:'100',placeholder:'Search by name, email or phone'}),submit=el('button','Search',{type:'submit',class:'staff-action'});input.value=search;label.append(input);filter.append(label,submit);filter.onsubmit=async e=>{e.preventDefault();if(g!==generation||submit.disabled||!root.contains(filter))return;submit.disabled=true;try{page=0;await list(input.value)}catch{}finally{submit.disabled=false}};content.append(filter);
   for(const p of rows.slice(0,25)){const card=el('article',null,{class:'staff-person-card'});card.append(el('h2',p.first_name+' '+p.last_name),el('p',(p.email||'')+' · '+(p.phone||'')),el('p',(p.relationships||[]).join(', ')),button('Review Person & follow-up',()=>detail(p.id)));content.append(card)}
   if(page>0)content.append(button('Previous',()=>{page--;return list(search)}));if(rows.length>25)content.append(button('Next',()=>{page++;return list(search)}));
  }
@@ -51,8 +52,8 @@
   status=el('p','Loading…',{role:'status',class:'staff-status'});content=el('div',null,{class:'staff-content'});root.append(status);const ctx=await request(()=>auth.client.rpc('staff_workspace_context',{}));if(g!==generation)return;grants=ctx.grants;updateNavigation();
   const choices=ctx.organizations.filter(o=>grants.some(x=>x.organization_id===o.id&&x.permission==='people.read'&&!x.department_ids));if(!choices.length){fail(403);return}
   const select=el('select',null,{'aria-label':'Organization'}),params=new URLSearchParams(location.search);for(const o of choices)select.append(el('option',o.name,{value:o.id}));if(choices.some(o=>o.id===params.get('org')))select.value=params.get('org');org=select.value;updateNavigation();
-  select.onchange=()=>{if(window.StaffWorkspace){window.StaffWorkspace.navigate('staff-people.html?org='+encodeURIComponent(select.value));return}org=select.value;updateNavigation();page=0;list().catch(()=>{})};const organizationField=el('label','Organization',{class:'staff-organization'});organizationField.append(select);root.append(organizationField,content);const person=params.get('person');if(person&&/^[a-f0-9-]{36}$/i.test(person))await detail(person);else await list();
+  select.onchange=()=>{if(window.StaffWorkspace){window.StaffWorkspace.navigate('staff-people.html?org='+encodeURIComponent(select.value));return}org=select.value;updateNavigation();resetList();list().catch(()=>{})};const organizationField=el('label','Organization',{class:'staff-organization'});organizationField.append(select);root.append(organizationField,content);const person=params.get('person');if(person&&/^[a-f0-9-]{36}$/i.test(person))await detail(person);else await list();
  }catch{if(g===generation)root.replaceChildren(el('p','Workspace unavailable. Please refresh and try again.',{role:'alert'}))}}
- window.addEventListener('staff-protected-clear',()=>{generation++;grants=[];org=null;content?.replaceChildren();content=null;root.replaceChildren();updateNavigation()});
- auth?.client.auth.onAuthStateChange((_event,session)=>{if(session?.user?.id!==user?.id){generation++;root.replaceChildren();grants=[];org=null;updateNavigation();setTimeout(boot,0)}});boot();
+ window.addEventListener('staff-protected-clear',()=>{generation++;resetList();grants=[];org=null;content?.replaceChildren();content=null;root.replaceChildren();updateNavigation()});
+ auth?.client.auth.onAuthStateChange((_event,session)=>{if(session?.user?.id!==user?.id){generation++;resetList();root.replaceChildren();grants=[];org=null;updateNavigation();setTimeout(boot,0)}});boot();
 })();

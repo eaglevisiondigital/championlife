@@ -4,6 +4,7 @@ on:
     paths:
       - 'tools/outreach/**'
       - 'assets/js/outreach-registration-staff.js'
+      - 'assets/js/outreach-people.js'
       - '.github/workflows/outreach-summary-review.yml'
 permissions:
   contents: read
@@ -22,5 +23,7 @@ jobs:
       - run: TEST_POSTGRES_BIN="$(pg_config --bindir)" node tools/outreach/shared-staff-backend.native.mjs
       - run: node tools/backend-tests/node_modules/playwright/cli.js install --with-deps chromium webkit
       - run: node tools/outreach/registration-navigation.browser.mjs
+      - run: node tools/outreach/people-navigation.browser.mjs
+      - run: node tools/backend-tests/outreach-people.dom.mjs
       - run: node tools/backend-tests/outreach-registration.dom.mjs
       - run: git diff --check
