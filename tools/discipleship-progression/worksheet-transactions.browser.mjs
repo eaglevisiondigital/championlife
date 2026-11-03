@@ -26,12 +26,13 @@ for(const [engine,launch]of [[chromium,process.env.CI?{}:{channel:'chrome'}],[we
      if(mode==='lost')return route.abort('failed');
      if(mode==='denied')return route.fulfill({status:403,json:{code:'42501',message:'fictional denied'}});
      if(mode==='conflict')return route.fulfill({status:400,json:{code:'40001',message:'fictional changed'}});
-     return route.fulfill({json:receipt}).catch(()=>{});
+     const lesson=r.postDataJSON().p_lesson,count=({5:10,6:7,7:7,8:6,9:5,10:5,11:4,12:3,13:4})[lesson]??20;
+     return route.fulfill({json:{...receipt,lesson,requiredQuestions:count,...(lesson>=5?{worksheet:`lesson-${lesson}-workbook-sections-v1`,answers:[{question:1,answer:'private response'}]}:{})}}).catch(()=>{});
     }
    }
    if(u.origin===origin){
     if(u.pathname==='/sdk.js')return route.fulfill({contentType:'text/javascript',body:sdk});
-    if(u.pathname.startsWith('/tools/discipleship-progression/'))return route.fulfill({contentType:'text/javascript',body:readFileSync(new URL(u.pathname.slice(1),base))});
+    if(u.pathname.startsWith('/tools/discipleship-progression/'))return route.fulfill({contentType:u.pathname.endsWith('.json')?'application/json':'text/javascript',body:readFileSync(new URL(u.pathname.slice(1),base))});
     return route.fulfill({contentType:'text/html',body:`<!doctype html><meta name="viewport" content="width=device-width"><output id="state"></output><script src="/sdk.js"></script><script type="module">
      import {createIsolatedWorksheetTransactions} from '/tools/discipleship-progression/worksheet-transactions.mjs';
      window.client=supabase.createClient('${backend}','fictional-publishable-key',{auth:{persistSession:false,autoRefreshToken:false,detectSessionInUrl:false}});
@@ -45,6 +46,7 @@ for(const [engine,launch]of [[chromium,process.env.CI?{}:{channel:'chrome'}],[we
   await page.goto(origin);await page.waitForFunction(()=>window.ready);
   async function sign(id){await page.evaluate(async access_token=>{const r=await client.auth.setSession({access_token,refresh_token:'fictional-refresh'});if(r.error)throw r.error},token(id))}
   await sign(a);
+  for(let lesson=1;lesson<=13;lesson++){const r=await page.evaluate(lesson=>adapter.read({lesson}),lesson);ok(r.status==='available'&&r.lesson===lesson,'canonical lesson '+lesson+' real SDK read');const saved=await page.evaluate(lesson=>adapter.save({...input(),lesson}),lesson);ok(saved.status==='available'&&saved.canComplete===false&&saved.canCommit===false&&!JSON.stringify(saved).includes('private'),'canonical lesson '+lesson+' save no raw answers or credit');}
   let r=await page.evaluate(()=>show(adapter.read({lesson:1})));ok(r.status==='available','real SDK reads owned receipt '+engine.name()+' '+width);
   r=await page.evaluate(()=>show(adapter.save(input())));ok(r.status==='available','real SDK saves via fixed RPC');ok(requests.at(-1).id===a,'save bearer belongs to original account');
   ok((await page.locator('#state').textContent())==='Owned worksheet receipt','authorized receipt displayed');

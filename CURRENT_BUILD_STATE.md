@@ -1,3 +1,7 @@
+## 2026-11-02 — Isolated worksheet CAS integration compatibility (source only)
+
+The existing isolated read/save adapter now consumes the exact approved Lesson5–13 catalogs alongside unchanged Lessons1–4. It enforces each lesson’s response identifiers/count and5–13 worksheet discriminator, while projecting no raw answers or completion authority. This closes an actual adapter-to-existing-RPC mismatch without changing SQL, public runtime, content or SDK. Local pinned-SDK browser, native PostgreSQL and independent adversarial checks are recorded privately. See docs/DISCIPLESHIP-WORKSHEET-TRANSACTION-COMPATIBILITY.md. Trusted completion remains1–4 source-only; media, provider, retention, recovery and release gates remain held.
+
 ## 2026-11-02 — Course overview availability copy (source only)
 
 The overview now describes all 13 implemented worksheet flows, distinguishing automatic drafts in Lessons 1–4 from explicit load/save in Lessons 5–13. Missing videos 11–13 remain clearly marked. It no longer promises completion tools or says additional worksheets await conversion. Routes, assets, layout, runtime, SQL and accepted content are unchanged. This describes the reviewed candidate after a separately approved installation; it is not a claim that the 13-lesson suite is currently live. Trusted playback, multipart binding, retention and genuine acceptance gates remain held.

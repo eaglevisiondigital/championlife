@@ -1,4 +1,4 @@
-import {WORKSHEET_QUESTIONS} from './worksheet-source.mjs';
+import {WORKSHEET_CONTRACTS} from './worksheet-contracts.mjs';
 import {COURSE} from './evidence-review.mjs';
 const uuid=x=>typeof x==='string'&&/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(x);
 const revision=x=>typeof x==='string'&&/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/.test(x);
@@ -24,13 +24,13 @@ export function createIsolatedWorksheetTransactions({client,projectRef,onClear=(
   const fail=status=>{if(current())clear();return result(status)};
   try{
    const keys=write?['answers','lesson','revision']:['lesson'];
-   if(!current()||!plain(input)||Reflect.ownKeys(input).length!==keys.length||keys.some(k=>!Object.hasOwn(input,k))||!Number.isInteger(input.lesson)||!WORKSHEET_QUESTIONS[input.lesson])return fail('unavailable');
-   const lesson=input.lesson;let answers=null;
+   if(!current()||!plain(input)||Reflect.ownKeys(input).length!==keys.length||keys.some(k=>!Object.hasOwn(input,k))||!Number.isInteger(input.lesson)||!WORKSHEET_CONTRACTS[input.lesson])return fail('unavailable');
+   const lesson=input.lesson,contract=WORKSHEET_CONTRACTS[lesson],required=contract.questions.length;let answers=null;
    if(write){
-    if(!revision(input.revision)||!Array.isArray(input.answers)||input.answers.length<1||input.answers.length>20)return fail('unavailable');
+    if(!revision(input.revision)||!Array.isArray(input.answers)||input.answers.length<1||input.answers.length>required)return fail('unavailable');
     const seen=new Set();answers=[];
     for(const a of input.answers){
-     if(!plain(a)||Reflect.ownKeys(a).length!==2||!Object.hasOwn(a,'question')||!Object.hasOwn(a,'answer')||!WORKSHEET_QUESTIONS[lesson].includes(a.question)||seen.has(a.question)||typeof a.answer!=='string'||a.answer.length>20000)return fail('unavailable');
+     if(!plain(a)||Reflect.ownKeys(a).length!==2||!Object.hasOwn(a,'question')||!Object.hasOwn(a,'answer')||!contract.questions.includes(a.question)||seen.has(a.question)||typeof a.answer!=='string'||a.answer.length>20000)return fail('unavailable');
      seen.add(a.question);answers.push({question:a.question,answer:a.answer});
     }
    }
@@ -60,8 +60,8 @@ export function createIsolatedWorksheetTransactions({client,projectRef,onClear=(
    }
    await authorize();if(!current())return fail('unavailable');
    const r=response.data;
-   if(!r||r.status!=='available'||r.course!==COURSE||r.lesson!==lesson||!revision(r.revision)||r.requiredQuestions!==20||!Number.isInteger(r.savedNonblankAnswers)||r.savedNonblankAnswers<0||r.savedNonblankAnswers>20||r.allRequiredAnswersSaved!==(r.savedNonblankAnswers===20)||r.canComplete!==false||r.canCommit!==false)return fail(write?'uncertain':'unavailable');
-   return Object.freeze({status:'available',course:COURSE,lesson,revision:r.revision,savedNonblankAnswers:r.savedNonblankAnswers,requiredQuestions:20,allRequiredAnswersSaved:r.allRequiredAnswersSaved,canComplete:false,canCommit:false});
+   if(!r||r.status!=='available'||r.course!==COURSE||r.lesson!==lesson||!revision(r.revision)||r.requiredQuestions!==required||(contract.worksheet!==null&&r.worksheet!==contract.worksheet)||!Number.isInteger(r.savedNonblankAnswers)||r.savedNonblankAnswers<0||r.savedNonblankAnswers>required||r.allRequiredAnswersSaved!==(r.savedNonblankAnswers===required)||r.canComplete!==false||r.canCommit!==false)return fail(write?'uncertain':'unavailable');
+   return Object.freeze({status:'available',course:COURSE,lesson,...(contract.worksheet?{worksheet:contract.worksheet}:{}),revision:r.revision,savedNonblankAnswers:r.savedNonblankAnswers,requiredQuestions:required,allRequiredAnswersSaved:r.allRequiredAnswersSaved,canComplete:false,canCommit:false});
   }catch{return fail(current()&&issued?'uncertain':'unavailable')}
  }
  return Object.freeze({read:input=>perform(input,false),save:input=>perform(input,true),clear,dispose(){disposed=true;clear();subscription.data?.subscription?.unsubscribe();for(const name of navigationEvents)globalThis.removeEventListener?.(name,clear)}});
