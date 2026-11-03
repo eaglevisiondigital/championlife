@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>My Discipleship | Champion Life Church</title>
-<meta name="description" content="Champion Life discipleship dashboard for course progress and lesson completion.">
+<meta name="description" content="Champion Life discipleship dashboard for saved lesson activity and private worksheets.">
 <link rel="stylesheet" href="assets/css/styles.css">
 <style>
 .dash-hero{min-height:0;padding:132px 0 54px;background:linear-gradient(135deg,#090a0d,#171a20)}
@@ -70,11 +70,12 @@
     <div class="dash-course-head">
       <span class="eyebrow">Current Course</span>
       <h2>Getting a Grip on the Basics</h2>
-      <p>Your first four lessons have interactive worksheets and cloud-saved progress. More lessons can be upgraded into the same experience as their new worksheets are prepared.</p>
-      <div class="dash-progress-meta"><span>Overall course progress</span><span id="dashProgressText">0 of 13 complete</span></div>
+      <p>Private cloud worksheets are available for all 13 lessons. Lessons 1–4 save drafts automatically; Lessons 5–13 use Load responses and Save responses. Device notes remain separate and do not sync.</p>
+      <p>Saved activity does not verify video watching or lesson completion. Worksheets saved in Lessons 5–13 may not appear in this activity summary; open the lesson to load your responses. No activity record does not mean you have not studied the lesson.</p>
+      <div class="dash-progress-meta"><span>Saved lesson activity</span><span id="dashProgressText">Loading activity...</span></div>
       <div class="dash-progress"><span id="dashProgressBar"></span></div>
     </div>
-    <div class="dash-loading" id="dashLoading">Loading your course progress...</div>
+    <div class="dash-loading" id="dashLoading">Loading your saved lesson activity...</div>
     <div class="dash-lessons" id="dashLessons" hidden></div>
   </section>
   </div>
@@ -140,18 +141,21 @@
     document.getElementById('dashEmail').textContent=data.user.email||'';
     document.getElementById('dashAvatar').textContent=(profile.first_name?.[0]||data.user.email?.[0]||'C').toUpperCase();
 
-    const progressMap=new Map((data.progress||[]).map(p=>[Number(p.lesson_number),p]));
-    const completed=[...progressMap.values()].filter(p=>p.status==='completed').length;
-    document.getElementById('dashProgressText').textContent=completed+' of 13 complete';
-    document.getElementById('dashProgressBar').style.width=((completed/13)*100)+'%';
+    // The existing owner-writable progress projection records activity only.
+    // It is not the protected trusted-completion audit or a worksheet inventory.
+    const progressMap=new Map((Array.isArray(data.progress)?data.progress:[])
+      .filter(p=>p && Number.isInteger(p.lesson_number) && p.lesson_number>=1 && p.lesson_number<=lessons.length && ['in_progress','completed'].includes(p.status))
+      .map(p=>[p.lesson_number,p]));
+    const recorded=progressMap.size;
+    document.getElementById('dashProgressText').textContent=recorded+' of 13 with activity records';
+    document.getElementById('dashProgressBar').style.width=((recorded/13)*100)+'%';
 
     const html=lessons.map((title,i)=>{
-      const n=i+1,p=progressMap.get(n);
-      const status=p?.status||'not_started';
-      const label=status==='completed'?'Complete':status==='in_progress'?'In Progress':'Not Started';
-      const cls=status==='completed'?'complete':status==='in_progress'?'progress':'';
+      const n=i+1,hasActivity=progressMap.has(n);
+      const label=hasActivity?'Activity recorded':'No activity record';
+      const cls=hasActivity?'progress':'';
       const href='getting-a-grip-'+n+'.html';
-      const extra=n<=4?'Interactive worksheet + cloud save':(n<=10?'Video + workbook':'Workbook · video coming soon');
+      const extra=(n<=4?'Private cloud worksheet · Autosave':'Private cloud worksheet · Save responses')+(n<=10?' · Video available':' · video coming soon');
       return '<a class="dash-lesson" href="'+href+'"><span class="dash-num">'+String(n).padStart(2,'0')+'</span><span><strong>'+title+'</strong><small>'+extra+'</small></span><span class="dash-status '+cls+'">'+label+'</span></a>';
     }).join('');
     document.getElementById('dashLessons').innerHTML=html;
@@ -160,7 +164,7 @@
     expiryTimer=setTimeout(load,Math.min(2147483647,session.expires_at*1000-Date.now()));
   }catch(e){
     if(stamp!==generation)return;clear();
-    document.getElementById('dashLoading').textContent='We could not load your progress right now. Please refresh and try again.';
+    document.getElementById('dashLoading').textContent='We could not load your saved lesson activity right now. Please refresh and try again.';
   }
 
   }

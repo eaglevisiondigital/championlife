@@ -81,3 +81,8 @@ The snapshot accepts lesson only. Current Auth/session and same-owner enrollment
 ## 2026-11-01 — Disabled trusted-completion source
 
 No API role can execute the new private SECURITY INVOKER writer or read/write its RLS evidence tables. It derives principal from the existing current Auth snapshot and binds every receipt to current session/enrollment/profile/media/policy/worksheet UUID. Profile replacement/revocation shares the worksheet mutex; deadlines are rechecked after progress-row waits. Immutable audit failure rolls back progress. Existing legacy progress writes create no trusted audit. Provider identity/eligible-watch evidence, least-privileged ingestion, retention and genuine recovery are unresolved activation gates; synthetic owner-role fixtures are not provider proof or a production credential model.
+
+
+## 2026-11-02 — Member activity is not completion authority
+
+The member dashboard no longer treats owner-writable lesson_progress rows as proof of completed lessons. Only valid numbered activity records affect its bounded count; absence does not imply no worksheet or watching. Existing verified-user/course filters and page account/generation/expiry checks are unchanged. No raw answers, notes, prayer or trusted-audit fields are newly queried or exposed by this correction. Existing private-reader eligibility remains authoritative. See docs/MEMBER-DASHBOARD-STATUS.md; browser fixtures are not genuine Auth or provider evidence.
