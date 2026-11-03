@@ -1,0 +1,27 @@
+name: Dream Track return journey
+on:
+  pull_request:
+    paths:
+      - 'dream-track-access.html'
+      - 'dream-track-*.html'
+      - 'dream-track.html'
+      - 'netlify/functions/dream-track-auth.mjs'
+      - 'netlify/edge-functions/dream-track-protect.js'
+      - 'tools/backend-tests/dream-track-return.browser.mjs'
+      - '.github/workflows/dream-track-return.yml'
+permissions:
+  contents: read
+jobs:
+  browser:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm ci --ignore-scripts --prefix tools/backend-tests
+      - run: tools/backend-tests/node_modules/.bin/playwright install --with-deps chromium webkit
+      - run: node tools/backend-tests/dream-track-return.browser.mjs
+      - run: node tools/backend-tests/site-build.test.mjs
+      - run: git diff --check

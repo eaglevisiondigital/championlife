@@ -42,3 +42,15 @@ The theme-song script performs no analytics/API/database requests, sets no cooki
 ## Operations Administrator candidate — local only, 2026-10-22
 
 Donation-intake access requires outreach.view AND finance.read. Restrictive RLS protects linked follow-up tasks/events and financial partner relationship audit; People RPC projections and filters enforce the same boundary. Permission management requires independent staff.manage plus campaign admin; self-target changes are denied. Organization registration operations never confer admin/configuration or finance privileges. Household audit kinds extend the original check and retain actor/history. Existing registry, policies for other domains and function ACLs remain intact. Exact baseline guards reject incompatible child functions. See docs/OPERATIONS-ADMIN-SECURITY.md for release impact, withheld capabilities, account verification and revocation.
+
+
+## 2026-11-03 — Dream Track original-step return (source only)
+
+The existing course gate now keeps supported step 1–7 destinations through access
+code entry and retry, canonicalizing clean paths to existing .html pages. Invalid
+external, encoded, unavailable or suffixed destinations fall back to the overview.
+The edge guard, cookie policy, access-code policy, course content and artwork are
+unchanged. No identity, membership, staff permission or completion is inferred.
+Local actual-handler Chromium/WebKit acceptance passed 398 assertions after the
+original 28 wrong destinations were reproduced; hosted acceptance and release
+authorization remain separate. See docs/DREAM-TRACK-RETURN-20261103.md.
