@@ -1,3 +1,7 @@
+## 2026-11-02 — Course overview availability copy (source only)
+
+The overview now describes all 13 implemented worksheet flows, distinguishing automatic drafts in Lessons 1–4 from explicit load/save in Lessons 5–13. Missing videos 11–13 remain clearly marked. It no longer promises completion tools or says additional worksheets await conversion. Routes, assets, layout, runtime, SQL and accepted content are unchanged. This describes the reviewed candidate after a separately approved installation; it is not a claim that the 13-lesson suite is currently live. Trusted playback, multipart binding, retention and genuine acceptance gates remain held.
+
 ## 2026-11-02 — Private worksheet reload safety (local source only)
 
 Lessons 5–13 now show unsaved changes accurately and require confirmation before an intentional reload replaces them. Cancel issues no RPC. Confirmation rechecks the current session/generation; privacy invalidations still clear immediately without prompting or persistence. Existing owner/revision transaction, content, SQL, SDK, enrollment and completion controls are unchanged. See docs/DISCIPLESHIP-WORKSHEET-RELOAD-SAFETY.md. Isolated Chromium/WebKit regression evidence is recorded separately; no hosted release or provider acceptance is implied.
