@@ -19,6 +19,7 @@ jobs:
           node-version: '22'
       - run: npm ci --ignore-scripts --prefix tools/backend-tests
       - run: TEST_POSTGRES_BIN="$(pg_config --bindir)" node tools/outreach/church-operations-restore.native.mjs
+      - run: TEST_POSTGRES_BIN="$(pg_config --bindir)" node tools/outreach/church-operations-restore.installability.native.mjs
       - run: node tools/backend-tests/node_modules/playwright/cli.js install --with-deps chromium webkit
       - run: node tools/outreach/church-operations-restore.browser.mjs
       - run: git diff --check
