@@ -25,6 +25,7 @@ jobs:
       - run: npm ci --ignore-scripts --prefix tools/backend-tests
       - run: node tools/outreach/campaign-assignment-contract.test.mjs
       - run: node tools/outreach/campaign-decision-adapter.test.mjs
+      - run: node tools/outreach/campaign-workspace-mount.test.mjs
       - name: Install disposable PostgreSQL 17
         shell: bash
         run: |
@@ -42,8 +43,12 @@ jobs:
           esac
       - name: Test exact reviewed SQL consumer boundaries
         run: TEST_POSTGRES_BIN=/usr/lib/postgresql/17/bin node tools/outreach/campaign-foundation-adapter.native.mjs
+      - name: Test decision-only campaign discovery with disposable PostgreSQL
+        run: TEST_POSTGRES_BIN=/usr/lib/postgresql/17/bin node tools/outreach/campaign-directory.native.mjs
       - name: Install Chromium and WebKit
         run: tools/backend-tests/node_modules/.bin/playwright install --with-deps chromium webkit
       - name: Test unmounted consumer with fictional sessions and real local SQL
         run: TEST_POSTGRES_BIN=/usr/lib/postgresql/17/bin node tools/outreach/campaign-decision.browser.mjs
+      - name: Test isolated campaign workspace with fictional sessions and real local SQL
+        run: TEST_POSTGRES_BIN=/usr/lib/postgresql/17/bin node tools/outreach/campaign-workspace.browser.mjs
       - run: git diff --check
