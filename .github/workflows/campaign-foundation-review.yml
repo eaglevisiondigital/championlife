@@ -24,5 +24,21 @@ jobs:
           node-version: '22'
       - run: npm ci --ignore-scripts --prefix tools/backend-tests
       - name: Replay reviewed current schema and campaign candidate locally
-        run: TEST_POSTGRES_BIN="$(pg_config --bindir)" node tools/outreach/campaign-foundation.native.mjs
+        shell: bash
+        run: |
+          # Same bounded PGDG installation pattern as the accepted Partner lane.
+          # The reviewed default ACL fixture uses PostgreSQL 17 MAINTAIN rights.
+          if [ ! -x /usr/lib/postgresql/17/bin/postgres ]; then
+            sudo /usr/share/postgresql-common/pgdg/apt.postgresql.org.sh -y
+            sudo mkdir -p /etc/postgresql-common/createcluster.d
+            printf 'create_main_cluster = false\n' | sudo tee /etc/postgresql-common/createcluster.d/campaign-ci.conf > /dev/null
+            sudo apt-get install --yes --no-install-recommends postgresql-17
+          fi
+          campaign_pg_version="$(/usr/lib/postgresql/17/bin/postgres --version)"
+          printf '%s\n' "$campaign_pg_version"
+          case "$campaign_pg_version" in
+            'postgres (PostgreSQL) 17.'*) ;;
+            *) exit 1 ;;
+          esac
+          TEST_POSTGRES_BIN=/usr/lib/postgresql/17/bin node tools/outreach/campaign-foundation.native.mjs
       - run: git diff --check
