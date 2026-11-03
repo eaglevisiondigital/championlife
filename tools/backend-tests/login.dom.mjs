@@ -95,6 +95,7 @@ for (const code of ['123456', '12345678', '12345', '1234567', '123456789', 'abcd
 const safe = [
   ['/staff-outreach-partners.html', '/staff-outreach-partners.html'],
   ['/staff-people.html', '/staff-people.html'],
+  ['/staff-home.html', '/staff-home.html'],
   ['/staff-people.html?person=synthetic&org=test#details', '/staff-people.html?person=synthetic&org=test#details'],
   ['/my-discipleship.html?q=kids%20youth#progress', '/my-discipleship.html?q=kids%20youth#progress'],
   ['/folder/../staff-people.html', '/staff-people.html']
