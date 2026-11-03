@@ -24,7 +24,7 @@ for(const[engine,options]of[[chromium,{channel:'chrome'}],[webkit,{}]]){
   page.on('pageerror',e=>errors.push(e.message));
   await ctx.route('**/*',async route=>{
    const req=route.request(),u=new URL(req.url());
-   if(u.hostname==='cdn.jsdelivr.net'&&u.pathname==='/npm/@supabase/supabase-js@2.118.0/dist/umd/supabase.js')return route.fulfill({contentType:'text/javascript',body:badSDK?Buffer.concat([sdk,Buffer.from('/* changed */')]):sdk,headers:{'access-control-allow-origin':'*'}});
+   if(u.href==='https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.118.0'&&req.method()==='GET')return route.fulfill({contentType:'text/javascript',body:badSDK?Buffer.concat([sdk,Buffer.from('/* changed */')]):sdk,headers:{'access-control-allow-origin':'*'}});
    if(u.origin===backend){
     const token=req.headers().authorization?.replace('Bearer ',''),sub=(()=>{try{return JSON.parse(Buffer.from(token.split('.')[1],'base64url').toString()).sub}catch{return null}})();
     const user=identities.find(x=>x.id===sub);

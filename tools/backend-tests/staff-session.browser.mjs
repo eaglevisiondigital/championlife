@@ -22,7 +22,9 @@ for(const[engine,options]of[[chromium,{channel:'chrome'}],[webkit,{}]]){
   page.on('pageerror',e=>errors.push(e.message));
   await ctx.route('**/*',async route=>{
    const req=route.request(),u=new URL(req.url());
-   if(u.hostname==='cdn.jsdelivr.net'&&['/npm/@supabase/supabase-js@2','/npm/@supabase/supabase-js@2.118.0/dist/umd/supabase.js'].includes(u.pathname)&&req.method()==='GET')return route.fulfill({contentType:'text/javascript',body:sdk,headers:{'access-control-allow-origin':'*'}});
+   if(u.href==='https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.118.0'&&req.method()==='GET')return route.fulfill({contentType:'text/javascript',body:sdk,headers:{'access-control-allow-origin':'*'}});
+   // Preserve the unchanged production partner-page regression only; never alias a corrected shell SDK URL.
+   if(u.href==='https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2'&&new URL(page.url()).pathname==='/staff-outreach-partners.html'&&req.method()==='GET')return route.fulfill({contentType:'text/javascript',body:sdk,headers:{'access-control-allow-origin':'*'}});
    if(u.origin===backend){
     if(u.pathname==='/auth/v1/user'){const token=req.headers().authorization?.replace('Bearer ','');const user=identities.find(i=>{try{return JSON.parse(Buffer.from(token.split('.')[1],'base64url').toString()).sub===i.id}catch{return false}});return route.fulfill(user?{json:makeSession(user).user}:{status:401,json:{message:'Synthetic session expired'}})}
     if(u.pathname==='/auth/v1/logout'&&req.method()==='POST'){logoutCalls.push(u.searchParams.get('scope'));return route.fulfill({status:204,body:''})}

@@ -17,7 +17,7 @@ for(const [engine,options] of [[chromium,{channel:'chrome'}],[webkit,{}]]){
  const context=await browser.newContext({viewport:{width:1280,height:900}}),page=await context.newPage();
  await context.route('**/*',async route=>{
   const u=new URL(route.request().url());
-  if(u.hostname==='cdn.jsdelivr.net')return route.fulfill({body:sdk,contentType:'text/javascript',headers:{'access-control-allow-origin':'*'}});
+  if(u.href==='https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.118.0'&&route.request().method()==='GET')return route.fulfill({body:sdk,contentType:'text/javascript',headers:{'access-control-allow-origin':'*'}});
   if(u.origin!=='https://review.invalid')throw Error('Unexpected network '+u.origin);
   if(u.pathname==='/assets/js/champion-life-auth.js')return route.fulfill({contentType:'text/javascript',body:`
    window.fixture={denied:false,hold:false,reverse:false,calls:0,release:null,holdStaff:false,denyCampaign:false,network:false,remove:false,mutations:0};

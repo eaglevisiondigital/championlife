@@ -32,12 +32,13 @@ jobs:
       - run: tools/backend-tests/node_modules/.bin/playwright install --with-deps chromium webkit chrome
       - name: Verify exact accepted SDK for offline browser routes
         run: |
-          curl --fail --silent --show-error --location 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.118.0/dist/umd/supabase.js' --output "$RUNNER_TEMP/supabase.js"
+          curl --fail --silent --show-error --location 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.118.0' --output "$RUNNER_TEMP/supabase.js"
           echo "bee24fc29228ed5a370f76a2ba1ca3c399549edad2fef23453c80148856a49af  $RUNNER_TEMP/supabase.js" | sha256sum --check
           echo "SUPABASE_SDK_PATH=$RUNNER_TEMP/supabase.js" >> "$GITHUB_ENV"
       - run: node tools/backoffice-composition/source.test.mjs
       - if: matrix.group == 'shell'
         run: |
+          node tools/backoffice-composition/sdk-artifact.browser.mjs
           node tools/backend-tests/staff-workspace.browser.mjs
           node tools/backend-tests/staff-workspace-discovery.browser.mjs
           node tools/backend-tests/staff-session.browser.mjs

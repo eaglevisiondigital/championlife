@@ -21,17 +21,23 @@
     {
       "path": "staff-home.html",
       "source": "fe0cc5b4219b17d18867c4d2a588f2f42ac82ae3",
-      "sha256": "59c075f6434bd0b3a25cde4a7a30b108a0f7941b47a415b45a8902e26ec078b2"
+      "sha256": "fe8898e9638d91bd310bdd9db831c99ed45b6a92a9e8d76a88e78d6dfa2489fb",
+      "originalSha256": "59c075f6434bd0b3a25cde4a7a30b108a0f7941b47a415b45a8902e26ec078b2",
+      "derivation": "SDK URL only: bind accepted 2.118.0 package-root artifact to unchanged integrity; tests restrict interception to that exact URL."
     },
     {
       "path": "staff-outreach-registration.html",
       "source": "fe0cc5b4219b17d18867c4d2a588f2f42ac82ae3",
-      "sha256": "031b411e8b6148bf36ed9afbcc28a0e0cacda7d05484aae30851be6061036e09"
+      "sha256": "0e4d671dbfa4b02d1aa97d7a4745aa5c4e09b07738951e1b0249fe95635db9a8",
+      "originalSha256": "031b411e8b6148bf36ed9afbcc28a0e0cacda7d05484aae30851be6061036e09",
+      "derivation": "SDK URL only: bind accepted 2.118.0 package-root artifact to unchanged integrity; tests restrict interception to that exact URL."
     },
     {
       "path": "staff-people.html",
       "source": "fe0cc5b4219b17d18867c4d2a588f2f42ac82ae3",
-      "sha256": "774b3581f84685e38608b5c06da986e9701c9b364e063b09184cf6c3774970cd"
+      "sha256": "44db0908beb05103fb1fff753daf9cff1af9eee72dd7d040019c3289548373b8",
+      "originalSha256": "774b3581f84685e38608b5c06da986e9701c9b364e063b09184cf6c3774970cd",
+      "derivation": "SDK URL only: bind accepted 2.118.0 package-root artifact to unchanged integrity; tests restrict interception to that exact URL."
     },
     {
       "path": "tools/site-build/public-files.json",
@@ -51,7 +57,9 @@
     {
       "path": "tools/backend-tests/staff-session.browser.mjs",
       "source": "fe0cc5b4219b17d18867c4d2a588f2f42ac82ae3",
-      "sha256": "0e2d7ddadf371085d7e354ad5d0e9b3a8a7a0fd9db6cb660117f8ef924ee320f"
+      "sha256": "6ba01c39bd9e3ba11d668e1472f9ad94c700f4b2015af590e14ac90198406bd1",
+      "originalSha256": "0e2d7ddadf371085d7e354ad5d0e9b3a8a7a0fd9db6cb660117f8ef924ee320f",
+      "derivation": "SDK URL only: bind accepted 2.118.0 package-root artifact to unchanged integrity; tests restrict interception to that exact URL. Unchanged legacy partner-page regression retains its original @2 fixture only for that page."
     },
     {
       "path": "tools/backend-tests/staff-session.dom.mjs",
@@ -61,12 +69,16 @@
     {
       "path": "tools/backend-tests/staff-workspace-discovery.browser.mjs",
       "source": "fe0cc5b4219b17d18867c4d2a588f2f42ac82ae3",
-      "sha256": "4725123bda30409012bb7b0464b81128064e5ef083815c33f8f09190ab7a6395"
+      "sha256": "8534bd091d517a8518114d8832d59f50861f221dec0f2a6cfb8490b5701cc8f2",
+      "originalSha256": "4725123bda30409012bb7b0464b81128064e5ef083815c33f8f09190ab7a6395",
+      "derivation": "SDK URL only: bind accepted 2.118.0 package-root artifact to unchanged integrity; tests restrict interception to that exact URL."
     },
     {
       "path": "tools/backend-tests/staff-workspace.browser.mjs",
       "source": "fe0cc5b4219b17d18867c4d2a588f2f42ac82ae3",
-      "sha256": "7d6671041a72993a4b1e051d073388b7053297c80d595b5980632d474412ceeb"
+      "sha256": "64a3308dac7561d569b82cca989f83258686d5af5bb99c780d1980f166206410",
+      "originalSha256": "7d6671041a72993a4b1e051d073388b7053297c80d595b5980632d474412ceeb",
+      "derivation": "SDK URL only: bind accepted 2.118.0 package-root artifact to unchanged integrity; tests restrict interception to that exact URL."
     },
     {
       "path": "tools/backend-tests/staff-workspace.native.mjs",
