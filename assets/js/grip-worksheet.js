@@ -6,17 +6,21 @@
  const lesson=Number(root.dataset.gripWorksheet),required=({5:10,6:7,7:7,8:6,9:5,10:5,11:4,12:3,13:4})[lesson];if(!required)return;
  const worksheet=`lesson-${lesson}-workbook-sections-v1`;
  const form=root.querySelector('[data-worksheet-form]'),fields=root.querySelector('[data-worksheet-fields]'),status=root.querySelector('[data-worksheet-status]'),load=root.querySelector('[data-worksheet-load]');
- const answers=[...root.querySelectorAll('[data-worksheet-answer]')],client=window.ChampionLifeAuth?.client;
+ const answers=[...root.querySelectorAll('[data-worksheet-answer]')],sharedAuth=window.ChampionLifeAuth,client=sharedAuth?.client;
  if(answers.length!==required||answers.some((a,i)=>Number(a.dataset.worksheetAnswer)!==i+1))return;
  const auth=client?.auth,rpc=client?.rpc,origin=client?.supabaseUrl,rest=client?.rest;
- const pinned=()=>client?.auth===auth&&client?.rpc===rpc&&client?.rest===rest&&client?.supabaseUrl===origin;
+ const pinned=()=>window.ChampionLifeAuth===sharedAuth&&sharedAuth?.client===client&&client?.auth===auth&&client?.rpc===rpc&&client?.rest===rest&&client?.supabaseUrl===origin;
  let epoch=0,controller=new AbortController(),binding=null,version=null,busy=false,active=true,timer,savedValues=null,cleanMessage='';
  const uuid=x=>typeof x==='string'&&/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/.test(x);
  function clear(message='Sign in, then load your private cloud worksheet.'){
   epoch++;controller.abort();controller=new AbortController();clearTimeout(timer);binding=null;version=null;busy=false;savedValues=null;cleanMessage='';
   answers.forEach(a=>{a.value='';a.defaultValue=''});fields.disabled=true;load.disabled=false;status.textContent=message;
  }
- const current=g=>active&&epoch===g&&!controller.signal.aborted&&pinned();
+ function current(g){
+  // A detached client must not keep its old principal, answers or pending results alive.
+  if(!pinned()){clear('Sign-in connection changed. Reload this page before loading your worksheet.');return false}
+  return active&&epoch===g&&!controller.signal.aborted;
+ }
  async function verified(g,expected){
   if(!current(g)||!auth?.getSession||!auth?.getUser)throw Error('unavailable');
   const s=await auth.getSession(),session=s.data?.session;
@@ -41,6 +45,7 @@
   status.textContent=dirty()?'Unsaved changes. Save responses before loading another copy. Changes are cleared when you leave or your session changes.':cleanMessage;
  }
  async function request(write){
+  if(!pinned()){clear('Sign-in connection changed. Reload this page before loading your worksheet.');return}
   if(!active||busy)return;
   if(binding&&(!pinned()||binding.expires<=Date.now())){clear();return}
   if(write&&(!binding||!version||fields.disabled||binding.expires<=Date.now())){clear();return}

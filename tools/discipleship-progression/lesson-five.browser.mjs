@@ -77,6 +77,49 @@ for(const[engine,options]of[[chromium,process.env.CI?{}:{channel:'chrome'}],[web
   mode='wrong-lesson';await page.locator('[data-worksheet-load]').click();await page.waitForFunction(()=>document.querySelector('[data-worksheet-status]').textContent.includes('unavailable'));ok(await field.isDisabled()&&await field.inputValue()==='','wrong lesson response never renders');mode='';await load();
   hold=true;const doubleWait=new Promise(r=>started=r),beforeDouble=calls.filter(c=>c.p.p_answers).length;await field.fill('one intentional submit');await save.click();await doubleWait;ok(await field.isDisabled(),'pending save prevents user edits');await page.evaluate(()=>{document.querySelector('[data-worksheet-answer="1"]').value='unsubmitted scripted change'});await page.evaluate(()=>document.querySelector('[data-worksheet-form]').dispatchEvent(new Event('submit',{bubbles:true,cancelable:true})));await page.waitForTimeout(30);ok(calls.filter(c=>c.p.p_answers).length===beforeDouble+1,'pending double submit issues exactly one mutation');release();await page.waitForFunction(()=>document.querySelector('[data-worksheet-status]').textContent.startsWith('Saved'));ok(await field.inputValue()==='one intentional submit'&&calls.at(-1).p.p_answers[0].answer==='one intentional submit','saved baseline uses committed response rather than pending DOM edits');
 
+  // Shared-client replacement is not an event on the captured SDK instance. Old handlers
+  // must fail closed even when that old instance still has a valid fictional A session.
+  const replaceShared=async kind=>page.evaluate(kind=>{
+   window.originalSharedAuth=window.ChampionLifeAuth;window.originalSharedClient=ChampionLifeAuth.client;
+   if(kind==='owner')window.ChampionLifeAuth={...ChampionLifeAuth};
+   else ChampionLifeAuth.client={supabaseUrl:originalSharedClient.supabaseUrl,auth:{},rest:{},rpc(){throw Error('replacement must not be called')}};
+  },kind);
+  const restoreShared=async()=>page.evaluate(()=>{window.ChampionLifeAuth=window.originalSharedAuth;ChampionLifeAuth.client=window.originalSharedClient});
+  const staleSubmit=async()=>page.evaluate(()=>document.querySelector('[data-worksheet-form]').dispatchEvent(new Event('submit',{bubbles:true,cancelable:true})));
+  for(const kind of['client','owner']){
+   await field.fill('must not save through old binding');const beforeBinding=calls.length;
+   await replaceShared(kind);await staleSubmit();
+   ok(await field.isDisabled()&&await field.inputValue()===''&&calls.length===beforeBinding,`${kind} replacement clears private answers and retained Save sends zero RPCs`);
+   await page.locator('[data-worksheet-load]').click();
+   ok(calls.length===beforeBinding&&await field.isDisabled(),`${kind} replacement cannot silently authorize through captured client`);
+   await restoreShared();await staleSubmit();ok(calls.length===beforeBinding,'restoring original binding still requires explicit fresh load');await load();
+  }
+  hold=true;const loadWait=new Promise(r=>started=r);await page.locator('[data-worksheet-load]').click();await loadWait;
+  await replaceShared('client');release();await page.waitForFunction(()=>document.querySelector('[data-worksheet-status]').textContent.includes('connection changed'));
+  ok(await field.isDisabled()&&await field.inputValue()==='','delayed load cannot display through detached shared client');await restoreShared();await load();
+  hold=true;const saveWait=new Promise(r=>started=r);await field.fill('submitted before replacement');await save.click();await saveWait;const sentBeforeReplacement=calls.length;
+  await replaceShared('client');release();await page.waitForFunction(()=>document.querySelector('[data-worksheet-status]').textContent.includes('connection changed'));
+  await staleSubmit();ok(await field.isDisabled()&&await field.inputValue()===''&&calls.length===sentBeforeReplacement,'submitted save may commit but cannot render or issue another mutation after binding change');
+  await restoreShared();await load();ok(await field.inputValue()==='submitted before replacement','fresh authorization reconciles already submitted save without retry');
+  hold=true;const mutationWait=new Promise(r=>started=r);await field.fill('captured field invalidation');await save.click();await mutationWait;
+  await page.evaluate(()=>{window.originalRpc=ChampionLifeAuth.client.rpc;ChampionLifeAuth.client.rpc=function(){throw Error('must not run altered RPC')}});release();
+  await page.waitForFunction(()=>document.querySelector('[data-worksheet-status]').textContent.includes('connection changed'));
+  ok(await field.isDisabled()&&await field.inputValue()==='','changed captured RPC during pending save clears prior displayed values');
+  await page.evaluate(()=>{ChampionLifeAuth.client.rpc=window.originalRpc});await load();
+  // Even an obsolete generation can discover that the controller's shared binding is gone.
+  await page.evaluate(()=>{
+   const client=ChampionLifeAuth.client,original=client.auth.getUser;let first=true;
+   window.originalGetUser=original;window.oldUserStarted=false;
+   client.auth.getUser=async function(...args){const result=await original.apply(this,args);if(first){first=false;window.oldUserStarted=true;await new Promise(resolve=>window.releaseOldUser=resolve)}return result};
+  });
+  await page.locator('[data-worksheet-load]').click();await page.waitForFunction(()=>window.oldUserStarted);
+  await page.evaluate(()=>dispatchEvent(new Event('champion-auth-invalid')));await load();await field.fill('newer generation private draft');
+  await replaceShared('client');await page.evaluate(()=>window.releaseOldUser());
+  await page.waitForFunction(()=>document.querySelector('[data-worksheet-status]').textContent.includes('connection changed'));
+  ok(await field.isDisabled()&&await field.inputValue()==='','obsolete Auth result detects shared-client replacement and clears newer retained DOM');
+  await restoreShared();await page.evaluate(()=>{ChampionLifeAuth.client.auth.getUser=window.originalGetUser});await load();
+  await sign(B);await load();ok(!await field.inputValue(),'fresh B cannot inherit A response after client recovery');await sign(A);await load();ok(await field.inputValue()==='captured field invalidation','fresh A restores only its independently authorized cloud copy');
+
   if(process.env.EVIDENCE_DIR){await mkdir(process.env.EVIDENCE_DIR,{recursive:true});await page.locator('[data-grip-worksheet]').scrollIntoViewIfNeeded();await page.evaluate(()=>scrollBy(0,-100));await page.screenshot({path:path.join(process.env.EVIDENCE_DIR,`lesson${lesson}-${engine.name()}-${width}.png`)})}
   await ctx.close();
  }}finally{await browser.close()}
