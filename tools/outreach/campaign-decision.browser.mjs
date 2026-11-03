@@ -13,7 +13,7 @@ const shell=(await readFile(path.join(ROOT,'staff-home.html'),'utf8')).replace(/
 const mutations=()=>host.requests.filter(x=>x.action==='followup_save').length;
 try{
  for(const [engine,browserType] of [['chromium',chromium],['webkit',webkit]])for(const [size,viewport] of [['desktop',{width:1440,height:1000}],['mobile',{width:390,height:844}]]){
-  await host.reset();const browser=await browserType.launch({headless:true}),context=await browser.newContext({viewport}),page=await context.newPage();let hold=null,release=null,dropped=false,deniedContext=false;
+  await host.reset();const browser=await browserType.launch({headless:true});try{const context=await browser.newContext({viewport}),page=await context.newPage();let hold=null,release=null,dropped=false,deniedContext=false;
   const unexpected=[];
   await context.route('**/*',async route=>{
    const url=new URL(route.request().url());if(url.origin!==origin){unexpected.push(url.origin);return route.abort()}
@@ -63,7 +63,7 @@ try{
   const prior=mutations();await page.evaluate(()=>{const form=document.querySelector('form');form.dispatchEvent(new Event('submit',{bubbles:true,cancelable:true}));form.dispatchEvent(new Event('submit',{bubbles:true,cancelable:true}))});await page.waitForFunction(()=>view.snapshot()?.state==='detail'||view.snapshot()?.state==='unavailable');check(mutations()===prior+1,label+'double submission one mutation');
   if(!seeded){await host.seedAssigned(49);seeded=true}await page.evaluate(()=>view.list());check((await state()).rows.length===50,label+'first page fifty');await page.evaluate(()=>window.oldNext=[...document.querySelectorAll('button')].find(x=>x.textContent==='Next page'));await page.getByRole('button',{name:'Next page',exact:true}).click();await page.waitForFunction(()=>view.snapshot()?.state==='list'&&view.snapshot().page===1);check((await state()).rows.length===1,label+'last page remaining record');check(await page.getByRole('button',{name:'Next page',exact:true}).isDisabled(),label+'last page next disabled');await page.evaluate(()=>oldNext.click());await page.waitForTimeout(30);check((await state()).page===1,label+'detached pagination cannot navigate');await page.getByRole('button',{name:'Previous page',exact:true}).click();await page.waitForFunction(()=>view.snapshot()?.state==='list'&&view.snapshot().page===0);check((await state()).rows.length===50,label+'previous page works');
   await open();check(await page.locator('label').filter({hasText:'Follow-up status'}).count()===1,label+'accessible form label');check(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),label+'no horizontal overflow');check(await page.locator('.staff-propel-credit').getAttribute('href')==='https://kingdompropel.com/',label+'approved branding intact');check(unexpected.length===0,label+'no external network');
-  if(evidence)await page.screenshot({path:path.join(evidence,engine+'-'+size+'.png'),fullPage:true});await page.evaluate(()=>view.close());await context.close();await browser.close();
+  if(evidence)await page.screenshot({path:path.join(evidence,engine+'-'+size+'.png'),fullPage:true});await page.evaluate(()=>view.close());await context.close();}finally{await browser.close()}
  }
  console.log(JSON.stringify({passed:passes,failed:0,nativeMutations:mutations(),auditRows:(await host.audit()).length}));
 }finally{await host.close()}
