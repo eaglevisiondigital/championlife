@@ -6,7 +6,7 @@
  const changed=()=>Object.assign(Error('Giving session changed.'),{code:'SESSION_CHANGED'});
  async function readSession(auth){try{const value=auth?await auth.getSession():null;if(value?.error)throw changed();return value?.data?.session;}catch{throw changed();}}
  auth?.onAuthStateChange((event,session)=>{const id=session?.user?.id??null;if((event!=='INITIAL_SESSION'&&event!=='TOKEN_REFRESHED')||(knownUser!==undefined&&knownUser!==id))generation++;knownUser=id;});
- async function call(payload,{signal}={}){
+ async function call(payload,{signal}={}){try{
   if(!attached())throw changed();
   const c=C(),stamp=generation;
   if(c?.enabled!==true||c.project!==window.CHAMPION_LIFE_SUPABASE?.url||c.origin!==location.origin||!/^https:\/\/[a-z0-9]{20}\.supabase\.co$/.test(c.project)||['exdocjbmylgxssanymjk','niyovbgoalulzkhbvebt','bkbmjisprwmkptywtmih'].includes(new URL(c.project).hostname.split('.')[0]))throw Error('Giving is unavailable.');
@@ -22,6 +22,6 @@
   if(!unchanged()||(session?.user?.id??null)!==(latest?.user?.id??null))throw changed();
   if([401,403].includes(r.status))throw changed();
   if(!r.ok)throw Error(value.status==='held'?'Giving is unavailable.':'We are confirming this result. Do not submit it again.');return value;
- }
+ }catch(error){if(!attached())throw changed();throw error;}}
  window.NmiGivingClient=Object.freeze({call,configuration:C,element:(tag,text,attrs={})=>{const e=document.createElement(tag);if(text!==undefined&&text!==null)e.textContent=text;for(const[k,v]of Object.entries(attrs))e.setAttribute(k,v);return e;}});
 })();
