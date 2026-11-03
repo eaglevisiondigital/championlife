@@ -22,8 +22,11 @@ on:
       - '.github/workflows/discipleship-source-review.yml'
 permissions:
   contents: read
+# The former serial job exceeded 15 minutes during Lesson 13 (run 41644241046).
+# Separate runners preserve every command and both browser engines/viewport checks.
+# No job uses continue-on-error; one failing group cannot cancel another group.
 jobs:
-  source-contract:
+  database-and-contracts:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -44,17 +47,73 @@ jobs:
       - run: node tools/discipleship-progression/worksheet-transactions.browser.mjs
       - run: node tools/discipleship-progression/lesson-five.database.mjs
       - run: TEST_POSTGRES_BIN="$(pg_config --bindir)" TEST_NATIVE_PG=1 node tools/discipleship-progression/lesson-five.database.mjs
-      - run: node tools/discipleship-progression/lesson-five.browser.mjs
       - run: node tools/discipleship-progression/lessons-six-eight.database.mjs
       - run: TEST_POSTGRES_BIN="$(pg_config --bindir)" TEST_NATIVE_PG=1 node tools/discipleship-progression/lessons-six-eight.database.mjs
-      - run: WORKSHEET_LESSON=6 node tools/discipleship-progression/lesson-five.browser.mjs
-      - run: WORKSHEET_LESSON=7 node tools/discipleship-progression/lesson-five.browser.mjs
-      - run: WORKSHEET_LESSON=8 node tools/discipleship-progression/lesson-five.browser.mjs
       - run: node tools/discipleship-progression/lessons-nine-thirteen.database.mjs
       - run: TEST_POSTGRES_BIN="$(pg_config --bindir)" TEST_NATIVE_PG=1 node tools/discipleship-progression/lessons-nine-thirteen.database.mjs
+      - run: git diff --check
+
+  worksheets-5-7:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm ci --ignore-scripts --prefix tools/backend-tests
+      - run: tools/backend-tests/node_modules/.bin/playwright install --with-deps chromium webkit
+      - run: node tools/discipleship-progression/lesson-five.browser.mjs
+      - run: WORKSHEET_LESSON=6 node tools/discipleship-progression/lesson-five.browser.mjs
+      - run: WORKSHEET_LESSON=7 node tools/discipleship-progression/lesson-five.browser.mjs
+      - run: git diff --check
+
+  worksheets-8-10:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm ci --ignore-scripts --prefix tools/backend-tests
+      - run: tools/backend-tests/node_modules/.bin/playwright install --with-deps chromium webkit
+      - run: WORKSHEET_LESSON=8 node tools/discipleship-progression/lesson-five.browser.mjs
       - run: WORKSHEET_LESSON=9 node tools/discipleship-progression/lesson-five.browser.mjs
       - run: WORKSHEET_LESSON=10 node tools/discipleship-progression/lesson-five.browser.mjs
+      - run: git diff --check
+
+  worksheets-11-13:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm ci --ignore-scripts --prefix tools/backend-tests
+      - run: tools/backend-tests/node_modules/.bin/playwright install --with-deps chromium webkit
       - run: WORKSHEET_LESSON=11 node tools/discipleship-progression/lesson-five.browser.mjs
       - run: WORKSHEET_LESSON=12 node tools/discipleship-progression/lesson-five.browser.mjs
       - run: WORKSHEET_LESSON=13 node tools/discipleship-progression/lesson-five.browser.mjs
       - run: git diff --check
+
+  # Keep the existing check name, but never report PASS for skipped/cancelled jobs.
+  source-contract:
+    if: ${{ always() }}
+    needs: [database-and-contracts, worksheets-5-7, worksheets-8-10, worksheets-11-13]
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - name: Require every original test group to pass
+        env:
+          DATABASE_RESULT: ${{ needs.database-and-contracts.result }}
+          EARLY_RESULT: ${{ needs.worksheets-5-7.result }}
+          MIDDLE_RESULT: ${{ needs.worksheets-8-10.result }}
+          FINAL_RESULT: ${{ needs.worksheets-11-13.result }}
+        shell: bash
+        run: |
+          test "$DATABASE_RESULT" = success
+          test "$EARLY_RESULT" = success
+          test "$MIDDLE_RESULT" = success
+          test "$FINAL_RESULT" = success
