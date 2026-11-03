@@ -1,3 +1,7 @@
+## 2026-11-03 — Main-compatible People workflow
+
+The accepted PR85 People implementation also runs through main's existing direct HTML mount and shared Auth/session/common helpers. Optional StaffWorkspace integration creates no dependency on the unpublished shell. Existing canonical Person/task/permission/audit SQL supplies creation and date/status operations; no service, schema, identity bridge or registration package is added. The only companion public edit binds this People page to the accepted 2.118.0 package-root SDK/SRI. See [exact composition](docs/PEOPLE-RELEASE-PHASE2-20261103.md).
+
 ## 2026-10-23 — Reusable staff presentation and session header
 
 `staff-portal.css` is opt-in through `body.staff-portal`; it does not restyle public pages. `staff-session.js` adds the same email/logout header to People, Registration/Check-In and Partner Review, using the existing ChampionLifeAuth client. It owns no authorization, RPC or data model. Existing modules retain their permission checks and async generation guards. Protected module mounts are detached before sign-out and before bfcache snapshots, so late responses cannot repopulate the visible workspace. See `docs/STAFF-PORTAL-POLISH.md`.

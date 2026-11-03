@@ -1,3 +1,7 @@
+## 2026-11-03 — Bounded independent People candidate
+
+The authorized phase-two integration selects existing accepted People source directly onto current main, with only the necessary People-page SDK pin. No new product policy, permission, grant, SQL installation, registration restoration or staff shell is adopted. PR84 remains frozen; future stacked integration must retain the newer People source and corrected SDK rather than overwrite either. Draft publication and passing source/CI checks do not authorize hosted acceptance or production release.
+
 ## 2026-10-23 — Bounded staff UI/logout release
 
 Reuse the existing staff authentication client and current production permission model. Show account identity explicitly to avoid confusing an existing church session with a newly requested owner login. Use current-session sign-out rather than terminating unrelated device sessions. Hide the workspace immediately, preserve unrelated browser storage and provide retry on failure. Scope shared styling to the three deployed staff pages; do not import unreleased staff modules or alter public registration behavior. Website release and real-account verification require the separate production approval; no database action is part of this candidate.
