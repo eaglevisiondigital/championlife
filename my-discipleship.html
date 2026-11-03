@@ -61,6 +61,7 @@
       </div>
     </section>
 
+  <p id="outreachResourceStatus" role="status" hidden>We could not check your St. Lucia resources right now. Your course is available below. Refresh to try again.</p>
   <section class="dash-outreach" id="readerResources">
     <span class="eyebrow">Your Reading Resources</span><h2>King Kind Digital Book</h2>
     <p>For verified general-resource, Bessemer and Huntsville registrants. The private reader checks your eligibility before opening the book.</p>
@@ -101,6 +102,7 @@
     document.getElementById('dashLoading').hidden=false;
     document.getElementById('dashLoading').textContent='Verifying your account...';
     document.getElementById('stLuciaResources').classList.remove('show');
+    document.getElementById('outreachResourceStatus').hidden=true;
     document.getElementById('readerResources').classList.remove('show');
   }
   const lessons=[
@@ -127,13 +129,18 @@
     if(stamp!==generation)return;
     if(!u){location.href=login;return}
     activeId=u.id;
-    const outreach=auth.getOutreachRegistration ? await auth.getOutreachRegistration('st_lucia_2026',u.id) : null;
+    let outreach=null,outreachUnavailable=false;
+    try{outreach=auth.getOutreachRegistration ? await auth.getOutreachRegistration('st_lucia_2026',u.id) : null}
+    catch{outreachUnavailable=true}
+    if(stamp!==generation)return;
+    // Optional outreach availability is separate from the course's fresh identity check.
     const data=await auth.getDashboard(u.id);
     if(stamp!==generation||data?.user?.id!==u.id)return;
     const session=await auth.getSession();
     if(stamp!==generation)return;
     if(session?.user?.id!==u.id||!session.expires_at||session.expires_at*1000<=Date.now()){clear();return}
     document.getElementById('readerResources').classList.add('show');
+    document.getElementById('outreachResourceStatus').hidden=!outreachUnavailable;
     const profile=data?.profile||{};
     if(outreach) document.getElementById('stLuciaResources')?.classList.add('show');
     const name=((profile.first_name||'')+' '+(profile.last_name||'')).trim() || 'Champion Life Learner';

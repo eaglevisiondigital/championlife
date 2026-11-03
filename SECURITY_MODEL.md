@@ -86,3 +86,8 @@ No API role can execute the new private SECURITY INVOKER writer or read/write it
 ## 2026-11-02 — Member activity is not completion authority
 
 The member dashboard no longer treats owner-writable lesson_progress rows as proof of completed lessons. Only valid numbered activity records affect its bounded count; absence does not imply no worksheet or watching. Existing verified-user/course filters and page account/generation/expiry checks are unchanged. No raw answers, notes, prayer or trusted-audit fields are newly queried or exposed by this correction. Existing private-reader eligibility remains authoritative. See docs/MEMBER-DASHBOARD-STATUS.md; browser fixtures are not genuine Auth or provider evidence.
+
+
+## 2026-11-03 — Independent member/outreach failure boundaries
+
+An optional St. Lucia lookup failure cannot establish or replace course authorization. The member page still requires the existing shared helper's fresh verified user, owner/course-filtered reads, bound-session check and its final same-user/unexpired session before showing any private content or partial-availability notice. Account/page invalidation stops stale lookup continuations before another course request. Unavailable outreach never implies linked registration, and raw provider diagnostics are not rendered. Existing St. Lucia claim idempotency, RLS, Auth helper, SDK and database objects are unchanged; no automatic retry or new enrollment/People writes. Tests use fictional intercepted provider transport only. See docs/MEMBER-DASHBOARD-STATUS.md.
