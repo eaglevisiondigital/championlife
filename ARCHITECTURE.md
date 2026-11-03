@@ -1,3 +1,7 @@
+## 2026-10-31 — Incremental staff shell composition
+
+The first local shell composes existing staff-workspace and campaign-registration authorization responses instead of importing historical shared-platform SQL. One existing Auth client and logout component serve staff home, People and registration. Context navigation reloads an allowlisted existing destination and reauthorizes it. Unreleased NMI, advanced decisions and provider modules are not loaded. Exact source overlaps and future composition boundaries are documented in [UNIFIED-STAFF-SHELL.md](docs/UNIFIED-STAFF-SHELL.md).
+
 ## 2026-11-02 — Actual Partner provider installability
 
 A dedicated application DB alone cannot preserve the accepted live Auth/assignment/People transaction merely by copying sessions. A complete isolated acceptance project is conditional on its own exact managed-Auth profile and independent gates; it is not a second production login. New offline metadata assessment has no authorization or installation capability. [Scope and next technical gate](tools/partner-platform/PROVIDER-INSTALLABILITY.md).
@@ -30,9 +34,18 @@ The existing canonical repository can execute its unchanged locking query throug
 
 Added a server-only transactional reader that reuses exact accepted Issue50 A/B/B2 identity receipts/reviews and the existing canonical adapter. Positive reads lock existing source/map, review/receipt/audit, Person/account and authority rows; missing/changed provenance remains unverified. The disposable fixture generates evidence through the accepted writer. No migration, connection/role or public mount; current metadata stays null. Synthetic Auth catalog pins deliberately prevent claiming real-provider readiness. PGlite and focused Node validation are recorded in [the source contract](docs/PARTNER-CANONICAL-REPOSITORY-20261101.md); native Linux contention CI and independent review remain gates.
 
-## 2026-10-31 — Incremental staff shell composition
+## 2026-11-01 — Assigned Partner metadata backend candidate
 
-The first local shell composes existing staff-workspace and campaign-registration authorization responses instead of importing historical shared-platform SQL. One existing Auth client and logout component serve staff home, People and registration. Context navigation reloads an allowlisted existing destination and reauthorizes it. Unreleased NMI, advanced decisions and provider modules are not loaded. Exact source overlaps and future composition boundaries are documented in [UNIFIED-STAFF-SHELL.md](docs/UNIFIED-STAFF-SHELL.md).
+Local source only: explicit campaign/Partner/worker assignment, locked active Auth session and metadata-only read RPC. No issuer or automatic People identity claim; `personId` remains null pending independently reviewed linkage. Existing financial intake authority and website PR61 are separate. See [implementation boundary and release gates](docs/PARTNER-ASSIGNED-METADATA-20261101.md). No migration, staff grant, public runtime activation or hosted acceptance has occurred.
+
+## 2026-11-01 — Partner current-base integration and private revocation
+
+Exact reviewed Outreach ancestry is reconciled into the Partner draft without changing accepted runtime bytes. A separate private-only revocation primitive prepares locked authority, expected revision, idempotency and immutable audit rollback; no application role can execute it and no Partner issuer policy is inferred. People linking remains null/unverified pending complete unreleased Issue50 receipt/review provenance. See [scope and gates](docs/PARTNER-PRIVATE-REVOCATION-20261101.md). Local source only; no production migration, grant, website activation or public endpoint.
+
+
+## 2026-11-01 — Private Partner issuance and provenance continuation
+
+Partner assignment preparation reuses existing three Partner tables and campaign audit; it adds no Person/account store and no public issuer. The optional canonical identity adapter jointly validates current source, receipt, review, audit and account binding through a trusted serialized repository that is not yet installed. Source fingerprint pins are dependency provenance, not deployed proof.
 
 ## 2026-10-23 — Reusable staff presentation and session header
 
@@ -56,16 +69,3 @@ The Outreach feature and dedicated sharing page use one static HTML audio player
 ## Organization operations candidate — 2026-10-22
 
 The bounded production-baseline security package projects existing registrations.view/manage and people.export into campaign operations only, using each campaign's exact organization. It preserves the per-campaign model and separates staff.manage from campaign configuration/operations. Financial intake, linked follow-up and relationship history have additional server-side finance boundaries. Two tenant assignments remain separate; no all-organization role or unaccepted unified module is introduced. See docs/OPERATIONS-ADMIN-SECURITY.md. Local only; full child-package integration remains separately reviewed.
-
-## 2026-11-01 — Assigned Partner metadata backend candidate
-
-Local source only: explicit campaign/Partner/worker assignment, locked active Auth session and metadata-only read RPC. No issuer or automatic People identity claim; `personId` remains null pending independently reviewed linkage. Existing financial intake authority and website PR61 are separate. See [implementation boundary and release gates](docs/PARTNER-ASSIGNED-METADATA-20261101.md). No migration, staff grant, public runtime activation or hosted acceptance has occurred.
-
-## 2026-11-01 — Partner current-base integration and private revocation
-
-Exact reviewed Outreach ancestry is reconciled into the Partner draft without changing accepted runtime bytes. A separate private-only revocation primitive prepares locked authority, expected revision, idempotency and immutable audit rollback; no application role can execute it and no Partner issuer policy is inferred. People linking remains null/unverified pending complete unreleased Issue50 receipt/review provenance. See [scope and gates](docs/PARTNER-PRIVATE-REVOCATION-20261101.md). Local source only; no production migration, grant, website activation or public endpoint.
-
-
-## 2026-11-01 — Private Partner issuance and provenance continuation
-
-Partner assignment preparation reuses existing three Partner tables and campaign audit; it adds no Person/account store and no public issuer. The optional canonical identity adapter jointly validates current source, receipt, review, audit and account binding through a trusted serialized repository that is not yet installed. Source fingerprint pins are dependency provenance, not deployed proof.

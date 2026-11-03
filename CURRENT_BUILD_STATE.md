@@ -1,3 +1,11 @@
+## 2026-10-31 — Unified shell independent review corrections
+
+Fresh adversarial review of e18062467c8a2a2e6af7239f12e2a3ca7d035e1d found a parallel-discovery denial delay and order-sensitive permission comparison. The narrowly corrected shell processes each discovery failure before waiting for its sibling and compares canonical permission sets while preserving display order. A permanent independent browser regression covers both discovery directions, late responses, retained mutation attempts, network errors, true permission removal and fresh reauthorization. Original sealed evidence remains preserved. No SQL, grants, payment or provider configuration changes. Draft implementation review and GitHub CI are authorized; merge, deployment and hosted acceptance remain separate gates. See docs/UNIFIED-STAFF-SHELL.md.
+
+## 2026-11-03 — Partner continuity merge-conflict correction
+
+Relocated only existing Partner continuity blocks to avoid concurrent prepend/append conflicts with exact Outreach base `eb7ad80c322fe3664273c38f56d176b1e28e1583`. All runtime, SQL, permissions, deployment configuration and provider gates remain identical to Partner `6a82380396fb58b8821a22c224a3bfb7d10b7ad6`, including its organization-specific financial intake handoff. This is a documentation conflict correction, not a new feature or imported base history. A clean virtual composition must retain the base People/registration blobs and the Partner handoff blob; source review/build checks are distinct from genuine Auth acceptance and release approval.
+
 ## 2026-11-02 — Actual Partner provider installability
 
 Actual bounded read-only provider metadata now establishes two concrete Partner installation blockers: managed Auth tables differ from the exact fictional fixture pins, and effective PUBLIC TEMP conflicts with the restricted execution role. Offline assessment reports NO_GO without changing pins or runtime; 19 new focused checks pass. No provider row reads, credentials, grants, installation or host mount. [Scope and next technical gate](tools/partner-platform/PROVIDER-INSTALLABILITY.md).
@@ -38,9 +46,33 @@ The canonical repository candidate `34197a6bc4acde93d192889534d9748a65058136` pa
 
 Added a server-only transactional reader that reuses exact accepted Issue50 A/B/B2 identity receipts/reviews and the existing canonical adapter. Positive reads lock existing source/map, review/receipt/audit, Person/account and authority rows; missing/changed provenance remains unverified. The disposable fixture generates evidence through the accepted writer. No migration, connection/role or public mount; current metadata stays null. Synthetic Auth catalog pins deliberately prevent claiming real-provider readiness. PGlite and focused Node validation are recorded in [the source contract](docs/PARTNER-CANONICAL-REPOSITORY-20261101.md); native Linux contention CI and independent review remain gates.
 
-## 2026-10-31 — Unified shell independent review corrections
+## 2026-11-01 — Assigned Partner metadata backend candidate
 
-Fresh adversarial review of e18062467c8a2a2e6af7239f12e2a3ca7d035e1d found a parallel-discovery denial delay and order-sensitive permission comparison. The narrowly corrected shell processes each discovery failure before waiting for its sibling and compares canonical permission sets while preserving display order. A permanent independent browser regression covers both discovery directions, late responses, retained mutation attempts, network errors, true permission removal and fresh reauthorization. Original sealed evidence remains preserved. No SQL, grants, payment or provider configuration changes. Draft implementation review and GitHub CI are authorized; merge, deployment and hosted acceptance remain separate gates. See docs/UNIFIED-STAFF-SHELL.md.
+Local source only: explicit campaign/Partner/worker assignment, locked active Auth session and metadata-only read RPC. No issuer or automatic People identity claim; `personId` remains null pending independently reviewed linkage. Existing financial intake authority and website PR61 are separate. See [implementation boundary and release gates](docs/PARTNER-ASSIGNED-METADATA-20261101.md). No migration, staff grant, public runtime activation or hosted acceptance has occurred.
+
+## 2026-11-01 — Partner current-base integration and private revocation
+
+Exact reviewed Outreach ancestry is reconciled into the Partner draft without changing accepted runtime bytes. A separate private-only revocation primitive prepares locked authority, expected revision, idempotency and immutable audit rollback; no application role can execute it and no Partner issuer policy is inferred. People linking remains null/unverified pending complete unreleased Issue50 receipt/review provenance. See [scope and gates](docs/PARTNER-PRIVATE-REVOCATION-20261101.md). Local source only; no production migration, grant, website activation or public endpoint.
+
+
+## 2026-11-01 — Private Partner issuance and provenance continuation
+
+Prepared private-only Partner access issuance and exact decision assignment/reassignment with current authority locks, CAS and immutable audit. No application role can execute it. Added an unwired server-only canonical provenance adapter; absent accepted Issue50 provider keeps current metadata null/unverified. Native Mac launch is blocked by IPC capacity; actual disposable SQL tests are delegated to existing GitHub CI before security acceptance. See docs/PARTNER-ISSUANCE-PROVENANCE-20261101.md.
+## 2026-11-01 — Partner canonical binding prerequisite verification
+
+Preserved accepted issuance and identity adapter; added actual-schema sequential denial and native authority serialization coverage. The replayed baseline lacks Issue50 identity request/review/care tables, so canonical repository wiring remains held and metadata stays null/unverified. Local 22 PGlite checks and 255 Partner/shared-backend Node tests PASS. Native concurrency is prepared for independent review and Linux CI, not executed on the IPC-limited Mac. No runtime, migration, grant, public or hosted changes. See [source mapping and remaining gates](docs/PARTNER-CANONICAL-BINDING-PREREQUISITES-20261101.md).
+
+## 2026-11-01 — Partner owned PostgreSQL acceptance connection
+
+Source-only follow-on to c6026cb6. New unmounted disposable-socket pg8.23.1 binding
+owns one fresh idle connection per identity read and closes it on every outcome;
+caller transactions, pooled identity reuse and late abort results cannot survive
+that lifetime. 16 new local checks plus 64 existing repository checks pass; 14
+native driver/session checks prepared for the existing PG18 CI harness. Runtime
+SQL, provenance manifests, website and shared staff source unchanged. Hosted
+least-privilege execution remains held: row locks require more than SELECT, and
+broad private-table owner/grants are not an acceptable binding. No live role,
+provider, migration or PR61 change. See canonical repository documentation.
 
 ## 2026-10-31 — First unified staff shell (local, not released)
 
@@ -133,31 +165,3 @@ Local full regression and responsive browser checks pass. Final physical-device
 acceptance and separately approved production Storage/website release remain gates.
 Personal notes/highlights are being prepared on a separate branch and are not part
 of this release. No production migration, upload, merge or deployment performed.
-
-## 2026-11-01 — Assigned Partner metadata backend candidate
-
-Local source only: explicit campaign/Partner/worker assignment, locked active Auth session and metadata-only read RPC. No issuer or automatic People identity claim; `personId` remains null pending independently reviewed linkage. Existing financial intake authority and website PR61 are separate. See [implementation boundary and release gates](docs/PARTNER-ASSIGNED-METADATA-20261101.md). No migration, staff grant, public runtime activation or hosted acceptance has occurred.
-
-## 2026-11-01 — Partner current-base integration and private revocation
-
-Exact reviewed Outreach ancestry is reconciled into the Partner draft without changing accepted runtime bytes. A separate private-only revocation primitive prepares locked authority, expected revision, idempotency and immutable audit rollback; no application role can execute it and no Partner issuer policy is inferred. People linking remains null/unverified pending complete unreleased Issue50 receipt/review provenance. See [scope and gates](docs/PARTNER-PRIVATE-REVOCATION-20261101.md). Local source only; no production migration, grant, website activation or public endpoint.
-
-
-## 2026-11-01 — Private Partner issuance and provenance continuation
-
-Prepared private-only Partner access issuance and exact decision assignment/reassignment with current authority locks, CAS and immutable audit. No application role can execute it. Added an unwired server-only canonical provenance adapter; absent accepted Issue50 provider keeps current metadata null/unverified. Native Mac launch is blocked by IPC capacity; actual disposable SQL tests are delegated to existing GitHub CI before security acceptance. See docs/PARTNER-ISSUANCE-PROVENANCE-20261101.md.
-## 2026-11-01 — Partner canonical binding prerequisite verification
-
-Preserved accepted issuance and identity adapter; added actual-schema sequential denial and native authority serialization coverage. The replayed baseline lacks Issue50 identity request/review/care tables, so canonical repository wiring remains held and metadata stays null/unverified. Local 22 PGlite checks and 255 Partner/shared-backend Node tests PASS. Native concurrency is prepared for independent review and Linux CI, not executed on the IPC-limited Mac. No runtime, migration, grant, public or hosted changes. See [source mapping and remaining gates](docs/PARTNER-CANONICAL-BINDING-PREREQUISITES-20261101.md).
-
-## 2026-11-01 — Partner owned PostgreSQL acceptance connection
-
-Source-only follow-on to c6026cb6. New unmounted disposable-socket pg8.23.1 binding
-owns one fresh idle connection per identity read and closes it on every outcome;
-caller transactions, pooled identity reuse and late abort results cannot survive
-that lifetime. 16 new local checks plus 64 existing repository checks pass; 14
-native driver/session checks prepared for the existing PG18 CI harness. Runtime
-SQL, provenance manifests, website and shared staff source unchanged. Hosted
-least-privilege execution remains held: row locks require more than SELECT, and
-broad private-table owner/grants are not an acceptable binding. No live role,
-provider, migration or PR61 change. See canonical repository documentation.

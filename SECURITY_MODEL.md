@@ -1,3 +1,7 @@
+## Unified shell discovery correction — 2026-10-31
+
+Process every discovery response independently: an explicit denial must immediately invalidate the workspace even if a concurrent discovery RPC remains pending. Late responses cannot reverse terminal invalidation. Canonical comparison treats organization, campaign, grant and department arrays as unordered sets; an actual change still retires access. No change to authoritative PostgreSQL authorization or session-retirement requirements. Synthetic browser proof is not provider-backed revocation evidence.
+
 ## 2026-11-02 — Actual Partner provider installability
 
 Original 23-function/17-relation pins remain untouched. Actual managed Auth metadata does not match local minimal fixture definitions; PUBLIC TEMP is inherited by any login. Do not weaken pins, replace Auth tables, copy stale sessions, use owner/service-role credentials, or alter shared ACLs to obtain a pass. [Scope and next technical gate](tools/partner-platform/PROVIDER-INSTALLABILITY.md).
@@ -30,9 +34,21 @@ A fixed empty-search-path owner-definer routine contains the required row-lock p
 
 Added a server-only transactional reader that reuses exact accepted Issue50 A/B/B2 identity receipts/reviews and the existing canonical adapter. Positive reads lock existing source/map, review/receipt/audit, Person/account and authority rows; missing/changed provenance remains unverified. The disposable fixture generates evidence through the accepted writer. No migration, connection/role or public mount; current metadata stays null. Synthetic Auth catalog pins deliberately prevent claiming real-provider readiness. PGlite and focused Node validation are recorded in [the source contract](docs/PARTNER-CANONICAL-REPOSITORY-20261101.md); native Linux contention CI and independent review remain gates.
 
-## Unified shell discovery correction — 2026-10-31
+## 2026-11-01 — Assigned Partner metadata backend candidate
 
-Process every discovery response independently: an explicit denial must immediately invalidate the workspace even if a concurrent discovery RPC remains pending. Late responses cannot reverse terminal invalidation. Canonical comparison treats organization, campaign, grant and department arrays as unordered sets; an actual change still retires access. No change to authoritative PostgreSQL authorization or session-retirement requirements. Synthetic browser proof is not provider-backed revocation evidence.
+Local source only: explicit campaign/Partner/worker assignment, locked active Auth session and metadata-only read RPC. No issuer or automatic People identity claim; `personId` remains null pending independently reviewed linkage. Existing financial intake authority and website PR61 are separate. See [implementation boundary and release gates](docs/PARTNER-ASSIGNED-METADATA-20261101.md). No migration, staff grant, public runtime activation or hosted acceptance has occurred.
+
+## 2026-11-01 — Partner current-base integration and private revocation
+
+Exact reviewed Outreach ancestry is reconciled into the Partner draft without changing accepted runtime bytes. A separate private-only revocation primitive prepares locked authority, expected revision, idempotency and immutable audit rollback; no application role can execute it and no Partner issuer policy is inferred. People linking remains null/unverified pending complete unreleased Issue50 receipt/review provenance. See [scope and gates](docs/PARTNER-PRIVATE-REVOCATION-20261101.md). Local source only; no production migration, grant, website activation or public endpoint.
+
+
+## 2026-11-01 — Private Partner issuance and provenance continuation
+
+The new private Partner preparation function requires current Auth/session, independent staff.manage AND campaign-admin authority and exact verified preassigned workers. Only partner.view can be created; no contact, pastoral, finance, export or campaign rights. Creation cannot overwrite existing rows; reassignment requires exact former worker/revision and immutable audit. Canonical identity remains unverified without the complete trusted provider.
+## 2026-11-01 — Partner authority serialization acceptance
+
+New acceptance exercises the existing metadata RPC against actual synthetic SQL rows. Native tests require explicit lock-timeout and serialization errors for both revocation orderings and retained snapshots across Auth/session, campaign/Partner authority, assigned-worker and source-association rows. Sequential PGlite checks pass; new native Linux CI remains pending. Verified B/B1/B2 file hashes do not establish installed provenance: current baseline lacks their receipt/review tables, and source-map/account writer reconciliation is still required before canonical identity can be exposed. No authorization or schema changes. See [prerequisite contract](docs/PARTNER-CANONICAL-BINDING-PREREQUISITES-20261101.md).
 
 ## 2026-10-31 — Unified shell authorization lifetime
 
@@ -82,19 +98,3 @@ The theme-song script performs no analytics/API/database requests, sets no cooki
 ## Operations Administrator candidate — local only, 2026-10-22
 
 Donation-intake access requires outreach.view AND finance.read. Restrictive RLS protects linked follow-up tasks/events and financial partner relationship audit; People RPC projections and filters enforce the same boundary. Permission management requires independent staff.manage plus campaign admin; self-target changes are denied. Organization registration operations never confer admin/configuration or finance privileges. Household audit kinds extend the original check and retain actor/history. Existing registry, policies for other domains and function ACLs remain intact. Exact baseline guards reject incompatible child functions. See docs/OPERATIONS-ADMIN-SECURITY.md for release impact, withheld capabilities, account verification and revocation.
-
-## 2026-11-01 — Assigned Partner metadata backend candidate
-
-Local source only: explicit campaign/Partner/worker assignment, locked active Auth session and metadata-only read RPC. No issuer or automatic People identity claim; `personId` remains null pending independently reviewed linkage. Existing financial intake authority and website PR61 are separate. See [implementation boundary and release gates](docs/PARTNER-ASSIGNED-METADATA-20261101.md). No migration, staff grant, public runtime activation or hosted acceptance has occurred.
-
-## 2026-11-01 — Partner current-base integration and private revocation
-
-Exact reviewed Outreach ancestry is reconciled into the Partner draft without changing accepted runtime bytes. A separate private-only revocation primitive prepares locked authority, expected revision, idempotency and immutable audit rollback; no application role can execute it and no Partner issuer policy is inferred. People linking remains null/unverified pending complete unreleased Issue50 receipt/review provenance. See [scope and gates](docs/PARTNER-PRIVATE-REVOCATION-20261101.md). Local source only; no production migration, grant, website activation or public endpoint.
-
-
-## 2026-11-01 — Private Partner issuance and provenance continuation
-
-The new private Partner preparation function requires current Auth/session, independent staff.manage AND campaign-admin authority and exact verified preassigned workers. Only partner.view can be created; no contact, pastoral, finance, export or campaign rights. Creation cannot overwrite existing rows; reassignment requires exact former worker/revision and immutable audit. Canonical identity remains unverified without the complete trusted provider.
-## 2026-11-01 — Partner authority serialization acceptance
-
-New acceptance exercises the existing metadata RPC against actual synthetic SQL rows. Native tests require explicit lock-timeout and serialization errors for both revocation orderings and retained snapshots across Auth/session, campaign/Partner authority, assigned-worker and source-association rows. Sequential PGlite checks pass; new native Linux CI remains pending. Verified B/B1/B2 file hashes do not establish installed provenance: current baseline lacks their receipt/review tables, and source-map/account writer reconciliation is still required before canonical identity can be exposed. No authorization or schema changes. See [prerequisite contract](docs/PARTNER-CANONICAL-BINDING-PREREQUISITES-20261101.md).
