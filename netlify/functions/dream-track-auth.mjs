@@ -9,8 +9,9 @@ function sign(secret) {
 }
 
 function safeReturn(value) {
-  if (!value) return "/dream-track.html";
-  return /^\/dream-track(?:\.html|-\d+\.html|\/)?$/.test(value) ? value : "/dream-track.html";
+  // Only existing course routes; normalize clean links without decoding caller input.
+  const match = /^\/dream-track(-[1-7])?(?:\.html|\/)?$/.exec(value);
+  return match && match[0] === value ? `/dream-track${match[1] || ""}.html` : "/dream-track.html";
 }
 
 export default async (req) => {

@@ -52,8 +52,10 @@
       const err=document.getElementById('dream-access-error');
       if(params.get('error')==='1') err.hidden=false;
       const requested=params.get('return');
-      if(requested && /^\/dream-track(?:\.html|-\d+\.html|\/)?$/.test(requested)) {
-        document.getElementById('dream-return-to').value=requested;
+      // Mirror the server's existing-route allowlist; URLSearchParams decodes once.
+      const match=requested && /^\/dream-track(-[1-7])?(?:\.html|\/)?$/.exec(requested);
+      if(match && match[0]===requested) {
+        document.getElementById('dream-return-to').value=`/dream-track${match[1] || ''}.html`;
       }
     })();
   </script>

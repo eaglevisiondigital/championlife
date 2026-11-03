@@ -20,3 +20,15 @@ The Outreach feature and dedicated sharing page use one static HTML audio player
 ## Organization operations candidate — 2026-10-22
 
 The bounded production-baseline security package projects existing registrations.view/manage and people.export into campaign operations only, using each campaign's exact organization. It preserves the per-campaign model and separates staff.manage from campaign configuration/operations. Financial intake, linked follow-up and relationship history have additional server-side finance boundaries. Two tenant assignments remain separate; no all-organization role or unaccepted unified module is introduced. See docs/OPERATIONS-ADMIN-SECURITY.md. Local only; full child-package integration remains separately reviewed.
+
+
+## 2026-11-03 — Dream Track original-step return (source only)
+
+The existing course gate now keeps supported step 1–7 destinations through access
+code entry and retry, canonicalizing clean paths to existing .html pages. Invalid
+external, encoded, unavailable or suffixed destinations fall back to the overview.
+The edge guard, cookie policy, access-code policy, course content and artwork are
+unchanged. No identity, membership, staff permission or completion is inferred.
+Local actual-handler Chromium/WebKit acceptance passed 398 assertions after the
+original 28 wrong destinations were reproduced; hosted acceptance and release
+authorization remain separate. See docs/DREAM-TRACK-RETURN-20261103.md.
