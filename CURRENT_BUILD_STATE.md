@@ -105,3 +105,16 @@ of this release. No production migration, upload, merge or deployment performed.
 ## 2026-11-02 — People stale identity verification correction
 
 A delayed earlier `getUser()` result could overwrite the current People module user after an account switch and falsely expire the newer user's next search/task operation. The result is now assigned only after the boot generation remains current. Chromium/WebKit reproduce the baseline defect; the focused source-only suite covers stale user/null/error/logout, current-account search/task continuity and current denial. See [People identity race contract](docs/OUTREACH-PEOPLE-IDENTITY-RACE-20261102.md). Decision/free-book mounting remains stopped: the current PR72/75 source lacks the accepted campaign/assigned-record decision RPC composition. Existing organization People/follow-up authority and event registration authority are not substitutes. No SQL/Auth/shell permissions, grants, hosted data or release changed; advanced evidence/recovery work remains paused.
+
+## Event Day arrival triage — November 3, 2026
+
+Source-only bounded arrival queues connect existing registration totals, household
+review and authorized individual check-in/reversal. Existing campaign RPC/RLS,
+waiver snapshots and audit are reused; no SQL/permission/export/contact change.
+Private staged rows require fresh identity and registration.view; stale account,
+campaign, history and revocation responses cannot restore the queue. Twenty
+households per page and page-local filters are explicit. See
+[scope and acceptance limits](docs/EVENT-DAY-ARRIVALS-20261103.md).
+Local browser/DOM and reproducible-build evidence is recorded privately; native
+PostgreSQL startup is blocked locally before assertions and remains a required
+CI gate. This is not hosted acceptance or release approval.
