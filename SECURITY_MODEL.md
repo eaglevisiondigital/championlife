@@ -1,3 +1,7 @@
+## 2026-11-03 — Existing-Person release boundary
+
+Exact accepted People runtime preserves fresh organization-wide People/follow-up permission checks, principal/client/route binding, duplicate suppression, revision predicates, UNKNOWN-result read-only reconciliation and existing financial RLS/audit restrictions. Main's session/login code is unchanged. Actual-page synthetic checks deny an unprivileged replacement account during an in-flight update and prove protected DOM/session cleanup, including SDK local removal after a failed logout response. Accepted SDK bytes are SHA256/SRI-checked; altered bytes fail closed. All Supabase source files and configuration remain hash-pinned unchanged. These tests are not genuine provider Auth or immediate JWT-revocation evidence; recovery/target/managed-Auth/release gates remain held. See [release contract](docs/PEOPLE-RELEASE-PHASE2-20261103.md).
+
 ## 2026-10-23 — Staff logout boundary
 
 The staff header calls the existing Supabase client's supported `auth.signOut({scope:'local'})`, then confirms the local session is absent before replacing navigation with the fixed staff login. It never clears all browser storage; SDK session cleanup and the application return hint are the only removals. A failed logout leaves protected content detached and displays a safe retry state, without claiming server retirement succeeded. Account changes and external sign-out clear the workspace. Pagehide clears protected snapshots; persisted pageshow reloads while hidden.

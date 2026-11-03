@@ -1,0 +1,40 @@
+name: Church People follow-up rescheduling (synthetic)
+on:
+  pull_request:
+    paths:
+      - 'assets/js/outreach-people.js'
+      - 'assets/js/champion-life-auth.js'
+      - 'assets/js/staff-session.js'
+      - 'assets/js/outreach-staff-common.js'
+      - 'staff-people.html'
+      - 'discipleship-login.html'
+      - 'tools/outreach/church-guest-*'
+      - 'tools/outreach/people-release-*'
+      - 'tools/backend-tests/**'
+      - 'tools/site-build/**'
+      - 'supabase/**'
+      - '.github/workflows/church-guest-followup.yml'
+permissions:
+  contents: read
+jobs:
+  reschedule:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm ci --ignore-scripts --prefix tools/backend-tests
+      - run: node tools/outreach/people-release-source.test.mjs
+      - run: TEST_POSTGRES_BIN="$(pg_config --bindir)" node tools/outreach/church-guest-followup.native.mjs
+      - run: node tools/backend-tests/node_modules/playwright/cli.js install --with-deps chromium webkit
+      - run: node tools/outreach/church-guest-followup.browser.mjs
+      - name: Verify accepted SDK artifact
+        run: |
+          curl --fail --silent --show-error --location 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.118.0' --output "$RUNNER_TEMP/supabase.js"
+          echo "bee24fc29228ed5a370f76a2ba1ca3c399549edad2fef23453c80148856a49af  $RUNNER_TEMP/supabase.js" | sha256sum --check
+          echo "SUPABASE_SDK_PATH=$RUNNER_TEMP/supabase.js" >> "$GITHUB_ENV"
+      - run: node tools/outreach/people-release-composition.browser.mjs
+      - run: node tools/site-build/build.mjs
+      - run: git diff --check
