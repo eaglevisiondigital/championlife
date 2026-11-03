@@ -1,3 +1,7 @@
+## 2026-11-03 — Printable roster uses existing registration contracts
+
+Roster preview and explicit Print share one refresh path: fresh context with export capability, existing campaign list/details, detached table assembly, then existing audited CSV authorization before publication/printing. CSV content is discarded; the original six columns and configured prize values remain. This adds no RPC or schema and is a sequence of current reads, not an atomic database snapshot. See [printable roster contract](docs/OUTREACH-PRINTABLE-ROSTER-20261103.md).
+
 ## 2026-10-31 — Incremental staff shell composition
 
 The first local shell composes existing staff-workspace and campaign-registration authorization responses instead of importing historical shared-platform SQL. One existing Auth client and logout component serve staff home, People and registration. Context navigation reloads an allowlisted existing destination and reauthorizes it. Unreleased NMI, advanced decisions and provider modules are not loaded. Exact source overlaps and future composition boundaries are documented in [UNIFIED-STAFF-SHELL.md](docs/UNIFIED-STAFF-SHELL.md).

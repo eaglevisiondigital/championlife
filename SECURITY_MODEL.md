@@ -1,3 +1,7 @@
+## 2026-11-03 — App-triggered roster print reauthorization
+
+A displayed preview no longer supplies continuing authority to print. Fresh context and a final existing backend `csv` export check gate each explicit print; observed denial clears protected roster content and stale account/campaign/navigation generations cannot publish or print late results. Exactly one existing export audit accompanies each successful preparation, not proof of physical printing. Browser/OS copies of previously disclosed data cannot be recalled. Unchanged native permission checks deny other campaigns/accounts, export-only revocation with view retained, expired and inactive assignments; failed export adds no successful audit. No child/waiver/registration/domain-event mutation occurs. See [evidence and limitations](docs/OUTREACH-PRINTABLE-ROSTER-20261103.md).
+
 ## Unified shell discovery correction — 2026-10-31
 
 Process every discovery response independently: an explicit denial must immediately invalidate the workspace even if a concurrent discovery RPC remains pending. Late responses cannot reverse terminal invalidation. Canonical comparison treats organization, campaign, grant and department arrays as unordered sets; an actual change still retires access. No change to authoritative PostgreSQL authorization or session-retirement requirements. Synthetic browser proof is not provider-backed revocation evidence.
