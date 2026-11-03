@@ -30,6 +30,34 @@
   for(const p of rows.slice(0,25)){const card=el('article',null,{class:'staff-person-card'});card.append(el('h2',p.first_name+' '+p.last_name),el('p',(p.email||'')+' · '+(p.phone||'')),el('p',(p.relationships||[]).join(', ')),button('Review Person & follow-up',()=>detail(p.id)));content.append(card)}
   if(page>0)content.append(button('Previous',()=>{page--;return list(search)}));if(rows.length>25)content.append(button('Next',()=>{page++;return list(search)}));
  }
+ function addTaskEditor(personId,g){
+  const targetOrg=org,actor=user?.id,client=auth.client,clientAuth=client.auth,url=location.pathname+location.search;
+  const card=el('article'),form=el('form'),titleLabel=el('label','Task title'),title=el('input',null,{type:'text',required:'',maxlength:'180'}),dueLabel=el('label','Due date (optional)'),due=el('input',null,{type:'date'}),submit=el('button','Add follow-up task',{type:'submit',class:'staff-action'});
+  card.append(el('h4','New follow-up task'),el('p','Add an operational next step for this person. Creating a task does not send a message.'));
+  titleLabel.append(title);dueLabel.append(due);form.append(titleLabel,dueLabel,submit);card.append(form);content.append(card);let pending=false,retired=false;
+  const current=()=>{if(!retired&&(window.ChampionLifeAuth!==auth||auth.client!==client||client.auth!==clientAuth)){retired=true;title.value='';due.value='';if(g===generation&&root.contains(card))card.replaceChildren(el('p','Task editor closed because the staff connection changed. Reload to verify access.'))}return !retired&&g===generation&&org===targetOrg&&user?.id===actor&&url===location.pathname+location.search&&root.contains(form)&&(!window.StaffWorkspace||window.StaffWorkspace.active())};
+  form.onsubmit=async event=>{
+   event.preventDefault();if(pending||!current()||!form.reportValidity())return;
+   const value=title.value.trim();if(!value||Array.from(value).length>180){status.textContent='Enter a task title using 1–180 characters.';title.focus();return}
+   const payload={organization_id:targetOrg,person_id:personId,title:value,due_on:due.value||null};
+   pending=true;submit.disabled=true;title.disabled=true;due.disabled=true;let submitted=false;
+   try{
+    await refreshPermissions();if(!current())return;
+    if(!can('followup.read')||!can('followup.manage')){fail(403);return}
+    const saved=await request(()=>{if(!current())throw Error();submitted=true;return client.from('followup_tasks').insert(payload).select('id').single()});
+    if(!current())return;
+    if(typeof saved?.id!=='string'||!/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(saved.id))throw Error();
+    await detail(personId);
+   }catch{
+    if(!current())return;
+    if(submitted){
+     // The existing INSERT has no idempotency key. Never replay an uncertain create.
+     form.replaceChildren(el('p','The save could not be confirmed. It may have succeeded. Refresh this person’s tasks and check the list before adding another task.'),button('Refresh follow-up tasks',()=>{if(current())return detail(personId)}));
+     status.textContent='Task save needs review.';
+    }else status.textContent='Unable to verify access. Please try again.';
+   }finally{if(current()&&!submitted){pending=false;submit.disabled=false;title.disabled=false;due.disabled=false}}
+  };
+ }
  async function detail(id){
   const g=++generation;content.replaceChildren();status.textContent='Loading…';await refreshPermissions();if(g!==generation)return;
   const data=await people('detail',{person_id:id});if(g!==generation)return;status.textContent='';const p=data.person;
@@ -39,7 +67,7 @@
   const tasks=await request(()=>auth.client.from('followup_tasks').select('id,title,status,due_on,revision').eq('organization_id',org).eq('person_id',id).order('created_at',{ascending:false}).limit(100));if(g!==generation)return;
   // RLS-filtered empty data is not proof of continuing authority.
   await refreshPermissions();if(g!==generation)return;if(!can('followup.read')){fail(403);return}
-  content.append(el('h3','Follow-up tasks'));if(!tasks.length)content.append(el('p','No follow-up tasks.'));
+  content.append(el('h3','Follow-up tasks'));if(can('followup.manage'))addTaskEditor(id,g);if(!tasks.length)content.append(el('p','No follow-up tasks.'));
   for(const task of tasks){const card=el('article');card.append(el('h4',task.title),el('p',task.status+' · '+(task.due_on||'No due date')));
    if(can('followup.manage')){const label=el('label','Status'),select=el('select');for(const value of ['open','completed','canceled']){const option=el('option',value,{value});option.selected=task.status===value;select.append(option)}label.append(select);card.append(label,button('Save task status',async()=>{
     await refreshPermissions();if(g!==generation)return;if(!can('followup.manage')){fail(403);return}
