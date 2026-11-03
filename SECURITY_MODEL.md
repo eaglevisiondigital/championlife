@@ -91,3 +91,8 @@ The member dashboard no longer treats owner-writable lesson_progress rows as pro
 ## 2026-11-03 — Independent member/outreach failure boundaries
 
 An optional St. Lucia lookup failure cannot establish or replace course authorization. The member page still requires the existing shared helper's fresh verified user, owner/course-filtered reads, bound-session check and its final same-user/unexpired session before showing any private content or partial-availability notice. Account/page invalidation stops stale lookup continuations before another course request. Unavailable outreach never implies linked registration, and raw provider diagnostics are not rendered. Existing St. Lucia claim idempotency, RLS, Auth helper, SDK and database objects are unchanged; no automatic retry or new enrollment/People writes. Tests use fictional intercepted provider transport only. See docs/MEMBER-DASHBOARD-STATUS.md.
+
+
+## 2026-11-03 — Member return-to-study source increment
+
+The optional return-to-study link uses verified current-account data, a fixed lesson1–13 route, validated nonfuture dates and the existing generation/session clearing lifecycle. It grants no authority or progress credit. Malformed/wrong-course data produces no return target. Independent source/CI and genuine provider acceptance remain separate.

@@ -175,3 +175,8 @@ Added exact existing workbook section responses for Lessons 6 (7 groups), 7 (7 g
 ## 2026-11-02 — Lessons 9–13 private worksheet source
 
 Added private source worksheets9–13 using exact selected original material and the existing account-owned transaction. New uninstalled forward migration preserves Auth/CAS/legacy-writer serialization and does not grant completion. Videos11–13 and genuine playback/hosted acceptance remain unavailable. See docs/DISCIPLESHIP-LESSONS-NINE-THIRTEEN-WORKSHEETS.md.
+
+
+## 2026-11-03 — Member return-to-study source increment
+
+Added a current-account return link to the most recently dated valid saved lesson activity, reusing the accepted dashboard projection and all13 existing routes. No completion/advancement inference, new storage, SQL or People linkage. Local source-only acceptance is recorded in docs/MEMBER-RETURN-TO-STUDY.md; genuine Auth and release gates remain unmet.

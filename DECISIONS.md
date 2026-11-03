@@ -84,3 +84,8 @@ Reuse the accepted worksheet transaction for the durable owner/session/enrollmen
 ## 2026-11-01 — Implement atomic source without inventing provider proof
 
 Prepare the missing SQL completion transaction behind no API grants and an empty observer registry. Preserve the existing answer store, opaque UUID evidence and95%unique-watch rule. Do not infer human viewing from YouTube browser telemetry or signatures, treat existing browser progress as trusted, seed a real provider, implement retention policy implicitly, or activate public gating. Separate provider selection, ingestion/host authorization, retention and recovery acceptance remain required.
+
+
+## 2026-11-03 — Member return-to-study source increment
+
+Use existing dated saved activity only as a return-to-study navigation hint. Do not infer next unlocked lesson, watched time, worksheet inventory, church membership or trusted completion. Keep all13 lesson choices and missing-media notices. No new owner policy or provider selection is implied.
