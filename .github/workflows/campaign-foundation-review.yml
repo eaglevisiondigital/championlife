@@ -1,0 +1,28 @@
+name: Campaign assigned decision foundation (synthetic PostgreSQL)
+on:
+  pull_request:
+    paths:
+      - 'supabase/migrations/**'
+      - 'supabase/bootstrap/**'
+      - 'supabase/release/king-kind-reader-private-storage-candidate.sql'
+      - 'tools/outreach/campaign-foundation*'
+      - 'tools/backend-tests/local-postgres.mjs'
+      - 'tools/backend-tests/fixtures/supabase-test-bootstrap.sql'
+      - 'tools/backend-tests/package*.json'
+      - '.github/workflows/campaign-foundation-review.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  native:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm ci --ignore-scripts --prefix tools/backend-tests
+      - name: Replay reviewed current schema and campaign candidate locally
+        run: TEST_POSTGRES_BIN="$(pg_config --bindir)" node tools/outreach/campaign-foundation.native.mjs
+      - run: git diff --check

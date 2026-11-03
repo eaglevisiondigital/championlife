@@ -1,0 +1,209 @@
+{
+  "purpose": "Disposable current-schema application replay; not a production install or history repair",
+  "reviewed_baseline": "audit/schema-reproducibility-2026-10-31/ACCEPTANCE-BASELINE.json",
+  "persistent_migrations": 27,
+  "retired_installers_excluded": [
+    "20261024013753",
+    "20261024035121",
+    "20261024120734"
+  ],
+  "files": [
+    {
+      "path": "supabase/bootstrap/automatic-rls.sql",
+      "sha256": "8387dc646df9fef987d725a9a45ff9e3f77f692a22eb0421909cb58a642e46e6"
+    },
+    {
+      "path": "tools/backend-tests/fixtures/supabase-test-bootstrap.sql",
+      "sha256": "c68c394b33c06a3c0e821b9a9f6482c1ed5f147a9cb678e26b6d27fd93784068"
+    },
+    {
+      "production_path": "supabase/migrations/20260923114743_create_course_progress_schema.sql",
+      "path": "supabase/migrations/20260923114743_create_course_progress_schema.sql",
+      "sha256": "c42d6a9a7f213558170e389f011e0f0b1972d065efd8fb9dc30644349b901f72",
+      "reviewed_production_sha256": "c42d6a9a7f213558170e389f011e0f0b1972d065efd8fb9dc30644349b901f72",
+      "production_omits_final_lf": false
+    },
+    {
+      "production_path": "supabase/migrations/20260923114822_harden_course_security_and_indexes.sql",
+      "path": "supabase/migrations/20260923114822_harden_course_security_and_indexes.sql",
+      "sha256": "9becd4c0e52b1787bf7ecf066683359aaced0b27c5b71123da066dd8a09193fb",
+      "reviewed_production_sha256": "9becd4c0e52b1787bf7ecf066683359aaced0b27c5b71123da066dd8a09193fb",
+      "production_omits_final_lf": false
+    },
+    {
+      "production_path": "supabase/migrations/20260923115114_revoke_public_rls_helper_execution.sql",
+      "path": "supabase/migrations/20260923115114_revoke_public_rls_helper_execution.sql",
+      "sha256": "a8c9d9e0044ea4f8ac6b6bf726b7b28370ddf9ade493eaceaaef319dcf741ee9",
+      "reviewed_production_sha256": "a8c9d9e0044ea4f8ac6b6bf726b7b28370ddf9ade493eaceaaef319dcf741ee9",
+      "production_omits_final_lf": false
+    },
+    {
+      "production_path": "supabase/migrations/20260923115706_grant_authenticated_course_api_access.sql",
+      "path": "supabase/migrations/20260923115706_grant_authenticated_course_api_access.sql",
+      "sha256": "83998f15a0236a4765dd83803a34166854a278fc2888073d28b4eee5b9a7dd26",
+      "reviewed_production_sha256": "83998f15a0236a4765dd83803a34166854a278fc2888073d28b4eee5b9a7dd26",
+      "production_omits_final_lf": false
+    },
+    {
+      "production_path": "supabase/migrations/20260923115732_restrict_authenticated_course_privileges.sql",
+      "path": "supabase/migrations/20260923115732_restrict_authenticated_course_privileges.sql",
+      "sha256": "5f53a377265a3b68231e32f75b4c99f656bea74900ec4fbdffc346f03473b103",
+      "reviewed_production_sha256": "5f53a377265a3b68231e32f75b4c99f656bea74900ec4fbdffc346f03473b103",
+      "production_omits_final_lf": false
+    },
+    {
+      "production_path": "supabase/migrations/20260923121707_add_st_lucia_registration_and_account_linking.sql",
+      "path": "supabase/migrations/20260923121707_add_st_lucia_registration_and_account_linking.sql",
+      "sha256": "225e352e966e466068649b30885a6003e44964237218f99dcbc678ccfffbcf71",
+      "reviewed_production_sha256": "225e352e966e466068649b30885a6003e44964237218f99dcbc678ccfffbcf71",
+      "production_omits_final_lf": false
+    },
+    {
+      "production_path": "supabase/migrations/20260923122017_secure_st_lucia_registration_claim_after_login.sql",
+      "path": "supabase/migrations/20260923122017_secure_st_lucia_registration_claim_after_login.sql",
+      "sha256": "a0636bf90aacd1eb1c8ac05aed9170527c46aba56b2e4b0c619dd6412702fcde",
+      "reviewed_production_sha256": "a0636bf90aacd1eb1c8ac05aed9170527c46aba56b2e4b0c619dd6412702fcde",
+      "production_omits_final_lf": false
+    },
+    {
+      "production_path": "supabase/migrations/20260925200310_organization_foundation.sql",
+      "path": "supabase/migrations/20260925200310_organization_foundation.sql",
+      "sha256": "3d26adbdb35e0aa657a08af6f175fc108fe9e49bc9ad01117314441b953d0d8c",
+      "reviewed_production_sha256": "3d26adbdb35e0aa657a08af6f175fc108fe9e49bc9ad01117314441b953d0d8c",
+      "production_omits_final_lf": false
+    },
+    {
+      "production_path": "supabase/migrations/20260925200318_harden_outreach_claim.sql",
+      "path": "supabase/migrations/20260925200318_harden_outreach_claim.sql",
+      "sha256": "55160b1ce86006a8acfcb8608f39689b3916eaaaf905587a7bbeec86dff37a4b",
+      "reviewed_production_sha256": "55160b1ce86006a8acfcb8608f39689b3916eaaaf905587a7bbeec86dff37a4b",
+      "production_omits_final_lf": false
+    },
+    {
+      "production_path": "supabase/migrations/20260925202633_lesson_notes.sql",
+      "path": "supabase/migrations/20260925202633_lesson_notes.sql",
+      "sha256": "774a2b1a345ab7efa4952d0aef9ecceda2952b21fdc91c146fde2d110d973d48",
+      "reviewed_production_sha256": "774a2b1a345ab7efa4952d0aef9ecceda2952b21fdc91c146fde2d110d973d48",
+      "production_omits_final_lf": false
+    },
+    {
+      "production_path": "supabase/migrations/20260926000821_followup_tasks.sql",
+      "path": "supabase/migrations/20260926000821_followup_tasks.sql",
+      "sha256": "db3fa4c4869fc6efff84133e300ee162697558d2d64c6c37abd68c1ff4748f74",
+      "reviewed_production_sha256": "db3fa4c4869fc6efff84133e300ee162697558d2d64c6c37abd68c1ff4748f74",
+      "production_omits_final_lf": false
+    },
+    {
+      "production_path": "supabase/migrations/20260926022613_staff_access_and_people.sql",
+      "path": "supabase/migrations/20260926022613_staff_access_and_people.sql",
+      "sha256": "5245c90b63fe289b929f6210c294c36f300deeec3786aa22866c7b59141aca4c",
+      "reviewed_production_sha256": "5245c90b63fe289b929f6210c294c36f300deeec3786aa22866c7b59141aca4c",
+      "production_omits_final_lf": false
+    },
+    {
+      "production_path": "supabase/migrations/20260926024742_household_records.sql",
+      "path": "supabase/migrations/20260926024742_household_records.sql",
+      "sha256": "9da11eb6ff58e3df63e4d5e6ccd961f1a3e14db234e6eeca8c49cb73c66a93e1",
+      "reviewed_production_sha256": "9da11eb6ff58e3df63e4d5e6ccd961f1a3e14db234e6eeca8c49cb73c66a93e1",
+      "production_omits_final_lf": false
+    },
+    {
+      "production_path": "supabase/migrations/20260926032026_department_tags.sql",
+      "path": "supabase/migrations/20260926032026_department_tags.sql",
+      "sha256": "ca8dbaa58b0a8f7d8e5ac25e221b9fe7b77886befb843c23b8c67440b105bffe",
+      "reviewed_production_sha256": "ca8dbaa58b0a8f7d8e5ac25e221b9fe7b77886befb843c23b8c67440b105bffe",
+      "production_omits_final_lf": false
+    },
+    {
+      "production_path": "supabase/migrations/20260926034222_tag_workflows.sql",
+      "path": "supabase/migrations/20260926034222_tag_workflows.sql",
+      "sha256": "caa052c1bfc892c93291753afd9435d76e974859147010e955c2752d00dac678",
+      "reviewed_production_sha256": "caa052c1bfc892c93291753afd9435d76e974859147010e955c2752d00dac678",
+      "production_omits_final_lf": false
+    },
+    {
+      "production_path": "supabase/migrations/20260926035410_giving_configuration.sql",
+      "path": "supabase/migrations/20260926035410_giving_configuration.sql",
+      "sha256": "3fddb322a99c478bf13784bde14deb62ae05257dff1d899a279611edc08ffef4",
+      "reviewed_production_sha256": "3fddb322a99c478bf13784bde14deb62ae05257dff1d899a279611edc08ffef4",
+      "production_omits_final_lf": false
+    },
+    {
+      "production_path": "supabase/migrations/20260926040812_participant_portals.sql",
+      "path": "supabase/migrations/20260926040812_participant_portals.sql",
+      "sha256": "a9189d02e8723da20ac05acd061f7278d2b4ca4c293b338165f410f272f4f921",
+      "reviewed_production_sha256": "a9189d02e8723da20ac05acd061f7278d2b4ca4c293b338165f410f272f4f921",
+      "production_omits_final_lf": false
+    },
+    {
+      "production_path": "supabase/migrations/20260928172557_people_staff_v1.sql",
+      "path": "supabase/migrations/20260928172557_people_staff_v1.sql",
+      "sha256": "0c00fe4f50f2bc92f1d9a4896125f9143a56e7ea37e3317540954cdb52cadc07",
+      "reviewed_production_sha256": "0c00fe4f50f2bc92f1d9a4896125f9143a56e7ea37e3317540954cdb52cadc07",
+      "production_omits_final_lf": false
+    },
+    {
+      "production_path": "supabase/migrations/20261004055336_outreach_partner_intake_v1.sql",
+      "path": "supabase/migrations/20261004055336_outreach_partner_intake_v1.sql",
+      "sha256": "c2feb7c1675b973da4f3e0f5cf3a18aaf97dacdc59aca7a7e01a029d5ca84351",
+      "reviewed_production_sha256": "c2feb7c1675b973da4f3e0f5cf3a18aaf97dacdc59aca7a7e01a029d5ca84351",
+      "production_omits_final_lf": false
+    },
+    {
+      "production_path": "supabase/migrations/20261004154340_allow_bessemer_outreach_registrations.sql",
+      "path": "supabase/migrations/20261004154340_allow_bessemer_outreach_registrations.sql",
+      "sha256": "9919250f0df4280a311baf929e8c2eb5d97770285bc3ea93f204752d213a462a",
+      "reviewed_production_sha256": "9bb2d910ae0951587cf5b4d4f4bdeba88489b1a96f34298e3a2c956757cfc77a",
+      "production_omits_final_lf": true
+    },
+    {
+      "production_path": "supabase/migrations/20261004230453_outreach_partner_gateway.sql",
+      "path": "supabase/migrations/20261004230453_outreach_partner_gateway.sql",
+      "sha256": "25802f89d285d86fc3783b454132e6f0378b93f74c4802435d6bf7369dc29a67",
+      "reviewed_production_sha256": "25802f89d285d86fc3783b454132e6f0378b93f74c4802435d6bf7369dc29a67",
+      "production_omits_final_lf": false
+    },
+    {
+      "production_path": "supabase/migrations/20261005161946_outreach_network_limit_120.sql",
+      "path": "supabase/migrations/20261005161946_outreach_network_limit_120.sql",
+      "sha256": "6159ef5ac6fff5a5480f4a71acc45ece4a0298144e1a4078fb114d1ded0f4f0e",
+      "reviewed_production_sha256": "6159ef5ac6fff5a5480f4a71acc45ece4a0298144e1a4078fb114d1ded0f4f0e",
+      "production_omits_final_lf": false
+    },
+    {
+      "production_path": "supabase/migrations/20261018113932_20261016201932_huntsville_registration_foundation.sql",
+      "path": "supabase/migrations/20261016201932_huntsville_registration_foundation.sql",
+      "sha256": "365ade7c6995541ad99f32135c3775b4e03c52d9a9bde95cc8f70da844f10a09",
+      "reviewed_production_sha256": "365ade7c6995541ad99f32135c3775b4e03c52d9a9bde95cc8f70da844f10a09",
+      "production_omits_final_lf": false
+    },
+    {
+      "production_path": "supabase/migrations/20261018113939_20261016201933_huntsville_registration_draft.sql",
+      "path": "supabase/migrations/20261016201933_huntsville_registration_draft.sql",
+      "sha256": "961187b9a667c021909019a0ba77dd83b140c590de56b21a1111eeb039689952",
+      "reviewed_production_sha256": "961187b9a667c021909019a0ba77dd83b140c590de56b21a1111eeb039689952",
+      "production_omits_final_lf": false
+    },
+    {
+      "production_path": "supabase/migrations/20261018144843_20261018121900_allow_huntsville_decision_registrations.sql",
+      "path": "supabase/migrations/20261018121900_allow_huntsville_decision_registrations.sql",
+      "sha256": "af9abe5821e299b53457ca6c1ec516f402e63c0dc757b6b617570783bd3efda1",
+      "reviewed_production_sha256": "af9abe5821e299b53457ca6c1ec516f402e63c0dc757b6b617570783bd3efda1",
+      "production_omits_final_lf": false
+    },
+    {
+      "production_path": "supabase/migrations/20261022201357_operations_admin_security.sql",
+      "path": "supabase/migrations/20261022201357_operations_admin_security.sql",
+      "sha256": "a5cb9ad66faf87db263414c80a89b76a7498025188661691e1d9e196b603304a",
+      "reviewed_production_sha256": "a5cb9ad66faf87db263414c80a89b76a7498025188661691e1d9e196b603304a",
+      "production_omits_final_lf": false
+    },
+    {
+      "production_path": "supabase/migrations/20261027115906_king_kind_private_reader_release.sql",
+      "path": "supabase/release/king-kind-reader-private-storage-candidate.sql",
+      "sha256": "aac5ec4ee74a8b59b8b8bb1bd5ec1f4254fd6f0585fcc2fe1f63942c8dce4fb1",
+      "reviewed_production_sha256": "aac5ec4ee74a8b59b8b8bb1bd5ec1f4254fd6f0585fcc2fe1f63942c8dce4fb1",
+      "production_omits_final_lf": false
+    }
+  ]
+}
