@@ -48,7 +48,7 @@
    }))}content.append(card);
   }
  }
- async function boot(){const g=++generation;grants=[];content?.replaceChildren();root.replaceChildren();try{user=await auth?.getUser();if(g!==generation)return;if(!user){root.append(login());return}
+ async function boot(){const g=++generation;grants=[];content?.replaceChildren();root.replaceChildren();try{const verifiedUser=await auth?.getUser();if(g!==generation)return;user=verifiedUser;if(!user){root.append(login());return}
   status=el('p','Loading…',{role:'status',class:'staff-status'});content=el('div',null,{class:'staff-content'});root.append(status);const ctx=await request(()=>auth.client.rpc('staff_workspace_context',{}));if(g!==generation)return;grants=ctx.grants;updateNavigation();
   const choices=ctx.organizations.filter(o=>grants.some(x=>x.organization_id===o.id&&x.permission==='people.read'&&!x.department_ids));if(!choices.length){fail(403);return}
   const select=el('select',null,{'aria-label':'Organization'}),params=new URLSearchParams(location.search);for(const o of choices)select.append(el('option',o.name,{value:o.id}));if(choices.some(o=>o.id===params.get('org')))select.value=params.get('org');org=select.value;updateNavigation();

@@ -93,3 +93,7 @@ Local full regression and responsive browser checks pass. Final physical-device
 acceptance and separately approved production Storage/website release remain gates.
 Personal notes/highlights are being prepared on a separate branch and are not part
 of this release. No production migration, upload, merge or deployment performed.
+
+## 2026-11-02 — People stale identity verification correction
+
+A delayed earlier `getUser()` result could overwrite the current People module user after an account switch and falsely expire the newer user's next search/task operation. The result is now assigned only after the boot generation remains current. Chromium/WebKit reproduce the baseline defect; the focused source-only suite covers stale user/null/error/logout, current-account search/task continuity and current denial. See [People identity race contract](docs/OUTREACH-PEOPLE-IDENTITY-RACE-20261102.md). Decision/free-book mounting remains stopped: the current PR72/75 source lacks the accepted campaign/assigned-record decision RPC composition. Existing organization People/follow-up authority and event registration authority are not substitutes. No SQL/Auth/shell permissions, grants, hosted data or release changed; advanced evidence/recovery work remains paused.

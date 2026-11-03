@@ -24,6 +24,7 @@ jobs:
       - run: node tools/backend-tests/node_modules/playwright/cli.js install --with-deps chromium webkit
       - run: node tools/outreach/registration-navigation.browser.mjs
       - run: node tools/outreach/people-navigation.browser.mjs
+      - run: node tools/outreach/people-identity-race.browser.mjs
       - run: node tools/outreach/walkup-retry.browser.mjs
       - run: TEST_POSTGRES_BIN="$(pg_config --bindir)" node tools/outreach/walkup-retry.native.mjs
       - run: node tools/backend-tests/outreach-people.dom.mjs
