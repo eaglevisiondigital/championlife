@@ -1,0 +1,23 @@
+name: Church People follow-up rescheduling (synthetic)
+on:
+  pull_request:
+    paths:
+      - 'assets/js/outreach-people.js'
+      - 'tools/outreach/church-guest-*'
+      - '.github/workflows/church-guest-followup.yml'
+permissions:
+  contents: read
+jobs:
+  reschedule:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm ci --ignore-scripts --prefix tools/backend-tests
+      - run: TEST_POSTGRES_BIN="$(pg_config --bindir)" node tools/outreach/church-guest-followup.native.mjs
+      - run: node tools/backend-tests/node_modules/playwright/cli.js install --with-deps chromium webkit
+      - run: node tools/outreach/church-guest-followup.browser.mjs
+      - run: git diff --check
