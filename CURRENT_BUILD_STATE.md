@@ -1,3 +1,7 @@
+## 2026-11-03 — Recovered Church Events staff source integration
+
+Existing Events v1 authoring is mounted in the approved staff shell, with generation-bound controls, verified account transitions and denial cleanup. Original public events/Christmas pages, registrations, People and Auth remain unchanged. Exact historical Events SQL is isolated test-fixture provenance only; no migration or grants are installed. See [integration contract](docs/CHURCH-EVENTS-STAFF-INTEGRATION.md). Local source tests do not establish hosted Auth, schema or release acceptance.
+
 ## 2026-10-26 — King Kind neutral reader palette (owner approved)
 
 Owner approved the near-black/charcoal/gray palette with gold after reviewing the local visual proof. The reader stylesheet now uses near-black, charcoal and neutral gray with the existing gold accents. Only color values and the primary-button hover colors change; layout, responsive breakpoints, JavaScript, authorization and approved PDF remain unchanged. 21 existing source/security checks and contrast checks pass. Prepared for PR49; production remains unchanged. Owner reports both phone reading/download tests work; independent device-session corroboration, desktop download and final sandbox cleanup remain release gates. The loopback visual preview is a static color proof, not a new authenticated acceptance result.

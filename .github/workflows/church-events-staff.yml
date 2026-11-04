@@ -1,0 +1,31 @@
+name: Church Events staff integration
+on:
+  pull_request:
+    paths:
+      - 'staff-events.html'
+      - 'assets/js/staff-events.js'
+      - 'assets/js/events-common.js'
+      - 'assets/css/events.css'
+      - 'tools/church-events/**'
+      - '.github/workflows/church-events-staff.yml'
+permissions:
+  contents: read
+jobs:
+  isolated:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm ci --ignore-scripts --prefix tools/backend-tests
+      - run: node tools/church-events/integrity.mjs
+      - run: node tools/church-events/database.mjs
+      - run: TEST_POSTGRES_BIN="$(pg_config --bindir)" TEST_NATIVE_PG=1 node tools/church-events/database.mjs
+      - run: npx --prefix tools/backend-tests playwright install --with-deps chromium webkit
+      - run: node tools/church-events/browser.mjs
+      - run: node tools/site-build/build.mjs
+      - run: git diff --check
