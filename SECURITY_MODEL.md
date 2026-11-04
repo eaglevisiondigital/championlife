@@ -73,3 +73,20 @@ The anonymous display RPC is an intentional fixed-search-path projection and ret
 ## GIV-2A management boundary — local build
 
 New management RPC actions check verified identity/current explicit finance capability after organization serialization; direct private views/helpers remain revoked. Lists/detail IDs are organization scoped, household reads require reviewed active membership, money is exact strings and credential/vault fields are excluded. Manual-only options do not infer read/configuration rights; report-only Overview does not grant posting/refunds/merchant privileges. Atomic rapid rows preserve stable keys and all-or-nothing writes; ordering/future expectations check revisions. Same-session denial/sign-out clears content and refreshes navigation. No new real staff grant or accepted-hosted configuration is applied. [Detailed permission contract](docs/GIVING-GIV-2A-FINANCE-MANAGEMENT-UX.md).
+
+## 2026-11-03 — Nonfinancial template draft boundary
+
+The Water Baptism Interest template preserves eight existing collection fields;
+there is no inferred Person identity, new consent or financial configuration.
+Canonical Forms permissions, server validation, revision and audit remain unchanged.
+Create UI controls recheck current identity and original organization/epoch/panel
+before submission and suppress late navigation after access changes. No data is
+stored in browser storage. Separate publication and submission-read permission
+are not implied by creating a draft. Historical source dependencies require their
+own exact-target release reconciliation.
+
+### Private Forms editor catalog boundary (2026-11-03)
+
+Nonfinancial-only Forms editors no longer depend on Giving catalog availability to load a private nonfinancial definition. This is availability/functional isolation, not a new permission or a financial authorization bypass: the existing catalog projects public funds under canonical Forms permissions. Existing financial definitions and users authorized to configure payments keep their catalog requirement.
+
+Lazy catalog results require the originally captured principal, Auth object/client, organization, form and read-generation to remain current, plus a fresh `getUser()` result before and after success or failure. A late result cannot add a field into a replacement account/form. Explicit server denial retains the existing protected-state retirement. A temporary catalog error preserves authorized existing work, never treats an error as an empty successful catalog, never erases configured funds and never publishes. Original server authorization, revision validation and audit implementation remain unchanged. No broader role, schema or production access is introduced.

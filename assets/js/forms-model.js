@@ -381,6 +381,36 @@
     });
     return d;
   }
+  // Exact existing nonfinancial source; no Netlify endpoint or submission import.
+  const baptismSource = Object.freeze({
+    id: "water_baptism_interest_v1", version: 1,
+    path: "baptism-interest.html", formName: "water-baptism-interest",
+    sha256: "159f4277da14bdcf8be84e192365aa1eead87d7a9d29c96de04266d849c4e754",
+  });
+  function baptismInterest() {
+    const d = blank();
+    const text = (key, type, label, required = false) => ({
+      ...field(type), key, label, required,
+    });
+    const choice = (key, label, values) => ({
+      ...text(key, "radio_group", label, true),
+      options: values.map(value => ({ label: value, value, active: true })),
+    });
+    d.sections[0].title = "Water Baptism Interest Form";
+    d.sections[0].description = "Source: water-baptism-interest · template version 1. Draft only; the existing Netlify form remains unchanged.";
+    d.sections[0].fields = [
+      text("name", "name", "Name *", true),
+      text("email", "email", "Email *", true),
+      text("phone", "phone", "Phone Number *", true),
+      choice("wants_upcoming_information", "Would you like more information about the upcoming water baptism? *", ["Yes", "No"]),
+      choice("saved", "Have you been saved? *", ["Yes", "No", "Not sure"]),
+      { ...text("saved_when", "short_text", "If so, when were you saved?"), placeholder: "Approximate date or season is fine" },
+      choice("previously_water_baptized", "Have you ever been water baptized before? *", ["Yes", "No", "Not sure"]),
+      text("questions", "long_text", "Questions or anything else you would like us to know?"),
+      text("submit", "submit", "Submit Baptism Interest Form"),
+    ];
+    return d;
+  }
   global.FormsModel = {
     types,
     operators,
@@ -396,5 +426,7 @@
     minor,
     major,
     demo,
+    baptismSource,
+    baptismInterest,
   };
 })(window);
