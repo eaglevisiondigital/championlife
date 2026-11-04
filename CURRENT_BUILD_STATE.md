@@ -113,3 +113,7 @@ The original defect was reproduced in actual local Chromium/WebKit pages at
 activation, ordinary link navigation and existing partner interception. All
 provider/network interactions are blocked in these fixtures. Source review and
 CI remain separate from production approval.
+
+## 2026-11-04 — Dream Team selected-organization route correction (source only)
+
+A narrow PR #94 successor synchronizes the authorized organization selector, canonical URL and Reload workspace action. It preserves explicit scope for the separately reviewed PR #97 logout/account-transition return helper. Invalid/duplicate/unavailable scopes deny, and History API failure or identity change clears protected controls before further module requests. No application intake, course evidence, permission, SQL, shared Auth, branding or production changes. Original mismatch evidence is retained; targeted browser and source/build validation remain distinct from genuine provider acceptance.
