@@ -1,0 +1,34 @@
+import assert from 'node:assert/strict';
+import { PGlite } from '@electric-sql/pglite';
+import { readFileSync } from 'node:fs';
+import vm from 'node:vm';
+import { migrationOrder } from './migration-order.mjs';
+import { f, formsFixtureSQL } from './forms-fixture.mjs';
+const win={};vm.runInNewContext(readFileSync(new URL('../../assets/js/forms-model.js',import.meta.url),'utf8'),{window:win});
+const M=win.FormsModel, db=new PGlite();let n=0;
+const ok=(v,m)=>{assert.ok(v,m);n++;console.log('PASS '+m);};
+const as=async(user=f.admin)=>{await db.exec('reset role');await db.query("select set_config('request.jwt.claim.sub',$1,false)",[user]);await db.exec('set role authenticated');};
+const rpc=async(action,p={},org=f.org)=>(await db.query('select forms_workspace($1,$2,$3) v',[action,org,p])).rows[0].v;
+const denied=async(fn,m)=>{await assert.rejects(fn);ok(true,m);};
+try{
+ await db.exec(readFileSync(new URL('fixtures/supabase-test-bootstrap.sql',import.meta.url),'utf8'));
+ await db.exec(readFileSync(new URL('../../supabase/bootstrap/automatic-rls.sql',import.meta.url),'utf8'));
+ for(const file of migrationOrder)await db.exec(readFileSync(new URL('../../supabase/migrations/'+file,import.meta.url),'utf8'));
+ await db.exec(formsFixtureSQL);await as();
+ const created=await rpc('create',{name:'Synthetic baptism draft',type:'general',slug:'synthetic-baptism',description:'Existing approved source template v1',definition:M.baptismInterest()});const id=created.form.id;
+ ok(created.form.organization_id===f.org&&created.version.revision===1,'canonical organization draft created');
+ ok(created.form.status==='draft'&&created.version.state==='draft','create does not publish');
+ ok(created.version.definition.sections[0].fields.length===9,'eight collection fields plus existing submit');
+ ok(created.version.definition.settings.public_available===false&&JSON.stringify(created.version.definition.payment)==='{}','no public availability or financial configuration');
+ await denied(()=>rpc('get',{id},f.otherOrg||'ffffffff-ffff-4fff-8fff-ffffffffffff'),'other organization exact ID denied');
+ const edited=structuredClone(created.version.definition);edited.sections[0].title='Synthetic revised title';
+ const saved=await rpc('save',{id,revision:1,definition:edited});ok(saved.version.revision===2,'canonical revision increments');
+ await denied(()=>rpc('save',{id,revision:1,definition:created.version.definition}),'stale draft revision rejected');
+ ok((await rpc('get',{id})).version.definition.sections[0].title==='Synthetic revised title','rejected save preserves latest version');
+ await as(f.reader);await denied(()=>rpc('create',{name:'Denied',type:'general',slug:'denied',definition:M.baptismInterest()}),'read/edit permission cannot create');
+ await denied(()=>rpc('publish',{id,version_id:created.version.id,revision:2}),'read/edit permission cannot publish');
+ await as();const again=await rpc('get',{id});ok(again.version.state==='draft','no implicit publication after save/rejection');
+ await db.exec('reset role');const audits=(await db.query("select action from platform_form_audit where form_id=$1",[id])).rows.map(x=>x.action);ok(audits.includes('form.created')&&audits.includes('draft.saved'),'canonical create/save audit');ok(!audits.includes('version.published'),'rejected publish has no success audit');
+ ok(M.baptismInterest().sections[0].title==='Water Baptism Interest Form','template original unchanged after revisions');
+ console.log(`Forms baptism database PASS ${n} assertions`);
+}finally{await db.close();}

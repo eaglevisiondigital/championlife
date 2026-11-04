@@ -277,6 +277,10 @@
     }
   }
   function createPanel() {
+    if (!can("forms.create")) return;
+    const creationEpoch = epoch, creationOrg = org,
+      creationAuth = auth, creationClient = auth?.client,
+      creationUser = window.StaffWorkspace?.context?.user?.id;
     root.querySelector(".forms-create")?.remove();
     const panel = el("section", null, { class: "forms-card forms-create" }),
       values = {
@@ -318,19 +322,46 @@
             ? {
                 options: [
                   ["blank", "Blank form"],
+                  ["baptism", "Water Baptism Interest — existing fields (draft)"],
                   ["giving", "Synthetic Giving demo"],
                   ["event", "Synthetic Event demo"],
                 ],
               }
             : {},
       );
+    const currentCreate = () => {
+      if (!panel.isConnected || creationEpoch !== epoch || creationOrg !== org ||
+          !creationUser || window.StaffWorkspace?.context?.user?.id !== creationUser ||
+          !can("forms.create")) return false;
+      if (window.ChampionLifeAuth !== creationAuth || creationAuth?.client !== creationClient) {
+        deny();
+        return false;
+      }
+      return true;
+    };
+    const verifiedCreate = async () => {
+      try {
+        const currentUser = await auth.getUser();
+        if (!currentCreate()) return false;
+        if (currentUser?.id !== creationUser) { deny(); return false; }
+        return true;
+      } catch (_) {
+        if (currentCreate()) deny();
+        return false;
+      }
+    };
+    let creating = false;
     panel.append(
+      el("p", "The Water Baptism template copies existing approved fields into a private draft. It does not replace the live form, import responses, verify identity or enable publication."),
       button(
         "Create draft",
         async () => {
+          if (creating || !currentCreate()) return;
+          creating = true;
           try {
-            let definition = M.blank();
-            if (values.start !== "blank") {
+            if (!(await verifiedCreate())) return;
+            let definition = values.start === "baptism" ? M.baptismInterest() : M.blank();
+            if (!["blank", "baptism"].includes(values.start)) {
               const data = await rpc("funds");
               definition = M.demo(values.start, data.funds);
               if (definition.payment.enabled)
@@ -352,6 +383,7 @@
                   );
               }
             }
+            if (!currentCreate()) return;
             const result = await rpc("create", {
               name: values.name,
               type: values.type,
@@ -359,13 +391,16 @@
               description: values.description,
               definition,
             });
+            if (!(await verifiedCreate())) return;
             location.href =
               "staff-form-builder.html?organization=" +
               encodeURIComponent(org) +
               "&form=" +
               encodeURIComponent(result.form.id);
           } catch (e) {
-            message(e);
+            if (currentCreate()) message(e);
+          } finally {
+            creating = false;
           }
         },
         "forms-gold",

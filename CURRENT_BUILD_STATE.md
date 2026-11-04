@@ -158,3 +158,13 @@ Acceptance-only migration remote `20261012130902` applied once, prior38 preserve
 ## 2026-10-12 — GIV-2B stale-render error guard
 
 Same-session hosted checks exposed obsolete report failures clearing a newer authorized page and failed signatures preventing retry. The controller now ignores superseded start errors and clears the current failed signature. Five reproducing regression assertions plus267 totalDOM checks, build/syntax/diff PASS. Backend/identity/permissions/Auth unchanged. Hosted current-session recheck and cleanup remain required; production untouched, GIV-2C not started.
+
+## 2026-11-03 — Existing nonfinancial baptism template (source only)
+
+The accepted GIV-2C builder can create a private Water Baptism Interest draft from
+exact existing approved fields without finance lookup, publication, endpoint
+replacement, submission import or identity linking. Create controls reject stale
+account/organization/panel bindings and duplicate clicks. This is a dependent PR19
+source increment, not a current-main website release. See
+`docs/FORMS-BAPTISM-DRAFT.md`; genuine Auth and historical dependency reconciliation
+remain required. No migration or production/provider actions.
