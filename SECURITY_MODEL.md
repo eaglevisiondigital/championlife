@@ -62,3 +62,21 @@ Donation-intake access requires outreach.view AND finance.read. Restrictive RLS 
 ## 2026-11-02 — People verification result publication
 
 An asynchronous People boot must confirm its captured generation before publishing the verified user to module state. A retired account's delayed user/null result cannot overwrite the newer account or turn a permitted follow-up action into a false session expiry. Current-session checks, backend People/task permissions, task revision filters, denial clearing and logout remain authoritative and unchanged. The correction does not create campaign-assigned decision access; no decision mount may reuse event-registration permissions or broad organization People authority. Synthetic browser evidence and the exact source boundary are documented in [the focused contract](docs/OUTREACH-PEOPLE-IDENTITY-RACE-20261102.md).
+
+## Event Day arrival triage — November 3, 2026
+
+Source-only bounded arrival queues connect existing registration totals, household
+review and authorized individual check-in/reversal. Existing campaign RPC/RLS,
+waiver snapshots and audit are reused; no SQL/permission/export/contact change.
+Private staged rows require fresh identity and registration.view; stale account,
+campaign, history and revocation responses cannot restore the queue. Twenty
+households per page and page-local filters are explicit. See
+[scope and acceptance limits](docs/EVENT-DAY-ARRIVALS-20261103.md).
+Local browser/DOM and reproducible-build evidence is recorded privately; native
+PostgreSQL startup is blocked locally before assertions and remains a required
+CI gate. This is not hosted acceptance or release approval.
+
+Independent integration review reproduced an inherited normal Household lookup
+query leaking into a different authenticated account. The same scoped invalidation
+hook now clears that normal query as well as arrival state; same-account refresh
+is preserved. Six independent predecessor reproductions remain in private evidence.

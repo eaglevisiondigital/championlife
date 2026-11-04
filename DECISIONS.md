@@ -46,3 +46,21 @@ Use the owner's final exact PNG, lossless delivery derivative and original M4A. 
 ## Operations Administrator preparation — 2026-10-22
 
 Owner authorized local correction/testing only. Reuse the existing 29-key production vocabulary and authentication workflow. Separate two organization assignments; no campaign-admin row for operations. Require finance.read for financial commitments and their linked histories; no automatic finance grants to retain former access. Require independent permission authorizer and prohibit self-target access changes. Reconcile existing People/Household compatibility locally and extend rather than narrow audit vocabulary. No PR #34/#35 wholesale adoption, hosted application, invitation, user or production grant. Activation dates/identity and external provider role verification remain owner/release gates.
+
+## Event Day arrival triage — November 3, 2026
+
+Source-only bounded arrival queues connect existing registration totals, household
+review and authorized individual check-in/reversal. Existing campaign RPC/RLS,
+waiver snapshots and audit are reused; no SQL/permission/export/contact change.
+Private staged rows require fresh identity and registration.view; stale account,
+campaign, history and revocation responses cannot restore the queue. Twenty
+households per page and page-local filters are explicit. See
+[scope and acceptance limits](docs/EVENT-DAY-ARRIVALS-20261103.md).
+Local browser/DOM and reproducible-build evidence is recorded privately; native
+PostgreSQL startup is blocked locally before assertions and remains a required
+CI gate. This is not hosted acceptance or release approval.
+
+Independent integration review reproduced an inherited normal Household lookup
+query leaking into a different authenticated account. The same scoped invalidation
+hook now clears that normal query as well as arrival state; same-account refresh
+is preserved. Six independent predecessor reproductions remain in private evidence.

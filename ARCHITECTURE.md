@@ -32,3 +32,21 @@ The Outreach feature and dedicated sharing page use one static HTML audio player
 ## Organization operations candidate — 2026-10-22
 
 The bounded production-baseline security package projects existing registrations.view/manage and people.export into campaign operations only, using each campaign's exact organization. It preserves the per-campaign model and separates staff.manage from campaign configuration/operations. Financial intake, linked follow-up and relationship history have additional server-side finance boundaries. Two tenant assignments remain separate; no all-organization role or unaccepted unified module is introduced. See docs/OPERATIONS-ADMIN-SECURITY.md. Local only; full child-package integration remains separately reviewed.
+
+## Event Day arrival triage — November 3, 2026
+
+Source-only bounded arrival queues connect existing registration totals, household
+review and authorized individual check-in/reversal. Existing campaign RPC/RLS,
+waiver snapshots and audit are reused; no SQL/permission/export/contact change.
+Private staged rows require fresh identity and registration.view; stale account,
+campaign, history and revocation responses cannot restore the queue. Twenty
+households per page and page-local filters are explicit. See
+[scope and acceptance limits](docs/EVENT-DAY-ARRIVALS-20261103.md).
+Local browser/DOM and reproducible-build evidence is recorded privately; native
+PostgreSQL startup is blocked locally before assertions and remains a required
+CI gate. This is not hosted acceptance or release approval.
+
+Independent integration review reproduced an inherited normal Household lookup
+query leaking into a different authenticated account. The same scoped invalidation
+hook now clears that normal query as well as arrival state; same-account refresh
+is preserved. Six independent predecessor reproductions remain in private evidence.

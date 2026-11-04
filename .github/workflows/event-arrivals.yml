@@ -1,0 +1,33 @@
+name: Event Day arrival workspace (synthetic only)
+on:
+  pull_request:
+    paths:
+      - 'assets/js/outreach-registration-staff.js'
+      - 'tools/outreach/event-arrivals.*.mjs'
+      - '.github/workflows/event-arrivals.yml'
+permissions:
+  contents: read
+jobs:
+  database:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm ci --ignore-scripts --prefix tools/backend-tests
+      - run: TEST_POSTGRES_BIN="$(pg_config --bindir)" node tools/outreach/event-arrivals.native.mjs
+  browser:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm ci --ignore-scripts --prefix tools/backend-tests
+      - run: node tools/backend-tests/node_modules/playwright/cli.js install --with-deps chromium webkit
+      - run: node tools/outreach/event-arrivals.browser.mjs
+      - run: node tools/backend-tests/outreach-registration.dom.mjs
+      - run: git diff --check
