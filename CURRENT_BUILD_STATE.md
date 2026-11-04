@@ -137,3 +137,33 @@ affected Events browser assertions and14 provenance checks passed. Two412-file
 builds are identical; only assets/js/staff-events.js differs from preserved PR91.
 Coordinator independent Chromium/WebKit review passed40 checks. Exact-head CI and
 all genuine provider/release acceptance remain separate gates.
+
+## November 4 — guarded Events forward installer, source only
+
+Added a narrow forward wrapper around the exact reviewed Events SQL body. The
+canonical 27-migration baseline and accepted Forms/Dream variants are checked
+without replacing their permission registry, course policies or existing ACLs.
+Actual native testing exposed the missing anonymous private-schema usage
+prerequisite; the exact historical Events usage grant is now bounded by proof of
+zero existing anonymous private function/data privileges and exact postconditions.
+Unknown capabilities, partial Events installations, DDL triggers and collateral
+catalog changes reject atomically. No managed Auth ACL workaround is included.
+Final SQL has 54 local native checks plus 11 coordinator native checks; the prior
+61-check all-profile result is preserved separately. Exact-head five-profile CI
+remains required. All 412 public files and frontend source remain unchanged; two
+builds are checked by the permanent integrity test. Target nomination, genuine
+provider Auth/catalog evidence, independent recovery and exact-target SQL approval
+remain outstanding. Nothing was installed on a hosted system or approved for release.
+
+
+## November 4 — Events native CI catalog-order correction
+
+The five diagnostic Linux jobs failed; their artifacts identified only the order
+of two unchanged organization_people indexes under en_US.utf8 versus C locale.
+The shared catalog index aggregate now explicitly orders with COLLATE "C".
+All catalog fields, security checks, expected hashes and the historical Events
+body remain unchanged. Captured-artifact regression and real index/ACL/RLS drift
+rollback tests extend the native suite to 72 passing local assertions across
+five profiles. The five original CI failures remain preserved. Exact-head Linux
+CI must independently confirm the correction; no hosted installation or release
+is authorized. Reproducible builds retain all 412 public files byte-identically.

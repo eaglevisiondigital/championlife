@@ -1,0 +1,1025 @@
+{
+  "profile": "baseline",
+  "sqlSHA256": "bf5e960babbc2f62f83227e8da3d66783ada886bdc0fb2160bc24cedfd547e2b",
+  "environment": {
+    "version": "PostgreSQL 17.11 (Debian 17.11-1.pgdg13+2) on x86_64-pc-linux-gnu, compiled by gcc (Debian 14.2.0-19) 14.2.0, 64-bit",
+    "datcollate": "en_US.utf8",
+    "datctype": "en_US.utf8",
+    "encoding": "UTF8"
+  },
+  "dependencyHash": "02178900a85e38090fb2d0716333c98aaf1bcebd11eed9725062e70e78471293",
+  "projection": {
+    "coalesce": [
+      {
+        "acl": "{postgres=arwdDxtm/postgres,service_role=arwdDxtm/postgres,authenticated=r/postgres}",
+        "name": "public.organization_departments",
+        "owner": "postgres",
+        "columns": [
+          {
+            "acl": null,
+            "name": "id",
+            "type": "uuid",
+            "default": "gen_random_uuid()",
+            "notnull": true
+          },
+          {
+            "acl": "{authenticated=a/postgres}",
+            "name": "organization_id",
+            "type": "uuid",
+            "default": null,
+            "notnull": true
+          },
+          {
+            "acl": "{authenticated=aw/postgres}",
+            "name": "name",
+            "type": "text",
+            "default": null,
+            "notnull": true
+          },
+          {
+            "acl": "{authenticated=aw/postgres}",
+            "name": "leader_user_id",
+            "type": "uuid",
+            "default": null,
+            "notnull": false
+          },
+          {
+            "acl": "{authenticated=w/postgres}",
+            "name": "active",
+            "type": "boolean",
+            "default": "true",
+            "notnull": true
+          },
+          {
+            "acl": null,
+            "name": "revision",
+            "type": "integer",
+            "default": "1",
+            "notnull": true
+          },
+          {
+            "acl": null,
+            "name": "created_at",
+            "type": "timestamp with time zone",
+            "default": "now()",
+            "notnull": true
+          },
+          {
+            "acl": null,
+            "name": "updated_at",
+            "type": "timestamp with time zone",
+            "default": "now()",
+            "notnull": true
+          }
+        ],
+        "indexes": [
+          {
+            "ready": true,
+            "valid": true,
+            "definition": "CREATE INDEX department_leader_idx ON public.organization_departments USING btree (leader_user_id)"
+          },
+          {
+            "ready": true,
+            "valid": true,
+            "definition": "CREATE INDEX department_list_idx ON public.organization_departments USING btree (organization_id, active, name, id)"
+          },
+          {
+            "ready": true,
+            "valid": true,
+            "definition": "CREATE UNIQUE INDEX department_name_unique ON public.organization_departments USING btree (organization_id, lower(btrim(name)))"
+          },
+          {
+            "ready": true,
+            "valid": true,
+            "definition": "CREATE UNIQUE INDEX organization_departments_organization_id_id_key ON public.organization_departments USING btree (organization_id, id)"
+          },
+          {
+            "ready": true,
+            "valid": true,
+            "definition": "CREATE UNIQUE INDEX organization_departments_pkey ON public.organization_departments USING btree (id)"
+          }
+        ],
+        "relkind": "r",
+        "policies": [
+          {
+            "cmd": "INSERT",
+            "qual": null,
+            "roles": [
+              "authenticated"
+            ],
+            "tablename": "organization_departments",
+            "permissive": "PERMISSIVE",
+            "policyname": "organization_departments_insert",
+            "schemaname": "public",
+            "with_check": "(( SELECT count(*) AS count\n   FROM public.organization_staff_permissions p\n  WHERE ((p.organization_id = organization_departments.organization_id) AND (p.user_id = ( SELECT auth.uid() AS uid)) AND (p.revoked_at IS NULL) AND (p.permission = ANY (ARRAY['people.read'::text, 'tags.read'::text, 'tags.manage'::text])))) = 3)"
+          },
+          {
+            "cmd": "SELECT",
+            "qual": "(( SELECT count(*) AS count\n   FROM public.organization_staff_permissions p\n  WHERE ((p.organization_id = organization_departments.organization_id) AND (p.user_id = ( SELECT auth.uid() AS uid)) AND (p.revoked_at IS NULL) AND (p.permission = ANY (ARRAY['people.read'::text, 'tags.read'::text])))) = 2)",
+            "roles": [
+              "authenticated"
+            ],
+            "tablename": "organization_departments",
+            "permissive": "PERMISSIVE",
+            "policyname": "organization_departments_read",
+            "schemaname": "public",
+            "with_check": null
+          },
+          {
+            "cmd": "UPDATE",
+            "qual": "(( SELECT count(*) AS count\n   FROM public.organization_staff_permissions p\n  WHERE ((p.organization_id = organization_departments.organization_id) AND (p.user_id = ( SELECT auth.uid() AS uid)) AND (p.revoked_at IS NULL) AND (p.permission = ANY (ARRAY['people.read'::text, 'tags.read'::text, 'tags.manage'::text])))) = 3)",
+            "roles": [
+              "authenticated"
+            ],
+            "tablename": "organization_departments",
+            "permissive": "PERMISSIVE",
+            "policyname": "organization_departments_update",
+            "schemaname": "public",
+            "with_check": "(( SELECT count(*) AS count\n   FROM public.organization_staff_permissions p\n  WHERE ((p.organization_id = organization_departments.organization_id) AND (p.user_id = ( SELECT auth.uid() AS uid)) AND (p.revoked_at IS NULL) AND (p.permission = ANY (ARRAY['people.read'::text, 'tags.read'::text, 'tags.manage'::text])))) = 3)"
+          }
+        ],
+        "triggers": [
+          {
+            "name": "audit_organization_departments",
+            "enabled": "O",
+            "definition": "CREATE TRIGGER audit_organization_departments AFTER INSERT OR UPDATE ON public.organization_departments FOR EACH ROW EXECUTE FUNCTION private.audit_tag_write()"
+          },
+          {
+            "name": "guard_organization_departments",
+            "enabled": "O",
+            "definition": "CREATE TRIGGER guard_organization_departments BEFORE INSERT OR UPDATE ON public.organization_departments FOR EACH ROW EXECUTE FUNCTION private.guard_tag_write()"
+          },
+          {
+            "name": "portal_department_configuration_guard",
+            "enabled": "O",
+            "definition": "CREATE TRIGGER portal_department_configuration_guard BEFORE UPDATE ON public.organization_departments FOR EACH ROW EXECUTE FUNCTION private.guard_portal_access_configuration()"
+          }
+        ],
+        "reloptions": null,
+        "constraints": [
+          {
+            "name": "organization_departments_leader_user_id_fkey",
+            "validated": true,
+            "definition": "FOREIGN KEY (leader_user_id) REFERENCES auth.users(id)"
+          },
+          {
+            "name": "organization_departments_name_check",
+            "validated": true,
+            "definition": "CHECK (((length(btrim(name)) >= 1) AND (length(btrim(name)) <= 100)))"
+          },
+          {
+            "name": "organization_departments_organization_id_fkey",
+            "validated": true,
+            "definition": "FOREIGN KEY (organization_id) REFERENCES public.organizations(id)"
+          },
+          {
+            "name": "organization_departments_organization_id_id_key",
+            "validated": true,
+            "definition": "UNIQUE (organization_id, id)"
+          },
+          {
+            "name": "organization_departments_pkey",
+            "validated": true,
+            "definition": "PRIMARY KEY (id)"
+          }
+        ],
+        "relrowsecurity": true,
+        "view_definition": null,
+        "relforcerowsecurity": false
+      },
+      {
+        "acl": "{postgres=arwdDxtm/postgres,service_role=arwdDxtm/postgres,authenticated=r/postgres}",
+        "name": "public.organization_people",
+        "owner": "postgres",
+        "columns": [
+          {
+            "acl": null,
+            "name": "id",
+            "type": "uuid",
+            "default": "gen_random_uuid()",
+            "notnull": true
+          },
+          {
+            "acl": "{authenticated=a/postgres}",
+            "name": "organization_id",
+            "type": "uuid",
+            "default": null,
+            "notnull": true
+          },
+          {
+            "acl": null,
+            "name": "user_id",
+            "type": "uuid",
+            "default": null,
+            "notnull": false
+          },
+          {
+            "acl": "{authenticated=aw/postgres}",
+            "name": "first_name",
+            "type": "text",
+            "default": null,
+            "notnull": true
+          },
+          {
+            "acl": "{authenticated=aw/postgres}",
+            "name": "last_name",
+            "type": "text",
+            "default": null,
+            "notnull": true
+          },
+          {
+            "acl": "{authenticated=aw/postgres}",
+            "name": "email",
+            "type": "text",
+            "default": null,
+            "notnull": false
+          },
+          {
+            "acl": "{authenticated=aw/postgres}",
+            "name": "phone",
+            "type": "text",
+            "default": null,
+            "notnull": false
+          },
+          {
+            "acl": null,
+            "name": "created_at",
+            "type": "timestamp with time zone",
+            "default": "now()",
+            "notnull": true
+          },
+          {
+            "acl": "{authenticated=w/postgres}",
+            "name": "updated_at",
+            "type": "timestamp with time zone",
+            "default": "now()",
+            "notnull": true
+          },
+          {
+            "acl": null,
+            "name": "human_id",
+            "type": "uuid",
+            "default": null,
+            "notnull": true
+          }
+        ],
+        "indexes": [
+          {
+            "ready": true,
+            "valid": true,
+            "definition": "CREATE INDEX organization_people_human_idx ON public.organization_people USING btree (human_id)"
+          },
+          {
+            "ready": true,
+            "valid": true,
+            "definition": "CREATE INDEX organization_people_user_idx ON public.organization_people USING btree (user_id)"
+          },
+          {
+            "ready": true,
+            "valid": true,
+            "definition": "CREATE UNIQUE INDEX organization_people_human_unique ON public.organization_people USING btree (organization_id, human_id)"
+          },
+          {
+            "ready": true,
+            "valid": true,
+            "definition": "CREATE UNIQUE INDEX organization_people_organization_id_user_id_key ON public.organization_people USING btree (organization_id, user_id)"
+          },
+          {
+            "ready": true,
+            "valid": true,
+            "definition": "CREATE UNIQUE INDEX organization_people_org_id_unique ON public.organization_people USING btree (organization_id, id)"
+          },
+          {
+            "ready": true,
+            "valid": true,
+            "definition": "CREATE UNIQUE INDEX organization_people_pkey ON public.organization_people USING btree (id)"
+          }
+        ],
+        "relkind": "r",
+        "policies": [
+          {
+            "cmd": "INSERT",
+            "qual": null,
+            "roles": [
+              "authenticated"
+            ],
+            "tablename": "organization_people",
+            "permissive": "PERMISSIVE",
+            "policyname": "organization_people_insert",
+            "schemaname": "public",
+            "with_check": "((user_id IS NULL) AND (( SELECT count(*) AS count\n   FROM public.organization_staff_permissions p\n  WHERE ((p.organization_id = organization_people.organization_id) AND (p.user_id = ( SELECT auth.uid() AS uid)) AND (p.permission = ANY (ARRAY['people.read'::text, 'people.create'::text])) AND (p.revoked_at IS NULL))) = 2))"
+          },
+          {
+            "cmd": "SELECT",
+            "qual": "((user_id = ( SELECT auth.uid() AS uid)) OR private.has_staff_permission(organization_id, 'people.read'::text) OR private.person_permission(organization_id, id, 'people.read'::text))",
+            "roles": [
+              "authenticated"
+            ],
+            "tablename": "organization_people",
+            "permissive": "PERMISSIVE",
+            "policyname": "organization_people_read",
+            "schemaname": "public",
+            "with_check": null
+          },
+          {
+            "cmd": "UPDATE",
+            "qual": "(private.person_permission(organization_id, id, 'people.read'::text) AND private.person_permission(organization_id, id, 'people.update'::text))",
+            "roles": [
+              "authenticated"
+            ],
+            "tablename": "organization_people",
+            "permissive": "PERMISSIVE",
+            "policyname": "organization_people_update",
+            "schemaname": "public",
+            "with_check": "(private.person_permission(organization_id, id, 'people.read'::text) AND private.person_permission(organization_id, id, 'people.update'::text))"
+          }
+        ],
+        "triggers": [
+          {
+            "name": "audit_person_write",
+            "enabled": "O",
+            "definition": "CREATE TRIGGER audit_person_write AFTER INSERT OR UPDATE ON public.organization_people FOR EACH ROW EXECUTE FUNCTION private.audit_person_write()"
+          },
+          {
+            "name": "guard_person_write",
+            "enabled": "O",
+            "definition": "CREATE TRIGGER guard_person_write BEFORE INSERT OR UPDATE ON public.organization_people FOR EACH ROW EXECUTE FUNCTION private.guard_person_write()"
+          },
+          {
+            "name": "person_anchor",
+            "enabled": "O",
+            "definition": "CREATE TRIGGER person_anchor BEFORE INSERT OR UPDATE ON public.organization_people FOR EACH ROW EXECUTE FUNCTION private.person_anchor()"
+          }
+        ],
+        "reloptions": null,
+        "constraints": [
+          {
+            "name": "organization_people_email_check",
+            "validated": true,
+            "definition": "CHECK (((email IS NULL) OR (length(email) <= 320)))"
+          },
+          {
+            "name": "organization_people_first_name_check",
+            "validated": true,
+            "definition": "CHECK (((length(btrim(first_name)) >= 1) AND (length(btrim(first_name)) <= 100)))"
+          },
+          {
+            "name": "organization_people_human_id_fkey",
+            "validated": true,
+            "definition": "FOREIGN KEY (human_id) REFERENCES private.people(id)"
+          },
+          {
+            "name": "organization_people_last_name_check",
+            "validated": true,
+            "definition": "CHECK (((length(btrim(last_name)) >= 1) AND (length(btrim(last_name)) <= 100)))"
+          },
+          {
+            "name": "organization_people_org_id_unique",
+            "validated": true,
+            "definition": "UNIQUE (organization_id, id)"
+          },
+          {
+            "name": "organization_people_organization_id_fkey",
+            "validated": true,
+            "definition": "FOREIGN KEY (organization_id) REFERENCES public.organizations(id) ON DELETE CASCADE"
+          },
+          {
+            "name": "organization_people_organization_id_user_id_key",
+            "validated": true,
+            "definition": "UNIQUE (organization_id, user_id)"
+          },
+          {
+            "name": "organization_people_phone_check",
+            "validated": true,
+            "definition": "CHECK (((phone IS NULL) OR (length(phone) <= 40)))"
+          },
+          {
+            "name": "organization_people_pkey",
+            "validated": true,
+            "definition": "PRIMARY KEY (id)"
+          },
+          {
+            "name": "organization_people_user_id_fkey",
+            "validated": true,
+            "definition": "FOREIGN KEY (user_id) REFERENCES auth.users(id) ON DELETE SET NULL"
+          }
+        ],
+        "relrowsecurity": true,
+        "view_definition": null,
+        "relforcerowsecurity": false
+      },
+      {
+        "acl": "{postgres=arwdDxtm/postgres,service_role=arwdDxtm/postgres}",
+        "name": "public.organization_staff_directory",
+        "owner": "postgres",
+        "columns": [
+          {
+            "acl": null,
+            "name": "organization_id",
+            "type": "uuid",
+            "default": null,
+            "notnull": true
+          },
+          {
+            "acl": null,
+            "name": "user_id",
+            "type": "uuid",
+            "default": null,
+            "notnull": true
+          },
+          {
+            "acl": null,
+            "name": "display_name",
+            "type": "text",
+            "default": null,
+            "notnull": true
+          },
+          {
+            "acl": null,
+            "name": "revision",
+            "type": "integer",
+            "default": "1",
+            "notnull": true
+          },
+          {
+            "acl": null,
+            "name": "updated_at",
+            "type": "timestamp with time zone",
+            "default": "now()",
+            "notnull": true
+          },
+          {
+            "acl": null,
+            "name": "person_id",
+            "type": "uuid",
+            "default": null,
+            "notnull": false
+          },
+          {
+            "acl": null,
+            "name": "active",
+            "type": "boolean",
+            "default": "true",
+            "notnull": true
+          },
+          {
+            "acl": null,
+            "name": "effective_at",
+            "type": "timestamp with time zone",
+            "default": "now()",
+            "notnull": true
+          },
+          {
+            "acl": null,
+            "name": "expires_at",
+            "type": "timestamp with time zone",
+            "default": null,
+            "notnull": false
+          },
+          {
+            "acl": null,
+            "name": "reason",
+            "type": "text",
+            "default": "''::text",
+            "notnull": true
+          }
+        ],
+        "indexes": [
+          {
+            "ready": true,
+            "valid": true,
+            "definition": "CREATE INDEX staff_directory_user_idx ON public.organization_staff_directory USING btree (user_id)"
+          },
+          {
+            "ready": true,
+            "valid": true,
+            "definition": "CREATE UNIQUE INDEX organization_staff_directory_pkey ON public.organization_staff_directory USING btree (organization_id, user_id)"
+          },
+          {
+            "ready": true,
+            "valid": true,
+            "definition": "CREATE UNIQUE INDEX staff_assignment_person_unique ON public.organization_staff_directory USING btree (organization_id, person_id)"
+          }
+        ],
+        "relkind": "r",
+        "policies": null,
+        "triggers": null,
+        "reloptions": null,
+        "constraints": [
+          {
+            "name": "organization_staff_directory_display_name_check",
+            "validated": true,
+            "definition": "CHECK (((length(btrim(display_name)) >= 1) AND (length(btrim(display_name)) <= 150)))"
+          },
+          {
+            "name": "organization_staff_directory_organization_id_fkey",
+            "validated": true,
+            "definition": "FOREIGN KEY (organization_id) REFERENCES public.organizations(id)"
+          },
+          {
+            "name": "organization_staff_directory_pkey",
+            "validated": true,
+            "definition": "PRIMARY KEY (organization_id, user_id)"
+          },
+          {
+            "name": "organization_staff_directory_reason_check",
+            "validated": true,
+            "definition": "CHECK ((length(reason) <= 500))"
+          },
+          {
+            "name": "organization_staff_directory_user_id_fkey",
+            "validated": true,
+            "definition": "FOREIGN KEY (user_id) REFERENCES auth.users(id)"
+          },
+          {
+            "name": "staff_assignment_dates",
+            "validated": true,
+            "definition": "CHECK (((expires_at IS NULL) OR (expires_at > effective_at)))"
+          },
+          {
+            "name": "staff_assignment_person_fk",
+            "validated": true,
+            "definition": "FOREIGN KEY (organization_id, person_id) REFERENCES public.organization_people(organization_id, id)"
+          }
+        ],
+        "relrowsecurity": true,
+        "view_definition": null,
+        "relforcerowsecurity": false
+      },
+      {
+        "acl": "{postgres=arwdDxtm/postgres,service_role=arwdDxtm/postgres,authenticated=r/postgres}",
+        "name": "public.organization_staff_permissions",
+        "owner": "postgres",
+        "columns": [
+          {
+            "acl": null,
+            "name": "organization_id",
+            "type": "uuid",
+            "default": null,
+            "notnull": true
+          },
+          {
+            "acl": null,
+            "name": "user_id",
+            "type": "uuid",
+            "default": null,
+            "notnull": true
+          },
+          {
+            "acl": null,
+            "name": "permission",
+            "type": "text",
+            "default": null,
+            "notnull": true
+          },
+          {
+            "acl": null,
+            "name": "granted_at",
+            "type": "timestamp with time zone",
+            "default": "now()",
+            "notnull": true
+          },
+          {
+            "acl": null,
+            "name": "revoked_at",
+            "type": "timestamp with time zone",
+            "default": null,
+            "notnull": false
+          },
+          {
+            "acl": null,
+            "name": "department_ids",
+            "type": "uuid[]",
+            "default": null,
+            "notnull": false
+          },
+          {
+            "acl": null,
+            "name": "effective_at",
+            "type": "timestamp with time zone",
+            "default": "now()",
+            "notnull": true
+          },
+          {
+            "acl": null,
+            "name": "expires_at",
+            "type": "timestamp with time zone",
+            "default": null,
+            "notnull": false
+          },
+          {
+            "acl": null,
+            "name": "template_id",
+            "type": "uuid",
+            "default": null,
+            "notnull": false
+          }
+        ],
+        "indexes": [
+          {
+            "ready": true,
+            "valid": true,
+            "definition": "CREATE INDEX organization_staff_permissions_user_idx ON public.organization_staff_permissions USING btree (user_id, organization_id) WHERE (revoked_at IS NULL)"
+          },
+          {
+            "ready": true,
+            "valid": true,
+            "definition": "CREATE UNIQUE INDEX organization_staff_permissions_pkey ON public.organization_staff_permissions USING btree (organization_id, user_id, permission)"
+          }
+        ],
+        "relkind": "r",
+        "policies": [
+          {
+            "cmd": "SELECT",
+            "qual": "((user_id = ( SELECT auth.uid() AS uid)) AND (department_ids IS NULL) AND private.has_staff_permission(organization_id, permission))",
+            "roles": [
+              "authenticated"
+            ],
+            "tablename": "organization_staff_permissions",
+            "permissive": "PERMISSIVE",
+            "policyname": "staff_permissions_read_own",
+            "schemaname": "public",
+            "with_check": null
+          }
+        ],
+        "triggers": null,
+        "reloptions": null,
+        "constraints": [
+          {
+            "name": "organization_staff_permissions_organization_id_fkey",
+            "validated": true,
+            "definition": "FOREIGN KEY (organization_id) REFERENCES public.organizations(id) ON DELETE CASCADE"
+          },
+          {
+            "name": "organization_staff_permissions_pkey",
+            "validated": true,
+            "definition": "PRIMARY KEY (organization_id, user_id, permission)"
+          },
+          {
+            "name": "organization_staff_permissions_user_id_fkey",
+            "validated": true,
+            "definition": "FOREIGN KEY (user_id) REFERENCES auth.users(id) ON DELETE CASCADE"
+          },
+          {
+            "name": "staff_grant_dates",
+            "validated": true,
+            "definition": "CHECK (((expires_at IS NULL) OR (expires_at > effective_at)))"
+          },
+          {
+            "name": "staff_grant_scope",
+            "validated": true,
+            "definition": "CHECK (((department_ids IS NULL) OR ((cardinality(department_ids) > 0) AND (array_position(department_ids, NULL::uuid) IS NULL))))"
+          },
+          {
+            "name": "staff_grant_template_fk",
+            "validated": true,
+            "definition": "FOREIGN KEY (organization_id, template_id) REFERENCES public.staff_role_templates(organization_id, id)"
+          }
+        ],
+        "relrowsecurity": true,
+        "view_definition": null,
+        "relforcerowsecurity": false
+      },
+      {
+        "acl": "{postgres=arwdDxtm/postgres,service_role=arwdDxtm/postgres,authenticated=r/postgres}",
+        "name": "public.organizations",
+        "owner": "postgres",
+        "columns": [
+          {
+            "acl": null,
+            "name": "id",
+            "type": "uuid",
+            "default": "gen_random_uuid()",
+            "notnull": true
+          },
+          {
+            "acl": null,
+            "name": "slug",
+            "type": "text",
+            "default": null,
+            "notnull": true
+          },
+          {
+            "acl": null,
+            "name": "name",
+            "type": "text",
+            "default": null,
+            "notnull": true
+          },
+          {
+            "acl": null,
+            "name": "kind",
+            "type": "text",
+            "default": null,
+            "notnull": true
+          },
+          {
+            "acl": null,
+            "name": "created_at",
+            "type": "timestamp with time zone",
+            "default": "now()",
+            "notnull": true
+          }
+        ],
+        "indexes": [
+          {
+            "ready": true,
+            "valid": true,
+            "definition": "CREATE UNIQUE INDEX organizations_pkey ON public.organizations USING btree (id)"
+          },
+          {
+            "ready": true,
+            "valid": true,
+            "definition": "CREATE UNIQUE INDEX organizations_slug_key ON public.organizations USING btree (slug)"
+          }
+        ],
+        "relkind": "r",
+        "policies": [
+          {
+            "cmd": "SELECT",
+            "qual": "((EXISTS ( SELECT 1\n   FROM public.organization_affiliations a\n  WHERE ((a.organization_id = organizations.id) AND (a.user_id = ( SELECT auth.uid() AS uid))))) OR (EXISTS ( SELECT 1\n   FROM public.organization_staff_permissions p\n  WHERE ((p.organization_id = organizations.id) AND (p.user_id = ( SELECT auth.uid() AS uid)) AND (p.revoked_at IS NULL)))))",
+            "roles": [
+              "authenticated"
+            ],
+            "tablename": "organizations",
+            "permissive": "PERMISSIVE",
+            "policyname": "organizations_read_related",
+            "schemaname": "public",
+            "with_check": null
+          }
+        ],
+        "triggers": null,
+        "reloptions": null,
+        "constraints": [
+          {
+            "name": "organizations_kind_check",
+            "validated": true,
+            "definition": "CHECK ((kind = ANY (ARRAY['church'::text, 'ministry'::text])))"
+          },
+          {
+            "name": "organizations_name_check",
+            "validated": true,
+            "definition": "CHECK (((length(btrim(name)) >= 1) AND (length(btrim(name)) <= 150)))"
+          },
+          {
+            "name": "organizations_pkey",
+            "validated": true,
+            "definition": "PRIMARY KEY (id)"
+          },
+          {
+            "name": "organizations_slug_check",
+            "validated": true,
+            "definition": "CHECK ((slug ~ '^[a-z0-9]+(-[a-z0-9]+)*$'::text))"
+          },
+          {
+            "name": "organizations_slug_key",
+            "validated": true,
+            "definition": "UNIQUE (slug)"
+          }
+        ],
+        "relrowsecurity": true,
+        "view_definition": null,
+        "relforcerowsecurity": false
+      },
+      {
+        "acl": "{postgres=arwdDxtm/postgres,service_role=arwdDxtm/postgres}",
+        "name": "public.person_organization_relationships",
+        "owner": "postgres",
+        "columns": [
+          {
+            "acl": null,
+            "name": "id",
+            "type": "uuid",
+            "default": "gen_random_uuid()",
+            "notnull": true
+          },
+          {
+            "acl": null,
+            "name": "organization_id",
+            "type": "uuid",
+            "default": null,
+            "notnull": true
+          },
+          {
+            "acl": null,
+            "name": "person_id",
+            "type": "uuid",
+            "default": null,
+            "notnull": true
+          },
+          {
+            "acl": null,
+            "name": "relationship",
+            "type": "text",
+            "default": null,
+            "notnull": true
+          },
+          {
+            "acl": null,
+            "name": "effective_at",
+            "type": "timestamp with time zone",
+            "default": "now()",
+            "notnull": true
+          },
+          {
+            "acl": null,
+            "name": "expires_at",
+            "type": "timestamp with time zone",
+            "default": null,
+            "notnull": false
+          },
+          {
+            "acl": null,
+            "name": "active",
+            "type": "boolean",
+            "default": "true",
+            "notnull": true
+          }
+        ],
+        "indexes": [
+          {
+            "ready": true,
+            "valid": true,
+            "definition": "CREATE INDEX person_relationship_lookup ON public.person_organization_relationships USING btree (organization_id, person_id, relationship)"
+          },
+          {
+            "ready": true,
+            "valid": true,
+            "definition": "CREATE UNIQUE INDEX person_organization_relationships_pkey ON public.person_organization_relationships USING btree (id)"
+          }
+        ],
+        "relkind": "r",
+        "policies": null,
+        "triggers": null,
+        "reloptions": null,
+        "constraints": [
+          {
+            "name": "person_organization_relationship_organization_id_person_id_fkey",
+            "validated": true,
+            "definition": "FOREIGN KEY (organization_id, person_id) REFERENCES public.organization_people(organization_id, id)"
+          },
+          {
+            "name": "person_organization_relationships_check",
+            "validated": true,
+            "definition": "CHECK (((expires_at IS NULL) OR (expires_at > effective_at)))"
+          },
+          {
+            "name": "person_organization_relationships_pkey",
+            "validated": true,
+            "definition": "PRIMARY KEY (id)"
+          },
+          {
+            "name": "person_organization_relationships_relationship_check",
+            "validated": true,
+            "definition": "CHECK ((relationship = ANY (ARRAY['guest'::text, 'attendee'::text, 'member'::text, 'volunteer'::text, 'partner'::text, 'outreach_participant'::text, 'parent_guardian'::text, 'youth_student'::text, 'staff'::text])))"
+          }
+        ],
+        "relrowsecurity": true,
+        "view_definition": null,
+        "relforcerowsecurity": false
+      },
+      {
+        "acl": "{postgres=arwdDxtm/postgres,service_role=arwdDxtm/postgres,authenticated=r/postgres}",
+        "name": "public.portal_account_links",
+        "owner": "postgres",
+        "columns": [
+          {
+            "acl": null,
+            "name": "id",
+            "type": "uuid",
+            "default": "gen_random_uuid()",
+            "notnull": true
+          },
+          {
+            "acl": null,
+            "name": "organization_id",
+            "type": "uuid",
+            "default": null,
+            "notnull": true
+          },
+          {
+            "acl": null,
+            "name": "person_id",
+            "type": "uuid",
+            "default": null,
+            "notnull": true
+          },
+          {
+            "acl": null,
+            "name": "user_id",
+            "type": "uuid",
+            "default": null,
+            "notnull": true
+          },
+          {
+            "acl": null,
+            "name": "active",
+            "type": "boolean",
+            "default": "true",
+            "notnull": true
+          },
+          {
+            "acl": null,
+            "name": "verification_note",
+            "type": "text",
+            "default": null,
+            "notnull": true
+          },
+          {
+            "acl": null,
+            "name": "revision",
+            "type": "integer",
+            "default": "1",
+            "notnull": true
+          },
+          {
+            "acl": null,
+            "name": "updated_at",
+            "type": "timestamp with time zone",
+            "default": "now()",
+            "notnull": true
+          }
+        ],
+        "indexes": [
+          {
+            "ready": true,
+            "valid": true,
+            "definition": "CREATE INDEX portal_links_user_idx ON public.portal_account_links USING btree (user_id, organization_id)"
+          },
+          {
+            "ready": true,
+            "valid": true,
+            "definition": "CREATE UNIQUE INDEX portal_account_links_organization_id_person_id_key ON public.portal_account_links USING btree (organization_id, person_id)"
+          },
+          {
+            "ready": true,
+            "valid": true,
+            "definition": "CREATE UNIQUE INDEX portal_account_links_organization_id_user_id_key ON public.portal_account_links USING btree (organization_id, user_id)"
+          },
+          {
+            "ready": true,
+            "valid": true,
+            "definition": "CREATE UNIQUE INDEX portal_account_links_pkey ON public.portal_account_links USING btree (id)"
+          }
+        ],
+        "relkind": "r",
+        "policies": [
+          {
+            "cmd": "SELECT",
+            "qual": "private.portal_staff(organization_id)",
+            "roles": [
+              "authenticated"
+            ],
+            "tablename": "portal_account_links",
+            "permissive": "PERMISSIVE",
+            "policyname": "portal_account_links_read",
+            "schemaname": "public",
+            "with_check": null
+          }
+        ],
+        "triggers": null,
+        "reloptions": null,
+        "constraints": [
+          {
+            "name": "portal_account_links_organization_id_fkey",
+            "validated": true,
+            "definition": "FOREIGN KEY (organization_id) REFERENCES public.organizations(id)"
+          },
+          {
+            "name": "portal_account_links_organization_id_person_id_fkey",
+            "validated": true,
+            "definition": "FOREIGN KEY (organization_id, person_id) REFERENCES public.organization_people(organization_id, id)"
+          },
+          {
+            "name": "portal_account_links_organization_id_person_id_key",
+            "validated": true,
+            "definition": "UNIQUE (organization_id, person_id)"
+          },
+          {
+            "name": "portal_account_links_organization_id_user_id_key",
+            "validated": true,
+            "definition": "UNIQUE (organization_id, user_id)"
+          },
+          {
+            "name": "portal_account_links_pkey",
+            "validated": true,
+            "definition": "PRIMARY KEY (id)"
+          },
+          {
+            "name": "portal_account_links_user_id_fkey",
+            "validated": true,
+            "definition": "FOREIGN KEY (user_id) REFERENCES auth.users(id)"
+          },
+          {
+            "name": "portal_account_links_verification_note_check",
+            "validated": true,
+            "definition": "CHECK (((length(btrim(verification_note)) >= 10) AND (length(btrim(verification_note)) <= 500)))"
+          }
+        ],
+        "relrowsecurity": true,
+        "view_definition": null,
+        "relforcerowsecurity": false
+      }
+    ]
+  }
+}

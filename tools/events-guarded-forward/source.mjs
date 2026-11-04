@@ -1,0 +1,9 @@
+import assert from 'node:assert/strict';import fs from 'node:fs';import os from 'node:os';import path from 'node:path';import{execFileSync}from'node:child_process';import{createHash}from'node:crypto';import{pathToFileURL}from'node:url';
+const root=new URL('../..',import.meta.url),pin='3574ca964b22c962e72b618467bda72eb1d5f39e';
+const git=(commit,p)=>execFileSync('git',['show',commit+':'+p],{cwd:root,maxBuffer:20*1024*1024});
+const m=git(pin,'tools/events-forward-contract/sources.json');assert.deepEqual(m,fs.readFileSync(new URL('../events-forward-contract/sources.json',import.meta.url)));export const manifest=JSON.parse(m),sha=b=>createHash('sha256').update(b).digest('hex');
+export const source=(lane,p)=>{const s=manifest.sources[lane],b=git(s.commit,p);assert.equal(sha(b),s.files[p],p);return b.toString()};
+export async function fixture(){const temp=fs.mkdtempSync(path.join(os.tmpdir(),'events-guarded-'));for(const p of Object.keys(manifest.sources.forms.files).filter(p=>p.startsWith('tools/')||p.startsWith('supabase/'))){fs.mkdirSync(path.dirname(path.join(temp,p)),{recursive:true});fs.writeFileSync(path.join(temp,p),source('forms',p))}fs.symlinkSync(new URL('../backend-tests/node_modules',import.meta.url),path.join(temp,'tools/backend-tests/node_modules'),'dir');const f=await import(pathToFileURL(path.join(temp,'tools/forms-core/fixture.mjs')));const n=await import(pathToFileURL(path.join(temp,'tools/forms-core/native-database.mjs')));return{...f,...n,cleanup:()=>fs.rmSync(temp,{recursive:true,force:true})}}
+export const forms=()=>source('forms','supabase/migrations/20261104042117_forms_private_draft_core.sql');
+export const dream=()=>source('dream','supabase/migrations/20261104042141_dream_team_manual_followup.sql');
+export const historical=()=>source('events','tools/church-events/fixtures/20260928183137_events_calendar_v1.sql');
