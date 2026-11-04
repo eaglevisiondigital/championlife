@@ -54,7 +54,7 @@ try{
  await db.exec('reset role');await q("select set_config('request.jwt.claim.sub','',false)");await db.exec('set role anon');await denied(()=>staff('list'),'42501','anonymous denied');
  await db.exec('reset role');await db.exec('begin');await q("update outreach_event_registrations set status='closed' where id=$1",[id]);await actor(admin);
  ok((await staff('list')).summary.attendees===0,'closed household excluded from totals');ok((await staff('list')).registrations.some(r=>r.id===id&&r.status==='closed'),'list preserves historical closed row for client exclusion');
- await denied(()=>staff('checkin',{registration_id:id,attendee_id:adult.id}),'P0001','closed record cannot check in');await db.exec('reset role');await db.exec('rollback');
+ await denied(()=>staff('checkin',{registration_id:id,attendee_id:adult.id}),'P0001','closed record cannot check in');await db.exec('rollback');await db.exec('reset role');
  await actor(admin);full=await detail();ok(full.attendees.length===2,'no duplicate attendee or household identity');ok(full.signatures.length===1,'immutable signature retained');
  await db.exec('reset role');const records=(await q("select kind,actor_user_id,subject_id from outreach_campaign_audit where campaign_id=$1 and kind in ('attendee.checked_in','attendee.checkin_reversed')",[A])).rows;
  ok(records.length===2&&records.every(r=>r.actor_user_id===worker&&r.subject_id===child.id),'exact attributed check-in/reversal audits only');
