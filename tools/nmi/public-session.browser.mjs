@@ -3,11 +3,13 @@ import assert from 'node:assert/strict';
 import {readFileSync,mkdirSync} from 'node:fs';
 import {join} from 'node:path';
 import {execFileSync} from 'node:child_process';
+const errorFenceReproduction=process.argv.includes('--error-fence-reproduction');
+const errorFenceOnly=process.argv.includes('--error-fence-only');
 const replacementReproduction=process.argv.includes('--client-replacement-reproduction');
 const baseline=process.argv.includes('--baseline-reproduction');
 const initializationReproduction=process.argv.includes('--initialization-reproduction');
 import {chromium,webkit} from '../backend-tests/node_modules/playwright/index.mjs';
-const source=path=>(baseline||initializationReproduction||replacementReproduction)?execFileSync('git',['show',(replacementReproduction?'505e9dae9baf9cff71d00ca872f5e7b013015f13':initializationReproduction?'eb350f8aaefe123e747d2c0b5e70b50b0e69bdaf':'84b2d9ab398bb8046570019da26a5db67fe77467')+':'+path],{encoding:'utf8'}):readFileSync(new URL('../../'+path,import.meta.url),'utf8');
+const source=path=>errorFenceReproduction?execFileSync('git',['show','14ca8303100e21fbbdcf91295961304bd14f2c80:'+path],{encoding:'utf8'}):(baseline||initializationReproduction||replacementReproduction)?execFileSync('git',['show',(replacementReproduction?'505e9dae9baf9cff71d00ca872f5e7b013015f13':initializationReproduction?'eb350f8aaefe123e747d2c0b5e70b50b0e69bdaf':'84b2d9ab398bb8046570019da26a5db67fe77467')+':'+path],{encoding:'utf8'}):readFileSync(new URL('../../'+path,import.meta.url),'utf8');
 const client=source('assets/js/nmi-giving-client.js');
 const pageSource=source('assets/js/nmi-public-giving.js');
 let checks=0;
@@ -39,6 +41,30 @@ for(const [name,engine] of Object.entries({chromium,webkit})){
   async function execute(page){await payment(page);await page.getByRole('button',{name:'Give in sandbox',exact:true}).click();}
   async function cleared(page,label){await page.waitForFunction(()=>document.body.textContent.includes('Your giving session changed'));check(!await page.locator('body').textContent().then(x=>x.includes('Private-A-receipt')),name+' '+label+' no private receipt');check(await page.locator('button,form').count()===0,name+' '+label+' no retained controls');}
   async function replaceAuth(page,mode='client') {await page.evaluate(mode=>{const auth={getSession:async()=>({data:{session:{user:{id:'fictional-B'},access_token:'fictional-B-token'}}}),onAuthStateChange:()=>{}};if(mode==='auth')ChampionLifeAuth.client.auth=auth;else if(mode==='removed')delete window.ChampionLifeAuth;else if(mode==='same-auth')ChampionLifeAuth.client={auth:ChampionLifeAuth.client.auth};else ChampionLifeAuth.client={auth};},mode);}
+  if(!baseline&&!initializationReproduction&&!replacementReproduction){
+   for(const width of [390,1440])for(const outcome of ['network','json','expired-response','expired-error']){
+    const p=await setup();await p.setViewportSize({width,height:900});await execute(p);await p.getByText('Private-A-receipt',{exact:false}).waitFor();
+    await p.evaluate(outcome=>{
+     window.retained=document.querySelector('button').onclick;
+     const originalFetch=window.fetch;
+     window.fetch=async(...args)=>{const payload=JSON.parse(args[1].body);if(payload.action!=='status')return originalFetch(...args);calls.push(payload);
+      if(outcome==='json')return {status:200,ok:true,json:()=>new Promise((resolve,reject)=>{window.releaseFailure=()=>reject(Error('fictional malformed response'));})};
+      await new Promise(resolve=>{window.releaseFailure=resolve});
+      if(outcome==='network'||outcome==='expired-error')throw Error('fictional interrupted transport');
+      return Response.json(response);
+     };
+    },outcome);
+    await p.getByRole('button',{name:'Check current status'}).click();await p.waitForFunction(()=>typeof releaseFailure==='function');
+    const before=await p.evaluate(()=>calls.length);
+    await p.evaluate(outcome=>{if(outcome.startsWith('expired'))ChampionLifeAuth.client.auth.getSession=async()=>({data:{session:{user:{id:'fictional-A'},access_token:'fictional-token',expires_at:1}}});else window.user='fictional-B';releaseFailure();},outcome);
+    await p.waitForTimeout(60);
+    const label=name+' '+width+' '+outcome;
+    if(errorFenceReproduction){check((await p.locator('body').textContent()).includes('Private-A-receipt'),label+' ORIGINAL retains previous private receipt');check(await p.getByRole('button',{name:'Check current status'}).count()===1,label+' ORIGINAL retains status control');}
+    else{await cleared(p,label);await p.evaluate(()=>retained());await p.waitForTimeout(10);check(await p.evaluate(()=>calls.length)===before,label+' retained handler issues zero new requests');check(await p.evaluate(()=>calls.filter(x=>x.action==='execute').length)===1,label+' no repeated payment operation');}
+    await p.close();
+   }
+   if(errorFenceOnly||errorFenceReproduction)continue;
+  }
   if(!baseline&&!initializationReproduction){
    for(const stage of ['auth','create','execute','status','token']){
     const p=await setup();
