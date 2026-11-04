@@ -1,10 +1,18 @@
 // Exact guarded migration against owned disposable native PostgreSQL only.
-import assert from'node:assert/strict';import fs from'node:fs';import{fixture,forms,dream,historical,sha}from'./source.mjs';import{digest,preservedCatalog,relationCatalog,eventRelations}from'./catalog.mjs';
+import assert from'node:assert/strict';import fs from'node:fs';import{fixture,forms,dream,historical,sha}from'./source.mjs';import{digest,preservedCatalog,relationCatalog,eventRelations,dependencies}from'./catalog.mjs';
 const file='20261104171549_events_guarded_forward.sql',sql=fs.readFileSync(new URL('../../supabase/migrations/'+file,import.meta.url),'utf8');const f=await fixture();let count=0;
 const ok=(v,label)=>{assert.ok(v,label);count++;console.log('PASS '+label)};
 const snapshot=async db=>{await db.exec('reset role;set search_path=pg_catalog');return digest(db,preservedCatalog)};
 const profiles=[[],['forms'],['dream'],['forms','dream'],['dream','forms']],selected=process.env.EVENTS_FORWARD_PROFILE;assert.ok(!selected||profiles.some(x=>(x.join(',')||'baseline')===selected),'Unknown exact profile');const orders=selected?profiles.filter(x=>(x.join(',')||'baseline')===selected):profiles;assert.equal(sql.slice(sql.indexOf('-- Global Propel Events v1.'),sql.indexOf('\ndo $postflight$begin')),historical(),'Historical Events body byte-identical');
 try{for(const order of orders){const db=await f.nativeDatabase(),tag=order.join('→')||'baseline';try{await f.baseline(db);for(const mod of order)await db.exec(mod==='forms'?forms():dream());const original=await snapshot(db);
+// Disposable fixture metadata only: preserve exact Linux/native evidence if any assertion fails.
+if(process.env.EVENTS_CATALOG_DIAGNOSTICS==='1'){
+ const environment=(await db.query("select version(),datcollate,datctype,pg_encoding_to_char(encoding) encoding from pg_database where datname=current_database()")).rows[0];
+ const projection=(await db.query(relationCatalog(dependencies,true))).rows[0];
+ fs.mkdirSync('events-catalog-diagnostics',{recursive:true});
+ fs.writeFileSync('events-catalog-diagnostics/'+(order.join('-')||'baseline')+'.json',JSON.stringify({profile:tag,sqlSHA256:sha(sql),environment,dependencyHash:await digest(db,relationCatalog(dependencies,true)),projection},null,2)+'\n');
+}
+
 if(!order.length){
  async function rejects(setup,pattern,label,source=sql){await db.exec('begin;'+setup);await assert.rejects(()=>db.exec(source),pattern);await db.exec('rollback');ok(await snapshot(db)===original,label+' rolls back complete existing catalog');ok((await db.query("select to_regclass('public.event_series')v")).rows[0].v===null,label+' creates no Events domain')}
  await rejects('create table public.event_orphan(id int);',/exists or is partial/,'partial existing Events');
