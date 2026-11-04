@@ -104,3 +104,26 @@ confirmation; fresh genuine Auth, revocation and least-privilege acceptance;
 independent recovery/custody/cleanup; separately authorized migration and website
 release. No production policy, real account, grant, public form, message, payment
 or hosted resource is changed by these local tests.
+
+## Managed Auth execution-owner contract — November 4
+
+`tools/forms-core/fixtures/managed-auth-catalog.sql` is a SELECT-only catalog
+proposal: planned execution role, actual sensitive function owners, Auth table
+owner/ACL/RLS, required-column SELECT and table/column UPDATE privileges. It
+reads no Auth records, takes no row locks, invokes no workspace RPC and changes
+no privileges. Its source presence does not authorize a hosted query. Positive
+metadata is a prerequisite, not a claim that a managed provider accepted execution.
+
+PostgreSQL requires UPDATE on at least one column for SELECT FOR SHARE, in
+addition to the required SELECT privileges. The new disposable contract test
+models SELECT-only failure and verifies zero draft/audit effects, then rolls back
+all fictional role/ACL/owner changes. A separate synthetic column-UPDATE metadata
+case checks detection only; it is not an instruction to grant UPDATE on production
+Auth. Exact target provider guidance remains required. The original migration and
+runtime stay unchanged; no weaker fallback or permission escalation is introduced.
+
+The 15-check contract runs with PGlite locally and an independent empty PostgreSQL17
+CI service. This does not replace native concurrency, genuine Supabase Auth,
+managed-role/RLS acceptance or recovery evidence. Existing source and build checks
+are reused when unchanged. Sources: [PostgreSQL SELECT privileges](https://www.postgresql.org/docs/17/sql-select.html)
+and [Supabase function security](https://supabase.com/docs/guides/database/functions).

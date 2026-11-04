@@ -124,3 +124,12 @@ module pages reuse current Auth/session/navigation with pinned Supabase2.118.0;
 old frozen staff candidates are untouched. See docs/FORMS-PRIVATE-DRAFT-CORE.md.
 Local fixture/browser evidence and exact-head native CI remain distinct from
 managed-provider, genuine Auth, recovery and production release authorization.
+
+## 2026-11-04 — Forms managed-Auth capability regression
+
+The existing private Forms runtime/migration is unchanged. A permanent disposable
+15-check execution-owner contract verifies that SELECT-only Auth access cannot
+silently satisfy the required row lock, and that rejection preserves drafts,
+audit history and original ACL/owners. Its catalog-only companion requires no
+Auth row access or privilege changes. Native exact-head CI and actual managed
+provider acceptance remain separate; no production operation is authorized.
