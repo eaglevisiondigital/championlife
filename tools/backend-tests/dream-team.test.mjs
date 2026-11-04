@@ -41,4 +41,35 @@ await q("insert into organization_staff_directory(organization_id,user_id,displa
 await q("delete from organization_staff_permissions where organization_id=$1 and user_id=$2 and permission='dream_team.application.restricted'",[org,id(1)]);await as(1);await deny(()=>admin('detail',{id:a.id}),'revoked reviewer cannot reopen restricted content');await deny(()=>q('select dream_team_document($1)',[docId]),'revoked reviewer cannot download');await db.exec('reset role');
 // A learner who completed online coursework before this migration is eligible on next access.
 await db.exec('alter table course_completions disable trigger dream_team_course_hook');const legacyE=(await q('insert into course_enrollments(course_id,user_id)values($1,$2)returning id',[cid,id(4)])).rows[0].id;await q('insert into course_completions(enrollment_id,online_completed_at)values($1,now())',[legacyE]);await db.exec('alter table course_completions enable trigger dream_team_course_hook');await as(4);let legacy=await rpc('get');check(legacy.available,'existing online completer receives eligibility on next access');await rpc('get');await db.exec('reset role');check((await q("select count(*)::int n from private.dream_team_jobs where application_id=$1",[legacy.application.id])).rows[0].n===1,'legacy eligibility email remains idempotent');await as(4);await rpc('withdraw');check((await rpc('get')).application.status==='withdrawn','explicit withdrawal retained');await deny(()=>rpc('save',{revision:99,answers}),'withdrawn application cannot be edited');await db.exec('reset role');
+// New application-to-existing-Person next-step contract. No application answers enter tasks.
+await db.exec('reset role');
+for(const permission of ['followup.read','followup.manage'])await q('insert into organization_staff_permissions(organization_id,user_id,permission) values($1,$2,$3)',[org,id(1),permission]);
+await as(1);
+const beforeApplication=(await q('select dream_team_person($1,$2) v',[org,pid])).rows[0].v.application;
+const task=(await q('insert into followup_tasks(organization_id,person_id,title,due_on,assigned_user_id) values($1,$2,$3,$4,$5) returning *',[org,pid,'Dream Team — review next steps','2026-11-05',id(1)])).rows[0];
+check(task.revision===1&&task.status==='open'&&task.created_by===id(1),'next step uses existing task actor and initial revision');
+check(task.person_id===pid&&task.organization_id===org&&task.assigned_user_id===id(1),'next step bound to canonical organization/Person and authorized self');
+let taskEvents=(await q('select * from followup_task_events where task_id=$1',[task.id])).rows;
+check(taskEvents.length===1&&taskEvents[0].after_state.title==='Dream Team — review next steps','next-step creation has accurate immutable task audit');
+check(!JSON.stringify(taskEvents).includes('Synthetic response'),'restricted application answers absent from ordinary task audit');
+const changed=(await q("update followup_tasks set status='completed',due_on='2026-11-06' where organization_id=$1 and person_id=$2 and id=$3 and revision=1 returning *",[org,pid,task.id])).rows[0];
+check(changed.revision===2&&new Date(changed.due_on).toISOString().slice(0,10)==='2026-11-06','revision-guarded task status and due date update');
+check((await q("update followup_tasks set status='open' where organization_id=$1 and person_id=$2 and id=$3 and revision=1 returning id",[org,pid,task.id])).rows.length===0,'stale next-step write affects zero rows');
+check((await q('select * from followup_task_events where task_id=$1',[task.id])).rows.length===2,'stale next-step update appends no successful audit');
+check(JSON.stringify((await q('select dream_team_person($1,$2) v',[org,pid])).rows[0].v.application)===JSON.stringify(beforeApplication),'task completion never alters Dream Team application or readiness');
+await deny(()=>q('update followup_tasks set assigned_user_id=$1 where id=$2',[id(3),task.id]),'task cannot assign applicant without staff access');
+await deny(()=>q('insert into followup_tasks(organization_id,person_id,title) values($1,$2,$3)',[other,pid,'Dream Team — review next steps']),'cross-organization next step denied');
+await deny(()=>q('delete from followup_task_events where task_id=$1',[task.id]),'next-step audit immutable');
+await db.exec('reset role');
+await db.exec(`create function private.reject_test_task_audit() returns trigger language plpgsql as $$begin raise exception 'synthetic audit failure'; end$$; create trigger reject_test_task_audit before insert on followup_task_events for each row execute function private.reject_test_task_audit()`);
+await as(1);await deny(()=>q("update followup_tasks set status='open' where id=$1 and revision=2",[task.id]),'audit failure aborts task write');
+check((await q('select status,revision from followup_tasks where id=$1',[task.id])).rows[0].revision===2,'audit failure rolls back task revision');
+check((await q('select * from followup_task_events where task_id=$1',[task.id])).rows.length===2,'audit failure produces no successful-change event');
+await db.exec('reset role');await db.exec('drop trigger reject_test_task_audit on followup_task_events; drop function private.reject_test_task_audit()');
+await as(5);check((await q('select * from followup_tasks where id=$1',[task.id])).rows.length===0,'Dream Team summary authority does not confer task visibility');
+await deny(()=>q('insert into followup_tasks(organization_id,person_id,title) values($1,$2,$3)',[org,pid,'Dream Team — review next steps']),'Dream Team reviewer without follow-up authority cannot create task');
+await db.exec('reset role');await q("update organization_staff_permissions set revoked_at=now() where organization_id=$1 and user_id=$2 and permission='followup.manage'",[org,id(1)]);
+await as(1);check((await q("update followup_tasks set status='open' where id=$1 and revision=2 returning id",[task.id])).rows.length===0,'revoked follow-up manager cannot mutate with old session');
+check((await q('select * from followup_task_events where task_id=$1',[task.id])).rows.length===2,'revoked task write leaves immutable audit unchanged');
+await db.exec('reset role');
 fs.writeFileSync(path.join(os.tmpdir(),'dream-team-synthetic-snapshot.json'),JSON.stringify((await q('select snapshot from private.dream_team_submissions where version=1 limit 1')).rows[0].snapshot));console.log(count+' Dream Team backend checks passed');await db.close();
