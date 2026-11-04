@@ -2,6 +2,7 @@ name: Communications isolated source review
 on:
   pull_request:
     paths:
+      - 'assets/js/communications.js'
       - 'tools/communications-policy/**'
       - 'supabase/functions/_shared/communications/resend*.mjs'
       - 'supabase/migrations/20261102193138_communications_resend_suppressed.sql'
@@ -22,6 +23,9 @@ jobs:
     timeout-minutes: 5
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
@@ -35,4 +39,21 @@ jobs:
       - run: TEST_POSTGRES_BIN="$(pg_config --bindir)" node tools/communications-policy/reconciliation.native.mjs
       - run: TEST_POSTGRES_BIN="$(pg_config --bindir)" node tools/communications-policy/resend.native.mjs
       - run: TEST_POSTGRES_BIN="$(pg_config --bindir)" node tools/communications-policy/resend-host.native.mjs
+      - run: git diff --check
+  session-browser-integrity:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm ci --ignore-scripts --prefix tools/backend-tests
+      - run: tools/backend-tests/node_modules/.bin/playwright install --with-deps chromium webkit
+      - run: node tools/communications-policy/session.browser.mjs
+      - run: node tools/backend-tests/communications.dom.mjs
+      - run: node tools/communications-policy/session-integrity.mjs
       - run: git diff --check
