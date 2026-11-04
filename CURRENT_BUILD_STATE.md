@@ -117,3 +117,7 @@ CI remain separate from production approval.
 
 ## November 3: first backoffice composition (local source candidate)
 Current main plus frozen PR #61 shell and exact PR #72 eb7ad80 People/registration runtimes are composed on a separate branch. PR #61 remains frozen. Current PR #79 public navigation and all SQL/provider configuration remain unchanged. New selected-source verification and parallel focused CI accompany existing regression coverage. No hosted authentication, recovery rehearsal or release is claimed. See docs/FIRST-BACKOFFICE-COMPOSITION-20261103.md.
+
+
+## November 3: isolated backoffice household-search privacy successor
+Frozen PR #84 `40827da3a646a35165e5b3416568dbcc185ce83f` remains unchanged. This successor extracts only the proven normal household-search reset from PR #89 `db61caa31c3f274cd264bf3f846c8d7b8c5209dc`; Event Day arrivals, attendee restoration and its SQL are excluded. The registration runtime clears search on account transition, explicit denial, protected-state cleanup and history/page restoration; verified same-account refresh retains its search. Existing generation guards and authoritative RPC permissions remain unchanged. Permanent Chromium/WebKit coverage is added to existing composition CI, with the selected-source hash rebound only for this runtime. Local and independent checks are recorded in the separate private audit package. Genuine Auth/recovery and website release remain unaccepted and separately gated.

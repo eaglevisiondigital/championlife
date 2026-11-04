@@ -46,3 +46,7 @@ Donation-intake access requires outreach.view AND finance.read. Restrictive RLS 
 
 ## First backoffice composition boundary — November 3
 Later PR #72 navigation-generation, identity, permission-denial, stale-handler and printing authorization protections replace the two older frozen-shell runtime blobs verbatim. People task creation uses existing current organization permissions and does not grant campaign decision authority. Synthetic browser/native acceptance is distinct from genuine Auth and independent recovery. No grants, SQL or protected-preview target changes are included. See docs/FIRST-BACKOFFICE-COMPOSITION-20261103.md.
+
+
+## November 3: household-search ownership correction
+Search text can itself contain private household identifiers. Clearing rendered records alone is insufficient if the next account reuses the prior search closure. This narrow successor clears that closure at existing invalidation boundaries, including a freshly verified principal change detected during focus reauthorization when an Auth callback was missed. Same-account focus preserves search. Pending RPCs and detached handlers remain guarded by the existing navigation generation, principal, campaign and DOM bindings. No SDK, database authorization, permission, storage, schema or audit change is introduced. This local correction is not provider-backed session-retirement evidence.
