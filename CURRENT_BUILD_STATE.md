@@ -117,3 +117,23 @@ The original defect was reproduced in actual local Chromium/WebKit pages at
 activation, ordinary link navigation and existing partner interception. All
 provider/network interactions are blocked in these fixtures. Source review and
 CI remain separate from production approval.
+
+## November 4 — isolated Events organization handoff successor
+
+Narrow source-only successor to PR91 dcad232: Events now validates and preserves
+an explicitly requested authorized organization instead of selecting the first
+available organization. Duplicate/unknown hints fail closed; signed-out return
+uses the same shared login with a fixed Events path. No shared Auth, staff shell,
+public page, migration, grant or branding change. Original PR90/91 remain frozen.
+Targeted and affected browser evidence, reproducible build and independent review
+are recorded separately; local synthetic checks do not establish hosted readiness.
+Events backend installation and genuine Auth/recovery remain separate release gates.
+The same integration review confirmed and narrowly corrected an Events transport
+rejection retaining the prior account's list after a missed Auth callback. Original
+Chromium/WebKit failures are preserved; fresh identity plus post-await scope checks
+close that path without clearing independently authorized new-account content.
+Final local validation:84 focused organization/transport browser assertions plus108
+affected Events browser assertions and14 provenance checks passed. Two412-file
+builds are identical; only assets/js/staff-events.js differs from preserved PR91.
+Coordinator independent Chromium/WebKit review passed40 checks. Exact-head CI and
+all genuine provider/release acceptance remain separate gates.
