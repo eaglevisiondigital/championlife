@@ -84,3 +84,9 @@ before submission and suppress late navigation after access changes. No data is
 stored in browser storage. Separate publication and submission-read permission
 are not implied by creating a draft. Historical source dependencies require their
 own exact-target release reconciliation.
+
+### Private Forms editor catalog boundary (2026-11-03)
+
+Nonfinancial-only Forms editors no longer depend on Giving catalog availability to load a private nonfinancial definition. This is availability/functional isolation, not a new permission or a financial authorization bypass: the existing catalog projects public funds under canonical Forms permissions. Existing financial definitions and users authorized to configure payments keep their catalog requirement.
+
+Lazy catalog results require the originally captured principal, Auth object/client, organization, form and read-generation to remain current, plus a fresh `getUser()` result before and after success or failure. A late result cannot add a field into a replacement account/form. Explicit server denial retains the existing protected-state retirement. A temporary catalog error preserves authorized existing work, never treats an error as an empty successful catalog, never erases configured funds and never publishes. Original server authorization, revision validation and audit implementation remain unchanged. No broader role, schema or production access is introduced.

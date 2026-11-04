@@ -168,3 +168,11 @@ account/organization/panel bindings and duplicate clicks. This is a dependent PR
 source increment, not a current-main website release. See
 `docs/FORMS-BAPTISM-DRAFT.md`; genuine Auth and historical dependency reconciliation
 remain required. No migration or production/provider actions.
+
+## 2026-11-03 — private nonfinancial editor journey correction
+
+SOURCE-ONLY successor to PR #92 `89c427ab799570628497d0dc2bdfc760e1e1d86d`, retaining its historical GIV-2C base. A staff editor without payment-configuration permission can open, review and save the existing private baptism draft without requesting the unrelated Giving catalog. Financial definitions and payment configurators preserve their existing catalog requirement. Adding a financial field loads the canonical catalog before changing the draft, with current account/client/organization/form/generation checks before and after asynchronous results (including errors). Explicit denial clears protected state; temporary catalog failure cannot silently create an incomplete financial field or discard configured funds.
+
+Local evidence: original dependency failure reproduced in Chromium/WebKit at 390/1440 widths; corrected journey 128 assertions, existing baptism Create/source 100, Forms DOM/model 79, canonical PGlite baptism/private-editor 20. Independent review 53 checks. Two identical 469-file builds and site-build safety checks pass. These are isolated fictional tests, not genuine Auth/provider acceptance. No SQL, live form, Netlify endpoint, collection fields, publication or payment behavior changed.
+
+Current-main integration is still blocked: unchanged canonical Forms SQL cannot install over the accepted 27-migration baseline (42P01: missing `giving_sessions`), and the historical Giving dependencies/catalog columns are not present. Separate private reconciliation evidence verifies this; no historical financial schemas or grants were imported to manufacture compatibility. This branch does not claim current-main SDK/navigation composition or release readiness.

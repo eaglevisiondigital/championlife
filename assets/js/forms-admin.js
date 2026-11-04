@@ -18,6 +18,8 @@
     funds = [],
     destinations = [],
     minorScale = 2,
+    catalogReady = false,
+    catalogPending = null,
     selected = null,
     activePane = "canvas",
     mode = "desktop",
@@ -87,6 +89,10 @@
     history = [];
     future = [];
     permissions = [];
+    funds = [];
+    destinations = [];
+    catalogReady = false;
+    catalogPending = null;
     root.replaceChildren(
       el(
         "section",
@@ -477,7 +483,21 @@
     ...draft.sections.map((s) => s.key),
     ...M.allFields(draft).map((f) => f.key),
   ];
-  function add(type, target = draft.sections.at(-1).key, index) {
+  function add(type, target = draft?.sections.at(-1).key, index) {
+    if (!draft || !can("forms.edit") || conflict) return;
+    if (financialTypes.has(type) && !catalogReady) {
+      if (catalogPending) return;
+      const binding = readBinding();
+      const operation = (async () => {
+        try {
+          if (await loadCatalog(binding) && currentBinding(binding) && draft && can("forms.edit"))
+            add(type, target, index);
+        } catch (e) { if (currentBinding(binding)) message(e); }
+        finally { if (catalogPending === operation) catalogPending = null; }
+      })();
+      catalogPending = operation;
+      return operation;
+    }
     activePane = "canvas";
     change(() => {
       if (type === "section") {
@@ -1479,31 +1499,71 @@
       message(e);
     }
   }
+  const financialTypes = new Set(["currency", "fund", "gift_amount", "payment"]);
+  function readBinding() {
+    return { epoch, sequence: readSequence, org, formId, user: context?.principal,
+      auth: window.ChampionLifeAuth, client: window.ChampionLifeAuth?.client };
+  }
+  function currentBinding(b) {
+    return b.epoch === epoch && b.sequence === readSequence && b.org === org &&
+      b.formId === formId && b.user === context?.principal;
+  }
+  async function verifyBinding(b) {
+    if (!currentBinding(b)) return false;
+    if (b.auth !== auth || window.ChampionLifeAuth !== b.auth ||
+        auth.client !== b.client) { deny(); return false; }
+    let user;
+    try { user = await b.auth.getUser(); } catch { user = null; }
+    if (!currentBinding(b)) return false;
+    if (window.ChampionLifeAuth !== b.auth || auth.client !== b.client ||
+        !user?.id || user.id !== b.user) { deny(); return false; }
+    return true;
+  }
+  async function loadCatalog(b) {
+    if (!await verifyBinding(b)) return false;
+    let catalog;
+    try { catalog = await rpc("funds", { id: b.formId }); }
+    catch (e) {
+      if (!await verifyBinding(b)) return false;
+      throw e;
+    }
+    if (!await verifyBinding(b)) return false;
+    funds = catalog.funds;
+    destinations = catalog.destinations || [];
+    minorScale = catalog.minor_unit_scale ?? 2;
+    catalogReady = true;
+    return true;
+  }
   async function loadForm() {
-    const token = ++readSequence;
+    ++readSequence;
+    const binding = readBinding();
     clearTimeout(saveTimer);
+    // Retire the previous account/form before either request can complete.
+    draft = null; form = null; version = null;
+    funds = []; destinations = []; minorScale = 2;
+    catalogReady = false; catalogPending = null;
+    root.replaceChildren(el("p", "Loading form…", { role: "status" }));
     try {
-      const data = await rpc(can("forms.edit") ? "draft" : "get", {
-        id: formId,
-      });
-      if (token !== readSequence) return;
+      if (!await verifyBinding(binding)) return;
+      const data = await rpc(can("forms.edit") ? "draft" : "get", { id: formId });
+      if (!await verifyBinding(binding)) return;
       form = data.form;
       version = data.version;
       draft = M.clone(version.definition);
       permissions = data.permissions || permissions;
-      const catalog = await rpc("funds", { id: formId });
-      funds = catalog.funds;
-      destinations = catalog.destinations || [];
-      minorScale = catalog.minor_unit_scale ?? 2;
-      if (token !== readSequence) return;
-      history = [];
-      future = [];
-      dirty = false;
-      conflict = false;
+      const needsCatalog = can("forms.payment.configure") ||
+        Object.keys(draft.payment || {}).length > 0 ||
+        M.allFields(draft).some(f => financialTypes.has(f.type));
+      if (needsCatalog && !await loadCatalog(binding)) return;
+      if (!currentBinding(binding)) return;
+      history = []; future = []; dirty = false; conflict = false;
       preview = query.get("preview") === "true";
       builder();
     } catch (e) {
-      message(e);
+      if (currentBinding(binding)) {
+        root.append(error);
+        message(e);
+      }
     }
   }
   function csv(data) {
@@ -1841,7 +1901,7 @@
     if (context?.effective === effective) return;
     epoch++;
     clearTimeout(saveTimer);
-    context = { ...s.forms, effective };
+    context = { ...s.forms, effective, principal: user.id };
     permissions = [...new Set(per)];
     const needed =
       view === "builder"

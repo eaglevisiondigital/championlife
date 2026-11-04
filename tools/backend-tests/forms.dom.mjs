@@ -210,6 +210,7 @@ async function admin(view = "builder") {
   w.URL.createObjectURL = () => "blob:synthetic";
   w.URL.revokeObjectURL = () => {};
   w.ChampionLifeAuth = {
+    getUser: async () => ({ id: f.admin }),
     client: {
       rpc: async (name, args) => {
         calls.push([name, args]);

@@ -20,4 +20,5 @@ jobs:
       - run: node tools/backend-tests/forms-baptism.test.mjs
       - run: node tools/backend-tests/forms.test.mjs && node tools/backend-tests/forms-gateway.test.mjs && node tools/backend-tests/forms.dom.mjs
       - run: node tools/backend-tests/forms-baptism.browser.mjs
+      - run: node tools/backend-tests/forms-private-journey.browser.mjs
       - run: node tools/site-build/build.mjs && node tools/backend-tests/site-build.test.mjs && git diff --check
