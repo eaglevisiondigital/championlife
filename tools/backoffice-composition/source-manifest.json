@@ -93,7 +93,9 @@
     {
       "path": "assets/js/outreach-registration-staff.js",
       "source": "eb7ad80c322fe3664273c38f56d176b1e28e1583",
-      "sha256": "f5adfa9f3c63319da3ee2465a8d9127bf38370d2a136a7dc52ccc85ffba77284"
+      "sha256": "415e1b5ba0778d8b9e427cc0746d297dae274a147b1712b9069b821d12a83d00",
+      "originalSha256": "f5adfa9f3c63319da3ee2465a8d9127bf38370d2a136a7dc52ccc85ffba77284",
+      "derivation": "Search-state privacy only: extract account-transition/denial/history resets from PR89 db61caa31c3f274cd264bf3f846c8d7b8c5209dc onto frozen PR84 40827da3a646a35165e5b3416568dbcc185ce83f. No Event Day, restoration or SQL imports."
     },
     {
       "path": "tools/outreach/people-followup-create.browser.mjs",
