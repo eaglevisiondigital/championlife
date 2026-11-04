@@ -1,0 +1,63 @@
+import assert from 'node:assert/strict';
+import {createHash} from 'node:crypto';
+import {nativeDatabase} from './native-database.mjs';
+import {PGlite} from '../backend-tests/node_modules/@electric-sql/pglite/dist/index.js';
+import {baseline,seed,as,call,create,definition,id,read,migration,catalog} from './fixture.mjs';
+const native=process.env.TEST_NATIVE_PG==='1';const db=native?await nativeDatabase():new PGlite();let n=0;const ok=(x,m)=>{assert.ok(x,m);n++;console.log('PASS '+m)};const deny=async(fn,m)=>{await assert.rejects(fn);ok(true,m)};
+try{
+ await baseline(db);const before=await catalog(db);ok(before.tables.filter(x=>x.schema==='public').length===49&&before.functions.length===76&&before.policies.length===64,'accepted27baseline49tables76functions64policies');
+ const manifest=JSON.parse(read('tools/forms-core/provenance.json')),original=read('tools/forms-core/fixtures/original-giv-2c.sql'),core=read('supabase/migrations/'+migration);
+ const sha=s=>createHash('sha256').update(s).digest('hex');assert.equal(sha(original),manifest.originalSQLSHA256);ok(true,'original reviewed GIV2C fixture exact SHA256');
+ for(const name of manifest.unchangedTables){const part=original.match(new RegExp('create table '+name.replaceAll('.','\\.')+'\\([\\s\\S]*?;'))?.[0];assert.equal(sha(part),manifest.objects[name].originalSHA256);assert.ok(core.includes(part));}ok(true,'all nine canonical table definitions byte-identical');
+ for(const prepare of ["create table public.platform_form_unknown(id int)","create or replace function private.staff_permission_keys()returns text[] language sql immutable set search_path='' as $$select array[]::text[]$$", "create or replace function private.has_staff_permission(p_org uuid,p_key text,p_department uuid default null)returns boolean language sql stable security definer set search_path=''as $$select false$$"]){await db.exec('begin');await db.exec(prepare);await deny(()=>db.exec(core),'wrong/partial baseline fails guard');await db.exec('rollback');assert.deepEqual(await catalog(db),before);ok(true,'guard failure rollback preserves exact catalog');}
+ await db.exec('begin');await db.exec(read('supabase/migrations/'+migration));await db.exec('rollback');assert.deepEqual(await catalog(db),before);ok(true,'installation rollback restores every old catalog entry');
+ await db.exec(read('supabase/migrations/'+migration));const after=await catalog(db);
+ for(const group of ['tables','policies']){for(const old of before[group])assert.ok(after[group].some(x=>JSON.stringify(x)===JSON.stringify(old)));ok(true,'existing '+group+' owners/ACL/RLS/predicates preserved');}
+ for(const old of before.functions.filter(x=>x.name!=='staff_permission_keys'))assert.ok(after.functions.some(x=>JSON.stringify(x)===JSON.stringify(old)));ok(true,'all previous functions except explicit registry extension byte-identical');
+ await deny(()=>db.exec(read('supabase/migrations/'+migration)),'repeat install fails before changes');
+ const {org,other}=await seed(db);await as(db);const result=await call(db,org,'create',create());const form=result.form.id;
+ ok(result.version.revision===1&&result.form.status==='draft'&&result.capabilities.profile==='private_draft_v1','canonical private draft and capability');
+ ok((await call(db,org,'create',create())).form.id===form,'identical create retry preserves same record');
+ await deny(()=>call(db,org,'create',{...create(),name:'Changed'}),'changed duplicate slug cannot overwrite');
+ await as(db,2);await deny(()=>call(db,org,'create',create()),'other creator cannot reuse duplicate slug');await as(db);
+ const list=await call(db,org,'list');ok(list.forms[0].submission_count===null&&!list.capabilities.submissions,'unavailable counts never invented');
+ const d=definition();d.sections[0].title='Updated';const saved=await call(db,org,'save',{id:form,revision:1,definition:d});ok(saved.version.revision===2,'revision advances atomically');
+ for(const revision of [undefined,null,-1,0,1,1.5,'2','bad',{},[]])await deny(()=>call(db,org,'save',{id:form,revision,definition:d}),'bad/stale revision '+JSON.stringify(revision));
+ for(const action of ['publish','pause','resume','archive','funds','duplicate','submissions','detail','export','link','pledge','recurring','reserve_file','submit'])await deny(()=>call(db,org,action,{id:form}),'unavailable '+action+' rejected');
+ for(const value of [true,'false',null,0,undefined]){const bad=definition();if(value===undefined)delete bad.settings.public_available;else bad.settings.public_available=value;await deny(()=>call(db,org,'save',{id:form,revision:2,definition:bad}),'unsafe public flag '+JSON.stringify(value));}
+ for(const type of ['fund','gift_amount','payment','currency']){const bad=definition();bad.sections[0].fields.push({key:'financial',type,label:'Bad'});await deny(()=>call(db,org,'save',{id:form,revision:2,definition:bad}),'financial field '+type+' denied');}
+ for(const payment of [{enabled:false},{enabled:true},null,[]]){const bad=definition();bad.payment=payment;await deny(()=>call(db,org,'save',{id:form,revision:2,definition:bad}),'financial config rejected '+JSON.stringify(payment));}
+ await deny(()=>call(db,other,'get',{id:form}),'crossorganization exactID denied');await as(db,4);await deny(()=>call(db,org,'list'),'unverifiedstaff denied');await as(db,0,'anon');await deny(()=>call(db,org,'list'),'anonymous RPC denied');await as(db,0,'service_role');await deny(()=>call(db,org,'list'),'service_role no bypass');
+ await as(db,3);await deny(()=>call(db,org,'get',{id:form}),'unassigned staff denied');
+ await db.exec('reset role');await db.query('insert into private.platform_form_grants(organization_id,user_id,form_id,permissions) values($1,$2,$3,$4)',[org,id(3),form,['forms.read','forms.edit']]);await as(db,3);
+ ok((await call(db,org,'get',{id:form})).form.id===form,'existing exact form scoped access retained');await deny(()=>call(db,org,'create',create('scoped-create')),'scoped read/edit cannot create orgwide');
+ // Same permission union is not the same record authority. Exercise the exact
+ // context/list contract used by the browser's scope-aware invalidation.
+ const scopedDeny=async(fn,label)=>{await db.exec('savepoint scoped_denial');await assert.rejects(fn,e=>e.code==='42501');await db.exec('rollback to savepoint scoped_denial;release savepoint scoped_denial');ok(true,label)};
+ await db.exec('begin');await as(db);const second=(await call(db,org,'create',create('scope-second'))).form.id;
+ await db.exec('reset role');await db.query('insert into private.platform_form_grants(organization_id,user_id,form_id,permissions) values($1,$2,$3,$4)',[org,id(3),second,['forms.read']]);await as(db,3);
+ const scopedContext=async()=>{const value=await call(db,null,'context');return value.organizations.find(x=>x.id===org)};
+ const firstScope=await scopedContext();ok(firstScope.permissions.length===0,'exact-form grants do not confer organization directory authority');
+ ok(firstScope.scoped_forms.find(x=>x.id===form).permissions.includes('forms.edit')&&!firstScope.scoped_forms.find(x=>x.id===second).permissions.includes('forms.edit'),'context binds edit permission to original exact form');
+ const union=x=>[...new Set(x.scoped_forms.flatMap(f=>f.permissions))].sort();
+ await db.exec('reset role');await db.query('update private.platform_form_grants set permissions=$1 where user_id=$2 and form_id=$3',[['forms.read'],id(3),form]);await db.query('update private.platform_form_grants set permissions=$1 where user_id=$2 and form_id=$3',[['forms.read','forms.edit'],id(3),second]);await as(db,3);
+ const swappedScope=await scopedContext();assert.deepEqual(union(firstScope),union(swappedScope));ok(true,'record permission swap preserves the union but changes authority');
+ ok(!swappedScope.scoped_forms.find(x=>x.id===form).permissions.includes('forms.edit')&&swappedScope.scoped_forms.find(x=>x.id===second).permissions.includes('forms.edit'),'fresh context reports exact permission swap');
+ const swappedList=await call(db,org,'list');ok(!swappedList.forms.find(x=>x.id===form).permissions.includes('forms.edit')&&swappedList.forms.find(x=>x.id===second).permissions.includes('forms.edit'),'fresh list matches exact record edit authority');
+ await scopedDeny(()=>call(db,org,'save',{id:form,revision:2,definition:definition()}),'old exact-form edit request denied despite unchanged union');
+ ok((await call(db,org,'draft',{id:second})).form.id===second,'newly authorized exact-form draft accessible');
+ await db.exec('reset role');await db.query('update private.platform_form_grants set active=false where user_id=$1 and form_id=$2',[id(3),form]);await as(db,3);
+ ok((await scopedContext()).scoped_forms.every(x=>x.id!==form),'revoked record removed from authoritative context');
+ ok((await call(db,org,'list')).forms.every(x=>x.id!==form),'revoked record removed from authoritative list');
+ await scopedDeny(()=>call(db,org,'get',{id:form}),'retained revoked-record URL denied by backend');
+ await db.exec('rollback');await as(db,3);
+ await db.exec('reset role');await db.query('update private.platform_form_grants set active=false where user_id=$1',[id(3)]);await as(db,3);await deny(()=>call(db,org,'get',{id:form}),'scoped revocation immediate');await as(db);
+ await db.exec('reset role');await db.exec("create function private.test_audit_failure()returns trigger language plpgsql as $$begin raise exception 'synthetic audit failure';end$$;create trigger test_audit_failure before insert on platform_form_audit for each row execute function private.test_audit_failure();");await as(db);await deny(()=>call(db,org,'save',{id:form,revision:2,definition:definition()}),'audit failure rejects transaction');await db.exec('reset role');await db.exec('drop trigger test_audit_failure on platform_form_audit;drop function private.test_audit_failure()');await as(db);ok((await call(db,org,'get',{id:form})).version.revision===2,'audit failure preserves original revision');
+ await db.exec('reset role');ok((await db.query('select count(*)::int n from platform_form_audit')).rows[0].n===2,'only successful create/save audited');await deny(()=>db.exec("delete from platform_form_audit"),'audit immutable even owner');
+ for(const t of after.tables.filter(x=>!before.tables.some(b=>b.schema===x.schema&&b.name===x.name)))for(const role of ['anon','authenticated','service_role'])for(const right of ['select','insert','update','delete','truncate','references','trigger','maintain'])assert.equal((await db.query('select has_table_privilege($1,$2,$3) v',[role,t.schema+'.'+t.name,right])).rows[0].v,false);ok(true,'nine rawtables deny inherited privileges');
+ for(const helper of ['forms_compile(uuid,jsonb)','forms_validate(uuid,jsonb,boolean)','forms_audit(uuid,uuid,text,uuid)','forms_lock_authority(uuid,text,uuid)'])for(const role of ['anon','authenticated','service_role'])assert.equal((await db.query('select has_function_privilege($1,$2,$3) v',[role,'private.'+helper,'EXECUTE'])).rows[0].v,false);ok(true,'private helper execution denied');
+ for(const table of ['giving_sessions','giving_ledger','platform_form_submissions'])assert.equal((await db.query('select to_regclass($1) v',['public.'+table])).rows[0].v,null);ok(true,'no financial or submission placeholders');
+ const snapshot=async()=>(await db.query("select jsonb_build_object('forms',(select jsonb_agg(to_jsonb(x))from platform_forms x),'versions',(select jsonb_agg(to_jsonb(x))from platform_form_versions x),'audit',(select jsonb_agg(to_jsonb(x))from platform_form_audit x))v")).rows[0].v;
+ const preserved=await snapshot();await db.exec('begin');await db.exec('revoke execute on function public.forms_workspace(text,uuid,jsonb)from authenticated');await as(db);await deny(()=>call(db,org,'get',{id:form}),'emergency wrapper shutdown blocks fresh requests');await db.exec('rollback');assert.deepEqual(await snapshot(),preserved);ok(true,'shutdown rollback preserves all draft IDs revisions and immutable audits');
+ console.log('Forms core '+(native?'native PostgreSQL':'PGlite')+' PASS '+n);
+}finally{await db.close();}

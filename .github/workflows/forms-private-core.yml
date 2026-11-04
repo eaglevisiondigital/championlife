@@ -1,0 +1,61 @@
+name: Private Forms canonical core
+on:
+  pull_request:
+    paths:
+      - 'supabase/migrations/*forms_private_draft_core.sql'
+      - 'assets/js/forms-*.js'
+      - 'assets/css/forms.css'
+      - 'staff-form*.html'
+      - 'tools/forms-core/**'
+      - 'tools/site-build/public-files.json'
+      - '.github/workflows/forms-private-core.yml'
+permissions:
+  contents: read
+jobs:
+  browser-and-integrity:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm ci --ignore-scripts --prefix tools/backend-tests
+      - run: tools/backend-tests/node_modules/.bin/playwright install --with-deps chromium webkit
+      - run: node tools/forms-core/core.test.mjs
+      - run: node tools/forms-core/managed-auth-contract.test.mjs
+      - run: node tools/forms-core/browser.test.mjs
+      - run: node tools/forms-core/scoped-revocation.browser.mjs
+      - run: node tools/forms-core/build-integrity.mjs
+      - run: git diff --check
+  native-postgres:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    strategy:
+      fail-fast: false
+      matrix:
+        suite: [core.test.mjs, native-concurrency.mjs, managed-auth-contract.test.mjs]
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_PASSWORD: synthetic-only
+          POSTGRES_DB: forms_core_test
+        ports: ['5432:5432']
+        options: >-
+          --health-cmd pg_isready --health-interval 5s --health-timeout 5s --health-retries 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm ci --ignore-scripts --prefix tools/backend-tests
+      - run: node tools/forms-core/${{ matrix.suite }}
+        env:
+          TEST_NATIVE_PG: '1'
+          TEST_DATABASE_URL: postgres://postgres:synthetic-only@127.0.0.1:5432/forms_core_test

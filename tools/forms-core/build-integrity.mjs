@@ -1,0 +1,7 @@
+import assert from 'node:assert/strict';import {readFileSync}from'node:fs';import{createHash}from'node:crypto';import{execFileSync}from'node:child_process';import{join}from'node:path';import{buildSite}from'../site-build/build.mjs';
+const sha=b=>createHash('sha256').update(b).digest('hex'),files=JSON.parse(readFileSync('tools/site-build/public-files.json'));
+const first=await buildSite();const one=Object.fromEntries(files.map(p=>[p,sha(readFileSync(join(first.output,p)))]));const second=await buildSite();const two=Object.fromEntries(files.map(p=>[p,sha(readFileSync(join(second.output,p)))]));assert.deepEqual(two,one);
+for(const file of ['baptism-interest.html','assets/js/champion-life-auth.js','assets/js/staff-session.js','assets/js/king-kind-reader.js','assets/js/supabase-config.js','assets/images/logo-gold.png','assets/images/propel-logo-header-transparent.png'])assert.deepEqual(readFileSync(file),execFileSync('git',['show','999f4a75eeb8e4a05580dc603dda39ba64eb0409:'+file]));
+const sri='sha384-UagCvVPT5XXA0Hx+nJYUAGBFseHT9zBgpJMSebsAxl9lciTwbT+39j5VfRjdP5Tp';for(const p of['staff-forms.html','staff-form-builder.html']){const html=readFileSync(p,'utf8');assert.ok(html.includes('@supabase/supabase-js@2.118.0"')&&html.includes(sri));assert.ok(!html.includes('staff-home.html'));}
+assert.ok(!files.some(p=>p.startsWith('tools/forms-core/')||p.startsWith('supabase/')));
+console.log(JSON.stringify({builds:2,identical:true,files:files.length,manifestSHA256:sha(JSON.stringify(one)),protectedSourceFiles:7,pinnedEntryPoints:2}));

@@ -113,3 +113,33 @@ The original defect was reproduced in actual local Chromium/WebKit pages at
 activation, ordinary link navigation and existing partner interception. All
 provider/network interactions are blocked in these fixtures. Source review and
 CI remain separate from production approval.
+
+## 2026-11-03 — Canonical private Forms draft composition (source only)
+
+A bounded current-main Forms core recovers the canonical GIV-2C draft tables,
+validator and editor with create/read/edit RPCs, exact private capability denial,
+revision/idempotency and audit rollback. It adds no public response collection,
+financial activation, real assignments or replacement Netlify endpoint. Two
+module pages reuse current Auth/session/navigation with pinned Supabase2.118.0;
+old frozen staff candidates are untouched. See docs/FORMS-PRIVATE-DRAFT-CORE.md.
+Local fixture/browser evidence and exact-head native CI remain distinct from
+managed-provider, genuine Auth, recovery and production release authorization.
+
+## 2026-11-04 — Forms managed-Auth capability regression
+
+The existing private Forms runtime/migration is unchanged. A permanent disposable
+15-check execution-owner contract verifies that SELECT-only Auth access cannot
+silently satisfy the required row lock, and that rejection preserves drafts,
+audit history and original ACL/owners. Its catalog-only companion requires no
+Auth row access or privilege changes. Native exact-head CI and actual managed
+provider acceptance remain separate; no production operation is authorized.
+
+## 2026-11-04 — Forms exact-record scope refresh correction
+
+Source-only successor to PR95: the existing private Forms workspace now distinguishes
+record-specific authority from the union of permission names. A→B reassignment and
+per-form permission swaps retire stale protected lists and controls. No SQL, registry,
+Auth owner/ACL, public baptism, financial, collection or shared navigation changes.
+Targeted fictional browser and exact canonical SQL regression checks accompany the
+correction; genuine managed-provider/Auth/recovery acceptance remains outstanding.
+See docs/FORMS-PRIVATE-DRAFT-CORE.md for scope and limitations.
