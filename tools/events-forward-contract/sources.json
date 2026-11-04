@@ -1,0 +1,77 @@
+{
+  "baselineSourceManifest": {
+    "commit": "32605a00753c8c60076c5aa6742a770c710b0354",
+    "path": "tools/staff-composition/sources.json",
+    "sha256": "024307ee48fb3e7982d76ebaac919e4f5d03be99ad86c8607d8a492e88ea18d1"
+  },
+  "sources": {
+    "forms": {
+      "commit": "7c186dd11a34ff5be277bc14b8ebf6f2b29414ee",
+      "files": {
+        "supabase/migrations/20261104042117_forms_private_draft_core.sql": "094783c4b7b8da05caad942614a2f5266898069f2cc66daad099150de159d64e",
+        "staff-forms.html": "83085875a2725ce23d8b07d302a17de4e3e872c742e33fa1e1241f7fad097bb4",
+        "staff-form-builder.html": "a33d660d8454b4319038ee6f51898bbe8bbff6afc206a2fe625b05734d51cb6e",
+        "assets/js/forms-context.js": "34cd0699c62f365722356c80c9eb01ba57703e7e88250219eba73d9b280a06ac",
+        "assets/js/forms-admin.js": "9bc0ff611fd77fbfe0f454fc18d31b5b3a66d6c4136e50f8a542fbf685bdb276",
+        "assets/js/forms-model.js": "d3e7b7d02c1cea2641b72c2e0aea8d769ca4ed1e273e374082e8a5e29b6031d9",
+        "assets/js/forms-renderer.js": "cc845ebcf3e52338074632e283050a23058b85d781e692c1ed9f57fa27de1bbb",
+        "assets/css/forms.css": "d51179feca384acca12f1c46df791744d9ce064eadf461b71e33bca27f1cd3c5",
+        "assets/js/champion-life-auth.js": "f1d277ea1cb5cf608de471b0a62f6ae41c9ecdc3b675960628083ee4e1df3cb4",
+        "assets/js/staff-session.js": "f465a46d0a655d4d3d5167f1f6afadbe3748b54e401045f7464535e90d23c5ab",
+        "tools/forms-core/fixture.mjs": "fc96bf00aa06d52ec9a18459705a11467914c8ce5e11da6e40043a038644d240",
+        "tools/forms-core/fixtures/accepted-reader-baseline.sql": "aac5ec4ee74a8b59b8b8bb1bd5ec1f4254fd6f0585fcc2fe1f63942c8dce4fb1",
+        "tools/backend-tests/migration-order.mjs": "0771c0f24299bc0632fb09fe4eae84e608a64ec270789efd106795774f619050",
+        "tools/backend-tests/fixtures/supabase-test-bootstrap.sql": "c68c394b33c06a3c0e821b9a9f6482c1ed5f147a9cb678e26b6d27fd93784068",
+        "supabase/bootstrap/automatic-rls.sql": "8387dc646df9fef987d725a9a45ff9e3f77f692a22eb0421909cb58a642e46e6",
+        "supabase/migrations/20260923114743_create_course_progress_schema.sql": "c42d6a9a7f213558170e389f011e0f0b1972d065efd8fb9dc30644349b901f72",
+        "supabase/migrations/20260923114822_harden_course_security_and_indexes.sql": "9becd4c0e52b1787bf7ecf066683359aaced0b27c5b71123da066dd8a09193fb",
+        "supabase/migrations/20260923115114_revoke_public_rls_helper_execution.sql": "a8c9d9e0044ea4f8ac6b6bf726b7b28370ddf9ade493eaceaaef319dcf741ee9",
+        "supabase/migrations/20260923115706_grant_authenticated_course_api_access.sql": "83998f15a0236a4765dd83803a34166854a278fc2888073d28b4eee5b9a7dd26",
+        "supabase/migrations/20260923115732_restrict_authenticated_course_privileges.sql": "5f53a377265a3b68231e32f75b4c99f656bea74900ec4fbdffc346f03473b103",
+        "supabase/migrations/20260923121707_add_st_lucia_registration_and_account_linking.sql": "225e352e966e466068649b30885a6003e44964237218f99dcbc678ccfffbcf71",
+        "supabase/migrations/20260923122017_secure_st_lucia_registration_claim_after_login.sql": "a0636bf90aacd1eb1c8ac05aed9170527c46aba56b2e4b0c619dd6412702fcde",
+        "supabase/migrations/20260925200310_organization_foundation.sql": "3d26adbdb35e0aa657a08af6f175fc108fe9e49bc9ad01117314441b953d0d8c",
+        "supabase/migrations/20260925200318_harden_outreach_claim.sql": "55160b1ce86006a8acfcb8608f39689b3916eaaaf905587a7bbeec86dff37a4b",
+        "supabase/migrations/20260925202633_lesson_notes.sql": "774a2b1a345ab7efa4952d0aef9ecceda2952b21fdc91c146fde2d110d973d48",
+        "supabase/migrations/20260926000821_followup_tasks.sql": "db3fa4c4869fc6efff84133e300ee162697558d2d64c6c37abd68c1ff4748f74",
+        "supabase/migrations/20260926022613_staff_access_and_people.sql": "5245c90b63fe289b929f6210c294c36f300deeec3786aa22866c7b59141aca4c",
+        "supabase/migrations/20260926024742_household_records.sql": "9da11eb6ff58e3df63e4d5e6ccd961f1a3e14db234e6eeca8c49cb73c66a93e1",
+        "supabase/migrations/20260926032026_department_tags.sql": "ca8dbaa58b0a8f7d8e5ac25e221b9fe7b77886befb843c23b8c67440b105bffe",
+        "supabase/migrations/20260926034222_tag_workflows.sql": "caa052c1bfc892c93291753afd9435d76e974859147010e955c2752d00dac678",
+        "supabase/migrations/20260926035410_giving_configuration.sql": "3fddb322a99c478bf13784bde14deb62ae05257dff1d899a279611edc08ffef4",
+        "supabase/migrations/20260926040812_participant_portals.sql": "a9189d02e8723da20ac05acd061f7278d2b4ca4c293b338165f410f272f4f921",
+        "supabase/migrations/20260928172557_people_staff_v1.sql": "0c00fe4f50f2bc92f1d9a4896125f9143a56e7ea37e3317540954cdb52cadc07",
+        "supabase/migrations/20261004055336_outreach_partner_intake_v1.sql": "c2feb7c1675b973da4f3e0f5cf3a18aaf97dacdc59aca7a7e01a029d5ca84351",
+        "supabase/migrations/20261004154340_allow_bessemer_outreach_registrations.sql": "9919250f0df4280a311baf929e8c2eb5d97770285bc3ea93f204752d213a462a",
+        "supabase/migrations/20261004230453_outreach_partner_gateway.sql": "25802f89d285d86fc3783b454132e6f0378b93f74c4802435d6bf7369dc29a67",
+        "supabase/migrations/20261005161946_outreach_network_limit_120.sql": "6159ef5ac6fff5a5480f4a71acc45ece4a0298144e1a4078fb114d1ded0f4f0e",
+        "supabase/migrations/20261016201932_huntsville_registration_foundation.sql": "365ade7c6995541ad99f32135c3775b4e03c52d9a9bde95cc8f70da844f10a09",
+        "supabase/migrations/20261016201933_huntsville_registration_draft.sql": "961187b9a667c021909019a0ba77dd83b140c590de56b21a1111eeb039689952",
+        "supabase/migrations/20261018121900_allow_huntsville_decision_registrations.sql": "af9abe5821e299b53457ca6c1ec516f402e63c0dc757b6b617570783bd3efda1",
+        "supabase/migrations/20261022201357_operations_admin_security.sql": "a5cb9ad66faf87db263414c80a89b76a7498025188661691e1d9e196b603304a",
+        "tools/forms-core/native-database.mjs": "79e402e40f91f4168bb70a404ea8e9bc577350e0deae6ecce1e71c4e4c4869ac",
+        "tools/backend-tests/local-postgres.mjs": "bbe76a014897326b6347b47db057af979e7bcddf4f15c92f86a79c9d5060ca81",
+        "tools/site-build/public-files.json": "ee3349d3d203c5fc744da041bd8bc6745f32621163a5df3d378afe253ae69745"
+      }
+    },
+    "events": {
+      "commit": "e4058f70232f2adddd4328dd76aec47cef724c22",
+      "files": {
+        "tools/church-events/fixtures/20260928183137_events_calendar_v1.sql": "42af6e032d0a78c5b7b22d128ecb8a7240070abbf7d7bb8a0218e36e040d3f99",
+        "staff-events.html": "85faf7b6b8e7d026dc44946982cf66bef76ac3d88d42ecdadc9ec185add87b39",
+        "assets/js/events-common.js": "e928120eca0a165d023bcbec818868ce1d1d8a86c4b241ebb67f2dc8a0b0c481",
+        "assets/js/staff-events.js": "e987092934d12c2a8b368c8d3a642040f6c06b99c70f7da52285cdbd836ef3d1",
+        "assets/css/events.css": "77c10ba67bc65b9a1168640e25f25ce75161ef02dd97256520a49fe1ead6c1e2",
+        "assets/js/champion-life-auth.js": "f1d277ea1cb5cf608de471b0a62f6ae41c9ecdc3b675960628083ee4e1df3cb4",
+        "assets/js/staff-session.js": "f465a46d0a655d4d3d5167f1f6afadbe3748b54e401045f7464535e90d23c5ab"
+      }
+    },
+    "dream": {
+      "commit": "1725d7138ab15cf09494fd6057e76d7b29194f80",
+      "files": {
+        "supabase/migrations/20261104042141_dream_team_manual_followup.sql": "d22f757f52adf8707165c9d92679081117ee983c9e64bb36b0c30ab8d77966d7"
+      }
+    }
+  },
+  "scope": "Disposable three-module catalog compatibility only; Events installer is historical fixture, not approved forward migration."
+}
