@@ -1,3 +1,7 @@
+## 2026-11-03 — Recovered Church Events staff source integration
+
+Existing Events v1 authoring is mounted in the approved staff shell, with generation-bound controls, verified account transitions and denial cleanup. Original public events/Christmas pages, registrations, People and Auth remain unchanged. Exact historical Events SQL is isolated test-fixture provenance only; no migration or grants are installed. See [integration contract](docs/CHURCH-EVENTS-STAFF-INTEGRATION.md). Local source tests do not establish hosted Auth, schema or release acceptance.
+
 ## 2026-10-23 — Staff logout boundary
 
 The staff header calls the existing Supabase client's supported `auth.signOut({scope:'local'})`, then confirms the local session is absent before replacing navigation with the fixed staff login. It never clears all browser storage; SDK session cleanup and the application return hint are the only removals. A failed logout leaves protected content detached and displays a safe retry state, without claiming server retirement succeeded. Account changes and external sign-out clear the workspace. Pagehide clears protected snapshots; persisted pageshow reloads while hidden.

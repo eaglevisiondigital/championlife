@@ -1,3 +1,7 @@
+## 2026-11-03 — Recovered Church Events staff source integration
+
+Existing Events v1 authoring is mounted in the approved staff shell, with generation-bound controls, verified account transitions and denial cleanup. Original public events/Christmas pages, registrations, People and Auth remain unchanged. Exact historical Events SQL is isolated test-fixture provenance only; no migration or grants are installed. See [integration contract](docs/CHURCH-EVENTS-STAFF-INTEGRATION.md). Local source tests do not establish hosted Auth, schema or release acceptance.
+
 ## 2026-10-23 — Reusable staff presentation and session header
 
 `staff-portal.css` is opt-in through `body.staff-portal`; it does not restyle public pages. `staff-session.js` adds the same email/logout header to People, Registration/Check-In and Partner Review, using the existing ChampionLifeAuth client. It owns no authorization, RPC or data model. Existing modules retain their permission checks and async generation guards. Protected module mounts are detached before sign-out and before bfcache snapshots, so late responses cannot repopulate the visible workspace. See `docs/STAFF-PORTAL-POLISH.md`.

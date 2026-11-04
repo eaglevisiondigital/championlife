@@ -1,0 +1,20 @@
+{
+  "productionSourceBase": "999f4a75eeb8e4a05580dc603dda39ba64eb0409",
+  "recoveredEventsSource": "5bfe40c0d2d3f82b2f7d0bbce9ed3b76e0e95e4e",
+  "sqlIsTestFixtureNotMigration": true,
+  "acceptedSdkSource": "40827da3a646a35165e5b3416568dbcc185ce83f",
+  "acceptedSdkTag": "<script src=\"https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.118.0\" integrity=\"sha384-UagCvVPT5XXA0Hx+nJYUAGBFseHT9zBgpJMSebsAxl9lciTwbT+39j5VfRjdP5Tp\" crossorigin=\"anonymous\"></script>",
+  "immutableFiles": {
+    "events.html": "a01ed78d5242bbd39460f8a17211e6aed8bf10c72e9d9ff18df2666ec07a58df",
+    "christmas-dinner-2026.html": "0dff57c9758e0a6950c91b157557840a1155dcb82de3fb6160d9ebf54c9c39a8",
+    "assets/js/christmas-dinner-2026.js": "fc552b37d4a4e8437339c0e6f0b8f138f4d05ea15a13120bf037360d92c3afba",
+    "assets/js/champion-life-auth.js": "f1d277ea1cb5cf608de471b0a62f6ae41c9ecdc3b675960628083ee4e1df3cb4",
+    "assets/js/staff-session.js": "f465a46d0a655d4d3d5167f1f6afadbe3748b54e401045f7464535e90d23c5ab",
+    "assets/js/outreach-registration-staff.js": "20066dc179c5a086a0951f20a4656741354bc8c4d1b786de0661c6782dc80a9c",
+    "staff-people.html": "1d9dae5ef0ff7b45e0cc4b9fcfd12cba0ec2bc94611503f3403397c418100f8a",
+    "assets/css/staff-portal.css": "89db633369eb31b0ca790ae7b9633fc01403c40bb52c3491c59870f9cc0fc417",
+    "assets/js/events-common.js": "e928120eca0a165d023bcbec818868ce1d1d8a86c4b241ebb67f2dc8a0b0c481",
+    "tools/church-events/fixtures/20260928183137_events_calendar_v1.sql": "42af6e032d0a78c5b7b22d128ecb8a7240070abbf7d7bb8a0218e36e040d3f99",
+    "tools/church-events/fixtures/events.acceptance.sql": "ca0511eaa9f021196e43f07fc7064bd2f3bd95aebbfe8ac756fada6e2d56ac80"
+  }
+}
