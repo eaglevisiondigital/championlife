@@ -182,6 +182,14 @@
         "Organization",
         org,
         (v) => {
+          try {
+            const route = new URL(location.href);
+            route.searchParams.set("organization", v);
+            window.history.replaceState(null, "", route.pathname + route.search + route.hash);
+          } catch {
+            deny();
+            return;
+          }
           org = v;
           start({ ...window.ChampionLifeFormsContext.context });
         },

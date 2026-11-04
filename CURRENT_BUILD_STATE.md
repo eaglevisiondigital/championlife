@@ -143,3 +143,13 @@ Auth owner/ACL, public baptism, financial, collection or shared navigation chang
 Targeted fictional browser and exact canonical SQL regression checks accompany the
 correction; genuine managed-provider/Auth/recovery acceptance remains outstanding.
 See docs/FORMS-PRIVATE-DRAFT-CORE.md for scope and limitations.
+
+## 2026-11-04 — Forms organization handoff and actual-source Events composition
+
+A narrow source successor preserves PR95 and synchronizes the current authorized
+Forms organization with its URL. History failures retire protected state before
+scope changes. New exact-source SQL/browser tests compose Forms, Events PR96 and
+the separately reviewed shared-session return helper without importing those other
+runtimes or installing SQL. Catalog/permission boundaries remain authoritative;
+local fixture success is not genuine Auth or managed-provider acceptance. See
+`docs/STAFF-FORMS-EVENTS-COMPOSITION.md` for exact source and release dependencies.
