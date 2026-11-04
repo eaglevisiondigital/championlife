@@ -113,3 +113,15 @@ The original defect was reproduced in actual local Chromium/WebKit pages at
 activation, ordinary link navigation and existing partner interception. All
 provider/network interactions are blocked in these fixtures. Source review and
 CI remain separate from production approval.
+
+## November 4 — bounded shared staff module return
+
+Source-only current-main correction preserves Events/Forms/Dream manual module
+and explicit organization through existing logout/account-switch navigation,
+using fixed paths and fresh target authorization. Invalid/duplicate scope stays
+unavailable; builders return to the list without record/draft identifiers.
+Existing unified-shell home behavior and legacy staff fallback remain intact.
+No Auth, SQL, permission, menu or frozen PR90 change. Actual accepted page sources
+are exercised with the shared session in isolated browser tests; provider
+acceptance and release remain gated. See docs/STAFF-MODULE-RETURN.md. Forms/Dream
+selector URL synchronization remains a separately scoped module integration task.

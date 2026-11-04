@@ -1,0 +1,27 @@
+name: Staff module return integration
+on:
+  pull_request:
+    paths:
+      - 'assets/js/staff-session.js'
+      - 'tools/staff-module-return/**'
+      - '.github/workflows/staff-module-return.yml'
+permissions:
+  contents: read
+jobs:
+  isolated:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm ci --ignore-scripts --prefix tools/backend-tests
+      - run: tools/backend-tests/node_modules/.bin/playwright install --with-deps chromium webkit
+      - run: node tools/backend-tests/staff-session.dom.mjs
+      - run: node tools/staff-module-return/browser.mjs
+      - run: node tools/staff-module-return/integrity.mjs
+      - run: git diff --check
