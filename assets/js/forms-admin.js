@@ -31,6 +31,7 @@
     conflict = false,
     epoch = 0,
     readSequence = 0,
+    readPending = false,
     drag = null,
     pointerCleanup = null,
     suppressClickUntil = 0,
@@ -90,6 +91,7 @@
     pointerCleanup?.();
     epoch++;
     readSequence++;
+    readPending = false;
     clearTimeout(saveTimer);
     draft = null;
     version = null;
@@ -193,6 +195,7 @@
   }
   async function listLoad(state = "") {
     const token = readSequence;
+    readPending = true;
     try {
       const data = await rpc("list", { status: state });
       if (token !== readSequence) return;
@@ -275,7 +278,9 @@
       panel.append(scroll);
       root.append(panel);
     } catch (e) {
-      message(e);
+      if (token === readSequence) message(e);
+    } finally {
+      if (token === readSequence) readPending = false;
     }
   }
   async function act(a, id) {
@@ -1515,6 +1520,7 @@
   async function loadForm() {
     ++readSequence;
     const binding = readBinding();
+    readPending = true;
     clearTimeout(saveTimer);
     // Retire the previous account/form before either request can complete.
     draft = null; form = null; version = null;
@@ -1542,6 +1548,8 @@
         root.append(error);
         message(e);
       }
+    } finally {
+      if (currentBinding(binding)) readPending = false;
     }
   }
   function csv(data) {
@@ -1875,8 +1883,20 @@
         ? chosen.scoped_forms?.find((f) => f.id === formId)?.permissions || []
         : (chosen.scoped_forms || []).flatMap((f) => f.permissions || [])),
     ];
-    const effective = JSON.stringify([user.id, org, [...new Set(per)].sort()]);
-    if (context?.effective === effective) return;
+    // Equal permission names do not imply equal authority: exact-form grants can
+    // change while their union stays the same. Bind refresh suppression to the
+    // actual organization and relevant record scopes, independent of ordering.
+    const scope = (chosen.scoped_forms || [])
+      .filter((f) => !formId || f.id === formId)
+      .map((f) => [f.id, [...new Set(f.permissions || [])].sort()])
+      .sort((a, b) => a[0].localeCompare(b[0]));
+    const effective = JSON.stringify([
+      user.id, org, [...new Set(chosen.permissions || [])].sort(), scope,
+    ]);
+    // A changed context generation invalidates in-flight reads even when its
+    // authority is equivalent. Replace that pending read, but keep a completed
+    // same-scope editor (including unsaved changes) intact.
+    if (context?.effective === effective && !readPending) return;
     epoch++;
     clearTimeout(saveTimer);
     context = { ...s.forms, effective, principal: user.id };

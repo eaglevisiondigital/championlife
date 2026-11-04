@@ -127,3 +127,25 @@ CI service. This does not replace native concurrency, genuine Supabase Auth,
 managed-role/RLS acceptance or recovery evidence. Existing source and build checks
 are reused when unchanged. Sources: [PostgreSQL SELECT privileges](https://www.postgresql.org/docs/17/sql-select.html)
 and [Supabase function security](https://supabase.com/docs/guides/database/functions).
+
+## Exact-record scope transition correction — November 4
+
+The module previously compared only the union of permission names when deciding
+whether to refresh its protected workspace. Reassigning the same reader/edit
+permissions from form A to form B could therefore leave A's old row visible.
+The comparison now includes organization-level permissions separately from each
+relevant form ID and its exact permissions. Changed scope retires old controls
+and loads the fresh server-authorized list; reordered equivalent scope does not
+needlessly reload a completed view. If the context generation changes while a
+read is still pending, a replacement read runs under the new generation; the old
+result and error cannot overwrite it. Completed same-scope editors retain unsaved
+drafts. Builder comparisons include only the selected record, preserving unrelated
+work. Backend authorization remains unchanged.
+
+Permanent browser cases cover record reassignment, same-union per-record permission
+swaps, organization switching, delayed responses, detached old controls and zero
+mutation calls. Disposable SQL checks prove the actual context/list contract and
+42501 rejection of old record mutations and retained URLs. These local fictional
+checks do not establish genuine Auth, managed-provider acceptance or instantaneous
+remote revocation notification. Existing polling/focus/Auth refresh and authoritative
+RPC checks remain the mechanisms for detecting changed permissions.

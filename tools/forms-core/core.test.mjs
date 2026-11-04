@@ -31,6 +31,26 @@ try{
  await as(db,3);await deny(()=>call(db,org,'get',{id:form}),'unassigned staff denied');
  await db.exec('reset role');await db.query('insert into private.platform_form_grants(organization_id,user_id,form_id,permissions) values($1,$2,$3,$4)',[org,id(3),form,['forms.read','forms.edit']]);await as(db,3);
  ok((await call(db,org,'get',{id:form})).form.id===form,'existing exact form scoped access retained');await deny(()=>call(db,org,'create',create('scoped-create')),'scoped read/edit cannot create orgwide');
+ // Same permission union is not the same record authority. Exercise the exact
+ // context/list contract used by the browser's scope-aware invalidation.
+ const scopedDeny=async(fn,label)=>{await db.exec('savepoint scoped_denial');await assert.rejects(fn,e=>e.code==='42501');await db.exec('rollback to savepoint scoped_denial;release savepoint scoped_denial');ok(true,label)};
+ await db.exec('begin');await as(db);const second=(await call(db,org,'create',create('scope-second'))).form.id;
+ await db.exec('reset role');await db.query('insert into private.platform_form_grants(organization_id,user_id,form_id,permissions) values($1,$2,$3,$4)',[org,id(3),second,['forms.read']]);await as(db,3);
+ const scopedContext=async()=>{const value=await call(db,null,'context');return value.organizations.find(x=>x.id===org)};
+ const firstScope=await scopedContext();ok(firstScope.permissions.length===0,'exact-form grants do not confer organization directory authority');
+ ok(firstScope.scoped_forms.find(x=>x.id===form).permissions.includes('forms.edit')&&!firstScope.scoped_forms.find(x=>x.id===second).permissions.includes('forms.edit'),'context binds edit permission to original exact form');
+ const union=x=>[...new Set(x.scoped_forms.flatMap(f=>f.permissions))].sort();
+ await db.exec('reset role');await db.query('update private.platform_form_grants set permissions=$1 where user_id=$2 and form_id=$3',[['forms.read'],id(3),form]);await db.query('update private.platform_form_grants set permissions=$1 where user_id=$2 and form_id=$3',[['forms.read','forms.edit'],id(3),second]);await as(db,3);
+ const swappedScope=await scopedContext();assert.deepEqual(union(firstScope),union(swappedScope));ok(true,'record permission swap preserves the union but changes authority');
+ ok(!swappedScope.scoped_forms.find(x=>x.id===form).permissions.includes('forms.edit')&&swappedScope.scoped_forms.find(x=>x.id===second).permissions.includes('forms.edit'),'fresh context reports exact permission swap');
+ const swappedList=await call(db,org,'list');ok(!swappedList.forms.find(x=>x.id===form).permissions.includes('forms.edit')&&swappedList.forms.find(x=>x.id===second).permissions.includes('forms.edit'),'fresh list matches exact record edit authority');
+ await scopedDeny(()=>call(db,org,'save',{id:form,revision:2,definition:definition()}),'old exact-form edit request denied despite unchanged union');
+ ok((await call(db,org,'draft',{id:second})).form.id===second,'newly authorized exact-form draft accessible');
+ await db.exec('reset role');await db.query('update private.platform_form_grants set active=false where user_id=$1 and form_id=$2',[id(3),form]);await as(db,3);
+ ok((await scopedContext()).scoped_forms.every(x=>x.id!==form),'revoked record removed from authoritative context');
+ ok((await call(db,org,'list')).forms.every(x=>x.id!==form),'revoked record removed from authoritative list');
+ await scopedDeny(()=>call(db,org,'get',{id:form}),'retained revoked-record URL denied by backend');
+ await db.exec('rollback');await as(db,3);
  await db.exec('reset role');await db.query('update private.platform_form_grants set active=false where user_id=$1',[id(3)]);await as(db,3);await deny(()=>call(db,org,'get',{id:form}),'scoped revocation immediate');await as(db);
  await db.exec('reset role');await db.exec("create function private.test_audit_failure()returns trigger language plpgsql as $$begin raise exception 'synthetic audit failure';end$$;create trigger test_audit_failure before insert on platform_form_audit for each row execute function private.test_audit_failure();");await as(db);await deny(()=>call(db,org,'save',{id:form,revision:2,definition:definition()}),'audit failure rejects transaction');await db.exec('reset role');await db.exec('drop trigger test_audit_failure on platform_form_audit;drop function private.test_audit_failure()');await as(db);ok((await call(db,org,'get',{id:form})).version.revision===2,'audit failure preserves original revision');
  await db.exec('reset role');ok((await db.query('select count(*)::int n from platform_form_audit')).rows[0].n===2,'only successful create/save audited');await deny(()=>db.exec("delete from platform_form_audit"),'audit immutable even owner');

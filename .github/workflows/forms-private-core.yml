@@ -28,6 +28,7 @@ jobs:
       - run: node tools/forms-core/core.test.mjs
       - run: node tools/forms-core/managed-auth-contract.test.mjs
       - run: node tools/forms-core/browser.test.mjs
+      - run: node tools/forms-core/scoped-revocation.browser.mjs
       - run: node tools/forms-core/build-integrity.mjs
       - run: git diff --check
   native-postgres:
