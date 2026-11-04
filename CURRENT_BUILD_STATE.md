@@ -113,3 +113,14 @@ The original defect was reproduced in actual local Chromium/WebKit pages at
 activation, ordinary link navigation and existing partner interception. All
 provider/network interactions are blocked in these fixtures. Source review and
 CI remain separate from production approval.
+
+## 2026-11-03 — Canonical private Forms draft composition (source only)
+
+A bounded current-main Forms core recovers the canonical GIV-2C draft tables,
+validator and editor with create/read/edit RPCs, exact private capability denial,
+revision/idempotency and audit rollback. It adds no public response collection,
+financial activation, real assignments or replacement Netlify endpoint. Two
+module pages reuse current Auth/session/navigation with pinned Supabase2.118.0;
+old frozen staff candidates are untouched. See docs/FORMS-PRIVATE-DRAFT-CORE.md.
+Local fixture/browser evidence and exact-head native CI remain distinct from
+managed-provider, genuine Auth, recovery and production release authorization.

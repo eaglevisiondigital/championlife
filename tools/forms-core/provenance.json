@@ -1,0 +1,104 @@
+{
+  "source": "edf82fb34e8db448a0d6c6465a3799c75993d5a2",
+  "originalSQLSHA256": "d6be09498385749c9648cf8c40475c8f94533271bc45a2736b76881af15bb313",
+  "objects": {
+    "public.platform_forms": {
+      "originalSHA256": "8bb0f5f20571ce4de76a0612036edab2b2fb97a8c34d29ca853f92406563fc9a",
+      "line": 12
+    },
+    "public.platform_form_versions": {
+      "originalSHA256": "7eacc707797ed452ca7e10238e4de88f8dbf444ac189020888dd66b2bffc9d34",
+      "line": 21
+    },
+    "public.platform_form_sections": {
+      "originalSHA256": "51863ac38491a9a3cbf14a323c2a49f0d7dd86610200b96aa798c1adf2f2a78a",
+      "line": 29
+    },
+    "public.platform_form_fields": {
+      "originalSHA256": "36f31c553ea2bd2fdc7f5154f873587b36fa0711ef42f294d450347147ae286c",
+      "line": 33
+    },
+    "public.platform_form_conditions": {
+      "originalSHA256": "47a2af934b4d4d657e550ff4c4b940300c8df91aa3e3240649f82dd54ffb09bf",
+      "line": 38
+    },
+    "public.platform_form_payments": {
+      "originalSHA256": "d8d041610c0ffb6949eb3a1e5f37c952043080696c2cff2ecc5a4a0d257d7b55",
+      "line": 43
+    },
+    "public.platform_form_instances": {
+      "originalSHA256": "238558a8193d4ba1dd24a17d6aeed993c3888b9d6d534bdbf5bd938e40960054",
+      "line": 48
+    },
+    "private.platform_form_grants": {
+      "originalSHA256": "0a26310dadabf67b184a83ed1bc380550d34106706f13c88e3787a2d3a5ce514",
+      "line": 53
+    },
+    "public.platform_form_audit": {
+      "originalSHA256": "79c93ef52edcb8a48ce69d28268c0ae44078bd71d3d4e239b2dae0939a4fab9e",
+      "line": 98
+    },
+    "private.forms_lock": {
+      "originalSHA256": "a3e8e88691ee97fc70f49db6139fb730a95b10804f78291a46969a426f6ffa23",
+      "line": 111
+    },
+    "private.forms_can": {
+      "originalSHA256": "00d4342b8601e04a04ad36e188e929b8e5e6c3d98dba249ade48c718daef0c7f",
+      "line": 112
+    },
+    "private.forms_audit": {
+      "originalSHA256": "8fa41023107cd85ac95f611493954cf3288d21cde0d9b14a8b71370f5a7bdc8d",
+      "line": 118
+    },
+    "private.forms_frozen": {
+      "originalSHA256": "8fc3c321a8aed35f93308a405066496e6092002a3f4827ddd94313d14e7d40f8",
+      "line": 121
+    },
+    "private.forms_shape": {
+      "originalSHA256": "164793e24d8c05dbd6a6ede844d3398b49bbd16fee98faa6d4a8790264997c95",
+      "line": 141
+    },
+    "private.forms_safe_link": {
+      "originalSHA256": "5b40d018b242cf3dc9c3d77b62fc499e9df3f9eae9ac07e2082f2d00beeb24ba",
+      "line": 144
+    },
+    "private.forms_instant": {
+      "originalSHA256": "b85d4048461f4379d9bd0fa0a6af2391da8535ea013466a23b733363856f4e5a",
+      "line": 147
+    },
+    "private.forms_compile": {
+      "originalSHA256": "e608761f1226811d5eadbaf548478dfb2368a459fb5fc0ca959c5877df5a28e4",
+      "line": 223
+    },
+    "private.forms_value": {
+      "originalSHA256": "806065f174010b444a92fbd342770efbabe0df2846c28974ed496fd01980c81e",
+      "line": 382
+    },
+    "private.forms_validate": {
+      "originalSHA256": "8f120bf2cdef669475ecbb848c4d502b591cce329003830138fa99f5631e8340",
+      "line": 153
+    }
+  },
+  "unchangedTables": [
+    "public.platform_forms",
+    "public.platform_form_versions",
+    "public.platform_form_sections",
+    "public.platform_form_fields",
+    "public.platform_form_conditions",
+    "public.platform_form_payments",
+    "public.platform_form_instances",
+    "private.platform_form_grants",
+    "public.platform_form_audit"
+  ],
+  "changedFunctions": [
+    "private.forms_permissions",
+    "private.forms_validate",
+    "private.forms_workspace"
+  ],
+  "newHelpers": [
+    "private.forms_private_definition",
+    "private.forms_history_immutable",
+    "private.forms_lock_authority",
+    "private.forms_authorized"
+  ]
+}
