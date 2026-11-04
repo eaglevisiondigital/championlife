@@ -2,6 +2,9 @@
  'use strict';
  const root=document.querySelector('#staff-events-app'),T=window.PropelEvents,auth=window.ChampionLifeAuth;if(!root||!T)return;
  const {el,field,select}=T;let org='',context=null,user=null,generation=0,detailGeneration=0,busy=false,page=0,organizations=[],mutation=0;
+ // The route is a scope request, never authority or a fallback to another tenant.
+ function requestedOrganization(){const values=new URLSearchParams(location.search).getAll('org');if(values.length>1||(values.length===1&&!/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(values[0])))throw Error('Invalid organization route');return values[0]||null;}
+ function signInRoute(requested){const next='/staff-events.html'+(requested?'?org='+encodeURIComponent(requested):'');return 'discipleship-login.html?'+new URLSearchParams({next});}
  const status=el('p','Checking event access…',{role:'status'}),orgForm=el('div',null,{class:'event-toolbar'}),orgSelect=select(orgForm,'Organization','organization',[]),list=el('div',null,{class:'event-admin-list'}),tools=el('div',null,{class:'event-toolbar'}),dialog=el('dialog',null,{'aria-label':'Event editor',class:'event-editor'});
  root.append(orgForm,status,tools,list,dialog);
  // Bind controls and responses to the original principal, tenant and navigation lifetime.
@@ -13,11 +16,21 @@
  function clear(){generation++;detailGeneration++;mutation++;busy=false;org='';context=null;user=null;organizations=[];orgSelect.replaceChildren();list.replaceChildren();tools.replaceChildren();dialog.replaceChildren();if(dialog.open)dialog.close();}
  function retire(message='Event access is no longer available. Sign in again to check access.'){clear();status.textContent=message;}
  const rpc=async(action,data={})=>{
-  const b=binding();
+  const b=binding(),client=auth.client;
   let verified;try{verified=await auth.getUser();}catch(error){if(current(b))retire();throw error;}
   if(!current(b))throw Error('retired');
   if(!verified?.id||verified.id!==b.userId){retire();throw Error('retired');}
-  const {data:value,error}=await auth.client.rpc('events_workspace',{p_org:b.org,p_action:action,p_data:data});
+  let response;
+  try{response=await client.rpc('events_workspace',{p_org:b.org,p_action:action,p_data:data});}
+  catch(error){
+   // A transport failure must not leave an undetected former account on screen.
+   if(sameAuthority(b)){
+    let latest;try{latest=await auth.getUser();}catch{}
+    if(sameAuthority(b)&&(!latest?.id||latest.id!==b.userId||window.ChampionLifeAuth!==auth||auth.client!==client))retire();
+   }
+   throw error;
+  }
+  const {data:value,error}=response;
   // A confirmed denial invalidates current authority in this same principal/tenant,
   // even when its originating editor has retired. Other principals/tenants are independent.
   if(error){if(denied(error)&&sameAuthority(b))retire();throw error;}
@@ -28,7 +41,7 @@
   return value;
  };
  const msg=e=>/stale/i.test(e?.message)?'This record changed. Close and reload before saving.':denied(e)?'Your event access has changed. Refresh to check access.':'Unable to complete this action. Reload the event and try again.';
- async function boot(){clear();const token=generation;try{if(!auth)throw Error('Connection unavailable');const nextUser=await auth.getUser();if(token!==generation||!root.isConnected)return;user=nextUser;if(!user){status.replaceChildren(el('a','Sign in to the staff workspace',{href:'discipleship-login.html'}));return;}const {data,error}=await auth.client.rpc('staff_workspace_context');if(error)throw error;if(token!==generation)return;organizations=data.organizations;const grants=data.grants.filter(g=>['events.view','events.manage'].includes(g.permission)),orgs=data.organizations.filter(o=>grants.some(g=>g.organization_id===o.id));orgSelect.replaceChildren(...orgs.map(o=>el('option',o.name,{value:o.id})));if(!orgs.length){status.textContent='Your account has no event access.';return;}org=orgSelect.value;page=0;await load();}catch(_){if(token===generation)retire('Event access is unavailable. Refresh to try again.');}}
+ async function boot(){clear();const token=generation;try{const requested=requestedOrganization();if(!auth)throw Error('Connection unavailable');const nextUser=await auth.getUser();if(token!==generation||!root.isConnected)return;user=nextUser;if(!user){status.replaceChildren(el('a','Sign in to the staff workspace',{href:signInRoute(requested)}));return;}const {data,error}=await auth.client.rpc('staff_workspace_context');if(error)throw error;if(token!==generation)return;organizations=data.organizations;const grants=data.grants.filter(g=>['events.view','events.manage'].includes(g.permission)),orgs=data.organizations.filter(o=>grants.some(g=>g.organization_id===o.id));if(requested&&!orgs.some(o=>o.id===requested)){retire('Requested organization is unavailable. Return to your authorized staff workspace.');return;}orgSelect.replaceChildren(...orgs.map(o=>el('option',o.name,{value:o.id})));if(!orgs.length){status.textContent='Your account has no event access.';return;}org=requested||orgSelect.value;orgSelect.value=org;page=0;await load();}catch(_){if(token===generation)retire('Event access is unavailable. Refresh to try again.');}}
  async function load(){const token=++generation,selectedOrg=org;detailGeneration++;list.replaceChildren();tools.replaceChildren();dialog.replaceChildren();if(dialog.open)dialog.close();try{const fresh=await rpc('context');if(token!==generation||org!==selectedOrg)return;context=fresh;const rows=await rpc('list',{page});if(token!==generation||org!==selectedOrg)return;status.textContent='Events · '+context.timezone;
   if(context.manage_configuration||context.departments.some(d=>d.can_manage))tools.append(button('Create event',()=>editor()));
   if(context.manage_configuration)tools.append(button('Locations, audiences & settings',configuration));
@@ -36,7 +49,7 @@
   for(const s of rows.slice(0,50)){const card=el('article',null,{class:'event-admin-card'});card.append(button(s.title,()=>open(s.id)),el('p',`${s.status} · ${s.visibility} · ${s.local_start.slice(0,10)}`));list.append(card);}if(!rows.length)list.append(el('p','No events yet. Create a draft to get started.'));
   const nav=el('div',null,{class:'event-toolbar'});const prev=button('Previous',()=>{page--;load();}),next=button('Next',()=>{page++;load();});prev.disabled=page===0;next.disabled=rows.length<=50;nav.append(prev,el('span',`Page ${page+1}`),next);list.append(nav);
  }catch(_){if(token===generation){retire('Event access is unavailable. Refresh to try again.');}}}
- orgSelect.addEventListener('change',()=>{detailGeneration++;org=orgSelect.value;page=0;load();});
+ orgSelect.addEventListener('change',()=>{detailGeneration++;org=orgSelect.value;const route=new URL(location.href);route.searchParams.set('org',org);history.replaceState(null,'',route.pathname+route.search);page=0;load();});
  dialog.addEventListener('cancel',event=>{event.preventDefault();detailGeneration++;dialog.replaceChildren();dialog.close();load();});
  dialog.addEventListener('close',()=>{if(!dialog.open&&dialog.childElementCount){detailGeneration++;dialog.replaceChildren();load();}});
  function shell(title){detailGeneration++;dialog.replaceChildren(el('h2',title));const close=button('Close',()=>{detailGeneration++;dialog.close();dialog.replaceChildren();load();});dialog.append(close);if(!dialog.open)dialog.showModal();return detailGeneration;}

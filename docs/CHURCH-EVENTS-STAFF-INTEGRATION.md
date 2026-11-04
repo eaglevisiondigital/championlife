@@ -17,3 +17,34 @@ Old forms retained after navigation could obtain a fresh navigation token when s
 ## Verification and remaining gates
 
 The source-matched current-main migration chain plus exact original Events SQL is replayed using disposable PGlite. Original Events checks and rollback assertions cover scope, publication visibility, revisions, recurrence/timezones, exceptions and audit behavior. Chromium/WebKit desktop/mobile tests cover draft creation, review submission, occurrence cancellation and adversarial session/navigation behavior. Browser Auth/RPC fixtures are fictional, not genuine provider evidence. Native PostgreSQL, real Auth, exact target/schema acceptance, protected preview, recovery/cleanup and separate release approval remain required. No production SQL, permissions, deployed page or provider configuration changes occur from these tests.
+
+## Explicit organization handoff — November 4
+
+The isolated Events route now honors one explicit `?org=<organization UUID>` only
+when the existing staff context grants Events access to that exact organization.
+Unknown, malformed or duplicate hints fail closed; they never silently open the
+first alternative organization. No hint retains the existing authorized default.
+Selecting another organization updates the route, so a same-account refresh keeps
+that selection; account changes must independently authorize the requested scope.
+The module's signed-out link returns through the existing shared login to the
+fixed Events path and optional validated organization, never arbitrary `next`
+parameters or fragments. Shared Auth, global logout, login validation and the
+frozen backoffice sources are unchanged.
+
+This fixes a demonstrated handoff defect: the previous editor ignored `org` and
+opened the first granted organization even when another was explicitly requested.
+Focused Chromium/WebKit desktop/mobile tests cover exact-scope requests, denied
+hints, account changes, pending replies, retained controls, refresh and safe return
+URLs. Existing Events navigation/session regressions remain applicable. The
+original Events PR91 source is preserved; this is a separately reviewable source
+successor, not a shared-menu mount, installation, real grant or provider acceptance.
+Existing Events SQL, managed-target, recovery and genuine Auth gates still apply.
+
+The same review also reproduced a transport-error privacy gap: if a detail request
+rejected after the actual account changed without an Auth callback, the previous
+account's list remained visible. The RPC rejection path now freshly verifies
+identity, then rechecks the original principal/organization before clearing state.
+Missing/changed identity, failed verification or replaced Auth/client retires the
+protected view. A temporary error for the same valid account does not erase its
+legitimate list; an old account's error cannot clear a newly authorized account.
+This does not retry uncertain mutations or replace server permission enforcement.
