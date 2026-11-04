@@ -49,3 +49,10 @@ No unrelated IPC/kernel setting or running service was altered.
 No hosted installation, real grants, messages, payment, deployment or release is
 authorized. Genuine Auth/revocation acceptance and separate release approval are
 still required. Frozen PR #84 and independent PR #86 are unchanged.
+
+Independent composition review also reproduced retained normal Household lookup
+text across account changes in the predecessor runtime. Because Registrations is
+reachable from the new queue, the same invalidation hook now clears both existing
+normal search and arrival state. Auth-callback, missed-callback focus, and arrival
+return navigation have permanent regressions; same verified-account focus keeps
+its lookup. No broader session, permissions or database mechanism was changed.

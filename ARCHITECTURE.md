@@ -45,3 +45,8 @@ households per page and page-local filters are explicit. See
 Local browser/DOM and reproducible-build evidence is recorded privately; native
 PostgreSQL startup is blocked locally before assertions and remains a required
 CI gate. This is not hosted acceptance or release approval.
+
+Independent integration review reproduced an inherited normal Household lookup
+query leaking into a different authenticated account. The same scoped invalidation
+hook now clears that normal query as well as arrival state; same-account refresh
+is preserved. Six independent predecessor reproductions remain in private evidence.
