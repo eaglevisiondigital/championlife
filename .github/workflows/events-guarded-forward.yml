@@ -1,0 +1,42 @@
+name: Guarded Events forward installer
+on:
+  pull_request:
+    paths:
+      - 'supabase/migrations/20261104171549_events_guarded_forward.sql'
+      - 'tools/events-guarded-forward/**'
+      - '.github/workflows/events-guarded-forward.yml'
+permissions:
+  contents: read
+jobs:
+  native-guard:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    strategy:
+      fail-fast: false
+      matrix:
+        profile: ['baseline', 'forms', 'dream', 'forms,dream', 'dream,forms']
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_PASSWORD: synthetic-only
+          POSTGRES_DB: forms_core_test
+        ports: ['5432:5432']
+        options: >-
+          --health-cmd pg_isready --health-interval 5s --health-timeout 5s --health-retries 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm ci --ignore-scripts --prefix tools/backend-tests
+      - run: node tools/events-guarded-forward/native.test.mjs
+        env:
+          TEST_DATABASE_URL: postgres://postgres:synthetic-only@127.0.0.1:5432/forms_core_test
+          EVENTS_FORWARD_PROFILE: ${{ matrix.profile }}
+      - run: node tools/events-guarded-forward/integrity.mjs
+        if: matrix.profile == 'baseline'
+      - run: git diff --check
