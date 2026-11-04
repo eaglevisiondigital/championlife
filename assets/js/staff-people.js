@@ -207,6 +207,13 @@
       const available = (orgs.data || []).filter(org => (peopleV1 && permissions.some(p=>p.organization_id===org.id)) || can('people.read',org.id) || can('staff.manage',org.id) || can('finance.read',org.id));
       if (!available.length) { status.textContent = 'No staff workspace is assigned to this account yet. Ask your ministry administrator for access.'; return; }
       for (const org of available) { const option = document.createElement('option'); option.value = org.id; option.textContent = org.name; select.append(option); }
+      // An explicit organization handoff is a request, never additional authority.
+      const requestedOrgs=new URLSearchParams(location.search).getAll('org');
+      if(requestedOrgs.length>1 || (requestedOrgs.length===1 && (!/^[a-f0-9-]{36}$/i.test(requestedOrgs[0]) || !available.some(org=>org.id===requestedOrgs[0])))) {
+        status.textContent='The requested organization is unavailable to this account.';
+        return;
+      }
+      if(requestedOrgs.length===1)select.value=requestedOrgs[0];
       $('workspace').hidden = false; updateOrganization(); showView(currentView, false);
       const linkedPerson=new URLSearchParams(location.search).get('person');
       if(linkedPerson&&/^[a-f0-9-]{36}$/.test(linkedPerson)&&can('people.read'))personDetail?.open({id:linkedPerson});

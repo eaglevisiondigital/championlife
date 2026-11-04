@@ -1,0 +1,1 @@
+{"private":true,"type":"module","devDependencies":{"playwright":"1.62.1"},"scripts":{"test":"node next-steps.browser.mjs"}}

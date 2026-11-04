@@ -108,3 +108,15 @@ The explicit public manifest and dist/ output now exclude source docs, migration
 ## September 27 bootstrap correction
 
 Historical migration recovery alone did not prove fresh managed initialization: the synthetic fixture silently provided the optional automatic-RLS helper. Tests now start without it, execute the checked-in bootstrap, reproduce/recover SQLSTATE 42883, and verify exact function/policy parity under managed-like defaults. Bootstrap revokes all client/PUBLIC/service-role execution immediately, keeps the captured fixed search path, rejects drift and populated/initialized targets, and changes no production history. A separate replay without the event trigger proves explicit application RLS. See docs/MIGRATION-BASELINE.md for provenance, operational guards and hosted verification requirements.
+
+## November 3 — Dream Team next-step integration
+
+New task controls require restricted Dream Team review plus current canonical
+People/follow-up permissions, and use exact organization/Person/task/revision
+filters. Neutral fixed task titles never copy restricted responses into generic
+follow-up history. Account/client/view retirement and explicit denial remove
+private details and invalidate pending reads, handlers and document downloads.
+Application-link recheck and task write are separate transactions; this grants no
+new atomic identity/serving authority. Open-title duplicate detection is a UI
+check, not cross-process idempotency. UNKNOWN writes require read-only inspection.
+Existing SQL/RLS/audit is unchanged. See docs/DREAM-TEAM-NEXT-STEPS.md.

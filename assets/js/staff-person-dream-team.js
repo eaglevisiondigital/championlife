@@ -7,7 +7,7 @@
   section.append(el('h3','Dream Team'));const a=data.application,t=data.dream_track;section.append(el('p',t?.badge_awarded_at?'Dream Track completed':t?.online_completed_at?'Online coursework complete · Final meeting required':'Dream Track online coursework not yet complete'));
   section.append(el('p',a?a.status.replaceAll('_',' ')+' · Placement '+a.placement_status:'Application not yet available'));
   for(const [label,key] of [['Available','available_at'],['Invited','invited_at'],['Submitted','submitted_at'],['Decision','decision_at']])if(a?.[key])section.append(el('p',label+': '+new Date(a[key]).toLocaleString()));
-  if(context.can('dream_team.application.read')){const link=el('a',a?'Open Dream Team workspace':'Enable Dream Team Application');link.href='staff-dream-team.html'+(a?'?application='+encodeURIComponent(a.id):'?person='+encodeURIComponent(person.id));section.append(link);}
+  if(context.can('dream_team.application.read')){const link=el('a',a?'Open Dream Team workspace':'Enable Dream Team Application');link.href='staff-dream-team.html?org='+encodeURIComponent(context.organizationId)+(a?'&application='+encodeURIComponent(a.id):'&person='+encodeURIComponent(person.id));section.append(link);}
   section.append(el('h4','Milestones'));for(const e of data.timeline)section.append(el('p',new Date(e.at).toLocaleString()+' · '+e.type.replaceAll('.',' ').replaceAll('_',' ')));
  };
 })();

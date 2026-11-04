@@ -1,0 +1,35 @@
+name: Dream Team next-step source acceptance
+on:
+  pull_request:
+    paths:
+      - 'assets/js/staff-dream-team.js'
+      - 'assets/js/staff-person-dream-team.js'
+      - 'assets/js/staff-people.js'
+      - 'assets/js/dream-team-common.js'
+      - 'tools/dream-team-tests/**'
+      - 'tools/backend-tests/dream-team*'
+      - '.github/workflows/dream-team-next-steps.yml'
+permissions:
+  contents: read
+jobs:
+  next-steps:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm ci --ignore-scripts --prefix tools/backend-tests
+      - run: npm ci --ignore-scripts --prefix tools/dream-team-tests
+      - run: npx --prefix tools/dream-team-tests playwright install --with-deps chromium webkit
+      - run: node tools/backend-tests/dream-team.test.mjs
+      - run: node tools/backend-tests/followup.test.mjs
+      - run: node tools/backend-tests/dream-team-staff.dom.mjs
+      - run: node tools/backend-tests/dream-team-handoff.dom.mjs
+      - run: node tools/backend-tests/dream-team-download.dom.mjs
+      - run: node tools/backend-tests/staff-workspace.dom.cjs
+      - run: node tools/backend-tests/people-staff.dom.cjs
+      - run: node tools/backend-tests/followup-ui.dom.cjs
+      - run: node tools/dream-team-tests/next-steps.browser.mjs
+      - run: node tools/site-build/build.mjs
