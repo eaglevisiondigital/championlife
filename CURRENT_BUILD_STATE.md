@@ -153,3 +153,13 @@ the separately reviewed shared-session return helper without importing those oth
 runtimes or installing SQL. Catalog/permission boundaries remain authoritative;
 local fixture success is not genuine Auth or managed-provider acceptance. See
 `docs/STAFF-FORMS-EVENTS-COMPOSITION.md` for exact source and release dependencies.
+
+## 2026-11-04 — Exact six-head staff integration tests
+
+A test-only successor verifies frozen PR90 shell, original PR94 Dream Team,
+PR95 Forms, PR96 Events, PR97 shared-session return and PR98 organization-route
+source together with actual disposable SQL authorization. It changes no runtime,
+public file or migration. Shared identity does not imply shared module powers;
+Dream restricted revocation leaves separately authorized Forms/Events intact.
+Frozen shell navigation still lacks links to these new modules. Genuine provider
+and operational release gates remain separate. See docs/STAFF-EXACT-COMPOSITION.md.

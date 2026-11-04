@@ -1,0 +1,57 @@
+{
+  "sources": {
+    "shell": {
+      "commit": "4f64fa14f03098e31ee8111c8ff1810fbc260542",
+      "files": {
+        "staff-home.html": "fe8898e9638d91bd310bdd9db831c99ed45b6a92a9e8d76a88e78d6dfa2489fb",
+        "assets/js/staff-workspace.js": "4429fb59c41d8c8a53230f98814ca95bae12053998d2afe624e1177e02076b49",
+        "assets/css/staff-workspace.css": "dacb4b0cddc15e624690f7c6ad16fa2867d6b4a9997e06ad445472874b39e28b",
+        "assets/js/champion-life-auth.js": "f1d277ea1cb5cf608de471b0a62f6ae41c9ecdc3b675960628083ee4e1df3cb4",
+        "assets/js/outreach-staff-common.js": "78ae549e7077b662dc6a275f23307fea2b6eb34b6a0c1da407ffe3ec36dad164",
+        "assets/css/staff-portal.css": "89db633369eb31b0ca790ae7b9633fc01403c40bb52c3491c59870f9cc0fc417",
+        "assets/css/outreach-campaigns.css": "3b062e4113e2b8da3fdb02769b1ffdf29e8a5d4cb86784c2b8f8bd9abbfbda81"
+      }
+    },
+    "dream": {
+      "commit": "1725d7138ab15cf09494fd6057e76d7b29194f80",
+      "files": {
+        "staff-dream-team-manual.html": "77a842ea4a83358f9c0cb8830d84bd08e5f43808f2f6472079a410dbb44ed89b",
+        "assets/js/dream-team-manual.js": "f9e072c69ac5bf511957141a2a28cf6e6c5837f4506d4bb0d5175512c263f184",
+        "supabase/migrations/20261104042141_dream_team_manual_followup.sql": "d22f757f52adf8707165c9d92679081117ee983c9e64bb36b0c30ab8d77966d7",
+        "assets/js/champion-life-auth.js": "f1d277ea1cb5cf608de471b0a62f6ae41c9ecdc3b675960628083ee4e1df3cb4",
+        "assets/js/outreach-staff-common.js": "78ae549e7077b662dc6a275f23307fea2b6eb34b6a0c1da407ffe3ec36dad164",
+        "assets/css/staff-portal.css": "89db633369eb31b0ca790ae7b9633fc01403c40bb52c3491c59870f9cc0fc417",
+        "assets/css/outreach-campaigns.css": "3b062e4113e2b8da3fdb02769b1ffdf29e8a5d4cb86784c2b8f8bd9abbfbda81"
+      }
+    },
+    "forms": {
+      "commit": "7c186dd11a34ff5be277bc14b8ebf6f2b29414ee",
+      "files": {}
+    },
+    "events": {
+      "commit": "e4058f70232f2adddd4328dd76aec47cef724c22",
+      "files": {}
+    },
+    "session": {
+      "commit": "efcfa3af4b2b7920bf4c357d42deba9aee3cfa4a",
+      "files": {
+        "assets/js/staff-session.js": "152dffe8ea3d6aeb8985168fb441bc40020a22c909f256209490fbba4b851163"
+      }
+    },
+    "composition": {
+      "commit": "32605a00753c8c60076c5aa6742a770c710b0354",
+      "files": {
+        "tools/staff-composition/sources.json": "024307ee48fb3e7982d76ebaac919e4f5d03be99ad86c8607d8a492e88ea18d1",
+        "tools/staff-composition/source.mjs": "ecebb9fa143968c17223b28fbb9fef70bd6912d3388692d985ad20b3f5be76a3",
+        "assets/js/forms-admin.js": "49efdfa2c2ddf8268880a4387d9016b5cce2a21a13f0b6d804e5c12d06e0fe8d",
+        "tools/site-build/public-files.json": "ee3349d3d203c5fc744da041bd8bc6745f32621163a5df3d378afe253ae69745",
+        "assets/js/champion-life-auth.js": "f1d277ea1cb5cf608de471b0a62f6ae41c9ecdc3b675960628083ee4e1df3cb4",
+        "assets/js/outreach-staff-common.js": "78ae549e7077b662dc6a275f23307fea2b6eb34b6a0c1da407ffe3ec36dad164",
+        "assets/css/staff-portal.css": "89db633369eb31b0ca790ae7b9633fc01403c40bb52c3491c59870f9cc0fc417",
+        "assets/css/outreach-campaigns.css": "3b062e4113e2b8da3fdb02769b1ffdf29e8a5d4cb86784c2b8f8bd9abbfbda81"
+      }
+    }
+  },
+  "upstreamManifest": "tools/staff-composition/sources.json",
+  "purpose": "Test-only exact six-head composition; no release runtime overrides or migrations installed."
+}
