@@ -175,3 +175,14 @@ Added exact existing workbook section responses for Lessons 6 (7 groups), 7 (7 g
 ## 2026-11-02 — Lessons 9–13 private worksheet source
 
 Added private source worksheets9–13 using exact selected original material and the existing account-owned transaction. New uninstalled forward migration preserves Auth/CAS/legacy-writer serialization and does not grant completion. Videos11–13 and genuine playback/hosted acceptance remain unavailable. See docs/DISCIPLESHIP-LESSONS-NINE-THIRTEEN-WORKSHEETS.md.
+
+
+## 2026-11-04 — Existing worksheet export account fence, source only
+
+A narrow PR76 successor corrects Lessons1–4 private Download/Print/email-copy
+controls retaining the prior loaded principal after a missed Auth callback. Exports
+now verify current identity/session/client and view lifetime before reading private
+fields. Existing thirteen worksheet save/load flows, artwork, shared Auth, SQL and
+completion semantics are unchanged. Local fictional-browser tests and reproducible
+builds are recorded privately; genuine provider/release acceptance remains gated.
+See docs/DISCIPLESHIP-PRIVATE-EXPORT-IDENTITY.md.

@@ -4,6 +4,7 @@ on:
     paths:
       - 'tools/discipleship-progression/**'
       - 'assets/js/grip-worksheet.js'
+      - 'assets/js/grip-course.js'
       - 'getting-a-grip-5.html'
       - 'getting-a-grip-6.html'
       - 'getting-a-grip-7.html'
@@ -31,6 +32,9 @@ jobs:
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
@@ -58,6 +62,9 @@ jobs:
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
@@ -73,6 +80,9 @@ jobs:
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
@@ -88,6 +98,9 @@ jobs:
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
@@ -98,10 +111,28 @@ jobs:
       - run: WORKSHEET_LESSON=13 node tools/discipleship-progression/lesson-five.browser.mjs
       - run: git diff --check
 
+  worksheet-exports:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm ci --ignore-scripts --prefix tools/backend-tests
+      - run: tools/backend-tests/node_modules/.bin/playwright install --with-deps chromium webkit
+      - run: node tools/discipleship-progression/worksheet-export.browser.mjs
+      - run: node tools/backend-tests/general-resource-corrections.test.mjs
+      - run: node tools/discipleship-progression/worksheet-export.integrity.mjs
+      - run: git diff --check
+
   # Keep the existing check name, but never report PASS for skipped/cancelled jobs.
   source-contract:
     if: ${{ always() }}
-    needs: [database-and-contracts, worksheets-5-7, worksheets-8-10, worksheets-11-13]
+    needs: [database-and-contracts, worksheets-5-7, worksheets-8-10, worksheets-11-13, worksheet-exports]
     runs-on: ubuntu-latest
     timeout-minutes: 2
     steps:
@@ -111,9 +142,11 @@ jobs:
           EARLY_RESULT: ${{ needs.worksheets-5-7.result }}
           MIDDLE_RESULT: ${{ needs.worksheets-8-10.result }}
           FINAL_RESULT: ${{ needs.worksheets-11-13.result }}
+          EXPORT_RESULT: ${{ needs.worksheet-exports.result }}
         shell: bash
         run: |
           test "$DATABASE_RESULT" = success
           test "$EARLY_RESULT" = success
           test "$MIDDLE_RESULT" = success
           test "$FINAL_RESULT" = success
+          test "$EXPORT_RESULT" = success
