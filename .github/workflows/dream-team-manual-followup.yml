@@ -1,0 +1,50 @@
+name: Dream Team manual follow-up
+on:
+  pull_request:
+    paths:
+      - 'supabase/migrations/*dream_team_manual_followup.sql'
+      - 'assets/js/dream-team-manual.js'
+      - 'staff-dream-team-manual.html'
+      - 'tools/backend-tests/dream-team-manual*'
+      - '.github/workflows/dream-team-manual-followup.yml'
+permissions:
+  contents: read
+jobs:
+  local:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm ci --ignore-scripts --prefix tools/backend-tests
+      - run: tools/backend-tests/node_modules/.bin/playwright install --with-deps chromium webkit
+      - run: node tools/backend-tests/dream-team-manual.test.mjs
+      - run: node tools/backend-tests/dream-team-manual.browser.mjs
+      - run: node tools/site-build/build.mjs && node tools/backend-tests/site-build.test.mjs && git diff --check
+  native-concurrency:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_PASSWORD: synthetic-only
+          POSTGRES_DB: dream_team_manual_test
+        ports: ['5432:5432']
+        options: >-
+          --health-cmd pg_isready --health-interval 5s --health-timeout 5s --health-retries 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm ci --ignore-scripts --prefix tools/backend-tests
+      - run: node tools/backend-tests/dream-team-manual-concurrency.mjs
+        env:
+          TEST_DATABASE_URL: postgres://postgres:synthetic-only@127.0.0.1:5432/dream_team_manual_test
