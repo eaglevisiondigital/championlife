@@ -14,7 +14,17 @@ if(process.env.EVENTS_CATALOG_DIAGNOSTICS==='1'){
 }
 
 if(!order.length){
+ const captured=JSON.parse(fs.readFileSync(new URL('./fixtures/linux-baseline-catalog.json',import.meta.url),'utf8'));
+ const linux=Object.values(captured.projection)[0],current=Object.values((await db.query(relationCatalog(dependencies,true))).rows[0])[0];
+ const jsonHash=async value=>(await db.query("select encode(sha256(convert_to($1::jsonb::text,'UTF8')),'hex')v",[JSON.stringify(value)])).rows[0].v;
+ ok(await jsonHash(linux)==='02178900a85e38090fb2d0716333c98aaf1bcebd11eed9725062e70e78471293','preserved actual Linux failure projection hash');
+ const normalized=(await db.query(`select jsonb_agg(r || jsonb_build_object('indexes',(select jsonb_agg(i order by (i->>'definition') COLLATE "C") from jsonb_array_elements(r->'indexes')i)) order by (r->>'name') COLLATE "C")v from jsonb_array_elements($1::jsonb)r`,[JSON.stringify(linux)])).rows[0].v;
+ ok(JSON.stringify(normalized)===JSON.stringify(current),'captured Linux projection equals current catalog after ordering only');
+ ok(await jsonHash(normalized)==='1d554a111d903e864005a0175d48c7f056d93f7dc51a9084a9af45d8f4ed4252','canonical expected fingerprint unchanged');
  async function rejects(setup,pattern,label,source=sql){await db.exec('begin;'+setup);await assert.rejects(()=>db.exec(source),pattern);await db.exec('rollback');ok(await snapshot(db)===original,label+' rolls back complete existing catalog');ok((await db.query("select to_regclass('public.event_series')v")).rows[0].v===null,label+' creates no Events domain')}
+ await rejects('drop index public.organization_people_human_idx;create index organization_people_human_idx on public.organization_people(user_id);',/dependency relation/,'changed index definition');
+ await rejects('alter table public.organization_people disable row level security;',/dependency relation/,'changed dependency RLS');
+ await rejects('revoke select on public.organization_people from authenticated;',/dependency relation/,'changed dependency ACL');
  await rejects('create table public.event_orphan(id int);',/exists or is partial/,'partial existing Events');
  await rejects("create or replace function private.has_staff_permission(p_org uuid,p_key text,p_department uuid default null)returns boolean language sql as 'select true';",/authority definition/,'changed authority helper');
  await rejects("create or replace function private.staff_permission_keys()returns text[]language sql as $$select array['events.manage','unapproved']::text[]$$;",/registry\/constraint pair/,'unknown registry');
