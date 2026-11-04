@@ -6,9 +6,13 @@
  const el=(tag,text,attrs={})=>{const n=document.createElement(tag);if(text!=null)n.textContent=text;for(const[k,v]of Object.entries(attrs))n.setAttribute(k,v);return n};
  const required=['dream_team.application.read','dream_team.application.restricted','people.read','followup.read'];
  let epoch=0,principal=null,org=null,selected=null,grants=[],body=null,status=null;
+ const validOrg=v=>typeof v==='string'&&/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(v);
+ function route(scope){return location.pathname+'?org='+encodeURIComponent(scope)}
+ function syncRoute(scope){history.replaceState(null,'',route(scope))}
+ function signIn(){const hints=new URLSearchParams(location.search).getAll('org');const next=location.pathname+(hints.length?'?org='+encodeURIComponent(hints.length===1&&validOrg(hints[0])?hints[0]:'unavailable'):'');return 'discipleship-login.html?next='+encodeURIComponent(next)}
  const denial=e=>['42501','401','403'].includes(String(e?.code||e?.status));
  function retire(message='Your access is no longer available. Sign in and reload to continue.'){
-  epoch++;selected=null;org=null;principal=null;grants=[];body=null;status=null;root.replaceChildren(el('p',message,{role:'alert'}),el('a','Sign in',{href:'discipleship-login.html?next=%2Fstaff-dream-team-manual.html'}));
+  epoch++;selected=null;org=null;principal=null;grants=[];body=null;status=null;root.replaceChildren(el('p',message,{role:'alert'}),el('a','Sign in',{href:signIn()}));
   const email=document.getElementById('staff-session-email');if(email)email.textContent='';
  }
  const current=t=>t.epoch===epoch&&t.principal===principal&&t.org===org&&window.ChampionLifeAuth===auth&&auth.client===client;
@@ -76,13 +80,21 @@
   const start=++epoch;root.replaceChildren(el('p','Verifying staff identity…',{role:'status'}));
   try{const response=await client.auth.getUser();if(start!==epoch)return;if(response.error||!response.data?.user?.id){retire();return}principal=response.data.user.id;
    const t=ticket();await verify(t);const ctx=await client.rpc('staff_workspace_context',{});await verify(t);if(ctx.error)throw ctx.error;
-   grants=ctx.data.grants||[];const choices=(ctx.data.organizations||[]).filter(o=>required.every(k=>grants.some(g=>g.organization_id===o.id&&g.permission===k&&!g.department_ids)));
+   grants=ctx.data.grants||[];const choices=(ctx.data.organizations||[]).filter(o=>validOrg(o.id)&&required.every(k=>grants.some(g=>g.organization_id===o.id&&g.permission===k&&!g.department_ids)));
    if(!choices.length){retire();return}
-   const hints=new URLSearchParams(location.search).getAll('org');if(hints.length>1||(hints.length===1&&!choices.some(o=>o.id===hints[0]))){retire('Requested organization is unavailable.');return}
-   org=hints[0]||choices[0].id;const select=el('select',null,{'aria-label':'Organization'});for(const o of choices)select.append(el('option',o.name,{value:o.id}));select.value=org;
-   select.onchange=()=>{if(!select.isConnected)return;org=select.value;list()};
+   const hints=new URLSearchParams(location.search).getAll('org');if(hints.length>1||(hints.length===1&&(!validOrg(hints[0])||!choices.some(o=>o.id===hints[0])))){retire('Requested organization is unavailable.');return}
+   org=hints[0]||choices[0].id;syncRoute(org);const select=el('select',null,{'aria-label':'Organization'});for(const o of choices)select.append(el('option',o.name,{value:o.id}));select.value=org;
+   const reload=el('a','Reload workspace',{href:route(org)});
+   select.onchange=async()=>{
+    if(!select.isConnected)return;const next=select.value;
+    // Retire the old subject before any identity wait or navigation operation.
+    epoch++;selected=null;body?.replaceChildren();const t=ticket();
+    try{await verify(t);if(!select.isConnected||!current(t))return;if(!validOrg(next)||!choices.some(o=>o.id===next)){retire('Requested organization is unavailable.');return}
+     syncRoute(next);org=next;reload.href=route(org);await list();
+    }catch{if(current(t))retire('Workspace unavailable. Reload to verify access.')}
+   };
    status=el('p','',{role:'status',class:'staff-status'});body=el('div',null,{class:'staff-content'});root.replaceChildren(select,status,body);
-   root.append(el('a','Reload workspace',{href:location.pathname+location.search}));await list();
+   root.append(reload);await list();
   }catch{if(start===epoch)retire('Workspace unavailable. Reload to verify access.')}
  }
  client.auth.onAuthStateChange((event,session)=>{if(event==='SIGNED_OUT'||(principal&&session?.user?.id!==principal))retire()});
