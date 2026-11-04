@@ -36,6 +36,7 @@ for(const[engine,options]of[[chromium,{channel:'chrome'}],[webkit,{}]]){
      if(delay===name+':'+payload.p_action){delay=null;await new Promise(r=>release=r)}
      if(revoked)return route.fulfill({status:403,json:{code:'42501',message:'Synthetic access revoked'}});
      if(failDiscovery&&name==='staff_workspace_context')return route.abort();
+     if(name==='forms_workspace')return route.fulfill({status:404,json:{code:'PGRST202',message:'Optional Forms backend not installed in this fixture'}});
      if(name==='staff_workspace_context')return route.fulfill({json:user===identities[0]?{organizations:[{id:'org',name:'Champion Life · Synthetic'}],grants:['people.read','followup.read',...(finance?['outreach.view','finance.read']:[])].map(permission=>({organization_id:'org',permission,department_ids:department?['restricted-department']:null}))}:{organizations:[],grants:[]}});
      if(name==='people_workspace')return route.fulfill({json:payload.p_action==='list'?[{id:'11111111-1111-4111-8111-111111111111',first_name:'Church',last_name:'Fixture',email:'private@example.test',relationships:['volunteer']}]:{person:{first_name:'Church',last_name:'Fixture'},relationships:[]}});
      if(name==='outreach_registration_workspace'){
@@ -106,10 +107,10 @@ for(const[engine,options]of[[chromium,{channel:'chrome'}],[webkit,{}]]){
   manage=true;await ready('/staff-outreach-registration.html?campaign='+fixture.campaign);await page.getByText('Household lookup',{exact:true}).waitFor();
   await page.getByRole('button',{name:'Open household'}).click();await page.getByText('Waiver signatures',{exact:true}).waitFor();await page.getByText('Edit household',{exact:true}).click();
   const writesBefore=requests.filter(x=>x.payload.p_action==='update').length;
+  await page.evaluate(()=>window.staleSave=[...document.querySelectorAll('button')].find(b=>b.textContent==='Save household'));
   await page.getByRole('button',{name:'Save household',exact:true}).click();await page.getByText('Waiver signatures',{exact:true}).waitFor();
   ok(requests.filter(x=>x.payload.p_action==='update').length===writesBefore+1,'authorized household save still submits once');
   ok(requests.filter(x=>x.payload.p_action==='update').at(-1).payload.p_payload.registration_id===fixture.registration,'save keeps original registration binding');
-  await page.evaluate(()=>window.staleSave=[...document.querySelectorAll('button')].find(b=>b.textContent==='Save household'));
   revoked=true;await page.evaluate(()=>ChampionLifeAuth.client.rpc('outreach_registration_workspace',{p_action:'context',p_campaign:new URL(location.href).searchParams.get('campaign'),p_payload:{}}));await clear();
   const afterDeny=requests.length;await page.evaluate(()=>window.staleSave.click());await page.waitForTimeout(70);ok(requests.length===afterDeny,'detached Save emits zero mutations after denial');revoked=false;manage=false;
   await seed(identities[1]);

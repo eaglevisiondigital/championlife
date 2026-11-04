@@ -84,6 +84,10 @@ for(const[engine,type]of[['chromium',chromium],['webkit',webkit]]){
   }
   // A request already accepted cannot be canceled; late result cannot restore the old detail.
   await reboot();hold='insert';await submit('Late accepted');await waitHeld();await back();await open(1);release();release=null;await page.waitForTimeout(70);ok(await page.getByRole('heading',{name:'Taylor Fixture',exact:true}).isVisible(),'late accepted create cannot restore Morgan');ok(await page.getByRole('heading',{name:'Late accepted',exact:true}).count()===0,'late old-person task does not appear in new person');
+  for(const mode of ['accepted','lost','validation']){
+   await reboot();before=count();hold='insert';outcome=mode==='accepted'?null:mode;await page.evaluate(()=>window.previousAccountForm=document.querySelector('form'));await submit('Previous account '+mode);await waitHeld();await page.evaluate(()=>{actor={id:'replacement-without-callback'}});release();release=null;await page.getByRole('alert').waitFor();
+   ok(await page.getByRole('heading',{name:'Morgan Fixture',exact:true}).count()===0,mode+' missed-callback response clears former Person');ok(await page.getByRole('button',{name:'Refresh follow-up tasks',exact:true}).count()===0,mode+' cannot restore previous-account uncertain-save control');await page.evaluate(()=>previousAccountForm.onsubmit(new Event('submit')));ok(count()===before+1,mode+' retained old-account form sends zero further inserts');
+  }
   await reboot();outcome='denied';await submit('Denied at insert');await page.getByRole('alert').waitFor();ok(await add().count()===0,'backend denial clears task create');ok(!(await page.locator('body').innerText()).includes('RAW_PRIVATE_ERROR'),'backend denial keeps raw error private');
   ok(await page.evaluate(()=>localStorage.length===0&&sessionStorage.length===0),'task drafts never written to browser storage');ok(errors.length===0,'no browser exceptions');console.log(JSON.stringify({engine,width,checks}));await page.close();
  }

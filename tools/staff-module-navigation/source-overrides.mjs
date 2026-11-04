@@ -1,0 +1,8 @@
+import assert from'node:assert/strict';import{createHash}from'node:crypto';
+const paths=['assets/js/outreach-people.js','assets/js/staff-workspace.js'];const tests=['tools/backend-tests/staff-session.browser.mjs','tools/backend-tests/staff-workspace-discovery.browser.mjs','tools/backend-tests/staff-workspace.browser.mjs','tools/outreach/people-followup-create.browser.mjs'];const base='4f64fa14f03098e31ee8111c8ff1810fbc260542';const sha=b=>createHash('sha256').update(b).digest('hex');
+export function verifyOverrides(binding,manifestBytes,original,current){
+ assert.equal(binding.base,base,'Exact frozen90 baseline');assert.deepEqual(Object.keys(binding.files).sort(),paths,'Only two independently reviewed runtime overrides');assert.equal(sha(manifestBytes),binding.originalManifestSHA256,'Historical source manifest unchanged');assert.deepEqual(manifestBytes,original(base,'tools/backoffice-composition/source-manifest.json'),'Frozen historical manifest Git bytes');
+ assert.deepEqual(Object.keys(binding.testFiles).sort(),tests,'Only four directly affected test overrides');
+ const manifest=JSON.parse(manifestBytes),selected=new Map([...manifest.selectedFiles,...manifest.preservedFiles].map(f=>[f.path,f.sha256]));
+ for(const path of [...paths,...tests]){const pair=binding.files[path]||binding.testFiles[path];assert.deepEqual(Object.keys(pair).sort(),['originalSHA256','reviewedSHA256']);assert.equal(pair.originalSHA256,selected.get(path),'Frozen manifest source '+path);assert.equal(sha(original(base,path)),pair.originalSHA256,'Frozen Git source '+path);assert.equal(sha(current(path)),pair.reviewedSHA256,'Reviewed successor source '+path)}return new Set([...paths,...tests]);
+}

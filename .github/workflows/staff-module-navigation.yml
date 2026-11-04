@@ -1,0 +1,29 @@
+name: Staff module navigation
+on:
+  pull_request:
+    paths:
+      - 'assets/js/staff-workspace.js'
+      - 'assets/js/outreach-people.js'
+      - 'tools/staff-module-navigation/**'
+      - '.github/workflows/staff-module-navigation.yml'
+permissions:
+  contents: read
+jobs:
+  navigation:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm ci --ignore-scripts --prefix tools/backend-tests
+      - run: tools/backend-tests/node_modules/.bin/playwright install --with-deps chromium webkit
+      - run: node tools/backoffice-composition/source.test.mjs
+      - run: node tools/staff-module-navigation/override-negative.mjs
+      - run: node tools/staff-module-navigation/browser.mjs
+      - run: node tools/staff-module-navigation/integrity.mjs
+      - run: git diff --check

@@ -14,11 +14,25 @@
   root.append(code===401?login():el('a','Return to Outreach',{href:'outreach.html'}));
  }
  async function request(run){
-  const g=generation;
-  if(window.StaffWorkspace&&!window.StaffWorkspace.active())throw Error("Staff access unavailable");
-  try{const session=await auth.getSession();if(g!==generation)throw Error();if(!session||session.user.id!==user?.id){fail(401);throw Error()}
-   if(window.StaffWorkspace&&!window.StaffWorkspace.active())throw Error("Staff access unavailable");const r=await run();if(g!==generation)throw Error();if(r.error||r.status===401||r.status===403){if(r.status===401||r.status===403||r.error?.code==='42501')fail(r.status===401?401:403);else status.textContent='Unable to complete this request. Please refresh and try again.';throw Error()}return r.data;
-  }catch(e){if(g===generation&&status)status.textContent='Unable to complete this request. Please refresh and try again.';throw e}
+  const g=generation,client=auth.client,clientAuth=client.auth,actor=user?.id;let fenced=false;
+  async function verifyCurrent(){
+   if(g!==generation)throw Error('Retired request');
+   if(window.ChampionLifeAuth!==auth||auth.client!==client||client.auth!==clientAuth){fail(401);throw Error('Staff connection changed')}
+   let session;try{session=await auth.getSession()}catch(e){if(g===generation)fail(401);throw e}
+   if(g!==generation)throw Error('Retired request');
+   if(window.ChampionLifeAuth!==auth||auth.client!==client||client.auth!==clientAuth||session?.user?.id!==actor){fail(401);throw Error('Staff identity changed')}
+   if(window.StaffWorkspace&&!window.StaffWorkspace.active())throw Error('Staff access unavailable');
+  }
+  if(window.StaffWorkspace&&!window.StaffWorkspace.active())throw Error('Staff access unavailable');
+  try{await verifyCurrent();const r=await run();await verifyCurrent();fenced=true;
+   if(r.error||r.status===401||r.status===403){if(r.status===401||r.status===403||r.error?.code==='42501')fail(r.status===401?401:403);else status.textContent='Unable to complete this request. Please refresh and try again.';throw Error()}return r.data;
+  }catch(e){
+   // Direct table operations bypass the shell RPC guard. Even a failed response
+   // must verify current local identity before an uncertain-save UI can return.
+   if(g===generation&&!fenced)await verifyCurrent();
+   if(g===generation&&(e?.status===401||e?.status===403||e?.code==='42501'))fail(e.status===401?401:403);
+   if(g===generation&&status)status.textContent='Unable to complete this request. Please refresh and try again.';throw e;
+  }
  }
  const people=(action,payload)=>request(()=>auth.client.rpc('people_workspace',{p_org:org,p_action:action,p_payload:payload}));
  function button(label,action){const g=generation,b=el('button',label,{type:'button',class:'staff-action'});b.onclick=async()=>{if(g!==generation)return;b.disabled=true;try{await action()}catch{}finally{b.disabled=false}};return b}
