@@ -8,7 +8,18 @@
  const el=(tag,text,attrs={})=>{const node=document.createElement(tag);if(text)node.textContent=text;for(const[k,v]of Object.entries(attrs))node.setAttribute(k,v);return node};
  const params=new URLSearchParams(location.search),originalRpc=auth?.client?.rpc?.bind(auth.client);
  const mobile=matchMedia('(max-width: 1023px)');
- let epoch=0,identity=null,active=false,stopped=false,checking=false,fingerprint='',timer;
+ let epoch=0,identity=null,active=false,stopped=false,verification=null,fingerprint='',timer;
+ const destinations=new Set(),client=auth?.client;
+ const orgPermission=(grants,id,key)=>grants.some(g=>g.organization_id===id&&g.permission===key&&!g.department_ids);
+ const formsKeys=['forms.read','forms.create','forms.edit'];
+ const dreamKeys=['dream_team.application.read','dream_team.application.restricted','people.read','followup.read'];
+ function modules(snapshot,id){const result=[];
+  if(orgPermission(snapshot.grants,id,'people.read'))result.push(['People & Follow-up','staff-people.html?org='+encodeURIComponent(id)]);
+  if(snapshot.grants.some(g=>g.organization_id===id&&['events.view','events.manage'].includes(g.permission)&&(g.department_ids==null||Array.isArray(g.department_ids)&&g.department_ids.length)))result.push(['Church Events','staff-events.html?org='+encodeURIComponent(id)]);
+  if(snapshot.forms.some(o=>o.id===id))result.push(['Forms','staff-forms.html?organization='+encodeURIComponent(id)]);
+  if(dreamKeys.every(key=>orgPermission(snapshot.grants,id,key)))result.push(['Dream Team & Manual Follow-up','staff-dream-team-manual.html?org='+encodeURIComponent(id)]);
+  return result;
+ }
  const denied=r=>[401,403].includes(r?.status)||[401,403].includes(r?.error?.status)||['42501','PGRST301','PGRST302','PGRST303'].includes(r?.error?.code);
  const reject=()=>({data:null,error:{code:'42501',message:'Staff access must be verified again.'},status:403});
  // Discovery arrays are unordered sets. Canonicalize comparison, not display order.
@@ -17,13 +28,15 @@
  function stop(reason){
   if(stopped)return;stopped=true;active=false;epoch++;clearInterval(timer);
   window.dispatchEvent(new Event('staff-protected-clear'));
-  main.replaceChildren();main.hidden=true;nav.replaceChildren();controls.replaceChildren();controls.hidden=true;drawer(false);
+  const displayedIdentity=document.getElementById('staff-session-email');if(displayedIdentity)displayedIdentity.textContent='';
+  destinations.clear();main.replaceChildren();main.hidden=true;nav.replaceChildren();controls.replaceChildren();controls.hidden=true;drawer(false);
   message.replaceChildren(el('span',reason+' '),el('a','Verify access again',{href:'staff-home.html'}),document.createTextNode(' · '),el('a','Sign in',{href:'discipleship-login.html?next=%2Fstaff-home.html'}));
  }
- function navigate(href){
-  const url=new URL(href,location.href);
-  if(url.origin!==location.origin||!['/staff-home.html','/staff-people.html','/staff-outreach-registration.html','/staff-outreach-partners.html'].includes(url.pathname))return;
-  stop('Opening your selected workspace.');location.assign(url.href);
+ async function navigate(href){
+  const url=new URL(href,location.href),target=url.href;
+  if(!active||stopped||url.origin!==location.origin||!destinations.has(target))return;
+  await verify();if(!active||stopped||!destinations.has(target))return;
+  stop('Opening your selected workspace.');location.assign(target);
  }
  window.StaffWorkspace=Object.freeze({active:()=>active&&!stopped,navigate});
  menu.addEventListener('click',()=>drawer(menu.getAttribute('aria-expanded')!=='true'));
@@ -49,6 +62,9 @@
    const result=await originalRpc(...args);
    if(generation!==epoch||stopped)return reject();
    if(denied(result)){stop('Access is no longer available.');return reject()}
+   const latest=await client.auth.getUser();if(generation!==epoch||stopped)return reject();
+   const currentSession=await auth.getSession();if(generation!==epoch||stopped)return reject();
+   if(window.ChampionLifeAuth!==auth||auth.client!==client||latest.error||latest.data?.user?.id!==identity||!latest.data.user.email_confirmed_at||latest.data.user.is_anonymous||currentSession?.user?.id!==identity){stop('Your staff session changed.');return reject()}
    return result;
   }catch{if(generation===epoch)stop('Access could not be verified. Check your connection.');return reject()}
  };
@@ -60,33 +76,41 @@
  document.getElementById('staff-logout').addEventListener('click',()=>stop('Signing out.'),{capture:true});
  window.addEventListener('pagehide',()=>stop('Verify access after returning to this page.'));
  window.addEventListener('pageshow',event=>{if(event.persisted){stop('Verify access after returning to this page.');location.reload()}});
- function link(text,href){const a=el('a',text,{href});if(new URL(href,location.href).pathname===location.pathname)a.setAttribute('aria-current','page');a.onclick=event=>{if(event.button===0&&!event.ctrlKey&&!event.metaKey&&!event.shiftKey&&!event.altKey){event.preventDefault();navigate(href)}};return a}
+ function link(text,href){destinations.add(new URL(href,location.href).href);const a=el('a',text,{href});if(new URL(href,location.href).pathname===location.pathname)a.setAttribute('aria-current','page');a.onclick=event=>{if(!a.isConnected||!active||stopped){event.preventDefault();return}if(event.button===0&&!event.ctrlKey&&!event.metaKey&&!event.shiftKey&&!event.altKey){event.preventDefault();navigate(href)}};return a}
  function show(snapshot){
-  const orgs=snapshot.organizations, campaigns=snapshot.campaigns;
+  const orgs=snapshot.organizations,campaigns=snapshot.campaigns;
+  for(const key of ['context','org','campaign'])if(params.getAll(key).length>1||(params.has(key)&&!params.get(key)))throw Error('Invalid workspace selection');
   const requested=params.get('context'),context=page==='people'?'church':page==='registration'?'outreach':requested||(orgs.length?'church':'outreach');
   if(!['church','outreach'].includes(context))throw Error('Invalid workspace');
   const choices=context==='church'?orgs:campaigns,key=context==='church'?'org':'campaign';
   const specified=params.get(key),selected=choices.find(x=>x.id===specified)||(!specified?choices[0]:null);
   if(!selected)throw Error('No authorized workspace');
-  if(page!=='home'&&!specified){const url=new URL(location.href);url.searchParams.set(key,selected.id);history.replaceState(null,'',url.href)}
+  if(page==='home'){const route=new URL(location.pathname,location.origin);route.searchParams.set('context',context);route.searchParams.set(key,selected.id);history.replaceState(null,'',route.href)}
+  else if(!specified){const url=new URL(location.href);url.searchParams.set(key,selected.id);history.replaceState(null,'',url.href)}
   nav.replaceChildren(link('Staff home','staff-home.html'));
-  const href=context==='church'?'staff-people.html?org='+encodeURIComponent(selected.id):'staff-outreach-registration.html?campaign='+encodeURIComponent(selected.id);
-  nav.append(link(context==='church'?'People & Follow-up':'Registration & Check-In',href));
-  if(context==='church'&&snapshot.grants.some(g=>g.organization_id===selected.id&&g.permission==='outreach.view'&&!g.department_ids)&&snapshot.grants.some(g=>g.organization_id===selected.id&&g.permission==='finance.read'&&!g.department_ids)){const financial=link('Financial Outreach Review','staff-outreach-partners.html?org='+encodeURIComponent(selected.id));financial.id='financial-outreach-link';nav.append(financial)}
+  const entries=context==='church'?modules(snapshot,selected.id):[['Registration & Check-In','staff-outreach-registration.html?campaign='+encodeURIComponent(selected.id)]];
+  for(const [label,href]of entries)nav.append(link(label,href));
+  if(context==='church'&&orgPermission(snapshot.grants,selected.id,'outreach.view')&&orgPermission(snapshot.grants,selected.id,'finance.read')){const financial=link('Financial Outreach Review','staff-outreach-partners.html?org='+encodeURIComponent(selected.id));financial.id='financial-outreach-link';nav.append(financial)}
   const mode=el('select',null,{'aria-label':'Ministry context'});
-  for(const[value,label,enabled]of[['church','Church',orgs.length],['outreach','Outreach',campaigns.length]])if(enabled)mode.append(el('option',label,{value}));mode.value=context;
-  mode.onchange=()=>navigate('staff-home.html?context='+encodeURIComponent(mode.value));
+  for(const[value,label,enabled]of[['church','Church',orgs.length],['outreach','Outreach',campaigns.length]])if(enabled){mode.append(el('option',label,{value}));destinations.add(new URL('staff-home.html?context='+value,location.href).href)}mode.value=context;
+  mode.onchange=()=>{if(mode.isConnected)navigate('staff-home.html?context='+encodeURIComponent(mode.value))};
   const select=el('select',null,{'aria-label':context==='church'?'Church organization':'Outreach campaign'});
-  for(const item of choices)select.append(el('option',item.name,{value:item.id}));select.value=selected.id;
-  select.onchange=()=>navigate((context==='church'?'staff-people.html?org=':'staff-outreach-registration.html?campaign=')+encodeURIComponent(select.value));
+  const scopeRoute=id=>page==='home'?'staff-home.html?context='+context+'&'+key+'='+encodeURIComponent(id):(context==='church'?'staff-people.html?org=':'staff-outreach-registration.html?campaign=')+encodeURIComponent(id);
+  for(const item of choices){select.append(el('option',item.name,{value:item.id}));destinations.add(new URL(scopeRoute(item.id),location.href).href)}select.value=selected.id;
+  select.onchange=()=>{if(select.isConnected)navigate(scopeRoute(select.value))};
   const modeLabel=el('label','Workspace'),scopeLabel=el('label',context==='church'?'Organization':'Campaign');modeLabel.append(mode);scopeLabel.append(select);controls.replaceChildren(modeLabel,scopeLabel);controls.hidden=false;
-  if(page==='home')document.getElementById('staff-home-links').replaceChildren(link(context==='church'?'Open People & Follow-up':'Open Registration & Check-In',href));
+  if(page==='home')document.getElementById('staff-home-links').replaceChildren(...entries.map(([label,href])=>link('Open '+label,href)));
  }
- async function verify(initial=false){
-  if(checking||stopped)return;checking=true;const generation=epoch;
+ function verify(initial=false){
+  if(stopped)return Promise.resolve();if(verification)return verification;
+  verification=verifyNow(initial).finally(()=>{verification=null});return verification;
+ }
+ async function verifyNow(initial=false){
+  const generation=epoch;
   const watchdog=setTimeout(()=>stop('Access verification timed out. Please try again.'),10000);
   try{
-   const result=await auth.client.auth.getUser();if(stopped||generation!==epoch)return;
+   if(window.ChampionLifeAuth!==auth||auth.client!==client)throw Error('Authentication client changed');
+   const result=await client.auth.getUser();if(stopped||generation!==epoch)return;
    const user=result.data?.user;if(result.error||!user?.id||!user.email_confirmed_at||user.is_anonymous)throw Error('Verified sign-in required');
    if(identity&&identity!==user.id){stop('Your account changed.');return}identity=user.id;
    const discover=async(...args)=>{
@@ -98,13 +122,25 @@
     }
     return response;
    };
-   const [staff,registration]=await Promise.all([discover('staff_workspace_context',{}),discover('outreach_registration_workspace',{p_action:'campaigns',p_campaign:null,p_payload:{}})]);
+   const optionalForms=async()=>{
+    let response;try{response=await originalRpc('forms_workspace',{p_action:'context',p_org:null,p_payload:{}})}catch(error){if(denied({error,status:error?.status})){if(generation===epoch&&!stopped)stop('Access is no longer available.');throw error}return []}
+    if(denied(response)){if(generation===epoch&&!stopped)stop('Access is no longer available.');throw Error('Forms access denied')}
+    if(!response||response.error||response.data?.capabilities?.profile!=='private_draft_v1'||!Array.isArray(response.data.organizations))return [];
+    // Keep only authorized organization navigation; never retain scoped form IDs/names.
+    return response.data.organizations.filter(o=>o&&typeof o.id==='string'&&/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(o.id)&&typeof o.name==='string'&&(Array.isArray(o.permissions)&&o.permissions.some(k=>formsKeys.includes(k))||Array.isArray(o.scoped_forms)&&o.scoped_forms.some(f=>f&&Array.isArray(f.permissions)&&f.permissions.some(k=>formsKeys.includes(k))))).map(o=>({id:o.id,name:o.name}));
+   };
+   const [staff,registration,forms]=await Promise.all([discover('staff_workspace_context',{}),discover('outreach_registration_workspace',{p_action:'campaigns',p_campaign:null,p_payload:{}}),optionalForms()]);
    if(stopped||generation!==epoch)return;
    if(staff.error||registration.error||denied(staff)||denied(registration))throw Error('Permission discovery failed');
-   const session=await auth.getSession();if(stopped||generation!==epoch)return;if(session?.user?.id!==identity)throw Error('Session changed');
+   const latest=await client.auth.getUser();if(stopped||generation!==epoch)return;
+   if(window.ChampionLifeAuth!==auth||auth.client!==client||latest.error||latest.data?.user?.id!==identity||!latest.data.user.email_confirmed_at||latest.data.user.is_anonymous)throw Error('Session changed');
+   const currentSession=await auth.getSession();if(stopped||generation!==epoch)return;
+   if(window.ChampionLifeAuth!==auth||auth.client!==client||currentSession?.user?.id!==identity)throw Error('Session changed');
    const grants=staff.data?.grants,organizations=staff.data?.organizations,campaigns=registration.data;
    if(!Array.isArray(grants)||!Array.isArray(organizations)||!Array.isArray(campaigns))throw Error('Invalid context');
-   const snapshot={grants,organizations:organizations.filter(o=>grants.some(g=>g.organization_id===o.id&&g.permission==='people.read'&&!g.department_ids)),campaigns};
+   const snapshot={grants,forms,campaigns,organizations:[]};
+   const byId=new Map([...organizations,...forms].map(o=>[o.id,{id:o.id,name:o.name}]));
+   snapshot.organizations=[...byId.values()].filter(o=>page==='people'?orgPermission(grants,o.id,'people.read'):modules(snapshot,o.id).length>0);
    const current=JSON.stringify(canonical(snapshot));
    if(!initial&&current!==fingerprint){stop('Your permissions changed. Verify access again.');return}
    if(initial){show(snapshot);fingerprint=current;active=true;main.hidden=false;message.textContent='';
@@ -113,7 +149,7 @@
     timer=setInterval(()=>verify(),20000);
    }
   }catch{if(generation===epoch&&!stopped)stop('Staff access is unavailable or could not be verified.');}
-  finally{clearTimeout(watchdog);checking=false}
+  finally{clearTimeout(watchdog)}
  }
  window.addEventListener('focus',()=>verify());
  document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')verify()});

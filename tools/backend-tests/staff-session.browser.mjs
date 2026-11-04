@@ -34,6 +34,7 @@ for(const[engine,options]of[[chromium,{channel:'chrome'}],[webkit,{}]]){
      const sessionUser=identities.find(i=>token===makeSession(i).access_token)||identities.find(i=>{try{return JSON.parse(Buffer.from(token.split('.')[1],'base64url').toString()).sub===i.id}catch{return false}});
      if(!sessionUser)return route.fulfill({status:401,json:{message:'No synthetic session'}});
      const permissions=['people.read','followup.read','outreach.view',...(sessionUser.id===identities[1].id?['finance.read']:[])];
+     if(name==='forms_workspace')return route.fulfill({status:404,json:{code:'PGRST202',message:'Optional Forms backend not installed in this fixture'}});
      if(name==='staff_workspace_context')return route.fulfill({json:{organizations:[{id:'org',name:'Champion Life · Synthetic preview'}],grants:permissions.map(permission=>({organization_id:'org',permission,department_ids:null}))}});
      if(name==='people_workspace')return route.fulfill({json:payload.p_action==='list'?(payload.p_payload.search==='no-match'?[]:[{id:'11111111-1111-4111-8111-111111111111',first_name:sessionUser.id===identities[0].id?'Church':'Owner',last_name:'Fixture',email:'fixture@example.test',relationships:['volunteer']}]):{person:{first_name:'Synthetic',last_name:'Fixture'},relationships:[]}});
      if(name==='outreach_registration_workspace')return route.fulfill({json:fixture.response(name,payload)});

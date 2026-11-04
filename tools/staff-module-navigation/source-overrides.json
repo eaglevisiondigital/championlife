@@ -1,0 +1,32 @@
+{
+  "base": "4f64fa14f03098e31ee8111c8ff1810fbc260542",
+  "originalManifestSHA256": "08d69709c03394eb1dc2e354a35360c41ca08297dbd7a59bee69054a01dcb90f",
+  "files": {
+    "assets/js/outreach-people.js": {
+      "originalSHA256": "bd356fd7252074a660ef2cd5283e69d94fbe593362e21f5abe27a6c630328138",
+      "reviewedSHA256": "942e20ce113bac4b041fd510d32f302b763c7b1111f1e818ba10d555a8252200"
+    },
+    "assets/js/staff-workspace.js": {
+      "originalSHA256": "4429fb59c41d8c8a53230f98814ca95bae12053998d2afe624e1177e02076b49",
+      "reviewedSHA256": "c25659dcaff9d9581653e04420dd445fa0539e619e8c7f92af89f395dff7c189"
+    }
+  },
+  "testFiles": {
+    "tools/backend-tests/staff-session.browser.mjs": {
+      "originalSHA256": "6ba01c39bd9e3ba11d668e1472f9ad94c700f4b2015af590e14ac90198406bd1",
+      "reviewedSHA256": "6eeacde815abb474feba75c1a7a801814c0d24142dbd44284808f7bbb528b7e2"
+    },
+    "tools/backend-tests/staff-workspace-discovery.browser.mjs": {
+      "originalSHA256": "8534bd091d517a8518114d8832d59f50861f221dec0f2a6cfb8490b5701cc8f2",
+      "reviewedSHA256": "b58325f9b5ee03f854939c4750b016045b40146a73baebec8f73083e7fb37184"
+    },
+    "tools/backend-tests/staff-workspace.browser.mjs": {
+      "originalSHA256": "64a3308dac7561d569b82cca989f83258686d5af5bb99c780d1980f166206410",
+      "reviewedSHA256": "2f0d3f98c25fd52e9c57a2e0ae2244660786898eb364ff3509a1b54e9c3df3e6"
+    },
+    "tools/outreach/people-followup-create.browser.mjs": {
+      "originalSHA256": "47f5fdf052794ee7b7591217c6fc696e6da135504a306f27800ab45ef1a9e848",
+      "reviewedSHA256": "4b9d64d53446db0962b9580117767ff0b0d4673c421b05c68884b45148a14363"
+    }
+  }
+}

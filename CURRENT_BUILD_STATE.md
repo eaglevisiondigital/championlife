@@ -121,3 +121,25 @@ Current main plus frozen PR #61 shell and exact PR #72 eb7ad80 People/registrati
 
 ## November 3: isolated backoffice household-search privacy successor
 Frozen PR #84 `40827da3a646a35165e5b3416568dbcc185ce83f` remains unchanged. This successor extracts only the proven normal household-search reset from PR #89 `db61caa31c3f274cd264bf3f846c8d7b8c5209dc`; Event Day arrivals, attendee restoration and its SQL are excluded. The registration runtime clears search on account transition, explicit denial, protected-state cleanup and history/page restoration; verified same-account refresh retains its search. Existing generation guards and authoritative RPC permissions remain unchanged. Permanent Chromium/WebKit coverage is added to existing composition CI, with the selected-source hash rebound only for this runtime. Local and independent checks are recorded in the separate private audit package. Genuine Auth/recovery and website release remain unaccepted and separately gated.
+
+## 2026-11-04 — Permission-aware staff module navigation (source successor)
+
+Frozen PR #90 remains unchanged. A separate successor adds existing Events,
+private Forms and restricted Dream Team links to the approved shell using exact
+current organization/campaign permissions. Module-only authority does not confer
+People, household, financial or course authority. Forms scoped access uses its
+canonical private context; no form identifiers are retained in navigation.
+
+The narrow integration also closes a reproduced delayed People RPC response leak
+after an account changes without a callback. Protected content and the old account
+label retire before stale data can reach the module. Fresh navigation/discovery
+checks preserve current local-session fencing. Module pages/SQL remain explicit
+composition dependencies; this source branch is not a standalone release package.
+No production installation, account, grant, SDK, styling or provider changes.
+
+A second independently reproduced gap affected direct Person task INSERT responses,
+which bypass the shell RPC adapter. The existing People request wrapper now fences
+returned and thrown/error outcomes against current local identity/client before
+old-account private review or uncertain-save controls can return. Same-account
+uncertain writes retain the original no-retry handling; no records are rolled back
+or replayed by this browser correction.
