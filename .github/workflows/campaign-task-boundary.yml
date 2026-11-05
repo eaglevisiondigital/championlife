@@ -1,0 +1,64 @@
+name: Campaign canonical task boundary (disposable only)
+on:
+  pull_request:
+    paths:
+      - 'supabase/migrations/20261105223940_campaign_person_task_boundary.sql'
+      - 'tools/outreach/campaign-task-*'
+      - 'tools/outreach/campaign-person-task-*'
+      - 'tools/outreach/fixtures/campaign-task-*'
+      - '.github/workflows/campaign-task-boundary.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  native:
+    name: Native ${{ matrix.suite }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        suite: [author, independent, browser]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm ci --ignore-scripts --prefix tools/backend-tests
+      - name: Install disposable PostgreSQL 17 binaries
+        shell: bash
+        run: |
+          if [ ! -x /usr/lib/postgresql/17/bin/postgres ]; then
+            sudo /usr/share/postgresql-common/pgdg/apt.postgresql.org.sh -y
+            sudo mkdir -p /etc/postgresql-common/createcluster.d
+            printf 'create_main_cluster = false\n' | sudo tee /etc/postgresql-common/createcluster.d/campaign-task-ci.conf > /dev/null
+            sudo apt-get install --yes --no-install-recommends postgresql-17
+          fi
+          /usr/lib/postgresql/17/bin/postgres --version
+      - if: matrix.suite == 'browser'
+        working-directory: tools/backend-tests
+        run: npx playwright install --with-deps chromium webkit
+      - name: Exact-source synthetic checks
+        env:
+          TEST_POSTGRES_BIN: /usr/lib/postgresql/17/bin
+        shell: bash
+        run: |
+          case '${{ matrix.suite }}' in
+            author)
+              node tools/outreach/campaign-task-boundary.native.mjs
+              node tools/outreach/campaign-task-integrity.mjs
+              ;;
+            independent)
+              node tools/outreach/campaign-task-independent.native.mjs
+              node tools/outreach/campaign-task-independent-race.native.mjs
+              REVIEW_RACE=event node tools/outreach/campaign-task-independent-race.native.mjs
+              ;;
+            browser)
+              node tools/outreach/campaign-person-task-reader.test.mjs
+              node tools/outreach/campaign-person-task-reader.browser.mjs
+              ;;
+          esac
+      - run: git diff --check
