@@ -24,6 +24,8 @@ jobs:
       - run: node tools/backend-tests/node_modules/playwright/cli.js install --with-deps chromium webkit
       - run: node tools/outreach/registration-print-roster.browser.mjs
       - run: TEST_POSTGRES_BIN="$(pg_config --bindir)" node tools/outreach/registration-print-roster.native.mjs
+      - run: node tools/outreach/registration-checkin-status.browser.mjs
+      - run: TEST_POSTGRES_BIN="$(pg_config --bindir)" node tools/outreach/registration-checkin-status.native.mjs
       - run: node tools/outreach/registration-navigation.browser.mjs
       - run: node tools/outreach/people-followup-create.browser.mjs
       - run: TEST_POSTGRES_BIN="$(pg_config --bindir)" node tools/outreach/people-followup-create.native.mjs
