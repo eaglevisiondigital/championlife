@@ -194,3 +194,6 @@ fields. Existing thirteen worksheet save/load flows, artwork, shared Auth, SQL a
 completion semantics are unchanged. Local fictional-browser tests and reproducible
 builds are recorded privately; genuine provider/release acceptance remains gated.
 See docs/DISCIPLESHIP-PRIVATE-EXPORT-IDENTITY.md.
+## November 5 — playback authority deadline propagation (source only)
+
+The real signed-envelope verifier and progression adapter now preserve the earliest receipt/observer deadline across the complete ledger review. A reproduced delayed transaction previously returned positive review evidence after observer expiry when the envelope itself remained valid. The verifier supplies `authorityValidUntil` from trusted registry metadata; the adapter requires it, compares fresh exact proofs and checks it at every wait boundary and final return. Invalid clocks fail closed. This is disconnected review evidence only, always `canCommit:false`; no observer, completion or serving authority is activated. SQL, private answer projections, all13 worksheets, SDK, public output and Dream Team source remain unchanged. Provider-backed playback, videos11–13, multipart6/8/9 bindings and finite retention remain unresolved gates.

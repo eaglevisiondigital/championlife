@@ -32,18 +32,22 @@ export async function reviewTrustedProgression(input, ports, {signal, now = Date
       if (signal?.aborted || !id(receipt.id) || typeof receipt.envelope !== 'string' || receipt.envelope.length > 65536) return deny();
       const proof = copy(await ports.verifyPlayback(receipt.envelope,{signal}));
       const t = now();
-      if (proof.source !== 'independent_provider_observation' || proof.eligiblePlayback !== true || proof.id !== receipt.id || proof.envelopeSha256 !== digest(receipt.envelope) || proof.userId !== target.userId || proof.sessionId !== target.sessionId || proof.course !== COURSE || proof.lesson !== target.lesson || proof.mediaId !== ledger.mediaId || proof.videoRevision !== ledger.videoRevision || !id(proof.provider) || !id(proof.policyVersion) || proof.policyVersion !== ledger.policyVersion || !int(t) || !int(proof.observedAt) || !int(proof.validUntil) || proof.observedAt > t || proof.validUntil <= t || !int(proof.elapsedMs) || proof.elapsedMs > t - proof.observedAt || signal?.aborted) return deny();
+      if (proof.source !== 'independent_provider_observation' || proof.eligiblePlayback !== true || proof.id !== receipt.id || proof.envelopeSha256 !== digest(receipt.envelope) || proof.userId !== target.userId || proof.sessionId !== target.sessionId || proof.course !== COURSE || proof.lesson !== target.lesson || proof.mediaId !== ledger.mediaId || proof.videoRevision !== ledger.videoRevision || !id(proof.provider) || !id(proof.policyVersion) || proof.policyVersion !== ledger.policyVersion || !int(t) || !int(proof.observedAt) || !int(proof.validUntil) || !int(proof.authorityValidUntil) || proof.observedAt > t || proof.authorityValidUntil <= t || proof.authorityValidUntil > proof.validUntil || !int(proof.elapsedMs) || proof.elapsedMs > t - proof.observedAt || signal?.aborted) return deny();
       checked.push({...proof,providerValidated:true});
     }
+    const proofsCurrent = () => {
+      const t = now();
+      return int(t) && checked.every(p => p.observedAt <= t && p.elapsedMs <= t - p.observedAt && p.authorityValidUntil > t);
+    };
     let count = 0, result;
     await ports.withCurrentLedger(target, async current => {
       if (++count !== 1) throw Error('repeated callback');
-      if (!equal(ledger,copy(current)) || signal?.aborted || checked.some(p => p.validUntil <= now())) { result = deny(); return; }
+      if (!equal(ledger,copy(current)) || signal?.aborted || !proofsCurrent()) { result = deny(); return; }
       // Revalidate observer authority under the ledger's required serialization,
       // not just before waiting for it. A key/policy downgrade invalidates proof.
       for (let i=0;i<current.receipts.length;i++) {
         const fresh=copy(await ports.verifyPlayback(current.receipts[i].envelope,{signal}));
-        if (!equal(ledger,copy(current)) || !equal({...fresh,providerValidated:true},checked[i]) || signal?.aborted || checked[i].validUntil<=now()) {result=deny();return;}
+        if (!equal(ledger,copy(current)) || !equal({...fresh,providerValidated:true},checked[i]) || signal?.aborted || !proofsCurrent()) {result=deny();return;}
       }
       // Build only from the freshly serialized durable ledger. Raw answers never leave it.
       result = await reviewProgression(target,{withCurrentEvidence:async(_,read)=>read({
@@ -53,9 +57,9 @@ export async function reviewTrustedProgression(input, ports, {signal, now = Date
         watchReceipts:checked, answerReceipt:current.answerReceipt,
         enrollmentId:current.enrollmentId, worksheetRevision:current.worksheetRevision
       })},{signal});
-      if (signal?.aborted || checked.some(p => p.validUntil <= now())) result = deny();
+      if (signal?.aborted || !proofsCurrent()) result = deny();
     },{signal});
-    if (count !== 1 || signal?.aborted || checked.some(p => p.validUntil <= now())) return deny();
+    if (count !== 1 || signal?.aborted || !proofsCurrent()) return deny();
     return result ?? deny();
   } catch { return deny(); }
 }

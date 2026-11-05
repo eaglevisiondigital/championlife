@@ -46,7 +46,9 @@ export function createPlaybackEnvelopeVerifier({repository,now=Date.now}={}){
     const key=createPublicKey(r.publicKeyPem);requireValue(key.asymmetricKeyType==='ed25519'&&sha(key.export({type:'spki',format:'der'}))===r.publicKeySha256);
     requireValue(verify(null,Buffer.concat([Buffer.from(PLAYBACK_SIGNATURE_DOMAIN),bytes]),key,signature)&&!signal?.aborted);
     deadline=Math.min(p.validUntil,r.expiresAt===null?Infinity:r.expiresAt);
-    result=Object.freeze({...p,source:r.source,envelopeSha256:sha(envelope),observerRevision:r.revision,observerReview:r.review.id});
+    // Locks prevent registry changes, not time passing. Carry the earliest
+    // verified deadline into the outer ledger transaction's return fence.
+    result=Object.freeze({...p,source:r.source,envelopeSha256:sha(envelope),observerRevision:r.revision,observerReview:r.review.id,authorityValidUntil:deadline});
    },{signal});
    requireValue(called&&result&&!signal?.aborted&&integer(now())&&now()<deadline);
    return result;

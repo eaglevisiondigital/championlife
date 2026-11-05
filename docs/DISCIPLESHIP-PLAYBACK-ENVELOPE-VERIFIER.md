@@ -1,5 +1,11 @@
 # Playback envelope verification — source only
 
+## November 5 — composed authority deadline
+
+The verifier now returns `authorityValidUntil`, derived from the earlier of the signed receipt's `validUntil` and the current observer registry's `expiresAt`. The signed envelope schema is unchanged; this field is trusted verifier metadata, not a caller-signed claim. A null registry expiry retains the existing registry semantics but cannot extend the finite receipt expiry. The progression adapter requires the field, binds it in both exact proof comparisons, and rejects it if missing, malformed, expired or later than the receipt expiry. All subsequent time checks use a valid safe-integer clock and the earliest bound.
+
+An actual composition reproduction with fictional Ed25519 keys showed observer expiry after the ledger callback but before transaction return could previously leave positive review evidence. The existing verifier denied at its own return boundary, but its observer deadline was lost by the outer adapter. The corrected final return fence preserves that deadline. Locks and fresh checks still require the accepted server-owned implementation; no key, provider or ledger is installed. Review remains `canCommit:false` and cannot certify Dream Team training or serving eligibility. Permanent tests exercise the real verifier and adapter, exact deadlines, delayed phases, invalid proof metadata and unchanged unique-watch behavior.
+
 This successor to `280120fbfe1e077320926e17e755af6715029d33` implements the previously abstract cryptographic playback verification step. It does not install a provider, key registry, receipt-ingestion service, browser telemetry collector, or completion writer.
 
 ## Implemented boundary

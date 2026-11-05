@@ -8,7 +8,7 @@ const clone=x=>structuredClone(x);
 function fixture() {
  const principal={userId:'learner-a',sessionId:'session-a',active:true,verified:true};
  const ledger={userId:principal.userId,sessionId:principal.sessionId,course:COURSE,lesson:1,revision:1,sessionActive:true,enrolled:true,mediaId:'video-1',videoRevision:'v1',videoApproved:true,policyVersion:'reviewed-1',durationMs:100000,receipts:[{id:'receipt-1',envelope:'fictional-server-observation'}],answerReceipt:{id:'answer-1',userId:'learner-a',course:COURSE,lesson:1,revision:1,durable:true,complete:true}};
- const proof={source:'independent_provider_observation',id:'receipt-1',envelopeSha256:createHash('sha256').update(ledger.receipts[0].envelope).digest('hex'),userId:'learner-a',sessionId:'session-a',course:COURSE,lesson:1,mediaId:'video-1',videoRevision:'v1',provider:'fictional-observer',policyVersion:'reviewed-1',observedAt:0,validUntil:200000,eligiblePlayback:true,startMs:0,endMs:95000,elapsedMs:95000};
+ const proof={source:'independent_provider_observation',id:'receipt-1',envelopeSha256:createHash('sha256').update(ledger.receipts[0].envelope).digest('hex'),userId:'learner-a',sessionId:'session-a',course:COURSE,lesson:1,mediaId:'video-1',videoRevision:'v1',provider:'fictional-observer',policyVersion:'reviewed-1',observedAt:0,validUntil:200000,authorityValidUntil:200000,eligiblePlayback:true,startMs:0,endMs:95000,elapsedMs:95000};
  const ports={authenticate:async()=>principal,loadLedger:async()=>ledger,verifyPlayback:async()=>proof,withCurrentLedger:async(_,read)=>read(ledger)};
  return {principal,ledger,proof,ports};
 }
