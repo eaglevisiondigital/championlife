@@ -1,3 +1,15 @@
+## 2026-11-05 — Reentrant campaign control retirement
+
+Independent review found a second consumer-lifecycle fault after the first intent-binding draft: caller getters/proxies could retire selection while `save` captured the later navigation generation, allowing the old ticket to continue. Save now captures the original scope/generation/principal before caller operations and rechecks both that binding and the exact current snapshot/busy state before entering saving. Reentrant retirement submits zero writes; a separate legitimate nested save is preserved. This is a source-only adapter correction, not a database authorization bypass. Earlier published head and CI remain historical evidence; final-head review/CI are required independently.
+
+## 2026-11-05 — Campaign follow-up intent binding
+
+Source-only successor to PR104 `1606a6897fff4c19723298ee6b9426f7d59e38e4`. The reusable adapter captures and validates own primitive status/date values once before asynchronous authorization. Caller mutations during verification cannot replace the originally submitted intent or audit values. Existing record/session tickets, current authorization, consent, revision CAS, UNKNOWN handling and all SQL remain unchanged. No canonical People task authority is inferred from campaign access. See docs/CAMPAIGN-DECISION-ADAPTER-20261102.md. Local fictional/native tests are not hosted acceptance; release remains NO-GO.
+
+## 2026-11-05 — Assigned decision consumer rejected-denial correction
+
+Narrow source-only successor to PR82 d36afcffbcbce97307350841e59738cc49924d20. A delayed RPC rejection containing an explicit authorization denial could leave a newer same-session/campaign record visible because the resolved-response denial fence was skipped. Both denial transports now retire the same protected scope before generation checks. Current account/campaign isolation, uncertain Save behavior, immutable audit, revisions, contact prohibition and all SQL remain unchanged. Permanent unit and native-SQL Chromium/WebKit regressions reproduce the gap and enforce zero retained-control mutations. Public outputs remain unchanged; genuine Auth, managed-provider compatibility, assignment governance, independent recovery and release remain NO-GO.
+
 ## 2026-10-31 — Unified shell independent review corrections
 
 Fresh adversarial review of e18062467c8a2a2e6af7239f12e2a3ca7d035e1d found a parallel-discovery denial delay and order-sensitive permission comparison. The narrowly corrected shell processes each discovery failure before waiting for its sibling and compares canonical permission sets while preserving display order. A permanent independent browser regression covers both discovery directions, late responses, retained mutation attempts, network errors, true permission removal and fresh reauthorization. Original sealed evidence remains preserved. No SQL, grants, payment or provider configuration changes. Draft implementation review and GitHub CI are authorized; merge, deployment and hosted acceptance remain separate gates. See docs/UNIFIED-STAFF-SHELL.md.

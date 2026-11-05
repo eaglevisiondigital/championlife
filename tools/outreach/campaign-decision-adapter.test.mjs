@@ -8,7 +8,7 @@ function fixture(){
  const client={supabaseUrl:'https://abcdefghijklmnopqrst.supabase.co',rest:{url:'https://abcdefghijklmnopqrst.supabase.co/rest/v1'},auth:{url:'https://abcdefghijklmnopqrst.supabase.co/auth/v1',getUser:async()=>({data:{user:{id:f.user,email_confirmed_at:'2026-01-01',is_anonymous:false}}}),onAuthStateChange:fn=>{f.authEvent=fn;return{data:{subscription:{unsubscribe(){}}}}}},rpc:async(name,p)=>{
   check(name==='campaign_decision_foundation','fixed RPC');
   if(p.p_action===f.hold){f.hold=null;await new Promise(resolve=>f.release=resolve)}
-  if(f.revoked)return{error:f.denial??{code:'42501'}};
+  if(f.revoked){if(f.throwDenial)throw Object.assign(new Error('Explicit fixture denial'),f.denial??{code:'42501'});return{error:f.denial??{code:'42501'}};}
   if(p.p_action==='context')return{data:{organization_id:org,campaign_id:campaign,scope:'assigned',capabilities:f.manage?['decisions.read','followup.manage']:['decisions.read']}};
   if(p.p_action==='list')return{data:{organization_id:org,campaign_id:campaign,page:p.p_payload.page,registrations:[row(a),row(b)]}};
   if(p.p_action==='detail')return{data:row(p.p_payload.registration_id)};
@@ -51,5 +51,72 @@ for(const event of ['storage','popstate','pagehide','pageshow','staff-access-den
 }
 for(const denial of [{code:'PGRST303'},{status:401},{status:403}]){
  const {f,adapter,select}=fixture();select();f.hold='detail';const pending=adapter.detail(a).catch(e=>e.code);await tick();await adapter.detail(b);f.denial=denial;f.revoked=true;f.release();await pending;check(adapter.snapshot().state==='unavailable','late alternate auth denial clears');adapter.close();
+}
+for(const denial of [{code:'42501'},{code:'PGRST301'},{code:'PGRST302'},{code:'PGRST303'},{status:401},{status:403}]){
+ const {f,adapter,select}=fixture();select();f.hold='detail';const pending=adapter.detail(a).catch(e=>e.code);await tick();await adapter.detail(b);const ticket=adapter.snapshot().ticket;f.denial=denial;f.throwDenial=true;f.revoked=true;f.release();await pending;check(adapter.snapshot().state==='unavailable','late rejected explicit denial clears '+JSON.stringify(denial));await assert.rejects(adapter.save(ticket,{status:'new',nextContactOn:null}));check(!f.mutations.length,'rejected denial retires saved ticket');adapter.close();
+}
+for(const oldAccount of [false,true]){
+ const {f,adapter,select}=fixture();select();f.hold='detail';const pending=adapter.detail(a).catch(e=>e.code);await tick();if(oldAccount){f.user=b;f.token='new-account-token';f.authEvent('SIGNED_IN');select()}await adapter.detail(b);f.throwDenial=true;f.denial={code:oldAccount?'42501':'NETWORK'};f.revoked=true;f.release();await pending;check(adapter.snapshot().state==='detail'&&adapter.snapshot().record.registrationId===b,oldAccount?'old-account rejection does not retire new authority':'ordinary late network error is not revocation');check(!f.mutations.length,'late non-current rejection performs no write');adapter.close();
+}
+// The reviewed update is one immutable intent across asynchronous Auth/context checks.
+{
+ const {f,adapter,select}=fixture();select();const old=await adapter.detail(a);
+ const changes={status:'in_progress',nextContactOn:'2026-11-20'};
+ f.hold='context';const saving=adapter.save(old.ticket,changes);await tick();
+ changes.status='completed';changes.nextContactOn='2026-12-25';
+ f.release();await saving;
+ check(f.mutations.length===1,'pending intent submits once');
+ check(f.mutations[0].status==='in_progress'&&f.mutations[0].next_contact_on==='2026-11-20','pending intent remains bound to reviewed values');
+ adapter.close();
+}
+for(const later of [{status:'invalid',nextContactOn:'invalid'},{status:null,nextContactOn:null},{status:'declined',nextContactOn:'2027-01-01'}]){
+ const {f,adapter,select}=fixture();select();const old=await adapter.detail(a);
+ const changes={status:'needs_contact',nextContactOn:null};f.hold='context';
+ const saving=adapter.save(old.ticket,changes);await tick();Object.assign(changes,later);f.release();await saving;
+ check(f.mutations.length===1&&f.mutations[0].status==='needs_contact'&&f.mutations[0].next_contact_on===null,'late mutation cannot replace validated intent');adapter.close();
+}
+{
+ const {f,adapter,select}=fixture();select();const old=await adapter.detail(a);let statusReads=0,dateReads=0;
+ await adapter.save(old.ticket,{get status(){return ++statusReads===1?'in_progress':'completed'},get nextContactOn(){return ++dateReads===1?null:'2027-01-01'}});
+ check(statusReads===1&&dateReads===1,'capture caller fields once');check(f.mutations[0].status==='in_progress'&&f.mutations[0].next_contact_on===null,'validated accessor values are submitted');adapter.close();
+}
+for(const invalid of [{status:'completed',nextContactOn:'invalid'},{status:'invalid',nextContactOn:null},{status:'new'},null,[]]){
+ const {f,adapter,select}=fixture();select();const old=await adapter.detail(a);await assert.rejects(adapter.save(old.ticket,invalid),{code:'INVALID_UPDATE'});check(f.mutations.length===0,'invalid original intent has no mutation');adapter.close();
+}
+{
+ const {f,adapter,select}=fixture();select();const old=await adapter.detail(a);const changes={status:'in_progress',nextContactOn:null};f.hold='context';const pending=adapter.save(old.ticket,changes).catch(e=>e.code);await tick();changes.status='completed';f.authEvent('SIGNED_OUT');f.release();await pending;check(f.mutations.length===0,'snapshot does not bypass logout');adapter.close();
+}
+{
+ const {f,adapter,select}=fixture();select();const old=await adapter.detail(a);let coercions=0;
+ await assert.rejects(adapter.save(old.ticket,{status:'new',nextContactOn:{toString(){coercions++;return '2026-11-20'}}}),{code:'INVALID_UPDATE'});
+ check(coercions===0&&f.mutations.length===0,'nonprimitive date rejected without coercion');
+ await assert.rejects(adapter.save(old.ticket,Object.create({status:'new',nextContactOn:null})),{code:'INVALID_UPDATE'});
+ check(f.mutations.length===0,'inherited update intent rejected');adapter.close();
+}
+for(const stage of ['status','date','ownKeys','descriptor'])for(const action of ['select','revoke','close','logout','account']){
+ const {f,adapter,select}=fixture();select();const old=await adapter.detail(a);let triggered=false;
+ const retire=()=>{if(triggered)return;triggered=true;if(action==='select')select();else if(action==='revoke')adapter.revoke();else if(action==='close')adapter.close();else {if(action==='account'){f.user=b;f.token='fictional-B'}f.authEvent(action==='account'?'SIGNED_IN':'SIGNED_OUT')}};
+ let changes={status:'in_progress',nextContactOn:null};
+ if(stage==='status')Object.defineProperty(changes,'status',{enumerable:true,get(){retire();return 'in_progress'}});
+ if(stage==='date')Object.defineProperty(changes,'nextContactOn',{enumerable:true,get(){retire();return null}});
+ if(stage==='ownKeys')changes=new Proxy(changes,{ownKeys(target){retire();return Reflect.ownKeys(target)}});
+ if(stage==='descriptor')changes=new Proxy(changes,{getOwnPropertyDescriptor(target,key){retire();return Reflect.getOwnPropertyDescriptor(target,key)}});
+ await assert.rejects(adapter.save(old.ticket,changes));check(triggered&&f.mutations.length===0,stage+' '+action+' retires old intent before mutation');adapter.close();
+}
+for(const stage of ['status','date','ownKeys','descriptor']){
+ const {f,adapter,select}=fixture();select();const old=await adapter.detail(a);let triggered=false,nested;
+ const begin=()=>{if(triggered)return;triggered=true;nested=adapter.save(old.ticket,{status:'needs_contact',nextContactOn:'2026-11-21'})};
+ let changes={status:'completed',nextContactOn:null};
+ if(stage==='status')Object.defineProperty(changes,'status',{enumerable:true,get(){begin();return 'completed'}});
+ if(stage==='date')Object.defineProperty(changes,'nextContactOn',{enumerable:true,get(){begin();return null}});
+ if(stage==='ownKeys')changes=new Proxy(changes,{ownKeys(target){begin();return Reflect.ownKeys(target)}});
+ if(stage==='descriptor')changes=new Proxy(changes,{getOwnPropertyDescriptor(target,key){begin();return Reflect.getOwnPropertyDescriptor(target,key)}});
+ await assert.rejects(adapter.save(old.ticket,changes),{code:'STALE_CONTROL'});await nested;
+ check(f.mutations.length===1&&f.mutations[0].status==='needs_contact'&&f.mutations[0].next_contact_on==='2026-11-21',stage+' cannot override nested legitimate save');check(adapter.snapshot().state==='detail','nested save remains usable');adapter.close();
+}
+{
+ const {f,adapter,select}=fixture();select();const old=await adapter.detail(a);
+ const changes={get status(){f.user=b;f.token='fictional-new-account';return 'completed'},nextContactOn:null};
+ await assert.rejects(adapter.save(old.ticket,changes));check(f.mutations.length===0,'silent account change in getter cannot reuse old principal');adapter.close();
 }
 console.log(JSON.stringify({passed:count,failed:0}));

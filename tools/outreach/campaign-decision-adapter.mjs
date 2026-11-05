@@ -3,6 +3,7 @@ const UUID=/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 const id=x=>typeof x==='string'&&UUID.test(x);
 const statuses=new Set(['new','needs_contact','attempted','connected','in_progress','completed','declined']);
 const failure=code=>Object.assign(new Error(code),{code});
+const denied=response=>['42501','PGRST301','PGRST302','PGRST303'].includes(response?.error?.code)||[401,403].includes(response?.status)||[401,403].includes(response?.error?.status);
 const freeze=x=>{if(x&&typeof x==='object'){Object.values(x).forEach(freeze);Object.freeze(x)}return x};
 const text=x=>typeof x==='string'&&x.length<=500?x:null;
 function project(row,detail=false){
@@ -42,13 +43,14 @@ export function createCampaignDecisionAdapter({auth,workspace,eventTarget,getAll
  const call=async(action,payload,g,s,principal)=>{
   await verify(g,s,principal);guard(g,s);
   const controller=new AbortController();pending.add(controller);let response;
-  try{let request=client.rpc('campaign_decision_foundation',{p_action:action,p_org:s.organizationId,p_campaign:s.campaignId,p_payload:payload});if(typeof request?.abortSignal==='function')request=request.abortSignal(controller.signal);response=await request}finally{pending.delete(controller)}
-  const denied=['42501','PGRST301','PGRST302','PGRST303'].includes(response?.error?.code)||[401,403].includes(response?.status)||[401,403].includes(response?.error?.status);
+  const retireDenial=response=>{if(denied(response)&&!closed&&scope?.organizationId===s.organizationId&&scope?.campaignId===s.campaignId&&activePrincipal?.id===principal.id&&activePrincipal?.token===principal.token)invalidate('Access is no longer available.')};
+  try{let request=client.rpc('campaign_decision_foundation',{p_action:action,p_org:s.organizationId,p_campaign:s.campaignId,p_payload:payload});if(typeof request?.abortSignal==='function')request=request.abortSignal(controller.signal);response=await request}catch(error){retireDenial({error});if(denied({error}))throw failure('DENIED');throw error}finally{pending.delete(controller)}
+  const isDenied=denied(response);
   // A late denial still retires the current same-principal/campaign workspace.
   // Navigation generation must not discard authoritative revocation evidence.
-  if(denied&&!closed&&scope?.organizationId===s.organizationId&&scope?.campaignId===s.campaignId&&activePrincipal?.id===principal.id&&activePrincipal?.token===principal.token)invalidate('Access is no longer available.');
+  retireDenial(response);
   guard(g,s);
-  if(response?.error||denied){const code=response.error?.code;throw failure(denied?'DENIED':code==='40001'?'CONFLICT':code==='PGRST202'?'NOT_INSTALLED':'UNAVAILABLE')}
+  if(response?.error||isDenied){const code=response.error?.code;throw failure(isDenied?'DENIED':code==='40001'?'CONFLICT':code==='PGRST202'?'NOT_INSTALLED':'UNAVAILABLE')}
   await verify(g,s,principal);guard(g,s);return response?.data;
  };
  const context=async(g,s,p)=>{
@@ -77,15 +79,21 @@ export function createCampaignDecisionAdapter({auth,workspace,eventTarget,getAll
   finally{if(g===generation)busy=false}
  };
  const save=async(ticket,changes)=>{
-  const current=snapshot;
+  const current=snapshot,s=scope,g=generation,p=principals.get(ticket);
   if(closed||busy||!scope||current?.state!=='detail'||!current.canSave||ticket!==current.ticket||ticket.generation!==generation||ticket.registrationId!==current.record.registrationId)throw failure('STALE_CONTROL');
-  if(!changes||Object.keys(changes).some(k=>!['status','nextContactOn'].includes(k))||!statuses.has(changes.status)||!(changes.nextContactOn===null||/^\d{4}-\d{2}-\d{2}$/.test(changes.nextContactOn)))throw failure('INVALID_UPDATE');
-  const s=scope,g=generation,p=principals.get(ticket);busy=true;emit({state:'saving'});
+  if(!changes||typeof changes!=='object'||Array.isArray(changes)||!Object.hasOwn(changes,'status')||!Object.hasOwn(changes,'nextContactOn')||Object.keys(changes).some(k=>!['status','nextContactOn'].includes(k)))throw failure('INVALID_UPDATE');
+  // Capture and validate one intent before any asynchronous authorization work.
+  const status=changes.status,nextContactOn=changes.nextContactOn;
+  if(!statuses.has(status)||!(nextContactOn===null||(typeof nextContactOn==='string'&&/^\d{4}-\d{2}-\d{2}$/.test(nextContactOn))))throw failure('INVALID_UPDATE');
+  // Caller getters/proxies may retire navigation or begin a different save.
+  guard(g,s);
+  if(closed||busy||snapshot!==current||scope!==s||generation!==g)throw failure('STALE_CONTROL');
+  busy=true;emit({state:'saving'});
   let submitted=false;
   try{
    await verify(g,s,p);if(!await context(g,s,p))throw failure('DENIED');guard(g,s);
    const requestId=newRequestId();if(!id(requestId))throw failure('INVALID_REQUEST_ID');
-   const payload={registration_id:current.record.registrationId,revision:current.record.revision,status:changes.status,next_contact_on:changes.nextContactOn,request_id:requestId};
+   const payload={registration_id:current.record.registrationId,revision:current.record.revision,status,next_contact_on:nextContactOn,request_id:requestId};
    // No automatic retry. A transport failure after this point has unknown commit state.
    submitted=true;const response=await call('followup_save',payload,g,s,p);
    if(response?.saved!==true||response.revision!==current.record.revision+1||typeof response.replayed!=='boolean')throw failure('INVALID_RESPONSE');
