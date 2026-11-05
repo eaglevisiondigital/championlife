@@ -93,4 +93,30 @@ for(const invalid of [{status:'completed',nextContactOn:'invalid'},{status:'inva
  await assert.rejects(adapter.save(old.ticket,Object.create({status:'new',nextContactOn:null})),{code:'INVALID_UPDATE'});
  check(f.mutations.length===0,'inherited update intent rejected');adapter.close();
 }
+for(const stage of ['status','date','ownKeys','descriptor'])for(const action of ['select','revoke','close','logout','account']){
+ const {f,adapter,select}=fixture();select();const old=await adapter.detail(a);let triggered=false;
+ const retire=()=>{if(triggered)return;triggered=true;if(action==='select')select();else if(action==='revoke')adapter.revoke();else if(action==='close')adapter.close();else {if(action==='account'){f.user=b;f.token='fictional-B'}f.authEvent(action==='account'?'SIGNED_IN':'SIGNED_OUT')}};
+ let changes={status:'in_progress',nextContactOn:null};
+ if(stage==='status')Object.defineProperty(changes,'status',{enumerable:true,get(){retire();return 'in_progress'}});
+ if(stage==='date')Object.defineProperty(changes,'nextContactOn',{enumerable:true,get(){retire();return null}});
+ if(stage==='ownKeys')changes=new Proxy(changes,{ownKeys(target){retire();return Reflect.ownKeys(target)}});
+ if(stage==='descriptor')changes=new Proxy(changes,{getOwnPropertyDescriptor(target,key){retire();return Reflect.getOwnPropertyDescriptor(target,key)}});
+ await assert.rejects(adapter.save(old.ticket,changes));check(triggered&&f.mutations.length===0,stage+' '+action+' retires old intent before mutation');adapter.close();
+}
+for(const stage of ['status','date','ownKeys','descriptor']){
+ const {f,adapter,select}=fixture();select();const old=await adapter.detail(a);let triggered=false,nested;
+ const begin=()=>{if(triggered)return;triggered=true;nested=adapter.save(old.ticket,{status:'needs_contact',nextContactOn:'2026-11-21'})};
+ let changes={status:'completed',nextContactOn:null};
+ if(stage==='status')Object.defineProperty(changes,'status',{enumerable:true,get(){begin();return 'completed'}});
+ if(stage==='date')Object.defineProperty(changes,'nextContactOn',{enumerable:true,get(){begin();return null}});
+ if(stage==='ownKeys')changes=new Proxy(changes,{ownKeys(target){begin();return Reflect.ownKeys(target)}});
+ if(stage==='descriptor')changes=new Proxy(changes,{getOwnPropertyDescriptor(target,key){begin();return Reflect.getOwnPropertyDescriptor(target,key)}});
+ await assert.rejects(adapter.save(old.ticket,changes),{code:'STALE_CONTROL'});await nested;
+ check(f.mutations.length===1&&f.mutations[0].status==='needs_contact'&&f.mutations[0].next_contact_on==='2026-11-21',stage+' cannot override nested legitimate save');check(adapter.snapshot().state==='detail','nested save remains usable');adapter.close();
+}
+{
+ const {f,adapter,select}=fixture();select();const old=await adapter.detail(a);
+ const changes={get status(){f.user=b;f.token='fictional-new-account';return 'completed'},nextContactOn:null};
+ await assert.rejects(adapter.save(old.ticket,changes));check(f.mutations.length===0,'silent account change in getter cannot reuse old principal');adapter.close();
+}
 console.log(JSON.stringify({passed:count,failed:0}));

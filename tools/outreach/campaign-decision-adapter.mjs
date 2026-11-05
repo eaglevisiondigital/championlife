@@ -79,13 +79,16 @@ export function createCampaignDecisionAdapter({auth,workspace,eventTarget,getAll
   finally{if(g===generation)busy=false}
  };
  const save=async(ticket,changes)=>{
-  const current=snapshot;
+  const current=snapshot,s=scope,g=generation,p=principals.get(ticket);
   if(closed||busy||!scope||current?.state!=='detail'||!current.canSave||ticket!==current.ticket||ticket.generation!==generation||ticket.registrationId!==current.record.registrationId)throw failure('STALE_CONTROL');
   if(!changes||typeof changes!=='object'||Array.isArray(changes)||!Object.hasOwn(changes,'status')||!Object.hasOwn(changes,'nextContactOn')||Object.keys(changes).some(k=>!['status','nextContactOn'].includes(k)))throw failure('INVALID_UPDATE');
   // Capture and validate one intent before any asynchronous authorization work.
   const status=changes.status,nextContactOn=changes.nextContactOn;
   if(!statuses.has(status)||!(nextContactOn===null||(typeof nextContactOn==='string'&&/^\d{4}-\d{2}-\d{2}$/.test(nextContactOn))))throw failure('INVALID_UPDATE');
-  const s=scope,g=generation,p=principals.get(ticket);busy=true;emit({state:'saving'});
+  // Caller getters/proxies may retire navigation or begin a different save.
+  guard(g,s);
+  if(closed||busy||snapshot!==current||scope!==s||generation!==g)throw failure('STALE_CONTROL');
+  busy=true;emit({state:'saving'});
   let submitted=false;
   try{
    await verify(g,s,p);if(!await context(g,s,p))throw failure('DENIED');guard(g,s);

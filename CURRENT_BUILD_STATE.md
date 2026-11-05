@@ -1,3 +1,7 @@
+## 2026-11-05 — Reentrant campaign control retirement
+
+Independent review found a second consumer-lifecycle fault after the first intent-binding draft: caller getters/proxies could retire selection while `save` captured the later navigation generation, allowing the old ticket to continue. Save now captures the original scope/generation/principal before caller operations and rechecks both that binding and the exact current snapshot/busy state before entering saving. Reentrant retirement submits zero writes; a separate legitimate nested save is preserved. This is a source-only adapter correction, not a database authorization bypass. Earlier published head and CI remain historical evidence; final-head review/CI are required independently.
+
 ## 2026-11-05 — Campaign follow-up intent binding
 
 Source-only successor to PR104 `1606a6897fff4c19723298ee6b9426f7d59e38e4`. The reusable adapter captures and validates own primitive status/date values once before asynchronous authorization. Caller mutations during verification cannot replace the originally submitted intent or audit values. Existing record/session tickets, current authorization, consent, revision CAS, UNKNOWN handling and all SQL remain unchanged. No canonical People task authority is inferred from campaign access. See docs/CAMPAIGN-DECISION-ADAPTER-20261102.md. Local fictional/native tests are not hosted acceptance; release remains NO-GO.
