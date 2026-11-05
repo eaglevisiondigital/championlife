@@ -3,6 +3,7 @@ const UUID=/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 const id=x=>typeof x==='string'&&UUID.test(x);
 const statuses=new Set(['new','needs_contact','attempted','connected','in_progress','completed','declined']);
 const failure=code=>Object.assign(new Error(code),{code});
+const denied=response=>['42501','PGRST301','PGRST302','PGRST303'].includes(response?.error?.code)||[401,403].includes(response?.status)||[401,403].includes(response?.error?.status);
 const freeze=x=>{if(x&&typeof x==='object'){Object.values(x).forEach(freeze);Object.freeze(x)}return x};
 const text=x=>typeof x==='string'&&x.length<=500?x:null;
 function project(row,detail=false){
@@ -42,13 +43,14 @@ export function createCampaignDecisionAdapter({auth,workspace,eventTarget,getAll
  const call=async(action,payload,g,s,principal)=>{
   await verify(g,s,principal);guard(g,s);
   const controller=new AbortController();pending.add(controller);let response;
-  try{let request=client.rpc('campaign_decision_foundation',{p_action:action,p_org:s.organizationId,p_campaign:s.campaignId,p_payload:payload});if(typeof request?.abortSignal==='function')request=request.abortSignal(controller.signal);response=await request}finally{pending.delete(controller)}
-  const denied=['42501','PGRST301','PGRST302','PGRST303'].includes(response?.error?.code)||[401,403].includes(response?.status)||[401,403].includes(response?.error?.status);
+  const retireDenial=response=>{if(denied(response)&&!closed&&scope?.organizationId===s.organizationId&&scope?.campaignId===s.campaignId&&activePrincipal?.id===principal.id&&activePrincipal?.token===principal.token)invalidate('Access is no longer available.')};
+  try{let request=client.rpc('campaign_decision_foundation',{p_action:action,p_org:s.organizationId,p_campaign:s.campaignId,p_payload:payload});if(typeof request?.abortSignal==='function')request=request.abortSignal(controller.signal);response=await request}catch(error){retireDenial({error});if(denied({error}))throw failure('DENIED');throw error}finally{pending.delete(controller)}
+  const isDenied=denied(response);
   // A late denial still retires the current same-principal/campaign workspace.
   // Navigation generation must not discard authoritative revocation evidence.
-  if(denied&&!closed&&scope?.organizationId===s.organizationId&&scope?.campaignId===s.campaignId&&activePrincipal?.id===principal.id&&activePrincipal?.token===principal.token)invalidate('Access is no longer available.');
+  retireDenial(response);
   guard(g,s);
-  if(response?.error||denied){const code=response.error?.code;throw failure(denied?'DENIED':code==='40001'?'CONFLICT':code==='PGRST202'?'NOT_INSTALLED':'UNAVAILABLE')}
+  if(response?.error||isDenied){const code=response.error?.code;throw failure(isDenied?'DENIED':code==='40001'?'CONFLICT':code==='PGRST202'?'NOT_INSTALLED':'UNAVAILABLE')}
   await verify(g,s,principal);guard(g,s);return response?.data;
  };
  const context=async(g,s,p)=>{

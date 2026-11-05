@@ -8,7 +8,7 @@ function fixture(){
  const client={supabaseUrl:'https://abcdefghijklmnopqrst.supabase.co',rest:{url:'https://abcdefghijklmnopqrst.supabase.co/rest/v1'},auth:{url:'https://abcdefghijklmnopqrst.supabase.co/auth/v1',getUser:async()=>({data:{user:{id:f.user,email_confirmed_at:'2026-01-01',is_anonymous:false}}}),onAuthStateChange:fn=>{f.authEvent=fn;return{data:{subscription:{unsubscribe(){}}}}}},rpc:async(name,p)=>{
   check(name==='campaign_decision_foundation','fixed RPC');
   if(p.p_action===f.hold){f.hold=null;await new Promise(resolve=>f.release=resolve)}
-  if(f.revoked)return{error:f.denial??{code:'42501'}};
+  if(f.revoked){if(f.throwDenial)throw Object.assign(new Error('Explicit fixture denial'),f.denial??{code:'42501'});return{error:f.denial??{code:'42501'}};}
   if(p.p_action==='context')return{data:{organization_id:org,campaign_id:campaign,scope:'assigned',capabilities:f.manage?['decisions.read','followup.manage']:['decisions.read']}};
   if(p.p_action==='list')return{data:{organization_id:org,campaign_id:campaign,page:p.p_payload.page,registrations:[row(a),row(b)]}};
   if(p.p_action==='detail')return{data:row(p.p_payload.registration_id)};
@@ -51,5 +51,11 @@ for(const event of ['storage','popstate','pagehide','pageshow','staff-access-den
 }
 for(const denial of [{code:'PGRST303'},{status:401},{status:403}]){
  const {f,adapter,select}=fixture();select();f.hold='detail';const pending=adapter.detail(a).catch(e=>e.code);await tick();await adapter.detail(b);f.denial=denial;f.revoked=true;f.release();await pending;check(adapter.snapshot().state==='unavailable','late alternate auth denial clears');adapter.close();
+}
+for(const denial of [{code:'42501'},{code:'PGRST301'},{code:'PGRST302'},{code:'PGRST303'},{status:401},{status:403}]){
+ const {f,adapter,select}=fixture();select();f.hold='detail';const pending=adapter.detail(a).catch(e=>e.code);await tick();await adapter.detail(b);const ticket=adapter.snapshot().ticket;f.denial=denial;f.throwDenial=true;f.revoked=true;f.release();await pending;check(adapter.snapshot().state==='unavailable','late rejected explicit denial clears '+JSON.stringify(denial));await assert.rejects(adapter.save(ticket,{status:'new',nextContactOn:null}));check(!f.mutations.length,'rejected denial retires saved ticket');adapter.close();
+}
+for(const oldAccount of [false,true]){
+ const {f,adapter,select}=fixture();select();f.hold='detail';const pending=adapter.detail(a).catch(e=>e.code);await tick();if(oldAccount){f.user=b;f.token='new-account-token';f.authEvent('SIGNED_IN');select()}await adapter.detail(b);f.throwDenial=true;f.denial={code:oldAccount?'42501':'NETWORK'};f.revoked=true;f.release();await pending;check(adapter.snapshot().state==='detail'&&adapter.snapshot().record.registrationId===b,oldAccount?'old-account rejection does not retire new authority':'ordinary late network error is not revocation');check(!f.mutations.length,'late non-current rejection performs no write');adapter.close();
 }
 console.log(JSON.stringify({passed:count,failed:0}));
