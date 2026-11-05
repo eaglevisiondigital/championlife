@@ -58,4 +58,39 @@ for(const denial of [{code:'42501'},{code:'PGRST301'},{code:'PGRST302'},{code:'P
 for(const oldAccount of [false,true]){
  const {f,adapter,select}=fixture();select();f.hold='detail';const pending=adapter.detail(a).catch(e=>e.code);await tick();if(oldAccount){f.user=b;f.token='new-account-token';f.authEvent('SIGNED_IN');select()}await adapter.detail(b);f.throwDenial=true;f.denial={code:oldAccount?'42501':'NETWORK'};f.revoked=true;f.release();await pending;check(adapter.snapshot().state==='detail'&&adapter.snapshot().record.registrationId===b,oldAccount?'old-account rejection does not retire new authority':'ordinary late network error is not revocation');check(!f.mutations.length,'late non-current rejection performs no write');adapter.close();
 }
+// The reviewed update is one immutable intent across asynchronous Auth/context checks.
+{
+ const {f,adapter,select}=fixture();select();const old=await adapter.detail(a);
+ const changes={status:'in_progress',nextContactOn:'2026-11-20'};
+ f.hold='context';const saving=adapter.save(old.ticket,changes);await tick();
+ changes.status='completed';changes.nextContactOn='2026-12-25';
+ f.release();await saving;
+ check(f.mutations.length===1,'pending intent submits once');
+ check(f.mutations[0].status==='in_progress'&&f.mutations[0].next_contact_on==='2026-11-20','pending intent remains bound to reviewed values');
+ adapter.close();
+}
+for(const later of [{status:'invalid',nextContactOn:'invalid'},{status:null,nextContactOn:null},{status:'declined',nextContactOn:'2027-01-01'}]){
+ const {f,adapter,select}=fixture();select();const old=await adapter.detail(a);
+ const changes={status:'needs_contact',nextContactOn:null};f.hold='context';
+ const saving=adapter.save(old.ticket,changes);await tick();Object.assign(changes,later);f.release();await saving;
+ check(f.mutations.length===1&&f.mutations[0].status==='needs_contact'&&f.mutations[0].next_contact_on===null,'late mutation cannot replace validated intent');adapter.close();
+}
+{
+ const {f,adapter,select}=fixture();select();const old=await adapter.detail(a);let statusReads=0,dateReads=0;
+ await adapter.save(old.ticket,{get status(){return ++statusReads===1?'in_progress':'completed'},get nextContactOn(){return ++dateReads===1?null:'2027-01-01'}});
+ check(statusReads===1&&dateReads===1,'capture caller fields once');check(f.mutations[0].status==='in_progress'&&f.mutations[0].next_contact_on===null,'validated accessor values are submitted');adapter.close();
+}
+for(const invalid of [{status:'completed',nextContactOn:'invalid'},{status:'invalid',nextContactOn:null},{status:'new'},null,[]]){
+ const {f,adapter,select}=fixture();select();const old=await adapter.detail(a);await assert.rejects(adapter.save(old.ticket,invalid),{code:'INVALID_UPDATE'});check(f.mutations.length===0,'invalid original intent has no mutation');adapter.close();
+}
+{
+ const {f,adapter,select}=fixture();select();const old=await adapter.detail(a);const changes={status:'in_progress',nextContactOn:null};f.hold='context';const pending=adapter.save(old.ticket,changes).catch(e=>e.code);await tick();changes.status='completed';f.authEvent('SIGNED_OUT');f.release();await pending;check(f.mutations.length===0,'snapshot does not bypass logout');adapter.close();
+}
+{
+ const {f,adapter,select}=fixture();select();const old=await adapter.detail(a);let coercions=0;
+ await assert.rejects(adapter.save(old.ticket,{status:'new',nextContactOn:{toString(){coercions++;return '2026-11-20'}}}),{code:'INVALID_UPDATE'});
+ check(coercions===0&&f.mutations.length===0,'nonprimitive date rejected without coercion');
+ await assert.rejects(adapter.save(old.ticket,Object.create({status:'new',nextContactOn:null})),{code:'INVALID_UPDATE'});
+ check(f.mutations.length===0,'inherited update intent rejected');adapter.close();
+}
 console.log(JSON.stringify({passed:count,failed:0}));

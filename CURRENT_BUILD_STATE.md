@@ -1,3 +1,7 @@
+## 2026-11-05 — Campaign follow-up intent binding
+
+Source-only successor to PR104 `1606a6897fff4c19723298ee6b9426f7d59e38e4`. The reusable adapter captures and validates own primitive status/date values once before asynchronous authorization. Caller mutations during verification cannot replace the originally submitted intent or audit values. Existing record/session tickets, current authorization, consent, revision CAS, UNKNOWN handling and all SQL remain unchanged. No canonical People task authority is inferred from campaign access. See docs/CAMPAIGN-DECISION-ADAPTER-20261102.md. Local fictional/native tests are not hosted acceptance; release remains NO-GO.
+
 ## 2026-11-05 — Assigned decision consumer rejected-denial correction
 
 Narrow source-only successor to PR82 d36afcffbcbce97307350841e59738cc49924d20. A delayed RPC rejection containing an explicit authorization denial could leave a newer same-session/campaign record visible because the resolved-response denial fence was skipped. Both denial transports now retire the same protected scope before generation checks. Current account/campaign isolation, uncertain Save behavior, immutable audit, revisions, contact prohibition and all SQL remain unchanged. Permanent unit and native-SQL Chromium/WebKit regressions reproduce the gap and enforce zero retained-control mutations. Public outputs remain unchanged; genuine Auth, managed-provider compatibility, assignment governance, independent recovery and release remain NO-GO.

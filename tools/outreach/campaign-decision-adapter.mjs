@@ -81,13 +81,16 @@ export function createCampaignDecisionAdapter({auth,workspace,eventTarget,getAll
  const save=async(ticket,changes)=>{
   const current=snapshot;
   if(closed||busy||!scope||current?.state!=='detail'||!current.canSave||ticket!==current.ticket||ticket.generation!==generation||ticket.registrationId!==current.record.registrationId)throw failure('STALE_CONTROL');
-  if(!changes||Object.keys(changes).some(k=>!['status','nextContactOn'].includes(k))||!statuses.has(changes.status)||!(changes.nextContactOn===null||/^\d{4}-\d{2}-\d{2}$/.test(changes.nextContactOn)))throw failure('INVALID_UPDATE');
+  if(!changes||typeof changes!=='object'||Array.isArray(changes)||!Object.hasOwn(changes,'status')||!Object.hasOwn(changes,'nextContactOn')||Object.keys(changes).some(k=>!['status','nextContactOn'].includes(k)))throw failure('INVALID_UPDATE');
+  // Capture and validate one intent before any asynchronous authorization work.
+  const status=changes.status,nextContactOn=changes.nextContactOn;
+  if(!statuses.has(status)||!(nextContactOn===null||(typeof nextContactOn==='string'&&/^\d{4}-\d{2}-\d{2}$/.test(nextContactOn))))throw failure('INVALID_UPDATE');
   const s=scope,g=generation,p=principals.get(ticket);busy=true;emit({state:'saving'});
   let submitted=false;
   try{
    await verify(g,s,p);if(!await context(g,s,p))throw failure('DENIED');guard(g,s);
    const requestId=newRequestId();if(!id(requestId))throw failure('INVALID_REQUEST_ID');
-   const payload={registration_id:current.record.registrationId,revision:current.record.revision,status:changes.status,next_contact_on:changes.nextContactOn,request_id:requestId};
+   const payload={registration_id:current.record.registrationId,revision:current.record.revision,status,next_contact_on:nextContactOn,request_id:requestId};
    // No automatic retry. A transport failure after this point has unknown commit state.
    submitted=true;const response=await call('followup_save',payload,g,s,p);
    if(response?.saved!==true||response.revision!==current.record.revision+1||typeof response.replayed!=='boolean')throw failure('INVALID_RESPONSE');
