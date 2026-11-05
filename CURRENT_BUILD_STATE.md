@@ -1,3 +1,7 @@
+## November 5 — reproducible Communications browser CI dependency
+
+Pinned Playwright1.62.1 in the existing test package and lockfile. A clean installation of parent e94e9a2 omitted the CLI used by session-browser-integrity, reproducing GitHub job126799719697 exit127 before tests. The correction preserves every existing dependency, test command, runtime, SQL and public asset; lifecycle scripts remain disabled. Exact-head CI must complete before CI acceptance. Provider activation and release remain NO-GO.
+
 ## November 2 — provider metadata and bounded owner choice
 
 Read-only Resend metadata confirms the existing authentication domain and current 50,000-monthly/10-domain limits; it does not establish a dedicated communications sender, legal account custody, actual billing or webhook capacity. Added a concise [owner-choice delta](tools/communications-policy/RESEND-OWNER-CHOICE-2026-11-02.md) with one-organization sender options, exact isolated host/custody gates, zero unapproved incremental cost and a proposed—not authorized—12-send ceiling. Accepted host, SQL, tests and disabled configuration remain byte-identical. Network Solutions receipt support remains unverified; no provider changes or test sends.
