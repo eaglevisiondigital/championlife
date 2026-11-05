@@ -1,3 +1,7 @@
+## November 5 — progression receipt data minimization (source only)
+
+The current-account progression snapshot must carry only receipt metadata, never private worksheet answer bodies. The guarded forward correction uses an explicit projection after the existing account/session/enrollment/revision transaction and does not broaden function permissions or RLS. Lesson 5–13 worksheet reload still returns legitimate answers directly to their verified owner. Same-owner overprojection was reproduced locally; no cross-account or hosted exposure is claimed. Existing trusted completion and external playback/retention gates remain unchanged.
+
 ## November 5 — device notes require current identity before writes
 
 A previously verified owner is insufficient to authorize a later device-note write. Lessons 5–13 now revalidate through the pinned shared Auth verifier and latest session, bind asynchronous results to owner/navigation/edit generations, and reject detached fields. Rejected or retired edits never write another namespace; stored legitimate notes and legacy unowned data are neither deleted nor reassigned. Browser storage remains device/profile readable and unencrypted. Auth callback, storage event and expiry cleanup remain, with explicit history-navigation retirement added. If an identity change emits no event, the next note operation detects it; this is not a claim of instantaneous detection of an unobservable provider change. Verification failures discard pending edits and clear the rendered field. No cloud/API mutation or completion permission is introduced.

@@ -11,7 +11,7 @@ async function denied(label,prepare=async()=>{},transform=x=>x){
 let base,p,o;
 try{
  await setupCompletion(db);
- if(process.env.WORKSHEET_EXTENSIONS==='1')for(const file of ['20261102193245_lesson_five_owned_worksheet.sql','20261102200549_lessons_six_to_eight_owned_worksheets.sql','20261102210907_lessons_nine_thirteen_owned_worksheets.sql'])await db.exec(readFileSync(new URL('../../supabase/migrations/'+file,import.meta.url),'utf8'));
+ if(process.env.WORKSHEET_EXTENSIONS==='1')for(const file of ['20261102193245_lesson_five_owned_worksheet.sql','20261102200549_lessons_six_to_eight_owned_worksheets.sql','20261102210907_lessons_nine_thirteen_owned_worksheets.sql','20261105194549_bound_progression_receipt_projection.sql'])await db.exec(readFileSync(new URL('../../supabase/migrations/'+file,import.meta.url),'utf8'));
  ok((await db.query('select count(*)::int n from private.lesson_observer_profiles')).rows[0].n===0,'migration seeds no observer authority');
  p=await fictionalProfile(db);o=await observation(db,p);base=await args(db,p,[o.id]);
  await denied('default-disabled observer');
