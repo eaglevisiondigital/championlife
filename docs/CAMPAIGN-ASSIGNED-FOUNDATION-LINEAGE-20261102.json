@@ -1,0 +1,67 @@
+{
+  "status": "source-only-unmounted-unapplied",
+  "base_pr": 72,
+  "base_sha": "7699d6cda6309e0d02e1d6058ca1406401a776bd",
+  "migration": "supabase/migrations/20261103035250_campaign_assigned_decision_foundation.sql",
+  "supabase_cli": "2.81.3",
+  "sources": [
+    {
+      "commit": "76c328c507460406218f4aff279d3ce3467c9710",
+      "path": "supabase/migrations/20261019004611_unified_outreach_staff_partner.sql",
+      "sha256": "418862e6e22a5c3280958253ade398a7f9e362f039c312a971d9d063e692749f",
+      "use": "Inspected historical source; broad migration not imported"
+    },
+    {
+      "commit": "76c328c507460406218f4aff279d3ce3467c9710",
+      "path": "supabase/migrations/20261019004612_unified_outreach_workflow_foundation.sql",
+      "sha256": "3ba064f7900624ca32faa95befa1d1de702ce3e428cc74131aac737581bff0f2",
+      "use": "Inspected historical source; broad migration not imported"
+    },
+    {
+      "commit": "76c328c507460406218f4aff279d3ce3467c9710",
+      "path": "supabase/migrations/20261019004613_unified_outreach_operations.sql",
+      "sha256": "e6ebf423e395f65cac1d0e60913c6877c78bfdbbd193b714e7d9d56dc870ddfb",
+      "use": "Inspected historical source; broad migration not imported"
+    },
+    {
+      "commit": "76c328c507460406218f4aff279d3ce3467c9710",
+      "path": "supabase/migrations/20261019004614_unified_outreach_security.sql",
+      "sha256": "a361cff97ec94cad6994d23529d89990f71d772dc2341caa64f63673f9d92030",
+      "use": "Inspected historical source; broad migration not imported"
+    },
+    {
+      "commit": "8afd64099cf6d323657d1c5a284e5b5af390af3b",
+      "path": "supabase/migrations/20261029134650_huntsville_decisions_followup_acceptance.sql",
+      "sha256": "fb6a567d5c5a27bed986ff57c0b0d14484948314659962386eabd53d661711c1",
+      "use": "Narrow concepts extracted; no wholesale migration, contact route, admin writer or Huntsville hardcoding"
+    },
+    {
+      "commit": "8afd64099cf6d323657d1c5a284e5b5af390af3b",
+      "path": "supabase/migrations/20261029191508_huntsville_assigned_access.sql",
+      "sha256": "0222509cb50dd485e894fb6486087bc83aed89616562f83c1bad0c2b1d2370df",
+      "use": "Narrow concepts extracted; no wholesale migration, contact route, admin writer or Huntsville hardcoding"
+    },
+    {
+      "commit": "4d4344542135994384eaa96752eb5f73b4ba6087",
+      "path": "supabase/migrations/20261101154618_partner_assigned_metadata_boundary.sql",
+      "sha256": "55c3cc4e583364587e81fd7bd72ba8e68315d4313253f8967af7faf427e92260",
+      "use": "Current verified user/session locking pattern; no Partner host role, authority or ACL imported"
+    },
+    {
+      "commit": "4d4344542135994384eaa96752eb5f73b4ba6087",
+      "path": "tools/partner-platform/assigned-backend.native.mjs",
+      "sha256": "187d957c9d63fefae65582087dc1f710a80b47176cbc15a85b3ef50dd743dd5d",
+      "use": "Current verified user/session locking pattern; no Partner host role, authority or ACL imported"
+    }
+  ],
+  "excluded": [
+    "historical broad authorization fallback",
+    "new People or Auth subsystem",
+    "email/name inference",
+    "staff learner summary",
+    "adult/guardian contact provenance",
+    "real grants or source mapping seeds",
+    "PR61 edits",
+    "hosted writes or release"
+  ]
+}
