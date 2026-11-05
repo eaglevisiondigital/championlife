@@ -7,21 +7,28 @@
   const status = document.querySelector('[data-grip-notes-status]');
   const signin = document.querySelector('[data-grip-notes-signin]');
   const auth = window.ChampionLifeAuth;
+  const client = auth?.client, clientAuth = client?.auth;
+  const verifier = auth?.getVerifiedUser, sessionReader = auth?.getSession;
+  const pinned = () => window.ChampionLifeAuth === auth && auth?.client === client &&
+    client?.auth === clientAuth && auth?.getVerifiedUser === verifier && auth?.getSession === sessionReader;
   const course = 'getting-a-grip-on-the-basics';
   const key = id => `championlife-grip-notes-v1:${id}:${course}:lesson:${lesson}`;
-  let owner = null, generation = 0, expiresAt = 0, expiryTimer, active = true;
+  let owner = null, generation = 0, writeGeneration = 0, expiresAt = 0, expiryTimer, active = true;
 
   function clear() {
-    generation++; clearTimeout(expiryTimer); owner = null; expiresAt = 0;
+    generation++; writeGeneration++; clearTimeout(expiryTimer); owner = null; expiresAt = 0;
     // Clear live and default values so browser history cannot resurrect an unowned value.
     field.value = ''; field.defaultValue = ''; field.disabled = true;
     if (status) status.textContent = 'Sign in to view your private notes on this device.';
     if (signin) signin.hidden = false;
   }
-  function current(stamp) { return active && stamp === generation; }
+  function current(stamp) {
+    if (!pinned() || !field.isConnected) { clear(); return false; }
+    return active && stamp === generation;
+  }
   async function restore() {
     clear(); const stamp = generation;
-    if (!active || !auth?.getVerifiedUser || lesson < 5 || lesson > 13) return;
+    if (!active || !pinned() || !verifier || !sessionReader || lesson < 5 || lesson > 13) return;
     try {
       const user = await auth.getVerifiedUser();
       if (!current(stamp) || !user?.id || !user.email_confirmed_at || user.is_anonymous) return;
@@ -40,15 +47,28 @@
       expiryTimer = setTimeout(restore, Math.min(2147483647, expiresAt - Date.now()));
     } catch (_) { if (current(stamp)) clear(); }
   }
-  function save() {
-    if (!active || !owner || field.disabled || expiresAt <= Date.now()) { clear(); return; }
-    // Synchronous write under the captured verified owner: there is no deferred write to retarget.
+  async function save() {
+    if (!active || !pinned() || !field.isConnected || !owner || field.disabled || expiresAt <= Date.now()) { clear(); return; }
+    const stamp = generation, write = ++writeGeneration, capturedOwner = owner, notes = field.value;
+    const pending = () => current(stamp) && write === writeGeneration && owner === capturedOwner;
+    if (status) status.textContent = 'Verifying your account before saving these device notes…';
     try {
-      localStorage.setItem(key(owner.id), JSON.stringify({owner:owner.id, course, lesson, notes:field.value, savedAt:new Date().toISOString()}));
-      if (status) status.textContent = `Saved on this device for ${owner.email}. These notes do not sync to the cloud.`;
-    } catch (_) {
-      if (status) status.textContent = 'Device storage is unavailable. These notes are not saved; copy them privately before leaving this page.';
-    }
+      // Auth callbacks can be missed. Never persist under a cached owner alone.
+      // The captured text is not stored until the current verified identity and
+      // latest session agree; newer edits and navigation retire older writes.
+      const user = await verifier.call(auth);
+      if (!pending()) return;
+      if (user?.id !== capturedOwner.id || !user.email_confirmed_at || user.is_anonymous) throw Error('Identity changed');
+      const session = await sessionReader.call(auth);
+      if (!pending()) return;
+      if (session?.user?.id !== capturedOwner.id || !(session.expires_at * 1000 > Date.now()) || expiresAt <= Date.now()) throw Error('Session changed');
+      try {
+        localStorage.setItem(key(capturedOwner.id), JSON.stringify({owner:capturedOwner.id, course, lesson, notes, savedAt:new Date().toISOString()}));
+        if (status) status.textContent = `Saved on this device for ${capturedOwner.email}. These notes do not sync to the cloud.`;
+      } catch (_) {
+        if (status) status.textContent = 'Device storage is unavailable. These notes are not saved; copy them privately before leaving this page.';
+      }
+    } catch (_) { if (pending()) clear(); }
   }
   field.addEventListener('input', save);
   field.addEventListener('change', save);
@@ -56,6 +76,7 @@
   window.addEventListener('pagehide', () => { active = false; clear(); });
   window.addEventListener('pageshow', () => { active = true; restore(); });
   window.addEventListener('champion-auth-invalid', clear);
+  window.addEventListener('popstate', clear);
   document.addEventListener('visibilitychange', () => { active = !document.hidden; if (active) restore(); else clear(); });
   window.addEventListener('storage', event => {
     if (event.key === null || event.key?.startsWith('sb-') || (owner && event.key === key(owner.id))) { clear(); setTimeout(restore, 0); }
