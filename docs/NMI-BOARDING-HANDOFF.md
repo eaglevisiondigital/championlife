@@ -31,3 +31,15 @@ Successful fictional review reaches the actual hash-checked PR78 source at `b59e
 35 additional integration tests cover Main/Outreach success through the disabled gateway, stale digest, source/gateway drift, unused-slot expiry/revocation, selected receipt/pilot mismatch, malformed approval, UNKNOWN, caller configuration/source/receipt injection and snapshot isolation. Existing CI static-contract selection: **699 PASS**; readiness self-test: **11 PASS**. No SQL or runtime source changed. Native PostgreSQL was not restarted on the Mac because its environment remains blocked; prior exact-base CI evidence is retained, and the unchanged native CI jobs remain required for a published successor. New-head remote CI and independent review are pending.
 
 Actual merchant evidence remains **0/4 independently provider-verified**. GiveHub, recurring, PR59, PR78 and hosted systems are unchanged. No browser validation, real provider acceptance, production installation or release approval is claimed.
+
+## Global disabled-route readiness correction — November 5
+
+The existing overall boarding checklist now holds a route when its MID alias does
+not identify an existing slot or when that slot belongs to a different organization,
+even while the route is disabled. Previously these conditions were checked for
+enabled routes and selected pilots but could incorrectly leave the overall checklist
+`READY_FOR_REVIEW`. They remain route-specific blockers: an independently valid
+one-route pilot review does not acquire an all-four boarding requirement. No route
+is enabled, no execution source changes, and reviewability remains distinct from
+genuine merchant verification or activation approval. Permanent tests exercise both
+defects across all five routes and preserve positive disabled/pilot behavior.
