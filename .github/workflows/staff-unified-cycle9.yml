@@ -1,0 +1,95 @@
+name: Unified staff composition acceptance
+on:
+  pull_request:
+    paths:
+      - 'assets/js/**'
+      - 'assets/css/**'
+      - 'staff-*.html'
+      - 'tools/staff-cycle9/**'
+      - 'tools/staff-cycle9-integrity/**'
+      - 'tools/staff-cycle9-security/**'
+      - 'tools/site-build/**'
+      - '.github/workflows/staff-unified-cycle9.yml'
+permissions:
+  contents: read
+concurrency:
+  group: staff-unified-cycle9-${{ github.event.pull_request.number }}
+  cancel-in-progress: false
+jobs:
+  source-integrity:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: node tools/staff-cycle9/source.mjs
+      - run: node --test tools/staff-cycle9-integrity/integrity.test.mjs tools/staff-cycle9-integrity/independent.test.mjs
+      - run: node tools/staff-cycle9-integrity/integrity.mjs
+      - run: git diff --check
+  security:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        browser: [chromium, webkit]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm ci --ignore-scripts --prefix tools/backend-tests
+      - run: tools/backend-tests/node_modules/.bin/playwright install --with-deps chromium webkit
+      - name: Verify exact accepted SDK artifact
+        run: |
+          curl --fail --silent --show-error --location 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.118.0' --output "$RUNNER_TEMP/supabase-sdk.js"
+          echo "bee24fc29228ed5a370f76a2ba1ca3c399549edad2fef23453c80148856a49af  $RUNNER_TEMP/supabase-sdk.js" | sha256sum --check
+          echo "SUPABASE_SDK_PATH=$RUNNER_TEMP/supabase-sdk.js" >> "$GITHUB_ENV"
+      - run: node tools/staff-cycle9-security/journey.browser.mjs
+        env:
+          SOURCE_ROOT: ${{ github.workspace }}
+          EVIDENCE_DIR: ${{ runner.temp }}/cycle9-security
+          TEST_BROWSER: ${{ matrix.browser }}
+      - run: node tools/staff-cycle9-security/direct-response.browser.mjs
+        env:
+          SOURCE_ROOT: ${{ github.workspace }}
+          TEST_BROWSER: ${{ matrix.browser }}
+      - run: node tools/staff-cycle9-security/forms-retirement.browser.mjs
+        env:
+          SOURCE_ROOT: ${{ github.workspace }}
+          TEST_BROWSER: ${{ matrix.browser }}
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: staff-cycle9-security-${{ matrix.browser }}
+          path: ${{ runner.temp }}/cycle9-security
+          retention-days: 7
+      - run: git diff --check
+  operational-journey:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm ci --ignore-scripts --prefix tools/backend-tests
+      - run: tools/backend-tests/node_modules/.bin/playwright install --with-deps chromium webkit
+      - name: Verify exact accepted SDK artifact
+        run: |
+          curl --fail --silent --show-error --location 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.118.0' --output "$RUNNER_TEMP/supabase-sdk.js"
+          echo "bee24fc29228ed5a370f76a2ba1ca3c399549edad2fef23453c80148856a49af  $RUNNER_TEMP/supabase-sdk.js" | sha256sum --check
+          echo "SUPABASE_SDK_PATH=$RUNNER_TEMP/supabase-sdk.js" >> "$GITHUB_ENV"
+      - run: node tools/staff-cycle9/journey.browser.mjs
+      - run: git diff --check

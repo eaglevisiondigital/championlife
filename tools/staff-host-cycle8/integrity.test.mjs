@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {verifyHostOverrides,current,checkpointReader,original,existing,additions,pinnedHelpers} from './overrides.mjs';
+import {verifyHostOverrides,current,checkpointReader,original,existing,additions,pinnedHelpers} from '../staff-cycle9-integrity/historical.mjs';
 const bytes=current('tools/staff-host-cycle8/overrides.json');
 test('reviewed successor binds current overrides before historical comparisons',()=>{verifyHostOverrides();const read=checkpointReader();for(const path of existing)assert.deepEqual(read(path),original(path));assert.deepEqual(read('assets/js/champion-life-auth.js'),current('assets/js/champion-life-auth.js'))});
 for(const path of [...existing,...additions])test('changed reviewed bytes rejected: '+path,()=>assert.throws(()=>verifyHostOverrides(bytes,p=>p===path?Buffer.concat([current(p),Buffer.from('\n/* tamper */')]):current(p)),/Reviewed/));

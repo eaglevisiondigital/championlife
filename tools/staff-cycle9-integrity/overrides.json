@@ -1,0 +1,62 @@
+{
+  "base": "e75fdf884e6880f69920521e74ff7d3a82c3397f",
+  "existing": {
+    "assets/js/outreach-people.js": {
+      "reviewedSHA256": "7c95613bcd7e08d213162f9844cc33d50d16bb97adb3b6295bc3e86eb4d98f3f",
+      "originalSHA256": "942e20ce113bac4b041fd510d32f302b763c7b1111f1e818ba10d555a8252200"
+    },
+    "assets/js/outreach-registration-staff.js": {
+      "reviewedSHA256": "665236df4f5eb52f25e4bcc5560a0e8fda4feae139b4f0b17265d10964ca4f2a",
+      "originalSHA256": "415e1b5ba0778d8b9e427cc0746d297dae274a147b1712b9069b821d12a83d00"
+    },
+    "tools/site-build/public-files.json": {
+      "originalSHA256": "49918a7eebf77b625bd9140308eb6c49560a63db871f2652f9131f02b76332a5",
+      "reviewedSHA256": "59bdc5eca9630f955ae83bdff0577ae0c4cf6f7413d96e5a447b40750477c10a"
+    }
+  },
+  "additions": {
+    "staff-forms.html": {
+      "reviewedSHA256": "fc4900e62ba06bf5e894d2fd0dae135f704ceb37fc23d4ea9a354c35bcc581db"
+    },
+    "staff-form-builder.html": {
+      "reviewedSHA256": "0f5587c2f1200f187c041bd72974888f0399b4e9dc7882b793561edee06202ee"
+    },
+    "assets/js/forms-model.js": {
+      "reviewedSHA256": "d3e7b7d02c1cea2641b72c2e0aea8d769ca4ed1e273e374082e8a5e29b6031d9"
+    },
+    "assets/js/forms-renderer.js": {
+      "reviewedSHA256": "cc845ebcf3e52338074632e283050a23058b85d781e692c1ed9f57fa27de1bbb"
+    },
+    "assets/js/forms-context.js": {
+      "reviewedSHA256": "09596fdd93fd6d01dee08cf974ed947f224795cd9075f76ccb0e6f23a7043075"
+    },
+    "assets/js/forms-admin.js": {
+      "reviewedSHA256": "b549720ee40e5a7031287e82fe130d79b5f6ada2fd45690547ad10d00636a010"
+    },
+    "assets/css/forms.css": {
+      "reviewedSHA256": "d51179feca384acca12f1c46df791744d9ce064eadf461b71e33bca27f1cd3c5"
+    },
+    "staff-events.html": {
+      "reviewedSHA256": "9a8bffc949d78e6fa62a55b5a78deceb644d3ef607975cf7a2c7b31f382a1b3b"
+    },
+    "assets/js/events-common.js": {
+      "reviewedSHA256": "e928120eca0a165d023bcbec818868ce1d1d8a86c4b241ebb67f2dc8a0b0c481"
+    },
+    "assets/js/staff-events.js": {
+      "reviewedSHA256": "e987092934d12c2a8b368c8d3a642040f6c06b99c70f7da52285cdbd836ef3d1"
+    },
+    "assets/css/events.css": {
+      "reviewedSHA256": "77c10ba67bc65b9a1168640e25f25ce75161ef02dd97256520a49fe1ead6c1e2"
+    },
+    "staff-dream-team-manual.html": {
+      "reviewedSHA256": "e3c5750e52cb9c9f5cd6616ef2309b68ce497d6f086fda3855d5c490dab7248f"
+    },
+    "assets/js/dream-team-manual.js": {
+      "reviewedSHA256": "56bfb30006406c92534ca5e0552d5eff0bea20b5b723abd4fd490f08f6cf9574"
+    }
+  },
+  "provenance": {
+    "tools/staff-cycle9/source.mjs": "1e7632ba192e63cb3e31c447cdb5f6b1b29b54477b657b4fe61920b6fc1eab59",
+    "tools/staff-cycle9/sources.json": "cf22273bd02ba3dcb0d5af8c7ba0a0a99aab43a7dc9a0512029040843a54399d"
+  }
+}
