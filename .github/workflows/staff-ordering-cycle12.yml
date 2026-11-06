@@ -1,0 +1,50 @@
+name: Bounded historical Forms request ordering
+on:
+  pull_request:
+    paths:
+      - 'tools/staff-cycle12/**'
+      - '.github/workflows/staff-ordering-cycle12.yml'
+permissions:
+  contents: read
+concurrency:
+  group: staff-ordering-cycle12-${{ github.event.pull_request.number }}
+  cancel-in-progress: false
+jobs:
+  bounded-ordering:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: node tools/staff-cycle12/verify.mjs
+      - run: node --test tools/staff-cycle12/gate.test.mjs
+      - run: npm ci --ignore-scripts --prefix tools/backend-tests
+      - name: Install locked WebKit and Linux dependencies
+        timeout-minutes: 18
+        run: tools/backend-tests/node_modules/.bin/playwright install --with-deps webkit
+      - name: Verify exact accepted SDK
+        shell: bash
+        run: |
+          curl --fail --silent --show-error --location 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.118.0' --output "$RUNNER_TEMP/cycle12-sdk.js"
+          printf '%s  %s\n' 'bee24fc29228ed5a370f76a2ba1ca3c399549edad2fef23453c80148856a49af' "$RUNNER_TEMP/cycle12-sdk.js" | sha256sum --check
+          printf 'SUPABASE_SDK_PATH=%s\n' "$RUNNER_TEMP/cycle12-sdk.js" >> "$GITHUB_ENV"
+          printf 'HOST_SOURCE_ROOT=%s\n' "$GITHUB_WORKSPACE" >> "$GITHUB_ENV"
+          printf 'DIAGNOSTIC_DIR=%s\n' "$RUNNER_TEMP/staff-ordering-cycle12" >> "$GITHUB_ENV"
+      - name: Execute each predeclared ordering once with original strict assertions
+        timeout-minutes: 3
+        run: node tools/staff-cycle12/run.mjs
+      - name: Preserve every arm including strict failures
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: staff-ordering-cycle12-${{ github.event.pull_request.head.sha }}
+          path: ${{ runner.temp }}/staff-ordering-cycle12/
+          if-no-files-found: warn
+          retention-days: 7
+      - if: always()
+        run: git diff --check
