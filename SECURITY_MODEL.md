@@ -74,3 +74,12 @@ An independently authenticated provider receipt must also match the server profi
 ## 2026-11-02 — Preserve callback signature bytes
 
 The shared bounded raw-body reader uses fatal UTF-8 decoding with BOM preservation. A signature over an ordinary body must not authenticate a different request with a prepended BOM; malformed UTF-8 still rejects and the byte cap remains8192. No parsing, trimming or normalization occurs before the configured verifier. The empty production verifier registry and existing exact profile/attempt/context/UNKNOWN controls are unchanged. Synthetic HMAC tests validate this ingress boundary only; no vendor acceptance or sending is implied.
+
+
+## November 6, 2026 — Source-only preference replay correction
+
+The existing keyword callback ledger could acknowledge a reused organization/event ID with a different recipient or keyword as a successful duplicate. A guarded, uninstalled forward migration binds new records to exact normalized recipient and current source-context digests, channel, keyword and provider. Changed-payload replays and legacy unbound history reject instead of acknowledging or applying a second preference. Historical rows and original migrations remain intact.
+
+Existing service-only execution, RLS, function ownership/ACL, suppression reducer, consent semantics and canonical audit remain preserved. Direct external-keyword calls acquire the existing global/control and organization locks in the existing order and validate current context. No raw callback envelope or recipient is added to the comparison ledger. Digests are private comparison metadata, not anonymity or independent authority. Audit failures roll back the preference and receipt together.
+
+No provider, sender, endpoint, credentials, transport, new runtime or production SQL is installed or activated. UNKNOWN/no-retry, Network Solutions and Supabase Auth SMTP remain unchanged. Focused native, independent negative/concurrency checks and exact-head CI are recorded in the private November 6 audit. All public output must remain unchanged. Genuine provider acceptance, exact-target installation, cleanup and separate owner release approval remain gates; RELEASE NO-GO.

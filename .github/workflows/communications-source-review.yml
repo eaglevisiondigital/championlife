@@ -6,6 +6,7 @@ on:
       - 'tools/communications-policy/**'
       - 'supabase/functions/_shared/communications/resend*.mjs'
       - 'supabase/migrations/20261102193138_communications_resend_suppressed.sql'
+      - 'supabase/migrations/20261106071632_communications_preference_replay_binding.sql'
       - 'supabase/migrations/20261102154214_communications_resend_host_lookup.sql'
       - 'supabase/migrations/20261102150100_communications_resend_source.sql'
       - 'supabase/functions/_shared/communications/providers.mjs'
@@ -39,6 +40,8 @@ jobs:
       - run: TEST_POSTGRES_BIN="$(pg_config --bindir)" node tools/communications-policy/reconciliation.native.mjs
       - run: TEST_POSTGRES_BIN="$(pg_config --bindir)" node tools/communications-policy/resend.native.mjs
       - run: TEST_POSTGRES_BIN="$(pg_config --bindir)" node tools/communications-policy/resend-host.native.mjs
+      - run: TEST_POSTGRES_BIN="$(pg_config --bindir)" node tools/communications-policy/preference-replay.native.mjs
+      - run: TEST_POSTGRES_BIN="$(pg_config --bindir)" node tools/communications-policy/preference-independent.native.mjs
       - run: git diff --check
   session-browser-integrity:
     runs-on: ubuntu-latest
