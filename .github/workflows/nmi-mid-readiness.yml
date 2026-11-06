@@ -71,6 +71,10 @@ jobs:
       - run: tools/backend-tests/node_modules/.bin/playwright install --with-deps chromium webkit
       - name: Test actual unmounted giving client with intercepted fictional transport
         run: node tools/nmi/public-session.browser.mjs
+      - name: Verify HTTP denial retires receipts before response-body parsing
+        run: node tools/nmi/public-denial.browser.mjs
+      - name: Independently check denial classification and unchanged uncertainty
+        run: node tools/nmi/public-denial-independent.mjs
       - name: Verify imported source provenance and public exclusion
         run: |
           git fetch --no-tags --depth=1 origin 84b2d9ab398bb8046570019da26a5db67fe77467

@@ -18,9 +18,11 @@
   if(!unchanged())throw changed();
   if(session?.access_token)headers.Authorization='Bearer '+session.access_token;
   const r=await fetch(project+'/functions/v1/nmi-giving',{method:'POST',headers,body:JSON.stringify(payload),credentials:'omit',cache:'no-store',signal});
+  // Access denial retires the giving session even when its body is unreadable
+  // or never completes. Do not leave a prior receipt/control visible while parsing.
+  if([401,403].includes(r.status))throw changed();
   const value=await r.json();
   await verifyCurrent();
-  if([401,403].includes(r.status))throw changed();
   if(!r.ok)throw Error(value.status==='held'?'Giving is unavailable.':'We are confirming this result. Do not submit it again.');return value;
  }catch(error){if(!attached())throw changed();
   // Transport/JSON failures still cross an async boundary. Retire old-account
