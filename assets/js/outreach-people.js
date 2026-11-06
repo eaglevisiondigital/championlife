@@ -68,7 +68,7 @@
   };
   const verify=async token=>{if(!current(token))return false;const session=await auth.getSession();if(!current(token))return false;if(session?.user?.id!==actor){fail(401);return false}return true};
   hide.onclick=()=>{if(!current(sequence))return;sequence++;pending=false;output.replaceChildren();hide.hidden=true;show.disabled=false};
-  show.onclick=async()=>{
+  async function load(cursors=[]){
    if(pending||!current(sequence))return;pending=true;show.disabled=true;hide.hidden=false;const token=++sequence;
    const panel=el('section',null,{role:'region','aria-label':'Recent task history'});panel.append(el('p','Loading task history…'));output.replaceChildren(panel);
    try{
@@ -76,17 +76,21 @@
     // Bind the visible card back to its current canonical Person and organization.
     const bound=await request(()=>client.from('followup_tasks').select('id').eq('organization_id',targetOrg).eq('person_id',personId).eq('id',task.id).maybeSingle());
     if(!await verify(token))return;if(bound?.id!==task.id)throw Error();
-    const rows=await request(()=>client.from('followup_task_events').select('id,organization_id,task_id,occurred_at,action,before_status:before_state->>status,after_status:after_state->>status,before_due:before_state->>due_on,after_due:after_state->>due_on,before_revision:before_state->revision,after_revision:after_state->revision').eq('organization_id',targetOrg).eq('task_id',task.id).order('occurred_at',{ascending:false}).order('id',{ascending:false}).limit(51));
+    const rows=await request(()=>{let query=client.from('followup_task_events').select('id,organization_id,task_id,occurred_at,action,before_status:before_state->>status,after_status:after_state->>status,before_due:before_state->>due_on,after_due:after_state->>due_on,before_revision:before_state->revision,after_revision:after_state->revision').eq('organization_id',targetOrg).eq('task_id',task.id).order('occurred_at',{ascending:false}).order('id',{ascending:false});const cursor=cursors.at(-1);if(cursor)query=query.or('occurred_at.lt.'+cursor.occurred_at+',and(occurred_at.eq.'+cursor.occurred_at+',id.lt.'+cursor.id+')');return query.limit(51)});
     if(!await verify(token))return;await refreshPermissions();if(!await verify(token))return;if(!can('followup.read')){fail(403);return}
     const uuid=v=>typeof v==='string'&&/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(v);
     const date=v=>v===null||(typeof v==='string'&&/^\d{4}-\d{2}-\d{2}$/.test(v)&&Number.isFinite(Date.parse(v+'T00:00:00Z'))&&new Date(v+'T00:00:00Z').toISOString().slice(0,10)===v);
     const state=v=>['open','completed','canceled'].includes(v),seen=new Set();
+    // PostgreSQL timestamptz retains microseconds; Date alone would collapse distinct cursors.
+    const instant=v=>BigInt(Date.parse(v))*1000n+BigInt(((v.match(/\.(\d{1,6})/)?.[1]||'').padEnd(6,'0').slice(3))||'0');
+    const older=(a,b)=>instant(a.occurred_at)<instant(b.occurred_at)||(instant(a.occurred_at)===instant(b.occurred_at)&&a.id.toLowerCase()<b.id.toLowerCase());
+    let previous=cursors.at(-1);
     if(!Array.isArray(rows)||rows.length>51)throw Error();
     for(const r of rows){
-     if(!r||!uuid(r.id)||seen.has(r.id)||r.organization_id!==targetOrg||r.task_id!==task.id||typeof r.occurred_at!=='string'||!/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{1,6})?(?:Z|[+-]\d{2}:\d{2})$/.test(r.occurred_at)||!Number.isFinite(Date.parse(r.occurred_at))||!state(r.after_status)||!date(r.before_due)||!date(r.after_due)||!Number.isSafeInteger(r.after_revision)||r.after_revision<1)throw Error();
+     if(!r||!uuid(r.id)||seen.has(r.id.toLowerCase())||r.organization_id!==targetOrg||r.task_id!==task.id||typeof r.occurred_at!=='string'||!/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{1,6})?(?:Z|[+-]\d{2}:\d{2})$/.test(r.occurred_at)||!Number.isFinite(Date.parse(r.occurred_at))||!state(r.after_status)||!date(r.before_due)||!date(r.after_due)||!Number.isSafeInteger(r.after_revision)||r.after_revision<1)throw Error();
      if(r.action==='created'){if(r.before_status!==null||r.before_due!==null||r.before_revision!==null||r.after_revision!==1||r.after_status!=='open')throw Error()}
      else if(r.action!=='updated'||!state(r.before_status)||!Number.isSafeInteger(r.before_revision)||r.before_revision<1||r.after_revision!==r.before_revision+1)throw Error();
-     seen.add(r.id);
+     if(previous&&!older(r,previous))throw Error();previous=r;seen.add(r.id.toLowerCase());
     }
     const list=el('ol'),due=v=>v||'No due date';
     for(const r of rows.slice(0,50)){
@@ -95,11 +99,16 @@
      else{if(r.before_status!==r.after_status)parts.push('Status: '+r.before_status+' → '+r.after_status);if(r.before_due!==r.after_due)parts.push('Due date: '+due(r.before_due)+' → '+due(r.after_due));if(parts.length===2)parts.push('Task updated; status and due date unchanged.')}
      list.append(el('li',parts.join(' · ')));
     }
-    panel.replaceChildren(el('h5','Recent task history'),el('p',rows.length>50?'Latest 50 changes. Earlier history is not shown.':rows.length?'Most recent changes for this task.':'No task history is available.'),list);
+    panel.replaceChildren(el('h5','Recent task history'),el('p','History page '+(cursors.length+1)),el('p',rows.length?'Up to 50 changes per page. History reflects current access.':cursors.length?'No changes on this page. Return to newer history or refresh the latest history.':'No task history is available.'),list);
+    const navigation=(label,next)=>{const control=el('button',label,{type:'button',class:'staff-action'});control.onclick=()=>{if(pending||!current(token)||!panel.contains(control)||!root.contains(panel))return;load(next)};panel.append(control)};
+    navigation('Refresh latest history',[]);
+    if(cursors.length)navigation('Newer history',cursors.slice(0,-1));
+    if(rows.length>50){const last=rows[49];navigation('Older history',[...cursors,{occurred_at:last.occurred_at,id:last.id}])}
    }catch{
     if(await verify(token).catch(()=>false))panel.replaceChildren(el('p','Task history is unavailable. Hide it and try again.'));
    }finally{if(current(token)){pending=false;show.disabled=false}}
-  };
+  }
+  show.onclick=()=>load();
  }
  function addTaskActions(card,task,personId,g,taskCursors,taskStatus){
   const targetOrg=org,actor=user?.id,client=auth.client,clientAuth=client.auth,url=location.pathname+location.search;
