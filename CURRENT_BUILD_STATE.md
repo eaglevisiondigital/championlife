@@ -125,3 +125,12 @@ A delayed earlier `getUser()` result could overwrite the current People module u
 ## 2026-11-05 — Campaign-derived canonical task read boundary (uninstalled)
 
 A source-only empty-binding enforcement candidate adds dual current organization People/task AND exact campaign-record authority to existing canonical task and event reads. It exposes only a neutral read-only context; bound task writes and all producer/issuer paths stay disabled. No identity source, reviewer authority, adult verification producer, real binding, grant or hosted installation is authorized. Exact provenance and release gates: [boundary contract](docs/CAMPAIGN-PERSON-TASK-BOUNDARY-20261105.md). Local synthetic acceptance is distinct from genuine Auth/RLS and release authorization.
+
+
+## November 6, 2026 — Held audit plan and disposable intent experiment
+
+Source-only. `private.task_writer_plan` produces exact canonical before/after audit specifications under the existing five-revision, server-actor/session, dual-authority and consent checks. It performs no task/audit mutation and grants no API execution. The transaction identifier is diagnostic only; it is not request identity or commit proof. Existing bound-write denial and operational SQL remain unchanged.
+
+Permanent native tests demonstrate that a deferred fixture fence can be forced early using SET CONSTRAINTS, leaving later consent/expiry changes unchecked. A successful operational commit-time safeguard is therefore NOT established. The separate `task_intent_fixture` schema is disposable test infrastructure only: ordinary synthetic task/intent/receipt transactions, rollback, concurrent duplicate requests and discarded commit responses are exercised without an operational writer or registry. Foreign keys alone permit mismatched old-event correspondence; the independent tests preserve this counterexample. No receipt is accepted as terminal authority. UNKNOWN remains held without automatic retry.
+
+Author checks: 92 writer-plan and 104 intent; independent checks: 31 writer-plan and 21 intent. Publication CI is recorded separately in the private audit report. All 411 public files and PR #105 backend source must remain byte-identical. No hosted acceptance, real identity association, task issuance or release is authorized.

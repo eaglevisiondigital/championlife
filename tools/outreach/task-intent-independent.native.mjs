@@ -1,0 +1,34 @@
+import assert from 'node:assert/strict';
+import {readFileSync} from 'node:fs';
+import {randomUUID,createHash} from 'node:crypto';
+import {pathToFileURL,fileURLToPath} from 'node:url';
+const root=fileURLToPath(new URL('../../',import.meta.url));
+const {createCampaignTaskFixture}=await import(pathToFileURL(root+'/tools/outreach/campaign-task-fixture.mjs'));
+const {taskWriterOutcome}=await import(pathToFileURL(root+'/tools/outreach/task-writer-outcome.mjs'));
+const f=await createCampaignTaskFixture();let checks=0;const records=[];
+const eq=(a,b,m)=>{assert.deepEqual(a,b,m);checks++;records.push(m)};
+const deny=async(fn,code,m)=>{await assert.rejects(fn,e=>e.code===code,m);checks++;records.push(m)};
+try{
+ const sql=readFileSync(root+'/tools/outreach/task-intent-fixture.sql','utf8');await f.db.exec(sql);await f.setClaims(f.db,f.users.worker);
+ const before=await f.counts();
+ eq((await f.q("select bool_and(relrowsecurity) v from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname='task_intent_fixture' and c.relkind='r'")).rows[0].v,true,'fixture tables retain RLS');
+ eq((await f.q("select prosecdef from pg_proc where oid='task_intent_fixture.capture(uuid,uuid,integer,text,date)'::regprocedure")).rows[0].prosecdef,false,'capture is invoker, not a privilege bridge');
+ for(const table of ['intents','receipts'])await deny(()=>f.authenticatedQuery('worker','select * from task_intent_fixture.'+table),'42501','authenticated raw '+table+' unavailable');
+ for(const [rev,status,due] of [[0,'open',null],[1,null,null],[1,'open','infinity'],[1,'open','-infinity']])await deny(()=>f.q('select task_intent_fixture.capture($1,$2,$3,$4,$5)',[randomUUID(),f.ordinaryTaskId,rev,status,due]),'22023','malformed or unbounded fixture intent denied');
+ const id=randomUUID();const v=(await f.q('select task_intent_fixture.capture($1,$2,1,$3,null) v',[id,f.ordinaryTaskId,'completed'])).rows[0].v;
+ eq(v.state,'UNKNOWN','valid ordinary capture never terminal');eq(v.terminal_verified,false,'capture never certifies terminal');eq(v.can_commit,false,'capture never permits commit');
+ const boundEvent=(await f.q("select id from followup_task_events where task_id=$1 and action='created'",[f.taskId])).rows[0].id;
+ await f.q('begin');await f.q('insert into task_intent_fixture.receipts(intent_id,event_id) values($1,$2)',[id,boundEvent]);
+ const cross=(await f.q('select r.*,i.task_id intended_task,e.task_id event_task from task_intent_fixture.receipts r join task_intent_fixture.intents i using(intent_id) join followup_task_events e on e.id=r.event_id where r.intent_id=$1',[id])).rows[0];
+ eq(cross.intended_task,f.ordinaryTaskId,'ordinary intent remains exact task');eq(cross.event_task,f.taskId,'FK accepts unrelated bound-task creation event: operational correspondence NOT enforced');
+ eq(taskWriterOutcome(cross),{state:'UNKNOWN',automaticRetry:false},'cross-task server row grants no terminal authority');
+ const second=randomUUID();await f.q('insert into task_intent_fixture.intents(intent_id,actor_id,session_id,organization_id,person_id,task_id,expected_revision,intent_status) values($1,$2,$3,$4,$5,$6,1,$7)',[second,f.users.worker.id,f.users.other.sessionId,f.orgId,f.personId,f.ordinaryTaskId,'canceled']);
+ const mismatch=(await f.q('select i.actor_id,s.user_id session_actor from task_intent_fixture.intents i join auth.sessions s on s.id=i.session_id where intent_id=$1',[second])).rows[0];
+ eq(mismatch.actor_id,f.users.worker.id,'raw fixture owner can assert actor');eq(mismatch.session_actor,f.users.other.id,'separate FKs do not enforce actor/session equality');
+ eq(taskWriterOutcome(mismatch),{state:'UNKNOWN',automaticRetry:false},'raw forged fixture identity cannot become terminal output');
+ await deny(()=>f.q('insert into task_intent_fixture.receipts(intent_id,event_id) values($1,$2)',[second,boundEvent]),'23505','same event cannot satisfy a second fixture receipt');await f.q('rollback');
+ eq((await f.q('select count(*)::int n from task_intent_fixture.receipts')).rows[0].n,0,'adversarial receipts rolled back');
+ eq((await f.q('select count(*)::int n from task_intent_fixture.intents')).rows[0].n,1,'raw mismatch rolled back; only actual capture remains');
+ eq(await f.counts(),before,'all canonical task and event counts unchanged');
+ console.log(JSON.stringify({status:'PASS',checks,records,sourceSha256:createHash('sha256').update(sql).digest('hex'),operationalReceiptRegistry:false,terminalAuthority:false,hostedAcceptance:false},null,2));
+}finally{await f.close()}

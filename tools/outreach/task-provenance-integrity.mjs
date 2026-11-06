@@ -11,6 +11,11 @@ const old=p=>git('show',baseline+':'+p);
 const sha=b=>createHash('sha256').update(b).digest('hex');
 const allow=new Set([
  'CURRENT_BUILD_STATE.md','SECURITY_MODEL.md',
+ 'docs/TASK-INTENT-CONTRACT-20261106.md',
+ 'tools/outreach/task-writer-plan.sql','tools/outreach/task-writer-plan.native.mjs',
+ 'tools/outreach/task-writer-plan-independent.native.mjs',
+ 'tools/outreach/task-intent-fixture.sql','tools/outreach/task-intent-contract.native.mjs',
+ 'tools/outreach/task-intent-independent.native.mjs',
  'docs/TASK-WRITER-HELD-CONTRACT-20261105.md',
  'docs/CAMPAIGN-PROVENANCE-CONTRACT-20261105.md',
  'tools/outreach/task-writer-prepare.sql','tools/outreach/task-writer-outcome.mjs',
