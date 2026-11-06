@@ -58,6 +58,47 @@
    }finally{if(current()&&!submitted){pending=false;submit.disabled=false;title.disabled=false;due.disabled=false}}
   };
  }
+ function addTaskActions(card,task,personId,g,taskCursors){
+  const targetOrg=org,actor=user?.id,client=auth.client,clientAuth=client.auth,url=location.pathname+location.search;
+  const controls=el('div'),statusLabel=el('label','Status'),select=el('select'),dueLabel=el('label','Task due date'),due=el('input',null,{type:'date'});
+  for(const value of ['open','completed','canceled']){const option=el('option',value,{value});option.selected=task.status===value;select.append(option)}
+  due.value=task.due_on||'';statusLabel.append(select);dueLabel.append(due);
+  const saveStatus=el('button','Save task status',{type:'button',class:'staff-action'}),saveDue=el('button','Save due date',{type:'button',class:'staff-action'}),clearDue=el('button','Remove due date',{type:'button',class:'staff-action'});
+  controls.append(statusLabel,saveStatus,dueLabel,el('p','Change the date or choose Remove due date.'),saveDue,clearDue);card.append(controls);
+  let pending=false,retired=false;
+  const current=()=>{
+   if(!retired&&(window.ChampionLifeAuth!==auth||auth.client!==client||client.auth!==clientAuth)){retired=true;select.value='';due.value='';if(g===generation&&root.contains(card))card.replaceChildren(el('p','Task editor closed because the staff connection changed. Reload to verify access.'))}
+   return !retired&&g===generation&&org===targetOrg&&user?.id===actor&&url===location.pathname+location.search&&root.contains(card)&&(!window.StaffWorkspace||window.StaffWorkspace.active());
+  };
+  const review=message=>{
+   controls.replaceChildren(el('p',message),button('Refresh follow-up tasks',()=>{if(current())return detail(personId,taskCursors)}));
+   status.textContent='Task save needs review.';
+  };
+  async function save(field,removeDue=false){
+   if(pending||!current())return;
+   if(field==='due_on'&&!removeDue&&(!due.reportValidity()||(due.value&&!/^\d{4}-\d{2}-\d{2}$/.test(due.value)))){status.textContent='Enter a valid due date.';due.focus();return}
+   const value=field==='due_on'?(due.value||null):select.value;
+   if(field==='due_on'&&value===(task.due_on||null)){status.textContent='No task changes to save.';return}
+   const payload={[field]:value};pending=true;for(const control of[select,due,saveStatus,saveDue,clearDue])control.disabled=true;let submitted=false;
+   try{
+    await refreshPermissions();if(!current())return;
+    if(!can('followup.read')||!can('followup.manage')){fail(403);return}
+    const saved=await request(()=>{if(!current())throw Error();submitted=true;return client.from('followup_tasks').update(payload).eq('organization_id',targetOrg).eq('person_id',personId).eq('id',task.id).eq('revision',task.revision).select('id').maybeSingle()});
+    if(!current())return;
+    if(!saved){
+     await refreshPermissions();if(!current())return;if(!can('followup.read')||!can('followup.manage')){fail(403);return}
+     review('Task changed or access was removed. Refresh the tasks before making another change.');return;
+    }
+    if(saved.id!==task.id)throw Error();
+    await detail(personId,taskCursors);
+   }catch{
+    if(!current())return;
+    if(submitted)review('The save could not be confirmed. It may have succeeded. Refresh the tasks and check the current date and status before making another change.');
+    else status.textContent='Unable to verify access. Please try again.';
+   }finally{if(current()&&!submitted){pending=false;for(const control of[select,due,saveStatus,saveDue,clearDue])control.disabled=false}}
+  }
+  saveStatus.onclick=()=>save('status');saveDue.onclick=()=>save('due_on');clearDue.onclick=()=>{if(pending||!current())return;due.value='';return save('due_on',true)};
+ }
  async function detail(id,taskCursors=[]){
   const g=++generation;content.replaceChildren();status.textContent='Loading…';await refreshPermissions();if(g!==generation)return;
   const data=await people('detail',{person_id:id});if(g!==generation)return;status.textContent='';const p=data.person;
@@ -69,11 +110,7 @@
   await refreshPermissions();if(g!==generation)return;if(!can('followup.read')){fail(403);return}
   content.append(el('h3','Follow-up tasks'),el('p','Task page '+(taskCursors.length+1)),button('Refresh latest tasks',()=>detail(id)));if(can('followup.manage'))addTaskEditor(id,g);if(!tasks.length)content.append(el('p',taskCursors.length?'No tasks on this page. Return to newer tasks or refresh the latest tasks.':'No follow-up tasks.'));
   for(const task of tasks.slice(0,100)){const card=el('article');card.append(el('h4',task.title),el('p',task.status+' · '+(task.due_on||'No due date')));
-   if(can('followup.manage')){const label=el('label','Status'),select=el('select');for(const value of ['open','completed','canceled']){const option=el('option',value,{value});option.selected=task.status===value;select.append(option)}label.append(select);card.append(label,button('Save task status',async()=>{
-    await refreshPermissions();if(g!==generation)return;if(!can('followup.manage')){fail(403);return}
-    const saved=await request(()=>auth.client.from('followup_tasks').update({status:select.value}).eq('organization_id',org).eq('person_id',id).eq('id',task.id).eq('revision',task.revision).select('id').maybeSingle());
-    if(g!==generation)return;if(!saved){await refreshPermissions();status.textContent='Task changed or access was removed. Refresh before retrying.';content.replaceChildren();return}await detail(id,taskCursors);
-   }))}content.append(card);
+   if(can('followup.manage'))addTaskActions(card,task,id,g,taskCursors);content.append(card);
   }
   if(taskCursors.length)content.append(button('Newer tasks',()=>detail(id,taskCursors.slice(0,-1))));
   if(tasks.length>100){const last=tasks[99];

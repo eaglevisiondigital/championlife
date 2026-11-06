@@ -7,7 +7,7 @@ import {buildSite} from '../site-build/build.mjs';
 const root=fileURLToPath(new URL('../../',import.meta.url)),base='676abc58c3da3b082c1f95ef15c8c33c3aa91e33';
 const git=(...args)=>execFileSync('git',args,{cwd:root,maxBuffer:40*1024*1024});
 const old=p=>git('show',base+':'+p),sha=b=>createHash('sha256').update(b).digest('hex');
-const allow=new Set(['assets/js/outreach-people.js','tools/outreach/people-followup-pagination.browser.mjs','tools/outreach/people-followup-pagination-independent.browser.mjs','tools/outreach/people-followup-pagination-integrity.mjs','docs/PEOPLE-FOLLOWUP-PAGINATION-20261106.md','.github/workflows/outreach-summary-review.yml','CURRENT_BUILD_STATE.md','SECURITY_MODEL.md']);
+const allow=new Set(['assets/js/outreach-people.js','tools/outreach/people-followup-pagination.browser.mjs','tools/outreach/people-followup-pagination-independent.browser.mjs','tools/outreach/people-followup-pagination-integrity.mjs','docs/PEOPLE-FOLLOWUP-PAGINATION-20261106.md','docs/PEOPLE-FOLLOWUP-COMPOSITION-20261106.md','tools/outreach/people-followup-composition.browser.mjs','tools/outreach/people-followup-composition-independent.browser.mjs','.github/workflows/outreach-summary-review.yml','CURRENT_BUILD_STATE.md','SECURITY_MODEL.md']);
 const changed=git('diff','--name-only',base).toString().trim().split('\n').filter(Boolean);
 assert.ok(changed.every(p=>allow.has(p)),'unexpected source change');
 const paths=JSON.parse(fs.readFileSync(root+'tools/site-build/public-files.json'));
