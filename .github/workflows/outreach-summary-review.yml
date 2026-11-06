@@ -3,20 +3,150 @@ on:
   pull_request:
     paths:
       - 'tools/outreach/**'
+      - 'tools/partner-integration-cycle12/**'
+      - 'assets/js/outreach-registration-staff.js'
+      - 'assets/js/outreach-people.js'
       - '.github/workflows/outreach-summary-review.yml'
 permissions:
   contents: read
 jobs:
   summary:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    # Adds exact three-tree verification and the unchanged checkpoint guard.
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - run: npm ci --ignore-scripts --prefix tools/backend-tests
-      - run: node --test tools/outreach/shared-staff-backend.test.mjs tools/outreach/isolated-staff-summary-auth.test.mjs tools/outreach/campaign-summary.test.mjs tools/outreach/campaign-summary.review.test.mjs tools/outreach/campaign-summary-lifecycle.test.mjs tools/outreach/campaign-summary-lifecycle.review.test.mjs tools/outreach/church-outreach-summary-composition.test.mjs tools/outreach/church-outreach-auth-binding.test.mjs tools/outreach/church-outreach-summary-view.test.mjs tools/outreach/church-outreach-summary-entry.test.mjs
-      - run: TEST_POSTGRES_BIN="$(pg_config --bindir)" node tools/outreach/campaign-summary.native.mjs
-      - run: TEST_POSTGRES_BIN="$(pg_config --bindir)" node tools/outreach/shared-staff-backend.native.mjs
-      - run: git diff --check
+      - name: Test exact composition boundaries
+        run: node --test tools/partner-integration-cycle12/composition.test.mjs tools/partner-integration-cycle12/composition.independent.test.mjs
+      - name: Materialize only the two reviewed source checkpoints
+        run: node tools/partner-integration-cycle12/compose.mjs "$RUNNER_TEMP/partner-cycle12"
+      - name: Verify all checkpoint and composed bytes
+        run: node tools/partner-integration-cycle12/verify.mjs "$RUNNER_TEMP/partner-cycle12"
+      - working-directory: ${{ runner.temp }}/partner-cycle12/composition
+        run: npm ci --ignore-scripts --prefix tools/backend-tests
+      - working-directory: ${{ runner.temp }}/partner-cycle12/composition
+        run: node --test tools/outreach/shared-staff-backend.test.mjs tools/outreach/isolated-staff-summary-auth.test.mjs tools/outreach/campaign-summary.test.mjs tools/outreach/campaign-summary.review.test.mjs tools/outreach/campaign-summary-lifecycle.test.mjs tools/outreach/campaign-summary-lifecycle.review.test.mjs tools/outreach/church-outreach-summary-composition.test.mjs tools/outreach/church-outreach-auth-binding.test.mjs tools/outreach/church-outreach-summary-view.test.mjs tools/outreach/church-outreach-summary-entry.test.mjs
+      - working-directory: ${{ runner.temp }}/partner-cycle12/composition
+        run: TEST_POSTGRES_BIN="$(pg_config --bindir)" node tools/outreach/campaign-summary.native.mjs
+      - working-directory: ${{ runner.temp }}/partner-cycle12/composition
+        run: TEST_POSTGRES_BIN="$(pg_config --bindir)" node tools/outreach/shared-staff-backend.native.mjs
+      - working-directory: ${{ runner.temp }}/partner-cycle12/composition
+        run: node tools/backend-tests/node_modules/playwright/cli.js install --with-deps chromium webkit
+      - working-directory: ${{ runner.temp }}/partner-cycle12/composition
+        run: node tools/outreach/registration-print-roster.browser.mjs
+      - working-directory: ${{ runner.temp }}/partner-cycle12/composition
+        run: TEST_POSTGRES_BIN="$(pg_config --bindir)" node tools/outreach/registration-print-roster.native.mjs
+      - working-directory: ${{ runner.temp }}/partner-cycle12/composition
+        run: node tools/outreach/registration-checkin-status.browser.mjs
+      - working-directory: ${{ runner.temp }}/partner-cycle12/composition
+        run: TEST_POSTGRES_BIN="$(pg_config --bindir)" node tools/outreach/registration-checkin-status.native.mjs
+      - working-directory: ${{ runner.temp }}/partner-cycle12/composition
+        run: node tools/outreach/registration-navigation.browser.mjs
+      - working-directory: ${{ runner.temp }}/partner-cycle12/composition
+        run: node tools/outreach/registration-search-composition.browser.mjs
+      - working-directory: ${{ runner.temp }}/partner-cycle12/composition
+        run: node tools/outreach/registration-search-composition-independent.browser.mjs
+      - working-directory: ${{ runner.temp }}/partner-cycle12/composition
+        run: node tools/outreach/people-followup-pagination.browser.mjs
+      - working-directory: ${{ runner.temp }}/partner-cycle12/composition
+        run: node tools/outreach/people-followup-pagination-independent.browser.mjs
+      - working-directory: ${{ runner.temp }}/partner-cycle12/composition
+        run: node tools/outreach/people-followup-composition.browser.mjs
+      - working-directory: ${{ runner.temp }}/partner-cycle12/composition
+        run: node tools/outreach/people-followup-composition-independent.browser.mjs
+      - working-directory: ${{ runner.temp }}/partner-cycle12/outreach
+        run: node tools/outreach/people-followup-pagination-integrity.mjs
+      - working-directory: ${{ runner.temp }}/partner-cycle12/composition
+        run: node tools/outreach/people-followup-create.browser.mjs
+      - working-directory: ${{ runner.temp }}/partner-cycle12/composition
+        run: TEST_POSTGRES_BIN="$(pg_config --bindir)" node tools/outreach/people-followup-create.native.mjs
+      - working-directory: ${{ runner.temp }}/partner-cycle12/composition
+        run: node tools/outreach/people-navigation.browser.mjs
+      - working-directory: ${{ runner.temp }}/partner-cycle12/composition
+        run: node tools/outreach/people-identity-race.browser.mjs
+      - working-directory: ${{ runner.temp }}/partner-cycle12/composition
+        run: node tools/outreach/walkup-retry.browser.mjs
+      - working-directory: ${{ runner.temp }}/partner-cycle12/composition
+        run: TEST_POSTGRES_BIN="$(pg_config --bindir)" node tools/outreach/walkup-retry.native.mjs
+      - working-directory: ${{ runner.temp }}/partner-cycle12/composition
+        run: node tools/backend-tests/outreach-people.dom.mjs
+      - working-directory: ${{ runner.temp }}/partner-cycle12/composition
+        run: node tools/backend-tests/outreach-registration.dom.mjs
+      - working-directory: ${{ runner.temp }}/partner-cycle12/composition
+        run: git diff --check
+      - name: Reverify source inventories after acceptance
+        run: node tools/partner-integration-cycle12/verify.mjs "$RUNNER_TEMP/partner-cycle12"
+  composed-history:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: node tools/partner-integration-cycle12/compose.mjs "$RUNNER_TEMP/partner-history-cycle12"
+      - working-directory: ${{ runner.temp }}/partner-history-cycle12/composition
+        run: npm ci --ignore-scripts --prefix tools/backend-tests
+      - working-directory: ${{ runner.temp }}/partner-history-cycle12/composition
+        run: node tools/backend-tests/node_modules/playwright/cli.js install --with-deps chromium webkit
+      - name: Exact approved SDK
+        shell: bash
+        run: |
+          curl --fail --silent --show-error --location 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.118.0' --output "$RUNNER_TEMP/partner-history-sdk.js"
+          printf '%s  %s\n' 'bee24fc29228ed5a370f76a2ba1ca3c399549edad2fef23453c80148856a49af' "$RUNNER_TEMP/partner-history-sdk.js" | sha256sum --check
+          printf 'SUPABASE_SDK_PATH=%s\n' "$RUNNER_TEMP/partner-history-sdk.js" >> "$GITHUB_ENV"
+      - working-directory: ${{ runner.temp }}/partner-history-cycle12/composition
+        run: node tools/outreach/people-followup-history.browser.mjs
+      - working-directory: ${{ runner.temp }}/partner-history-cycle12/composition
+        run: node tools/outreach/people-followup-history-independent.browser.mjs
+      - name: Select PostgreSQL 17 for the accepted history contract
+        shell: bash
+        run: |
+          if [ ! -x /usr/lib/postgresql/17/bin/postgres ]; then
+            sudo /usr/share/postgresql-common/pgdg/apt.postgresql.org.sh -y
+            sudo mkdir -p /etc/postgresql-common/createcluster.d
+            printf 'create_main_cluster = false\n' | sudo tee /etc/postgresql-common/createcluster.d/partner-history-ci.conf > /dev/null
+            sudo apt-get install --yes --no-install-recommends postgresql-17
+          fi
+          /usr/lib/postgresql/17/bin/postgres --version | grep -E '^postgres \(PostgreSQL\) 17\.'
+      - working-directory: ${{ runner.temp }}/partner-history-cycle12/composition
+        run: TEST_POSTGRES_BIN=/usr/lib/postgresql/17/bin node tools/outreach/people-followup-history.native.mjs
+      - run: node tools/partner-integration-cycle12/verify.mjs "$RUNNER_TEMP/partner-history-cycle12"
+  composed-partner:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: node tools/partner-integration-cycle12/compose.mjs "$RUNNER_TEMP/partner-journey-cycle12"
+      - working-directory: ${{ runner.temp }}/partner-journey-cycle12/composition
+        run: npm ci --ignore-scripts --prefix tools/backend-tests
+      - working-directory: ${{ runner.temp }}/partner-journey-cycle12/composition
+        run: node tools/backend-tests/node_modules/playwright/cli.js install --with-deps chromium webkit
+      - working-directory: ${{ runner.temp }}/partner-journey-cycle12/composition
+        run: node --test tools/partner-platform/org-handoff.test.mjs
+      - working-directory: ${{ runner.temp }}/partner-journey-cycle12/composition
+        run: node tools/backend-tests/outreach-partner-staff.dom.mjs
+      - working-directory: ${{ runner.temp }}/partner-journey-cycle12/composition
+        run: node tools/partner-platform/staff-intake-review.browser.mjs
+      - working-directory: ${{ runner.temp }}/partner-journey-cycle12/composition
+        run: node tools/partner-platform/assigned-backend.browser.mjs
+      - working-directory: ${{ runner.temp }}/partner-journey-cycle12/composition
+        run: TEST_POSTGRES_BIN="$(pg_config --bindir)" node tools/partner-platform/org-handoff.browser.mjs
+      - working-directory: ${{ runner.temp }}/partner-journey-cycle12/composition
+        run: node tools/backend-tests/site-build.test.mjs
+      - run: node tools/partner-integration-cycle12/verify.mjs "$RUNNER_TEMP/partner-journey-cycle12"
