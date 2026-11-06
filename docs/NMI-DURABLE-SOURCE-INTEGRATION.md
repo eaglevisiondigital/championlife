@@ -124,3 +124,36 @@ prior payments can be reconciled safely; setting `recoveryEnabled=false` as well
 rejects all recovery before claims, secret reads and query transport. The native
 suite checks both boundaries. Neither control is a substitute for separately
 reviewed provider credential revocation or independent operational recovery.
+
+## Stored MID proof parity — November 6, 2026
+
+The disabled durable reviewer now compares the MID in the stored merchant proof
+with the independently reviewed MID and the canonical processor route's MID.
+Previously it selected only the canonical route MID: changing only
+`nmi_giving_route_proofs.mid_reference` could incorrectly leave
+`reviewableSnapshot=true`, even though the existing execution predicate
+`private.nmi_giving_route_ok` rejects that mismatch. The native baseline failure
+was reproduced and preserved before this correction.
+
+The change adds the missing stored field to the existing read-only query and
+requires its equality with the same reviewed alias. It does not call the execution
+predicate to authorize a review, enable controls, or weaken the separate current
+identity, organization, legal merchant, settlement, receipt, revision and evidence
+checks. A consistent change to both stored MIDs still fails if the independently
+reviewed evidence has not changed. Church and SowGo/Soul Fuel remain separately
+scoped. This establishes internal consistency only, not authentic merchant proof.
+
+Focused validation: `node --test tools/nmi/durable-pilot-review.test.mjs` and
+`node tools/nmi/durable-proof-mid.native.mjs`. The native suite loads the existing
+hash-pinned SQL into a disposable local database and exercises fictional Church
+and SowGo fixtures. To compare with the existing execution predicate, it briefly
+sets a fictional control row inside a transaction that always rolls back. No
+executor, provider transport or source configuration is enabled. Stored controls
+and forms remain false; reviews leave sessions, attempts, ledger, receipts and
+audits unchanged. No prior parser/lookup tests are repeated by this focused suite.
+
+PR107's parser, the accepted executor/webhook/SQL pins, historical migrations,
+GiveHub, guest giving and UNKNOWN/no-retry rules are unchanged. `canSubmit`,
+`canRetry`, `canPostLedger` and `providerVerified` remain false. Real four-MID
+boarding, recipient/settlement/receipt evidence, custody and provider acceptance
+remain required; this source correction provides no activation authority.

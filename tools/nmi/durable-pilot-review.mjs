@@ -27,7 +27,7 @@ export function createDurablePilotReviewer({authenticate,resolveEvidence,withRea
     if(incident.rows[0]?.blocked!==false)return;
     const snapshot=await db.query(`select ff.purpose, f.id as fund_id,f.status,f.is_public,d.gateway_id,d.processor_route_id,
       gr.mid_reference,gr.revision as route_revision,a.merchant_reference,a.enabled as account_enabled,
-      proof.settlement_reference,proof.merchant_reference as proof_merchant,proof.proof_reference,proof.enabled as proof_enabled,
+      proof.mid_reference as proof_mid,proof.settlement_reference,proof.merchant_reference as proof_merchant,proof.proof_reference,proof.enabled as proof_enabled,
       nr.enabled as nmi_route_enabled,c.receipt_identity,c.enabled as control_enabled,fo.recurring_allowed,fo.enabled as form_enabled,
       proof.verified_at is not null and nr.verified_at is not null and a.last_verified_at is not null as checked
       from private.nmi_giving_form_funds ff
@@ -42,7 +42,7 @@ export function createDurablePilotReviewer({authenticate,resolveEvidence,withRea
       where ff.organization_id=$1 and ff.form_id=$2 and ff.fund_id=$3 and gr.id=$4`,keys.map(k=>scope[k]));
     const s=snapshot.rows[0];
     reviewable=snapshot.rows.length===1&&s.checked===true&&s.status==='active'&&s.is_public===true&&s.account_enabled===true&&s.proof_enabled===true&&s.nmi_route_enabled===true&&s.recurring_allowed===false&&s.form_enabled===false&&s.control_enabled===false&&
-     s.purpose===evidence.purpose&&s.gateway_id===evidence.gatewayId&&s.mid_reference===evidence.midAlias&&s.merchant_reference===evidence.legalMerchant&&s.proof_merchant===evidence.legalMerchant&&s.settlement_reference===evidence.settlementOwner&&s.receipt_identity===evidence.receiptOwner&&s.proof_reference===evidence.evidenceRef&&s.route_revision===evidence.revision;
+     s.purpose===evidence.purpose&&s.gateway_id===evidence.gatewayId&&s.mid_reference===evidence.midAlias&&s.proof_mid===evidence.midAlias&&s.merchant_reference===evidence.legalMerchant&&s.proof_merchant===evidence.legalMerchant&&s.settlement_reference===evidence.settlementOwner&&s.receipt_identity===evidence.receiptOwner&&s.proof_reference===evidence.evidenceRef&&s.route_revision===evidence.revision;
    });
    const fresh=await authenticate();const current=await resolveEvidence(scope,identity);
    if(!completed||fresh?.verified!==true||fresh.userId!==identity.userId||fresh.sessionId!==identity.sessionId||JSON.stringify(current)!==JSON.stringify(evidence)||Date.parse(evidence.expiresAt)<=Date.now())return result('REVOKED_OR_CHANGED_BINDING');

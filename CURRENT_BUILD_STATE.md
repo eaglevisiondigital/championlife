@@ -98,3 +98,7 @@ of this release. No production migration, upload, merge or deployment performed.
 ## November 6, 2026 — Strict Query evidence in disabled NMI integration
 
 Existing exact-source loader consumes reviewed PR107 `e9e884c99899e5e4b14cc005fdd49f0d13e34d94`; only the Query parser blob changes. Historical webhook, public client and durable SQL pins remain intact. Malformed XML and nested product-total confusion remain UNKNOWN through the actual loaded executor. No duplicate runtime, financial permission, merchant configuration, payment, messaging or public output change. See docs/NMI-BOARDING-HANDOFF.md. Local/CI results are separate from provider acceptance and activation, which remain NO-GO.
+
+## 2026-11-06 — Disabled durable review binds stored merchant proof MID
+
+The existing nonoperational durable pilot reviewer now selects the stored proof MID and requires equality with the independently reviewed fictional MID, matching the existing private.nmi_giving_route_ok requirement. A native counterexample previously returned reviewable for a conflicting proof; original failure is preserved privately. Focused mock/native and independent merchant/settlement tests cover Church and SowGo. No query parser, executor pin, SQL, public output, GiveHub or payment flags changed. Exact-head CI remains separately recorded in the private cycle report. Provider evidence and activation remain blocked.

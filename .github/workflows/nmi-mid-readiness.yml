@@ -51,6 +51,10 @@ jobs:
       - run: npm ci --ignore-scripts --prefix tools/backend-tests
       - name: Exercise real disposable PostgreSQL with fictional outcomes only
         run: TEST_POSTGRES_BIN="$(pg_config --bindir)" node tools/nmi/durable-pilot.native.mjs
+      - name: Verify stored merchant proof matches the reviewed route without activation
+        run: TEST_POSTGRES_BIN="$(pg_config --bindir)" node tools/nmi/durable-proof-mid.native.mjs
+      - name: Independently verify merchant and settlement isolation
+        run: TEST_POSTGRES_BIN="$(pg_config --bindir)" node tools/nmi/durable-proof-mid-independent.native.mjs
       - name: Exercise authoritative lookup and signed-webhook recovery with no provider network
         run: TEST_POSTGRES_BIN="$(pg_config --bindir)" node tools/nmi/durable-recovery.native.mjs
 
