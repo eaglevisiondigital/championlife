@@ -101,7 +101,7 @@
    }finally{if(current(token)){pending=false;show.disabled=false}}
   };
  }
- function addTaskActions(card,task,personId,g,taskCursors){
+ function addTaskActions(card,task,personId,g,taskCursors,taskStatus){
   const targetOrg=org,actor=user?.id,client=auth.client,clientAuth=client.auth,url=location.pathname+location.search;
   const controls=el('div'),statusLabel=el('label','Status'),select=el('select'),dueLabel=el('label','Task due date'),due=el('input',null,{type:'date'});
   for(const value of ['open','completed','canceled']){const option=el('option',value,{value});option.selected=task.status===value;select.append(option)}
@@ -114,7 +114,7 @@
    return !retired&&g===generation&&org===targetOrg&&user?.id===actor&&url===location.pathname+location.search&&root.contains(card)&&(!window.StaffWorkspace||window.StaffWorkspace.active());
   };
   const review=message=>{
-   controls.replaceChildren(el('p',message),button('Refresh follow-up tasks',()=>{if(current())return detail(personId,taskCursors)}));
+   controls.replaceChildren(el('p',message),button('Refresh follow-up tasks',()=>{if(current())return detail(personId,taskCursors,taskStatus)}));
    status.textContent='Task save needs review.';
   };
   async function save(field,removeDue=false){
@@ -133,7 +133,7 @@
      review('Task changed or access was removed. Refresh the tasks before making another change.');return;
     }
     if(saved.id!==task.id)throw Error();
-    await detail(personId,taskCursors);
+    await detail(personId,taskCursors,taskStatus);
    }catch{
     if(!current())return;
     if(submitted)review('The save could not be confirmed. It may have succeeded. Refresh the tasks and check the current date and status before making another change.');
@@ -142,25 +142,42 @@
   }
   saveStatus.onclick=()=>save('status');saveDue.onclick=()=>save('due_on');clearDue.onclick=()=>{if(pending||!current())return;due.value='';return save('due_on',true)};
  }
- async function detail(id,taskCursors=[]){
-  const g=++generation;content.replaceChildren();status.textContent='Loading…';await refreshPermissions();if(g!==generation)return;
-  const data=await people('detail',{person_id:id});if(g!==generation)return;status.textContent='';const p=data.person;
+ async function detail(id,taskCursors=[],taskStatus='all'){
+  if(!['all','open','completed','canceled'].includes(taskStatus))return;
+  const g=++generation,detailOrg=org,detailActor=user?.id,detailClient=auth.client,detailAuth=detailClient.auth,detailUrl=location.pathname+location.search;
+  const current=()=>{
+   if(g!==generation)return false;
+   if(window.ChampionLifeAuth!==auth||auth.client!==detailClient||detailClient.auth!==detailAuth||org!==detailOrg||user?.id!==detailActor||location.pathname+location.search!==detailUrl||(window.StaffWorkspace&&!window.StaffWorkspace.active())){generation++;content?.replaceChildren();status.textContent='Task view closed because the staff context changed. Reload to verify access.';return false}
+   return true;
+  };
+  try{
+  content.replaceChildren();status.textContent='Loading…';await refreshPermissions();if(!current())return;
+  const data=await people('detail',{person_id:id});if(!current())return;status.textContent='';const p=data.person;
   content.append(button('Back to People',()=>list()),el('h2',p.first_name+' '+p.last_name),el('p',p.email||''),el('p',p.phone||''),el('h3','Organization relationships'));
   for(const r of data.relationships||[])content.append(el('p',r.relationship+(r.active?'':' (inactive)')));
   if(!can('followup.read'))return;
-  const tasks=await request(()=>{let query=auth.client.from('followup_tasks').select('id,title,status,due_on,revision,created_at').eq('organization_id',org).eq('person_id',id).order('created_at',{ascending:false}).order('id',{ascending:false});const cursor=taskCursors.at(-1);if(cursor)query=query.or('created_at.lt.'+cursor.created_at+',and(created_at.eq.'+cursor.created_at+',id.lt.'+cursor.id+')');return query.limit(101)});if(g!==generation)return;
+  const tasks=await request(()=>{if(!current())throw Error();let query=detailClient.from('followup_tasks').select('id,title,status,due_on,revision,created_at').eq('organization_id',org).eq('person_id',id).order('created_at',{ascending:false}).order('id',{ascending:false});if(taskStatus!=='all')query=query.eq('status',taskStatus);const cursor=taskCursors.at(-1);if(cursor)query=query.or('created_at.lt.'+cursor.created_at+',and(created_at.eq.'+cursor.created_at+',id.lt.'+cursor.id+')');return query.limit(101)});if(!current())return;
   // RLS-filtered empty data is not proof of continuing authority.
-  await refreshPermissions();if(g!==generation)return;if(!can('followup.read')){fail(403);return}
-  content.append(el('h3','Follow-up tasks'),el('p','Task page '+(taskCursors.length+1)),button('Refresh latest tasks',()=>detail(id)));if(can('followup.manage'))addTaskEditor(id,g);if(!tasks.length)content.append(el('p',taskCursors.length?'No tasks on this page. Return to newer tasks or refresh the latest tasks.':'No follow-up tasks.'));
+  await refreshPermissions();if(!current())return;if(!can('followup.read')){fail(403);return}
+  const taskFilter=el('select',null,{'aria-label':'Filter follow-up tasks'}),taskFilterLabel=el('label','Task status filter');
+  for(const [value,label] of [['all','All tasks'],['open','Open tasks'],['completed','Completed tasks'],['canceled','Canceled tasks']]){const option=el('option',label,{value});option.selected=value===taskStatus;taskFilter.append(option)}
+  const filterOrg=org,filterActor=user?.id,filterClient=auth.client,filterAuth=filterClient.auth,filterUrl=location.pathname+location.search;
+  taskFilter.onchange=()=>{
+   if(g!==generation||!root.contains(taskFilter))return;
+   if(window.ChampionLifeAuth!==auth||auth.client!==filterClient||filterClient.auth!==filterAuth||org!==filterOrg||user?.id!==filterActor||location.pathname+location.search!==filterUrl||(window.StaffWorkspace&&!window.StaffWorkspace.active())){taskFilterLabel.replaceChildren(el('p','Task filter closed because the staff context changed. Reload to verify access.'));return}
+   detail(id,[],taskFilter.value).catch(()=>{});
+  };taskFilterLabel.append(taskFilter);
+  content.append(el('h3','Follow-up tasks'),taskFilterLabel,el('p','Task page '+(taskCursors.length+1)),button('Refresh latest tasks',()=>detail(id,[],taskStatus)));if(can('followup.manage'))addTaskEditor(id,g);if(!tasks.length)content.append(el('p',taskCursors.length?'No tasks on this page. Return to newer tasks or refresh the latest tasks.':taskStatus==='all'?'No follow-up tasks.':'No '+taskStatus+' follow-up tasks.'));
   for(const task of tasks.slice(0,100)){const card=el('article');card.append(el('h4',task.title),el('p',task.status+' · '+(task.due_on||'No due date')));
-   if(can('followup.manage'))addTaskActions(card,task,id,g,taskCursors);addTaskHistory(card,task,id,g);content.append(card);
+   if(can('followup.manage'))addTaskActions(card,task,id,g,taskCursors,taskStatus);addTaskHistory(card,task,id,g);content.append(card);
   }
-  if(taskCursors.length)content.append(button('Newer tasks',()=>detail(id,taskCursors.slice(0,-1))));
+  if(taskCursors.length)content.append(button('Newer tasks',()=>detail(id,taskCursors.slice(0,-1),taskStatus)));
   if(tasks.length>100){const last=tasks[99];
    // Preserve PostgreSQL timestamp precision; accept only safe typed cursor values.
-   if(/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(last.id)&&/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{1,6})?(?:Z|[+-]\d{2}:\d{2})$/.test(last.created_at))content.append(button('Older tasks',()=>detail(id,[...taskCursors,{id:last.id,created_at:last.created_at}])));
+   if(/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(last.id)&&/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{1,6})?(?:Z|[+-]\d{2}:\d{2})$/.test(last.created_at))content.append(button('Older tasks',()=>detail(id,[...taskCursors,{id:last.id,created_at:last.created_at}],taskStatus)));
    else status.textContent='Unable to load older tasks. Please refresh and try again.';
   }
+  }finally{current()}
  }
  async function boot(){const g=++generation;grants=[];content?.replaceChildren();root.replaceChildren();try{const verifiedUser=await auth?.getUser();if(g!==generation)return;user=verifiedUser;if(!user){root.append(login());return}
   status=el('p','Loading…',{role:'status',class:'staff-status'});content=el('div',null,{class:'staff-content'});root.append(status);const ctx=await request(()=>auth.client.rpc('staff_workspace_context',{}));if(g!==generation)return;grants=ctx.grants;updateNavigation();
