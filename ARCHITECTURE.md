@@ -1,3 +1,11 @@
+## 2026-11-03 — Existing-person task creation completes the People workflow
+
+The People detail mounts a small title/date editor only under its existing three organization-wide read/manage grants. It reuses the current shared client and column-limited task INSERT, requests only `id`, and refreshes into the existing revision-guarded status editor. The server supplies actor/identity/status and audit; no campaign-assigned decision interface, new RPC, workflow, person merge or notification is involved. Ambiguous writes require a read-only review, since existing INSERT has no idempotency key. See [task creation contract](docs/PEOPLE-FOLLOWUP-CREATE-20261103.md).
+
+## 2026-11-03 — Printable roster uses existing registration contracts
+
+Roster preview and explicit Print share one refresh path: fresh context with export capability, existing campaign list/details, detached table assembly, then existing audited CSV authorization before publication/printing. CSV content is discarded; the original six columns and configured prize values remain. This adds no RPC or schema and is a sequence of current reads, not an atomic database snapshot. See [printable roster contract](docs/OUTREACH-PRINTABLE-ROSTER-20261103.md).
+
 ## 2026-10-31 — Incremental staff shell composition
 
 The first local shell composes existing staff-workspace and campaign-registration authorization responses instead of importing historical shared-platform SQL. One existing Auth client and logout component serve staff home, People and registration. Context navigation reloads an allowlisted existing destination and reauthorizes it. Unreleased NMI, advanced decisions and provider modules are not loaded. Exact source overlaps and future composition boundaries are documented in [UNIFIED-STAFF-SHELL.md](docs/UNIFIED-STAFF-SHELL.md).

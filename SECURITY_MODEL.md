@@ -1,3 +1,11 @@
+## 2026-11-03 — Scoped People task creation and uncertain-save handling
+
+New task forms require fresh organization-wide people.read/followup.read/followup.manage and the existing verified session. Current person/org/route/generation plus shared auth-owner/client/client-auth bindings guard each asynchronous continuation. Observed binding replacement retires and clears only the captured editor; old forms and repeated submits cannot issue another insert. An uncertain submitted insert is never automatically replayed. Existing dated staff authority, RLS, finance restriction, composite person/org FK and column privileges remain unchanged. Native negative tests deny revoked/expired/future/scoped, other/unverified/anonymous actors and forged identity/status fields. Task history is append-only to authenticated callers, not claimed immutable against owner/service authority. See [evidence and limits](docs/PEOPLE-FOLLOWUP-CREATE-20261103.md).
+
+## 2026-11-03 — App-triggered roster print reauthorization
+
+A displayed preview no longer supplies continuing authority to print. Fresh context and a final existing backend `csv` export check gate each explicit print; observed denial clears protected roster content and stale account/campaign/navigation generations cannot publish or print late results. Exactly one existing export audit accompanies each successful preparation, not proof of physical printing. Browser/OS copies of previously disclosed data cannot be recalled. Unchanged native permission checks deny other campaigns/accounts, export-only revocation with view retained, expired and inactive assignments; failed export adds no successful audit. No child/waiver/registration/domain-event mutation occurs. See [evidence and limitations](docs/OUTREACH-PRINTABLE-ROSTER-20261103.md).
+
 ## Unified shell discovery correction — 2026-10-31
 
 Process every discovery response independently: an explicit denial must immediately invalidate the workspace even if a concurrent discovery RPC remains pending. Late responses cannot reverse terminal invalidation. Canonical comparison treats organization, campaign, grant and department arrays as unordered sets; an actual change still retires access. No change to authoritative PostgreSQL authorization or session-retirement requirements. Synthetic browser proof is not provider-backed revocation evidence.
@@ -50,3 +58,22 @@ The theme-song script performs no analytics/API/database requests, sets no cooki
 ## Operations Administrator candidate — local only, 2026-10-22
 
 Donation-intake access requires outreach.view AND finance.read. Restrictive RLS protects linked follow-up tasks/events and financial partner relationship audit; People RPC projections and filters enforce the same boundary. Permission management requires independent staff.manage plus campaign admin; self-target changes are denied. Organization registration operations never confer admin/configuration or finance privileges. Household audit kinds extend the original check and retain actor/history. Existing registry, policies for other domains and function ACLs remain intact. Exact baseline guards reject incompatible child functions. See docs/OPERATIONS-ADMIN-SECURITY.md for release impact, withheld capabilities, account verification and revocation.
+
+## 2026-11-02 — People verification result publication
+
+An asynchronous People boot must confirm its captured generation before publishing the verified user to module state. A retired account's delayed user/null result cannot overwrite the newer account or turn a permitted follow-up action into a false session expiry. Current-session checks, backend People/task permissions, task revision filters, denial clearing and logout remain authoritative and unchanged. The correction does not create campaign-assigned decision access; no decision mount may reuse event-registration permissions or broad organization People authority. Synthetic browser evidence and the exact source boundary are documented in [the focused contract](docs/OUTREACH-PEOPLE-IDENTITY-RACE-20261102.md).
+
+
+## November 6, 2026 — Reach older authorized Person follow-up tasks
+
+The existing Person detail workspace now offers stable created_at/id keyset pages, newer/older navigation and explicit latest refresh. Status changes preserve the current page; creation returns to the latest page. The prior newest-100-only limit left older open tasks unreachable. Only existing canonical task reads/status updates are used. No SQL, permission, campaign authority, identity association, public layout or branding changes.
+
+Protected cursors and handlers remain generation-scoped; current session and followup.read/manage authorization are rechecked. A malformed cursor fails closed without constructing a filter. Rows remain live rather than a claimed snapshot. Focused author acceptance:264 browser assertions; unchanged affected People suites:276 creation,222 identity,64 navigation and5 DOM scenarios. Independent Chromium/WebKit review adds56 passing adversarial assertions; exact-head CI is separately recorded. See docs/PEOPLE-FOLLOWUP-PAGINATION-20261106.md. Source-only, not deployed.
+
+## 2026-11-06 — Existing task edit controls with paged detail
+
+The previously reviewed PR86 task action helper is reused with current PR72 navigation generation and page cursors. It rechecks current identity and People/follow-up permissions before a task/org/Person/revision-scoped update. Retired controls cannot mutate; stale or uncertain writes require read-only refresh and never automatic resubmission. This does not create campaign-to-Person authority or identity bindings. No SQL, RLS, audit, grants, SDK or hosted behavior changed.
+
+## 2026-11-06 — Household-search state follows current authority
+
+Private registration search is now cleared on account identity changes, denial, protected-content clearing, logout, page retirement and history navigation using the already accepted PR90 correction. Existing generation/connected-control guards remain responsible for rejecting stale handlers and results; fresh same-account focus preserves the search. This narrow current-branch composition does not create new permissions, identity associations or campaign decision access. The original current-base failure and exact recovered source provenance are retained privately. No backend, SQL, grant or hosted action changed.

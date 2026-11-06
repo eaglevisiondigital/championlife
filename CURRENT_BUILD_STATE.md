@@ -1,3 +1,11 @@
+## 2026-11-03 — People follow-up creation through existing permissions
+
+Source-only PR72 successor adds the missing existing-person task creation step: title, optional due date, then existing status completion. Uses unchanged column-limited `followup_tasks` INSERT with fresh people/follow-up authority; no new SQL, assignment, People record, decision access or message. Uncertain saves retire the form and require task-list review; no automatic retry or exactly-once claim. New 276 browser + 48 native assertions, baseline 6, affected 64 navigation + 222 identity assertions and 5 DOM scenarios PASS. Coordinator verified identical 411-file builds with only People runtime changed publicly. Exact-head review/CI and hosted/release gates remain distinct. See [contract](docs/PEOPLE-FOLLOWUP-CREATE-20261103.md).
+
+## 2026-11-03 — Fresh authority and data for printable registration rosters
+
+Source-only PR72 successor corrects app printing after export permission revocation. Each preview/explicit print refreshes current context and household details, then uses the existing audited export check before publishing the six-column roster. Closed detail rows are excluded; current contact/check-in/waiver values replace stale preview data. No SQL, grants, provider or release changes. New 216 browser + 21 native assertions, baseline 18 reproduction, existing 96 navigation + 91 DOM checks PASS; two identical 411-file builds have one public runtime delta. Independent review/exact-head CI remain coordinator-reported gates, and genuine hosted acceptance is not claimed. See [contract and limits](docs/OUTREACH-PRINTABLE-ROSTER-20261103.md).
+
 ## 2026-10-31 — Unified shell independent review corrections
 
 Fresh adversarial review of e18062467c8a2a2e6af7239f12e2a3ca7d035e1d found a parallel-discovery denial delay and order-sensitive permission comparison. The narrowly corrected shell processes each discovery failure before waiting for its sibling and compares canonical permission sets while preserving display order. A permanent independent browser regression covers both discovery directions, late responses, retained mutation attempts, network errors, true permission removal and fresh reauthorization. Original sealed evidence remains preserved. No SQL, grants, payment or provider configuration changes. Draft implementation review and GitHub CI are authorized; merge, deployment and hosted acceptance remain separate gates. See docs/UNIFIED-STAFF-SHELL.md.
@@ -93,3 +101,28 @@ Local full regression and responsive browser checks pass. Final physical-device
 acceptance and separately approved production Storage/website release remain gates.
 Personal notes/highlights are being prepared on a separate branch and are not part
 of this release. No production migration, upload, merge or deployment performed.
+
+## 2026-11-02 — People stale identity verification correction
+
+A delayed earlier `getUser()` result could overwrite the current People module user after an account switch and falsely expire the newer user's next search/task operation. The result is now assigned only after the boot generation remains current. Chromium/WebKit reproduce the baseline defect; the focused source-only suite covers stale user/null/error/logout, current-account search/task continuity and current denial. See [People identity race contract](docs/OUTREACH-PEOPLE-IDENTITY-RACE-20261102.md). Decision/free-book mounting remains stopped: the current PR72/75 source lacks the accepted campaign/assigned-record decision RPC composition. Existing organization People/follow-up authority and event registration authority are not substitutes. No SQL/Auth/shell permissions, grants, hosted data or release changed; advanced evidence/recovery work remains paused.
+
+## Outreach check-in status compatibility — November 5, 2026
+
+Source-only correction on exact PR72 `eb7ad80c322fe3664273c38f56d176b1e28e1583`: cancelled, no-show and closed household details previously displayed enabled check-in actions although the existing campaign RPC rejects them. The unchanged authoritative SQL remains final; the staff UI now permits check-in only for submitted, confirmed or checked-in households and explains the existing authorized reopening requirement. Unknown statuses fail closed. Waiver, attendance, permission and reversal controls remain unchanged. No SQL, grants, public registration form, branding or release composition change.
+
+Original unnecessary mutation reproduced in Chromium/WebKit at mobile/desktop dimensions. Focused acceptance:108 browser and31 disposable native PostgreSQL checks; affected regressions:96 navigation,216 printable roster and91 DOM checks PASS. Two411-file builds identical, with only the reviewed staff runtime changed publicly. Both permanent new tests join the existing CI without removing coverage. Independent review and exact-head CI remain separate gates. PR102 and its newer privacy protections remain unchanged; this PR72 successor is not full-system or genuine Auth acceptance. Hosted release remains NO-GO.
+
+
+## November 6, 2026 — Reach older authorized Person follow-up tasks
+
+The existing Person detail workspace now offers stable created_at/id keyset pages, newer/older navigation and explicit latest refresh. Status changes preserve the current page; creation returns to the latest page. The prior newest-100-only limit left older open tasks unreachable. Only existing canonical task reads/status updates are used. No SQL, permission, campaign authority, identity association, public layout or branding changes.
+
+Protected cursors and handlers remain generation-scoped; current session and followup.read/manage authorization are rechecked. A malformed cursor fails closed without constructing a filter. Rows remain live rather than a claimed snapshot. Focused author acceptance:264 browser assertions; unchanged affected People suites:276 creation,222 identity,64 navigation and5 DOM scenarios. Independent Chromium/WebKit review adds56 passing adversarial assertions; exact-head CI is separately recorded. See docs/PEOPLE-FOLLOWUP-PAGINATION-20261106.md. Source-only, not deployed.
+
+## 2026-11-06 — Reviewed task editor composed with current paging
+
+Reuses the accepted PR86 due-date/status editor from da658ea4c0fd9590e969bbc6ad772f02b3a99b12 in PR72's 8fad1b0e98292543a9be27a7960c4ff81521efa3 People runtime. Only the helper's page-return parameter is adapted: older tasks can be rescheduled, cleared and completed while preserving their page. Existing create behavior, paging, search/session cleanup, SDK, backend and public navigation remain unchanged. Exact helper provenance, independent adversarial browser checks and reproducible public builds are required; see docs/PEOPLE-FOLLOWUP-COMPOSITION-20261106.md. Source-only successor; frozen backoffice candidates remain unchanged. Genuine Auth/RLS/recovery and a separate release approval are still required.
+
+## 2026-11-06 — Registration household-search privacy composition
+
+The current PR72 registration branch was missing the six accepted PR90 household-search lifecycle resets. The previous account's identifying search could be sent and displayed after a transition. Recovered only those six resets onto the current check-in/print-roster runtime; all other runtime bytes are checked against exact base 9f78e195115f55135d763e1e5373a494e817423b. Frozen PR90/102, People task paging/editor, SQL, SDK, public registrations and branding remain unchanged. The recovered permanent Chromium/WebKit regression covers callback and missed-callback account changes, denial, logout, history, page cache, stale results and legitimate same-account refresh. See docs/REGISTRATION-SEARCH-COMPOSITION-20261106.md. Independent review, exact-head CI and genuine provider acceptance are distinct gates; source-only, release NO-GO.
