@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import {checkpointReader} from '../staff-host-cycle8/overrides.mjs';
+import {checkpointReader} from '../staff-cycle9-integrity/overrides.mjs';
 import {execFileSync} from 'node:child_process';
 import {verifyOverrides} from '../staff-module-navigation/source-overrides.mjs';
 import {readFileSync,readdirSync} from 'node:fs';
