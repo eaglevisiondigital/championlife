@@ -11,6 +11,8 @@ const old=p=>git('show',baseline+':'+p);
 const sha=b=>createHash('sha256').update(b).digest('hex');
 const allow=new Set([
  'CURRENT_BUILD_STATE.md','SECURITY_MODEL.md',
+ 'tools/outreach/task-admission-proof.sql','tools/outreach/task-admission-proof.native.mjs',
+ 'tools/outreach/task-admission-independent.native.mjs','docs/TASK-ADMISSION-PROOF-20261106.md',
  'docs/TASK-INTENT-CONTRACT-20261106.md',
  'tools/outreach/task-writer-plan.sql','tools/outreach/task-writer-plan.native.mjs',
  'tools/outreach/task-writer-plan-independent.native.mjs',

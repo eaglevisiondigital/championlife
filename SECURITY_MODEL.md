@@ -79,3 +79,10 @@ Source-only. `private.task_writer_plan` produces exact canonical before/after au
 Permanent native tests demonstrate that a deferred fixture fence can be forced early using SET CONSTRAINTS, leaving later consent/expiry changes unchecked. A successful operational commit-time safeguard is therefore NOT established. The separate `task_intent_fixture` schema is disposable test infrastructure only: ordinary synthetic task/intent/receipt transactions, rollback, concurrent duplicate requests and discarded commit responses are exercised without an operational writer or registry. Foreign keys alone permit mismatched old-event correspondence; the independent tests preserve this counterexample. No receipt is accepted as terminal authority. UNKNOWN remains held without automatic retry.
 
 Author checks: 92 writer-plan and 104 intent; independent checks: 31 writer-plan and 21 intent. Publication CI is recorded separately in the private audit report. All 411 public files and PR #105 backend source must remain byte-identical. No hosted acceptance, real identity association, task issuance or release is authorized.
+
+
+## November 6, 2026 — Disposable admission and event correspondence proof
+
+Extends the existing isolated `task_intent_fixture` only. Task-first locking serializes lab arm/rejection; an observer binds the actual canonical event to the exact current-transaction actor/task/before/after intent. No canonical writer, API privilege or hosted migration is added. The five-revision held plan and PR105 bound-task denial remain unchanged.
+
+97 author and 25 independent native assertions pass, including actual lock waits, competing intents, injected audit rollback, old/forged event rejection and same-user session replacement. Permanent counterexamples preserve the limits: an event is not a transaction-end authority fence, and unarmed ordinary writes are outside lab exclusion. Neither observation is operational terminal proof; UNKNOWN/no automatic retry remains mandatory. See docs/TASK-ADMISSION-PROOF-20261106.md. Exact-head CI is reported separately; release remains NO-GO.

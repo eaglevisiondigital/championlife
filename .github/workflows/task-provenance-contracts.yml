@@ -8,6 +8,7 @@ on:
       - 'supabase/**'
       - 'docs/TASK-WRITER-HELD-CONTRACT-20261105.md'
       - 'docs/TASK-INTENT-CONTRACT-20261106.md'
+      - 'docs/TASK-ADMISSION-PROOF-20261106.md'
       - 'docs/CAMPAIGN-PROVENANCE-CONTRACT-20261105.md'
       - '.github/workflows/task-provenance-contracts.yml'
   workflow_dispatch:
@@ -21,7 +22,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        suite: [writer, intent, provenance, independent, integrity]
+        suite: [writer, intent, admission, provenance, independent, integrity]
     steps:
       - uses: actions/checkout@v4
         with:
@@ -56,6 +57,10 @@ jobs:
               ;;
             intent)
               node tools/outreach/task-intent-contract.native.mjs
+              ;;
+            admission)
+              node tools/outreach/task-admission-proof.native.mjs
+              node tools/outreach/task-admission-independent.native.mjs
               ;;
             provenance)
               node tools/outreach/campaign-provenance-contract.native.mjs
