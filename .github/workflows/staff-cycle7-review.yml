@@ -1,0 +1,80 @@
+name: Staff exact-source composition probes
+on:
+  pull_request:
+    paths:
+      - 'tools/staff-cycle7/**'
+      - '.github/workflows/staff-cycle7-review.yml'
+permissions:
+  contents: read
+concurrency:
+  group: staff-cycle7-${{ github.event.pull_request.number }}
+  cancel-in-progress: false
+jobs:
+  source-integrity:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: node --test tools/staff-cycle7/source.test.mjs
+      - run: node tools/staff-cycle7/integrity.mjs
+      - run: git diff --check
+  people-registration:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        browser: [chromium, webkit]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm ci --ignore-scripts --prefix tools/backend-tests
+      - run: tools/backend-tests/node_modules/.bin/playwright install --with-deps ${{ matrix.browser }}
+      - name: Fetch exact SDK artifact; test verifies its SHA256 and original SRI
+        run: curl --fail --silent --show-error --location 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.118.0' --output "$RUNNER_TEMP/supabase-sdk.js"
+      - run: node tools/staff-cycle7/people-registration.browser.mjs
+        env:
+          TEST_BROWSER: ${{ matrix.browser }}
+          SUPABASE_SDK_PATH: ${{ runner.temp }}/supabase-sdk.js
+  communications-blockers:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm ci --ignore-scripts --prefix tools/backend-tests
+      - run: tools/backend-tests/node_modules/.bin/playwright install --with-deps chromium webkit
+      - name: Detect known host incompatibility; this is not Communications acceptance
+        run: node tools/staff-cycle7/communications.browser.mjs
+  native-catalog:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm ci --ignore-scripts --prefix tools/backend-tests
+      - name: Disposable local schema composition and denied RPCs only
+        run: |
+          /usr/lib/postgresql/17/bin/postgres --version | grep -E 'PostgreSQL\) 17\.'
+          TEST_POSTGRES_BIN=/usr/lib/postgresql/17/bin node tools/staff-cycle7/modules.native.mjs
