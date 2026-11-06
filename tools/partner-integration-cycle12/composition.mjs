@@ -9,7 +9,7 @@ export const root=fileURLToPath(new URL('../../',import.meta.url));
 export const manifest=JSON.parse(fs.readFileSync(new URL('./manifest.json',import.meta.url)));
 export const pins=Object.freeze({partner:'6af774d5adcdd3c20f65930d5dd485f35466cca8',outreach:'bf4cf916f176ae8c1e86401c64306c56cfca6a35',ancestor:'f2f518fbed16ed5e1d4a38a790cd95965fc1c635'});
 export const sha=b=>createHash('sha256').update(b).digest('hex');
-export const git=(...args)=>execFileSync('git',args,{cwd:root,maxBuffer:64*1024*1024});
+export const git=(...args)=>execFileSync('git',['--no-replace-objects',...args],{cwd:root,maxBuffer:64*1024*1024});
 export function tree(ref){
  const result={};
  for(const row of git('ls-tree','-rz',ref).toString().split('\0').filter(Boolean)){
@@ -53,7 +53,7 @@ function files(dir,prefix=''){
 const blobHashes=new Map();
 function preloadBlobs(expected){
  const missing=[...new Set(Object.values(expected).map(e=>e.blob))].filter(b=>!blobHashes.has(b));if(!missing.length)return;
- const bytes=execFileSync('git',['cat-file','--batch'],{cwd:root,input:missing.join('\n')+'\n',maxBuffer:512*1024*1024});let at=0;
+ const bytes=execFileSync('git',['--no-replace-objects','cat-file','--batch'],{cwd:root,input:missing.join('\n')+'\n',maxBuffer:512*1024*1024});let at=0;
  for(const blob of missing){const end=bytes.indexOf(10,at),[actual,type,size]=bytes.subarray(at,end).toString().split(' ');assert.equal(actual,blob);assert.equal(type,'blob');at=end+1;const count=Number(size);blobHashes.set(blob,sha(bytes.subarray(at,at+count)));at+=count+1;}
  assert.equal(at,bytes.length);
 }
