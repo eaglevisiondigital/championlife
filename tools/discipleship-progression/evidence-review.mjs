@@ -34,8 +34,10 @@ export async function reviewProgression(request, port, {signal} = {}) {
       if (signal?.aborted) return denied('cancelled');
       const s = snapshot;
       if (!s || s.userId !== target.userId || s.sessionId !== target.sessionId || s.course !== target.course || s.lesson !== target.lesson || s.sessionActive !== true || s.enrolled !== true || !integer(s.revision)) return denied('binding');
-      // Approved media currently absent for lessons 11–13. No placeholder credit.
-      if (target.lesson > 10 || s.videoApproved !== true || !id(s.videoRevision) || !integer(s.durationMs) || s.durationMs === 0) return denied('media_unavailable');
+      // Lessons 6/8/9 have multiple videos; this single-media contract cannot
+      // establish their required complete set, order or durations. Hold review
+      // until that binding is approved and implemented. Media 11–13 is absent.
+      if ([6,8,9].includes(target.lesson) || target.lesson > 10 || s.videoApproved !== true || !id(s.videoRevision) || !integer(s.durationMs) || s.durationMs === 0) return denied('media_unavailable');
       if (!Array.isArray(s.watchReceipts) || s.watchReceipts.length > 10000) return denied('invalid_receipts');
       const intervals = [], seen = new Map();
       for (const r of s.watchReceipts) {

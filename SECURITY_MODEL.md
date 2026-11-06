@@ -1,3 +1,7 @@
+## November 5 — individual media proof cannot establish multipart advancement
+
+The source-only progression evaluator rejects whole-lesson watch/advance/completion evidence for Lessons 6/8/9 while required multipart binding remains unresolved. A valid individual-media signature, `videoApproved` flag, complete single-part coverage or replay cannot bypass that hold. No guessed part registry/order/duration or production observer is introduced. Existing 95% interval arithmetic, observer expiry and answer minimization are preserved; every result remains `canCommit:false`. This changes no public runtime or database permission and is not genuine provider or hosted acceptance.
+
 ## November 5 — progression receipt data minimization (source only)
 
 The current-account progression snapshot must carry only receipt metadata, never private worksheet answer bodies. The guarded forward correction uses an explicit projection after the existing account/session/enrollment/revision transaction and does not broaden function permissions or RLS. Lesson 5–13 worksheet reload still returns legitimate answers directly to their verified owner. Same-owner overprojection was reproduced locally; no cross-account or hosted exposure is claimed. Existing trusted completion and external playback/retention gates remain unchanged.
