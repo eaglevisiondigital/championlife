@@ -36,6 +36,7 @@ for(const[engine,options]of[[chromium,{channel:'chrome'}],[webkit,{}]]){
      if(delay===name+':'+payload.p_action){delay=null;await new Promise(r=>release=r)}
      if(revoked)return route.fulfill({status:403,json:{code:'42501',message:'Synthetic access revoked'}});
      if(failDiscovery&&name==='staff_workspace_context')return route.abort();
+     if(name==='communications_workspace')return route.fulfill({status:404,json:{code:'PGRST202',message:'Optional Communications backend not installed in this fixture'}});
      if(name==='forms_workspace')return route.fulfill({status:404,json:{code:'PGRST202',message:'Optional Forms backend not installed in this fixture'}});
      if(name==='staff_workspace_context')return route.fulfill({json:user===identities[0]?{organizations:[{id:'org',name:'Champion Life · Synthetic'}],grants:['people.read','followup.read',...(finance?['outreach.view','finance.read']:[])].map(permission=>({organization_id:'org',permission,department_ids:department?['restricted-department']:null}))}:{organizations:[],grants:[]}});
      if(name==='people_workspace')return route.fulfill({json:payload.p_action==='list'?[{id:'11111111-1111-4111-8111-111111111111',first_name:'Church',last_name:'Fixture',email:'private@example.test',relationships:['volunteer']}]:{person:{first_name:'Church',last_name:'Fixture'},relationships:[]}});

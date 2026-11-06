@@ -1,0 +1,12 @@
+import assert from 'node:assert/strict';
+import {readFileSync,readdirSync,lstatSync} from 'node:fs';
+import {createHash} from 'node:crypto';
+import {buildSite} from '../site-build/build.mjs';
+import {verifyHostOverrides,original,current,existing,additions,base} from './overrides.mjs';
+const root=new URL('../../',import.meta.url),sha=b=>createHash('sha256').update(b).digest('hex');
+verifyHostOverrides();const before=JSON.parse(original('tools/site-build/public-files.json')),after=JSON.parse(current('tools/site-build/public-files.json'));
+for(const path of before)if(!existing.includes(path))assert.deepEqual(current(path),original(path),'Protected public source '+path);
+const walk=dir=>readdirSync(dir).sort().flatMap(name=>{const p=new URL(name,dir);assert(!lstatSync(p).isSymbolicLink());return lstatSync(p).isDirectory()?walk(new URL(name+'/',dir)):[[p.href.slice(new URL('dist/',root).href.length),sha(readFileSync(p))]]});
+await buildSite({env:{}});const first=walk(new URL('dist/',root));await buildSite({env:{}});assert.deepEqual(walk(new URL('dist/',root)),first,'Deterministic build');
+assert.deepEqual(first.map(([p])=>p).sort(),after,'Exact public output inventory');for(const [path,hash]of first)assert.equal(hash,sha(current(decodeURIComponent(path))),'Build bytes '+path);
+console.log(JSON.stringify({status:'PASS',base,publicFiles:after.length,unchangedPublicFiles:before.length-2,changedExistingPublic:existing.filter(p=>before.includes(p)),addedPublic:additions,builds:2,manifestSHA256:sha(JSON.stringify(first)),releaseAuthorized:false}));

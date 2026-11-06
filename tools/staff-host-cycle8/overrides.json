@@ -1,0 +1,49 @@
+{
+  "base": "0bee5dc7beef8ad7b88e5aeb9e0567730c82fc53",
+  "existing": {
+    "assets/js/staff-session.js": {
+      "originalSHA256": "ae6533b1f63eb66f1870117bc429673bbed4179038087f6f6f1670b4f9bb7307",
+      "reviewedSHA256": "152dffe8ea3d6aeb8985168fb441bc40020a22c909f256209490fbba4b851163"
+    },
+    "assets/js/staff-workspace.js": {
+      "originalSHA256": "c25659dcaff9d9581653e04420dd445fa0539e619e8c7f92af89f395dff7c189",
+      "reviewedSHA256": "8bb03001599c3c9980c97ef4e71373474cec8248a8bf258fba87e7ba4d5c6127"
+    },
+    "tools/backend-tests/staff-session.browser.mjs": {
+      "originalSHA256": "6eeacde815abb474feba75c1a7a801814c0d24142dbd44284808f7bbb528b7e2",
+      "reviewedSHA256": "45c358d9fa7be37043e566fa60e15cb9599af3efb81c32910070ef7148861a88"
+    },
+    "tools/backend-tests/staff-workspace-discovery.browser.mjs": {
+      "originalSHA256": "b58325f9b5ee03f854939c4750b016045b40146a73baebec8f73083e7fb37184",
+      "reviewedSHA256": "cf04a3c3e340e681849db685b0d71843b0fe2a7327396eb81b3b9af3cbc52a69"
+    },
+    "tools/backend-tests/staff-workspace.browser.mjs": {
+      "originalSHA256": "2f0d3f98c25fd52e9c57a2e0ae2244660786898eb364ff3509a1b54e9c3df3e6",
+      "reviewedSHA256": "d6d23a867d32569085fa2de582f1070d0524ca36155f9714d75b22270f3621ed"
+    },
+    "tools/site-build/public-files.json": {
+      "originalSHA256": "26ea5ae0c5bec1ad2b070865bf256a7228bfa94fd8b3846c431e021791e19c04",
+      "reviewedSHA256": "49918a7eebf77b625bd9140308eb6c49560a63db871f2652f9131f02b76332a5"
+    }
+  },
+  "additions": {
+    "assets/css/communications.css": {
+      "reviewedSHA256": "84f600e217256cc891ecd247c8985d2ebaa836d55e25e9b26644f23f2b0f69b6"
+    },
+    "assets/js/communications.js": {
+      "reviewedSHA256": "19afae3ebec9a058ef35a1fce1625b77d674a53a2ae398c431fdd7ed8fdab4f3"
+    },
+    "staff-campaign-communications.html": {
+      "reviewedSHA256": "c127f0cccc052740f4e7cd3cfc980d6ff0217f28e67b618861e63359859759af"
+    },
+    "staff-communication-activity.html": {
+      "reviewedSHA256": "dc36a55ee87cdb02a1630161e225402b87d6e30728210bdbae5f17671b647e02"
+    },
+    "staff-communication-templates.html": {
+      "reviewedSHA256": "ba4e14e04baaa46f376ce06d60c004b5ed6553095c4d61eda459dae8fba41bc3"
+    },
+    "staff-communications.html": {
+      "reviewedSHA256": "674e3b802a38ad1c8a5d5771cec00616bac050501987a069bea1bb610024f47b"
+    }
+  }
+}

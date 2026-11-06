@@ -8,7 +8,28 @@
  const main=document.getElementById('staff-main');
  const auth=window.ChampionLifeAuth;
  if(!account||!email||!logout||!message||!main||!auth?.client?.auth)return;
- const login='discipleship-login.html?next='+encodeURIComponent(document.body.hasAttribute('data-staff-workspace')?'/staff-home.html':'/staff-people.html');
+ // Preserve approved unified-shell return behavior without mounting that shell here.
+ function loginRoute(){
+  let next='/staff-people.html';
+  if(document.body.hasAttribute('data-staff-workspace'))next='/staff-home.html';
+  else{
+   const routes={
+    '/staff-events.html':['/staff-events.html','org'],
+    '/staff-forms.html':['/staff-forms.html','organization'],
+    '/staff-form-builder.html':['/staff-forms.html','organization'],
+    '/staff-dream-team-manual.html':['/staff-dream-team-manual.html','org']
+   },route=routes[location.pathname];
+   if(route){
+    next=route[0];const values=new URLSearchParams(location.search).getAll(route[1]);
+    if(values.length){
+     // Invalid/duplicate requests stay unavailable; never become another tenant's default.
+     const scope=values.length===1&&/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(values[0])?values[0]:'unavailable';
+     next+='?'+route[1]+'='+encodeURIComponent(scope);
+    }
+   }
+  }
+  return 'discipleship-login.html?next='+encodeURIComponent(next);
+ }
  let currentId=null,revision=0,leaving=false,signingOut=false;
  // Detach module mounts, so pending responses can only update detached elements.
  function clearWorkspace(){
@@ -20,7 +41,7 @@
  function leave(){
   if(leaving)return;
   leaving=true;revision++;clearWorkspace();email.textContent='';account.hidden=true;
-  clearReturnHint();location.replace(login);
+  clearReturnHint();location.replace(loginRoute());
  }
  function display(user){
   currentId=user?.id||null;

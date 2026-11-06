@@ -1,14 +1,16 @@
 import assert from 'node:assert/strict';
+import {checkpointReader} from '../staff-host-cycle8/overrides.mjs';
 import {execFileSync} from 'node:child_process';
 import {verifyOverrides} from '../staff-module-navigation/source-overrides.mjs';
 import {readFileSync,readdirSync} from 'node:fs';
 import {createHash} from 'node:crypto';
 const root=new URL('../../',import.meta.url),read=p=>readFileSync(new URL(p,root));
+const checkpoint=checkpointReader();
 const manifest=JSON.parse(read('tools/backoffice-composition/source-manifest.json'));
 let checks=0;const ok=(v,m)=>{assert.ok(v,m);checks++};
 const overrides=JSON.parse(read('tools/staff-module-navigation/source-overrides.json'));
-const changed=verifyOverrides(overrides,read('tools/backoffice-composition/source-manifest.json'),(base,path)=>execFileSync('git',['show',base+':'+path],{cwd:root,maxBuffer:16*1024*1024}),read);
-for(const file of [...manifest.selectedFiles,...manifest.preservedFiles])ok(createHash('sha256').update(read(file.path)).digest('hex')===(changed.has(file.path)?(overrides.files[file.path]||overrides.testFiles[file.path]).reviewedSHA256:file.sha256),'exact reviewed source: '+file.path);
+const changed=verifyOverrides(overrides,read('tools/backoffice-composition/source-manifest.json'),(base,path)=>execFileSync('git',['show',base+':'+path],{cwd:root,maxBuffer:16*1024*1024}),checkpoint);
+for(const file of [...manifest.selectedFiles,...manifest.preservedFiles])ok(createHash('sha256').update(checkpoint(file.path)).digest('hex')===(changed.has(file.path)?(overrides.files[file.path]||overrides.testFiles[file.path]).reviewedSHA256:file.sha256),'exact reviewed source: '+file.path);
 for(const p of ['staff-home.html','staff-people.html','staff-outreach-registration.html']){
  const html=read(p).toString();
  ok(html.includes('src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.118.0" integrity="sha384-UagCvVPT5XXA0Hx+nJYUAGBFseHT9zBgpJMSebsAxl9lciTwbT+39j5VfRjdP5Tp" crossorigin="anonymous"'),'SDK source URL binds accepted artifact SRI: '+p);
