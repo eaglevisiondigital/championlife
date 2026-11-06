@@ -1,0 +1,365 @@
+{
+  "schema": 1,
+  "partner": "6af774d5adcdd3c20f65930d5dd485f35466cca8",
+  "outreach": "bf4cf916f176ae8c1e86401c64306c56cfca6a35",
+  "ancestor": "f2f518fbed16ed5e1d4a38a790cd95965fc1c635",
+  "conflicts": [
+    {
+      "path": "ARCHITECTURE.md",
+      "selected": "partner",
+      "partner": {
+        "mode": "100644",
+        "blob": "cb719a78d53c5f9a8cb01d8d19836e12652427f6"
+      },
+      "outreach": {
+        "mode": "100644",
+        "blob": "ce97760e1b9200cafd5e6fbb0a7cfd8fe6aecb77"
+      },
+      "reason": "Preserve source-branch continuity; current Outreach continuity remains in immutable checkpoint."
+    },
+    {
+      "path": "CURRENT_BUILD_STATE.md",
+      "selected": "partner",
+      "partner": {
+        "mode": "100644",
+        "blob": "d238a9160ff66a329de973cde19533229f3727b2"
+      },
+      "outreach": {
+        "mode": "100644",
+        "blob": "13f6c70695cc744b7660911833a3386191520147"
+      },
+      "reason": "Preserve source-branch continuity; current Outreach continuity remains in immutable checkpoint."
+    },
+    {
+      "path": "SECURITY_MODEL.md",
+      "selected": "partner",
+      "partner": {
+        "mode": "100644",
+        "blob": "4d070e4dc598c5aea0458c7a97b710c294dc127a"
+      },
+      "outreach": {
+        "mode": "100644",
+        "blob": "5442638da6b1a042b43fb51a8ce27870422541c3"
+      },
+      "reason": "Preserve source-branch continuity; current Outreach continuity remains in immutable checkpoint."
+    }
+  ],
+  "outreachOverlay": [
+    {
+      "path": ".github/workflows/outreach-summary-review.yml",
+      "mode": "100644",
+      "blob": "47e68973ac16197e01b9794062bc160ab0d19012",
+      "sha256": "cc566d9e315927b519239bb98d23d143601fffd8b777f4e0844f50aeb47e18d8"
+    },
+    {
+      "path": ".github/workflows/people-followup-history.yml",
+      "mode": "100644",
+      "blob": "63e18ebfbbe3f0eeb6735fb38cec1dfeed3d9c8c",
+      "sha256": "3cc693f4bbd3f9ccc383be48315703178ff425b807f15120d4112552fc8ae9e0"
+    },
+    {
+      "path": "assets/js/outreach-people.js",
+      "mode": "100644",
+      "blob": "eaf06f92098af130e21ef8239834d93dfe9ab067",
+      "sha256": "85e37f91829c35f4fd39f95b538f9ba4c59d50155e526a137e9928a054e2823e"
+    },
+    {
+      "path": "assets/js/outreach-registration-staff.js",
+      "mode": "100644",
+      "blob": "534043400f82083847e48b5dc475a6b649cbf14f",
+      "sha256": "665236df4f5eb52f25e4bcc5560a0e8fda4feae139b4f0b17265d10964ca4f2a"
+    },
+    {
+      "path": "docs/OUTREACH-PEOPLE-IDENTITY-RACE-20261102.md",
+      "mode": "100644",
+      "blob": "946f53a57c31343854b24d1c95ba0ab35c573a83",
+      "sha256": "cc6a8000dac433062e71c76a651322007aa60d691bb21809a3d15b9afddd81ce"
+    },
+    {
+      "path": "docs/OUTREACH-PRINTABLE-ROSTER-20261103.md",
+      "mode": "100644",
+      "blob": "d9e0b6f900f06a2a42be48bcc0d34cc2a4df0b35",
+      "sha256": "83f9d9b3cf1325455b8fb6d93721529c7dee8449fb79e47d151e59a5cfb6c1d4"
+    },
+    {
+      "path": "docs/OUTREACH-REGISTRATION-NAVIGATION-20261102.md",
+      "mode": "100644",
+      "blob": "f0d97c4c8c6c9ce077e66e68772f866c5a4ccd14",
+      "sha256": "121b9ca81f0888441eb863710fb461c896dfc6a914b98a6e87fe88d256d0bdac"
+    },
+    {
+      "path": "docs/OUTREACH-WALKUP-RETRY-20261102.md",
+      "mode": "100644",
+      "blob": "8da8366c77f47fb388b53373e76a81d190eef7eb",
+      "sha256": "c89e5f8e50923587d0f2d6f4f543e9ea62feb3e56fb11f4cb7ab604157db06c8"
+    },
+    {
+      "path": "docs/PEOPLE-FOLLOWUP-COMPOSITION-20261106.md",
+      "mode": "100644",
+      "blob": "a4fe7ade9eb7f92ee0f5f3af63f8edd35bba75a3",
+      "sha256": "f0b6a1609a778c47be0fbdcbcea914d78ad58c535ba6d17a8353bf91fadb548a"
+    },
+    {
+      "path": "docs/PEOPLE-FOLLOWUP-CREATE-20261103.md",
+      "mode": "100644",
+      "blob": "f716c06380f7db238a4c53fb0cdb2b438035a1d2",
+      "sha256": "487f0055389375939d4ad79c5ceb62a23d04fd3498af5ac34926b6ce8228569a"
+    },
+    {
+      "path": "docs/PEOPLE-FOLLOWUP-HISTORY-20261106.md",
+      "mode": "100644",
+      "blob": "17d2ca58ba8dd07abdc84f0b3668e1e58e375a17",
+      "sha256": "0f64c9d4756e7bde4ab3f1f13182ab3dfdfd47ce90a54297866a5f2c356fae13"
+    },
+    {
+      "path": "docs/PEOPLE-FOLLOWUP-PAGINATION-20261106.md",
+      "mode": "100644",
+      "blob": "f9ac549cace5290e46eadd1f9ad7e9d22a136aca",
+      "sha256": "d98f7789d5ef7982f4d761919054de4fac48617690e237733ce4ee00737658e8"
+    },
+    {
+      "path": "docs/PEOPLE-SEARCH-NAVIGATION-20261102.md",
+      "mode": "100644",
+      "blob": "14bc7c33dd0d75ccfc8f3525bbe2e4327abad437",
+      "sha256": "19b239092f3c3aa564c5a741d47f0b7f72ddf25eb21c6ad1d720d96ba5af4670"
+    },
+    {
+      "path": "docs/REGISTRATION-SEARCH-COMPOSITION-20261106.md",
+      "mode": "100644",
+      "blob": "b1d7b27536163b91431ca9c7f1002d71a7bc3e78",
+      "sha256": "0ae21e7bafdf27ffa681d7ebd22e1957a299d357b54018b44fae32adf4782108"
+    },
+    {
+      "path": "tools/outreach/people-followup-composition-independent.browser.mjs",
+      "mode": "100644",
+      "blob": "93f35bb5b8c5631bfe4dcf709c5ef29d205fdcb8",
+      "sha256": "e080ea31ea2520311fc3210beb029f35e63f7166c1d4b5f9360a1fce3306df9c"
+    },
+    {
+      "path": "tools/outreach/people-followup-composition.browser.mjs",
+      "mode": "100644",
+      "blob": "06261fe2962796d5bca8998216bcb41cb13a42c6",
+      "sha256": "d63e2b7e08af5ea3f53433858c581da677ad7567892fa3f61e8d246b9e36e3b4"
+    },
+    {
+      "path": "tools/outreach/people-followup-create.browser.mjs",
+      "mode": "100644",
+      "blob": "1092d2d8e92d25784a024cae8230077c80fb3431",
+      "sha256": "47f5fdf052794ee7b7591217c6fc696e6da135504a306f27800ab45ef1a9e848"
+    },
+    {
+      "path": "tools/outreach/people-followup-create.native.mjs",
+      "mode": "100644",
+      "blob": "6210489fc46bb585b64f84ab65395bad54b4a38c",
+      "sha256": "2cf370e473988d2c619fb986ee60aac8beff49c4e239766144969567e8367bb6"
+    },
+    {
+      "path": "tools/outreach/people-followup-history-independent.browser.mjs",
+      "mode": "100644",
+      "blob": "71b90d4073a812782396d5abbc1a7a8cf5344453",
+      "sha256": "8647f8470e8ad9afdbf24a6256d4ad70c328cfae2689b120a0f8b1134e4215db"
+    },
+    {
+      "path": "tools/outreach/people-followup-history.browser.mjs",
+      "mode": "100644",
+      "blob": "48103031e1aa4aec535ee97b58d720a4b7d70e34",
+      "sha256": "a8029d3678f3b3653ab737eb297e7efa5ca6e56358109e8f0d4db90a5e0dabcd"
+    },
+    {
+      "path": "tools/outreach/people-followup-history.native.mjs",
+      "mode": "100644",
+      "blob": "f53104d353d25125a123c0decfa8a304adca41b6",
+      "sha256": "9dcc8d32d1c62b8ac579c75975c4027203579dd3952f7c192b380b1cd2c69331"
+    },
+    {
+      "path": "tools/outreach/people-followup-pagination-independent.browser.mjs",
+      "mode": "100644",
+      "blob": "9e0b7124caa4504bfd6427cd7953e9896699cd87",
+      "sha256": "913891da909cda2e2786e14df5476ce34d3861754654cfe75dc3bd77917330da"
+    },
+    {
+      "path": "tools/outreach/people-followup-pagination-integrity.mjs",
+      "mode": "100644",
+      "blob": "ec479b342b0b21af1481f1a616bbed90d11a7097",
+      "sha256": "8520f78a08a2c3e7106b7b6ebfa3f7113786af8ecc94cdb923631f272f5b67cd"
+    },
+    {
+      "path": "tools/outreach/people-followup-pagination.browser.mjs",
+      "mode": "100644",
+      "blob": "f9ce3de0cd5b3672583d2f8a5ed34698156984d3",
+      "sha256": "2dc519c0abeb26bb0bee7943ca887a47a1096701ee79b6f9cf482800c88f4a36"
+    },
+    {
+      "path": "tools/outreach/people-identity-race.browser.mjs",
+      "mode": "100644",
+      "blob": "32dd6d8ba185c3be74816a0a7b91dce71d458f3b",
+      "sha256": "809e79fdd29fdeb29c262029a2fc5c33a37158831da3d6f56f27060ea1019267"
+    },
+    {
+      "path": "tools/outreach/people-navigation.browser.mjs",
+      "mode": "100644",
+      "blob": "585a373ed0420b3db7e8f9721bf31217ed57aba0",
+      "sha256": "e4690fe32c55819f4926520b9b2af3ede84ee4e6d2069fb07c678bbde4166c53"
+    },
+    {
+      "path": "tools/outreach/registration-checkin-status.browser.mjs",
+      "mode": "100644",
+      "blob": "ad5bbe0acd593c43a392da2ce108b1b22626b82b",
+      "sha256": "105eaca087ee768773bf0de782034310cfbf432caac7197f63caab1988019b3b"
+    },
+    {
+      "path": "tools/outreach/registration-checkin-status.native.mjs",
+      "mode": "100644",
+      "blob": "1e34a72ab514b06d55a21a3e0d49758078d29a30",
+      "sha256": "f941859a5b2a376b17fc135bcc217f7d8fead492634595d20de04d497c248dfa"
+    },
+    {
+      "path": "tools/outreach/registration-navigation.browser.mjs",
+      "mode": "100644",
+      "blob": "32018a488d296b6d75fa8a4e3f82b3cb63086a61",
+      "sha256": "cc75d705b67680d15edc4e662c4c2692a28422a83a2d8df9d39a726a6b9df31a"
+    },
+    {
+      "path": "tools/outreach/registration-print-roster.browser.mjs",
+      "mode": "100644",
+      "blob": "afb5e0a30adff69f9f6ec19482ed752fa99bcc2b",
+      "sha256": "0e6aec942de8ae07a8a070951728b0e51a95825394d2130c2b2a62723a42ec91"
+    },
+    {
+      "path": "tools/outreach/registration-print-roster.native.mjs",
+      "mode": "100644",
+      "blob": "4984f288ceeb607990075098ce7d251223384130",
+      "sha256": "c079ed4442ef6799c7dc17becff1e9a4d12397b386d477fd6458ec8d00534994"
+    },
+    {
+      "path": "tools/outreach/registration-search-composition-independent.browser.mjs",
+      "mode": "100644",
+      "blob": "f98aef6602ea3a02803466c799ff06eb09eec60d",
+      "sha256": "898fbeb151b55bfb58367bdf5f58ec5807e1e6f3529fee1bf5d226b862dca0dd"
+    },
+    {
+      "path": "tools/outreach/registration-search-composition.browser.mjs",
+      "mode": "100644",
+      "blob": "07f7246b8d256165373dbb6cae8957d65858d28c",
+      "sha256": "f0be4f227bf23f3d47ad2f0195a538f8706528b4bce107195baa259cd900a590"
+    },
+    {
+      "path": "tools/outreach/walkup-retry.browser.mjs",
+      "mode": "100644",
+      "blob": "67ec325eb96a42b0d2b80604959b0640bb352521",
+      "sha256": "0568239168e2e4b493308ab26cef5c0ff4f8ca50333ed551fb9e0d5d248fbb44"
+    },
+    {
+      "path": "tools/outreach/walkup-retry.native.mjs",
+      "mode": "100644",
+      "blob": "753c9d8dbcdec3b3acdbb04d25aa8351aa2e9b5f",
+      "sha256": "a150af1d995ea5774db1cf99ca19e8ba7e7a2df889ba93b1a200aa0c1f8fb357"
+    }
+  ],
+  "summaryCommands": [
+    {
+      "command": "npm ci --ignore-scripts --prefix tools/backend-tests",
+      "target": "composition"
+    },
+    {
+      "command": "node --test tools/outreach/shared-staff-backend.test.mjs tools/outreach/isolated-staff-summary-auth.test.mjs tools/outreach/campaign-summary.test.mjs tools/outreach/campaign-summary.review.test.mjs tools/outreach/campaign-summary-lifecycle.test.mjs tools/outreach/campaign-summary-lifecycle.review.test.mjs tools/outreach/church-outreach-summary-composition.test.mjs tools/outreach/church-outreach-auth-binding.test.mjs tools/outreach/church-outreach-summary-view.test.mjs tools/outreach/church-outreach-summary-entry.test.mjs",
+      "target": "composition"
+    },
+    {
+      "command": "TEST_POSTGRES_BIN=\"$(pg_config --bindir)\" node tools/outreach/campaign-summary.native.mjs",
+      "target": "composition"
+    },
+    {
+      "command": "TEST_POSTGRES_BIN=\"$(pg_config --bindir)\" node tools/outreach/shared-staff-backend.native.mjs",
+      "target": "composition"
+    },
+    {
+      "command": "node tools/backend-tests/node_modules/playwright/cli.js install --with-deps chromium webkit",
+      "target": "composition"
+    },
+    {
+      "command": "node tools/outreach/registration-print-roster.browser.mjs",
+      "target": "composition"
+    },
+    {
+      "command": "TEST_POSTGRES_BIN=\"$(pg_config --bindir)\" node tools/outreach/registration-print-roster.native.mjs",
+      "target": "composition"
+    },
+    {
+      "command": "node tools/outreach/registration-checkin-status.browser.mjs",
+      "target": "composition"
+    },
+    {
+      "command": "TEST_POSTGRES_BIN=\"$(pg_config --bindir)\" node tools/outreach/registration-checkin-status.native.mjs",
+      "target": "composition"
+    },
+    {
+      "command": "node tools/outreach/registration-navigation.browser.mjs",
+      "target": "composition"
+    },
+    {
+      "command": "node tools/outreach/registration-search-composition.browser.mjs",
+      "target": "composition"
+    },
+    {
+      "command": "node tools/outreach/registration-search-composition-independent.browser.mjs",
+      "target": "composition"
+    },
+    {
+      "command": "node tools/outreach/people-followup-pagination.browser.mjs",
+      "target": "composition"
+    },
+    {
+      "command": "node tools/outreach/people-followup-pagination-independent.browser.mjs",
+      "target": "composition"
+    },
+    {
+      "command": "node tools/outreach/people-followup-composition.browser.mjs",
+      "target": "composition"
+    },
+    {
+      "command": "node tools/outreach/people-followup-composition-independent.browser.mjs",
+      "target": "composition"
+    },
+    {
+      "command": "node tools/outreach/people-followup-pagination-integrity.mjs",
+      "target": "outreach"
+    },
+    {
+      "command": "node tools/outreach/people-followup-create.browser.mjs",
+      "target": "composition"
+    },
+    {
+      "command": "TEST_POSTGRES_BIN=\"$(pg_config --bindir)\" node tools/outreach/people-followup-create.native.mjs",
+      "target": "composition"
+    },
+    {
+      "command": "node tools/outreach/people-navigation.browser.mjs",
+      "target": "composition"
+    },
+    {
+      "command": "node tools/outreach/people-identity-race.browser.mjs",
+      "target": "composition"
+    },
+    {
+      "command": "node tools/outreach/walkup-retry.browser.mjs",
+      "target": "composition"
+    },
+    {
+      "command": "TEST_POSTGRES_BIN=\"$(pg_config --bindir)\" node tools/outreach/walkup-retry.native.mjs",
+      "target": "composition"
+    },
+    {
+      "command": "node tools/backend-tests/outreach-people.dom.mjs",
+      "target": "composition"
+    },
+    {
+      "command": "node tools/backend-tests/outreach-registration.dom.mjs",
+      "target": "composition"
+    },
+    {
+      "command": "git diff --check",
+      "target": "composition"
+    }
+  ]
+}
