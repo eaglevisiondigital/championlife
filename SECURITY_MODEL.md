@@ -1,3 +1,15 @@
+## 2026-11-05 — Observed history cannot clear UNKNOWN
+
+The private disposable reconciliation contract reuses current server identity, dual authorization, consent and five expected revisions before and after checking canonical history. It has no API execution grants or application DML; its row locks require an ordinary PostgreSQL transaction, not READ ONLY mode. Exact current state, contiguous canonical events and a matching proposed intent do not prove that an uncertain request committed, failed or has no pending operation. All observations retain UNKNOWN, no retry and no terminal proof. A real intent ledger and successful atomic task/audit/final-fence implementation remain absent; existing unconditional write denial remains intact.
+
+Fictional custody checks require a distinct currently verified authorizer plus signed designation, separately accepted source/identity/adult/consent methods, and a captured head bound to the exact policy, designation and history. Capture cannot precede the latest event or occur in the future. A still-valid captured head cannot discover a later withdrawal by itself: a real independent current-head custodian is an explicit missing capability. These checks neither establish real identity nor create linking/contact/write authority.
+
+## 2026-11-05 — Prepared intent is not mutation authority
+
+The disposable-only private prepare function has no API execution grants, public wrapper, migration installer, DML or enablement switch. Server session identity and fresh independent organization manage plus assigned-campaign authority are checked under existing task-first locks; consent, expiry and exact revisions are rechecked after waits. The returned intent/hash is not a durable receipt or transferable authorization. Existing unconditional bound-task write denial remains authoritative. No automatic retry follows an uncertain outcome.
+
+Fictional provenance signatures demonstrate byte integrity only. Evidence must also bind the exact case/version, canonical source/Person/account, policy, independently designated reviewer and complete externally anchored history. Reviewer designation must cover both the original approval/withdrawal event and current inspection. Unknown or conflicting identity, minors, guardian assumptions, withdrawal, expiry and missing custody fail closed. No actual associations, identity producer or authority are created. Real custody/reviewer/retention acceptance and a separately reviewed atomic mutation/audit implementation remain mandatory.
+
 ## Unified shell discovery correction — 2026-10-31
 
 Process every discovery response independently: an explicit denial must immediately invalidate the workspace even if a concurrent discovery RPC remains pending. Late responses cannot reverse terminal invalidation. Canonical comparison treats organization, campaign, grant and department arrays as unordered sets; an actual change still retires access. No change to authoritative PostgreSQL authorization or session-retirement requirements. Synthetic browser proof is not provider-backed revocation evidence.
@@ -58,3 +70,19 @@ An asynchronous People boot must confirm its captured generation before publishi
 ### Source-only campaign task boundary, 2026-11-05
 
 Campaign-derived generic task visibility requires both current ordinary organization People/follow-up authority and current assigned campaign-record follow-up authority. The initially empty private binding store is not an identity producer. Binding hashes reference future independently approved evidence rather than verifying it. Bound task mutations remain denied until an atomic expected-revision server interface is separately reviewed. Task/history mutation and financial/tag attachment triggers also apply to definer/service write paths. Authenticated-client reads use restrictive RLS; direct service-role reads remain privileged and are not claimed to be RLS-isolated. No service credential is issued or exposed by this package. No hosted application or permission installation occurred.
+
+
+## November 6, 2026 — Held audit plan and disposable intent experiment
+
+Source-only. `private.task_writer_plan` produces exact canonical before/after audit specifications under the existing five-revision, server-actor/session, dual-authority and consent checks. It performs no task/audit mutation and grants no API execution. The transaction identifier is diagnostic only; it is not request identity or commit proof. Existing bound-write denial and operational SQL remain unchanged.
+
+Permanent native tests demonstrate that a deferred fixture fence can be forced early using SET CONSTRAINTS, leaving later consent/expiry changes unchecked. A successful operational commit-time safeguard is therefore NOT established. The separate `task_intent_fixture` schema is disposable test infrastructure only: ordinary synthetic task/intent/receipt transactions, rollback, concurrent duplicate requests and discarded commit responses are exercised without an operational writer or registry. Foreign keys alone permit mismatched old-event correspondence; the independent tests preserve this counterexample. No receipt is accepted as terminal authority. UNKNOWN remains held without automatic retry.
+
+Author checks: 92 writer-plan and 104 intent; independent checks: 31 writer-plan and 21 intent. Publication CI is recorded separately in the private audit report. All 411 public files and PR #105 backend source must remain byte-identical. No hosted acceptance, real identity association, task issuance or release is authorized.
+
+
+## November 6, 2026 — Disposable admission and event correspondence proof
+
+Extends the existing isolated `task_intent_fixture` only. Task-first locking serializes lab arm/rejection; an observer binds the actual canonical event to the exact current-transaction actor/task/before/after intent. No canonical writer, API privilege or hosted migration is added. The five-revision held plan and PR105 bound-task denial remain unchanged.
+
+97 author and 25 independent native assertions pass, including actual lock waits, competing intents, injected audit rollback, old/forged event rejection and same-user session replacement. Permanent counterexamples preserve the limits: an event is not a transaction-end authority fence, and unarmed ordinary writes are outside lab exclusion. Neither observation is operational terminal proof; UNKNOWN/no automatic retry remains mandatory. See docs/TASK-ADMISSION-PROOF-20261106.md. Exact-head CI is reported separately; release remains NO-GO.

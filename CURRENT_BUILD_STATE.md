@@ -1,3 +1,15 @@
+## 2026-11-05 — Uncertain task observation and provenance custody
+
+The held task contract now supports a disposable-only, permission-checked observation of expected revisions and canonical audit consistency. A matching snapshot and one event per revision still return UNKNOWN with terminal verification and automatic retry false: canonical events do not carry a durable request identity. Existing task writes remain blocked. Native tests exercise task/event lock contention and the existing deferred denial/rollback; they do not implement a successful bound CAS writer or positive commit-time expiry fence.
+
+Fictional provenance now checks current verified authorizer metadata separately from signed designation, finite acceptance for each evidence method, and externally captured audit-head timing and policy/designation binding. Account existence is not authority. Real designation, methods, custody, retention and source evidence remain unavailable. Permanent independent tests cover fully signed negative cases and unchanged canonical rows. No migration, existing permission, public output, provider or operational capability changes. Exact source CI is separate from genuine hosted acceptance; release remains NO-GO.
+
+## 2026-11-05 — Held task preparation and fictional provenance contracts
+
+Source-only contracts extend unchanged PR105 without enabling its blocked task writes or identity bindings. Disposable native PostgreSQL preparation locks the canonical task and existing authority dependencies, compares five exact revisions and binds the neutral intent to current server Auth. Every valid preparation remains HELD; ambiguous results remain UNKNOWN without a retry port. Positive bound mutation/audit CAS is deliberately not implemented.
+
+The separate provenance exercise verifies fictional source, identity, adult and consent attestations against canonical metadata, distinct fixture signing roots and an independently captured current history head. All linking/contact/write flags remain false. Real source custody, independently designated reviewer, approved verification methods and finite retention remain missing; email-matched legacy account links are not independent identity proof. Independent review corrected approval-before-designation and malformed-envelope failures before publication. Permanent author and independent native tests and exact-source CI cover these contracts; public runtime, all existing migrations and permission definitions remain unchanged. See the two scoped contract documents. Genuine hosted acceptance and release remain NO-GO.
+
 ## 2026-11-05 — Reentrant campaign control retirement
 
 Independent review found a second consumer-lifecycle fault after the first intent-binding draft: caller getters/proxies could retire selection while `save` captured the later navigation generation, allowing the old ticket to continue. Save now captures the original scope/generation/principal before caller operations and rechecks both that binding and the exact current snapshot/busy state before entering saving. Reentrant retirement submits zero writes; a separate legitimate nested save is preserved. This is a source-only adapter correction, not a database authorization bypass. Earlier published head and CI remain historical evidence; final-head review/CI are required independently.
@@ -113,3 +125,19 @@ A delayed earlier `getUser()` result could overwrite the current People module u
 ## 2026-11-05 — Campaign-derived canonical task read boundary (uninstalled)
 
 A source-only empty-binding enforcement candidate adds dual current organization People/task AND exact campaign-record authority to existing canonical task and event reads. It exposes only a neutral read-only context; bound task writes and all producer/issuer paths stay disabled. No identity source, reviewer authority, adult verification producer, real binding, grant or hosted installation is authorized. Exact provenance and release gates: [boundary contract](docs/CAMPAIGN-PERSON-TASK-BOUNDARY-20261105.md). Local synthetic acceptance is distinct from genuine Auth/RLS and release authorization.
+
+
+## November 6, 2026 — Held audit plan and disposable intent experiment
+
+Source-only. `private.task_writer_plan` produces exact canonical before/after audit specifications under the existing five-revision, server-actor/session, dual-authority and consent checks. It performs no task/audit mutation and grants no API execution. The transaction identifier is diagnostic only; it is not request identity or commit proof. Existing bound-write denial and operational SQL remain unchanged.
+
+Permanent native tests demonstrate that a deferred fixture fence can be forced early using SET CONSTRAINTS, leaving later consent/expiry changes unchecked. A successful operational commit-time safeguard is therefore NOT established. The separate `task_intent_fixture` schema is disposable test infrastructure only: ordinary synthetic task/intent/receipt transactions, rollback, concurrent duplicate requests and discarded commit responses are exercised without an operational writer or registry. Foreign keys alone permit mismatched old-event correspondence; the independent tests preserve this counterexample. No receipt is accepted as terminal authority. UNKNOWN remains held without automatic retry.
+
+Author checks: 92 writer-plan and 104 intent; independent checks: 31 writer-plan and 21 intent. Publication CI is recorded separately in the private audit report. All 411 public files and PR #105 backend source must remain byte-identical. No hosted acceptance, real identity association, task issuance or release is authorized.
+
+
+## November 6, 2026 — Disposable admission and event correspondence proof
+
+Extends the existing isolated `task_intent_fixture` only. Task-first locking serializes lab arm/rejection; an observer binds the actual canonical event to the exact current-transaction actor/task/before/after intent. No canonical writer, API privilege or hosted migration is added. The five-revision held plan and PR105 bound-task denial remain unchanged.
+
+97 author and 25 independent native assertions pass, including actual lock waits, competing intents, injected audit rollback, old/forged event rejection and same-user session replacement. Permanent counterexamples preserve the limits: an event is not a transaction-end authority fence, and unarmed ordinary writes are outside lab exclusion. Neither observation is operational terminal proof; UNKNOWN/no automatic retry remains mandatory. See docs/TASK-ADMISSION-PROOF-20261106.md. Exact-head CI is reported separately; release remains NO-GO.
