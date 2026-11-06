@@ -1,0 +1,82 @@
+name: Staff Linux WebKit account-transition diagnostic
+on:
+  pull_request:
+    paths:
+      - 'tools/staff-cycle10/**'
+      - 'tools/staff-cycle10-security/**'
+      - '.github/workflows/staff-webkit-cycle10.yml'
+permissions:
+  contents: read
+concurrency:
+  group: staff-webkit-cycle10-${{ github.event.pull_request.number }}
+  cancel-in-progress: false
+jobs:
+  exact-legacy-diagnostic:
+    runs-on: ubuntu-latest
+    # Dependency installation is separately bounded; the unchanged case gets 3 minutes.
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: node tools/staff-cycle10/verify-legacy.mjs
+      - run: node --test tools/staff-cycle10/observer.test.mjs
+      - run: npm ci --ignore-scripts --prefix tools/backend-tests
+      - name: Install the exact locked WebKit browser and dependencies
+        timeout-minutes: 18
+        run: tools/backend-tests/node_modules/.bin/playwright install --with-deps webkit
+      - name: Obtain and verify the accepted SDK without changing its version
+        shell: bash
+        run: |
+          curl --fail --silent --show-error --location 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.118.0' --output "$RUNNER_TEMP/supabase-sdk.js"
+          echo "bee24fc29228ed5a370f76a2ba1ca3c399549edad2fef23453c80148856a49af  $RUNNER_TEMP/supabase-sdk.js" | sha256sum --check
+          echo "SUPABASE_SDK_PATH=$RUNNER_TEMP/supabase-sdk.js" >> "$GITHUB_ENV"
+          echo "HOST_SOURCE_ROOT=$GITHUB_WORKSPACE" >> "$GITHUB_ENV"
+          echo "DIAGNOSTIC_DIR=$RUNNER_TEMP/staff-webkit-cycle10" >> "$GITHUB_ENV"
+      - name: Observe exact historical WebKit390 Forms case with unchanged assertions
+        timeout-minutes: 3
+        shell: bash
+        run: |
+          mkdir -p "$DIAGNOSTIC_DIR"
+          node tools/staff-cycle10/legacy.browser.mjs 2>&1 | tee "$DIAGNOSTIC_DIR/strict-result.log"
+      - name: Preserve observations even when the strict historical assertion fails
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: staff-webkit-cycle10-${{ github.event.pull_request.head.sha }}
+          path: ${{ runner.temp }}/staff-webkit-cycle10/
+          if-no-files-found: warn
+          retention-days: 7
+      - if: always()
+        run: git diff --check
+  current-module-security:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        browser: [chromium, webkit]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm ci --ignore-scripts --prefix tools/backend-tests
+      - run: tools/backend-tests/node_modules/.bin/playwright install --with-deps ${{ matrix.browser }}
+      - name: Verify accepted SDK and run new current-source detail isolation cases
+        timeout-minutes: 3
+        shell: bash
+        env:
+          TEST_BROWSER: ${{ matrix.browser }}
+        run: |
+          curl --fail --silent --show-error --location 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.118.0' --output "$RUNNER_TEMP/supabase-sdk.js"
+          echo "bee24fc29228ed5a370f76a2ba1ca3c399549edad2fef23453c80148856a49af  $RUNNER_TEMP/supabase-sdk.js" | sha256sum --check
+          SUPABASE_SDK_PATH="$RUNNER_TEMP/supabase-sdk.js" SOURCE_ROOT="$GITHUB_WORKSPACE" node tools/staff-cycle10-security/pending-detail.browser.mjs
+      - run: git diff --check
