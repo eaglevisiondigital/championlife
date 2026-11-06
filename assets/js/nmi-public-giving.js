@@ -48,7 +48,7 @@
   f.onsubmit=guarded(async e=>{e.preventDefault();if(!current(generation)||busy||!challenge)return;busy=true;submit.disabled=true;try{
    capability??=Array.from(crypto.getRandomValues(new Uint8Array(32)),x=>x.toString(16).padStart(2,'0')).join('');
    const payload={action:'create',organization_id:org,form_id:form,request_key:requestKey,capability,receipt_email:email.value,donor_name:name.value,frequency:frequency.value,lines:[{fund_id:fund.value,amount_minor:window.GivingUtils.amountToMinor(amount.value)}],challenge_token:challenge};if(frequency.value!=='once')payload.starts_on=date.value;
-   const result=await call(payload);challenge=null;window.turnstile.remove(challengeWidget);await payment(result,frequency.value);
+   const result=await call(payload);challenge=null;window.turnstile.remove(challengeWidget);await payment(result,payload.frequency);
   }catch(err){if(!current(generation))return;f.append(E('p',err.message,{role:'alert'}));challenge=null;window.turnstile.reset(challengeWidget);}finally{busy=false;if(current(generation))submit.disabled=false}});
  }
  window.addEventListener('focus',()=>current(epoch));

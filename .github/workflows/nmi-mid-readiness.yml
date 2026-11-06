@@ -75,6 +75,10 @@ jobs:
         run: node tools/nmi/public-denial.browser.mjs
       - name: Independently check denial classification and unchanged uncertainty
         run: node tools/nmi/public-denial-independent.mjs
+      - name: Preserve captured checkout frequency across delayed creation
+        run: node tools/nmi/public-frequency.browser.mjs
+      - name: Independently check checkout operation matches submitted intent
+        run: node tools/nmi/public-frequency-independent.mjs
       - name: Verify imported source provenance and public exclusion
         run: |
           git fetch --no-tags --depth=1 origin 84b2d9ab398bb8046570019da26a5db67fe77467
