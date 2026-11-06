@@ -55,7 +55,7 @@ try {
   eq(afterWithdrawal(withdrawn,now).status,'withdrawn');
   eq(afterWithdrawal(input,now).status,'denied','truncated journal before withdrawal fails current head');
   eq(inspect(withdrawn,now).status,'denied','unanchored appended journal');
-  for (const name of ['campaign','source','registration','person','portal_link','registrant','followup','task','binding','account','reviewer']) {
+  for (const name of ['campaign','source','registration','person','portal_link','registrant','followup','task','binding','account','reviewer','authorizer']) {
     denied(x=>{const rows=JSON.parse(x.canonicalBytes);rows[name].push(rows[name][0]);x.canonicalBytes=JSON.stringify(rows)},`duplicate ${name}`);
     const facts=JSON.parse(canonicalBytes);facts[name].push(facts[name][0]);
     const duplicate=makeProvenanceFixture(f,JSON.stringify(facts),now);
@@ -64,7 +64,7 @@ try {
   for (const [table,field,value] of [['source','active',false],['registration','user_id',f.users.other.id],
     ['registration','consent',false],['portal_link','active',false],['registrant','person_id',f.users.other.id],
     ['binding','eligibility','minor'],['binding','eligibility','unknown'],['binding','revoked_at',new Date(now).toISOString()],
-    ['account','active',false],['reviewer','verified',false]]) {
+    ['account','active',false],['reviewer','verified',false],['authorizer','active',false],['authorizer','verified',false]]) {
     const facts=JSON.parse(canonicalBytes);facts[table][0][field]=value;
     const inconsistent=makeProvenanceFixture(f,JSON.stringify(facts),now);
     eq(inconsistent.evaluator()(inconsistent.input,now).status,'denied',`freshly signed fixture cannot accept ${table}.${field}`);

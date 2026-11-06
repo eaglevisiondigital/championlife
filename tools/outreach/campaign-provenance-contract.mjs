@@ -45,9 +45,9 @@ export function createFixtureProvenanceEvaluator({authorityKey, sourceKey, revie
   let anchor;
   try {
     anchor = parse(trustedFixtureHeadBytes);
-    keys(anchor, 'case_sha256 event_count head_sha256 current_until');
-    check(hash(anchor.case_sha256) && hash(anchor.head_sha256) && revision(anchor.event_count));
-    instant(anchor.current_until);
+    keys(anchor, 'case_sha256 policy_sha256 designation_sha256 event_count head_sha256 captured_at current_until');
+    check(hash(anchor.case_sha256) && hash(anchor.policy_sha256) && hash(anchor.designation_sha256) && hash(anchor.head_sha256) && revision(anchor.event_count));
+    check(instant(anchor.captured_at) < instant(anchor.current_until));
   } catch { anchor = null; }
   return function inspect(input, now) {
     try {
@@ -62,7 +62,7 @@ export function createFixtureProvenanceEvaluator({authorityKey, sourceKey, revie
       check(typeof c.source === 'string' && /^[a-z0-9_]{1,80}$/.test(c.source));
       check(c.requested_by !== c.reviewed_by && c.account_id !== c.reviewed_by);
       check(hash(c.canonical_sha256) && c.canonical_sha256 === provenanceDigest(canonicalBytes));
-      keys(facts, 'campaign source registration person portal_link portal_events registrant followup task binding account reviewer');
+      keys(facts, 'campaign source registration person portal_link portal_events registrant followup task binding account reviewer authorizer');
       const one = (rows, predicate) => { check(Array.isArray(rows) && rows.length === 1 && predicate(rows[0])); return rows[0]; };
       one(facts.campaign, r => r.id === c.campaign_id && r.organization_id === c.organization_id);
       one(facts.source, r => r.campaign_id === c.campaign_id && r.source === c.source && r.active === true);
@@ -78,15 +78,27 @@ export function createFixtureProvenanceEvaluator({authorityKey, sourceKey, revie
       for (const [name,id] of [['account',c.account_id],['reviewer',c.reviewed_by]]) one(facts[name], r => r.id === id && r.verified === true && r.active === true);
 
       const p = signed(policy, roots[0]);
-      keys(p, 'mode policy_id organization_id campaign_id method valid_from valid_until evidence_retain_until audit_retain_until');
+      keys(p, 'mode policy_id organization_id campaign_id method accepted_methods valid_from valid_until evidence_retain_until audit_retain_until');
       check(p.mode === c.mode && p.policy_id === c.policy_id && p.organization_id === c.organization_id && p.campaign_id === c.campaign_id && p.method === c.method);
       const start = instant(p.valid_from), end = instant(p.valid_until), retain = instant(p.evidence_retain_until), auditRetain = instant(p.audit_retain_until);
       check(start <= now && now < end && end <= retain && retain <= auditRetain && end <= instant(facts.binding[0].valid_until));
+      // Per-claim acceptance is part of the signed policy, never inferred from a
+      // generic method name or a source witness's assertion. IDs remain fictional.
+      keys(p.accepted_methods, 'source identity adult consent');
+      for (const [kind, acceptance] of Object.entries(p.accepted_methods)) {
+        keys(acceptance, 'method valid_from valid_until');
+        check(acceptance.method === `fictional-${kind}-witness-v1`);
+        check(start <= instant(acceptance.valid_from) && instant(acceptance.valid_from) <= now
+          && now < instant(acceptance.valid_until) && instant(acceptance.valid_until) <= end);
+      }
       const d = signed(designation, roots[0]);
       keys(d, 'mode reviewer_id authorizer_id organization_id campaign_id policy_id valid_from valid_until');
       check(d.mode === c.mode && uuid(d.authorizer_id) && ![c.requested_by,c.reviewed_by,c.account_id].includes(d.authorizer_id));
       check(d.reviewer_id === c.reviewed_by && d.organization_id === c.organization_id && d.campaign_id === c.campaign_id && d.policy_id === c.policy_id);
       check(instant(d.valid_from) <= now && now < instant(d.valid_until) && instant(d.valid_until) <= end);
+      // Account status is a necessary current consistency fact, not authority or
+      // independent identity proof. Only the fictional authority root designates.
+      one(facts.authorizer, r => r.id === d.authorizer_id && r.verified === true && r.active === true);
 
       // Separate original bytes for each source, identity, adult and consent claim.
       // An unrelated digest, verified:true, role name or matching contact is insufficient.
@@ -96,8 +108,11 @@ export function createFixtureProvenanceEvaluator({authorityKey, sourceKey, revie
       for (const receipt of receipts) {
         keys(receipt, 'original signed');
         const e = signed(receipt.signed, roots[1]);
-        keys(e, 'kind case_sha256 original_sha256 policy_sha256 designation_sha256 observed_at valid_until');
+        keys(e, 'kind method case_sha256 original_sha256 policy_sha256 designation_sha256 observed_at valid_until');
         check(expected.delete(e.kind) && e.case_sha256 === caseHash && e.policy_sha256 === provenanceDigest(policy.bytes) && e.designation_sha256 === provenanceDigest(designation.bytes));
+        const acceptance = p.accepted_methods[e.kind];
+        check(e.method === acceptance.method && instant(acceptance.valid_from) <= instant(e.observed_at)
+          && instant(e.valid_until) <= instant(acceptance.valid_until));
         check(typeof receipt.original === 'string' && provenanceDigest(receipt.original) === e.original_sha256);
         const original = parse(receipt.original);
         keys(original, 'mode kind case_sha256 assertion');
@@ -123,7 +138,10 @@ export function createFixtureProvenanceEvaluator({authorityKey, sourceKey, revie
         check(e.valid_until === p.valid_until && e.evidence_retain_until === p.evidence_retain_until && e.audit_retain_until === p.audit_retain_until);
         previous = provenanceDigest(event.bytes); withdrawn ||= e.action === 'withdrawn';
       }
-      check(anchor && anchor.case_sha256 === caseHash && anchor.event_count === history.length && anchor.head_sha256 === previous && now < instant(anchor.current_until));
+      check(anchor && anchor.case_sha256 === caseHash && anchor.policy_sha256 === provenanceDigest(policy.bytes)
+        && anchor.designation_sha256 === provenanceDigest(designation.bytes) && anchor.event_count === history.length
+        && anchor.head_sha256 === previous && lastTime <= instant(anchor.captured_at) && instant(anchor.captured_at) <= now
+        && now < instant(anchor.current_until) && instant(anchor.current_until) <= end);
       return output(withdrawn ? 'withdrawn' : 'fixture-contract-pass', 'Real reviewer designation, source verification method and immutable custody remain unapproved.');
     } catch {
       return output('denied', 'Invalid, stale, conflicting or incomplete fixture provenance.');
