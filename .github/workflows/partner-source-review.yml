@@ -28,6 +28,9 @@ jobs:
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 0
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
@@ -65,4 +68,5 @@ jobs:
           TEST_POSTGRES_BIN=/usr/lib/postgresql/18/bin node tools/partner-platform/canonical-host-ingress.native.mjs
           TEST_POSTGRES_BIN=/usr/lib/postgresql/18/bin node tools/partner-platform/canonical-execution-role.native.mjs
           TEST_POSTGRES_BIN=/usr/lib/postgresql/18/bin node tools/partner-platform/provider-database-isolation.native.mjs
+          TEST_NATIVE_PG=1 TEST_POSTGRES_BIN=/usr/lib/postgresql/18/bin node --test tools/partner-platform/canonical-request-binding.test.mjs tools/partner-platform/canonical-request-binding-independent.test.mjs
       - run: git diff --check
