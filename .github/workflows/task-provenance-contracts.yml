@@ -1,0 +1,59 @@
+name: Held task and fictional provenance contracts
+on:
+  pull_request:
+    paths:
+      - 'tools/outreach/**'
+      - 'tools/backend-tests/**'
+      - 'tools/site-build/**'
+      - 'supabase/**'
+      - 'docs/TASK-WRITER-HELD-CONTRACT-20261105.md'
+      - 'docs/CAMPAIGN-PROVENANCE-CONTRACT-20261105.md'
+      - '.github/workflows/task-provenance-contracts.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  contracts:
+    name: ${{ matrix.suite }} contract
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        suite: [writer, provenance, independent, integrity]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - if: matrix.suite != 'integrity'
+        run: npm ci --ignore-scripts --prefix tools/backend-tests
+      - name: Install disposable PostgreSQL 17
+        if: matrix.suite != 'integrity'
+        shell: bash
+        run: |
+          if [ ! -x /usr/lib/postgresql/17/bin/postgres ]; then
+            sudo /usr/share/postgresql-common/pgdg/apt.postgresql.org.sh -y
+            sudo mkdir -p /etc/postgresql-common/createcluster.d
+            printf 'create_main_cluster = false\n' | sudo tee /etc/postgresql-common/createcluster.d/task-provenance-ci.conf > /dev/null
+            sudo apt-get install --yes --no-install-recommends postgresql-17
+          fi
+          /usr/lib/postgresql/17/bin/postgres --version
+      - name: Exact-source disposable contracts
+        env:
+          TEST_POSTGRES_BIN: /usr/lib/postgresql/17/bin
+        shell: bash
+        run: |
+          case '${{ matrix.suite }}' in
+            writer) node tools/outreach/task-writer.native.mjs ;;
+            provenance) node tools/outreach/campaign-provenance-contract.native.mjs ;;
+            independent)
+              node tools/outreach/task-writer-independent.native.mjs
+              node tools/outreach/campaign-provenance-independent.native.mjs
+              ;;
+            integrity) node tools/outreach/task-provenance-integrity.mjs ;;
+          esac
+      - run: git diff --check

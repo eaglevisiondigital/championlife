@@ -1,3 +1,9 @@
+## 2026-11-05 — Prepared intent is not mutation authority
+
+The disposable-only private prepare function has no API execution grants, public wrapper, migration installer, DML or enablement switch. Server session identity and fresh independent organization manage plus assigned-campaign authority are checked under existing task-first locks; consent, expiry and exact revisions are rechecked after waits. The returned intent/hash is not a durable receipt or transferable authorization. Existing unconditional bound-task write denial remains authoritative. No automatic retry follows an uncertain outcome.
+
+Fictional provenance signatures demonstrate byte integrity only. Evidence must also bind the exact case/version, canonical source/Person/account, policy, independently designated reviewer and complete externally anchored history. Reviewer designation must cover both the original approval/withdrawal event and current inspection. Unknown or conflicting identity, minors, guardian assumptions, withdrawal, expiry and missing custody fail closed. No actual associations, identity producer or authority are created. Real custody/reviewer/retention acceptance and a separately reviewed atomic mutation/audit implementation remain mandatory.
+
 ## Unified shell discovery correction — 2026-10-31
 
 Process every discovery response independently: an explicit denial must immediately invalidate the workspace even if a concurrent discovery RPC remains pending. Late responses cannot reverse terminal invalidation. Canonical comparison treats organization, campaign, grant and department arrays as unordered sets; an actual change still retires access. No change to authoritative PostgreSQL authorization or session-retirement requirements. Synthetic browser proof is not provider-backed revocation evidence.
