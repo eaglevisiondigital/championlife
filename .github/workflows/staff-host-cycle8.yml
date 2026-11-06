@@ -1,0 +1,74 @@
+name: Communications shared host acceptance
+on:
+  pull_request:
+    paths:
+      - 'assets/js/staff-workspace.js'
+      - 'assets/js/staff-session.js'
+      - 'assets/js/communications.js'
+      - 'assets/css/communications.css'
+      - 'staff-communication*.html'
+      - 'staff-campaign-communications.html'
+      - 'tools/staff-host-cycle8/**'
+      - 'tools/staff-cycle8/**'
+      - 'tools/staff-cycle7/**'
+      - 'tools/backoffice-composition/**'
+      - 'tools/staff-module-navigation/**'
+      - 'tools/backend-tests/**'
+      - 'tools/site-build/**'
+      - '.github/workflows/staff-host-cycle8.yml'
+permissions:
+  contents: read
+concurrency:
+  group: staff-host-cycle8-${{ github.event.pull_request.number }}
+  cancel-in-progress: false
+jobs:
+  integrity:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: node tools/staff-host-cycle8/integrity.test.mjs
+      - run: node tools/backoffice-composition/source.test.mjs
+      - run: node tools/staff-module-navigation/override-negative.mjs
+      - run: node tools/staff-module-navigation/integrity.mjs
+      - run: node --input-type=module -e 'import {verifySources} from "./tools/staff-cycle7/source.mjs"; console.log(verifySources().length + " original source pins verified");'
+      - run: git diff --check
+  browser:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        group: [communications, modules, people]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm ci --ignore-scripts --prefix tools/backend-tests
+      - run: tools/backend-tests/node_modules/.bin/playwright install --with-deps chromium webkit
+      - name: Obtain exact accepted SDK for intercepted local browser traffic
+        run: |
+          curl --fail --silent --show-error --location 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.118.0' --output "$RUNNER_TEMP/supabase-sdk.js"
+          echo "bee24fc29228ed5a370f76a2ba1ca3c399549edad2fef23453c80148856a49af  $RUNNER_TEMP/supabase-sdk.js" | sha256sum --check
+          echo "SUPABASE_SDK_PATH=$RUNNER_TEMP/supabase-sdk.js" >> "$GITHUB_ENV"
+          echo "HOST_SOURCE_ROOT=$GITHUB_WORKSPACE" >> "$GITHUB_ENV"
+      - run: node tools/staff-host-cycle8/integrity.test.mjs
+      - if: matrix.group == 'communications'
+        run: node tools/staff-host-cycle8/host.browser.mjs
+      - if: matrix.group == 'modules'
+        run: |
+          node --test tools/staff-cycle8/modules-unload.test.mjs
+          node tools/staff-cycle8/modules.browser.mjs
+      - if: matrix.group == 'people'
+        run: node tools/staff-cycle8/people-independent.browser.mjs
+      - run: git diff --check

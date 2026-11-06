@@ -1,0 +1,9 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {verifyHostOverrides,current,checkpointReader,original,existing,additions,pinnedHelpers} from './overrides.mjs';
+const bytes=current('tools/staff-host-cycle8/overrides.json');
+test('reviewed successor binds current overrides before historical comparisons',()=>{verifyHostOverrides();const read=checkpointReader();for(const path of existing)assert.deepEqual(read(path),original(path));assert.deepEqual(read('assets/js/champion-life-auth.js'),current('assets/js/champion-life-auth.js'))});
+for(const path of [...existing,...additions])test('changed reviewed bytes rejected: '+path,()=>assert.throws(()=>verifyHostOverrides(bytes,p=>p===path?Buffer.concat([current(p),Buffer.from('\n/* tamper */')]):current(p)),/Reviewed/));
+for(const path of pinnedHelpers)test('original pinned source helper tamper rejected: '+path,()=>assert.throws(()=>verifyHostOverrides(bytes,p=>p===path?Buffer.concat([current(p),Buffer.from(' ')]):current(p)),/Original Cycle7 helper/));
+for(const path of ['tools/backoffice-composition/source-manifest.json','tools/staff-module-navigation/source-overrides.json','tools/staff-module-navigation/source-overrides.mjs','tools/site-build/build.mjs','tools/backend-tests/package.json','tools/backend-tests/package-lock.json'])test('historical guard and dependency tamper rejected: '+path,()=>assert.throws(()=>verifyHostOverrides(bytes,p=>p===path?Buffer.concat([current(p),Buffer.from(' ')]):current(p)),/Historical/));
+for(const mutate of [m=>m.base='HEAD',m=>delete m.existing[existing[0]],m=>m.existing['assets/js/champion-life-auth.js']={},m=>m.additions[additions[0]].reviewedSHA256='0'.repeat(64)])test('unreviewed manifest modification rejected: '+mutate.toString(),()=>{const m=JSON.parse(bytes);mutate(m);assert.throws(()=>verifyHostOverrides(Buffer.from(JSON.stringify(m))),/Exact reviewed Cycle8 override manifest/)});

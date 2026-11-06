@@ -23,7 +23,7 @@ for(const [engine,options] of [[chromium,{channel:'chrome'}],[webkit,{}]]){
    window.fixture={denied:false,hold:false,reverse:false,calls:0,release:null,holdStaff:false,denyCampaign:false,network:false,remove:false,mutations:0};
    const user={id:'11111111-1111-4111-8111-111111111111',email:'reviewer@example.test',email_confirmed_at:'2026-01-01'};
    window.ChampionLifeAuth={getUser:async()=>user,getSession:async()=>({user}),client:{auth:{getUser:async()=>({data:{user}}),onAuthStateChange:()=>{}},rpc:async(name,args)=>{
-    fixture.calls++;if(name==='forms_workspace')return {error:{code:'PGRST202'},status:404};
+    fixture.calls++;if(name==='forms_workspace'||name==='communications_workspace')return {error:{code:'PGRST202'},status:404};
     if(!['staff_workspace_context','outreach_registration_workspace'].includes(name)){fixture.mutations++;return {data:{}}}
     if(name==='staff_workspace_context'){
      if(fixture.holdStaff)await new Promise(r=>fixture.release=r);
