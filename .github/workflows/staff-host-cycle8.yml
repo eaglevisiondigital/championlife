@@ -66,7 +66,9 @@ jobs:
       - if: matrix.group == 'communications'
         run: node tools/staff-host-cycle8/host.browser.mjs
       - if: matrix.group == 'modules'
-        run: node tools/staff-cycle8/modules.browser.mjs
+        run: |
+          node --test tools/staff-cycle8/modules-unload.test.mjs
+          node tools/staff-cycle8/modules.browser.mjs
       - if: matrix.group == 'people'
         run: node tools/staff-cycle8/people-independent.browser.mjs
       - run: git diff --check

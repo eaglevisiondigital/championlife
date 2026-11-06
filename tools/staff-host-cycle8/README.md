@@ -39,6 +39,11 @@ verifier. Browser suites require the hash-verified `SUPABASE_SDK_PATH` artifact 
 installed Chromium/WebKit. `tools/staff-cycle8` suites use fictional intercepted HTTP;
 they do not prove hosted Auth or database RLS. Strictly correlated WebKit SDK unload
 diagnostics during Forms account replacement remain explicitly counted, not fixed.
+The first Linux CI run additionally emitted Forms/Auth access-control errors without
+observed cancellation. Those errors remain rejected and that run remains failed.
+An observation-only diagnostic successor records document/request/Auth-event timing;
+22 adversarial classifier tests preserve the original acceptance boundary. This
+does not establish Linux acceptance or justify ignoring errors without evidence.
 
 Genuine Auth/RLS, installed backend compatibility, independent recovery/cleanup and
 separate release authorization remain required. Production release is NO-GO.
