@@ -1,0 +1,121 @@
+{
+  "purpose": "Exact selected accepted definitions for isolated replay only; not runtime installation",
+  "sources": {
+    "B1": "578fd9fa7eb6786eea79345039bc4eec0c11a2b779875759b770627eda727f6a",
+    "B2": "46d29ac81d565f17b34e41571d47c2b016fe1b2f54242bf8c632562e5b9d7754",
+    "B": "03c3f6b94aadbe4195ecd9cea30463918687518d3c0ed5a630d3c7071d6c0020"
+  },
+  "sections": [
+    {
+      "source": "B1",
+      "section": "source map and exact capability constraint",
+      "sha256": "d10ace9f8ae94b33b8baa0ec4a03187aa00a7a4c69f6d3770db025a38ef8d974"
+    },
+    {
+      "source": "B1",
+      "section": "identity request journal",
+      "sha256": "d817accaf14a9e1db69629278dce5b9f1c4044cc054ce32c3b7d1f5ec9a184ae"
+    },
+    {
+      "source": "B",
+      "section": "review/care tables",
+      "sha256": "b79adc5e12fd313023ab3993cb6b7c685788992bf47d350d59e329324ff7b0b8"
+    },
+    {
+      "source": "B2",
+      "section": "assigned-care column",
+      "sha256": "18e120e765ec2c027c0cccc42159eb3286a920f654b3125795e5e027c1757fbe"
+    },
+    {
+      "source": "B1",
+      "section": "city_decision_project",
+      "sha256": "2cf8cd3f2dc097cfa5e12258131f477f1982df919b6e129df424d55089383284"
+    },
+    {
+      "source": "B1",
+      "section": "city_decision_reconcile",
+      "sha256": "93adb084c9e70e316af96130debfb4030a3e6e98e5dce72c7a64306b431f62a1"
+    },
+    {
+      "source": "B",
+      "section": "city_roster_can",
+      "sha256": "19a03f5a4babb6c23028044a351369bf9ffbeff62b9febe6122cb61f513a1ced"
+    },
+    {
+      "source": "B",
+      "section": "city_followup_assignee",
+      "sha256": "0b1505d4627cda124ddd8433e93bb684de50ce03b0d22c5f6547b19b15cfd6a6"
+    },
+    {
+      "source": "B2",
+      "section": "city_care_assigned",
+      "sha256": "047d479982a20550f67cbca0114f13bc8cc08fc306ff4ab4b4ecfa25d3d293e3"
+    },
+    {
+      "source": "B2",
+      "section": "city_source_visible",
+      "sha256": "4c3ed58d0990abd72e782edc745ee66cb986b7fc76ed26a0a2469aa7ae0f475c"
+    },
+    {
+      "source": "B2",
+      "section": "city_identity_admin",
+      "sha256": "edf423d2569b8485c732f1db25b422e4dcf2ffb9820638c0988b638ff6cb172e"
+    },
+    {
+      "source": "B",
+      "section": "original reconciliation rename",
+      "sha256": "a931ed338ccce88cbd9bdcf86a7e9d029d9e9b5def7fc299a7ae2fb6e1988b07"
+    },
+    {
+      "source": "B2",
+      "section": "city_decision_reconcile",
+      "sha256": "97d861b0d1316d16e7c80c0d44de170e90ce12a20035bdb322bf5f982c04b6aa"
+    },
+    {
+      "source": "B2",
+      "section": "city_care_workspace",
+      "sha256": "0fcb35b285e0eaf46f815ba1560ea9a71d7f1a62a383bbf3a6577b07e9953b77"
+    },
+    {
+      "source": "B1",
+      "section": "decision ingress helper",
+      "sha256": "037edd88bf25e67ad33edffbca15aaf4b1665ab7b5d25d2b1fcbfbf1335556f9"
+    },
+    {
+      "source": "B1",
+      "section": "project execution boundary",
+      "sha256": "ed96b03a90f78b4f8e5831f8b4d7eb40326fd8f99bc60e111bd0c9914c78428c"
+    },
+    {
+      "source": "B1",
+      "section": "roster helper boundary",
+      "sha256": "c85f13bcbc9aa9a0e34a75969302b57f5a668a20c7a94e9f3002f1234288bf1a"
+    },
+    {
+      "source": "B",
+      "section": "underlying reconciliation boundary",
+      "sha256": "9d12a5882b2ca3c6ff69e96646d406ef3f80c7337201ff62ee97a9deabfe992b"
+    },
+    {
+      "source": "B",
+      "section": "reconciliation boundary",
+      "sha256": "566457712a57a39f7a5f565f52bb9e29901f7b39bf064cc3e7623ec4086bc7ae"
+    },
+    {
+      "source": "B",
+      "section": "identity helper boundary",
+      "sha256": "8dcf1885fb5ce1bf1ffa4683b43e80568c4c03f3c01d78037185d841687908cb"
+    },
+    {
+      "source": "B2",
+      "section": "assigned helper boundary",
+      "sha256": "682577f75dc59f592b25b8d20edaa9c8b26816247cf1d87a9d1ee040f2236209"
+    },
+    {
+      "source": "B",
+      "section": "care boundary",
+      "sha256": "42c1e9b468ce309bf69723126adeb9ab7e49010513aaf57832273c9db9776a1b"
+    }
+  ],
+  "fixtureSha256": "b1785df783554eb27a9160a941c2599f4e9ec515839f4857d8deebb3fdb0f4e3"
+}

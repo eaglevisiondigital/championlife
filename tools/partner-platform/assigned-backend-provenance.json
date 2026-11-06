@@ -1,0 +1,16 @@
+{
+  "source_commit": "bff9612ac9385cf963c5e7e41f9091da7af86cf0",
+  "source_path": "supabase/migrations/20261019004611_unified_outreach_staff_partner.sql",
+  "source_sha256": "418862e6e22a5c3280958253ade398a7f9e362f039c312a971d9d063e692749f",
+  "extracted_three_tables_sha256": "8ce3013aa9bfd319ffc1df453c33bc1ca78c69f388e506dd0c40be40c13b0321",
+  "omitted": [
+    "central_manage broad OR permissions",
+    "all administrative issuers",
+    "all grants/seeds",
+    "raw contact/household projection",
+    "all followup/contact/export/pastoral mutations",
+    "old RLS/RPC grants"
+  ],
+  "new_boundary": "Metadata-only verified active session and exact campaign plus Partner grant plus assigned worker. Canonical Person identity explicitly unverified/null; no issuer.",
+  "auth_column_provenance": "Existing production-applied 20261024013753 provisioner source, preserved in private schema replay evidence, verifies auth.users.deleted_at/banned_until and auth.sessions.not_after; not copied or reinstalled."
+}

@@ -1,0 +1,368 @@
+{
+  "functions": {
+    "private.city_decision_reconcile_a(uuid,jsonb)": {
+      "hash": "c4d30ef9e16f201304100fc9a3a0e61b60c31af6c250de3b27f0ee68d44cb9d4",
+      "definer": true,
+      "volatility": "v",
+      "config": [
+        "search_path=\"\""
+      ],
+      "language": "plpgsql",
+      "owner": "postgres",
+      "privileges": [
+        false,
+        false,
+        false
+      ]
+    },
+    "private.city_decision_reconcile(uuid,jsonb)": {
+      "hash": "3444c44e802bf3aa36a2e84c4ada86392825cd5c2a09fd9c29fb08559feefb7e",
+      "definer": true,
+      "volatility": "v",
+      "config": [
+        "search_path=\"\""
+      ],
+      "language": "plpgsql",
+      "owner": "postgres",
+      "privileges": [
+        false,
+        true,
+        false
+      ]
+    },
+    "private.city_care_workspace(uuid,text,jsonb)": {
+      "hash": "c47a0b1c3fb94031006c419b954d2d34498746999977e20b721895eae6b01914",
+      "definer": true,
+      "volatility": "v",
+      "config": [
+        "search_path=\"\""
+      ],
+      "language": "plpgsql",
+      "owner": "postgres",
+      "privileges": [
+        false,
+        true,
+        false
+      ]
+    },
+    "private.city_identity_admin(uuid)": {
+      "hash": "0d1b364cd7e73aa51d3d5d11746ce5359c7c6b61079ec2bab0f73a970f48ab6b",
+      "definer": true,
+      "volatility": "s",
+      "config": [
+        "search_path=\"\""
+      ],
+      "language": "sql",
+      "owner": "postgres",
+      "privileges": [
+        false,
+        false,
+        false
+      ]
+    },
+    "private.city_decision_project(uuid)": {
+      "hash": "2479c5e6e25cb085d717d19134f35fa97f48d8a463306043c43d2e598e857ac5",
+      "definer": true,
+      "volatility": "v",
+      "config": [
+        "search_path=\"\""
+      ],
+      "language": "plpgsql",
+      "owner": "postgres",
+      "privileges": [
+        false,
+        false,
+        false
+      ]
+    },
+    "private.city_care_assigned(uuid)": {
+      "hash": "1023d8de56f7e50746fcd5f1d5f5813c90a8a1481e320824d5fb9dece392164c",
+      "definer": true,
+      "volatility": "s",
+      "config": [
+        "search_path=\"\""
+      ],
+      "language": "sql",
+      "owner": "postgres",
+      "privileges": [
+        false,
+        false,
+        false
+      ]
+    },
+    "private.city_source_visible(uuid,uuid)": {
+      "hash": "67e4d894b0cd4ba70d1f779e69f4799e4a78eddb18e4d4b8702a460bcb87388b",
+      "definer": true,
+      "volatility": "s",
+      "config": [
+        "search_path=\"\""
+      ],
+      "language": "sql",
+      "owner": "postgres",
+      "privileges": [
+        false,
+        false,
+        false
+      ]
+    },
+    "private.city_roster_can(uuid,text)": {
+      "hash": "c6beb0efdf61789f1994169312ca154b1287281424ea50697cd13f2660188478",
+      "definer": true,
+      "volatility": "s",
+      "config": [
+        "search_path=\"\""
+      ],
+      "language": "sql",
+      "owner": "postgres",
+      "privileges": [
+        false,
+        false,
+        false
+      ]
+    },
+    "private.outreach_verified(uuid)": {
+      "hash": "ca777682cb9b1c1a524d8a0b713eb04524f4e5a3f37549174c8149204227e28b",
+      "definer": true,
+      "volatility": "s",
+      "config": [
+        "search_path=\"\""
+      ],
+      "language": "sql",
+      "owner": "postgres",
+      "privileges": [
+        false,
+        false,
+        false
+      ]
+    },
+    "private.outreach_admin(uuid,boolean)": {
+      "hash": "2ebaf6bc4b98b14f2b542613020e0ac0520e54c6c213c5cdfd913b3a4cd524f5",
+      "definer": true,
+      "volatility": "s",
+      "config": [
+        "search_path=\"\""
+      ],
+      "language": "sql",
+      "owner": "postgres",
+      "privileges": [
+        false,
+        false,
+        false
+      ]
+    },
+    "private.staff_assignment_active(uuid,uuid)": {
+      "hash": "547d916400d2b74c4651d8d633a2c048e0e7889d170c1ab7a003c6ce42f592d6",
+      "definer": true,
+      "volatility": "s",
+      "config": [
+        "search_path=\"\""
+      ],
+      "language": "sql",
+      "owner": "postgres",
+      "privileges": [
+        false,
+        false,
+        false
+      ]
+    },
+    "private.has_staff_permission(uuid,text,uuid)": {
+      "hash": "93b5c0cfe50bdce3d8c8b3130007239ba4f97c7f0d8f042526191c4b12d643d4",
+      "definer": true,
+      "volatility": "s",
+      "config": [
+        "search_path=\"\""
+      ],
+      "language": "sql",
+      "owner": "postgres",
+      "privileges": [
+        false,
+        true,
+        false
+      ]
+    },
+    "private.person_permission(uuid,uuid,text)": {
+      "hash": "bafcb7a7c316f1ae66ec4bfa8ea9d02e74f23570c3b53fb3ae07f70cfcef692b",
+      "definer": true,
+      "volatility": "s",
+      "config": [
+        "search_path=\"\""
+      ],
+      "language": "sql",
+      "owner": "postgres",
+      "privileges": [
+        false,
+        true,
+        false
+      ]
+    },
+    "private.outreach_audit(uuid,uuid,text,uuid,jsonb)": {
+      "hash": "57872964bed3a98cc099e8fc139e5840206d281b161519c4024fc6f9ca6d2563",
+      "definer": true,
+      "volatility": "v",
+      "config": [
+        "search_path=\"\""
+      ],
+      "language": "sql",
+      "owner": "postgres",
+      "privileges": [
+        false,
+        false,
+        false
+      ]
+    },
+    "private.outreach_immutable()": {
+      "hash": "a32b1cb2394c0a13fb4d41e0d8cc3be4d20c7a3f67388556e99d12a9fe64b269",
+      "definer": false,
+      "volatility": "v",
+      "config": [
+        "search_path=\"\""
+      ],
+      "language": "plpgsql",
+      "owner": "postgres",
+      "privileges": [
+        false,
+        false,
+        false
+      ]
+    },
+    "private.partner_assigned_metadata(uuid,uuid)": {
+      "hash": "58ebac3d4840fc7eaeed8c6c172d2b91bd1590dff2562e3b1ce79db43379aa76",
+      "definer": true,
+      "volatility": "v",
+      "config": [
+        "search_path=\"\""
+      ],
+      "language": "plpgsql",
+      "owner": "postgres",
+      "privileges": [
+        false,
+        true,
+        false
+      ]
+    },
+    "private.city_followup_assignee(uuid,uuid)": {
+      "hash": "0d11b1b9457e96aa6eb19f0606434410db48cf014c9d5215b3b9cf175a181dad",
+      "definer": true,
+      "volatility": "s",
+      "config": [
+        "search_path=\"\""
+      ],
+      "language": "sql",
+      "owner": "postgres",
+      "privileges": [
+        false,
+        false,
+        false
+      ]
+    },
+    "private.people_workspace(uuid,text,jsonb)": {
+      "hash": "ac3cd4abd55bbc8ba9e96b643bac50f15a8bd5f0b142b4e86ec5560abca2d696",
+      "definer": true,
+      "volatility": "v",
+      "config": [
+        "search_path=\"\""
+      ],
+      "language": "plpgsql",
+      "owner": "postgres",
+      "privileges": [
+        false,
+        true,
+        false
+      ]
+    },
+    "private.operational_relationship_visible(uuid,uuid,text)": {
+      "hash": "5c438398a861b484ab49d20b7eb1aae59b4d4e3c8ffd8b36c4ca4fb37c0818e0",
+      "definer": true,
+      "volatility": "s",
+      "config": [
+        "search_path=\"\""
+      ],
+      "language": "sql",
+      "owner": "postgres",
+      "privileges": [
+        false,
+        true,
+        false
+      ]
+    },
+    "private.staff_permission_keys()": {
+      "hash": "c834c63d2da3500f4038596ea7a641a29fef95968bf103ed01f2db6e384ad11f",
+      "definer": false,
+      "volatility": "i",
+      "config": [
+        "search_path=\"\""
+      ],
+      "language": "sql",
+      "owner": "postgres",
+      "privileges": [
+        false,
+        false,
+        false
+      ]
+    },
+    "private.audit_person_write()": {
+      "hash": "7ec967b416d82bf04c7dab517d436305169a7c8a9afebedd1001354d53895828",
+      "definer": true,
+      "volatility": "v",
+      "config": [
+        "search_path=\"\""
+      ],
+      "language": "plpgsql",
+      "owner": "postgres",
+      "privileges": [
+        false,
+        false,
+        false
+      ]
+    },
+    "private.person_anchor()": {
+      "hash": "a58cdcd08857a0dc6871b48a624c44ea3545982a03f634ca95033f7147b4c22b",
+      "definer": true,
+      "volatility": "v",
+      "config": [
+        "search_path=\"\""
+      ],
+      "language": "plpgsql",
+      "owner": "postgres",
+      "privileges": [
+        false,
+        false,
+        false
+      ]
+    },
+    "private.guard_person_write()": {
+      "hash": "703dfca4e9a068128d8aa5f989a11ae9e109570712c4181c8ec399d733d214a8",
+      "definer": true,
+      "volatility": "v",
+      "config": [
+        "search_path=\"\""
+      ],
+      "language": "plpgsql",
+      "owner": "postgres",
+      "privileges": [
+        false,
+        false,
+        false
+      ]
+    }
+  },
+  "relations": {
+    "public.outreach_campaign_sources": "5d9c5ca5127226e469012dfc4cd9d7100706dc51c981006bdaf4d8a68f652f29",
+    "public.outreach_campaign_registrants": "614d82e6cf142da3f56094437396788bfe4f9f48a4804506f788a554cf69474e",
+    "public.portal_account_links": "32784eaeb0d1d19c68e7d463a144625dc3f0b21518a57a1a0dd6c19d930292b3",
+    "private.city_identity_requests": "a4a4177408f37bf4d8c9e028f8f065d42ddffd17a62fc3b297d0f07755e6de2b",
+    "private.city_identity_reviews": "d2572db8563ced4693cca48dbc792a60e87fe2c9f6e1cbeb269b9280aa51f5c1",
+    "private.city_care_requests": "e03fd57b8ae38757bb7fdb22eed790f621f8784a55619b491e3696cf1ed89358",
+    "public.outreach_campaign_audit": "392852766ceca4ce7d44d04d5cbef19caadfcad6cec9cca1708ea9fc2775ad3d",
+    "private.people": "48cffb030275bbd32cb413c45b97782d2d574560a0c3db41e83cb8671e1eb3c3",
+    "public.organization_people": "1d304e9cd6cd54574e8ac93e6ce9e37daa9df76715dee60504258df430d131e7",
+    "public.outreach_registrations": "21baa64b9a43bff5eb7cd8e0b1b0c178ba20d54bd191180ff12071afc1c2fb05",
+    "public.outreach_campaigns": "0d0050cc5aeaa705454d5fb8652a152facdbd17c6408f6e1b41bee4ef34e42ed",
+    "public.outreach_campaign_assignments": "9d270ac3fbf7a10ec41dbdfc5e3ced94b7fa52f4650fcb4255f9bf46ba9aad57",
+    "public.outreach_partner_churches": "6715b3e30a5628ae7cc04061366fbb81fb5ffbf32202e35b7baf3c5623281030",
+    "public.outreach_partner_users": "c9051143c6e3f46a10446e9406811c774746810420d66bccdd2339cf020c92f4",
+    "public.outreach_partner_assignments": "5bad9144b4fb71fac860077d5fe2927c21064a518a13a1809141fe106a9e59af",
+    "auth.users": "ad7739127aebcb0af455f6ce58c19e3af2ed434c4d9e73009946dc0c927331c5",
+    "auth.sessions": "ded56d357104695e8dcff172809bf350923a9c33ec2f53bde00015e97469d8fc"
+  }
+}

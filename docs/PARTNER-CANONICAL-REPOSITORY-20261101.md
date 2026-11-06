@@ -1,0 +1,120 @@
+# Partner canonical repository candidate
+
+Source-only successor to `5232db6b1afaf830a9f4251d539d142a71f0871e`. The existing canonical identity adapter now has an **unmounted server-only database repository**. The website and metadata RPC still return null/unverified; no migration, role, connection, endpoint or public mount is installed.
+
+## Accepted source reuse
+
+The disposable fixture selects only the necessary Issue50 definitions from Package B (`f06c5a2673e93fc93a2fdbf886aaf165cf468b18`), preserved B1 composition (`578fd9fa7eb6786eea79345039bc4eec0c11a2b779875759b770627eda727f6a`) and B2 (`53adb74df0b02c77784e5f00f2fb6b5a64e84baa`, composition `46d29ac81d565f17b34e41571d47c2b016fe1b2f54242bf8c632562e5b9d7754`). Section hashes and original source hashes are recorded in `fixtures/issue50-identity-source.json`. No historical branch chain or seed data is imported. Original sections and execute boundaries remain unchanged.
+
+The fixture calls the actual accepted `private.city_care_workspace(...,'identity_save',...)`. This generates the identity request, care request, review and two immutable audits through A/B2 reconciliation. Tests never construct these proofs by inserting invented receipt rows. The canonical People and portal account tables are the existing shared tables.
+
+## Read and authority lifetime
+
+The repository accepts only organization/campaign/assignment and the trusted principal's user/session UUIDs. It calls the exact accepted Partner metadata function before obtaining its canonical snapshot. Source and campaign map, registrant, current review, matching immutable receipts/audits, canonical Person/human, exact active account link, actor/subject Auth, session, and campaign/Partner/worker assignments are held `FOR SHARE` until the synchronous adapter projection and commit complete. Missing or ambiguous rows deny. The adapter still independently checks all state, revision, audit and account bindings and discards a result if current principal/generation/expiry changed.
+
+Positive eligibility always requires an existing exact row. `portal_account_links` has unique organization/Person and organization/user constraints; the source map has a source primary key. Consequently replacement requires changing/deleting a locked row or conflicts with its existing unique key. No table-wide locks or new writer advisory-lock protocol is introduced. Independent rows remain writable. Deadlocks, lock/statement timeouts and query failures deny; no retry converts an uncertain result into verified identity.
+
+The trusted host must supply an **exclusive idle connection**. The repository owns BEGIN/COMMIT/ROLLBACK, fixed search path and transaction-local identity settings. It must never receive a connection already inside a caller transaction. Failed operations discard the connection; no pool/role or runtime credential binding is provided here. A later host needs a separately reviewed least-privilege execution design; this candidate does not authorize broad private-table access.
+
+## Provenance and limitations
+
+The server-owned manifest pins 23 function source/security/search-path/language/owner/effective-execute contracts and 17 relation column/constraint/index/trigger/RLS/policy/owner/table-and-column ACL contracts. Checks run before and after the row read. This includes unique-key validity and immutable audit trigger attachment, plus attached trigger functions and named private helpers. Runtime callers cannot supply fingerprint booleans or snapshots.
+
+**The Auth table fingerprints intentionally describe the disposable test schema.** They are not represented as genuine provider schema acceptance. A real provider shape, missing Issue50 installation or changed contract fails closed. The manifest must not be relaxed or regenerated from a target just to obtain a PASS. Complete approved identity-stack reconciliation and independently reviewed actual provider catalog are still prerequisites to any mount.
+
+Normal application writers cannot alter schema/functions. Database owners and maintenance DDL remain a trusted administrative boundary; start/end fingerprints do not defend against a hostile owner changing and restoring function definitions between checks, nor do current fingerprints retrospectively attest every historical writer installation. No such threat is represented as solved.
+
+## Validation and gates
+
+Local result: **322 Partner/shared-backend Node tests PASS**, including 64 canonical repository tests; syntax and diff checks PASS. PGlite covers accepted-writer positive integration, baseline missing-schema denial, source-map/content/account/consent/revision and authority changes, every pinned function, table ACLs, column ACL drift, unique-key removal, immutable trigger drift, callback failure and minimized snapshot output. UUID input rejects trailing newlines.
+
+`canonical-repository.native.mjs` adds independent native read-before-write and write-before-read checks, account and source-map delete/reinsert blocking, receipt/audit row locks and unrelated account/campaign writes. Native CI run `41362035208` on `34197a6` **FAILED at the first positive read** (unverified), before contention acceptance; the Mac PostgreSQL server was not started and IPC settings were not changed. PGlite is sequential SQL evidence, not contention proof. CI adds the native suite to the existing Partner workflow.
+
+No browser/public runtime changed. No real-provider, hosted or production acceptance is claimed. No source push, merge, deploy, accounts/grants, messages, payments or historical seal changes are part of authoring. Next: independent exact-diff review and native CI, then the separately scoped real identity-stack/provider and least-privilege host reconciliation. The frozen schema-free PR61 remains independent.
+
+## Diagnostic successor
+
+The accepted PGlite fixture is PostgreSQL 18.3. `canonical-catalog-diagnostics.mjs` is test-only: it uses the verifier's exact literal catalog queries, reconstructs and validates the accepted PGlite baseline against unchanged committed pins, and compares native server version plus differing catalog fields/digests. It prints no identity rows and never updates a manifest. Native mismatch still fails the test. One focused diagnostic test passes locally for exact baseline, column ACL drift, constraint-field changes and privacy; native diagnosis and any version-specific correction remain pending. Do not infer that PostgreSQL major versions or catalog representations are interchangeable.
+
+## CI PostgreSQL major version
+
+Diagnostic CI `41362490783` established PostgreSQL 16.15 on the native runner versus the reviewed PGlite 18.3 catalog. All 17 relation differences are standalone NOT NULL constraint entries; the column nullability and other catalog fields match. The workflow now selects `/usr/lib/postgresql/18/bin` for this canonical check, installing the supported `postgresql-18` package through the PostgreSQL project's packaged PGDG setup script when needed. Automatic package-created main clusters are disabled; the existing disposable Unix-socket harness owns its own cluster. Other native checks run before this installation and keep their existing binary selection. The selected major/version is printed and checked.
+
+This is a CI reproducibility correction, not PostgreSQL 16 runtime compatibility approval. No security field is omitted or normalized, and no provenance manifest is regenerated. All existing checks still must pass on native PostgreSQL 18. Package installation/native execution remains pending Linux CI; no Mac package/server action was taken. Installation follows the [PostgreSQL Ubuntu instructions](https://www.postgresql.org/download/linux/ubuntu/).
+
+## Fresh owned PostgreSQL connection acceptance binding
+
+The repository's idle, exclusive connection assumption now has an executable
+`canonical-pg-repository.mjs` binding for the existing disposable Unix-socket
+harness. It instantiates the already-pinned pg 8.23.1 Client for each read, checks
+the protocol's idle transaction status before handing it to the repository, and
+always closes it. There is no supplied pool, supplied client, connection URL,
+remote hostname, password, environment fallback, module-load connection or
+website mount. Only the canonical temporary-directory/socket path created by the
+existing `localPostgres()` harness is accepted. `postgres` is the disposable
+fixture owner, explicitly **not an approved hosted execution role**.
+
+A host-controlled AbortSignal retires that repository lifetime, closes active
+connections and prevents late query results or later reads from authorizing.
+Callbacks remain synchronous; failures, transport errors and close failures
+return only the existing safe unavailable result. The connection cannot commit a
+transaction belonging to its caller or retain another request's JWT settings.
+Native tests observe real blocked backends and their disappearance following
+abort/termination. This is local driver/session evidence, not Supabase Auth
+session retirement or independent operational recovery.
+
+Least-privilege remains a real deployment gate. PostgreSQL SELECT FOR SHARE also
+requires UPDATE privilege on at least one column. Raw SELECT-only access cannot
+execute this locking repository, while table-wide UPDATE/private-table grants or
+an owner/service-role credential would overgrant its host. The fixture explicitly
+tests the SELECT-only rejection. No grant workaround is supplied. Before a hosted
+mount, independently review a narrow, nonpublic routine/role execution envelope
+that retains the exact locks, principal validation, installed-source pins and
+minimized projection while denying arbitrary table queries/writes. The complete
+Issue50 installation and actual provider Auth catalog must separately match an
+approved manifest; the fictional catalog is never promoted into production truth.
+
+Local validation: 16 new connection/configuration tests and 64 existing canonical
+repository tests PASS (80 total). Fourteen new real-driver native scenarios are
+prepared in the existing PostgreSQL18 job; their actual execution is CI-pending.
+Historical source hashes and the existing four-file PR61 rehearsal packet remain
+unchanged. No new PR61 packet or repeated owner questions are needed.
+
+## Restricted routine source successor
+
+The disposable connection now uses the integrated restricted role/routine described in [the host-envelope contract](PARTNER-HOST-ENVELOPE-20261101.md). It no longer runs canonical reads under its owner current_user. This supplies the source-only fixed-operation privilege prerequisite; it does not supply a genuine hosted login credential or provider principal. Earlier broad-grant/SELECT-only limitations remain valid, and no accepted provenance pin changed.
+
+## Cycle11 request binding correction
+
+The direct repository entry point now snapshots exactly five own UUID data
+properties before acquiring a connection: organization, campaign, assignment,
+user and session. Accessors, missing/extra keys and malformed values deny before
+acquisition. All transaction-local identity settings, metadata checks and snapshot
+arguments use this frozen capture. Caller mutation during acquisition or catalog
+reads cannot redirect the operation. This does not authenticate a supplied UUID;
+the existing trusted-host principal binding and SQL authorization still apply.
+
+A baseline reproduction on `09729bc98768f5d5b8de9c8ef7d08f99feef59bb`
+changed an initially foreign organization/campaign request into the assigned
+scope during acquisition; the old direct repository accepted that replacement.
+The higher-level identity boundary already freezes its constructed request. This
+correction therefore closes the direct repository's request-selection gap, not a
+newly demonstrated database permission bypass or hosted endpoint vulnerability.
+
+`canonical-request-binding.test.mjs` uses the actual accepted Issue50 writer and
+unchanged canonical SQL/catalog pins. Local PGlite18 validation passes 26 Node
+tests (25 named scenarios and their enclosing test): exact scope/identity,
+mutations of each captured field during acquisition/catalog reads, mutation before
+snapshot read, accessor/proxy behavior, all four repository constructors' early
+input denial, current deadlines/revocation, and boundary invalidation rollback.
+Successful mutation cases must issue exactly the baseline SQL and parameters.
+Proxy descriptor traps can run while JavaScript obtains descriptors; they are not
+a trusted authority source. Only the resulting own validated primitive values
+are captured, and ordinary property getters are never invoked.
+
+The same test runs with `TEST_NATIVE_PG=1` in the existing PostgreSQL18 CI stage.
+Local PostgreSQL18 is unavailable; no native PASS is claimed here. No unchanged
+broad suite was rerun. Cancellation coverage here means existing boundary
+invalidation and rollback, not a new database cancellation API. Public files,
+SQL, grants, provenance pins, genuine-provider acceptance and hosted installation
+remain unchanged; metadata identity remains unverified and no activation occurs.

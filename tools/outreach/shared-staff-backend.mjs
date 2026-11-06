@@ -72,6 +72,31 @@ export function createSharedStaffBackend({auth, workspace, eventTarget, projectR
     close,
     active:()=>!closed&&workspace.active(),
     discover:()=>run((g,signal)=>directory(g,signal)),
+    // Source-only assigned portal read. Backend installation/operational issuance
+    // remains a separate release; discover() must not advertise it as installed.
+    async readAssignedPartnerMetadata(selection){
+      const keys=selection && Object.keys(selection);
+      if(!keys || keys.some(k=>!['campaignId','assignmentId'].includes(k)) ||
+          !Object.hasOwn(selection,'campaignId') || !uuid(selection.campaignId) ||
+          (Object.hasOwn(selection,'assignmentId') && !uuid(selection.assignmentId))){close();throw error();}
+      const campaign=selection.campaignId, assignment=selection.assignmentId??null;
+      return run(async(g,signal)=>{
+        // Database authorizes current session, exact assigned worker, current
+        // campaign/Partner grants. Canonical Person association is withheld until
+        // independent linkage provenance is available.
+        const rows=await rpc('partner_assigned_metadata',{p_campaign:campaign,p_assignment:assignment},g,signal);
+        if(!Array.isArray(rows) || rows.length>100)throw error();
+        const seen=new Set();
+        return Object.freeze(rows.map(r=>{
+          if(!uuid(r?.id)||r.campaignId!==campaign||(assignment!==null&&r.id!==assignment)||
+              !uuid(r.organizationId)||!uuid(r.partnerChurchId)||r.personId!==null||r.identityStatus!=='unverified'||
+              !['active','completed'].includes(r.status)||!Number.isInteger(r.revision)||r.revision<1||seen.has(r.id))throw error();
+          seen.add(r.id);
+          return Object.freeze({id:r.id,campaignId:r.campaignId,organizationId:r.organizationId,
+            partnerChurchId:r.partnerChurchId,personId:null,identityStatus:'unverified',status:r.status,revision:r.revision});
+        }));
+      });
+    },
     // Fixed read action only; consumer cannot inject an RPC name, action, identity,
     // permission, search, export, offset, or direct table request.
     async readPartnerIntakes(selection){

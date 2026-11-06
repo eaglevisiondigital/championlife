@@ -1,3 +1,31 @@
+## 2026-11-02 — Actual Partner provider installability
+
+Document actual provider incompatibility and prepare a separately reviewed provider-profile requirement; do not infer that a new empty project or per-role REVOKE resolves it. This is read-only/source preparation, not approval of a new target, profile, role, public mount or shared-production ACL change. [Scope and next technical gate](tools/partner-platform/PROVIDER-INSTALLABILITY.md).
+
+## 2026-11-02 — Partner execution-role composition (source only)
+
+Prepare a separate fixed least-privilege execution profile rather than borrowing postgres credentials or loosening the accepted default reader. Test-only role creation and PUBLIC TEMP revocation are not deployment instructions. Actual provider privilege reconciliation, shared-workload impact, custody and release remain separate decisions. [Exact contract and held provider prerequisites](tools/partner-platform/EXECUTION-ROLE-READINESS.md).
+
+## 2026-11-02 — Reuse the existing Auth SDK for unmounted trusted ingress
+
+Use the official 2.118.0 Auth SDK verifier with explicitly supplied public ES256 key custody and strict no-network fallback, rather than accepting caller principal booleans. Connect it to the existing restricted canonical repository without changing catalog pins or roles. This is an authorized source integration, not selection of a production signing algorithm, host, login membership or rotation policy; actual installation remains separately held. [Source scope and installation decisions](docs/PARTNER-SIGNED-HOST-INGRESS-20261102.md).
+
+## 2026-11-02 — Prefer explicit restrictive profile over restoring historical grants
+
+Continue owner-authorized source integration by sharing the accepted catalog checks under a fixed stricter profile. Preserve historical profile/SQL and do not widen application permissions to make old fingerprints pass. Actual host, provider provenance, credential custody and production installation remain separately reviewed gates. [Scope](docs/PARTNER-RESTRICTED-CANONICAL-PROFILE-20261102.md).
+
+## 2026-11-02 — Reconcile Partner dependencies without activating grants
+
+Implement the authorized test-only current-schema composition using exact accepted private writer bodies; preserve original historical guards and runtime provenance pins. Withhold the two historical application writer grants and keep the canonical runtime unverified. A future stricter provenance profile and host credential/principal contract require independent source review; do not restore broad grants merely to satisfy old fingerprints. No production installation or new product permission policy is selected. [Concrete candidate and remaining contract](docs/PARTNER-CURRENT-SCHEMA-COMPOSITION-20261102.md).
+
+## 2026-11-02 — Preserve Partner boundaries after complete-source replay
+
+No new policy or host architecture is selected. Exact accepted B1/B2 reconstruction exposes current-base incompatibilities and broader wrapper/grant dependencies; it does not authorize installing them. Record the actionable integration contract instead of adding a provider stub or another parallel repository. [Dependency findings and continuation assignment](docs/PARTNER-HOST-INTEGRATION-GAP-20261102.md).
+
+## 2026-11-01 — Source-only Partner host envelope
+
+Contain row-lock privileges within one fixed nonpublic routine and a restricted NOLOGIN caller source contract; do not grant broad UPDATE/private-table access to the host. Reuse accepted metadata authorization, query bytes, provenance pins and canonical adapter. No release migration or real execution membership until complete Issue50/provider/ingress and credential custody are independently reviewed. Synthetic principal claims remain test evidence only. [Implementation contract](docs/PARTNER-HOST-ENVELOPE-20261101.md).
+
 ## 2026-10-31 — Unified shell first slice uses installed contracts
 
 Owner authorized local implementation, not another planning-only report or a historical PR-chain merge. Reconciled Issue #58/PR #60 and implemented the smallest staff shell against current-main RPCs. No Gate 0 migration is required for this slice; broader NMI/Outreach catalogs and modules remain separate release units. Exact SDK bytes are reused for the three shell entry points without changing the blocked PR #57 migration. Independent review, applicable isolated acceptance and an exact website release authorization remain required. No real staff is activated.
@@ -46,3 +74,16 @@ Use the owner's final exact PNG, lossless delivery derivative and original M4A. 
 ## Operations Administrator preparation — 2026-10-22
 
 Owner authorized local correction/testing only. Reuse the existing 29-key production vocabulary and authentication workflow. Separate two organization assignments; no campaign-admin row for operations. Require finance.read for financial commitments and their linked histories; no automatic finance grants to retain former access. Require independent permission authorizer and prohibit self-target access changes. Reconcile existing People/Household compatibility locally and extend rather than narrow audit vocabulary. No PR #34/#35 wholesale adoption, hosted application, invitation, user or production grant. Activation dates/identity and external provider role verification remain owner/release gates.
+
+## 2026-11-01 — Assigned Partner metadata backend candidate
+
+Local source only: explicit campaign/Partner/worker assignment, locked active Auth session and metadata-only read RPC. No issuer or automatic People identity claim; `personId` remains null pending independently reviewed linkage. Existing financial intake authority and website PR61 are separate. See [implementation boundary and release gates](docs/PARTNER-ASSIGNED-METADATA-20261101.md). No migration, staff grant, public runtime activation or hosted acceptance has occurred.
+
+## 2026-11-01 — Partner current-base integration and private revocation
+
+Exact reviewed Outreach ancestry is reconciled into the Partner draft without changing accepted runtime bytes. A separate private-only revocation primitive prepares locked authority, expected revision, idempotency and immutable audit rollback; no application role can execute it and no Partner issuer policy is inferred. People linking remains null/unverified pending complete unreleased Issue50 receipt/review provenance. See [scope and gates](docs/PARTNER-PRIVATE-REVOCATION-20261101.md). Local source only; no production migration, grant, website activation or public endpoint.
+
+
+## 2026-11-01 — Private Partner issuance and provenance continuation
+
+Continue source-only Partner issuance/reassignment preparation without inventing production issuer policy or enabling application EXECUTE. Preserve prior revocation and metadata packages. Reuse exact Issue50 receipt contracts as a fail-closed dependency adapter, not a guessed identity provider. Native acceptance must pass in existing CI while local IPC capacity is unavailable; no hosted environment is provisioned.

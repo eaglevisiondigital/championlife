@@ -1,0 +1,72 @@
+name: Partner isolated source review
+on:
+  # Exact source-branch checks supplement current-base pull-request checks.
+  # No workflow installs a hosted migration or activates application grants.
+  push:
+    branches:
+      - 'codex/publish-partner-20261101'
+    paths:
+      - 'tools/partner-platform/**'
+      - 'tools/outreach/shared-staff-backend*'
+      - 'supabase/migrations/20261101154618_partner_assigned_metadata_boundary.sql'
+      - 'supabase/migrations/20261101164328_partner_private_revocation_preparation.sql'
+      - 'supabase/migrations/20261101214027_prepare_private_partner_assignment_issuance.sql'
+      - '.github/workflows/partner-source-review.yml'
+  pull_request:
+    paths:
+      - 'tools/partner-platform/**'
+      - 'tools/outreach/shared-staff-backend*'
+      - 'supabase/migrations/20261101154618_partner_assigned_metadata_boundary.sql'
+      - 'supabase/migrations/20261101164328_partner_private_revocation_preparation.sql'
+      - 'supabase/migrations/20261101214027_prepare_private_partner_assignment_issuance.sql'
+      - '.github/workflows/partner-source-review.yml'
+permissions:
+  contents: read
+jobs:
+  source-contract:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm ci --ignore-scripts --prefix tools/backend-tests
+      - run: npm ci --ignore-scripts --prefix tools/partner-platform
+      - run: node --test tools/partner-platform/*.test.mjs tools/outreach/shared-staff-backend.test.mjs
+      - run: node tools/partner-platform/authority-denials.pglite.mjs
+      - run: npx --prefix tools/backend-tests playwright install --with-deps chromium webkit
+      - run: node tools/partner-platform/staff-intake-review.browser.mjs
+      - run: node tools/partner-platform/assigned-backend.browser.mjs
+      - run: TEST_POSTGRES_BIN="$(pg_config --bindir)" node tools/partner-platform/assigned-backend.native.mjs
+      - run: TEST_POSTGRES_BIN="$(pg_config --bindir)" node tools/partner-platform/authority-serialization.native.mjs
+      - run: TEST_POSTGRES_BIN="$(pg_config --bindir)" node tools/partner-platform/private-revocation.native.mjs
+      - run: TEST_POSTGRES_BIN="$(pg_config --bindir)" node tools/partner-platform/private-issuance.native.mjs
+      # Install/select PostgreSQL 18 only after the existing native suites, so
+      # their pg_config default cannot change. PGlite provenance uses PG 18.3.
+      - name: Canonical repository native acceptance (PostgreSQL 18)
+        shell: bash
+        run: |
+          if [ ! -x /usr/lib/postgresql/18/bin/postgres ]; then
+            sudo /usr/share/postgresql-common/pgdg/apt.postgresql.org.sh -y
+            sudo mkdir -p /etc/postgresql-common/createcluster.d
+            printf 'create_main_cluster = false\n' | sudo tee /etc/postgresql-common/createcluster.d/partner-ci.conf > /dev/null
+            sudo apt-get install --yes --no-install-recommends postgresql-18
+          fi
+          canonical_pg_version="$(/usr/lib/postgresql/18/bin/postgres --version)"
+          printf '%s\n' "$canonical_pg_version"
+          case "$canonical_pg_version" in
+            'postgres (PostgreSQL) 18.'*) ;;
+            *) exit 1 ;;
+          esac
+          TEST_POSTGRES_BIN=/usr/lib/postgresql/18/bin node tools/partner-platform/canonical-repository.native.mjs
+          TEST_POSTGRES_BIN=/usr/lib/postgresql/18/bin node tools/partner-platform/current-schema-composition.native.mjs
+          TEST_POSTGRES_BIN=/usr/lib/postgresql/18/bin node tools/partner-platform/restricted-canonical-profile.native.mjs
+          TEST_POSTGRES_BIN=/usr/lib/postgresql/18/bin node tools/partner-platform/canonical-host-ingress.native.mjs
+          TEST_POSTGRES_BIN=/usr/lib/postgresql/18/bin node tools/partner-platform/canonical-execution-role.native.mjs
+          TEST_POSTGRES_BIN=/usr/lib/postgresql/18/bin node tools/partner-platform/provider-database-isolation.native.mjs
+          TEST_NATIVE_PG=1 TEST_POSTGRES_BIN=/usr/lib/postgresql/18/bin node --test tools/partner-platform/canonical-request-binding.test.mjs tools/partner-platform/canonical-request-binding-independent.test.mjs
+      - run: git diff --check

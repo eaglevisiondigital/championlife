@@ -10,6 +10,54 @@ A displayed preview no longer supplies continuing authority to print. Fresh cont
 
 Process every discovery response independently: an explicit denial must immediately invalidate the workspace even if a concurrent discovery RPC remains pending. Late responses cannot reverse terminal invalidation. Canonical comparison treats organization, campaign, grant and department arrays as unordered sets; an actual change still retires access. No change to authoritative PostgreSQL authorization or session-retirement requirements. Synthetic browser proof is not provider-backed revocation evidence.
 
+## 2026-11-02 — Actual Partner provider installability
+
+Original 23-function/17-relation pins remain untouched. Actual managed Auth metadata does not match local minimal fixture definitions; PUBLIC TEMP is inherited by any login. Do not weaken pins, replace Auth tables, copy stale sessions, use owner/service-role credentials, or alter shared ACLs to obtain a pass. [Scope and next technical gate](tools/partner-platform/PROVIDER-INSTALLABILITY.md).
+
+## 2026-11-02 — Partner execution-role composition (source only)
+
+The new execution profile requires a fixed LOGIN identity and exactly one SET-only reader membership, no inheritance/delegation/admin edge, privileged role flags, database CREATE/TEMP, relation/column/sequence access or additional reachable definer routines. Effective PUBLIC privileges and RESET ROLE are checked. Original envelope remains default. PUBLIC TEMP denial is a real installation blocker; no global production revocation is authorized. [Exact contract and held provider prerequisites](tools/partner-platform/EXECUTION-ROLE-READINESS.md).
+
+## 2026-11-02 — Signed ingress retains current database authority
+
+Verified signature, exact issuer/audience and current token lifetime are prerequisites, not Partner permission. Subject/session must still pass the locked current canonical join; caller actor fields and metadata cannot substitute. Unknown keys, unsupported algorithms, network fallback, stale config mutation, cancellation and retired ingress instances fail closed. Historical 23-function/17-relation pins and the no-members NOLOGIN envelope remain unchanged. Fictional issuer acceptance does not prove real provider/credential custody. [Validation and remaining controls](docs/PARTNER-SIGNED-HOST-INGRESS-20261102.md).
+
+## 2026-11-02 — Restricted canonical profile denies broader execution
+
+Historical source manifest is SHA-pinned and preserved; the new factory refuses either previously broad authenticated writer grant and all existing provenance/envelope drift. Read locks, current authority, transaction rollback and private-data projection remain unchanged. Fictional Auth pins/owner SET ROLE do not authorize a hosted principal. [Exact security boundary](docs/PARTNER-RESTRICTED-CANONICAL-PROFILE-20261102.md).
+
+## 2026-11-02 — Grant-free Partner composition remains unmounted
+
+The new test-only composer installs exact selected private dependencies with all application EXECUTE/data access revoked, omitting two historical authenticated writer grants. Existing public registration administration still rejects expanded capability keys and cannot widen care_scope; existing trusted service-role assignment DML remains an explicit installation review boundary. New baseline/shape guards roll back drift while original runtime pins remain unchanged and fail closed. Native lock, committed revocation and cancellation checks pass. No approved real host credential or provider principal is inferred. [Security contract and limits](docs/PARTNER-CURRENT-SCHEMA-COMPOSITION-20261102.md).
+
+## 2026-11-02 — Partner integration compatibility remains enforced
+
+Full-source reconstruction and disposable rollback probes confirm that the historical B1/B2 packages cannot silently install on the current Partner baseline. Do not remove their guards, replay historical public-wrapper grants, reuse a public gateway service credential or promote browser verification into server principal authority. Existing provenance pins, restricted NOLOGIN envelope and current-row locks remain byte-identical. [Evidence and required host contract](docs/PARTNER-HOST-INTEGRATION-GAP-20261102.md).
+
+## 2026-11-01 — Partner host privilege containment candidate
+
+A fixed empty-search-path owner-definer routine contains the required row-lock privilege; its dedicated caller receives no direct table/column/sequence grants or other application definer execution. Runtime checks pin routine/ACL/role/schema state before and after the read while preserving existing identity-source pins. Owner privilege is explicitly trusted; SQL claim equality is not cryptographic authentication. The local owner SET ROLE fixture is not a production credential. No hosted role/grant or public endpoint is installed. [Evidence and gates](docs/PARTNER-HOST-ENVELOPE-20261101.md).
+
+## 2026-11-01 — Unmounted canonical Partner repository
+
+Added a server-only transactional reader that reuses exact accepted Issue50 A/B/B2 identity receipts/reviews and the existing canonical adapter. Positive reads lock existing source/map, review/receipt/audit, Person/account and authority rows; missing/changed provenance remains unverified. The disposable fixture generates evidence through the accepted writer. No migration, connection/role or public mount; current metadata stays null. Synthetic Auth catalog pins deliberately prevent claiming real-provider readiness. PGlite and focused Node validation are recorded in [the source contract](docs/PARTNER-CANONICAL-REPOSITORY-20261101.md); native Linux contention CI and independent review remain gates.
+
+## 2026-11-01 — Assigned Partner metadata backend candidate
+
+Local source only: explicit campaign/Partner/worker assignment, locked active Auth session and metadata-only read RPC. No issuer or automatic People identity claim; `personId` remains null pending independently reviewed linkage. Existing financial intake authority and website PR61 are separate. See [implementation boundary and release gates](docs/PARTNER-ASSIGNED-METADATA-20261101.md). No migration, staff grant, public runtime activation or hosted acceptance has occurred.
+
+## 2026-11-01 — Partner current-base integration and private revocation
+
+Exact reviewed Outreach ancestry is reconciled into the Partner draft without changing accepted runtime bytes. A separate private-only revocation primitive prepares locked authority, expected revision, idempotency and immutable audit rollback; no application role can execute it and no Partner issuer policy is inferred. People linking remains null/unverified pending complete unreleased Issue50 receipt/review provenance. See [scope and gates](docs/PARTNER-PRIVATE-REVOCATION-20261101.md). Local source only; no production migration, grant, website activation or public endpoint.
+
+
+## 2026-11-01 — Private Partner issuance and provenance continuation
+
+The new private Partner preparation function requires current Auth/session, independent staff.manage AND campaign-admin authority and exact verified preassigned workers. Only partner.view can be created; no contact, pastoral, finance, export or campaign rights. Creation cannot overwrite existing rows; reassignment requires exact former worker/revision and immutable audit. Canonical identity remains unverified without the complete trusted provider.
+## 2026-11-01 — Partner authority serialization acceptance
+
+New acceptance exercises the existing metadata RPC against actual synthetic SQL rows. Native tests require explicit lock-timeout and serialization errors for both revocation orderings and retained snapshots across Auth/session, campaign/Partner authority, assigned-worker and source-association rows. Sequential PGlite checks pass; new native Linux CI remains pending. Verified B/B1/B2 file hashes do not establish installed provenance: current baseline lacks their receipt/review tables, and source-map/account writer reconciliation is still required before canonical identity can be exposed. No authorization or schema changes. See [prerequisite contract](docs/PARTNER-CANONICAL-BINDING-PREREQUISITES-20261101.md).
+
 ## 2026-10-31 — Unified shell authorization lifetime
 
 Fresh remote user verification and existing server scope discovery precede module loading. Explicit denial, session identity change, logout and navigation retirement clear protected state and invalidate detached handlers; permission projections are refreshed on focus/visibility and every 20 seconds. Auth callbacks only invalidate synchronously, avoiding SDK lock reentry. Backend RLS/RPC checks remain authoritative; UI polling does not promise instantaneous remote revocation or cancellation of already submitted requests. No permission vocabulary, grant, SQL or private learner/King Kind policy changed. See [the complete contract and local/provider distinction](docs/UNIFIED-STAFF-SHELL.md).

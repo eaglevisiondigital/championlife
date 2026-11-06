@@ -1,0 +1,8 @@
+{
+  "name": "champion-partner-unmounted-source",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "@supabase/auth-js": "2.118.0"
+  }
+}
