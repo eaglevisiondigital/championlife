@@ -38,7 +38,10 @@ export function evaluate(document) {
     seen.add(route.route);
     if (typeof route.enabled!=='boolean') errors.push(route.route+' missing enabled flag');
     const slot=slots?.find(s=>s.slot===route.mid_slot);
-    if (!route.mid_slot) blockers.push(route.route+' route not mapped');
+    // Disabled routes must still bind a real slot owned by the route organization.
+    // Keep these as route blockers so a separately scoped valid pilot is unaffected.
+    if (!slot) blockers.push(route.route+' route not mapped to an existing MID');
+    if (slot && slot.merchant_organization!==route.organization) blockers.push(route.route+' merchant organization does not own route');
     if (typeof route.boarded_purpose_approved!=='boolean') errors.push(route.route+' invalid purpose approval');
     if (route.boarded_purpose_approved!==true) blockers.push(route.route+' purpose not boarded/approved');
     if (route.enabled) {

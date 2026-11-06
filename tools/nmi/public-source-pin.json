@@ -1,0 +1,14 @@
+{
+  "commit": "84b2d9ab398bb8046570019da26a5db67fe77467",
+  "purpose": "Exact accepted historical source before narrowly scoped session correction; not mounted or allowlisted",
+  "files": [
+    {
+      "path": "assets/js/nmi-public-giving.js",
+      "sha256": "71018f9f47f4656e9657afa3497664e29220a77ef10a9f59f47f334ba9dee89e"
+    },
+    {
+      "path": "assets/js/nmi-giving-client.js",
+      "sha256": "0df081193d9ace5c5f1133aa3954386e0d70f1ac97980de929ba8dfef5d74de2"
+    }
+  ]
+}
