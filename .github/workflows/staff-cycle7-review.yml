@@ -74,6 +74,20 @@ jobs:
         with:
           node-version: 22
       - run: npm ci --ignore-scripts --prefix tools/backend-tests
+      - name: Install required PostgreSQL 17 from the official PGDG repository
+        run: |
+          sudo install -d /usr/share/postgresql-common/pgdg
+          sudo curl --fail --silent --show-error --location https://www.postgresql.org/media/keys/ACCC4CF8.asc --output /usr/share/postgresql-common/pgdg/apt.postgresql.org.asc
+          . /etc/os-release
+          sudo tee /etc/apt/sources.list.d/pgdg.sources > /dev/null <<EOF
+          Types: deb
+          URIs: https://apt.postgresql.org/pub/repos/apt
+          Suites: ${VERSION_CODENAME}-pgdg
+          Components: main
+          Signed-By: /usr/share/postgresql-common/pgdg/apt.postgresql.org.asc
+          EOF
+          sudo apt-get update
+          sudo apt-get install --yes --no-install-recommends postgresql-17
       - name: Disposable local schema composition and denied RPCs only
         run: |
           /usr/lib/postgresql/17/bin/postgres --version | grep -E 'PostgreSQL\) 17\.'
