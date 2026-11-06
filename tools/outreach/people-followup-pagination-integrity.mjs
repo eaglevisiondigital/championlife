@@ -12,6 +12,8 @@ const changed=git('diff','--name-only',base).toString().trim().split('\n').filte
 // Narrow composition of the accepted PR90 search resets onto current PR72.
 // Keep the original baseline and all other protected output comparisons.
 for(const p of ['assets/js/outreach-registration-staff.js','tools/outreach/registration-search-composition.browser.mjs','tools/outreach/registration-search-composition-independent.browser.mjs','docs/REGISTRATION-SEARCH-COMPOSITION-20261106.md'])allow.add(p);
+// Reviewed read-only history increment; no SQL, public manifest or other output exception.
+for(const p of ['tools/outreach/people-followup-history.browser.mjs','tools/outreach/people-followup-history-independent.browser.mjs','tools/outreach/people-followup-history.native.mjs','docs/PEOPLE-FOLLOWUP-HISTORY-20261106.md','.github/workflows/people-followup-history.yml'])allow.add(p);
 assert.equal(sha(fs.readFileSync(root+'assets/js/outreach-registration-staff.js')),'665236df4f5eb52f25e4bcc5560a0e8fda4feae139b4f0b17265d10964ca4f2a','exact reviewed registration composition');
 assert.ok(changed.every(p=>allow.has(p)),'unexpected source change');
 const paths=JSON.parse(fs.readFileSync(root+'tools/site-build/public-files.json'));
