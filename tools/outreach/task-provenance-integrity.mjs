@@ -15,8 +15,11 @@ const allow=new Set([
  'docs/CAMPAIGN-PROVENANCE-CONTRACT-20261105.md',
  'tools/outreach/task-writer-prepare.sql','tools/outreach/task-writer-outcome.mjs',
  'tools/outreach/task-writer.native.mjs','tools/outreach/task-writer-independent.native.mjs',
+ 'tools/outreach/task-writer-reconcile.sql','tools/outreach/task-writer-reconcile.native.mjs',
+ 'tools/outreach/task-writer-reconcile-independent.native.mjs',
  'tools/outreach/campaign-provenance-contract.mjs','tools/outreach/campaign-provenance-fixture.mjs',
  'tools/outreach/campaign-provenance-contract.native.mjs','tools/outreach/campaign-provenance-independent.native.mjs',
+ 'tools/outreach/campaign-provenance-custody.native.mjs','tools/outreach/campaign-provenance-custody-independent.native.mjs',
  'tools/outreach/task-provenance-integrity.mjs','.github/workflows/task-provenance-contracts.yml'
 ]);
 const changed=git('diff','--name-only',baseline).toString().trim().split('\n').filter(Boolean);

@@ -1,3 +1,9 @@
+## 2026-11-05 — Observed history cannot clear UNKNOWN
+
+The private disposable reconciliation contract reuses current server identity, dual authorization, consent and five expected revisions before and after checking canonical history. It has no API execution grants or application DML; its row locks require an ordinary PostgreSQL transaction, not READ ONLY mode. Exact current state, contiguous canonical events and a matching proposed intent do not prove that an uncertain request committed, failed or has no pending operation. All observations retain UNKNOWN, no retry and no terminal proof. A real intent ledger and successful atomic task/audit/final-fence implementation remain absent; existing unconditional write denial remains intact.
+
+Fictional custody checks require a distinct currently verified authorizer plus signed designation, separately accepted source/identity/adult/consent methods, and a captured head bound to the exact policy, designation and history. Capture cannot precede the latest event or occur in the future. A still-valid captured head cannot discover a later withdrawal by itself: a real independent current-head custodian is an explicit missing capability. These checks neither establish real identity nor create linking/contact/write authority.
+
 ## 2026-11-05 — Prepared intent is not mutation authority
 
 The disposable-only private prepare function has no API execution grants, public wrapper, migration installer, DML or enablement switch. Server session identity and fresh independent organization manage plus assigned-campaign authority are checked under existing task-first locks; consent, expiry and exact revisions are rechecked after waits. The returned intent/hash is not a durable receipt or transferable authorization. Existing unconditional bound-task write denial remains authoritative. No automatic retry follows an uncertain outcome.

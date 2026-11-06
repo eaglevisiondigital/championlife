@@ -1,3 +1,9 @@
+## 2026-11-05 — Uncertain task observation and provenance custody
+
+The held task contract now supports a disposable-only, permission-checked observation of expected revisions and canonical audit consistency. A matching snapshot and one event per revision still return UNKNOWN with terminal verification and automatic retry false: canonical events do not carry a durable request identity. Existing task writes remain blocked. Native tests exercise task/event lock contention and the existing deferred denial/rollback; they do not implement a successful bound CAS writer or positive commit-time expiry fence.
+
+Fictional provenance now checks current verified authorizer metadata separately from signed designation, finite acceptance for each evidence method, and externally captured audit-head timing and policy/designation binding. Account existence is not authority. Real designation, methods, custody, retention and source evidence remain unavailable. Permanent independent tests cover fully signed negative cases and unchanged canonical rows. No migration, existing permission, public output, provider or operational capability changes. Exact source CI is separate from genuine hosted acceptance; release remains NO-GO.
+
 ## 2026-11-05 — Held task preparation and fictional provenance contracts
 
 Source-only contracts extend unchanged PR105 without enabling its blocked task writes or identity bindings. Disposable native PostgreSQL preparation locks the canonical task and existing authority dependencies, compares five exact revisions and binds the neutral intent to current server Auth. Every valid preparation remains HELD; ambiguous results remain UNKNOWN without a retry port. Positive bound mutation/audit CAS is deliberately not implemented.
