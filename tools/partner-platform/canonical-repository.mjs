@@ -47,8 +47,13 @@ export function createCanonicalPartnerRepository({acquire}){return repositoryFor
 export function createCanonicalPartnerRoutineRepository({acquire}){return repositoryFor(acquire,true)}
 function repositoryFor(acquire,routine,verifyProvenance=verifyCanonicalRepositoryProvenance,verifyEnvelope=verifyCanonicalHostEnvelope){
  if(typeof acquire!=='function')throw TypeError('Trusted private database connection required');
- return Object.freeze({sourceHashes:IDENTITY_SOURCE_HASHES,async withCurrentIdentity(request,consume){
-  if(!request||Object.getPrototypeOf(request)!==Object.prototype||Reflect.ownKeys(request).length!==fields.length||!fields.every(k=>uuid(request[k]))||typeof consume!=='function')unavailable();
+ return Object.freeze({sourceHashes:IDENTITY_SOURCE_HASHES,async withCurrentIdentity(input,consume){
+  if(!input||Object.getPrototypeOf(input)!==Object.prototype||typeof consume!=='function')unavailable();
+  // Capture only own data values once. Never invoke caller accessors or reread
+  // a retained request after acquisition/provenance/SQL has yielded control.
+  const descriptors=Object.getOwnPropertyDescriptors(input);
+  if(Reflect.ownKeys(descriptors).length!==fields.length||!fields.every(k=>Object.hasOwn(descriptors,k)&&Object.hasOwn(descriptors[k],'value')&&uuid(descriptors[k].value)))unavailable();
+  const request=Object.freeze(Object.fromEntries(fields.map(k=>[k,descriptors[k].value])));
   const c=await acquire();let transaction=false,committed=false;
   try{
    await c.query('begin isolation level read committed');transaction=true;

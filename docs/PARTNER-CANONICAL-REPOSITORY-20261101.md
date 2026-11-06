@@ -83,3 +83,38 @@ unchanged. No new PR61 packet or repeated owner questions are needed.
 ## Restricted routine source successor
 
 The disposable connection now uses the integrated restricted role/routine described in [the host-envelope contract](PARTNER-HOST-ENVELOPE-20261101.md). It no longer runs canonical reads under its owner current_user. This supplies the source-only fixed-operation privilege prerequisite; it does not supply a genuine hosted login credential or provider principal. Earlier broad-grant/SELECT-only limitations remain valid, and no accepted provenance pin changed.
+
+## Cycle11 request binding correction
+
+The direct repository entry point now snapshots exactly five own UUID data
+properties before acquiring a connection: organization, campaign, assignment,
+user and session. Accessors, missing/extra keys and malformed values deny before
+acquisition. All transaction-local identity settings, metadata checks and snapshot
+arguments use this frozen capture. Caller mutation during acquisition or catalog
+reads cannot redirect the operation. This does not authenticate a supplied UUID;
+the existing trusted-host principal binding and SQL authorization still apply.
+
+A baseline reproduction on `09729bc98768f5d5b8de9c8ef7d08f99feef59bb`
+changed an initially foreign organization/campaign request into the assigned
+scope during acquisition; the old direct repository accepted that replacement.
+The higher-level identity boundary already freezes its constructed request. This
+correction therefore closes the direct repository's request-selection gap, not a
+newly demonstrated database permission bypass or hosted endpoint vulnerability.
+
+`canonical-request-binding.test.mjs` uses the actual accepted Issue50 writer and
+unchanged canonical SQL/catalog pins. Local PGlite18 validation passes 26 Node
+tests (25 named scenarios and their enclosing test): exact scope/identity,
+mutations of each captured field during acquisition/catalog reads, mutation before
+snapshot read, accessor/proxy behavior, all four repository constructors' early
+input denial, current deadlines/revocation, and boundary invalidation rollback.
+Successful mutation cases must issue exactly the baseline SQL and parameters.
+Proxy descriptor traps can run while JavaScript obtains descriptors; they are not
+a trusted authority source. Only the resulting own validated primitive values
+are captured, and ordinary property getters are never invoked.
+
+The same test runs with `TEST_NATIVE_PG=1` in the existing PostgreSQL18 CI stage.
+Local PostgreSQL18 is unavailable; no native PASS is claimed here. No unchanged
+broad suite was rerun. Cancellation coverage here means existing boundary
+invalidation and rollback, not a new database cancellation API. Public files,
+SQL, grants, provenance pins, genuine-provider acceptance and hosted installation
+remain unchanged; metadata identity remains unverified and no activation occurs.
