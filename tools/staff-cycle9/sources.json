@@ -1,0 +1,195 @@
+{
+  "base": "e75fdf884e6880f69920521e74ff7d3a82c3397f",
+  "scope": "Explicit browser composition only; backend sources are not installed or imported.",
+  "imports": [
+    {
+      "path": "assets/js/outreach-people.js",
+      "commit": "6e04acaef569228dfac8e621ef4c1de5c558b889",
+      "sourceSHA256": "cd00bc392435a0c95da9256358cf115e32e1aa7c872034eb74d98055d92735d7",
+      "compositionSHA256": "7c95613bcd7e08d213162f9844cc33d50d16bb97adb3b6295bc3e86eb4d98f3f",
+      "adaptation": "Preserve the exact PR109 request() identity/client/error fence while importing PR72 paging and task editing.",
+      "retainedFunction": {
+        "commit": "e75fdf884e6880f69920521e74ff7d3a82c3397f",
+        "path": "assets/js/outreach-people.js",
+        "sourceSHA256": "942e20ce113bac4b041fd510d32f302b763c7b1111f1e818ba10d555a8252200",
+        "startMarker": " async function request(run){",
+        "endMarker": " const people=",
+        "sha256": "bf1fccc025072431fdf6cb5f11d9b8465eb0dc3cc37ef69647528ea8402bcaf5"
+      }
+    },
+    {
+      "path": "assets/js/outreach-registration-staff.js",
+      "commit": "6e04acaef569228dfac8e621ef4c1de5c558b889",
+      "sourceSHA256": "665236df4f5eb52f25e4bcc5560a0e8fda4feae139b4f0b17265d10964ca4f2a",
+      "compositionSHA256": "665236df4f5eb52f25e4bcc5560a0e8fda4feae139b4f0b17265d10964ca4f2a",
+      "adaptation": null
+    },
+    {
+      "path": "staff-forms.html",
+      "commit": "32605a00753c8c60076c5aa6742a770c710b0354",
+      "sourceSHA256": "83085875a2725ce23d8b07d302a17de4e3e872c742e33fa1e1241f7fad097bb4",
+      "compositionSHA256": "fc4900e62ba06bf5e894d2fd0dae135f704ceb37fc23d4ea9a354c35bcc581db",
+      "adaptation": "Add a Staff home anchor without query parameters to the existing staff navigation."
+    },
+    {
+      "path": "staff-form-builder.html",
+      "commit": "32605a00753c8c60076c5aa6742a770c710b0354",
+      "sourceSHA256": "a33d660d8454b4319038ee6f51898bbe8bbff6afc206a2fe625b05734d51cb6e",
+      "compositionSHA256": "0f5587c2f1200f187c041bd72974888f0399b4e9dc7882b793561edee06202ee",
+      "adaptation": "Add a Staff home anchor without query parameters to the existing staff navigation."
+    },
+    {
+      "path": "assets/js/forms-model.js",
+      "commit": "32605a00753c8c60076c5aa6742a770c710b0354",
+      "sourceSHA256": "d3e7b7d02c1cea2641b72c2e0aea8d769ca4ed1e273e374082e8a5e29b6031d9",
+      "compositionSHA256": "d3e7b7d02c1cea2641b72c2e0aea8d769ca4ed1e273e374082e8a5e29b6031d9",
+      "adaptation": null
+    },
+    {
+      "path": "assets/js/forms-renderer.js",
+      "commit": "32605a00753c8c60076c5aa6742a770c710b0354",
+      "sourceSHA256": "cc845ebcf3e52338074632e283050a23058b85d781e692c1ed9f57fa27de1bbb",
+      "compositionSHA256": "cc845ebcf3e52338074632e283050a23058b85d781e692c1ed9f57fa27de1bbb",
+      "adaptation": null
+    },
+    {
+      "path": "assets/js/forms-context.js",
+      "commit": "32605a00753c8c60076c5aa6742a770c710b0354",
+      "sourceSHA256": "34cd0699c62f365722356c80c9eb01ba57703e7e88250219eba73d9b280a06ac",
+      "compositionSHA256": "09596fdd93fd6d01dee08cf974ed947f224795cd9075f76ccb0e6f23a7043075",
+      "adaptation": "Do not issue identity requests or reopen the obsolete Forms context after the shared session removes its root.",
+      "retirementValidation": [
+        {
+          "before": " async function refresh(){\n  const request=++sequence;let user;",
+          "after": " async function refresh(){\n  if(closed||!root.isConnected)return;\n  const request=++sequence;let user;"
+        },
+        {
+          "before": "window.addEventListener('pageshow',e=>{if(e.persisted){closed=false;principal=null;clear();refresh();}});",
+          "after": "window.addEventListener('pageshow',e=>{if(e.persisted&&root.isConnected){closed=false;principal=null;clear();refresh();}});"
+        }
+      ]
+    },
+    {
+      "path": "assets/js/forms-admin.js",
+      "commit": "32605a00753c8c60076c5aa6742a770c710b0354",
+      "sourceSHA256": "49efdfa2c2ddf8268880a4387d9016b5cce2a21a13f0b6d804e5c12d06e0fe8d",
+      "compositionSHA256": "b549720ee40e5a7031287e82fe130d79b5f6ada2fd45690547ad10d00636a010",
+      "adaptation": "Reject duplicate or malformed supplied organization selectors before Forms list/detail; preserve absent-selector authorized default.",
+      "routeValidation": [
+        {
+          "before": "    formId = query.get(\"form\");",
+          "after": "    formId = query.get(\"form\");\n  const organizationHints = query.getAll(\"organization\"),\n    invalidOrganization = organizationHints.length > 1 ||\n      (organizationHints.length === 1 &&\n        !/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(organizationHints[0]));"
+        },
+        {
+          "before": "    if (!user) {\n      deny();",
+          "after": "    if (!user || invalidOrganization) {\n      deny();"
+        }
+      ]
+    },
+    {
+      "path": "assets/css/forms.css",
+      "commit": "32605a00753c8c60076c5aa6742a770c710b0354",
+      "sourceSHA256": "d51179feca384acca12f1c46df791744d9ce064eadf461b71e33bca27f1cd3c5",
+      "compositionSHA256": "d51179feca384acca12f1c46df791744d9ce064eadf461b71e33bca27f1cd3c5",
+      "adaptation": null
+    },
+    {
+      "path": "staff-events.html",
+      "commit": "e4058f70232f2adddd4328dd76aec47cef724c22",
+      "sourceSHA256": "85faf7b6b8e7d026dc44946982cf66bef76ac3d88d42ecdadc9ec185add87b39",
+      "compositionSHA256": "9a8bffc949d78e6fa62a55b5a78deceb644d3ef607975cf7a2c7b31f382a1b3b",
+      "adaptation": "Add a Staff home anchor without query parameters to the existing staff navigation."
+    },
+    {
+      "path": "assets/js/events-common.js",
+      "commit": "e4058f70232f2adddd4328dd76aec47cef724c22",
+      "sourceSHA256": "e928120eca0a165d023bcbec818868ce1d1d8a86c4b241ebb67f2dc8a0b0c481",
+      "compositionSHA256": "e928120eca0a165d023bcbec818868ce1d1d8a86c4b241ebb67f2dc8a0b0c481",
+      "adaptation": null
+    },
+    {
+      "path": "assets/js/staff-events.js",
+      "commit": "e4058f70232f2adddd4328dd76aec47cef724c22",
+      "sourceSHA256": "e987092934d12c2a8b368c8d3a642040f6c06b99c70f7da52285cdbd836ef3d1",
+      "compositionSHA256": "e987092934d12c2a8b368c8d3a642040f6c06b99c70f7da52285cdbd836ef3d1",
+      "adaptation": null
+    },
+    {
+      "path": "assets/css/events.css",
+      "commit": "e4058f70232f2adddd4328dd76aec47cef724c22",
+      "sourceSHA256": "77c10ba67bc65b9a1168640e25f25ce75161ef02dd97256520a49fe1ead6c1e2",
+      "compositionSHA256": "77c10ba67bc65b9a1168640e25f25ce75161ef02dd97256520a49fe1ead6c1e2",
+      "adaptation": null
+    },
+    {
+      "path": "staff-dream-team-manual.html",
+      "commit": "0b6bf2f44c206c7b42c11d4a8ce0323777533f30",
+      "sourceSHA256": "77a842ea4a83358f9c0cb8830d84bd08e5f43808f2f6472079a410dbb44ed89b",
+      "compositionSHA256": "e3c5750e52cb9c9f5cd6616ef2309b68ce497d6f086fda3855d5c490dab7248f",
+      "adaptation": "Add a Staff home anchor without query parameters to the existing staff navigation."
+    },
+    {
+      "path": "assets/js/dream-team-manual.js",
+      "commit": "0b6bf2f44c206c7b42c11d4a8ce0323777533f30",
+      "sourceSHA256": "56bfb30006406c92534ca5e0552d5eff0bea20b5b723abd4fd490f08f6cf9574",
+      "compositionSHA256": "56bfb30006406c92534ca5e0552d5eff0bea20b5b723abd4fd490f08f6cf9574",
+      "adaptation": null
+    }
+  ],
+  "preservedDependencies": [
+    {
+      "path": "assets/css/outreach-campaigns.css",
+      "commit": "e75fdf884e6880f69920521e74ff7d3a82c3397f",
+      "sourceSHA256": "3b062e4113e2b8da3fdb02769b1ffdf29e8a5d4cb86784c2b8f8bd9abbfbda81"
+    },
+    {
+      "path": "assets/css/staff-portal.css",
+      "commit": "e75fdf884e6880f69920521e74ff7d3a82c3397f",
+      "sourceSHA256": "89db633369eb31b0ca790ae7b9633fc01403c40bb52c3491c59870f9cc0fc417"
+    },
+    {
+      "path": "assets/images/logo-gold.png",
+      "commit": "e75fdf884e6880f69920521e74ff7d3a82c3397f",
+      "sourceSHA256": "0a58d621918aeffc58ab72a30311054432461014b52eae5dd973da1f3cc59a69"
+    },
+    {
+      "path": "assets/images/propel-logo-header-transparent.png",
+      "commit": "e75fdf884e6880f69920521e74ff7d3a82c3397f",
+      "sourceSHA256": "1da2643a7741846dea083b29b6c9d7fddc3bb051d008b2039e6999df860d1b8d"
+    },
+    {
+      "path": "assets/js/champion-life-auth.js",
+      "commit": "e75fdf884e6880f69920521e74ff7d3a82c3397f",
+      "sourceSHA256": "f1d277ea1cb5cf608de471b0a62f6ae41c9ecdc3b675960628083ee4e1df3cb4"
+    },
+    {
+      "path": "assets/js/outreach-staff-common.js",
+      "commit": "e75fdf884e6880f69920521e74ff7d3a82c3397f",
+      "sourceSHA256": "78ae549e7077b662dc6a275f23307fea2b6eb34b6a0c1da407ffe3ec36dad164"
+    },
+    {
+      "path": "assets/js/staff-session.js",
+      "commit": "e75fdf884e6880f69920521e74ff7d3a82c3397f",
+      "sourceSHA256": "152dffe8ea3d6aeb8985168fb441bc40020a22c909f256209490fbba4b851163"
+    },
+    {
+      "path": "assets/js/supabase-config.js",
+      "commit": "e75fdf884e6880f69920521e74ff7d3a82c3397f",
+      "sourceSHA256": "df1645963771760944d8bb4d26292537e4eb3e98850dcb187a3d81a59c592a37"
+    }
+  ],
+  "backendReferences": [
+    {
+      "module": "Events guarded fresh draft dependency; source reference only, not installed or imported",
+      "commit": "1f03ad3cf1609fa3dc9525a1539b8e9dc1734815"
+    },
+    {
+      "module": "Forms private_draft_v1 source contract; source reference only, not installed or imported",
+      "commit": "32605a00753c8c60076c5aa6742a770c710b0354"
+    },
+    {
+      "module": "Dream Team manual review and existing task authority; source reference only, not installed or imported",
+      "commit": "0b6bf2f44c206c7b42c11d4a8ce0323777533f30"
+    }
+  ]
+}
