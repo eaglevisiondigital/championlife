@@ -6,9 +6,19 @@ import {chromium,webkit} from '../backend-tests/node_modules/playwright/index.mj
 const origin='https://people-pages.invalid',P='11111111-1111-4111-8111-111111111111',Q='22222222-2222-4222-8222-222222222222';
 const sources=['outreach-staff-common.js','outreach-people.js'].map(n=>readFileSync(n==='outreach-people.js'&&process.env.BASELINE_SOURCE?process.env.BASELINE_SOURCE:new URL('../../assets/js/'+n,import.meta.url),'utf8'));
 // PR86 da658ea4c0fd9590e969bbc6ad772f02b3a99b12 reuses PR85 a9dc5260765bcaea8ad18af34ae91270c10b7cfb.
-// Only helper changes: taskCursors argument and its two paged detail returns.
-const runtime=sources[1],helper=runtime.slice(runtime.indexOf(' function addTaskActions('),runtime.indexOf(' async function detail(')).replace('personId,g,taskCursors){','personId,g){').replaceAll('detail(personId,taskCursors)','detail(personId)');
-if(!process.env.BASELINE_SOURCE)assert.equal(createHash('sha256').update(helper).digest('hex'),'8e67f1056799b5f7b4a7cbb580c420672b61e23b50cdd9949b2260d18ef0e374','accepted PR85/86 helper except reviewed page return adaptation');
+// Exact reviewed adaptations: page/filter arguments and the two page/filter detail returns.
+const runtime=sources[1];
+if(!process.env.BASELINE_SOURCE){
+ let helper=runtime.slice(runtime.indexOf(' function addTaskActions('),runtime.indexOf(' async function detail('));
+ for(const [adapted,original,count] of [
+  ['personId,g,taskCursors,taskStatus){','personId,g){',1],
+  ['detail(personId,taskCursors,taskStatus)','detail(personId)',2],
+ ]){
+  assert.equal(helper.split(adapted).length-1,count,'exact reviewed helper adaptation count: '+adapted);
+  helper=helper.replaceAll(adapted,original);
+ }
+ assert.equal(createHash('sha256').update(helper).digest('hex'),'8e67f1056799b5f7b4a7cbb580c420672b61e23b50cdd9949b2260d18ef0e374','accepted PR85/86 helper except exact reviewed page/filter return adaptation');
+}
 let checks=0;const ok=(v,m)=>{assert.ok(v,m);checks++};
 for(const[engine,type]of[['chromium',chromium],['webkit',webkit]]){
  if(process.env.TEST_BROWSER&&process.env.TEST_BROWSER!==engine)continue;
