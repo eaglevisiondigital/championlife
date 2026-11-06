@@ -53,3 +53,10 @@ Production Champion Life Supabase `exdocjbmylgxssanymjk` was rechecked and remai
 **Current gate:** draft production release PR + CI only. No merge, production migrations, Edge deployment, grants, waiver publication, registration activation, SowGo routing change or live message is authorized. Branded email remains a separate launch gate.
 
 See [dependency graph](docs/HUNTSVILLE-MINIMAL-DEPENDENCIES.md) and [release/containment plan](docs/HUNTSVILLE-MINIMAL-RELEASE.md).
+
+
+## November 6, 2026 — Strict NMI Query document and field binding
+
+Source-only successor to reviewed PR78. The existing Query parser rejected malformed input incompletely: a valid-looking transaction inside an invalid document could become authoritative, and nested product amounts could be mistaken for payment totals. The existing parser now validates the entire bounded XML document, projects only direct-parent fields, uses explicit status mapping and rejects invalid UTF-8/non-XML whitespace. Unsupported input remains held for review; there is no automatic payment retry.
+
+44 focused author cases,45 independent cases,34 native executor/ledger checks and108 preserved disabled-guard cases pass locally. The original Query regression also passes. A native baseline false-ledger posting is preserved as failure evidence; corrected invalid responses create no ledger or receipt. All SQL, activation gates, merchant/settlement boundaries, GiveHub and public source remain unchanged. CI/provider acceptance are separate. See docs/NMI-QUERY-STRUCTURE.md. RELEASE NO-GO.

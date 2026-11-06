@@ -1,0 +1,40 @@
+name: NMI strict Query structure (disabled source only)
+on:
+  pull_request:
+    paths:
+      - 'supabase/functions/_shared/payments/nmi-query.mjs'
+      - 'tools/backend-tests/nmi-query*'
+      - 'docs/NMI-QUERY-STRUCTURE.md'
+      - '.github/workflows/nmi-query-structure-review.yml'
+permissions:
+  contents: read
+jobs:
+  query:
+    name: Query structure and independent security
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: node --test tools/backend-tests/nmi-query-structure.test.mjs tools/backend-tests/nmi-query-independent.test.mjs tools/backend-tests/nmi-preclaim-disabled.test.mjs tools/backend-tests/nmi-gateway-preclaim.test.mjs tools/backend-tests/nmi-webhook-disabled.test.mjs
+      - run: node tools/backend-tests/nmi-query.test.mjs
+      - run: node tools/backend-tests/nmi-query-integrity.mjs
+      - run: git diff --check
+  native:
+    name: Native Query UNKNOWN and ledger isolation
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm ci --ignore-scripts --prefix tools/backend-tests
+      - run: TEST_POSTGRES_BIN="$(pg_config --bindir)" node tools/backend-tests/nmi-query-structure.native.mjs
