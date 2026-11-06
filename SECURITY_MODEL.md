@@ -62,3 +62,10 @@ Donation-intake access requires outreach.view AND finance.read. Restrictive RLS 
 ## 2026-11-02 — People verification result publication
 
 An asynchronous People boot must confirm its captured generation before publishing the verified user to module state. A retired account's delayed user/null result cannot overwrite the newer account or turn a permitted follow-up action into a false session expiry. Current-session checks, backend People/task permissions, task revision filters, denial clearing and logout remain authoritative and unchanged. The correction does not create campaign-assigned decision access; no decision mount may reuse event-registration permissions or broad organization People authority. Synthetic browser evidence and the exact source boundary are documented in [the focused contract](docs/OUTREACH-PEOPLE-IDENTITY-RACE-20261102.md).
+
+
+## November 6, 2026 — Reach older authorized Person follow-up tasks
+
+The existing Person detail workspace now offers stable created_at/id keyset pages, newer/older navigation and explicit latest refresh. Status changes preserve the current page; creation returns to the latest page. The prior newest-100-only limit left older open tasks unreachable. Only existing canonical task reads/status updates are used. No SQL, permission, campaign authority, identity association, public layout or branding changes.
+
+Protected cursors and handlers remain generation-scoped; current session and followup.read/manage authorization are rechecked. A malformed cursor fails closed without constructing a filter. Rows remain live rather than a claimed snapshot. Focused author acceptance:264 browser assertions; unchanged affected People suites:276 creation,222 identity,64 navigation and5 DOM scenarios. Independent Chromium/WebKit review adds56 passing adversarial assertions; exact-head CI is separately recorded. See docs/PEOPLE-FOLLOWUP-PAGINATION-20261106.md. Source-only, not deployed.

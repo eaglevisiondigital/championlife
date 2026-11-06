@@ -58,22 +58,28 @@
    }finally{if(current()&&!submitted){pending=false;submit.disabled=false;title.disabled=false;due.disabled=false}}
   };
  }
- async function detail(id){
+ async function detail(id,taskCursors=[]){
   const g=++generation;content.replaceChildren();status.textContent='Loading…';await refreshPermissions();if(g!==generation)return;
   const data=await people('detail',{person_id:id});if(g!==generation)return;status.textContent='';const p=data.person;
   content.append(button('Back to People',()=>list()),el('h2',p.first_name+' '+p.last_name),el('p',p.email||''),el('p',p.phone||''),el('h3','Organization relationships'));
   for(const r of data.relationships||[])content.append(el('p',r.relationship+(r.active?'':' (inactive)')));
   if(!can('followup.read'))return;
-  const tasks=await request(()=>auth.client.from('followup_tasks').select('id,title,status,due_on,revision').eq('organization_id',org).eq('person_id',id).order('created_at',{ascending:false}).limit(100));if(g!==generation)return;
+  const tasks=await request(()=>{let query=auth.client.from('followup_tasks').select('id,title,status,due_on,revision,created_at').eq('organization_id',org).eq('person_id',id).order('created_at',{ascending:false}).order('id',{ascending:false});const cursor=taskCursors.at(-1);if(cursor)query=query.or('created_at.lt.'+cursor.created_at+',and(created_at.eq.'+cursor.created_at+',id.lt.'+cursor.id+')');return query.limit(101)});if(g!==generation)return;
   // RLS-filtered empty data is not proof of continuing authority.
   await refreshPermissions();if(g!==generation)return;if(!can('followup.read')){fail(403);return}
-  content.append(el('h3','Follow-up tasks'));if(can('followup.manage'))addTaskEditor(id,g);if(!tasks.length)content.append(el('p','No follow-up tasks.'));
-  for(const task of tasks){const card=el('article');card.append(el('h4',task.title),el('p',task.status+' · '+(task.due_on||'No due date')));
+  content.append(el('h3','Follow-up tasks'),el('p','Task page '+(taskCursors.length+1)),button('Refresh latest tasks',()=>detail(id)));if(can('followup.manage'))addTaskEditor(id,g);if(!tasks.length)content.append(el('p',taskCursors.length?'No tasks on this page. Return to newer tasks or refresh the latest tasks.':'No follow-up tasks.'));
+  for(const task of tasks.slice(0,100)){const card=el('article');card.append(el('h4',task.title),el('p',task.status+' · '+(task.due_on||'No due date')));
    if(can('followup.manage')){const label=el('label','Status'),select=el('select');for(const value of ['open','completed','canceled']){const option=el('option',value,{value});option.selected=task.status===value;select.append(option)}label.append(select);card.append(label,button('Save task status',async()=>{
     await refreshPermissions();if(g!==generation)return;if(!can('followup.manage')){fail(403);return}
     const saved=await request(()=>auth.client.from('followup_tasks').update({status:select.value}).eq('organization_id',org).eq('person_id',id).eq('id',task.id).eq('revision',task.revision).select('id').maybeSingle());
-    if(g!==generation)return;if(!saved){await refreshPermissions();status.textContent='Task changed or access was removed. Refresh before retrying.';content.replaceChildren();return}await detail(id);
+    if(g!==generation)return;if(!saved){await refreshPermissions();status.textContent='Task changed or access was removed. Refresh before retrying.';content.replaceChildren();return}await detail(id,taskCursors);
    }))}content.append(card);
+  }
+  if(taskCursors.length)content.append(button('Newer tasks',()=>detail(id,taskCursors.slice(0,-1))));
+  if(tasks.length>100){const last=tasks[99];
+   // Preserve PostgreSQL timestamp precision; accept only safe typed cursor values.
+   if(/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(last.id)&&/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{1,6})?(?:Z|[+-]\d{2}:\d{2})$/.test(last.created_at))content.append(button('Older tasks',()=>detail(id,[...taskCursors,{id:last.id,created_at:last.created_at}])));
+   else status.textContent='Unable to load older tasks. Please refresh and try again.';
   }
  }
  async function boot(){const g=++generation;grants=[];content?.replaceChildren();root.replaceChildren();try{const verifiedUser=await auth?.getUser();if(g!==generation)return;user=verifiedUser;if(!user){root.append(login());return}
