@@ -64,6 +64,7 @@ try {
  const eventsSQL=readFileSync(new URL('../../supabase/migrations/20261102193138_communications_resend_suppressed.sql',import.meta.url),'utf8');
  for(const change of ["grant execute on function private.comm_provider_service_resend_v1(text,uuid,jsonb) to service_role;", "create or replace function private.comm_provider_service_resend_v1(action text,o uuid,p jsonb)returns jsonb language sql security definer set search_path='' as $$select '{}'::jsonb$$;"]){await rejects(async()=>sql('begin;'+change+eventsSQL+'commit;'),'events migration rejects function or privilege drift');}
  sql(eventsSQL);
+ sql(readFileSync(new URL('../../supabase/migrations/20261106071632_communications_preference_replay_binding.sql',import.meta.url),'utf8'));
  let requests=0,seq=0;
  const api=async()=>{requests++;return new Response(JSON.stringify({id:randomUUID()}));};
  const host=createResendSourceHost({binding,rpc,fetchImpl:api,apiKey:'re_fictional_not_a_secret',outboundEnabled:true,receiptsEnabled:true});

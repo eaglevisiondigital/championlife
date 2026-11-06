@@ -36,6 +36,7 @@ try {
  sql(readFileSync(new URL('../backend-tests/fixtures/supabase-test-bootstrap.sql',import.meta.url),'utf8'));
  sql(readFileSync(new URL('../../supabase/bootstrap/automatic-rls.sql',import.meta.url),'utf8'));
  for(const name of migrationOrder)sql(readFileSync(new URL('../../supabase/migrations/'+name,import.meta.url),'utf8'));
+ sql(readFileSync(new URL('../../supabase/migrations/20261106071632_communications_preference_replay_binding.sql',import.meta.url),'utf8'));
  sql(fixtureSQL);
  // No automated fixture reminders; each scenario queues explicit fictional rows.
  sql('update communication_routes set enabled=false;');
