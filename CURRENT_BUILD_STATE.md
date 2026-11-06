@@ -143,3 +143,24 @@ returned and thrown/error outcomes against current local identity/client before
 old-account private review or uncertain-save controls can return. Same-account
 uncertain writes retain the original no-retry handling; no records are rolled back
 or replayed by this browser correction.
+
+## 2026-11-06 — Cycle12 bounded historical Forms ordering experiment
+
+Additive test tools in `tools/staff-cycle12/` retain exact Forms98, shared session97,
+SDK2.118.0, the original driver bytes and strict unload classifier. An explicit
+navigation-timer/route gate tested three predetermined orderings once locally.
+Holding Auth through pagehide produced an Auth cancellation and no Forms RPC;
+allowing Auth then holding Forms RPC through navigation produced a cancelled
+Forms RPC and a verification Auth access-control error; completing refresh before
+navigation produced neither cancellation nor error. The middle error retained
+its actual Forms refresh→verify→identity initiator and matched the existing narrow
+classifier. All three original 19-check journeys passed with that one classified
+error retained. Four gate unit tests and original-source verification passed.
+
+The original PR110 Linux pair includes an additional Forms RPC access-control
+error and no recorded request cancellation. It was not reproduced: original cause
+remains UNKNOWN, original failed CI remains unaccepted. These timing interventions
+are constructed evidence, not production fixes or genuine Auth/RLS acceptance.
+Initial sandbox browser-launch failures occurred before page/context execution
+and are preserved separately from the one actual three-arm execution. No hosted,
+SDK, runtime, SQL, grants, deployment or source-selection changes; release NO-GO.
