@@ -5,6 +5,7 @@ import {createHash} from 'node:crypto';
 import {fileURLToPath} from 'node:url';
 import {loadSource} from './modules-source.mjs';
 import {fixture,ids,session} from './modules-fixture.mjs';
+import {knownUnload} from './modules-unload.mjs';
 const {chromium,webkit}=await import('../backend-tests/node_modules/playwright/index.mjs');
 const root=fileURLToPath(new URL('../../',import.meta.url)),sdk=readFileSync(process.env.SUPABASE_SDK_PATH);
 assert.equal(createHash('sha256').update(sdk).digest('hex'),'bee24fc29228ed5a370f76a2ba1ca3c399549edad2fef23453c80148856a49af');
@@ -19,7 +20,30 @@ for(const [engine,type]of Object.entries({chromium,webkit})){
  const browser=await type.launch(engine==='chromium'&&!process.env.CI?{channel:'chrome'}:{});
  try{for(const width of [390,1440])for(const m of modules){
   if(process.env.TEST_MODULE&&process.env.TEST_MODULE!==m.name)continue;
-  const f=fixture(),context=await browser.newContext({viewport:{width,height:950}}),page=await context.newPage(),errors=[],failedRequests=[],navigations=[],served=new Set();let phase='setup';page.setDefaultTimeout(10000);page.on('pageerror',e=>errors.push({message:e.message,phase,stack:e.stack,time:Date.now()}));page.on('requestfailed',r=>failedRequests.push({url:r.url(),failure:r.failure(),phase,time:Date.now()}));page.on('framenavigated',frame=>{if(frame===page.mainFrame())navigations.push({url:frame.url(),phase,time:Date.now()})});
+  const f=fixture(),context=await browser.newContext({viewport:{width,height:950}}),page=await context.newPage(),errors=[],failedRequests=[],navigations=[],lifecycle=[],requestLifecycle=[],served=new Set();let phase='setup';page.setDefaultTimeout(10000);page.on('pageerror',e=>errors.push({message:e.message,phase,stack:e.stack,time:Date.now()}));page.on('requestfailed',r=>failedRequests.push({url:r.url(),failure:r.failure(),phase,time:Date.now()}));page.on('framenavigated',frame=>{if(frame===page.mainFrame())navigations.push({url:frame.url(),phase,time:Date.now()})});
+  // Observation only: no fetch wrapping, request aborting, application source edits,
+  // extra Auth I/O, or changes to existing diagnostic acceptance/privacy assertions.
+  await page.exposeBinding('__cycle8Lifecycle',({frame},event)=>{lifecycle.push({...event,frameUrl:frame.url(),observedPhase:phase,received:Date.now()})});
+  await page.addInitScript(()=>{
+   const record=event=>{void window.__cycle8Lifecycle({...event,url:location.href,time:Date.now()}).catch(()=>{})};
+   for(const type of ['pagehide','pageshow','beforeunload','popstate','hashchange'])addEventListener(type,event=>{
+    record({kind:'document-event',type,trusted:event.isTrusted,persisted:event.persisted??null});
+    if(type==='pagehide')queueMicrotask(()=>record({kind:'after-pagehide-handlers',privateMounts:document.querySelectorAll('#forms-app,#staff-events-app,#dream-team-manual').length}));
+   });
+   const watch=setInterval(()=>{
+    const client=window.ChampionLifeAuth?.client;if(!client?.auth?.onAuthStateChange)return;clearInterval(watch);
+    client.auth.onAuthStateChange((event,session)=>{record({kind:'actual-sdk-auth-event',event,principal:session?.user?.id||null})});
+   },5);
+   addEventListener('pagehide',()=>clearInterval(watch));
+  });
+  let requestSequence=0;const requestIds=new WeakMap();
+  const observeRequest=(kind,request,extra={})=>{
+   if(new URL(request.url()).origin!==backend)return;
+   if(!requestIds.has(request))requestIds.set(request,++requestSequence);
+   let frameUrl;try{frameUrl=request.frame().url()}catch{frameUrl='detached'}
+   requestLifecycle.push({kind,id:requestIds.get(request),url:request.url(),method:request.method(),frameUrl,phase,time:Date.now(),...extra});
+  };
+  page.on('request',r=>observeRequest('request',r));page.on('requestfinished',r=>observeRequest('requestfinished',r));page.on('requestfailed',r=>observeRequest('requestfailed',r,{failure:r.failure()}));
   await context.route('**/*',async route=>{
    const req=route.request(),u=new URL(req.url());
    if(req.url()===sdkUrl)return route.fulfill({body:sdk,contentType:'text/javascript',headers:{'access-control-allow-origin':'*'}});
@@ -70,11 +94,12 @@ for(const [engine,type]of Object.entries({chromium,webkit})){
    await open(ids.o);await page.getByRole('link',{name:'People & Follow-up',exact:true}).click();await page.getByRole('heading',{name:'Canonical Person',exact:true}).waitFor();
    eq(f.calls.filter(c=>c.name==='people_workspace').every(c=>!('application_id'in(c.p_data||{}))),true,label+' generic People return does not invent application linkage');
   }
-  eq(f.writes,[],label+' no mutation RPC attempted');eq(f.unexpected,[],label+' no provider or unknown HTTP requests');if(errors.length)console.log(JSON.stringify({browserDiagnostic:label,errors,failedRequests,navigations}));
+  eq(f.writes,[],label+' no mutation RPC attempted');eq(f.unexpected,[],label+' no provider or unknown HTTP requests');if(errors.length)console.log(JSON.stringify({browserDiagnostic:label,errors,failedRequests,navigations,lifecycle,requestLifecycle}));
   const unexpectedErrors=errors.filter(error=>{
-   const known=engine==='webkit'&&m.name==='Forms'&&error.phase==='account-replacement'&&error.message==='/synthetic-modules.supabase.co/auth/v1/user due to access control checks.'&&error.stack.includes(sdkUrl)&&error.stack.includes('_useSession')&&failedRequests.some(r=>r.phase===error.phase&&r.url===backend+'/rest/v1/rpc/forms_workspace'&&r.failure?.errorText==='cancelled'&&Math.abs(r.time-error.time)<=100)&&navigations.some(n=>n.phase===error.phase&&new URL(n.url).pathname==='/discipleship-login.html'&&new URL(n.url).searchParams.get('next')==='/staff-forms.html?organization='+ids.other&&Math.abs(n.time-error.time)<=250);
+   const known=knownUnload({engine,moduleName:m.name,error,failedRequests,navigations,backend,sdkUrl,otherOrg:ids.other});
    if(known)unloadDiagnostics++;return !known;
   });
+  if(process.env.DIAGNOSTIC_OBSERVATIONS==='1'&&!errors.length)console.log(JSON.stringify({lifecycleDiagnostic:label,lifecycle,requestLifecycle,navigations}));
   eq(unexpectedErrors,[],label+' no unexpected runtime errors (correlated SDK unload diagnostics reported separately)');
   eq(served.has(m.path)&&served.has('assets/js/staff-session.js')&&served.has('staff-home.html'),true,label+' exact module HTML and shared session served');await context.close();
  }}finally{await browser.close()}
