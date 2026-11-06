@@ -1,4 +1,34 @@
-# Campaign task writer contract — held, disposable-local prototype
+# Campaign task writer contract — held, disposable-local source
+
+## Next source increment — observational UNKNOWN reconciliation
+
+Successor baseline: PR106 `ccae6ed2d5ca367ce7e249e6fd3d3d795b4297c3`. The new `tools/outreach/task-writer-reconcile.sql` adds only a private, ungranted function for the disposable fixture. It calls the existing preparation function before and after reading canonical history, preserving strict actor/session/scope/intent parsing, all five expected revisions, task-first locking, fresh dual authority, consent and finite binding checks. It performs no application DML. Its row locks require an ordinary transaction: PostgreSQL `BEGIN READ ONLY` rejects this operation.
+
+Reconciliation validates a contiguous canonical event chain: one event per task revision, a creation event whose actor matches the canonical creator, exact predecessor snapshots on later updates, and a final snapshot equal to the current canonical task. Missing, duplicate or inconsistent history yields `CANONICAL_HISTORY_INCONSISTENT` without a task projection. Consistent history yields `EXPECTED_REVISIONS_CURRENT` and only the neutral task ID/status/date/revision and already validated revision expectations. Stale expectations raise `40001`; invalid scope or current authority raises `42501`; malformed requests remain rejected. The existing outcome classifier preserves `UNKNOWN` for all of these outcomes.
+
+Every successful reconciliation response is still `state=UNKNOWN`, with `can_authorize=false`, `can_commit=false`, `automatic_retry=false` and `terminal_verified=false`. Canonical history has no durable intent UUID or request digest. Matching status/date/revisions/history therefore cannot attribute an event to this request, prove a request completed, exclude a pending operation, establish that a write never committed, or clear an uncertain outcome. An absent event is not a negative commit receipt. Changing the payload under an existing intent UUID remains neither replay detection nor idempotency. The function creates no receipt registry, transport, retry port or permission to resubmit.
+
+The exact input and authority checks remain those below. No preparation or reconciliation response can be supplied as authority to another operation. This increment closes the missing fresh observation path; it does not complete the atomic bound writer.
+
+### Lock and transaction-boundary evidence
+
+Preparation and reconciliation acquire the task UPDATE lock before the binding SHARE lock, then use the existing helper's session/directory/permission/campaign/assignment/source/follow-up/registration/identity/evidence locks. Event and financial/tag attachment guards acquire the task UPDATE lock first, so reconciliation does not add an event-to-task lock inversion. The task lock stabilizes its protected event history while reconciliation reads it. Binding insertion also takes the task lock; binding withdrawal changes only the binding and its own audit. These statements describe the inspected paths, not a completed proof of every administrative cross-operation lock order. Deadlocks/timeouts still fail closed as UNKNOWN without automatic retry.
+
+New native tests demonstrate an actual independent task lock wait followed by committed consent revocation, and a concurrent event insertion blocked by reconciliation's task lock then rejected by the unchanged bound-event guard. No trigger, RLS definition or grant is disabled to create these cases.
+
+The existing PR105 deferred `campaign_bound_task_commit_fence` is exercised by updating an ordinary synthetic task, then adding its fictional binding within the same transaction. COMMIT rejects and rolls back the task change, canonical event, binding and binding event. The same denial holds after fixture binding expiry or consent withdrawal. Because the guard unconditionally denies bound management, these are negative transaction-end tests, **not positive proof that an authorized bound write survives until a fresh expiry/consent check**.
+
+An additional executable limit is deliberate: a reconciliation-only transaction can COMMIT after the session expires because a read does not queue a task constraint-trigger event. The prior observation stays UNKNOWN and a fresh reconciliation denies access. Same-transaction consent withdrawal is also denied on a fresh check. Changing constraint mode to IMMEDIATE does not open the bound writer. There is still no implemented positive bound mutation/audit/final-fence sequence.
+
+### Exact future mutation contract still held
+
+After independently accepted provenance/custody and a separately reviewed guard design, a future single server transaction must acquire the same ordered locks and compare all five revisions; capture the exact canonical task before-state; update only status/date using the task's expected revision; require one affected row and exactly one revision increment; and validate exactly one newly appended canonical event. That event must have the captured server actor, task and organization, action `updated`, and exactly the canonical `title`, `status`, `due_on`, `assigned_user_id`, `revision` before/after objects. No second hand-written event should duplicate the existing canonical audit trigger. Missing/duplicate audit, revision drift or changed identity/scope must abort the transaction.
+
+The final consent/revocation/expiry fence must remain effective at transaction end after all blocking work, including changes within the same transaction and supported constraint modes. An immediate post-update check alone does not establish that property. No existing PR105 guard is weakened here, and the full cross-operation lock review and durable intent/terminal-receipt design remain required before any successful bound writer can exist.
+
+Run the incremental test with `node tools/outreach/task-writer-reconcile.native.mjs` after installing the existing pinned backend dependencies. Its 67 author assertions include valid two-revision history, six inconsistent-history variants, five stale revisions, forged terminal/scope claims, no execution grants, no application DML, native concurrent locks, transaction-end rollback, and the explicit expiry limitation. These checks are separate from the earlier preparation suite. Local fictional PostgreSQL evidence is not hosted Auth/RLS acceptance or release authorization.
+
+## Earlier PR106 preparation contract (preserved)
 
 Exact base: PR105 `403b6d6624c0e182fecaab16a57261b900142a4b`. This source increment implements a server-owned **prepare contract**, not a successful task writer. It does not install a migration or expose a public/API method. Actual campaign-bound mutations remain disabled by the unchanged PR105 policies and guards. No production issuer, source binding producer, reviewer designation, runtime mount, bypass flag or activation switch exists here.
 
