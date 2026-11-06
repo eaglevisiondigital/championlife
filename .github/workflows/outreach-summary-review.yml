@@ -30,6 +30,8 @@ jobs:
       - run: node tools/outreach/registration-checkin-status.browser.mjs
       - run: TEST_POSTGRES_BIN="$(pg_config --bindir)" node tools/outreach/registration-checkin-status.native.mjs
       - run: node tools/outreach/registration-navigation.browser.mjs
+      - run: node tools/outreach/registration-search-composition.browser.mjs
+      - run: node tools/outreach/registration-search-composition-independent.browser.mjs
       - run: node tools/outreach/people-followup-pagination.browser.mjs
       - run: node tools/outreach/people-followup-pagination-independent.browser.mjs
       - run: node tools/outreach/people-followup-composition.browser.mjs

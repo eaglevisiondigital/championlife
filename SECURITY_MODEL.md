@@ -73,3 +73,7 @@ Protected cursors and handlers remain generation-scoped; current session and fol
 ## 2026-11-06 — Existing task edit controls with paged detail
 
 The previously reviewed PR86 task action helper is reused with current PR72 navigation generation and page cursors. It rechecks current identity and People/follow-up permissions before a task/org/Person/revision-scoped update. Retired controls cannot mutate; stale or uncertain writes require read-only refresh and never automatic resubmission. This does not create campaign-to-Person authority or identity bindings. No SQL, RLS, audit, grants, SDK or hosted behavior changed.
+
+## 2026-11-06 — Household-search state follows current authority
+
+Private registration search is now cleared on account identity changes, denial, protected-content clearing, logout, page retirement and history navigation using the already accepted PR90 correction. Existing generation/connected-control guards remain responsible for rejecting stale handlers and results; fresh same-account focus preserves the search. This narrow current-branch composition does not create new permissions, identity associations or campaign decision access. The original current-base failure and exact recovered source provenance are retained privately. No backend, SQL, grant or hosted action changed.
