@@ -1,5 +1,33 @@
 # Campaign task writer contract — held, disposable-local source
 
+## November 6 — canonical audit specification and deferred-fence limits
+
+Baseline: PR106 `07e27b055d49313f2f1c292ae96647f70856be20`, under the source-only assignment in Issue58 comment6676975263. `tools/outreach/task-writer-plan.sql` adds a private, ungranted **held plan**, not an executable writer. It performs no application DML and creates no table, receipt, trigger, migration installer or enablement switch. All PR105 guards and prior source contracts remain unchanged.
+
+The plan receives only the existing exact request. It derives actor/session through preparation, compares the five existing expected revisions under task-first locks, captures the current canonical before-state, and derives the proposed after-state only from the validated status/date intent with one revision increment. It then runs fresh reconciliation, including current dual authority, consent, binding validity and complete canonical-history consistency. Inconsistent history rejects the plan. A caller cannot supply a before-state, actor override or audit specification as authority.
+
+The returned audit specification has exactly the canonical organization/task/server-actor, action `updated`, and the trigger's five before/after fields: `title`, `status`, `due_on`, `assigned_user_id`, `revision`. `expected_event_count=1` is a requirement for the future writer, not a claim an event was written. The observation includes the current PostgreSQL transaction ID as a string. That ID is local diagnostic context: it is neither an operation identity, a signature, a durable receipt, evidence of COMMIT, nor a token accepted by another function. A new transaction recaptures every dependency; no previous plan is consumed as authority.
+
+Every plan returns `HELD`, with `can_authorize=false`, `can_commit=false`, `automatic_retry=false`, and `terminal_verified=false`. The request hash remains only an intent marker. No successful bound task mutation, intent attribution, terminal proof or guaranteed final fence is introduced.
+
+### What the new native proof establishes
+
+The test creates a fictional binding inside a transaction, captures the held specification, and rolls that transaction back. It then independently exercises the existing authorized **ordinary, unbound** canonical task update and compares the actual trigger-generated event against the specification. Three cases cover nullable/date changes and a same-value update. Each appends exactly one event in total, has the exact server actor and before/after fields, and increments the revision once. The ordinary write never receives authority from the discarded plan. This proves correspondence to the actual canonical trigger; it is not positive bound CAS or an atomic transfer from preparation to mutation.
+
+Bound writes are still rejected, and that denial rolls back an earlier ordinary task and canonical event. Stale revisions, wrong actor, caller-supplied snapshots and inconsistent history cannot produce a plan. No application API role receives EXECUTE. Existing function definitions remain byte-identical.
+
+A separate test-only deferred constraint trigger calls the held plan for the bound task while an ordinary fictional task is updated in the same transaction. Its request is captured in the experiment's fixed trigger argument, never a caller-controlled session setting. Under the default deferred mode, session/manage expiry, same-transaction consent or binding withdrawal, follow-up revision drift, and actor/session replacement reject COMMIT and roll back the ordinary task, canonical audit and dependency changes. An independent consent writer waits behind the held authority lock, then becomes visible only after the earlier transaction ends. This demonstrates serialization and rollback mechanics; it does not implement a bound writer.
+
+### Newly demonstrated final-fence gap
+
+`SET CONSTRAINTS task_writer_fixture_final IMMEDIATE` can execute and consume that experimental deferred check early. If the session subsequently expires or the same transaction withdraws consent without another task update, COMMIT succeeds for the ordinary task and its audit. A fresh plan denies access afterward. The permanent tests assert this limitation explicitly, rather than presenting the default deferred result as a guaranteed transaction-end fence.
+
+Thus a deferred trigger alone is insufficient when the caller controls constraint timing or can continue issuing statements after the check. PR105's unconditional bound management denial still blocks actual bound writes in every mode. A future positive writer must have a separately reviewed server-owned transaction lifecycle, including who can issue transaction/constraint commands, how later statements and same-transaction revocation are prevented or fenced, and how any external commit acknowledgment is attributed. Merely adding this experimental trigger or an immediate post-update check is not an accepted solution. No transaction API or operational restriction is invented or installed here.
+
+The plan adds no new row-lock order: it reuses the existing task UPDATE, binding SHARE and authority/dependency locks, then reads protected history under the task lock. A full administrative cross-operation lock-order proof remains outstanding; the narrow native race is not a global deadlock-freedom claim. The existing canonical audit trigger remains the sole future event producer. Any eventual writer must compare exactly one newly appended event and reject missing/duplicate events, wrong actor/scope, unexpected field changes or revision drift within its own transaction before a valid final boundary.
+
+Run `node tools/outreach/task-writer-plan.native.mjs` with the existing pinned backend dependencies and disposable PostgreSQL 17. Source/native proof is separate from hosted Auth/RLS compatibility and release approval. RELEASE NO-GO.
+
 ## Next source increment — observational UNKNOWN reconciliation
 
 Successor baseline: PR106 `ccae6ed2d5ca367ce7e249e6fd3d3d795b4297c3`. The new `tools/outreach/task-writer-reconcile.sql` adds only a private, ungranted function for the disposable fixture. It calls the existing preparation function before and after reading canonical history, preserving strict actor/session/scope/intent parsing, all five expected revisions, task-first locking, fresh dual authority, consent and finite binding checks. It performs no application DML. Its row locks require an ordinary transaction: PostgreSQL `BEGIN READ ONLY` rejects this operation.
