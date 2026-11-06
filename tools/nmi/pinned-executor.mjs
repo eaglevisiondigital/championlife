@@ -13,7 +13,7 @@ export async function loadPinnedWebhook() { return (await source()).createGiving
 export async function loadPinnedGateway() { return (await source()).createGivingHandler; }
 async function load() {
   const pin = JSON.parse(await readFile(new URL('./executor-source-pin.json', import.meta.url), 'utf8'));
-  if (pin.commit !== 'b59e1afcbe2978d16e27883750ce20adb7d3a23d' ||
+  if (pin.commit !== 'e9e884c99899e5e4b14cc005fdd49f0d13e34d94' ||
       Object.keys(pin.files).sort().join(',') !== 'acceptance-pin.mjs,gateway.mjs,nmi-executor-batch.mjs,nmi-executor.mjs,nmi-query.mjs,nmi.mjs,providers.mjs') throw Error('SOURCE_PIN_INVALID');
   const folder = await mkdtemp(join(tmpdir(), 'nmi-reviewed-source-'));
   try {

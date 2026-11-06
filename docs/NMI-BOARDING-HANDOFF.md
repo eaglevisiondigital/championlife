@@ -43,3 +43,10 @@ one-route pilot review does not acquire an all-four boarding requirement. No rou
 is enabled, no execution source changes, and reviewability remains distinct from
 genuine merchant verification or activation approval. Permanent tests exercise both
 defects across all five routes and preserve positive disabled/pilot behavior.
+
+
+## November 6 — reviewed Query parser dependency
+
+The existing disconnected executor loader now pins PR107 `e9e884c99899e5e4b14cc005fdd49f0d13e34d94`, a narrow successor to preserved PR78. Seven files retain exact path/hash checks; only `nmi-query.mjs` content differs. The unchanged webhook remains separately pinned to PR78. No runtime source is copied into this branch.
+
+The corrected parser rejects malformed documents and binds transaction totals to their real parent, preventing a product amount from authorizing a mismatched payment. Seven permanent pinned-executor regression cases complement the unchanged74-case disabled consumer test. The existing native durable-recovery test is run against the new pin. These injected fictional lookups do not authorize provider access. Checkout, recurring charging, sending and live recovery stay disabled. Real four-MID legal payee/settlement evidence and genuine provider acceptance remain missing.

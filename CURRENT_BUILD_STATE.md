@@ -93,3 +93,8 @@ Local full regression and responsive browser checks pass. Final physical-device
 acceptance and separately approved production Storage/website release remain gates.
 Personal notes/highlights are being prepared on a separate branch and are not part
 of this release. No production migration, upload, merge or deployment performed.
+
+
+## November 6, 2026 — Strict Query evidence in disabled NMI integration
+
+Existing exact-source loader consumes reviewed PR107 `e9e884c99899e5e4b14cc005fdd49f0d13e34d94`; only the Query parser blob changes. Historical webhook, public client and durable SQL pins remain intact. Malformed XML and nested product-total confusion remain UNKNOWN through the actual loaded executor. No duplicate runtime, financial permission, merchant configuration, payment, messaging or public output change. See docs/NMI-BOARDING-HANDOFF.md. Local/CI results are separate from provider acceptance and activation, which remain NO-GO.
