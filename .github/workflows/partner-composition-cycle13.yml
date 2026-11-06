@@ -1,0 +1,445 @@
+name: Partner and current Outreach exact-source acceptance
+on:
+  pull_request:
+    paths:
+      - 'tools/partner-integration-cycle13/**'
+      - '.github/workflows/partner-composition-cycle13.yml'
+permissions:
+  contents: read
+jobs:
+  integrity:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Fetch exact immutable source commits without changing checkout
+        run: git fetch --no-tags origin c170b0442b8015d9a8de9c7baa311754af95b484 4e29de51bbff57e4e3b3ccbdc750bd0edb960443
+      - name: Materialize exact reviewed checkpoints and composition
+        run: node tools/partner-integration-cycle13/compose.mjs "$RUNNER_TEMP/partner-cycle13"
+      - name: Verify every source file and reproducible composed build
+        run: node tools/partner-integration-cycle13/verify.mjs "$RUNNER_TEMP/partner-cycle13"
+      - run: node --test tools/partner-integration-cycle13/composition.test.mjs tools/partner-integration-cycle13/composition.independent.test.mjs
+      - name: Reverify exact sources after tests
+        if: always()
+        run: node tools/partner-integration-cycle13/verify.mjs "$RUNNER_TEMP/partner-cycle13"
+      - run: git diff --check
+  summary-node:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Fetch exact immutable source commits without changing checkout
+        run: git fetch --no-tags origin c170b0442b8015d9a8de9c7baa311754af95b484 4e29de51bbff57e4e3b3ccbdc750bd0edb960443
+      - name: Materialize exact reviewed checkpoints and composition
+        run: node tools/partner-integration-cycle13/compose.mjs "$RUNNER_TEMP/partner-cycle13"
+      - name: Verify every source file and reproducible composed build
+        run: node tools/partner-integration-cycle13/verify.mjs "$RUNNER_TEMP/partner-cycle13"
+      - working-directory: ${{ runner.temp }}/partner-cycle13/composition
+        run: npm ci --ignore-scripts --prefix tools/backend-tests
+      - working-directory: ${{ runner.temp }}/partner-cycle13/composition
+        run: node --test tools/outreach/shared-staff-backend.test.mjs tools/outreach/isolated-staff-summary-auth.test.mjs tools/outreach/campaign-summary.test.mjs tools/outreach/campaign-summary.review.test.mjs tools/outreach/campaign-summary-lifecycle.test.mjs tools/outreach/campaign-summary-lifecycle.review.test.mjs tools/outreach/church-outreach-summary-composition.test.mjs tools/outreach/church-outreach-auth-binding.test.mjs tools/outreach/church-outreach-summary-view.test.mjs tools/outreach/church-outreach-summary-entry.test.mjs
+      - working-directory: ${{ runner.temp }}/partner-cycle13/outreach
+        run: node tools/outreach/people-followup-pagination-integrity.mjs
+      - working-directory: ${{ runner.temp }}/partner-cycle13/composition
+        run: node tools/backend-tests/outreach-people.dom.mjs
+      - working-directory: ${{ runner.temp }}/partner-cycle13/composition
+        run: node tools/backend-tests/outreach-registration.dom.mjs
+      - working-directory: ${{ runner.temp }}/partner-cycle13/composition
+        run: git diff --check
+      - name: Reverify exact sources after tests
+        if: always()
+        run: node tools/partner-integration-cycle13/verify.mjs "$RUNNER_TEMP/partner-cycle13"
+      - run: git diff --check
+  summary-browser:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Fetch exact immutable source commits without changing checkout
+        run: git fetch --no-tags origin c170b0442b8015d9a8de9c7baa311754af95b484 4e29de51bbff57e4e3b3ccbdc750bd0edb960443
+      - name: Materialize exact reviewed checkpoints and composition
+        run: node tools/partner-integration-cycle13/compose.mjs "$RUNNER_TEMP/partner-cycle13"
+      - name: Verify every source file and reproducible composed build
+        run: node tools/partner-integration-cycle13/verify.mjs "$RUNNER_TEMP/partner-cycle13"
+      - working-directory: ${{ runner.temp }}/partner-cycle13/composition
+        run: npm ci --ignore-scripts --prefix tools/backend-tests
+      - working-directory: ${{ runner.temp }}/partner-cycle13/composition
+        run: node tools/backend-tests/node_modules/playwright/cli.js install --with-deps chromium webkit
+      - name: Verify exact accepted SDK artifact
+        shell: bash
+        run: |
+          curl --fail --silent --show-error --location 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.118.0' --output "$RUNNER_TEMP/partner-cycle13-sdk.js"
+          echo "bee24fc29228ed5a370f76a2ba1ca3c399549edad2fef23453c80148856a49af  $RUNNER_TEMP/partner-cycle13-sdk.js" | sha256sum --check
+          echo "SUPABASE_SDK_PATH=$RUNNER_TEMP/partner-cycle13-sdk.js" >> "$GITHUB_ENV"
+      - working-directory: ${{ runner.temp }}/partner-cycle13/composition
+        run: node tools/outreach/registration-print-roster.browser.mjs
+      - working-directory: ${{ runner.temp }}/partner-cycle13/composition
+        run: node tools/outreach/registration-checkin-status.browser.mjs
+      - working-directory: ${{ runner.temp }}/partner-cycle13/composition
+        run: node tools/outreach/registration-navigation.browser.mjs
+      - working-directory: ${{ runner.temp }}/partner-cycle13/composition
+        run: node tools/outreach/registration-search-composition.browser.mjs
+      - working-directory: ${{ runner.temp }}/partner-cycle13/composition
+        run: node tools/outreach/registration-search-composition-independent.browser.mjs
+      - working-directory: ${{ runner.temp }}/partner-cycle13/composition
+        run: node tools/outreach/people-followup-pagination.browser.mjs
+      - working-directory: ${{ runner.temp }}/partner-cycle13/composition
+        run: node tools/outreach/people-followup-pagination-independent.browser.mjs
+      - working-directory: ${{ runner.temp }}/partner-cycle13/composition
+        run: node tools/outreach/people-followup-composition.browser.mjs
+      - working-directory: ${{ runner.temp }}/partner-cycle13/composition
+        run: node tools/outreach/people-followup-composition-independent.browser.mjs
+      - working-directory: ${{ runner.temp }}/partner-cycle13/composition
+        run: node tools/outreach/people-followup-create.browser.mjs
+      - working-directory: ${{ runner.temp }}/partner-cycle13/composition
+        run: node tools/outreach/people-navigation.browser.mjs
+      - working-directory: ${{ runner.temp }}/partner-cycle13/composition
+        run: node tools/outreach/people-identity-race.browser.mjs
+      - working-directory: ${{ runner.temp }}/partner-cycle13/composition
+        run: node tools/outreach/walkup-retry.browser.mjs
+      - working-directory: ${{ runner.temp }}/partner-cycle13/composition
+        run: node tools/outreach/church-outreach-summary-staff.browser.mjs
+      - name: Reverify exact sources after tests
+        if: always()
+        run: node tools/partner-integration-cycle13/verify.mjs "$RUNNER_TEMP/partner-cycle13"
+      - run: git diff --check
+  summary-native:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Fetch exact immutable source commits without changing checkout
+        run: git fetch --no-tags origin c170b0442b8015d9a8de9c7baa311754af95b484 4e29de51bbff57e4e3b3ccbdc750bd0edb960443
+      - name: Materialize exact reviewed checkpoints and composition
+        run: node tools/partner-integration-cycle13/compose.mjs "$RUNNER_TEMP/partner-cycle13"
+      - name: Verify every source file and reproducible composed build
+        run: node tools/partner-integration-cycle13/verify.mjs "$RUNNER_TEMP/partner-cycle13"
+      - working-directory: ${{ runner.temp }}/partner-cycle13/composition
+        run: npm ci --ignore-scripts --prefix tools/backend-tests
+      - name: Select exact disposable PostgreSQL 17
+        shell: bash
+        run: |
+          if [ ! -x /usr/lib/postgresql/17/bin/postgres ]; then
+            sudo /usr/share/postgresql-common/pgdg/apt.postgresql.org.sh -y
+            sudo mkdir -p /etc/postgresql-common/createcluster.d
+            printf 'create_main_cluster = false\n' | sudo tee /etc/postgresql-common/createcluster.d/partner-cycle13.conf > /dev/null
+            sudo apt-get install --yes --no-install-recommends postgresql-17
+          fi
+          /usr/lib/postgresql/17/bin/postgres --version | grep -E '^postgres \(PostgreSQL\) 17\.'
+          echo "/usr/lib/postgresql/17/bin" >> "$GITHUB_PATH"
+          echo "TEST_POSTGRES_BIN=/usr/lib/postgresql/17/bin" >> "$GITHUB_ENV"
+      - working-directory: ${{ runner.temp }}/partner-cycle13/composition
+        run: TEST_POSTGRES_BIN="$(pg_config --bindir)" node tools/outreach/campaign-summary.native.mjs
+      - working-directory: ${{ runner.temp }}/partner-cycle13/composition
+        run: TEST_POSTGRES_BIN="$(pg_config --bindir)" node tools/outreach/shared-staff-backend.native.mjs
+      - working-directory: ${{ runner.temp }}/partner-cycle13/composition
+        run: TEST_POSTGRES_BIN="$(pg_config --bindir)" node tools/outreach/registration-print-roster.native.mjs
+      - working-directory: ${{ runner.temp }}/partner-cycle13/composition
+        run: TEST_POSTGRES_BIN="$(pg_config --bindir)" node tools/outreach/registration-checkin-status.native.mjs
+      - working-directory: ${{ runner.temp }}/partner-cycle13/composition
+        run: TEST_POSTGRES_BIN="$(pg_config --bindir)" node tools/outreach/people-followup-create.native.mjs
+      - working-directory: ${{ runner.temp }}/partner-cycle13/composition
+        run: TEST_POSTGRES_BIN="$(pg_config --bindir)" node tools/outreach/walkup-retry.native.mjs
+      - name: Reverify exact sources after tests
+        if: always()
+        run: node tools/partner-integration-cycle13/verify.mjs "$RUNNER_TEMP/partner-cycle13"
+      - run: git diff --check
+  people-browser:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Fetch exact immutable source commits without changing checkout
+        run: git fetch --no-tags origin c170b0442b8015d9a8de9c7baa311754af95b484 4e29de51bbff57e4e3b3ccbdc750bd0edb960443
+      - name: Materialize exact reviewed checkpoints and composition
+        run: node tools/partner-integration-cycle13/compose.mjs "$RUNNER_TEMP/partner-cycle13"
+      - name: Verify every source file and reproducible composed build
+        run: node tools/partner-integration-cycle13/verify.mjs "$RUNNER_TEMP/partner-cycle13"
+      - working-directory: ${{ runner.temp }}/partner-cycle13/composition
+        run: npm ci --ignore-scripts --prefix tools/backend-tests
+      - working-directory: ${{ runner.temp }}/partner-cycle13/composition
+        run: node tools/backend-tests/node_modules/playwright/cli.js install --with-deps chromium webkit
+      - name: Verify exact accepted SDK artifact
+        shell: bash
+        run: |
+          curl --fail --silent --show-error --location 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.118.0' --output "$RUNNER_TEMP/partner-cycle13-sdk.js"
+          echo "bee24fc29228ed5a370f76a2ba1ca3c399549edad2fef23453c80148856a49af  $RUNNER_TEMP/partner-cycle13-sdk.js" | sha256sum --check
+          echo "SUPABASE_SDK_PATH=$RUNNER_TEMP/partner-cycle13-sdk.js" >> "$GITHUB_ENV"
+      - working-directory: ${{ runner.temp }}/partner-cycle13/composition
+        run: node tools/outreach/people-followup-history.browser.mjs
+      - working-directory: ${{ runner.temp }}/partner-cycle13/composition
+        run: node tools/outreach/people-followup-history-independent.browser.mjs
+      - working-directory: ${{ runner.temp }}/partner-cycle13/composition
+        run: node tools/outreach/people-followup-filter.browser.mjs
+      - working-directory: ${{ runner.temp }}/partner-cycle13/composition
+        run: node tools/outreach/people-followup-filter-independent.browser.mjs
+      - name: Reverify exact sources after tests
+        if: always()
+        run: node tools/partner-integration-cycle13/verify.mjs "$RUNNER_TEMP/partner-cycle13"
+      - run: git diff --check
+  people-native:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Fetch exact immutable source commits without changing checkout
+        run: git fetch --no-tags origin c170b0442b8015d9a8de9c7baa311754af95b484 4e29de51bbff57e4e3b3ccbdc750bd0edb960443
+      - name: Materialize exact reviewed checkpoints and composition
+        run: node tools/partner-integration-cycle13/compose.mjs "$RUNNER_TEMP/partner-cycle13"
+      - name: Verify every source file and reproducible composed build
+        run: node tools/partner-integration-cycle13/verify.mjs "$RUNNER_TEMP/partner-cycle13"
+      - working-directory: ${{ runner.temp }}/partner-cycle13/composition
+        run: npm ci --ignore-scripts --prefix tools/backend-tests
+      - name: Select exact disposable PostgreSQL 17
+        shell: bash
+        run: |
+          if [ ! -x /usr/lib/postgresql/17/bin/postgres ]; then
+            sudo /usr/share/postgresql-common/pgdg/apt.postgresql.org.sh -y
+            sudo mkdir -p /etc/postgresql-common/createcluster.d
+            printf 'create_main_cluster = false\n' | sudo tee /etc/postgresql-common/createcluster.d/partner-cycle13.conf > /dev/null
+            sudo apt-get install --yes --no-install-recommends postgresql-17
+          fi
+          /usr/lib/postgresql/17/bin/postgres --version | grep -E '^postgres \(PostgreSQL\) 17\.'
+          echo "/usr/lib/postgresql/17/bin" >> "$GITHUB_PATH"
+          echo "TEST_POSTGRES_BIN=/usr/lib/postgresql/17/bin" >> "$GITHUB_ENV"
+      - working-directory: ${{ runner.temp }}/partner-cycle13/composition
+        run: TEST_POSTGRES_BIN=/usr/lib/postgresql/17/bin node tools/outreach/people-followup-history.native.mjs
+      - working-directory: ${{ runner.temp }}/partner-cycle13/composition
+        run: TEST_POSTGRES_BIN=/usr/lib/postgresql/17/bin node tools/outreach/people-followup-filter.native.mjs
+      - name: Reverify exact sources after tests
+        if: always()
+        run: node tools/partner-integration-cycle13/verify.mjs "$RUNNER_TEMP/partner-cycle13"
+      - run: git diff --check
+  partner-contract:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Fetch exact immutable source commits without changing checkout
+        run: git fetch --no-tags origin c170b0442b8015d9a8de9c7baa311754af95b484 4e29de51bbff57e4e3b3ccbdc750bd0edb960443
+      - name: Materialize exact reviewed checkpoints and composition
+        run: node tools/partner-integration-cycle13/compose.mjs "$RUNNER_TEMP/partner-cycle13"
+      - name: Verify every source file and reproducible composed build
+        run: node tools/partner-integration-cycle13/verify.mjs "$RUNNER_TEMP/partner-cycle13"
+      - working-directory: ${{ runner.temp }}/partner-cycle13/composition
+        run: npm ci --ignore-scripts --prefix tools/backend-tests
+      - working-directory: ${{ runner.temp }}/partner-cycle13/composition
+        run: npm ci --ignore-scripts --prefix tools/partner-platform
+      - working-directory: ${{ runner.temp }}/partner-cycle13/composition
+        run: node --test tools/partner-platform/*.test.mjs tools/outreach/shared-staff-backend.test.mjs
+      - working-directory: ${{ runner.temp }}/partner-cycle13/composition
+        run: node tools/partner-platform/authority-denials.pglite.mjs
+      - working-directory: ${{ runner.temp }}/partner-cycle13/composition
+        run: node tools/backend-tests/outreach-partner-staff.dom.mjs
+      - working-directory: ${{ runner.temp }}/partner-cycle13/composition
+        run: node tools/backend-tests/site-build.test.mjs
+      - name: Reverify exact sources after tests
+        if: always()
+        run: node tools/partner-integration-cycle13/verify.mjs "$RUNNER_TEMP/partner-cycle13"
+      - run: git diff --check
+  partner-browser:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Fetch exact immutable source commits without changing checkout
+        run: git fetch --no-tags origin c170b0442b8015d9a8de9c7baa311754af95b484 4e29de51bbff57e4e3b3ccbdc750bd0edb960443
+      - name: Materialize exact reviewed checkpoints and composition
+        run: node tools/partner-integration-cycle13/compose.mjs "$RUNNER_TEMP/partner-cycle13"
+      - name: Verify every source file and reproducible composed build
+        run: node tools/partner-integration-cycle13/verify.mjs "$RUNNER_TEMP/partner-cycle13"
+      - working-directory: ${{ runner.temp }}/partner-cycle13/composition
+        run: npm ci --ignore-scripts --prefix tools/backend-tests
+      - working-directory: ${{ runner.temp }}/partner-cycle13/composition
+        run: npm ci --ignore-scripts --prefix tools/partner-platform
+      - working-directory: ${{ runner.temp }}/partner-cycle13/composition
+        run: node tools/backend-tests/node_modules/playwright/cli.js install --with-deps chromium webkit
+      - name: Verify exact accepted SDK artifact
+        shell: bash
+        run: |
+          curl --fail --silent --show-error --location 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.118.0' --output "$RUNNER_TEMP/partner-cycle13-sdk.js"
+          echo "bee24fc29228ed5a370f76a2ba1ca3c399549edad2fef23453c80148856a49af  $RUNNER_TEMP/partner-cycle13-sdk.js" | sha256sum --check
+          echo "SUPABASE_SDK_PATH=$RUNNER_TEMP/partner-cycle13-sdk.js" >> "$GITHUB_ENV"
+      - working-directory: ${{ runner.temp }}/partner-cycle13/composition
+        run: node tools/partner-platform/staff-intake-review.browser.mjs
+      - working-directory: ${{ runner.temp }}/partner-cycle13/composition
+        run: node tools/partner-platform/assigned-backend.browser.mjs
+      - name: Reverify exact sources after tests
+        if: always()
+        run: node tools/partner-integration-cycle13/verify.mjs "$RUNNER_TEMP/partner-cycle13"
+      - run: git diff --check
+  partner-native17:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Fetch exact immutable source commits without changing checkout
+        run: git fetch --no-tags origin c170b0442b8015d9a8de9c7baa311754af95b484 4e29de51bbff57e4e3b3ccbdc750bd0edb960443
+      - name: Materialize exact reviewed checkpoints and composition
+        run: node tools/partner-integration-cycle13/compose.mjs "$RUNNER_TEMP/partner-cycle13"
+      - name: Verify every source file and reproducible composed build
+        run: node tools/partner-integration-cycle13/verify.mjs "$RUNNER_TEMP/partner-cycle13"
+      - working-directory: ${{ runner.temp }}/partner-cycle13/composition
+        run: npm ci --ignore-scripts --prefix tools/backend-tests
+      - working-directory: ${{ runner.temp }}/partner-cycle13/composition
+        run: npm ci --ignore-scripts --prefix tools/partner-platform
+      - name: Select exact disposable PostgreSQL 17
+        shell: bash
+        run: |
+          if [ ! -x /usr/lib/postgresql/17/bin/postgres ]; then
+            sudo /usr/share/postgresql-common/pgdg/apt.postgresql.org.sh -y
+            sudo mkdir -p /etc/postgresql-common/createcluster.d
+            printf 'create_main_cluster = false\n' | sudo tee /etc/postgresql-common/createcluster.d/partner-cycle13.conf > /dev/null
+            sudo apt-get install --yes --no-install-recommends postgresql-17
+          fi
+          /usr/lib/postgresql/17/bin/postgres --version | grep -E '^postgres \(PostgreSQL\) 17\.'
+          echo "/usr/lib/postgresql/17/bin" >> "$GITHUB_PATH"
+          echo "TEST_POSTGRES_BIN=/usr/lib/postgresql/17/bin" >> "$GITHUB_ENV"
+      - working-directory: ${{ runner.temp }}/partner-cycle13/composition
+        run: node tools/backend-tests/node_modules/playwright/cli.js install --with-deps chromium webkit
+      - name: Verify exact accepted SDK artifact
+        shell: bash
+        run: |
+          curl --fail --silent --show-error --location 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.118.0' --output "$RUNNER_TEMP/partner-cycle13-sdk.js"
+          echo "bee24fc29228ed5a370f76a2ba1ca3c399549edad2fef23453c80148856a49af  $RUNNER_TEMP/partner-cycle13-sdk.js" | sha256sum --check
+          echo "SUPABASE_SDK_PATH=$RUNNER_TEMP/partner-cycle13-sdk.js" >> "$GITHUB_ENV"
+      - working-directory: ${{ runner.temp }}/partner-cycle13/composition
+        run: TEST_POSTGRES_BIN=/usr/lib/postgresql/17/bin node tools/partner-platform/assigned-backend.native.mjs
+      - working-directory: ${{ runner.temp }}/partner-cycle13/composition
+        run: TEST_POSTGRES_BIN=/usr/lib/postgresql/17/bin node tools/partner-platform/authority-serialization.native.mjs
+      - working-directory: ${{ runner.temp }}/partner-cycle13/composition
+        run: TEST_POSTGRES_BIN=/usr/lib/postgresql/17/bin node tools/partner-platform/private-revocation.native.mjs
+      - working-directory: ${{ runner.temp }}/partner-cycle13/composition
+        run: TEST_POSTGRES_BIN=/usr/lib/postgresql/17/bin node tools/partner-platform/private-issuance.native.mjs
+      - working-directory: ${{ runner.temp }}/partner-cycle13/composition
+        run: TEST_POSTGRES_BIN=/usr/lib/postgresql/17/bin node tools/partner-platform/org-handoff.browser.mjs
+      - name: Reverify exact sources after tests
+        if: always()
+        run: node tools/partner-integration-cycle13/verify.mjs "$RUNNER_TEMP/partner-cycle13"
+      - run: git diff --check
+  partner-native18:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Fetch exact immutable source commits without changing checkout
+        run: git fetch --no-tags origin c170b0442b8015d9a8de9c7baa311754af95b484 4e29de51bbff57e4e3b3ccbdc750bd0edb960443
+      - name: Materialize exact reviewed checkpoints and composition
+        run: node tools/partner-integration-cycle13/compose.mjs "$RUNNER_TEMP/partner-cycle13"
+      - name: Verify every source file and reproducible composed build
+        run: node tools/partner-integration-cycle13/verify.mjs "$RUNNER_TEMP/partner-cycle13"
+      - working-directory: ${{ runner.temp }}/partner-cycle13/composition
+        run: npm ci --ignore-scripts --prefix tools/backend-tests
+      - working-directory: ${{ runner.temp }}/partner-cycle13/composition
+        run: npm ci --ignore-scripts --prefix tools/partner-platform
+      - name: Select exact disposable PostgreSQL 18
+        shell: bash
+        run: |
+          if [ ! -x /usr/lib/postgresql/18/bin/postgres ]; then
+            sudo /usr/share/postgresql-common/pgdg/apt.postgresql.org.sh -y
+            sudo mkdir -p /etc/postgresql-common/createcluster.d
+            printf 'create_main_cluster = false\n' | sudo tee /etc/postgresql-common/createcluster.d/partner-cycle13.conf > /dev/null
+            sudo apt-get install --yes --no-install-recommends postgresql-18
+          fi
+          /usr/lib/postgresql/18/bin/postgres --version | grep -E '^postgres \(PostgreSQL\) 18\.'
+          echo "/usr/lib/postgresql/18/bin" >> "$GITHUB_PATH"
+          echo "TEST_POSTGRES_BIN=/usr/lib/postgresql/18/bin" >> "$GITHUB_ENV"
+      - working-directory: ${{ runner.temp }}/partner-cycle13/composition
+        run: TEST_POSTGRES_BIN=/usr/lib/postgresql/18/bin node tools/partner-platform/canonical-repository.native.mjs
+      - working-directory: ${{ runner.temp }}/partner-cycle13/composition
+        run: TEST_POSTGRES_BIN=/usr/lib/postgresql/18/bin node tools/partner-platform/current-schema-composition.native.mjs
+      - working-directory: ${{ runner.temp }}/partner-cycle13/composition
+        run: TEST_POSTGRES_BIN=/usr/lib/postgresql/18/bin node tools/partner-platform/restricted-canonical-profile.native.mjs
+      - working-directory: ${{ runner.temp }}/partner-cycle13/composition
+        run: TEST_POSTGRES_BIN=/usr/lib/postgresql/18/bin node tools/partner-platform/canonical-host-ingress.native.mjs
+      - working-directory: ${{ runner.temp }}/partner-cycle13/composition
+        run: TEST_POSTGRES_BIN=/usr/lib/postgresql/18/bin node tools/partner-platform/canonical-execution-role.native.mjs
+      - working-directory: ${{ runner.temp }}/partner-cycle13/composition
+        run: TEST_POSTGRES_BIN=/usr/lib/postgresql/18/bin node tools/partner-platform/provider-database-isolation.native.mjs
+      - working-directory: ${{ runner.temp }}/partner-cycle13/composition
+        run: TEST_NATIVE_PG=1 TEST_POSTGRES_BIN=/usr/lib/postgresql/18/bin node --test tools/partner-platform/canonical-request-binding.test.mjs tools/partner-platform/canonical-request-binding-independent.test.mjs
+      - name: Reverify exact sources after tests
+        if: always()
+        run: node tools/partner-integration-cycle13/verify.mjs "$RUNNER_TEMP/partner-cycle13"
+      - run: git diff --check
+  historical-partner:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Fetch exact immutable source commits without changing checkout
+        run: git fetch --no-tags origin c170b0442b8015d9a8de9c7baa311754af95b484 4e29de51bbff57e4e3b3ccbdc750bd0edb960443
+      - run: node tools/partner-integration-cycle13/compose.mjs "$RUNNER_TEMP/partner-cycle13"
+      - run: node tools/partner-integration-cycle13/verify.mjs "$RUNNER_TEMP/partner-cycle13"
+      - working-directory: ${{ runner.temp }}/partner-cycle13/partner
+        run: node --test tools/partner-integration-cycle12/composition.test.mjs tools/partner-integration-cycle12/composition.independent.test.mjs
+      - name: Reverify all sources after original guard acceptance
+        if: always()
+        run: node tools/partner-integration-cycle13/verify.mjs "$RUNNER_TEMP/partner-cycle13"
+      - run: git diff --check
