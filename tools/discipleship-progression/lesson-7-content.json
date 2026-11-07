@@ -1,0 +1,44 @@
+{
+  "lesson": 7,
+  "worksheet": "lesson-7-workbook-sections-v1",
+  "source": "assets/downloads/grip/getting-a-grip-lesson-7-how-to-experience-gods-love-and-forgiveness.pdf",
+  "sha256": "dc917a0fa68e4d06f61cc45de78b5f1125eb7c2653d568cd420db94e70c46265",
+  "responseGroups": [
+    {
+      "id": 1,
+      "prompt": "Relationship Versus Friendship",
+      "page": 1
+    },
+    {
+      "id": 2,
+      "prompt": "How Does God See Me?",
+      "page": 2
+    },
+    {
+      "id": 3,
+      "prompt": "How Does God Define Sin?",
+      "page": 3
+    },
+    {
+      "id": 4,
+      "prompt": "Who Sins?",
+      "page": 3
+    },
+    {
+      "id": 5,
+      "prompt": "Who Tempts Us to Sin?",
+      "page": 4
+    },
+    {
+      "id": 6,
+      "prompt": "How Can We Resist the Temptation to Sin?",
+      "page": 4
+    },
+    {
+      "id": 7,
+      "prompt": "What Do We Do If We Sin?",
+      "page": 5
+    }
+  ],
+  "excludedActivities": "Section H personal application directs writing on paper and destroying that paper. It is intentionally not collected in the cloud. Section I group discussion stays in the PDF."
+}

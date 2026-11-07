@@ -1,0 +1,35 @@
+{
+  "lesson": 11,
+  "worksheet": "lesson-11-workbook-sections-v1",
+  "source": "assets/downloads/grip/getting-a-grip-lesson-11-how-to-experience-the-abundant-life.pdf",
+  "sha256": "9567b85b3dc0fabf047763a57598b9a7545e67efb7249322e011c9df0d905b86",
+  "responseGroups": [
+    {
+      "id": 1,
+      "prompt": "GOD BLESS YOU",
+      "page": 1,
+      "sourceSection": "A"
+    },
+    {
+      "id": 2,
+      "prompt": "WHY DOES GOD WANT US TO BE BLESSED WITH ABUNDANCE?",
+      "page": 3,
+      "sourceSection": "B"
+    },
+    {
+      "id": 3,
+      "prompt": "WE MUST LEARN TO BE CONTENT",
+      "page": 4,
+      "sourceSection": "C"
+    },
+    {
+      "id": 4,
+      "prompt": "TWO AREAS OF ABUNDANT LIVING: HEALING AND PROSPERITY",
+      "page": 5,
+      "sourceSection": "D"
+    }
+  ],
+  "excludedActivities": "Sections E and F optional study and group prayer remain in the PDF. Do not enter personal health, financial, hardship or prayer details, or information identifying other people.",
+  "grantsViewingCredit": false,
+  "grantsCompletionCredit": false
+}

@@ -1,3 +1,15 @@
+## November 5 — individual media proof cannot establish multipart advancement
+
+The source-only progression evaluator rejects whole-lesson watch/advance/completion evidence for Lessons 6/8/9 while required multipart binding remains unresolved. A valid individual-media signature, `videoApproved` flag, complete single-part coverage or replay cannot bypass that hold. No guessed part registry/order/duration or production observer is introduced. Existing 95% interval arithmetic, observer expiry and answer minimization are preserved; every result remains `canCommit:false`. This changes no public runtime or database permission and is not genuine provider or hosted acceptance.
+
+## November 5 — progression receipt data minimization (source only)
+
+The current-account progression snapshot must carry only receipt metadata, never private worksheet answer bodies. The guarded forward correction uses an explicit projection after the existing account/session/enrollment/revision transaction and does not broaden function permissions or RLS. Lesson 5–13 worksheet reload still returns legitimate answers directly to their verified owner. Same-owner overprojection was reproduced locally; no cross-account or hosted exposure is claimed. Existing trusted completion and external playback/retention gates remain unchanged.
+
+## November 5 — device notes require current identity before writes
+
+A previously verified owner is insufficient to authorize a later device-note write. Lessons 5–13 now revalidate through the pinned shared Auth verifier and latest session, bind asynchronous results to owner/navigation/edit generations, and reject detached fields. Rejected or retired edits never write another namespace; stored legitimate notes and legacy unowned data are neither deleted nor reassigned. Browser storage remains device/profile readable and unencrypted. Auth callback, storage event and expiry cleanup remain, with explicit history-navigation retirement added. If an identity change emits no event, the next note operation detects it; this is not a claim of instantaneous detection of an unobservable provider change. Verification failures discard pending edits and clear the rendered field. No cloud/API mutation or completion permission is introduced.
+
 ## 2026-10-29 — General prayer resource integration, LOCAL ONLY
 Reconciled PR #54 with the accepted Resource Registrant and reader chain through 5c84a42. Reused the completed implementation; removed the duplicate draft general signup backend. Additive `/king-kind-signup.html` entry points to the accepted form; all 26 SDK pins and current Powered by Propel branding are preserved. General registrations remain separate from outreach decisions, membership, staff and financial authority. See docs/GENERAL-PRAYER-SIGNUP-LAUNCH-CHECKLIST.md for exact next gates. No hosted testing, migration, message, permission change, push or deployment authorized or performed. Original packages unchanged.
 
@@ -63,3 +75,34 @@ General-resource correction: stale callback sessions cannot imply link verificat
 ## 2026-10-28 — Local King Kind reader session correction
 
 Separate successor to sealed 6d5730bf0034bbb138999ce8cab97ce150d525fe. Reader invalidates retained PDF/Blob/canvas/license state synchronously on Auth/storage/history/expiry changes; deferred authorization avoids SDK callback-lock deadlock. Generation-bound requests and detached rendering prevent stale completion from restoring prior-user content. Each personal-use download freshly checks identity and exact-object Storage eligibility. No design, SDK, PDF, SQL/RLS, general registration, lesson, recovery or Issue50/51 changes. Local regression and intercepted real-browser/real-renderer evidence are recorded privately; genuine-provider acceptance remains untested. See docs/KING-KIND-SESSION-CORRECTION.md. Stop at independent review; no hosted authorization, deployment or access grants.
+
+
+## 2026-11-01 — Durable worksheet transaction preparation
+
+Worksheet transaction preparation derives learner identity exclusively from Auth, checks current confirmed user/session rows, pins the browser bearer and rejects stale CAS revisions. Private versions cannot be caller-updated; direct legacy writes participate in revision invalidation. Session expiration, rollback and account-switch tests remain fictional. Existing legacy worksheet RLS is preserved; new RPC session protection does not claim public deployment.
+
+
+## 2026-11-01 — Playback authenticity is not completion authority
+
+A valid Ed25519 signature does not prove actual viewing. Source-review provenance must be independently accepted in a trusted repository; browser keys and flags cannot grant authority. Observer revocation requires compatible serialization with ledger evaluation. All outputs remain review-only, with no completion commit or actual provider acceptance.
+
+## 2026-11-01 — Database-owned answer receipt provenance
+
+The snapshot accepts lesson only. Current Auth/session and same-owner enrollment derive from the accepted worksheet transaction, with expiration rechecked before return. Cross-account, revoked/missing/foreign/expired sessions and lessons5–13 deny. Public and private function execution is limited to authenticated; both paths enforce the same identity checks. No raw answers, shared revision counter or new table rights escape. A browser can copy a receipt but cannot make it completion authority: source consumers must load it from the database in their own authorized transaction. New native contention coverage remains CI-pending; local PGlite does not prove process concurrency.
+
+## 2026-11-01 — Disabled trusted-completion source
+
+No API role can execute the new private SECURITY INVOKER writer or read/write its RLS evidence tables. It derives principal from the existing current Auth snapshot and binds every receipt to current session/enrollment/profile/media/policy/worksheet UUID. Profile replacement/revocation shares the worksheet mutex; deadlines are rechecked after progress-row waits. Immutable audit failure rolls back progress. Existing legacy progress writes create no trusted audit. Provider identity/eligible-watch evidence, least-privileged ingestion, retention and genuine recovery are unresolved activation gates; synthetic owner-role fixtures are not provider proof or a production credential model.
+
+
+## 2026-11-02 — Member activity is not completion authority
+
+The member dashboard no longer treats owner-writable lesson_progress rows as proof of completed lessons. Only valid numbered activity records affect its bounded count; absence does not imply no worksheet or watching. Existing verified-user/course filters and page account/generation/expiry checks are unchanged. No raw answers, notes, prayer or trusted-audit fields are newly queried or exposed by this correction. Existing private-reader eligibility remains authoritative. See docs/MEMBER-DASHBOARD-STATUS.md; browser fixtures are not genuine Auth or provider evidence.
+
+
+## 2026-11-03 — Independent member/outreach failure boundaries
+
+An optional St. Lucia lookup failure cannot establish or replace course authorization. The member page still requires the existing shared helper's fresh verified user, owner/course-filtered reads, bound-session check and its final same-user/unexpired session before showing any private content or partial-availability notice. Account/page invalidation stops stale lookup continuations before another course request. Unavailable outreach never implies linked registration, and raw provider diagnostics are not rendered. Existing St. Lucia claim idempotency, RLS, Auth helper, SDK and database objects are unchanged; no automatic retry or new enrollment/People writes. Tests use fictional intercepted provider transport only. See docs/MEMBER-DASHBOARD-STATUS.md.
+## November 5 — observer expiry survives composition
+
+Transaction locks cannot stop time advancing. The signed playback verifier's trusted `authorityValidUntil` is the minimum of the receipt expiry and current observer expiry (receipt expiry alone for an explicitly unbounded registry record). It is derived after registry and signature validation, never accepted as a browser payload claim. Progression review requires that finite safe-integer deadline, rejects values exceeding receipt expiry and rechecks it after delayed ledger completion. Missing deadlines fail closed rather than falling back to a longer envelope expiry. Existing registry/session/ledger serialization requirements remain authoritative; this deadline fence does not implement distributed revocation, authenticate a real provider or authorize completion writes.

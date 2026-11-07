@@ -1,0 +1,44 @@
+{
+  "lesson": 6,
+  "worksheet": "lesson-6-workbook-sections-v1",
+  "source": "assets/downloads/grip/getting-a-grip-lesson-6-how-to-obey-god.pdf",
+  "sha256": "3f5f9b39629b805cb426081016209cb6a6fd2e428aef18646d4fa9be0925522c",
+  "responseGroups": [
+    {
+      "id": 1,
+      "prompt": "Why should we obey God?",
+      "page": 1
+    },
+    {
+      "id": 2,
+      "prompt": "How do we show God that we love Him?",
+      "page": 1
+    },
+    {
+      "id": 3,
+      "prompt": "Is it really possible to obey God?",
+      "page": 2
+    },
+    {
+      "id": 4,
+      "prompt": "What commandments are we to obey?",
+      "page": 2
+    },
+    {
+      "id": 5,
+      "prompt": "What are the benefits of obedience?",
+      "page": 3
+    },
+    {
+      "id": 6,
+      "prompt": "What are the practical ways to obey God?",
+      "page": 4
+    },
+    {
+      "id": 7,
+      "prompt": "Are there areas of your life that you need to bring into obedience to God?",
+      "page": 7
+    }
+  ],
+  "excludedActivities": "Group discussion stays in the original PDF."
+}

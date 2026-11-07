@@ -66,3 +66,21 @@ Implement only the four confirmed general-resource launch corrections in a separ
 ## 2026-10-28 — Local King Kind reader session correction
 
 Separate successor to sealed 6d5730bf0034bbb138999ce8cab97ce150d525fe. Reader invalidates retained PDF/Blob/canvas/license state synchronously on Auth/storage/history/expiry changes; deferred authorization avoids SDK callback-lock deadlock. Generation-bound requests and detached rendering prevent stale completion from restoring prior-user content. Each personal-use download freshly checks identity and exact-object Storage eligibility. No design, SDK, PDF, SQL/RLS, general registration, lesson, recovery or Issue50/51 changes. Local regression and intercepted real-browser/real-renderer evidence are recorded privately; genuine-provider acceptance remains untested. See docs/KING-KIND-SESSION-CORRECTION.md. Stop at independent review; no hosted authorization, deployment or access grants.
+
+
+## 2026-11-01 — Durable worksheet transaction preparation
+
+Prepare durable worksheet transactions over existing answers using private server-owned version metadata; do not add a duplicate answer store or infer trusted watch evidence. Limit the new RPC to existing lessons1–4 question manifests; keep progression flags false. Conservative cross-course mutation serialization is documented pending performance review. No installation or public activation is approved.
+
+
+## 2026-11-01 — Bounded playback verifier implementation
+
+Implement only the missing cryptographic observer interface and current-ledger recheck in this source package. Preserve approved 95% unique-watch and answer rules, all worksheet/King Kind source, and truthful lesson availability. Defer the UUID worksheet bridge and completion writer to their own reviewed package; do not silently convert opaque versions.
+
+## 2026-11-01 — Finish the existing receipt binding before provider activation
+
+Reuse the accepted worksheet transaction for the durable owner/session/enrollment projection; retain source-only status and the exact prior migration. Do not fabricate a media registry, observer, monotonic progression ledger or completion write to make an incomplete course appear verified. Keep missing worksheets5–13 and videos11–13 visible as separate work. No major architecture or provider selection is made by this repository read.
+
+## 2026-11-01 — Implement atomic source without inventing provider proof
+
+Prepare the missing SQL completion transaction behind no API grants and an empty observer registry. Preserve the existing answer store, opaque UUID evidence and95%unique-watch rule. Do not infer human viewing from YouTube browser telemetry or signatures, treat existing browser progress as trusted, seed a real provider, implement retention policy implicitly, or activate public gating. Separate provider selection, ingestion/host authorization, retention and recovery acceptance remain required.

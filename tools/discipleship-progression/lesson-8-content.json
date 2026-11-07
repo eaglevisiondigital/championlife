@@ -1,0 +1,39 @@
+{
+  "lesson": 8,
+  "worksheet": "lesson-8-workbook-sections-v1",
+  "source": "assets/downloads/grip/getting-a-grip-lesson-8-how-to-be-filled-with-the-holy-spirit.pdf",
+  "sha256": "733273b3c4e0d310d4677005318da4909196653891236ecf6387d34db6749f5f",
+  "responseGroups": [
+    {
+      "id": 1,
+      "prompt": "Who Is the Holy Spirit?",
+      "page": 1
+    },
+    {
+      "id": 2,
+      "prompt": "What Does It Mean to Be Filled With the Holy Spirit?",
+      "page": 1
+    },
+    {
+      "id": 3,
+      "prompt": "The Difference Between Born of and Filled With the Holy Spirit",
+      "page": 2
+    },
+    {
+      "id": 4,
+      "prompt": "Comparing the Two Experiences",
+      "page": 3
+    },
+    {
+      "id": 5,
+      "prompt": "Why Should I Be Filled With the Holy Spirit?",
+      "page": 4
+    },
+    {
+      "id": 6,
+      "prompt": "How Can a Person Be Filled With the Spirit?",
+      "page": 4
+    }
+  ],
+  "excludedActivities": "Sections G and H personal prayer and group exercises remain in the original PDF; no spiritual experience or group participation is asserted by saving responses."
+}

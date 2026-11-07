@@ -41,3 +41,33 @@ General registration retains its distinct backend. The correction adds no runtim
 ## 2026-10-28 — Local King Kind reader session correction
 
 Separate successor to sealed 6d5730bf0034bbb138999ce8cab97ce150d525fe. Reader invalidates retained PDF/Blob/canvas/license state synchronously on Auth/storage/history/expiry changes; deferred authorization avoids SDK callback-lock deadlock. Generation-bound requests and detached rendering prevent stale completion from restoring prior-user content. Each personal-use download freshly checks identity and exact-object Storage eligibility. No design, SDK, PDF, SQL/RLS, general registration, lesson, recovery or Issue50/51 changes. Local regression and intercepted real-browser/real-renderer evidence are recorded privately; genuine-provider acceptance remains untested. See docs/KING-KIND-SESSION-CORRECTION.md. Stop at independent review; no hosted authorization, deployment or access grants.
+
+
+## 2026-11-01 — Durable worksheet transaction preparation
+
+The optional worksheet transaction API serializes existing legacy DML and revision-bound saves through a transaction-scoped mutex, private per-enrollment/lesson metadata and current Auth/session locks. It returns counts/revision, never answers or completion authority. No duplicate learner store or public frontend mount. See docs/DISCIPLESHIP-WORKSHEET-TRANSACTIONS.md.
+
+
+## 2026-11-01 — Playback authority source boundary
+
+The playback verifier accepts only exact domain-separated signed envelope bytes and an injected current observer/key/policy repository. Existing ledger composition re-verifies observer revision after its serialization wait. Actual registry, durable ingestion and atomic completion bindings remain unimplemented; existing worksheet storage is unchanged.
+
+## 2026-11-01 — Existing ledger read integration
+
+`owned_progression_snapshot(p_lesson)` is an invoker wrapper around a private owner-bound database repository. It calls the unchanged `owned_worksheet_transaction` and retains its Auth user/session, course/enrollment, private version locks and shared legacy-write mutex until transaction completion. It projects exactly the existing progression evaluator's discriminated `answerReceipt`, using opaque worksheet UUID tokens; the private allocation counter is never exposed. No second evidence store or progression state is introduced. This is a point-in-time worksheet read; it does not implement the `withCurrentLedger` lifetime across an external provider call. A future completion transaction still needs accepted playback authority and compatible serialization. See docs/DISCIPLESHIP-OWNED-PROGRESSION-SNAPSHOT.md.
+
+## 2026-11-01 — Completion transaction boundary
+
+The new uninstalled private completion function reuses existing worksheet/auth/enrollment locks, adds exact profile/receipt serialization via the same mutation mutex, and atomically writes the existing progress projection with private immutable completion audit. No duplicate answer or identity store is introduced. Provider ingestion/host privileges remain absent and the registry starts empty. Lessons1–4 only; accepted multi-part media policies and5–13cloud worksheets are still required. Historical audits are not perpetual unlock tokens.
+
+## Lesson5 worksheet extension (2026-11-02, source only)
+Reuse existing lesson_answers/version/RPC rather than a second course platform. Ten workbook section responses are saved separately from legacy device notes and never counted as trusted completion. Exact source catalog, guarded installation and remaining1–13 scope: docs/DISCIPLESHIP-LESSON-FIVE-WORKSHEET.md.
+
+## 2026-11-02 — Reused worksheet path for Lessons 6–8
+
+The existing owned worksheet transaction now has a separately reviewable uninstalled extension for Lessons 6–8, with exact PDF section catalogs and fixed cardinalities. Browser rendering remains a single account/session-bound client; durable answers and opaque revisions remain in the accepted stores. Installation takes the existing legacy-writer mutex before provenance checks and version seeding. No new permission surface or trusted completion boundary is introduced. See docs/DISCIPLESHIP-LESSONS-SIX-EIGHT-WORKSHEETS.md.
+
+
+## 2026-11-02 — Lessons 9–13 private worksheet source
+
+Extended the same worksheet client/answer store to9–13, with five/five/four/three/four selected response groups. No duplicate platform or new privilege surface. The guarded migration serializes provenance review/version initialization against legacy writes. Private answers never become course-completion authority. See docs/DISCIPLESHIP-LESSONS-NINE-THIRTEEN-WORKSHEETS.md.

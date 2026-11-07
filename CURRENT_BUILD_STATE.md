@@ -1,3 +1,43 @@
+## November 5 — multipart progression review guard (source only)
+
+Actual verifier-to-adapter reproduction showed one valid fictional media receipt could yield advancement evidence for multipart Lessons 6/8/9 despite their unresolved complete-media binding. The disconnected evaluator now holds those lessons with `media_unavailable`; 95% unique eligible playback for single-media Lessons 1–5/7/10, completion evidence limited to 1–4, private answers, observer expiry and missing media 11–13 remain unchanged. All 276 affected contract tests pass, including 26 new permanent tests; 12 new assertions failed against the original source as expected. No public runtime, SQL, provider, completion writer, grants or hosted action changed. Independent review and exact-head CI remain separate; release is held. See docs/DISCIPLESHIP-PROGRESSION-EVIDENCE-CONTRACT.md.
+
+## November 5 — bounded progression receipt projection (source only)
+
+The all-thirteen worksheet composition exposed an existing integration defect: the metadata-only progression snapshot forwarded the lesson 5–13 reload response, including the current learner's private answers. A guarded, uninstalled forward migration now explicitly projects receipt metadata while preserving the exact verified account/session, enrollment, opaque revision and existing locks/ACLs. The worksheet UI, saved answers, all previous migrations, SDK, King Kind and public outputs remain unchanged. No watch/completion authority expands. Permanent all-13 SQL tests, native concurrency and the affected atomic completion regression are required; independent review, CI and hosted acceptance remain distinct. See docs/DISCIPLESHIP-OWNED-PROGRESSION-SNAPSHOT.md.
+
+## November 5 — verified device-note persistence (source only)
+
+Lessons 5–13 device notes now verify the current account and latest unexpired session before persisting an edit. A missed Auth callback previously allowed an edit under account B to overwrite account A's device namespace. New write generations retire superseded edits, navigation and detached controls; pinned Auth dependencies fail closed. Existing account-owned saved notes are preserved. Pending edits are not reported saved until verification succeeds and may be discarded on session/navigation retirement. The 13 cloud worksheets, enrollment, progress, reader, SDK and all SQL remain unchanged. No trusted playback, completion, hosted Auth or release acceptance is claimed.
+
+## 2026-11-03 — Member course survives optional outreach lookup failure (source only)
+
+My Discipleship now loads existing course activity when the optional St. Lucia resource lookup is denied or unavailable, after the unchanged shared helper freshly verifies the same account and the page checks its session. A truthful refresh notice distinguishes unavailable resources from confirmed absence; stale outreach continuations stop before requesting course data. Original failure reproduced with real pinned-SDK/shared-Auth intercepted Chromium/WebKit transport on mobile/desktop. No SQL, People/Auth system, enrollment, completion, worksheet or provider change. See docs/MEMBER-DASHBOARD-STATUS.md. Local validation: 306 new real-SDK browser assertions, 444 existing dashboard assertions, 20 SDK pin checks and site-build safety checks PASS; two identical 415-file builds change only the dashboard public file. Source-only local acceptance; independent review, exact-head CI, genuine hosted acceptance and release remain separate gates.
+
+## 2026-11-02 — Truthful member dashboard activity (source only)
+
+My Discipleship now describes the existing owner-writable progress projection as recorded activity instead of certified completion. Counts include only unique valid lessons 1–13; saved worksheets and watching remain explicitly distinct. All thirteen existing worksheet routes show correct save modes and videos 11–13 remain coming soon. No SQL, shared Auth, SDK, layout, artwork or stored history changed. The original page fails the focused regression; the correction passes 444 intercepted Chromium/WebKit assertions at mobile/tablet/desktop. See docs/MEMBER-DASHBOARD-STATUS.md. Independent pinned-SDK review passes 228 additional checks; two identical 415-file builds change only the dashboard public file. Exact-head CI and genuine hosted acceptance remain separate; no production release or blocked migration is implied.
+
+## 2026-11-02 — Isolated worksheet CAS integration compatibility (source only)
+
+The existing isolated read/save adapter now consumes the exact approved Lesson5–13 catalogs alongside unchanged Lessons1–4. It enforces each lesson’s response identifiers/count and5–13 worksheet discriminator, while projecting no raw answers or completion authority. This closes an actual adapter-to-existing-RPC mismatch without changing SQL, public runtime, content or SDK. Local pinned-SDK browser, native PostgreSQL and independent adversarial checks are recorded privately. See docs/DISCIPLESHIP-WORKSHEET-TRANSACTION-COMPATIBILITY.md. Trusted completion remains1–4 source-only; media, provider, retention, recovery and release gates remain held.
+
+## 2026-11-02 — Course overview availability copy (source only)
+
+The overview now describes all 13 implemented worksheet flows, distinguishing automatic drafts in Lessons 1–4 from explicit load/save in Lessons 5–13. Missing videos 11–13 remain clearly marked. It no longer promises completion tools or says additional worksheets await conversion. Routes, assets, layout, runtime, SQL and accepted content are unchanged. This describes the reviewed candidate after a separately approved installation; it is not a claim that the 13-lesson suite is currently live. Trusted playback, multipart binding, retention and genuine acceptance gates remain held.
+
+## 2026-11-02 — Private worksheet reload safety (local source only)
+
+Lessons 5–13 now show unsaved changes accurately and require confirmation before an intentional reload replaces them. Cancel issues no RPC. Confirmation rechecks the current session/generation; privacy invalidations still clear immediately without prompting or persistence. Existing owner/revision transaction, content, SQL, SDK, enrollment and completion controls are unchanged. See docs/DISCIPLESHIP-WORKSHEET-RELOAD-SAFETY.md. Isolated Chromium/WebKit regression evidence is recorded separately; no hosted release or provider acceptance is implied.
+
+## 2026-11-02 — Lesson5 cloud workbook response groups, source only
+
+Added an actual private save/load worksheet using ten source-exact groups from the existing Lesson5 PDF and the existing owner-bound RPC/answer store. Guarded forward migration refuses source drift or unmapped existing Lesson5 answers; no new tables, grants, RLS or progress/completion writes. Other device notes and approved media preserved. Lesson6–13 structured worksheets, videos11–13 and genuine95% watch evidence remain unfinished. See docs/DISCIPLESHIP-LESSON-FIVE-WORKSHEET.md; tests/evidence are local, no hosted installation or release.
+
+## 2026-11-01 — Owned progression snapshot, source only
+
+New forward migration `20261101231330_owned_progression_snapshot.sql` derives the existing opaque worksheet evidence binding inside the actual owned worksheet transaction. Auth user/session, enrollment and revision come from locked database records; no browser wrapper supplies ownership. There is no additional answer or learner store, watch provider, completion writer, public mounting or hosted migration. Lessons1–4 only; `observer_unconfigured`, `canComplete:false`, `canCommit:false` remain explicit. Focused PGlite36 checks and existing Node293 tests PASS. Independent reviewer18 additional SQL checks PASS. Native session/legacy-write contention tests are wired to CI but not run on the IPC-exhausted Mac. See docs/DISCIPLESHIP-OWNED-PROGRESSION-SNAPSHOT.md. Exact-head CI, real provider, hosted/release acceptance remain pending.
+
 ## 2026-10-29 — Atomic general-resource enrollment correction, LOCAL ONLY
 The existing private Resource Registrant RPC now creates/preserves the authenticated user's Getting a Grip enrollment in the same transaction as registration and its immutable audit. No browser enrollment mutation or new schema. Existing enrollment timestamps/completion, answers and progress are never overwritten. Status is read-only and reports enrollment explicitly; the page requires both facts before success. Start Course remains dashboard navigation. This supersedes older "no automatic enrollment" descriptions below and in historical correction reports. Issue #56 watch/answer progression is unchanged and not claimed complete. Targeted native PostgreSQL and intercepted Chromium/WebKit tests, fresh independent review and private integrity evidence accompany the local successor. No provider acceptance or release authorization is implied.
 
@@ -124,3 +164,40 @@ is not implemented by the current course. These remain explicit release decision
 implementation gaps. Genuine provider, recovery, custody, maintenance and separate
 hosted/release approval remain blocked. No hosted execution, messages or deployment.
 See docs/GENERAL-PRAYER-SIGNUP-LAUNCH-CHECKLIST.md and private Issue53 evidence.
+
+
+## 2026-11-01 — Durable worksheet transaction preparation
+
+Implemented a separate, uninstalled durable worksheet transaction candidate for PR76. Existing answer/enrollment tables are reused; private server-owned revision metadata enables owner/current-session CAS saves. Public pages and the King Kind hold remain unchanged. Native and intercepted SDK/browser tests are local evidence only; independent source review and separately authorized genuine acceptance remain required.
+
+
+## 2026-11-01 — Playback verifier source preparation
+
+Implemented an Ed25519 envelope verifier against a server-owned current observer registry and repeated verification inside serialized ledger review. Fictional crypto/authorization tests only; no observer is installed and canCommit remains false. The opaque UUID worksheet receipt versus legacy numeric progression receipt bridge remains an explicit next integration task. See docs/DISCIPLESHIP-PLAYBACK-ENVELOPE-VERIFIER.md.
+
+## 2026-11-01 — Uninstalled atomic completion source
+
+PR76 now prepares an owner-only completion transaction over the existing current Auth/worksheet snapshot and existing lesson_progress. Empty disabled observer configuration, exact private receipts and immutable audit bind95%unique eligible intervals plus twenty saved answers. Local fictional SQL tests pass; no genuine provider is installed, no API grants/public wrapper exist, and legacy progress is not trusted proof. Native concurrency remains exact-head CI pending at this checkpoint. See docs/DISCIPLESHIP-ATOMIC-COMPLETION.md. Existing King Kind hold, public course design and all historical packages remain unchanged.
+
+## 2026-11-02 — Lessons 6–8 private worksheet source extension
+
+Added exact existing workbook section responses for Lessons 6 (7 groups), 7 (7 groups) and 8 (6 groups) using the accepted owner-only worksheet transaction and answer store. Lesson 7's destroy-on-paper personal exercise is intentionally not collected. The guarded forward migration serializes provenance review/version initialization with legacy writes; it is uninstalled. No completion/watch credit, new identity/answer schema, RLS/grant, media, King Kind or hosted change. Targeted local database/browser evidence and independent review are required before draft publication. See docs/DISCIPLESHIP-LESSONS-SIX-EIGHT-WORKSHEETS.md.
+
+
+## 2026-11-02 — Lessons 9–13 private worksheet source
+
+Added private source worksheets9–13 using exact selected original material and the existing account-owned transaction. New uninstalled forward migration preserves Auth/CAS/legacy-writer serialization and does not grant completion. Videos11–13 and genuine playback/hosted acceptance remain unavailable. See docs/DISCIPLESHIP-LESSONS-NINE-THIRTEEN-WORKSHEETS.md.
+
+
+## 2026-11-04 — Existing worksheet export account fence, source only
+
+A narrow PR76 successor corrects Lessons1–4 private Download/Print/email-copy
+controls retaining the prior loaded principal after a missed Auth callback. Exports
+now verify current identity/session/client and view lifetime before reading private
+fields. Existing thirteen worksheet save/load flows, artwork, shared Auth, SQL and
+completion semantics are unchanged. Local fictional-browser tests and reproducible
+builds are recorded privately; genuine provider/release acceptance remains gated.
+See docs/DISCIPLESHIP-PRIVATE-EXPORT-IDENTITY.md.
+## November 5 — playback authority deadline propagation (source only)
+
+The real signed-envelope verifier and progression adapter now preserve the earliest receipt/observer deadline across the complete ledger review. A reproduced delayed transaction previously returned positive review evidence after observer expiry when the envelope itself remained valid. The verifier supplies `authorityValidUntil` from trusted registry metadata; the adapter requires it, compares fresh exact proofs and checks it at every wait boundary and final return. Invalid clocks fail closed. This is disconnected review evidence only, always `canCommit:false`; no observer, completion or serving authority is activated. SQL, private answer projections, all13 worksheets, SDK, public output and Dream Team source remain unchanged. Provider-backed playback, videos11–13, multipart6/8/9 bindings and finite retention remain unresolved gates.

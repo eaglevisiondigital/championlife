@@ -23,6 +23,9 @@
   const downloadBtn = document.querySelector('[data-grip-download]');
   const emailBtn = document.querySelector('[data-grip-email]');
   const auth = window.ChampionLifeAuth || null;
+  const exportClient = auth?.client, exportAuth = exportClient?.auth;
+  const exportVerifier = auth?.getVerifiedUser, exportSession = auth?.getSession;
+  let exportGeneration = null;
 
   let pageActive = true;
   let cloudUser = null, generation = 0, controller = new AbortController();
@@ -38,7 +41,7 @@
   function invalidate() {
     generation++; controller.abort(); controller = new AbortController();
     clearTimeout(remoteSaveTimer); clearTimeout(expiryTimer);
-    cloudUser = null;
+    cloudUser = null; exportGeneration = null;
     form.reset();
     if(form.querySelector('[type=submit]'))form.querySelector('[type=submit]').textContent=submitText;
     form.querySelectorAll('textarea,input:not([type="hidden"]),select').forEach(el => {
@@ -283,8 +286,31 @@
     return lines.join('\n');
   }
 
+  async function privateExport(action) {
+    if (!pageActive || !cloudUser || !form.isConnected || exportGeneration !== null) return;
+    const stamp = generation, id = cloudUser.id;
+    const pinned = () => window.ChampionLifeAuth === auth && auth?.client === exportClient &&
+      exportClient?.auth === exportAuth && auth?.getVerifiedUser === exportVerifier && auth?.getSession === exportSession;
+    const active = () => pageActive && form.isConnected && current(stamp, id);
+    exportGeneration = stamp;
+    try {
+      if (!pinned() || !exportVerifier || !exportSession) throw Error('Session unavailable');
+      const verified = await exportVerifier.call(auth);
+      if (!active()) return;
+      if (!pinned() || verified?.id !== id || !verified.email_confirmed_at || verified.is_anonymous) throw Error('Identity changed');
+      const session = await exportSession.call(auth);
+      if (!active()) return;
+      if (!pinned() || session?.user?.id !== id || !(session.expires_at * 1000 > Date.now())) throw Error('Session changed');
+      // Read private fields only after the latest identity fence; never export a captured stale copy.
+      action();
+    } catch (_) {
+      if (current(stamp, id)) invalidate();
+    } finally {
+      if (exportGeneration === stamp) exportGeneration = null;
+    }
+  }
+
   function downloadAnswers() {
-    if (!cloudUser) return;
     const blob = new Blob([qaText()], {type:'text/plain;charset=utf-8'});
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
@@ -297,7 +323,6 @@
   }
 
   function emailAnswers() {
-    if (!cloudUser) return;
     const email = (form.querySelector('[name="email"]')?.value || '').trim();
     if (!email) {
       setMessage('error', 'Enter your email address first so we can prepare your email copy.');
@@ -395,9 +420,9 @@
     updateProgress();
   });
 
-  printBtn?.addEventListener('click', () => { if(cloudUser) window.print(); });
-  downloadBtn?.addEventListener('click', downloadAnswers);
-  emailBtn?.addEventListener('click', emailAnswers);
+  printBtn?.addEventListener('click', () => { void privateExport(() => window.print()); });
+  downloadBtn?.addEventListener('click', () => { void privateExport(downloadAnswers); });
+  emailBtn?.addEventListener('click', () => { void privateExport(emailAnswers); });
 
   auth?.client?.auth.onAuthStateChange?.(() => {
     invalidate(); // Synchronous clear; never await Supabase inside its auth callback lock.

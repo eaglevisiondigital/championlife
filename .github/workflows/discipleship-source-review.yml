@@ -1,0 +1,194 @@
+name: Discipleship isolated source review
+on:
+  pull_request:
+    paths:
+      - 'tools/discipleship-progression/**'
+      - 'assets/js/grip-worksheet.js'
+      - 'assets/js/grip-course.js'
+      - 'assets/js/grip-notes.js'
+      - 'tools/backend-tests/grip-notes*'
+      - 'getting-a-grip-5.html'
+      - 'getting-a-grip-6.html'
+      - 'getting-a-grip-7.html'
+      - 'getting-a-grip-8.html'
+      - 'getting-a-grip-9.html'
+      - 'getting-a-grip-10.html'
+      - 'getting-a-grip-11.html'
+      - 'getting-a-grip-12.html'
+      - 'getting-a-grip-13.html'
+      - 'supabase/migrations/20261102210907_lessons_nine_thirteen_owned_worksheets.sql'
+      - 'supabase/migrations/20261102200549_lessons_six_to_eight_owned_worksheets.sql'
+      - 'supabase/migrations/20261102193245_lesson_five_owned_worksheet.sql'
+      - 'supabase/migrations/20261101165620_prepare_owned_worksheet_transactions.sql'
+      - 'supabase/migrations/20261101231330_owned_progression_snapshot.sql'
+      - 'supabase/migrations/20261105194549_bound_progression_receipt_projection.sql'
+      - 'supabase/migrations/20261102014452_prepare_trusted_lesson_completion.sql'
+      - '.github/workflows/discipleship-source-review.yml'
+permissions:
+  contents: read
+# The former serial job exceeded 15 minutes during Lesson 13 (run 41644241046).
+# Separate runners preserve every command and both browser engines/viewport checks.
+# No job uses continue-on-error; one failing group cannot cancel another group.
+jobs:
+  database-and-contracts:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm ci --ignore-scripts --prefix tools/backend-tests
+      - run: WORKSHEET_EXTENSIONS=1 node tools/discipleship-progression/completion.database.mjs
+      - run: WORKSHEET_EXTENSIONS=1 TEST_NATIVE_PG=1 TEST_POSTGRES_BIN="$(pg_config --bindir)" node tools/discipleship-progression/completion.database.mjs
+      - run: node tools/discipleship-progression/progression-receipt-projection.database.mjs
+      - run: TEST_NATIVE_PG=1 TEST_POSTGRES_BIN="$(pg_config --bindir)" node tools/discipleship-progression/progression-receipt-projection.database.mjs
+      - run: node tools/discipleship-progression/progression-snapshot.database.mjs
+      - run: TEST_NATIVE_PG=1 TEST_POSTGRES_BIN="$(pg_config --bindir)" node tools/discipleship-progression/progression-snapshot.database.mjs
+      - run: node --test tools/discipleship-progression/*.test.mjs
+      - run: TEST_POSTGRES_BIN="$(pg_config --bindir)" node tools/discipleship-progression/worksheet-source.native.mjs
+      - run: TEST_POSTGRES_BIN="$(pg_config --bindir)" node tools/discipleship-progression/worksheet-transactions.native.mjs
+      - run: TEST_POSTGRES_BIN="$(pg_config --bindir)" node tools/discipleship-progression/worksheet-contracts.native.mjs
+      - run: tools/backend-tests/node_modules/.bin/playwright install --with-deps chromium webkit
+      - run: node tools/discipleship-progression/worksheet-transactions.browser.mjs
+      - run: node tools/discipleship-progression/lesson-five.database.mjs
+      - run: TEST_POSTGRES_BIN="$(pg_config --bindir)" TEST_NATIVE_PG=1 node tools/discipleship-progression/lesson-five.database.mjs
+      - run: node tools/discipleship-progression/lessons-six-eight.database.mjs
+      - run: TEST_POSTGRES_BIN="$(pg_config --bindir)" TEST_NATIVE_PG=1 node tools/discipleship-progression/lessons-six-eight.database.mjs
+      - run: node tools/discipleship-progression/lessons-nine-thirteen.database.mjs
+      - run: TEST_POSTGRES_BIN="$(pg_config --bindir)" TEST_NATIVE_PG=1 node tools/discipleship-progression/lessons-nine-thirteen.database.mjs
+      - run: git diff --check
+
+  worksheets-5-7:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm ci --ignore-scripts --prefix tools/backend-tests
+      - run: tools/backend-tests/node_modules/.bin/playwright install --with-deps chromium webkit
+      - run: node tools/discipleship-progression/lesson-five.browser.mjs
+      - run: WORKSHEET_LESSON=6 node tools/discipleship-progression/lesson-five.browser.mjs
+      - run: WORKSHEET_LESSON=7 node tools/discipleship-progression/lesson-five.browser.mjs
+      - run: git diff --check
+
+  worksheets-8-10:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm ci --ignore-scripts --prefix tools/backend-tests
+      - run: tools/backend-tests/node_modules/.bin/playwright install --with-deps chromium webkit
+      - run: WORKSHEET_LESSON=8 node tools/discipleship-progression/lesson-five.browser.mjs
+      - run: WORKSHEET_LESSON=9 node tools/discipleship-progression/lesson-five.browser.mjs
+      - run: WORKSHEET_LESSON=10 node tools/discipleship-progression/lesson-five.browser.mjs
+      - run: git diff --check
+
+  worksheets-11-13:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm ci --ignore-scripts --prefix tools/backend-tests
+      - run: tools/backend-tests/node_modules/.bin/playwright install --with-deps chromium webkit
+      - run: WORKSHEET_LESSON=11 node tools/discipleship-progression/lesson-five.browser.mjs
+      - run: WORKSHEET_LESSON=12 node tools/discipleship-progression/lesson-five.browser.mjs
+      - run: WORKSHEET_LESSON=13 node tools/discipleship-progression/lesson-five.browser.mjs
+      - run: git diff --check
+
+  worksheet-exports:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm ci --ignore-scripts --prefix tools/backend-tests
+      - run: tools/backend-tests/node_modules/.bin/playwright install --with-deps chromium webkit
+      - run: node tools/discipleship-progression/worksheet-export.browser.mjs
+      - run: node tools/backend-tests/general-resource-corrections.test.mjs
+      - run: node tools/discipleship-progression/worksheet-retirement.integrity.mjs worksheet-export
+      - run: git diff --check
+
+  # Keep the existing check name, but never report PASS for skipped/cancelled jobs.
+  source-contract:
+    if: ${{ always() }}
+    needs: [database-and-contracts, worksheets-5-7, worksheets-8-10, worksheets-11-13, worksheet-exports]
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - name: Require every original test group to pass
+        env:
+          DATABASE_RESULT: ${{ needs.database-and-contracts.result }}
+          EARLY_RESULT: ${{ needs.worksheets-5-7.result }}
+          MIDDLE_RESULT: ${{ needs.worksheets-8-10.result }}
+          FINAL_RESULT: ${{ needs.worksheets-11-13.result }}
+          EXPORT_RESULT: ${{ needs.worksheet-exports.result }}
+        shell: bash
+        run: |
+          test "$DATABASE_RESULT" = success
+          test "$EARLY_RESULT" = success
+          test "$MIDDLE_RESULT" = success
+          test "$FINAL_RESULT" = success
+          test "$EXPORT_RESULT" = success
+
+  notes-session-isolation:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm ci --ignore-scripts --prefix tools/backend-tests
+      - run: tools/backend-tests/node_modules/.bin/playwright install --with-deps chromium webkit
+      - run: node tools/backend-tests/grip-notes.test.mjs
+      - run: node tools/discipleship-progression/notes-session.browser.mjs
+      - run: node tools/discipleship-progression/worksheet-retirement.integrity.mjs notes-session
+      - run: git diff --check
+
+  worksheet-retirement:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm ci --ignore-scripts --prefix tools/backend-tests
+      - run: tools/backend-tests/node_modules/.bin/playwright install --with-deps chromium webkit
+      - run: node --test tools/discipleship-progression/worksheet-retirement.integrity.test.mjs
+      - run: node tools/discipleship-progression/worksheet-retirement.browser.mjs
+      - run: node tools/discipleship-progression/worksheet-retirement-independent.browser.mjs
+      - run: node tools/discipleship-progression/worksheet-retirement.integrity.mjs
+      - run: git diff --check

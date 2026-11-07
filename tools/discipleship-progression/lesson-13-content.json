@@ -1,0 +1,39 @@
+{
+  "lesson": 13,
+  "worksheet": "lesson-13-workbook-sections-v1",
+  "source": "assets/downloads/grip/getting-a-grip-lesson-13-how-to-serve-god.pdf",
+  "sha256": "2ec99366a35bd035a832a67072f5f7d120db88527ed76a9c7a53eda5cc6fa8fc",
+  "responseGroups": [
+    {
+      "id": 1,
+      "prompt": "If we want to be great in God's kingdom, what must we do?",
+      "page": 1,
+      "sourceSection": "B.1",
+      "scripture": "Matthew 20:26,27"
+    },
+    {
+      "id": 2,
+      "prompt": "What ministry has God called every believer to be involved in?",
+      "page": 1,
+      "sourceSection": "C.1",
+      "scripture": "2 Corinthians 5:17-21"
+    },
+    {
+      "id": 3,
+      "prompt": "In our life what are we to seek first?",
+      "page": 4,
+      "sourceSection": "D.1",
+      "scripture": "Matthew 6:33"
+    },
+    {
+      "id": 4,
+      "prompt": "Who has received gifts?",
+      "page": 6,
+      "sourceSection": "E.2",
+      "scripture": "1 Peter 4:10"
+    }
+  ],
+  "excludedActivities": "This is a selected four-question Scripture study, not the whole chapter. Personal reflections, financial disclosures, prayer, friend lists and church commitments remain outside this cloud worksheet. Do not enter other people's identities.",
+  "grantsViewingCredit": false,
+  "grantsCompletionCredit": false
+}

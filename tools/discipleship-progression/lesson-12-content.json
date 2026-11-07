@@ -1,0 +1,29 @@
+{
+  "lesson": 12,
+  "worksheet": "lesson-12-workbook-sections-v1",
+  "source": "assets/downloads/grip/getting-a-grip-lesson-12-how-to-be-an-overcomer.pdf",
+  "sha256": "132334c850edb65b7a00002b53ba6f9efbe61e25dac2c3756ff32819cdf1df2d",
+  "responseGroups": [
+    {
+      "id": 1,
+      "prompt": "REMEMBER, GOD IS ON YOUR SIDE",
+      "page": 1,
+      "sourceSection": "A"
+    },
+    {
+      "id": 2,
+      "prompt": "RECOGNIZE THERE ARE TWO KINGDOMS",
+      "page": 3,
+      "sourceSection": "B"
+    },
+    {
+      "id": 3,
+      "prompt": "REALIZE YOUR AUTHORITY OVER SATAN AND HIS KINGDOM",
+      "page": 4,
+      "sourceSection": "C"
+    }
+  ],
+  "excludedActivities": "Sections D and E personal application and group prayer remain in the PDF. Do not enter private confessions, personal trials, prayer details or information identifying other people.",
+  "grantsViewingCredit": false,
+  "grantsCompletionCredit": false
+}

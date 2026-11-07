@@ -1,0 +1,420 @@
+{
+  "schemaVersion": 1,
+  "sourceCommit": "7eb671e0c8d1467446814f642de4dab2f363e46e",
+  "purpose": "source-content-map-only",
+  "grantsViewingCredit": false,
+  "grantsCompletionCredit": false,
+  "fullWorkbook": {
+    "path": "assets/downloads/grip/getting-a-grip-on-the-basics-full-workbook.pdf",
+    "sha256": "3048f852d892293f1b0555e74821eb33ed73a6959cd257ad349073ad5e884772",
+    "pageCount": 119
+  },
+  "lessons": [
+    {
+      "lesson": 9,
+      "title": "How to Be Sure You Are Filled with the Spirit",
+      "source": "assets/downloads/grip/getting-a-grip-lesson-9-how-to-be-sure-you-are-filled-with-the-spirit.pdf",
+      "sha256": "5dd0921fd20b2f0c1f603c1983eaa84b18672187f3e00c06c4f0dd911690e391",
+      "mirror": "downloads/grip/getting-a-grip-lesson-9-how-to-be-sure-you-are-filled-with-the-spirit.pdf",
+      "pageCount": 7,
+      "fullWorkbookPages": [
+        67,
+        73
+      ],
+      "printedPages": [
+        73,
+        79
+      ],
+      "sections": [
+        {
+          "label": "A",
+          "heading": "WHAT SHOULD I EXPECT?",
+          "startPage": 1,
+          "endPage": 1,
+          "kind": "study-section"
+        },
+        {
+          "label": "B",
+          "heading": "DIFFERENT KINDS OF TONGUES",
+          "startPage": 1,
+          "endPage": 2,
+          "kind": "study-section"
+        },
+        {
+          "label": "C",
+          "heading": "WHAT IS THE PURPOSE OF SPEAKING IN TONGUES?",
+          "startPage": 2,
+          "endPage": 2,
+          "kind": "study-section"
+        },
+        {
+          "label": "D",
+          "heading": "WHAT ARE THE BENEFITS OF SPEAKING IN TONGUES?",
+          "startPage": 2,
+          "endPage": 4,
+          "kind": "study-section"
+        },
+        {
+          "label": "E",
+          "heading": "COMMON MISUNDERSTANDINGS CONCERNING TONGUES",
+          "startPage": 4,
+          "endPage": 6,
+          "kind": "study-section"
+        },
+        {
+          "label": "F",
+          "heading": "PERSONAL APPLICATION",
+          "startPage": 6,
+          "endPage": 7,
+          "kind": "personal-application"
+        },
+        {
+          "label": "G",
+          "heading": "GROUP EXERCISE",
+          "startPage": 7,
+          "endPage": 7,
+          "kind": "group-exercise"
+        }
+      ],
+      "videos": [
+        {
+          "id": "HY1OyDdODL8",
+          "title": "Chapter 9 | Ln 1: How to Be Sure You are Filled w/ the Spirit - Pt 1"
+        },
+        {
+          "id": "vjY2BTUzxGU",
+          "title": "Chapter 9 | Ln 1: How to Be Sure You are Filled w/ the Spirit - Pt 2"
+        }
+      ],
+      "trustedPlaybackStatus": "unconfigured",
+      "worksheetStatus": "mapped-not-implemented"
+    },
+    {
+      "lesson": 10,
+      "title": "How to Grow and Develop Your Faith",
+      "source": "assets/downloads/grip/getting-a-grip-lesson-10-how-to-grow-and-develop-your-faith.pdf",
+      "sha256": "e4233168a5da2b0b58e9b86495c4c5e4ace44341a4466093beb045354f642592",
+      "mirror": "downloads/grip/getting-a-grip-lesson-10-how-to-grow-and-develop-your-faith.pdf",
+      "pageCount": 6,
+      "fullWorkbookPages": [
+        74,
+        79
+      ],
+      "printedPages": [
+        81,
+        86
+      ],
+      "sections": [
+        {
+          "label": "A",
+          "heading": "FAITH IS VERY IMPORTANT",
+          "startPage": 1,
+          "endPage": 1,
+          "kind": "study-section"
+        },
+        {
+          "label": "B",
+          "heading": "WHAT IS FAITH?",
+          "startPage": 1,
+          "endPage": 2,
+          "kind": "study-section"
+        },
+        {
+          "label": "C",
+          "heading": "WE RECEIVE THINGS FROM GOD BY FAITH",
+          "startPage": 2,
+          "endPage": 3,
+          "kind": "study-section"
+        },
+        {
+          "label": "D",
+          "heading": "OUR FAITH CAN GROW",
+          "startPage": 3,
+          "endPage": 3,
+          "kind": "study-section"
+        },
+        {
+          "label": "E",
+          "heading": "RELEASING OUR FAITH AND RECEIVING FROM GOD",
+          "startPage": 3,
+          "endPage": 5,
+          "kind": "study-section"
+        },
+        {
+          "label": "F",
+          "heading": "PERSONAL APPLICATION",
+          "startPage": 5,
+          "endPage": 6,
+          "kind": "personal-application"
+        },
+        {
+          "label": "G",
+          "heading": "GROUP EXERCISE",
+          "startPage": 6,
+          "endPage": 6,
+          "kind": "group-exercise"
+        }
+      ],
+      "videos": [
+        {
+          "id": "5-1B6IouUNk",
+          "title": "Chapter 10 | Lesson 1: How to Grow and Develop Your Faith"
+        }
+      ],
+      "trustedPlaybackStatus": "unconfigured",
+      "worksheetStatus": "mapped-not-implemented"
+    },
+    {
+      "lesson": 11,
+      "title": "How to Experience the Abundant Life",
+      "source": "assets/downloads/grip/getting-a-grip-lesson-11-how-to-experience-the-abundant-life.pdf",
+      "sha256": "9567b85b3dc0fabf047763a57598b9a7545e67efb7249322e011c9df0d905b86",
+      "mirror": "downloads/grip/getting-a-grip-lesson-11-how-to-experience-the-abundant-life.pdf",
+      "pageCount": 8,
+      "fullWorkbookPages": [
+        80,
+        87
+      ],
+      "printedPages": [
+        87,
+        94
+      ],
+      "sections": [
+        {
+          "label": "A",
+          "heading": "GOD BLESS YOU",
+          "startPage": 1,
+          "endPage": 3,
+          "kind": "study-section"
+        },
+        {
+          "label": "B",
+          "heading": "WHY DOES GOD WANT US TO BE BLESSED WITH ABUNDANCE?",
+          "startPage": 3,
+          "endPage": 4,
+          "kind": "study-section"
+        },
+        {
+          "label": "C",
+          "heading": "WE MUST LEARN TO BE CONTENT",
+          "startPage": 4,
+          "endPage": 5,
+          "kind": "study-section"
+        },
+        {
+          "label": "D",
+          "heading": "TWO AREAS OF ABUNDANT LIVING: HEALING AND PROSPERITY",
+          "startPage": 5,
+          "endPage": 8,
+          "kind": "study-section"
+        },
+        {
+          "label": "E",
+          "heading": "PERSONAL APPLICATION",
+          "startPage": 8,
+          "endPage": 8,
+          "kind": "personal-application"
+        },
+        {
+          "label": "F",
+          "heading": "GROUP EXERCISE",
+          "startPage": 8,
+          "endPage": 8,
+          "kind": "group-exercise"
+        }
+      ],
+      "videos": [],
+      "trustedPlaybackStatus": "unconfigured",
+      "worksheetStatus": "mapped-not-implemented"
+    },
+    {
+      "lesson": 12,
+      "title": "How to Be an Overcomer",
+      "source": "assets/downloads/grip/getting-a-grip-lesson-12-how-to-be-an-overcomer.pdf",
+      "sha256": "132334c850edb65b7a00002b53ba6f9efbe61e25dac2c3756ff32819cdf1df2d",
+      "mirror": "downloads/grip/getting-a-grip-lesson-12-how-to-be-an-overcomer.pdf",
+      "pageCount": 10,
+      "fullWorkbookPages": [
+        88,
+        97
+      ],
+      "printedPages": [
+        95,
+        104
+      ],
+      "sections": [
+        {
+          "label": "A",
+          "heading": "REMEMBER, GOD IS ON YOUR SIDE",
+          "startPage": 1,
+          "endPage": 3,
+          "kind": "study-section"
+        },
+        {
+          "label": "B",
+          "heading": "RECOGNIZE THERE ARE TWO KINGDOMS",
+          "startPage": 3,
+          "endPage": 4,
+          "kind": "study-section"
+        },
+        {
+          "label": "C",
+          "heading": "REALIZE YOUR AUTHORITY OVER SATAN AND HIS KINGDOM",
+          "startPage": 4,
+          "endPage": 9,
+          "kind": "study-section"
+        },
+        {
+          "label": "D",
+          "heading": "PERSONAL APPLICATION",
+          "startPage": 9,
+          "endPage": 10,
+          "kind": "personal-application"
+        },
+        {
+          "label": "E",
+          "heading": "GROUP EXERCISE",
+          "startPage": 10,
+          "endPage": 10,
+          "kind": "group-exercise"
+        }
+      ],
+      "videos": [],
+      "trustedPlaybackStatus": "unconfigured",
+      "worksheetStatus": "mapped-not-implemented"
+    },
+    {
+      "lesson": 13,
+      "title": "How to Serve God",
+      "source": "assets/downloads/grip/getting-a-grip-lesson-13-how-to-serve-god.pdf",
+      "sha256": "2ec99366a35bd035a832a67072f5f7d120db88527ed76a9c7a53eda5cc6fa8fc",
+      "mirror": "downloads/grip/getting-a-grip-lesson-13-how-to-serve-god.pdf",
+      "pageCount": 8,
+      "fullWorkbookPages": [
+        98,
+        105
+      ],
+      "printedPages": [
+        105,
+        112
+      ],
+      "sections": [
+        {
+          "label": "A",
+          "heading": "GOD HAS A PLAN FOR YOUR LIFE",
+          "startPage": 1,
+          "endPage": 1,
+          "kind": "study-section"
+        },
+        {
+          "label": "B",
+          "heading": "ALL CHRISTIANS ARE CALLED TO BE SERVANTS",
+          "startPage": 1,
+          "endPage": 1,
+          "kind": "study-section"
+        },
+        {
+          "label": "C",
+          "heading": "ALL CHRISTIANS ARE CALLED TO BE WITNESSES FOR CHRIST",
+          "startPage": 1,
+          "endPage": 4,
+          "kind": "study-section"
+        },
+        {
+          "label": "D",
+          "heading": "ALL CHRISTIANS SHOULD SEEK GOD'S PLAN AND WILL FOR THEIR LIVES",
+          "startPage": 4,
+          "endPage": 5,
+          "kind": "study-section"
+        },
+        {
+          "label": "E",
+          "heading": "ALL CHRISTIANS SHOULD BE GOOD STEWARDS",
+          "startPage": 5,
+          "endPage": 6,
+          "kind": "study-section"
+        },
+        {
+          "label": "F",
+          "heading": "DEDICATED AND CONSECRATED TO THE WILL OF GOD",
+          "startPage": 6,
+          "endPage": 7,
+          "kind": "optional-prayer-instruction"
+        },
+        {
+          "label": "G",
+          "heading": "PERSONAL APPLICATION",
+          "startPage": 7,
+          "endPage": 7,
+          "kind": "personal-application"
+        },
+        {
+          "label": "H",
+          "heading": "GROUP EXERCISE",
+          "startPage": 7,
+          "endPage": 8,
+          "kind": "group-exercise"
+        }
+      ],
+      "videos": [],
+      "trustedPlaybackStatus": "unconfigured",
+      "worksheetStatus": "mapped-not-implemented"
+    }
+  ],
+  "multipartMedia": [
+    {
+      "lesson": 6,
+      "source": "getting-a-grip-6.html",
+      "videos": [
+        {
+          "id": "enGySOvV4jg",
+          "title": "GETTING A GRIP ON THE BASICS - WEEK 6"
+        },
+        {
+          "id": "TjuLVCy4gnQ",
+          "title": "GETTING A GRIP ON THE BASICS - WEEK 7 (Lesson 6 PT1)"
+        }
+      ],
+      "completionPolicy": "required-media-binding-unconfigured",
+      "durationsMs": null,
+      "requiredParts": null,
+      "minimumUniqueEligibleWatchPercent": 95
+    },
+    {
+      "lesson": 8,
+      "source": "getting-a-grip-8.html",
+      "videos": [
+        {
+          "id": "2VDVveA4RUQ",
+          "title": "Chapter 8 | Lesson 1: How to Be Filled with the Spirit - Part 1"
+        },
+        {
+          "id": "g8b964SWekE",
+          "title": "Chapter 8 | Lesson 1: How to Be Filled with the Spirit - Part 2"
+        }
+      ],
+      "completionPolicy": "required-media-binding-unconfigured",
+      "durationsMs": null,
+      "requiredParts": null,
+      "minimumUniqueEligibleWatchPercent": 95
+    },
+    {
+      "lesson": 9,
+      "source": "getting-a-grip-9.html",
+      "videos": [
+        {
+          "id": "HY1OyDdODL8",
+          "title": "Chapter 9 | Ln 1: How to Be Sure You are Filled w/ the Spirit - Pt 1"
+        },
+        {
+          "id": "vjY2BTUzxGU",
+          "title": "Chapter 9 | Ln 1: How to Be Sure You are Filled w/ the Spirit - Pt 2"
+        }
+      ],
+      "completionPolicy": "required-media-binding-unconfigured",
+      "durationsMs": null,
+      "requiredParts": null,
+      "minimumUniqueEligibleWatchPercent": 95
+    }
+  ]
+}
