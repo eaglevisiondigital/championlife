@@ -1,0 +1,126 @@
+name: Partner actual runtime composition
+on:
+  pull_request:
+    paths:
+      - 'assets/js/**'
+      - 'staff-outreach-partners.html'
+      - 'tools/partner-runtime-cycle14/**'
+      - '.github/workflows/partner-runtime-cycle14.yml'
+      - '.github/workflows/outreach-summary-review.yml'
+permissions:
+  contents: read
+jobs:
+  runtime-and-provenance:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: node tools/partner-runtime-cycle14/verify.mjs --build
+      - run: node --test tools/partner-runtime-cycle14/verify.test.mjs
+      - run: npm ci --ignore-scripts --prefix tools/backend-tests
+      - run: tools/backend-tests/node_modules/.bin/playwright install --with-deps chromium webkit
+      - run: node tools/partner-runtime-cycle14/partner-lifecycle.browser.mjs
+      - name: Verify accepted SDK for actual-page independent acceptance
+        run: |
+          curl --fail --silent --show-error --location 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.118.0' --output "$RUNNER_TEMP/partner-sdk.js"
+          echo "bee24fc29228ed5a370f76a2ba1ca3c399549edad2fef23453c80148856a49af  $RUNNER_TEMP/partner-sdk.js" | sha256sum --check
+          echo "SUPABASE_SDK_PATH=$RUNNER_TEMP/partner-sdk.js" >> "$GITHUB_ENV"
+      - run: node tools/partner-runtime-cycle14/partner-lifecycle-independent.browser.mjs
+      - run: node --test tools/partner-platform/org-handoff.test.mjs
+      - run: node tools/backend-tests/outreach-partner-staff.dom.mjs
+      - run: node tools/partner-runtime-cycle14/verify.mjs
+      - run: git diff --check
+  partner-native17:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: node tools/partner-runtime-cycle14/verify.mjs
+      - run: npm ci --ignore-scripts --prefix tools/backend-tests
+      - run: npm ci --ignore-scripts --prefix tools/partner-platform
+      - name: Select exact disposable PostgreSQL 17
+        shell: bash
+        run: |
+          if [ ! -x /usr/lib/postgresql/17/bin/postgres ]; then
+            sudo /usr/share/postgresql-common/pgdg/apt.postgresql.org.sh -y
+            sudo mkdir -p /etc/postgresql-common/createcluster.d
+            printf 'create_main_cluster = false\n' | sudo tee /etc/postgresql-common/createcluster.d/partner-cycle14.conf > /dev/null
+            sudo apt-get install --yes --no-install-recommends postgresql-17
+          fi
+          /usr/lib/postgresql/17/bin/postgres --version | grep -E '^postgres \(PostgreSQL\) 17\.'
+          echo "TEST_POSTGRES_BIN=/usr/lib/postgresql/17/bin" >> "$GITHUB_ENV"
+      - run: node tools/partner-platform/assigned-backend.native.mjs
+      - run: node tools/partner-platform/authority-serialization.native.mjs
+      - run: node tools/partner-platform/private-revocation.native.mjs
+      - run: node tools/partner-platform/private-issuance.native.mjs
+      - run: tools/backend-tests/node_modules/.bin/playwright install --with-deps chromium webkit
+      - run: node tools/partner-platform/org-handoff.browser.mjs
+      - run: node tools/partner-runtime-cycle14/verify.mjs
+      - run: git diff --check
+  partner-native18:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: node tools/partner-runtime-cycle14/verify.mjs
+      - run: npm ci --ignore-scripts --prefix tools/backend-tests
+      - run: npm ci --ignore-scripts --prefix tools/partner-platform
+      - name: Select exact disposable PostgreSQL 18
+        shell: bash
+        run: |
+          if [ ! -x /usr/lib/postgresql/18/bin/postgres ]; then
+            sudo /usr/share/postgresql-common/pgdg/apt.postgresql.org.sh -y
+            sudo mkdir -p /etc/postgresql-common/createcluster.d
+            printf 'create_main_cluster = false\n' | sudo tee /etc/postgresql-common/createcluster.d/partner-cycle14.conf > /dev/null
+            sudo apt-get install --yes --no-install-recommends postgresql-18
+          fi
+          /usr/lib/postgresql/18/bin/postgres --version | grep -E '^postgres \(PostgreSQL\) 18\.'
+          echo "TEST_POSTGRES_BIN=/usr/lib/postgresql/18/bin" >> "$GITHUB_ENV"
+      - run: node tools/partner-platform/canonical-repository.native.mjs
+      - run: node tools/partner-platform/current-schema-composition.native.mjs
+      - run: node tools/partner-platform/restricted-canonical-profile.native.mjs
+      - run: node tools/partner-platform/canonical-host-ingress.native.mjs
+      - run: node tools/partner-platform/canonical-execution-role.native.mjs
+      - run: node tools/partner-platform/provider-database-isolation.native.mjs
+      - run: TEST_NATIVE_PG=1 node --test tools/partner-platform/canonical-request-binding.test.mjs tools/partner-platform/canonical-request-binding-independent.test.mjs
+      - run: node tools/partner-runtime-cycle14/verify.mjs
+      - run: git diff --check
+  partner-contracts:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: node tools/partner-runtime-cycle14/verify.mjs
+      - run: npm ci --ignore-scripts --prefix tools/backend-tests
+      - run: npm ci --ignore-scripts --prefix tools/partner-platform
+      - run: node --test tools/partner-platform/*.test.mjs tools/outreach/shared-staff-backend.test.mjs
+      - run: node tools/partner-platform/authority-denials.pglite.mjs
+      - run: tools/backend-tests/node_modules/.bin/playwright install --with-deps chromium webkit
+      - run: node tools/partner-platform/staff-intake-review.browser.mjs
+      - run: node tools/partner-platform/assigned-backend.browser.mjs
+      - run: node tools/partner-runtime-cycle14/verify.mjs
+      - run: git diff --check
