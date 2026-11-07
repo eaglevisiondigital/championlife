@@ -117,17 +117,28 @@
   due.value=task.due_on||'';statusLabel.append(select);dueLabel.append(due);
   const saveStatus=el('button','Save task status',{type:'button',class:'staff-action'}),saveDue=el('button','Save due date',{type:'button',class:'staff-action'}),clearDue=el('button','Remove due date',{type:'button',class:'staff-action'});
   controls.append(statusLabel,saveStatus,dueLabel,el('p','Change the date or choose Remove due date.'),saveDue,clearDue);card.append(controls);
-  let pending=false,retired=false;
+  let pending=false,retired=false,reviewOnly=false;
+  const inputs=[select,due,saveStatus,saveDue,clearDue],owners=[card,controls];
+  // Capture ownership before card insertion; additions are not retirement.
+  for(let node=content;node;node=node.parentNode)owners.push(node);
+  let members=[statusLabel,dueLabel,...inputs];
+  const retire=()=>{if(retired)return;retired=true;observer.disconnect();select.value='';due.value='';due.defaultValue='';for(const option of select.options)option.defaultSelected=false;for(const control of inputs)control.disabled=true};
+  const removed=records=>{if(records.some(record=>Array.from(record.removedNodes).some(node=>[...owners,...members].some(owned=>node===owned||node.contains?.(owned)))))retire()};
+  const observer=new MutationObserver(removed);observer.observe(document,{childList:true,subtree:true});
   const current=()=>{
-   if(!retired&&(window.ChampionLifeAuth!==auth||auth.client!==client||client.auth!==clientAuth)){retired=true;select.value='';due.value='';if(g===generation&&root.contains(card))card.replaceChildren(el('p','Task editor closed because the staff connection changed. Reload to verify access.'))}
+   removed(observer.takeRecords());
+   if(!retired&&(window.ChampionLifeAuth!==auth||auth.client!==client||client.auth!==clientAuth)){retire();if(g===generation&&root.contains(card))card.replaceChildren(el('p','Task editor closed because the staff connection changed. Reload to verify access.'))}
    return !retired&&g===generation&&org===targetOrg&&user?.id===actor&&url===location.pathname+location.search&&root.contains(card)&&(!window.StaffWorkspace||window.StaffWorkspace.active());
   };
   const review=message=>{
-   controls.replaceChildren(el('p',message),button('Refresh follow-up tasks',()=>{if(current())return detail(personId,taskCursors,taskStatus)}));
+   // Retire mutation intent, but retain the existing read-only reconciliation action.
+   reviewOnly=true;select.value='';due.value='';due.defaultValue='';
+   const refresh=button('Refresh follow-up tasks',()=>{if(current())return detail(personId,taskCursors,taskStatus)});
+   members=[refresh];controls.replaceChildren(el('p',message),refresh);
    status.textContent='Task save needs review.';
   };
   async function save(field,removeDue=false){
-   if(pending||!current())return;
+   if(reviewOnly||pending||!current())return;
    if(field==='due_on'&&!removeDue&&(!due.reportValidity()||(due.value&&!/^\d{4}-\d{2}-\d{2}$/.test(due.value)))){status.textContent='Enter a valid due date.';due.focus();return}
    const value=field==='due_on'?(due.value||null):select.value;
    if(field==='due_on'&&value===(task.due_on||null)){status.textContent='No task changes to save.';return}
@@ -149,7 +160,7 @@
     else status.textContent='Unable to verify access. Please try again.';
    }finally{if(current()&&!submitted){pending=false;for(const control of[select,due,saveStatus,saveDue,clearDue])control.disabled=false}}
   }
-  saveStatus.onclick=()=>save('status');saveDue.onclick=()=>save('due_on');clearDue.onclick=()=>{if(pending||!current())return;due.value='';return save('due_on',true)};
+  saveStatus.onclick=()=>save('status');saveDue.onclick=()=>save('due_on');clearDue.onclick=()=>{if(reviewOnly||pending||!current())return;due.value='';return save('due_on',true)};
  }
  async function detail(id,taskCursors=[],taskStatus='all'){
   if(!['all','open','completed','canceled'].includes(taskStatus))return;
