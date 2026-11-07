@@ -13,22 +13,43 @@
     client?.auth === clientAuth && auth?.getVerifiedUser === verifier && auth?.getSession === sessionReader;
   const course = 'getting-a-grip-on-the-basics';
   const key = id => `championlife-grip-notes-v1:${id}:${course}:lesson:${lesson}`;
+  let retired = false;
   let owner = null, generation = 0, writeGeneration = 0, expiresAt = 0, expiryTimer, active = true;
 
   function clear() {
     generation++; writeGeneration++; clearTimeout(expiryTimer); owner = null; expiresAt = 0;
     // Clear live and default values so browser history cannot resurrect an unowned value.
     field.value = ''; field.defaultValue = ''; field.disabled = true;
-    if (status) status.textContent = 'Sign in to view your private notes on this device.';
+    if (status) status.textContent = retired ? 'This notes view is closed. Reload the page to open your private device notes.' : 'Sign in to view your private notes on this device.';
     if (signin) signin.hidden = false;
   }
+  // Bind this runtime to the original notes view and its captured ownership chain.
+  // Removal permanently retires it, including remove/reinsert in the same task.
+  const view = field.closest('.grip-notes-wrap');
+  const controls = [view, field, status, signin].filter(Boolean);
+  const ancestors = [];
+  for (let node = view?.parentNode; node; node = node.parentNode) ancestors.push(node);
+  const removed = records => records.some(record => [...record.removedNodes].some(node =>
+    [...controls, ...ancestors].some(control => node === control || node.contains?.(control))));
+  const owned = () => view?.isConnected && document.querySelector('[data-grip-notes-lesson]') === field &&
+    view.contains(field) && (!status || view.contains(status)) && (!signin || view.contains(signin));
+  function retire() { retired = true; active = false; clear(); observer.disconnect(); }
+  const observer = new MutationObserver(records => { if (!owned() || removed(records)) retire(); });
+  observer.observe(document.documentElement, {childList:true, subtree:true});
+  function live() {
+    if (retired) { clear(); return false; }
+    // Drain pending removals before a retained handler can start authentication.
+    if (!owned() || removed(observer.takeRecords())) { retire(); return false; }
+    return true;
+  }
   function current(stamp) {
-    if (!pinned() || !field.isConnected) { clear(); return false; }
+    if (!live()) return false;
+    if (!pinned()) { clear(); return false; }
     return active && stamp === generation;
   }
   async function restore() {
     clear(); const stamp = generation;
-    if (!active || !pinned() || !verifier || !sessionReader || lesson < 5 || lesson > 13) return;
+    if (!live() || !active || !pinned() || !verifier || !sessionReader || lesson < 5 || lesson > 13) return;
     try {
       const user = await auth.getVerifiedUser();
       if (!current(stamp) || !user?.id || !user.email_confirmed_at || user.is_anonymous) return;
@@ -48,7 +69,7 @@
     } catch (_) { if (current(stamp)) clear(); }
   }
   async function save() {
-    if (!active || !pinned() || !field.isConnected || !owner || field.disabled || expiresAt <= Date.now()) { clear(); return; }
+    if (!live() || !active || !pinned() || !owner || field.disabled || expiresAt <= Date.now()) { clear(); return; }
     const stamp = generation, write = ++writeGeneration, capturedOwner = owner, notes = field.value;
     const pending = () => current(stamp) && write === writeGeneration && owner === capturedOwner;
     if (status) status.textContent = 'Verifying your account before saving these device notes…';
