@@ -59,6 +59,8 @@ jobs:
       - run: node tools/communications-policy/session.browser.mjs
       - run: node tools/communications-policy/activity-controls.browser.mjs
       - run: node tools/communications-policy/activity-controls-independent.browser.mjs
+      - run: node tools/communications-policy/control-remount.browser.mjs
+      - run: node tools/communications-policy/control-remount-independent.browser.mjs
       - run: node tools/backend-tests/communications.dom.mjs
       - run: node tools/communications-policy/session-integrity.mjs
       - run: git diff --check
