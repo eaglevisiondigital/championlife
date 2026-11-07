@@ -39,6 +39,8 @@ function deferred(){let resolve;const promise=new Promise(r=>resolve=r);return{p
  ok(JSON.parse(w.localStorage.getItem(key(A.id))).values.q1==='A UNFINISHED','failure preserves owner-scoped draft without cloud deletion');
  mode='';switchTo(B);await flush();w.dispatchEvent(new w.StorageEvent('storage',{key:'sb-fictional-auth-token'}));ok(q.value==='','cross-tab Auth storage change clears immediately');await flush();
  ok(q.value==='B SECOND','same verified owner can recover draft after cross-tab revalidation');
+ // Retire and flush the actual worksheet before destroying JSDOM's document.
+ w.document.querySelector('.grip-course-form').remove();await flush();
  d.window.close();
 }
 // General callback failures cannot borrow old A session; valid callback must match token.
