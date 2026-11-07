@@ -27,7 +27,7 @@
   const exportVerifier = auth?.getVerifiedUser, exportSession = auth?.getSession;
   let exportGeneration = null;
 
-  let pageActive = true;
+  let pageActive = true, retired = false;
   let cloudUser = null, generation = 0, controller = new AbortController();
   let remoteSaveTimer = null, expiryTimer = null;
   const learnerField = form.querySelector('[name="learner-id"]');
@@ -44,16 +44,36 @@
     cloudUser = null; exportGeneration = null;
     form.reset();
     if(form.querySelector('[type=submit]'))form.querySelector('[type=submit]').textContent=submitText;
-    form.querySelectorAll('textarea,input:not([type="hidden"]),select').forEach(el => {
-      if (['checkbox','radio'].includes(el.type)) el.checked = false;
-      else el.value = '';
+    new Set([...originals.keys(), ...form.querySelectorAll('textarea,input:not([type="hidden"]),select')]).forEach(el => {
+      if (!el.matches('textarea,input:not([type="hidden"]),select')) return;
+      if (['checkbox','radio'].includes(el.type)) { el.checked = false; el.defaultChecked = false; }
+      else { el.value = ''; if ('defaultValue' in el) el.defaultValue = ''; }
     });
     if (learnerField) learnerField.value = '';
     card?.classList.remove('completed'); clearMessage(); enable(false); updateProgress();
-    if (saveStatus) saveStatus.textContent = 'Sign in to view your private worksheet.';
+    if (saveStatus) saveStatus.textContent = retired ? 'This worksheet view is closed. Reload the page to open your private answers.' : 'Sign in to view your private worksheet.';
     renderCloudState();
   }
-  const current = (stamp, id) => stamp === generation && cloudUser?.id === id && !controller.signal.aborted;
+  // This runtime owns the original form and private controls, never replacements.
+  // A removed/reinserted control or ancestor permanently retires the view.
+  const controls = [form, ...originals.keys(), ...privateActions].filter(Boolean);
+  const ancestors = [...new Set(controls.flatMap(control => {
+    const chain = []; for (let node = control.parentNode; node; node = node.parentNode) chain.push(node);
+    return chain;
+  }))];
+  const removed = records => records.some(record => [...record.removedNodes].some(node =>
+    [...controls, ...ancestors].some(control => node === control || node.contains?.(control))));
+  const owned = () => form.isConnected && document.querySelector('.grip-course-form') === form &&
+    [...originals.keys()].every(control => form.contains(control)) && privateActions.every(control => !control || control.isConnected);
+  function retire() { retired = true; pageActive = false; invalidate(); observer.disconnect(); }
+  const observer = new MutationObserver(records => { if (!owned() || removed(records)) retire(); });
+  observer.observe(document, {childList:true, subtree:true});
+  function live() {
+    if (retired) { invalidate(); return false; }
+    if (!owned() || removed(observer.takeRecords())) { retire(); return false; }
+    return true;
+  }
+  const current = (stamp, id) => live() && pageActive && stamp === generation && cloudUser?.id === id && !controller.signal.aborted;
 
   function fieldsToObject() {
     const data = {};
@@ -112,7 +132,7 @@
   }
 
   function saveDraft() {
-    if (!cloudUser) return;
+    if (!live() || !pageActive || !cloudUser) return;
     const payload = {
       owner: cloudUser.id, course: courseIdentity, lesson,
       savedAt: new Date().toISOString(),
@@ -144,7 +164,7 @@
   }
 
   function updateCourseProgressLocal() {
-    if (!cloudUser) return;
+    if (!live() || !pageActive || !cloudUser) return;
     let progress = {};
     try { progress = JSON.parse(localStorage.getItem(progressKey(cloudUser.id)) || '{}'); } catch(e) {}
     progress[lesson] = {
@@ -191,7 +211,7 @@
   }
 
   async function syncRemote(completed=false) {
-    if (!auth || !cloudUser) return;
+    if (!live() || !pageActive || !auth || !cloudUser) return;
     const stamp = generation, id = cloudUser.id, signal = controller.signal;
     try {
       if (learnerField) learnerField.value = id;
@@ -215,13 +235,13 @@
   }
 
   function scheduleRemoteSave() {
-    if (!cloudUser) return;
+    if (!live() || !pageActive || !cloudUser) return;
     clearTimeout(remoteSaveTimer);
     remoteSaveTimer = setTimeout(() => syncRemote(false), 1000);
   }
 
   function scheduleSave() {
-    if (!cloudUser) return;
+    if (!live() || !pageActive || !cloudUser) return;
     // Capture unfinished edits immediately under their current owner before any transition.
     saveDraft(); scheduleRemoteSave();
   }
@@ -229,14 +249,14 @@
   async function restoreRemote() {
     invalidate();
     const stamp = generation, signal = controller.signal;
-    if (!pageActive || !auth?.getVerifiedUser) return;
+    if (!live() || !pageActive || !auth?.getVerifiedUser) return;
     try {
       const u = await auth.getVerifiedUser();
-      if (stamp !== generation || !u) return;
+      if (!live() || !pageActive || stamp !== generation || !u) return;
       const data = await auth.loadLesson(Number(lesson), u.id, signal);
-      if (stamp !== generation || data?.user?.id !== u.id) return;
+      if (!live() || !pageActive || stamp !== generation || data?.user?.id !== u.id) return;
       const session = await auth.getSession();
-      if (stamp !== generation) return;
+      if (!live() || !pageActive || stamp !== generation) return;
       if (session?.user?.id !== u.id || !session.expires_at || session.expires_at * 1000 <= Date.now()) { invalidate(); return; }
       cloudUser = u;
       if (learnerField) learnerField.value = u.id;
@@ -287,7 +307,7 @@
   }
 
   async function privateExport(action) {
-    if (!pageActive || !cloudUser || !form.isConnected || exportGeneration !== null) return;
+    if (!live() || !pageActive || !cloudUser || exportGeneration !== null) return;
     const stamp = generation, id = cloudUser.id;
     const pinned = () => window.ChampionLifeAuth === auth && auth?.client === exportClient &&
       exportClient?.auth === exportAuth && auth?.getVerifiedUser === exportVerifier && auth?.getSession === exportSession;
@@ -338,7 +358,7 @@
 
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
-    if (!cloudUser) return;
+    if (!live() || !pageActive || !cloudUser) return;
     const stamp = generation, id = cloudUser.id, signal = controller.signal;
     clearMessage();
     if (!form.reportValidity()) {
@@ -408,8 +428,9 @@
   });
 
   clearBtn?.addEventListener('click', () => {
+    if (!live() || !pageActive || !cloudUser) return;
     if (!confirm('Clear the saved answers for this lesson on this device? Cloud-saved answers will remain in your account.')) return;
-    if (!cloudUser) return;
+    if (!live() || !pageActive || !cloudUser) return;
     clearTimeout(remoteSaveTimer);
     try { localStorage.removeItem(draftKey(cloudUser.id)); } catch (_) {}
     form.reset();
