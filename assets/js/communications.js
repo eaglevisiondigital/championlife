@@ -8,11 +8,22 @@
  const panel=(title,parent=root)=>{const p=el('section',null,{class:'comm-panel'});if(title)p.append(el('h2',title));parent.append(p);return p;};
  function input(form,label,key,options=null,type='text',value=''){const l=el('label',label),node=el(options?'select':type==='textarea'?'textarea':'input',null,{name:key,...(!options&&type!=='textarea'?{type}:{}),...(type==='checkbox'?{}:{})});if(options)for(const [v,t] of options)node.append(el('option',t,{value:v}));if(!options||value!==''||options.some(([v])=>v===''))node.value=value;l.append(node);form.append(l);return node;}
  const token=(control=null)=>Object.freeze({epoch,userId,org,campaign,control});
- function retire(message='Your communications session changed. Reload to continue.',permanent=false){epoch++;discovery++;identityGeneration++;busy=false;scope=null;context=null;userId=null;retired=retired||permanent;root.replaceChildren();const card=el('section',null,{class:'staff-state',role:'status'});card.append(el('h2','Communications unavailable'),el('p',message),el('a','Return to Staff Dashboard',{href:'staff-home.html'}));root.append(card);window.dispatchEvent(new Event('staff-access-denied'));}
- function attached(){if(window.ChampionLifeAuth!==auth||auth?.client!==client||client?.auth!==authSession){if(!retired)retire(undefined,true);return false;}return true;}
+ // A removed control is a retired intent, even if the same node is reinserted
+ // before an observer callback. Drain pending records before any Auth/RPC check.
+ const removedControls=new WeakSet();
+ function observeRemoval(records){for(const record of records)for(const node of record.removedNodes){
+  if(node===root||node.contains?.(root)){if(!retired)retire(undefined,true);return;}
+  removedControls.add(node);for(const control of node.querySelectorAll?.('button,select')||[])removedControls.add(control);
+ }}
+ const lifetimeObserver=new MutationObserver(observeRemoval);
+ lifetimeObserver.observe(document.documentElement,{childList:true,subtree:true});
+ function mounted(){observeRemoval(lifetimeObserver.takeRecords());if(!retired&&!root.isConnected)retire(undefined,true);return !retired;}
+
+ function retire(message='Your communications session changed. Reload to continue.',permanent=false){epoch++;discovery++;identityGeneration++;busy=false;scope=null;context=null;userId=null;retired=retired||permanent;if(retired)lifetimeObserver.disconnect();root.replaceChildren();const card=el('section',null,{class:'staff-state',role:'status'});card.append(el('h2','Communications unavailable'),el('p',message),el('a','Return to Staff Dashboard',{href:'staff-home.html'}));root.append(card);window.dispatchEvent(new Event('staff-access-denied'));}
+ function attached(){if(!mounted())return false;if(window.ChampionLifeAuth!==auth||auth?.client!==client||client?.auth!==authSession){if(!retired)retire(undefined,true);return false;}return true;}
  function active(b){return attached()&&window.StaffWorkspace.active()&&!retired&&root.isConnected&&!!scope&&b.epoch===epoch&&b.userId===userId&&b.org===org&&b.campaign===campaign;}
  // A current principal does not keep a removed editor or activity control usable.
- const usable=b=>active(b)&&(!b.control||root.contains(b.control));
+ const usable=b=>active(b)&&(!b.control||(!removedControls.has(b.control)&&root.contains(b.control)));
  const stale=()=>Object.assign(Error('Session changed'),{stale:true});
  async function fresh(b){if(!usable(b))throw stale();let user;try{user=await auth.getUser();}catch{if(active(b))retire();throw stale();}if(!active(b))throw stale();if(!user||user.is_anonymous||user.id!==b.userId){retire();throw stale();}if(!usable(b))throw stale();}
  const button=(label,fn,gold=false)=>{const b=el('button',label,{type:'button',class:gold?'campaign-gold':''}),binding=token(b);b.onclick=()=>act(fn,b,binding);return b;};

@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import {current as actualCurrent} from '../staff-runtime-cycle14/source.mjs';
+import {current as actualCurrent} from '../staff-integration-cycle16/source.mjs';
 import {readdirSync, lstatSync, readFileSync} from 'node:fs';
 import {buildSite} from '../site-build/build.mjs';
 import {verifyComposition, checkpointReader, current, original, root, sha, base} from './overrides.mjs';

@@ -14,6 +14,7 @@
   if(document.body.hasAttribute('data-staff-workspace'))next='/staff-home.html';
   else{
    const routes={
+    '/staff-outreach-partners.html':['/staff-outreach-partners.html','org'],
     '/staff-events.html':['/staff-events.html','org'],
     '/staff-forms.html':['/staff-forms.html','organization'],
     '/staff-form-builder.html':['/staff-forms.html','organization'],

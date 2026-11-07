@@ -32,17 +32,17 @@
 </head>
 <body class="staff-portal">
  <a class="staff-skip" href="#staff-main">Skip to workspace</a>
- <header class="staff-topbar"><a href="staff-people.html" class="staff-inline-brand"><img src="assets/images/logo-gold.png" alt="Champion Life"><span>Staff portal</span></a><div id="staff-session" class="staff-session" hidden><span class="staff-session-identity"><span>Signed in as</span><span id="staff-session-email"></span></span><button id="staff-logout" type="button">Log Out</button></div></header>
+ <header class="staff-topbar"><a data-partner-return="home" class="staff-inline-brand"><img src="assets/images/logo-gold.png" alt="Champion Life"><span>Staff portal</span></a><div id="staff-session" class="staff-session" hidden><span class="staff-session-identity"><span>Signed in as</span><span id="staff-session-email"></span></span><button id="staff-logout" type="button">Log Out</button></div></header>
  <p id="staff-session-message" class="staff-session-message" role="status"></p>
   <main id="staff-main" class="partner-workspace" tabindex="-1">
     <div class="partner-workspace-intro">
-      <a href="staff-people.html">People workspace</a>
+      <a data-partner-return="people">People workspace</a>
       <h1>Outreach Partner Review</h1>
       <p>Review outreach commitments and follow-up. Giving is managed separately.</p>
     </div>
     <div id="outreach-intakes"></div>
   </main>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.118.0" integrity="sha384-UagCvVPT5XXA0Hx+nJYUAGBFseHT9zBgpJMSebsAxl9lciTwbT+39j5VfRjdP5Tp" crossorigin="anonymous"></script>
   <script src="assets/js/supabase-config.js"></script>
   <script src="assets/js/champion-life-auth.js"></script>
   <script src="assets/js/staff-session.js"></script>
