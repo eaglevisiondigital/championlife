@@ -1,0 +1,52 @@
+{
+  "base": "b41d8002b3d1a452b91fe086e376f694825a06b4",
+  "people": "91ebfeea001babf5851690076e9ef6d71e91b19a",
+  "runtimeSHA256": "40aa0967529d0c0184b52866bdfa0861504b2339c11297b318d582d3706d7bc5",
+  "requestSHA256": "bf1fccc025072431fdf6cb5f11d9b8465eb0dc3cc37ef69647528ea8402bcaf5",
+  "imports": {
+    "tools/outreach/people-followup-history-pagination.browser.mjs": {
+      "sourceSHA256": "d04eba46ed9a80821f75e372f49528a994529bc90310c529c4cb7233f88135cb",
+      "composedSHA256": "978030223c684cf538a97cca9608eb715b86eda1ed858766f446bf4f04f7ce5a"
+    },
+    "tools/outreach/people-followup-history-pagination-independent.browser.mjs": {
+      "sourceSHA256": "8224023df31e3173f8148335253748a247796bc74570c3cb6de672cfdb53daf3",
+      "composedSHA256": "1f9a04dbf2c81e6af34431a4ec62c2dcad2cbfef34c66275bbeb050bd496c3fe"
+    },
+    "tools/outreach/people-followup-history-pagination.native.mjs": {
+      "sourceSHA256": "a14c0ce67a30bdd363aad8a628fd1a18144155c05189e08525c619a3899e010a",
+      "composedSHA256": "a14c0ce67a30bdd363aad8a628fd1a18144155c05189e08525c619a3899e010a"
+    },
+    "tools/outreach/people-followup-history.browser.mjs": {
+      "sourceSHA256": "5f1176a2235bd16a3378b8699d94f385fb015b4027aabc439585e8e1712d6eae",
+      "composedSHA256": "cd06dbb1974bead0a765129986b29e121ebc89cb8d9d273ef4d3b7f68cf5acc6"
+    },
+    "tools/outreach/people-followup-history-independent.browser.mjs": {
+      "sourceSHA256": "8647f8470e8ad9afdbf24a6256d4ad70c328cfae2689b120a0f8b1134e4215db",
+      "composedSHA256": "b90e9a45a28415b87ef72d42254999415a1c4b9cf983be52120cf5750f8841d5"
+    },
+    "tools/outreach/people-followup-history.native.mjs": {
+      "sourceSHA256": "9dcc8d32d1c62b8ac579c75975c4027203579dd3952f7c192b380b1cd2c69331",
+      "composedSHA256": "9dcc8d32d1c62b8ac579c75975c4027203579dd3952f7c192b380b1cd2c69331"
+    },
+    "tools/outreach/people-followup-filter.browser.mjs": {
+      "sourceSHA256": "aac0f2a69aa367888a862871ee728f296e7ce1279a2c45cc70d829805d6634a9",
+      "composedSHA256": "61d8d1c877e83f90cc0f8b72a1756b67867e9d62c3776676f247a0d68025f95d"
+    },
+    "tools/outreach/people-followup-filter-independent.browser.mjs": {
+      "sourceSHA256": "71eb474c173bf7bafd8000ef5c9a32de42da0edf6307a3dc741c2a64c1c47486",
+      "composedSHA256": "c6946ff64f994ceb354fedc10aae5c74596ba6962085034915adf724bfdb2154"
+    },
+    "tools/outreach/people-followup-filter.native.mjs": {
+      "sourceSHA256": "d2a7da0cdf7720ca885f4e42ddd5a455c360a56d9b9777f55f01e4e5ecd267ec",
+      "composedSHA256": "d2a7da0cdf7720ca885f4e42ddd5a455c360a56d9b9777f55f01e4e5ecd267ec"
+    },
+    "tools/outreach/people-followup-composition.browser.mjs": {
+      "sourceSHA256": "51814c8ac148879d3ffe86cfa8216eafc9af70ddf466162f0b297375c21474f5",
+      "composedSHA256": "51814c8ac148879d3ffe86cfa8216eafc9af70ddf466162f0b297375c21474f5"
+    },
+    "tools/outreach/people-followup-composition-independent.browser.mjs": {
+      "sourceSHA256": "e080ea31ea2520311fc3210beb029f35e63f7166c1d4b5f9360a1fce3306df9c",
+      "composedSHA256": "e080ea31ea2520311fc3210beb029f35e63f7166c1d4b5f9360a1fce3306df9c"
+    }
+  }
+}

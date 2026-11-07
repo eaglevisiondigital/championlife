@@ -5,11 +5,12 @@ import {readFileSync, lstatSync, readdirSync, existsSync} from 'node:fs';
 import {execFileSync} from 'node:child_process';
 import {createHash} from 'node:crypto';
 import * as cycle8 from '../staff-host-cycle8/overrides.mjs';
+import {checkpointReader as successorCheckpointReader,verifyActual} from '../staff-runtime-cycle14/source.mjs';
 
 export const base = 'e75fdf884e6880f69920521e74ff7d3a82c3397f';
 export const root = new URL('../../', import.meta.url);
 export const sha = bytes => createHash('sha256').update(bytes).digest('hex');
-export const current = path => readFileSync(new URL(path, root));
+export const current = successorCheckpointReader();
 const cache = new Map();
 export function original(path) {
   if (!cache.has(path)) cache.set(path, execFileSync('git', ['--no-replace-objects', 'show', base + ':' + path], {cwd: root, maxBuffer: 64 * 1024 * 1024}));
@@ -18,6 +19,7 @@ export function original(path) {
 // Replaced only after independent review of the complete exact-file inventory.
 export const manifestSHA256 = '060db602f97a6f56a39b0a2a37301cd74c41e47949e4578c3406134670b2ebfc';
 export function verifyComposition(bytes = current('tools/staff-cycle9-integrity/overrides.json'), read = current) {
+  verifyActual();
   assert.equal(sha(bytes), manifestSHA256, 'Exact independently reviewed Cycle9 manifest');
   const manifest = JSON.parse(bytes);
   assert.equal(manifest.base, base, 'Exact reviewed109 base');

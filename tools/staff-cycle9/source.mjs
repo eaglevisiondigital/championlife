@@ -4,6 +4,7 @@ import { execFileSync } from 'node:child_process';
 import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
+import {checkpointReader} from '../staff-runtime-cycle14/source.mjs';
 
 const root = fileURLToPath(new URL('../../', import.meta.url));
 export const manifest = JSON.parse(readFileSync(new URL('./sources.json', import.meta.url)));
@@ -15,12 +16,13 @@ const original = entry => {
   return execFileSync('git', ['--no-replace-objects', 'show', `${entry.commit}:${entry.path}`], {cwd: root});
 };
 export function verifyComposition() {
+  const readCheckpoint = checkpointReader();
   const entries = [...manifest.imports, ...manifest.preservedDependencies];
   assert.equal(new Set(entries.map(e => e.path)).size, entries.length, 'unique explicit paths');
   for (const entry of entries) {
     assert.match(entry.commit, /^[0-9a-f]{40}$/);
     assert(!path.isAbsolute(entry.path) && !entry.path.split('/').includes('..'));
-    const source = original(entry), current = readFileSync(path.join(root, entry.path));
+    const source = original(entry), current = readCheckpoint(entry.path);
     assert.equal(hash(source), entry.sourceSHA256, `${entry.path}: exact selected source`);
     let expected = source;
     if (entry.retainedFunction) {
