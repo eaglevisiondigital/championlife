@@ -59,7 +59,7 @@ export const reviewedAdditionHashes={
   "tools/comms-host-cycle16/source.test.mjs": "ac1eaf9d7641570d7e9a3f7faa55013122fd1b956d1ece554b7ae9a40c0e40a0",
   "tools/comms-host-cycle16/remount.browser.mjs": "64ca221a426284d1cbb82533803bf725bc0c7fd2b7a0f3a92e8d909adf86f8d3",
   "tools/staff-integration-cycle16/session-source.mjs": "bf8d4b0322d1eea9bda9bb2a5572eb637f151ca853f9b6cb6a7fd983e3c59442",
-  "tools/staff-integration-cycle16/source.test.mjs": "6d798f5f33b14632004c9219e37d5922cf670fbceab5c681f9cc954ecba139a4",
+  "tools/staff-integration-cycle16/source.test.mjs": "bec425ed3b484e076de4d317f81520e61d8d93176df6df133ec5f9266d5a8b3c",
   "tools/staff-integration-cycle16/build.mjs": "296164199e4e7aec54a78824a2e9111a2e2f4af4dbaae86fa3b9a5e364ec93d2",
   "tools/staff-integration-cycle16/README.md": "629c71f1476a97d2b98cd0a91c77271d062438045d92ae103cfef08c73356454",
   ".github/workflows/staff-integration-cycle16.yml": "ad1c42980e62d59544d7f7051b296a31cd7fba281089a270e51ed47fa837a98c"

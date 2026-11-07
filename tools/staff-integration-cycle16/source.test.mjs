@@ -26,7 +26,7 @@ test('fixture rejects old unadapted candidate and any additional session changes
  assert.throws(()=>verifySessionBytes(actual,baseline+'\n'),/Historical97/);
 });
 test('fixture rejects another root and preserves strict historical browser assertions',()=>{
- assert.throws(()=>reviewedHostSession('/private/tmp',pinnedSource('sharedSession')),/Host must be/);
+ assert.throws(()=>reviewedHostSession(fileURLToPath(new URL('../',root)),pinnedSource('sharedSession')),/Host must be/);
  for(const p of ['tools/staff-cycle8/modules-source.mjs','tools/staff-cycle8/people-independent.browser.mjs','tools/staff-cycle8/modules.browser.mjs','tools/backend-tests/staff-session.browser.mjs']){
   assert.deepEqual(current(p),expectedRouter(p));
   assert.throws(()=>verifyActual(alter(p,original(p))),/Exact actual source/);
