@@ -1,0 +1,110 @@
+name: Staff actual People runtime composition
+on:
+  pull_request:
+    paths:
+      - 'assets/js/outreach-people.js'
+      - 'tools/staff-runtime-cycle14/**'
+      - 'tools/outreach/**'
+      - 'tools/staff-cycle9/source.mjs'
+      - 'tools/staff-cycle9-integrity/overrides.mjs'
+      - '.github/workflows/staff-runtime-cycle14.yml'
+permissions:
+  contents: read
+jobs:
+  source-and-independent:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: node --test tools/staff-runtime-cycle14/source.test.mjs tools/staff-runtime-cycle14/independent.test.mjs
+      - run: node tools/staff-runtime-cycle14/build.mjs
+      - run: npm ci --ignore-scripts --prefix tools/backend-tests
+      - run: tools/backend-tests/node_modules/.bin/playwright install --with-deps chromium webkit
+      - name: Verify exact accepted SDK artifact
+        run: |
+          curl --fail --silent --show-error --location 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.118.0' --output "$RUNNER_TEMP/supabase-sdk.js"
+          echo "bee24fc29228ed5a370f76a2ba1ca3c399549edad2fef23453c80148856a49af  $RUNNER_TEMP/supabase-sdk.js" | sha256sum --check
+          echo "SUPABASE_SDK_PATH=$RUNNER_TEMP/supabase-sdk.js" >> "$GITHUB_ENV"
+          echo "HOST_SOURCE_ROOT=$GITHUB_WORKSPACE" >> "$GITHUB_ENV"
+      - run: node tools/staff-runtime-cycle14/history-host.browser.mjs
+      - run: node tools/staff-runtime-cycle14/independent.browser.mjs
+      - run: git diff --check
+  people-filter:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm ci --ignore-scripts --prefix tools/backend-tests
+      - run: tools/backend-tests/node_modules/.bin/playwright install --with-deps chromium webkit
+      - name: Verify exact accepted SDK artifact
+        run: |
+          curl --fail --silent --show-error --location 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.118.0' --output "$RUNNER_TEMP/supabase-sdk.js"
+          echo "bee24fc29228ed5a370f76a2ba1ca3c399549edad2fef23453c80148856a49af  $RUNNER_TEMP/supabase-sdk.js" | sha256sum --check
+          echo "SUPABASE_SDK_PATH=$RUNNER_TEMP/supabase-sdk.js" >> "$GITHUB_ENV"
+          echo "HOST_SOURCE_ROOT=$GITHUB_WORKSPACE" >> "$GITHUB_ENV"
+      - run: node tools/outreach/people-followup-filter.browser.mjs
+      - run: node tools/outreach/people-followup-filter-independent.browser.mjs
+      - run: TEST_POSTGRES_BIN="$(pg_config --bindir)" node tools/outreach/people-followup-filter.native.mjs
+      - run: node tools/outreach/people-followup-history.browser.mjs
+      - run: node tools/outreach/people-followup-history-independent.browser.mjs
+      - run: TEST_POSTGRES_BIN="$(pg_config --bindir)" node tools/outreach/people-followup-history.native.mjs
+      - run: git diff --check
+  people-history-pagination:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm ci --ignore-scripts --prefix tools/backend-tests
+      - run: tools/backend-tests/node_modules/.bin/playwright install --with-deps chromium webkit
+      - name: Verify exact accepted SDK artifact
+        run: |
+          curl --fail --silent --show-error --location 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.118.0' --output "$RUNNER_TEMP/supabase-sdk.js"
+          echo "bee24fc29228ed5a370f76a2ba1ca3c399549edad2fef23453c80148856a49af  $RUNNER_TEMP/supabase-sdk.js" | sha256sum --check
+          echo "SUPABASE_SDK_PATH=$RUNNER_TEMP/supabase-sdk.js" >> "$GITHUB_ENV"
+          echo "HOST_SOURCE_ROOT=$GITHUB_WORKSPACE" >> "$GITHUB_ENV"
+      - run: node tools/outreach/people-followup-history-pagination.browser.mjs
+      - run: node tools/outreach/people-followup-history-pagination-independent.browser.mjs
+      - run: TEST_POSTGRES_BIN="$(pg_config --bindir)" node tools/outreach/people-followup-history-pagination.native.mjs
+      - run: node tools/outreach/people-followup-composition.browser.mjs
+      - run: node tools/outreach/people-followup-composition-independent.browser.mjs
+      - run: git diff --check
+  unchanged-strict-modules:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm ci --ignore-scripts --prefix tools/backend-tests
+      - run: tools/backend-tests/node_modules/.bin/playwright install --with-deps chromium webkit
+      - name: Verify exact accepted SDK artifact
+        run: |
+          curl --fail --silent --show-error --location 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.118.0' --output "$RUNNER_TEMP/supabase-sdk.js"
+          echo "bee24fc29228ed5a370f76a2ba1ca3c399549edad2fef23453c80148856a49af  $RUNNER_TEMP/supabase-sdk.js" | sha256sum --check
+          echo "SUPABASE_SDK_PATH=$RUNNER_TEMP/supabase-sdk.js" >> "$GITHUB_ENV"
+          echo "HOST_SOURCE_ROOT=$GITHUB_WORKSPACE" >> "$GITHUB_ENV"
+      - run: node --test tools/staff-cycle8/modules-unload.test.mjs
+      - run: node tools/staff-cycle8/modules.browser.mjs
+      - run: git diff --check
