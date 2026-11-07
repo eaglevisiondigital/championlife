@@ -5,12 +5,13 @@ import {readFileSync,lstatSync,readdirSync,existsSync} from 'node:fs';
 import {execFileSync} from 'node:child_process';
 import {createHash} from 'node:crypto';
 import {fileURLToPath} from 'node:url';
+import {checkpointReader as cycle16CheckpointReader,verifyActual as verifyCycle16,additions as cycle16Additions} from '../staff-integration-cycle16/source.mjs';
 export const root=new URL('../../',import.meta.url);
 export const base='b41d8002b3d1a452b91fe086e376f694825a06b4';
 export const people='91ebfeea001babf5851690076e9ef6d71e91b19a';
 export const runtime='assets/js/outreach-people.js';
 export const hash=bytes=>createHash('sha256').update(bytes).digest('hex');
-export const current=path=>readFileSync(new URL(path,root));
+let cycle16Read;export const current=path=>(cycle16Read ||= cycle16CheckpointReader())(path);
 const cache=new Map();
 export function original(path,commit=base){const key=commit+':'+path;if(!cache.has(key))cache.set(key,execFileSync('git',['--no-replace-objects','show',key],{cwd:root,maxBuffer:64*1024*1024}));return Buffer.from(cache.get(key))}
 export function requestBlock(bytes){const text=bytes.toString(),start=' async function request(run){',end=' const people=';assert.equal(text.split(start).length,2);assert.equal(text.split(end).length,2);return text.slice(text.indexOf(start),text.indexOf(end))}
@@ -47,6 +48,7 @@ export const added=[
  'tools/staff-runtime-cycle14/provenance.json','.github/workflows/staff-runtime-cycle14.yml'
 ];
 export function verifyActual(read=current){
+ verifyCycle16();
  assert.equal(hash(read('.github/workflows/staff-runtime-cycle14.yml')),'6242fc1d757ba5759d7bdd304530dc52a3cac06fc953f2064793daea709c7977','Exact independently reviewed Cycle14 workflow');
  assert.deepEqual(read(runtime),expectedRuntime(),'Reviewed Cycle9 successor: Exact latest People plus retained current-actor response fence');
  for(const path of Object.keys(routers))assert.deepEqual(read(path),expectedRouter(path),'Exact successor router '+path);
@@ -55,7 +57,7 @@ export function verifyActual(read=current){
  for(const path of [...tracked,...added.filter(p=>existsSync(new URL(p,root)))]){const stat=lstatSync(new URL(path,root));assert(!stat.isSymbolicLink()&&stat.isFile(),'No public symlink or protected backend/config symlink '+path)}
  for(const path of tracked){if(path===runtime||Object.hasOwn(routers,path)||imported.includes(path))continue;assert(!lstatSync(new URL(path,root)).isSymbolicLink(),'No public symlink or protected backend/config symlink '+path);assert.deepEqual(read(path),original(path),'Historical guard/build/dependency unchanged; Unchanged staff110 dependency '+path)}
  const allowed=new Set([...tracked,...added]);
- const files=execFileSync('git',['ls-files','--cached','--others','--exclude-standard'],{cwd:root,encoding:'utf8'}).trim().split('\n').filter(Boolean);
+ const files=execFileSync('git',['ls-files','--cached','--others','--exclude-standard'],{cwd:root,encoding:'utf8'}).trim().split('\n').filter(Boolean).filter(path=>!cycle16Additions.includes(path));
  for(const path of files)assert(allowed.has(path),'Unlisted composition file '+path);
  for(const prefix of['supabase','netlify','assets']){function walk(path){if(!existsSync(new URL(path,root)))return;assert(!lstatSync(new URL(path,root)).isSymbolicLink());if(lstatSync(new URL(path,root)).isDirectory())for(const n of readdirSync(new URL(path,root)))walk(path+'/'+n);else assert(tracked.includes(path),'No backend/config addition or removal; Unlisted protected file '+path)}walk(prefix)}
  for(const name of readdirSync(root)){if(/\.html$/.test(name))assert(tracked.includes(name),'Unlisted public HTML '+name)}
