@@ -57,3 +57,18 @@ preserved legitimate-save timeout, 10 in that one-case diagnostic run and 70 in
 the seven previously unexecuted cases. This is not a clean full-matrix pass;
 the timeout cause remains UNKNOWN and exact-head CI remains required. Independent
 baseline browser reproduction recorded 36 assertions. No historical CI was retried.
+
+
+The coordinator's first full committed matrix also stopped at a legitimate-save
+check, with a storage event and the original fixture seed restored. A bounded
+independent two-arm observation proved that Playwright's all-frame init script
+seeded the actual lesson iframe's inherited-origin `about:blank` storage. The
+control limits fictional Auth and seeding to the top document, matching where
+the production lesson scripts run. The iframe, runtime and all acceptance
+assertions remain intact. That observation did not reproduce the timeout's
+precise ordering; prior timeout causation remains UNKNOWN. The fixture correction
+removes the independently demonstrated extra writer rather than relaxing saves.
+
+The corrected top-document fixture subsequently passed one complete 120-assertion
+Chromium/WebKit matrix. This supersedes segmented coverage for the final fixture,
+not the unresolved attribution of the earlier timeouts or any Staff WebKit failure.

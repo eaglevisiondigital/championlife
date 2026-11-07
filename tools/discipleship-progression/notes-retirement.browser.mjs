@@ -15,6 +15,8 @@ for(const[engine,type]of[['chromium',chromium],['webkit',webkit]]){
   page.on('pageerror',e=>errors.push(e.message));
   await page.route('**/*',r=>r.request().url()==='https://notes.example.test/getting-a-grip-5.html'?r.fulfill({body:html,contentType:'text/html'}):r.fulfill({status:204,body:''}));
   await page.addInitScript(()=>{
+   // Fictional Auth/storage belongs only to the lesson document, never its video frame.
+   if(window!==window.top)return;
    const actor={id:'aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa',email:'fictional@example.test',email_confirmed_at:'2026-01-01'},key='championlife-grip-notes-v1:'+actor.id+':getting-a-grip-on-the-basics:lesson:5';
    let stage='',callbacks=[],calls=0;
    const hold=async kind=>{calls++;if(stage===kind){stage='';await new Promise(r=>window.resumeNotes=r)}};
