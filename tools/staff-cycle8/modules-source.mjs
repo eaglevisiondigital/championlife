@@ -1,5 +1,6 @@
 // Test-only additive CSS inputs. Original76 pins and loader are unchanged.
 import {loadSource as originalLoad} from '../staff-cycle7/source.mjs';
+import {reviewedHostSession} from '../staff-integration-cycle16/session-source.mjs';
 import {readFileSync} from 'node:fs';
 import {pathToFileURL} from 'node:url';
 import {execFileSync} from 'node:child_process';
@@ -17,9 +18,10 @@ const css=Object.freeze({
   }
 });
 export function loadSource(id){
+ if(process.env.HOST_SOURCE_ROOT&&id==='sharedSession')return reviewedHostSession(process.env.HOST_SOURCE_ROOT,originalLoad('sharedSession'));
  if(process.env.HOST_SOURCE_ROOT&&id==='shell'){
   const host=pathToFileURL(process.env.HOST_SOURCE_ROOT.replace(/\/$/,'')+'/');
-  if(readFileSync(new URL('assets/js/staff-session.js',host),'utf8')!==originalLoad('sharedSession'))throw Error('CANDIDATE_SESSION_NOT_EXACT97');
+  reviewedHostSession(process.env.HOST_SOURCE_ROOT,originalLoad('sharedSession'));
   return readFileSync(new URL('assets/js/staff-workspace.js',host),'utf8');
  }
  if(!Object.hasOwn(css,id))return originalLoad(id);
