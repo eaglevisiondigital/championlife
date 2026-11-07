@@ -46,3 +46,20 @@ jobs:
       - run: node tools/backend-tests/outreach-people.dom.mjs
       - run: node tools/backend-tests/outreach-registration.dom.mjs
       - run: git diff --check
+  task-lifetime:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm ci --ignore-scripts --prefix tools/backend-tests
+      - run: node --test tools/outreach/people-task-lifetime.test.mjs tools/outreach/people-task-lifetime.integrity.test.mjs
+      - run: node tools/backend-tests/node_modules/playwright/cli.js install --with-deps chromium webkit
+      - run: node tools/outreach/people-task-lifetime-independent.browser.mjs
+      - run: node tools/outreach/people-task-lifetime.integrity.mjs
+      - run: git diff --check

@@ -18,6 +18,8 @@ for(const p of ['tools/outreach/people-followup-history.browser.mjs','tools/outr
 for(const p of ['tools/outreach/people-followup-filter.browser.mjs','tools/outreach/people-followup-filter-independent.browser.mjs','tools/outreach/people-followup-filter.native.mjs','docs/PEOPLE-FOLLOWUP-FILTER-20261106.md','.github/workflows/people-followup-filter.yml'])allow.add(p);
 // Reviewed read-only history pagination; exact test/document/workflow additions only.
 for(const p of ['tools/outreach/people-followup-history-pagination.browser.mjs','tools/outreach/people-followup-history-pagination-independent.browser.mjs','tools/outreach/people-followup-history-pagination.native.mjs','docs/PEOPLE-FOLLOWUP-HISTORY-PAGINATION-20261106.md','.github/workflows/people-followup-history-pagination.yml'])allow.add(p);
+// Bounded task-control lifetime successor; prior source and output comparisons retained.
+for(const p of ['tools/outreach/people-task-lifetime.test.mjs','tools/outreach/people-task-lifetime.integrity.mjs','tools/outreach/people-task-lifetime.integrity.test.mjs','tools/outreach/people-task-lifetime-independent.browser.mjs','docs/PEOPLE-TASK-LIFETIME-20261107.md'])allow.add(p);
 assert.equal(sha(fs.readFileSync(root+'assets/js/outreach-registration-staff.js')),'665236df4f5eb52f25e4bcc5560a0e8fda4feae139b4f0b17265d10964ca4f2a','exact reviewed registration composition');
 assert.ok(changed.every(p=>allow.has(p)),'unexpected source change');
 const paths=JSON.parse(fs.readFileSync(root+'tools/site-build/public-files.json'));
