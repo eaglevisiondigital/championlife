@@ -20,15 +20,27 @@ export function transportAdapter(channel,transport) {
 export function acceptanceSink() {
   const receipts=new Map();return {receipts,async send(job){if(job.sender.provider!=='acceptance_sink')throw Error('Acceptance sink only');if(!receipts.has(job.idempotency_key))receipts.set(job.idempotency_key,{id:'sink:'+job.id,status:'sent'});return receipts.get(job.idempotency_key);}};
 }
-export async function runWorker(rpc,organization,adapter,{enabled=false}={}) {
-  if(!enabled)return {mode:'disabled',processed:0};
+export async function runWorker(rpc,organization,adapter,{enabled=false,signal}={}) {
+  // Configuration and database permission flags must be actual booleans. In
+  // particular, the string "false" must never consume events or claim a lease.
+  if(enabled!==true)return {mode:'disabled',processed:0};
+  const cancelled=()=>signal?.aborted===true;
+  if(cancelled())return {mode:'cancelled',processed:0};
   const call=(action,payload={})=>rpc(action,organization,payload);
-  await call('consume_events');const claimed=await call('claim');let processed=0;
-  for(const job of claimed.messages){const auth=await call('authorize_dispatch',{id:job.id,lease_token:job.lease_token});if(!auth.authorized)continue;
+  await call('consume_events');
+  if(cancelled())return {mode:'cancelled',processed:0};
+  const claimed=await call('claim');let processed=0;
+  for(const job of claimed.messages){
+    if(cancelled())break;
+    const auth=await call('authorize_dispatch',{id:job.id,lease_token:job.lease_token});
+    if(cancelled())break;
+    if(auth?.authorized!==true)continue;
     let result;try {const sent=await adapter.send(job);result={outcome:'sent',provider_message_id:sent.id};}catch(error){result={outcome:classifyFailure(error)};}
     // A failed database acknowledgement stays uncertain under its lease. Never call transport again here.
+    // Once handed off, cancellation cannot undo delivery: persist the outcome
+    // without the cancelled signal, then stop before starting another job.
     await call('result',{id:job.id,lease_token:job.lease_token,...result});processed++;
-  }return {mode:claimed.mode,processed};
+  }return {mode:cancelled()?'cancelled':claimed.mode,processed};
 }
 export async function verifyCallback(raw,headers,secret,now=Date.now()) {
   const time=headers.get('x-communication-timestamp'), signature=headers.get('x-communication-signature');

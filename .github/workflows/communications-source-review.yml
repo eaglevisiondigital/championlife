@@ -1,0 +1,66 @@
+name: Communications isolated source review
+on:
+  pull_request:
+    paths:
+      - 'assets/js/communications.js'
+      - 'tools/communications-policy/**'
+      - 'supabase/functions/_shared/communications/resend*.mjs'
+      - 'supabase/migrations/20261102193138_communications_resend_suppressed.sql'
+      - 'supabase/migrations/20261106071632_communications_preference_replay_binding.sql'
+      - 'supabase/migrations/20261102154214_communications_resend_host_lookup.sql'
+      - 'supabase/migrations/20261102150100_communications_resend_source.sql'
+      - 'supabase/functions/_shared/communications/providers.mjs'
+      - 'supabase/functions/_shared/communications/activation.mjs'
+      - 'supabase/functions/_shared/communications/activation-service.ts'
+      - 'supabase/migrations/20261101214121_communications_receipt_reconciliation.sql'
+      - 'supabase/migrations/20261101231457_communications_callback_context.sql'
+      - 'tools/backend-tests/package*.json'
+      - '.github/workflows/communications-source-review.yml'
+permissions:
+  contents: read
+jobs:
+  source-contract:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm ci --ignore-scripts --prefix tools/backend-tests
+      - run: node tools/communications-policy/reconciliation.pglite.mjs
+      - run: node tools/communications-policy/callback-context.database.mjs
+      - run: node --test tools/communications-policy/*.test.mjs
+      - run: node tools/backend-tests/communications-provider.test.mjs
+      - run: TEST_POSTGRES_BIN="$(pg_config --bindir)" node tools/communications-policy/worker-durable.native.mjs
+      - run: TEST_POSTGRES_BIN="$(pg_config --bindir)" node tools/communications-policy/external-worker.native.mjs
+      - run: TEST_POSTGRES_BIN="$(pg_config --bindir)" node tools/communications-policy/reconciliation.native.mjs
+      - run: TEST_POSTGRES_BIN="$(pg_config --bindir)" node tools/communications-policy/resend.native.mjs
+      - run: TEST_POSTGRES_BIN="$(pg_config --bindir)" node tools/communications-policy/resend-host.native.mjs
+      - run: TEST_POSTGRES_BIN="$(pg_config --bindir)" node tools/communications-policy/preference-replay.native.mjs
+      - run: TEST_POSTGRES_BIN="$(pg_config --bindir)" node tools/communications-policy/preference-independent.native.mjs
+      - run: git diff --check
+  session-browser-integrity:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm ci --ignore-scripts --prefix tools/backend-tests
+      - run: tools/backend-tests/node_modules/.bin/playwright install --with-deps chromium webkit
+      - run: node tools/communications-policy/session.browser.mjs
+      - run: node tools/communications-policy/activity-controls.browser.mjs
+      - run: node tools/communications-policy/activity-controls-independent.browser.mjs
+      - run: node tools/communications-policy/control-remount.browser.mjs
+      - run: node tools/communications-policy/control-remount-independent.browser.mjs
+      - run: node tools/backend-tests/communications.dom.mjs
+      - run: node tools/communications-policy/session-integrity.mjs
+      - run: git diff --check

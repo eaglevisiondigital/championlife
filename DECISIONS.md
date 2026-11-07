@@ -1,3 +1,19 @@
+## November 2 — provider metadata and bounded owner choice
+
+Read-only Resend metadata confirms the existing authentication domain and current 50,000-monthly/10-domain limits; it does not establish a dedicated communications sender, legal account custody, actual billing or webhook capacity. Added a concise [owner-choice delta](tools/communications-policy/RESEND-OWNER-CHOICE-2026-11-02.md) with one-organization sender options, exact isolated host/custody gates, zero unapproved incremental cost and a proposed—not authorized—12-send ceiling. Accepted host, SQL, tests and disabled configuration remain byte-identical. Network Solutions receipt support remains unverified; no provider changes or test sends.
+
+## November 2 — disconnected Resend host composition
+
+Added an unmounted fixed HTTPS transport, bounded raw-byte callback, exact persisted-ID service lookup and guarded forward-only SQL. Existing H1 worker/outbox/consent/suppression/audit and accepted adapter remain unchanged. Flags default false, no ambient fetch or live provider installation. Native tests distinguish late database commit from HTTP cancellation and preserve UNKNOWN holds. See [source boundary](tools/communications-policy/RESEND-HOST-SOURCE.md). Provider/account/sender/custody/host/recovery acceptance remains separately held; Network Solutions/Auth SMTP unchanged.
+
+## November 2 — separately reviewable Resend acceptance planning
+
+The latest Issue #58 work order authorizes full source scrutiny and a separate provider account/cost/sender/endpoint/secret/rotation acceptance package. [The packet](tools/communications-policy/RESEND-PROVIDER-ACCEPTANCE.md) records pending values instead of selecting a provider or inventing custody. Its 12-send rehearsal ceiling is a proposal, not send permission. Runtime installation, exact isolated target, genuine provider acceptance and production selection/activation remain separate gates. Preserve accepted adapter/SQL and prior passing evidence; no duplicate validator is justified by a missing real account/host decision.
+
+## November 2 — Resend source-only integration
+
+Owner approved source-only Resend email adapter development on November 2. This authorizes no provider selection/migration, credentials, DNS, sender/webhook activation, real sending, Supabase Auth SMTP change or production SQL. Network Solutions remains unchanged. Separate provider acceptance and explicit activation approval remain required.
+
 ## October 9 — Authorized H1 build only
 
 Chat accepted G at `10a15402f059c605d883ec8b4517d3dfdf9cd850` and authorized the dependent H1 foundation. Retain Supabase Edge/canonical G boundaries and use a real SMTP adapter without touching Auth mail; no silent SMS vendor selection. Configuration/verification/enablement/message authorization remain distinct. All automated/bulk external work stays held; no real email/SMS during build. Network Solutions workload/structured telemetry/account DNS remain evidence gates, not guessed support. No prerequisite merges/production deployment, PR #10 changes or H2. [H1 decision and activation runbooks](docs/COMMUNICATIONS-PHASE-H1-PROVIDER-ACTIVATION.md).
@@ -55,3 +71,7 @@ Chat accepts Phase B at the exact PR #6 head and authorizes a dependent Phase C 
 Phase D branches from exact accepted PR #7 head and remains a dependent draft candidate. One attendee has one campaign drawing identity/number and at most one claimed prize. Selection is provisional; claim writes the immutable campaign-wide win. This preserves the user-required explicit unclaimed options while ensuring a claimed winner can never return. The conservative UI default is exclude_participant, but every pool persists an explicit choice. Present-to-win defaults true and comes only from Phase C check-in. Pool locks freeze relevant event-day eligibility; the database selects under a campaign lock and the public animation is presentation only.
 
 Prize permissions are independent. Public display is number-only; signed-in household retrieval uses verified registration email and adds no arbitrary public lookup. Digital/paper/hybrid are supported, with optional manual ticket reconciliation, private audited export and a documented manual fallback rather than an offline-sync claim. Reminder/winner events remain held for the future Communications Core. No campaign is enabled, no real permissions are granted, no provider or production setting changes, and Phase E is not authorized.
+
+## 2026-11-01 — Preserve approved SMTP and require final callback context
+
+Fix the real endpoint-to-SQL context race without selecting a new vendor. Current H1 source is Network Solutions SMTP. Historical Resend usage does not approve replacing that integration. Resend signatures and email_id cannot manufacture the missing binding to the existing SMTP Message-ID/current attempt. UNKNOWN remains held unless a separately approved authoritative mechanism provides complete request binding. No Resend verifier or generic SMTP webhook is installed.

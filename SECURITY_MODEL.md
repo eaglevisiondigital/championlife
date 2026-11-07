@@ -1,3 +1,15 @@
+## November 2 — disconnected Resend host composition
+
+Added an unmounted fixed HTTPS transport, bounded raw-byte callback, exact persisted-ID service lookup and guarded forward-only SQL. Existing H1 worker/outbox/consent/suppression/audit and accepted adapter remain unchanged. Flags default false, no ambient fetch or live provider installation. Native tests distinguish late database commit from HTTP cancellation and preserve UNKNOWN holds. See [source boundary](tools/communications-policy/RESEND-HOST-SOURCE.md). Provider/account/sender/custody/host/recovery acceptance remains separately held; Network Solutions/Auth SMTP unchanged.
+
+## November 2 — provider custody and acceptance boundary
+
+[Resend acceptance packet](tools/communications-policy/RESEND-PROVIDER-ACCEPTANCE.md) requires separately witnessed account/domain ownership, exact server-side sender/profile binding, domain-restricted sending-key verification, per-endpoint signing-secret custody/rotation, isolated host authorization and independent teardown. Sending access does not imply retrieval/admin access; no full-access key is installed to bypass this distinction. Provider test-address events are simulations, delivered is recipient-server acceptance, and neither proves reading. UNKNOWN lacking a durable provider ID remains held even after an authentic callback or an expired idempotency window. No account data/secrets, hosted grants or runtime changes are included.
+
+## November 2 — Resend source-only integration
+
+Source-only Resend handoff records original provider-account/context/content binding under the existing authority lock; callback receipt requires the same binding and known provider ID. Raw bytes are cryptographically verified before parsing; event ID/body hash conflicts and account drift fail closed. UNKNOWN without ID cannot be recovered by recipient guessing or automatically resent. Runtime installation, credentials and live sending remain unapproved.
+
 ## October 9 — H1 provider safety boundary
 
 Four explicit organization provider permissions govern metadata, verification, tests and enablement; communications.send alone confers none. Global kill control additionally requires an independently approved, active/unexpired Super Admin registry entry, initially empty. Secret bindings are tenant/environment/profile/approved-From exact; browser/raw tables cannot read credentials or promote provider status. Exact expiring allowlist, canonical adult Person, current initiating authority, purpose consent and suppression are rechecked at claim and committed handoff. Pre-handoff revocation stops delivery; already handed-off SMTP cannot be recalled. Unknown acceptance/lease outcome never blindly retries. Unselected vendor callbacks fail closed; only vendor-verified attempt-bound receipts can promote delivery. Local-only build, no grants/config/production changes. [Contract](docs/COMMUNICATIONS-PHASE-H1-PROVIDER-ACTIVATION.md).
@@ -53,3 +65,25 @@ New tables have RLS and no direct client privileges. Guests can read only enable
 Prize view/manage/draw/claim capabilities are explicit, current and campaign-scoped. Old draw, registration, People, pastor, follow-up, team and travel authority do not imply them; manage/draw/claim require prize.view. Every operational table remains RLS-enabled with no direct anon/authenticated table privileges. The authenticated workspace rechecks authority after campaign serialization. Direct RPC attempts cannot re-enable a claimed winner; immutable unique ledgers enforce the rule below the UI.
 
 The anonymous display RPC is an intentional fixed-search-path projection and returns only campaign/organization branding, prize label, state, time and six-digit number. It never joins attendee/registration identity. Household access requires a verified account and exact normalized email match to the campaign registration; no public reference lookup is added. Operator contact and backup exports require prize authority, are campaign-scoped/audited, and CSV cells are formula-neutralized. Held hooks contain no provider credentials and claim no delivery. No acceptance/production grants or configuration are included. See [Phase D contract](docs/OUTREACH-PHASE-D-PRIZES.md).
+
+## 2026-11-01 — Receipt context race correction
+
+An independently authenticated provider receipt must also match the server profile used during verification at final commit. Exact callback context is now required inside the existing SQL authority lock for reconciliation/delivery/preference callbacks; missing, extra or changed context fails before a successful audit/state transition. The context is constructed from the database profile, never the vendor body. Enablement and consent are excluded: disabling outbound delivery does not invalidate evidence of an already completed handoff or grant a new send. This is configuration binding, not proof of provider-account ownership; no real verifier is configured. Sender credential/account custody still needs independent acceptance.
+
+
+## 2026-11-02 — Preserve callback signature bytes
+
+The shared bounded raw-body reader uses fatal UTF-8 decoding with BOM preservation. A signature over an ordinary body must not authenticate a different request with a prepended BOM; malformed UTF-8 still rejects and the byte cap remains8192. No parsing, trimming or normalization occurs before the configured verifier. The empty production verifier registry and existing exact profile/attempt/context/UNKNOWN controls are unchanged. Synthetic HMAC tests validate this ingress boundary only; no vendor acceptance or sending is implied.
+
+
+## November 6, 2026 — Source-only preference replay correction
+
+The existing keyword callback ledger could acknowledge a reused organization/event ID with a different recipient or keyword as a successful duplicate. A guarded, uninstalled forward migration binds new records to exact normalized recipient and current source-context digests, channel, keyword and provider. Changed-payload replays and legacy unbound history reject instead of acknowledging or applying a second preference. Historical rows and original migrations remain intact.
+
+Existing service-only execution, RLS, function ownership/ACL, suppression reducer, consent semantics and canonical audit remain preserved. Direct external-keyword calls acquire the existing global/control and organization locks in the existing order and validate current context. No raw callback envelope or recipient is added to the comparison ledger. Digests are private comparison metadata, not anonymity or independent authority. Audit failures roll back the preference and receipt together.
+
+No provider, sender, endpoint, credentials, transport, new runtime or production SQL is installed or activated. UNKNOWN/no-retry, Network Solutions and Supabase Auth SMTP remain unchanged. Focused native, independent negative/concurrency checks and exact-head CI are recorded in the private November 6 audit. All public output must remain unchanged. Genuine provider acceptance, exact-target installation, cleanup and separate owner release approval remain gates; RELEASE NO-GO.
+
+## 2026-11-06 — Action controls bound through asynchronous checks
+
+Current organization/account authority alone does not keep a replaced communications control usable. Each button's immutable action binding also identifies its control. Connected ownership is checked before and after identity awaits, immediately before RPC dispatch, and before action-result publication. Existing principal/scope checks still process explicit denials and release busy state safely after retirement. Requests submitted before retirement may already have reached the database; the client does not claim rollback or provider completion. No new request or stale publication is authorized by a detached control. Backend authorization, consent/suppression, callback replay and UNKNOWN reconciliation remain authoritative and unchanged.

@@ -1,3 +1,15 @@
+## November 2 — disconnected Resend host composition
+
+Added an unmounted fixed HTTPS transport, bounded raw-byte callback, exact persisted-ID service lookup and guarded forward-only SQL. Existing H1 worker/outbox/consent/suppression/audit and accepted adapter remain unchanged. Flags default false, no ambient fetch or live provider installation. Native tests distinguish late database commit from HTTP cancellation and preserve UNKNOWN holds. See [source boundary](tools/communications-policy/RESEND-HOST-SOURCE.md). Provider/account/sender/custody/host/recovery acceptance remains separately held; Network Solutions/Auth SMTP unchanged.
+
+## November 2 — Resend host composition remains uninstalled
+
+The [separate provider acceptance packet](tools/communications-policy/RESEND-PROVIDER-ACCEPTANCE.md) maps the existing full stack and its held installation boundary. The current generic callback endpoint consumes text and generic event actions; Resend requires bounded raw bytes, `resendReceipt`, trusted persisted-provider-ID lookup and the existing `resend_receipt` SQL action. No production endpoint/resolver/provisioning path is added. Receipt processing must be proved independently operable after outbound shutdown in the eventual approved host. Existing H1 canonical data and authority remain the only implementation; no parallel queue, identity store or configuration platform.
+
+## November 2 — Resend source-only integration
+
+Resend uses the existing H1 outbox/attempt/callback/audit/consent structure, with an explicit resend_email discriminator and existing service-role/comm_external_lock boundary. No parallel communications platform or Global Propel data migration. Source migration 20261102150100 is not applied or added to historical production replay.
+
 ## October 9 — H1 provider activation build
 
 The accepted G canonical outbox/attempt/consent/audit remains the only delivery system. H1 adds environment-bound metadata controls and exact test authorizations, with separate global/org/channel/profile and message gates. A new default-off SMTP worker owns only explicitly confirmed tests; existing G sink processing excludes those rows, including lease recovery. Secret registry is server-only and must match tenant/profile/From/environment. No hosted migration, provider deployment, real message, automatic/bulk activation or Auth SMTP change. SMS and real signature verifiers remain selection/integration gates. [Contract](docs/COMMUNICATIONS-PHASE-H1-PROVIDER-ACTIVATION.md).
@@ -51,3 +63,7 @@ Existing campaign ownership/assignments/audit/held events now host native event 
 Phase D activates the existing owner-only prize integrity ledger through one guarded campaign workspace. Phase C attendee/check-in remains authoritative; the attendee-to-prize participant link is extended with one immutable six-digit identity. Campaign settings, reusable inventory pools, active pool entries, draw sessions and pool locks sit above the original draw/history/win/exclusion tables. Selection and claim serialize on the campaign, the browser never chooses a result, and the campaign-wide win ledger is the permanent one-prize constraint.
 
 Staff, signed-in household and anonymous public display are separate projections. The staff projection carries minimum operational identity/contact; the household projection is limited to the matching verified registration email; the anonymous projection never joins private identity. Held events remain delivery-neutral. See [Phase D contract](docs/OUTREACH-PHASE-D-PRIZES.md).
+
+## 2026-11-01 — Callback profile continuity through final SQL
+
+`verifiedProviderEvent` now carries a whitelist derived only from its captured SQL profile: profile, organization, environment/project, provider/channel and From/Reply-To. New forward service wrapper re-reads those values under `comm_external_lock` before delegating callback, keyword or reconciliation to the accepted service. Profile drift during asynchronous verification now denies at the durable boundary. Other service actions delegate unchanged; renamed historical helper execution is revoked. No second queue or vendor registry is introduced.

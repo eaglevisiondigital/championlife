@@ -36,27 +36,75 @@ export function smsAdapter(contract,binding){
   const r=await contract.send({binding,idempotencyKey:job.idempotency_key,to:job.address_snapshot,senderServiceId:binding.sender_service_id,text});if(!r?.id||normalizeOutcome('sms',r.status)!=='sent')throw Error('SMS receipt required');return{id:String(r.id),status:'sent',segments:r.segments??null,cost:r.cost??null};
  },verifyCallback:(raw,headers)=>contract.verifyCallback(raw,headers,binding)};
 }
-/** @param {{enabled?: boolean, runtime?: {environment: string, project_ref: string}, messageId?: string}} options */
-export async function runExternalWorker(rpc,organization,resolve,{enabled=false,runtime={environment:'',project_ref:''},messageId=''}={}){
- if(!enabled)return{mode:'disabled',processed:0};
+/** @param {{enabled?: boolean, runtime?: {environment: string, project_ref: string}, messageId?: string, signal?: AbortSignal}} options */
+export async function runExternalWorker(rpc,organization,resolve,{enabled=false,runtime={environment:'',project_ref:''},messageId='',signal}={}){
+ // Match the Core G worker: malformed flags never claim or authorize delivery.
+ if(enabled!==true)return{mode:'disabled',processed:0};
+ const cancelled=()=>signal?.aborted===true;
+ if(cancelled())return{mode:'cancelled',processed:0};
  const call=(a,p={})=>rpc(a,organization,p),claimed=await call('claim_external',messageId?{message_id:messageId}:{});
  if(claimed.environment!==runtime?.environment||claimed.project_ref!==runtime?.project_ref)throw Error('Environment binding mismatch');
  let processed=0;
  for(const job of claimed.messages){let adapter;
-  try{adapter=await resolve(job.sender);}catch{const auth=await call('authorize_external',{message_id:job.id,lease_token:job.lease_token});if(auth.authorized){await call('result_external',{message_id:job.id,lease_token:job.lease_token,outcome:'permanent'});}continue;}
-  const auth=await call('authorize_external',{message_id:job.id,lease_token:job.lease_token});if(!auth.authorized)continue;
-  // This transaction is the handoff linearization point. Already handed-off SMTP cannot be recalled.
-  let result;try{const sent=await adapter.send(job);result={outcome:'sent',provider_message_id:sent.id};}catch(e){result={outcome:e.failure||classifyFailure(e)};}
+  if(cancelled())break;
+  try{adapter=await resolve(job.sender);}catch{
+   if(cancelled())break;
+   const auth=await call('authorize_external',{message_id:job.id,lease_token:job.lease_token});
+   if(cancelled())break;
+   if(auth?.authorized===true)await call('result_external',{message_id:job.id,lease_token:job.lease_token,outcome:'permanent'});
+   continue;
+  }
+  if(cancelled())break;
+  const auth=await call('authorize_external',{message_id:job.id,lease_token:job.lease_token});
+  if(cancelled())break;
+  if(auth?.authorized!==true)continue;
+  // The existing database transaction is the handoff linearization point.
+  // After handoff cancellation cannot recall SMTP: persist the actual outcome,
+  // without a cancelled signal, then stop before another message. A failed
+  // result acknowledgement propagates; never send again in this invocation.
+  let result;try{
+   const sent=await adapter.send(job,auth);
+   if(!sent||sent.status!=='sent'||!safeHeader(sent.id,200)||!sent.id.trim())throw Error('Provider send receipt required');
+   result={outcome:'sent',provider_message_id:sent.id};
+  }catch(e){result={outcome:['transient','permanent','uncertain'].includes(e?.failure)?e.failure:classifyFailure(e)};}
   await call('result_external',{message_id:job.id,lease_token:job.lease_token,...result});processed++;
- }return{mode:claimed.mode,processed};
+ }return{mode:cancelled()?'cancelled':claimed.mode,processed};
 }
-export async function boundedBody(req){const reader=req.body?.getReader();if(!reader)throw Error('Missing body');let size=0;const chunks=[];for(;;){const{done,value}=await reader.read();if(done)break;size+=value.length;if(size>8192){await reader.cancel();throw Error('Body too large');}chunks.push(value);}const all=new Uint8Array(size);let offset=0;for(const c of chunks){all.set(c,offset);offset+=c.length;}return new TextDecoder('utf-8',{fatal:true}).decode(all);}
+export async function boundedBody(req){const reader=req.body?.getReader();if(!reader)throw Error('Missing body');let size=0;const chunks=[];for(;;){const{done,value}=await reader.read();if(done)break;size+=value.length;if(size>8192){await reader.cancel();throw Error('Body too large');}chunks.push(value);}const all=new Uint8Array(size);let offset=0;for(const c of chunks){all.set(c,offset);offset+=c.length;}
+ // Keep BOM bytes in the signed string; default decoding silently strips them.
+ return new TextDecoder('utf-8',{fatal:true,ignoreBOM:true}).decode(all);
+}
 // Contract verifier is supplied by the selected vendor. There is no invented generic SMTP webhook.
 export async function verifiedProviderEvent(raw,headers,profile,binding,verifier){
- if(!verifier||!profile.structured_callbacks)throw Error('Provider callbacks not configured');
- const e=await verifier(raw,headers,binding); // MUST verify signature, provider timestamp/replay envelope before returning.
+ if(typeof verifier!=='function'||profile?.structured_callbacks!==true)throw Error('Provider callbacks not configured');
+ // Bind the verifier's private registry entry to the actual service profile.
+ // Sending enablement/consent is intentionally not callback authority: receipts
+ // may reconcile an already handed-off message after outbound delivery stops.
+ const p=structuredClone(profile),b=structuredClone(binding),sender=p?.sender;
+ const uuid=s=>typeof s==='string'&&/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/.test(s);
+ if(!uuid(p.profile_id)||!uuid(p.organization_id)||sender?.id!==p.profile_id||sender?.organization_id!==p.organization_id||
+  !['acceptance','production'].includes(p.environment)||!safeHeader(p.project_ref,100)||!p.project_ref||
+  ![['sms','sms_transport'],['email','smtp_transport']].some(([channel,provider])=>sender.channel===channel&&sender.provider===provider)||
+  !safeHeader(sender.from_address,320)||!sender.from_address||
+  b?.profile_id!==p.profile_id||b?.organization_id!==p.organization_id||b?.environment!==p.environment||b?.project_ref!==p.project_ref||
+  b?.provider!==sender.provider||b?.from!==sender.from_address||(b?.reply_to??null)!==(sender.reply_to??null))throw Error('Provider callback binding mismatch');
+ const context=x=>JSON.stringify([x?.structured_callbacks,x?.profile_id,x?.organization_id,x?.environment,x?.project_ref,
+  x?.sender?.id,x?.sender?.organization_id,x?.sender?.provider,x?.sender?.channel,x?.sender?.from_address,x?.sender?.reply_to??null]);
+ const profileSnapshot=context(p),bindingSnapshot=JSON.stringify(b);
+ const e=await verifier(raw,headers,b); // MUST verify signature, provider account and timestamp/replay envelope before returning.
+ // A local snapshot is not durable authority. Detect in-process drift here;
+ // the existing final RPC still rechecks current profile/outbox/attempt under its lock.
+ if(context(profile)!==profileSnapshot||JSON.stringify(binding)!==bindingSnapshot||JSON.stringify(b)!==bindingSnapshot)throw Error('Provider callback context changed');
+ profile=p;binding=b;
+ const callback_context={profile_id:p.profile_id,organization_id:p.organization_id,environment:p.environment,project_ref:p.project_ref,provider:p.sender.provider,channel:p.sender.channel,from_address:p.sender.from_address,reply_to:p.sender.reply_to??null};
  if(!e||!safeHeader(e.event_id,200)||!e.event_id||e.provider!==profile.sender.provider||e.organization_id||e.profile_id)throw Error('Invalid provider event');
- if(e.type==='delivery'){if(!safeHeader(e.provider_message_id,200)||!e.provider_message_id||!/^[a-f0-9-]{36}$/.test(e.attempt_id||''))throw Error('Receipt binding required');return{action:'callback_external',payload:{event_id:e.event_id,provider:e.provider,provider_message_id:e.provider_message_id,attempt_id:e.attempt_id,outcome:normalizeOutcome(profile.sender.channel,e.status)}};}
- if(e.type==='preference'&&profile.sender.channel==='sms'&&['STOP','START','HELP'].includes(e.keyword)&&/^\+[1-9][0-9]{7,14}$/.test(e.address))return{action:'keyword_external',payload:{event_id:e.event_id,provider:e.provider,keyword:e.keyword,address:e.address}};
+ if(e.type==='reconciliation'){
+  const uuid=s=>typeof s==='string'&&/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/.test(s);
+  if(!uuid(e.message_id)||!uuid(e.attempt_id)||!safeHeader(e.idempotency_key,500)||!e.idempotency_key||e.environment!==binding.environment||e.project_ref!==binding.project_ref||!['sent','rejected','uncertain'].includes(e.status))throw Error('Authoritative request receipt required');
+  if(e.status==='sent'?(!safeHeader(e.provider_message_id,200)||!e.provider_message_id.trim()):e.provider_message_id!=null)throw Error('Accepted provider receipt required');
+  return {action:'reconcile_external',payload:{callback_context,event_id:e.event_id,provider:e.provider,environment:e.environment,project_ref:e.project_ref,message_id:e.message_id,attempt_id:e.attempt_id,idempotency_key:e.idempotency_key,provider_message_id:e.provider_message_id??null,outcome:e.status}};
+ }
+ if(e.type==='delivery'){if(!safeHeader(e.provider_message_id,200)||!e.provider_message_id||!/^[a-f0-9-]{36}$/.test(e.attempt_id||''))throw Error('Receipt binding required');return{action:'callback_external',payload:{callback_context,event_id:e.event_id,provider:e.provider,provider_message_id:e.provider_message_id,attempt_id:e.attempt_id,outcome:normalizeOutcome(profile.sender.channel,e.status)}};}
+ if(e.type==='preference'&&profile.sender.channel==='sms'&&['STOP','START','HELP'].includes(e.keyword)&&/^\+[1-9][0-9]{7,14}$/.test(e.address))return{action:'keyword_external',payload:{callback_context,event_id:e.event_id,provider:e.provider,keyword:e.keyword,address:e.address}};
  throw Error('Invalid provider event');
 }
