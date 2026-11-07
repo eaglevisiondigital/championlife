@@ -1,0 +1,69 @@
+name: People follow-up history acceptance
+on:
+  pull_request:
+    paths:
+      - 'assets/js/outreach-people.js'
+      - 'staff-people.html'
+      - 'assets/js/champion-life-auth.js'
+      - 'assets/js/staff-session.js'
+      - 'assets/js/staff-workspace.js'
+      - 'assets/js/outreach-staff-common.js'
+      - 'tools/outreach/people-followup-history*'
+      - 'tools/site-build/**'
+      - 'tools/backend-tests/package*.json'
+      - 'tools/backend-tests/local-postgres.mjs'
+      - 'tools/backend-tests/migration-order.mjs'
+      - 'tools/backend-tests/fixtures/**'
+      - 'supabase/migrations/**'
+      - 'supabase/bootstrap/**'
+      - '.github/workflows/people-followup-history.yml'
+permissions:
+  contents: read
+jobs:
+  history-browser:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm ci --ignore-scripts --prefix tools/backend-tests
+      - run: tools/backend-tests/node_modules/.bin/playwright install --with-deps chromium webkit
+      - name: Verify accepted SDK for actual-page tests
+        shell: bash
+        run: |
+          curl --fail --silent --show-error --location 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.118.0' --output "$RUNNER_TEMP/supabase-sdk.js"
+          echo "bee24fc29228ed5a370f76a2ba1ca3c399549edad2fef23453c80148856a49af  $RUNNER_TEMP/supabase-sdk.js" | sha256sum --check
+          echo "SUPABASE_SDK_PATH=$RUNNER_TEMP/supabase-sdk.js" >> "$GITHUB_ENV"
+      - run: node tools/outreach/people-followup-history.browser.mjs
+      - run: node tools/outreach/people-followup-history-independent.browser.mjs
+      - run: git diff --check
+  history-native:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm ci --ignore-scripts --prefix tools/backend-tests
+      - name: Select disposable PostgreSQL 17
+        shell: bash
+        run: |
+          if [ ! -x /usr/lib/postgresql/17/bin/postgres ]; then
+            sudo /usr/share/postgresql-common/pgdg/apt.postgresql.org.sh -y
+            sudo mkdir -p /etc/postgresql-common/createcluster.d
+            printf 'create_main_cluster = false\n' | sudo tee /etc/postgresql-common/createcluster.d/history-ci.conf > /dev/null
+            sudo apt-get install --yes --no-install-recommends postgresql-17
+          fi
+          /usr/lib/postgresql/17/bin/postgres --version
+          echo 'TEST_POSTGRES_BIN=/usr/lib/postgresql/17/bin' >> "$GITHUB_ENV"
+      - run: node tools/outreach/people-followup-history.native.mjs
+      - run: git diff --check

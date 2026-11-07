@@ -1,0 +1,8 @@
+import assert from 'node:assert/strict';import{test}from'node:test';import{manifest,plan,verify,root}from'./verify.mjs';import fs from'node:fs';import path from'node:path';
+test('actual source candidate and exact45 accepted overlays',()=>{assert.equal(verify().overlays,45)});
+for(const field of ['partner','outreach','ancestor','priorComposition','priorOutreach'])test('deny source-pin substitution '+field,()=>{const m=structuredClone(manifest);m[field]='0'.repeat(40);assert.throws(()=>plan(m),/immutable source/)});
+test('deny removed history pagination test',()=>{const m=structuredClone(manifest);m.overlay=m.overlay.filter(e=>!e.path.endsWith('people-followup-history-pagination.native.mjs'));assert.throws(()=>plan(m),/all45/)});
+test('deny widened SQL override',()=>{const m=structuredClone(manifest);m.runtimeOverrides['supabase/migrations/fake.sql']='0'.repeat(64);assert.throws(()=>plan(m),/bounded runtime/)});
+test('deny changed protected runtime bytes',()=>{const m=structuredClone(manifest);m.runtimeOverrides['assets/js/staff-outreach-partners.js']='0'.repeat(64);assert.throws(()=>verify(root,m),/source/)});
+test('deny added path even if ignored',()=>{const file=path.join(root,'cycle14-unreviewed.tmp');assert.ok(!fs.existsSync(file));try{fs.writeFileSync(file,'unreviewed');assert.throws(()=>verify(),/complete actual/)}finally{fs.unlinkSync(file)}});
+test('SDK exact accepted URL SRI and no fallback',()=>{const html=fs.readFileSync(path.join(root,'staff-outreach-partners.html'),'utf8');assert.equal((html.match(/supabase-js@/g)||[]).length,1);assert.match(html,/supabase-js@2\.118\.0\/dist\/umd\/supabase\.js" integrity="sha384-UagCvVPT5XXA0Hx\+nJYUAGBFseHT9zBgpJMSebsAxl9lciTwbT\+39j5VfRjdP5Tp" crossorigin="anonymous"/)});
