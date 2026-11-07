@@ -1,0 +1,243 @@
+{
+  "schema": 1,
+  "sourcePins": {
+    "partner": "c170b0442b8015d9a8de9c7baa311754af95b484",
+    "outreach": "4e29de51bbff57e4e3b3ccbdc750bd0edb960443"
+  },
+  "setupCommands": [
+    {
+      "command": "npm ci --ignore-scripts --prefix tools/backend-tests",
+      "target": "composition"
+    },
+    {
+      "command": "node tools/backend-tests/node_modules/playwright/cli.js install --with-deps chromium webkit",
+      "target": "composition"
+    },
+    {
+      "command": "npm ci --ignore-scripts --prefix tools/partner-platform",
+      "target": "composition"
+    }
+  ],
+  "groups": {
+    "summary-node": [
+      {
+        "command": "node --test tools/outreach/shared-staff-backend.test.mjs tools/outreach/isolated-staff-summary-auth.test.mjs tools/outreach/campaign-summary.test.mjs tools/outreach/campaign-summary.review.test.mjs tools/outreach/campaign-summary-lifecycle.test.mjs tools/outreach/campaign-summary-lifecycle.review.test.mjs tools/outreach/church-outreach-summary-composition.test.mjs tools/outreach/church-outreach-auth-binding.test.mjs tools/outreach/church-outreach-summary-view.test.mjs tools/outreach/church-outreach-summary-entry.test.mjs",
+        "target": "composition"
+      },
+      {
+        "command": "node tools/outreach/people-followup-pagination-integrity.mjs",
+        "target": "outreach"
+      },
+      {
+        "command": "node tools/backend-tests/outreach-people.dom.mjs",
+        "target": "composition"
+      },
+      {
+        "command": "node tools/backend-tests/outreach-registration.dom.mjs",
+        "target": "composition"
+      },
+      {
+        "command": "git diff --check",
+        "target": "composition"
+      }
+    ],
+    "summary-browser": [
+      {
+        "command": "node tools/outreach/registration-print-roster.browser.mjs",
+        "target": "composition"
+      },
+      {
+        "command": "node tools/outreach/registration-checkin-status.browser.mjs",
+        "target": "composition"
+      },
+      {
+        "command": "node tools/outreach/registration-navigation.browser.mjs",
+        "target": "composition"
+      },
+      {
+        "command": "node tools/outreach/registration-search-composition.browser.mjs",
+        "target": "composition"
+      },
+      {
+        "command": "node tools/outreach/registration-search-composition-independent.browser.mjs",
+        "target": "composition"
+      },
+      {
+        "command": "node tools/outreach/people-followup-pagination.browser.mjs",
+        "target": "composition"
+      },
+      {
+        "command": "node tools/outreach/people-followup-pagination-independent.browser.mjs",
+        "target": "composition"
+      },
+      {
+        "command": "node tools/outreach/people-followup-composition.browser.mjs",
+        "target": "composition"
+      },
+      {
+        "command": "node tools/outreach/people-followup-composition-independent.browser.mjs",
+        "target": "composition"
+      },
+      {
+        "command": "node tools/outreach/people-followup-create.browser.mjs",
+        "target": "composition"
+      },
+      {
+        "command": "node tools/outreach/people-navigation.browser.mjs",
+        "target": "composition"
+      },
+      {
+        "command": "node tools/outreach/people-identity-race.browser.mjs",
+        "target": "composition"
+      },
+      {
+        "command": "node tools/outreach/walkup-retry.browser.mjs",
+        "target": "composition"
+      },
+      {
+        "command": "node tools/outreach/church-outreach-summary-staff.browser.mjs",
+        "target": "composition"
+      }
+    ],
+    "summary-native": [
+      {
+        "command": "TEST_POSTGRES_BIN=\"$(pg_config --bindir)\" node tools/outreach/campaign-summary.native.mjs",
+        "target": "composition"
+      },
+      {
+        "command": "TEST_POSTGRES_BIN=\"$(pg_config --bindir)\" node tools/outreach/shared-staff-backend.native.mjs",
+        "target": "composition"
+      },
+      {
+        "command": "TEST_POSTGRES_BIN=\"$(pg_config --bindir)\" node tools/outreach/registration-print-roster.native.mjs",
+        "target": "composition"
+      },
+      {
+        "command": "TEST_POSTGRES_BIN=\"$(pg_config --bindir)\" node tools/outreach/registration-checkin-status.native.mjs",
+        "target": "composition"
+      },
+      {
+        "command": "TEST_POSTGRES_BIN=\"$(pg_config --bindir)\" node tools/outreach/people-followup-create.native.mjs",
+        "target": "composition"
+      },
+      {
+        "command": "TEST_POSTGRES_BIN=\"$(pg_config --bindir)\" node tools/outreach/walkup-retry.native.mjs",
+        "target": "composition"
+      }
+    ],
+    "people-browser": [
+      {
+        "command": "node tools/outreach/people-followup-history.browser.mjs",
+        "target": "composition"
+      },
+      {
+        "command": "node tools/outreach/people-followup-history-independent.browser.mjs",
+        "target": "composition"
+      },
+      {
+        "command": "node tools/outreach/people-followup-filter.browser.mjs",
+        "target": "composition"
+      },
+      {
+        "command": "node tools/outreach/people-followup-filter-independent.browser.mjs",
+        "target": "composition"
+      }
+    ],
+    "people-native": [
+      {
+        "command": "TEST_POSTGRES_BIN=/usr/lib/postgresql/17/bin node tools/outreach/people-followup-history.native.mjs",
+        "target": "composition"
+      },
+      {
+        "command": "TEST_POSTGRES_BIN=/usr/lib/postgresql/17/bin node tools/outreach/people-followup-filter.native.mjs",
+        "target": "composition"
+      }
+    ],
+    "partner-contract": [
+      {
+        "command": "node --test tools/partner-platform/*.test.mjs tools/outreach/shared-staff-backend.test.mjs",
+        "target": "composition"
+      },
+      {
+        "command": "node tools/partner-platform/authority-denials.pglite.mjs",
+        "target": "composition"
+      },
+      {
+        "command": "node tools/backend-tests/outreach-partner-staff.dom.mjs",
+        "target": "composition"
+      },
+      {
+        "command": "node tools/backend-tests/site-build.test.mjs",
+        "target": "composition"
+      }
+    ],
+    "partner-browser": [
+      {
+        "command": "node tools/partner-platform/staff-intake-review.browser.mjs",
+        "target": "composition"
+      },
+      {
+        "command": "node tools/partner-platform/assigned-backend.browser.mjs",
+        "target": "composition"
+      }
+    ],
+    "partner-native17": [
+      {
+        "command": "TEST_POSTGRES_BIN=/usr/lib/postgresql/17/bin node tools/partner-platform/assigned-backend.native.mjs",
+        "target": "composition"
+      },
+      {
+        "command": "TEST_POSTGRES_BIN=/usr/lib/postgresql/17/bin node tools/partner-platform/authority-serialization.native.mjs",
+        "target": "composition"
+      },
+      {
+        "command": "TEST_POSTGRES_BIN=/usr/lib/postgresql/17/bin node tools/partner-platform/private-revocation.native.mjs",
+        "target": "composition"
+      },
+      {
+        "command": "TEST_POSTGRES_BIN=/usr/lib/postgresql/17/bin node tools/partner-platform/private-issuance.native.mjs",
+        "target": "composition"
+      },
+      {
+        "command": "TEST_POSTGRES_BIN=/usr/lib/postgresql/17/bin node tools/partner-platform/org-handoff.browser.mjs",
+        "target": "composition"
+      }
+    ],
+    "partner-native18": [
+      {
+        "command": "TEST_POSTGRES_BIN=/usr/lib/postgresql/18/bin node tools/partner-platform/canonical-repository.native.mjs",
+        "target": "composition"
+      },
+      {
+        "command": "TEST_POSTGRES_BIN=/usr/lib/postgresql/18/bin node tools/partner-platform/current-schema-composition.native.mjs",
+        "target": "composition"
+      },
+      {
+        "command": "TEST_POSTGRES_BIN=/usr/lib/postgresql/18/bin node tools/partner-platform/restricted-canonical-profile.native.mjs",
+        "target": "composition"
+      },
+      {
+        "command": "TEST_POSTGRES_BIN=/usr/lib/postgresql/18/bin node tools/partner-platform/canonical-host-ingress.native.mjs",
+        "target": "composition"
+      },
+      {
+        "command": "TEST_POSTGRES_BIN=/usr/lib/postgresql/18/bin node tools/partner-platform/canonical-execution-role.native.mjs",
+        "target": "composition"
+      },
+      {
+        "command": "TEST_POSTGRES_BIN=/usr/lib/postgresql/18/bin node tools/partner-platform/provider-database-isolation.native.mjs",
+        "target": "composition"
+      },
+      {
+        "command": "TEST_NATIVE_PG=1 TEST_POSTGRES_BIN=/usr/lib/postgresql/18/bin node --test tools/partner-platform/canonical-request-binding.test.mjs tools/partner-platform/canonical-request-binding-independent.test.mjs",
+        "target": "composition"
+      }
+    ],
+    "historical-partner": [
+      {
+        "command": "node --test tools/partner-integration-cycle12/composition.test.mjs tools/partner-integration-cycle12/composition.independent.test.mjs",
+        "target": "partner"
+      }
+    ]
+  }
+}
