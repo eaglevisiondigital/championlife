@@ -36,7 +36,7 @@ for(const[engine,options]of[[chromium,{channel:'chrome'}],[webkit,{}]]){
      const permissions=['people.read','followup.read','outreach.view',...(sessionUser.id===identities[1].id?['finance.read']:[])];
      if(name==='communications_workspace')return route.fulfill({status:404,json:{code:'PGRST202',message:'Optional Communications backend not installed in this fixture'}});
      if(name==='forms_workspace')return route.fulfill({status:404,json:{code:'PGRST202',message:'Optional Forms backend not installed in this fixture'}});
-     if(name==='staff_workspace_context')return route.fulfill({json:{organizations:[{id:'org',name:'Champion Life · Synthetic preview'}],grants:permissions.map(permission=>({organization_id:'org',permission,department_ids:null}))}});
+     if(name==='staff_workspace_context')return route.fulfill({json:{organizations:[{id:'cccccccc-cccc-4ccc-8ccc-ccccccccccc1',name:'Champion Life · Synthetic preview'}],grants:permissions.map(permission=>({organization_id:'cccccccc-cccc-4ccc-8ccc-ccccccccccc1',permission,department_ids:null}))}});
      if(name==='people_workspace')return route.fulfill({json:payload.p_action==='list'?(payload.p_payload.search==='no-match'?[]:[{id:'11111111-1111-4111-8111-111111111111',first_name:sessionUser.id===identities[0].id?'Church':'Owner',last_name:'Fixture',email:'fixture@example.test',relationships:['volunteer']}]):{person:{first_name:'Synthetic',last_name:'Fixture'},relationships:[]}});
      if(name==='outreach_registration_workspace')return route.fulfill({json:fixture.response(name,payload)});
      if(name==='outreach_partner_workspace')return route.fulfill({json:[]});
@@ -76,8 +76,10 @@ for(const[engine,options]of[[chromium,{channel:'chrome'}],[webkit,{}]]){
   await page.getByRole('searchbox',{name:'Search contacts'}).fill('no-match');await page.getByRole('button',{name:'Search',exact:true}).click();await page.getByRole('status').filter({hasText:'No matching contacts.'}).waitFor();
   if(evidence&&engine.name()==='chromium')await page.screenshot({path:path.join(evidence,'staff-empty-'+width+'.png'),fullPage:true});
   await page.goto(origin+'/staff-outreach-partners.html');await page.locator('#staff-session-email').getByText(identities[1].email,{exact:true}).waitFor();
+  await page.waitForURL('**/staff-outreach-partners.html?org=cccccccc-cccc-4ccc-8ccc-ccccccccccc1');
   ok(await page.getByRole('button',{name:'Log Out',exact:true}).isVisible(),'Partner Review shares logout');
-  await page.getByRole('button',{name:'Log Out',exact:true}).click();await page.waitForURL('**/discipleship-login.html?next=%2Fstaff-people.html');
+  await page.getByRole('button',{name:'Log Out',exact:true}).click();await page.waitForURL('**/discipleship-login.html?next=%2Fstaff-outreach-partners.html%3Forg%3Dcccccccc-cccc-4ccc-8ccc-ccccccccccc1');
+  ok(new URL(page.url()).searchParams.get('next')==='/staff-outreach-partners.html?org=cccccccc-cccc-4ccc-8ccc-ccccccccccc1','Partner logout preserves exact route and fictional organization UUID');
   ok(logoutCalls.length===2&&logoutCalls.every(x=>x==='local'),'second account logs out with same supported method');
   ok(errors.length===0,'no browser script errors');ok(unexpected.length===0,'all requests stayed in controlled local fixtures');
   await ctx.close();

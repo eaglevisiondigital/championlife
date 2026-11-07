@@ -6,6 +6,7 @@ import {createHash} from 'node:crypto';
 import {fileURLToPath, pathToFileURL} from 'node:url';
 import {createPeopleFixture,ids,session} from './people-independent-fixture.mjs';
 import {loadSource} from '../staff-cycle7/source.mjs';
+import {reviewedHostSession} from '../staff-integration-cycle16/session-source.mjs';
 const {chromium,webkit}=await import('../backend-tests/node_modules/playwright/index.mjs');
 const root=fileURLToPath(new URL('../../',import.meta.url));
 const host=process.env.HOST_SOURCE_ROOT;
@@ -18,7 +19,7 @@ const sources=Object.fromEntries(Object.entries(files).map(([path,id])=>[path,lo
 // Explicit file selection, no replacement text, shim API, injection or merge.
 const hostPaths=['staff-home.html','staff-people.html','staff-outreach-registration.html','assets/js/staff-workspace.js','assets/js/staff-session.js','assets/css/staff-workspace.css','staff-campaign-communications.html','staff-communication-activity.html','assets/js/communications.js','assets/css/communications.css'];
 for(const path of hostPaths)sources[path]=readFileSync(new URL(path,pathToFileURL(host+'/')),'utf8');
-assert.equal(sources['assets/js/staff-session.js'],loadSource('sharedSession'),'host retains exact97 session');
+assert.equal(sources['assets/js/staff-session.js'],reviewedHostSession(host,loadSource('sharedSession')),'host retains exact97 session plus reviewed Partner route only');
 const inventory={hostPaths,inputs:Object.fromEntries(Object.entries(sources).map(([p,text])=>[p,sha(text)])),sdk:sha(sdk)};
 console.log(JSON.stringify({sourceInventory:inventory}));
 const origin='https://people-host-review.invalid',backend='https://synthetic-composition.supabase.co',key='sb-synthetic-composition-auth-token';
@@ -144,4 +145,4 @@ for(const [engine,type] of Object.entries({chromium,webkit})){
  }finally{await browser.close()}
 }
 if(process.env.EVIDENCE_DIR){mkdirSync(process.env.EVIDENCE_DIR,{recursive:true});writeFileSync(process.env.EVIDENCE_DIR+'/people-independent-source.json',JSON.stringify(inventory,null,2)+'\n')}
-console.log(JSON.stringify({status:'PASS',checks,scope:'changed host + exact72 People/registration +97 session',providerRequests:0,genuineAuth:false,sqlAuthorityVerified:false}));
+console.log(JSON.stringify({status:'PASS',checks,scope:'changed host + exact72 People/registration + exact97-derived Partner session',providerRequests:0,genuineAuth:false,sqlAuthorityVerified:false}));
