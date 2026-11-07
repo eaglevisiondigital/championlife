@@ -10,13 +10,26 @@
  if(answers.length!==required||answers.some((a,i)=>Number(a.dataset.worksheetAnswer)!==i+1))return;
  const auth=client?.auth,rpc=client?.rpc,origin=client?.supabaseUrl,rest=client?.rest;
  const pinned=()=>window.ChampionLifeAuth===sharedAuth&&sharedAuth?.client===client&&client?.auth===auth&&client?.rpc===rpc&&client?.rest===rest&&client?.supabaseUrl===origin;
+ let retired=false;
  let epoch=0,controller=new AbortController(),binding=null,version=null,busy=false,active=true,timer,savedValues=null,cleanMessage='';
  const uuid=x=>typeof x==='string'&&/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/.test(x);
  function clear(message='Sign in, then load your private cloud worksheet.'){
   epoch++;controller.abort();controller=new AbortController();clearTimeout(timer);binding=null;version=null;busy=false;savedValues=null;cleanMessage='';
-  answers.forEach(a=>{a.value='';a.defaultValue=''});fields.disabled=true;load.disabled=false;status.textContent=message;
+  answers.forEach(a=>{a.value='';a.defaultValue=''});fields.disabled=true;load.disabled=retired;status.textContent=message;
  }
+ // A removed/replaced view is a retired authority boundary, even if its captured
+ // controls are later reattached. A new page/runtime must authorize a fresh load.
+ const controls=[root,form,fields,status,load,...answers];
+ function owned(){return !retired&&root.isConnected&&document.querySelector('[data-grip-worksheet]')===root&&
+  root.contains(form)&&form.contains(fields)&&root.contains(status)&&root.contains(load)&&answers.every(a=>fields.contains(a))}
+ function retire(){if(retired)return;retired=true;active=false;clear('This worksheet view is closed. Reload the page to load your private responses.');observer.disconnect()}
+ const observer=new MutationObserver(records=>{
+  if(!owned()||records.some(r=>[...r.removedNodes].some(n=>controls.some(c=>n===c||n.contains?.(c)))))retire();
+ });
+ observer.observe(document.documentElement,{childList:true,subtree:true});
  function current(g){
+  if(!owned()){retire();return false}
+
   // A detached client must not keep its old principal, answers or pending results alive.
   if(!pinned()){clear('Sign-in connection changed. Reload this page before loading your worksheet.');return false}
   return active&&epoch===g&&!controller.signal.aborted;
@@ -40,11 +53,13 @@
  }
  const dirty=()=>binding&&savedValues&&answers.some((a,i)=>a.value!==savedValues[i]);
  function editStatus(){
+  if(!owned()){retire();return}
   if(!binding||fields.disabled)return;
   if(!active||!pinned()||binding.expires<=Date.now()){clear();return}
   status.textContent=dirty()?'Unsaved changes. Save responses before loading another copy. Changes are cleared when you leave or your session changes.':cleanMessage;
  }
  async function request(write){
+  if(!owned()){retire();return}
   if(!pinned()){clear('Sign-in connection changed. Reload this page before loading your worksheet.');return}
   if(!active||busy)return;
   if(binding&&(!pinned()||binding.expires<=Date.now())){clear();return}
