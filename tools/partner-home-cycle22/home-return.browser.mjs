@@ -54,4 +54,44 @@ for(const [name,type]of Object.entries({chromium,webkit})){
  }
  }}finally{await browser.close()}
 }
+// Forms denial recovery uses the same actual-page/SDK fixture and current identity.
+for(const [name,type] of Object.entries({chromium,webkit})){
+ const browser=await type.launch(name==='chromium'&&!process.env.CI?{channel:'chrome'}:{});
+ try{for(const width of [390,1440])for(const mode of ['unknown-org','malformed-org','repeated-org','revoked','replacement']){
+  const label=name+' '+width+' Forms '+mode,h=await setup(browser,width,[]);
+  h.state.orgs=[O];let permitted=true;
+  await h.context.route(backend+'/rest/v1/rpc/forms_workspace',async route=>{
+   const p=route.request().postDataJSON();h.state.calls.push({name:'forms_workspace',p});
+   const data=p.p_action==='context'?{capabilities:{profile:'private_draft_v1'},organizations:permitted?[{id:O,name:'Church A',permissions:['forms.read'],scoped_forms:[]}]:[]}:[];
+   eq(['context','list'].includes(p.p_action),true,label+' read-only Forms request');
+   await route.fulfill({json:data,headers:{'access-control-allow-origin':'*'}});
+  });
+  const hint=mode==='malformed-org'?'organization=bad':mode==='repeated-org'?'organization='+O+'&organization='+O:'organization='+Q;
+  await h.open('staff-forms.html?'+hint+'&form=PRIVATE#PRIVATE');
+  const recovery=h.page.getByRole('link',{name:'Return to Staff Dashboard',exact:true});await recovery.waitFor();
+  eq(await recovery.getAttribute('href'),'staff-home.html',label+' scope-neutral actual Home destination');
+  eq(await h.page.evaluate(()=>FormsAdmin.draft),null,label+' denied draft cleared');
+  if(mode==='revoked')permitted=false;
+  if(mode==='replacement'){
+   h.state.actor=B;permitted=false;
+   await h.page.evaluate(({key,value})=>localStorage.setItem(key,JSON.stringify(value)),{key,value:session(B)});
+  }
+  await recovery.click();await h.page.waitForURL('**/staff-home.html*');
+  if(permitted){
+   await h.page.getByRole('link',{name:'Open Forms',exact:true}).waitFor();
+   eq(await h.page.evaluate(()=>StaffWorkspace.active()),true,label+' authorized Home');
+   eq(await h.page.locator('#staff-home-links a').count(),1,label+' Forms-only module authority');
+   await h.page.getByRole('link',{name:'Open Forms',exact:true}).click();await h.page.waitForURL('**/staff-forms.html?organization='+O);
+   await h.page.getByRole('heading',{name:'Forms',exact:true}).waitFor();
+   eq(new URL(h.page.url()).search,'?organization='+O,label+' current authorized scope only');
+  }else{
+   await h.page.waitForFunction(()=>document.getElementById('staff-access-message').textContent.length>0);
+   eq(await h.page.evaluate(()=>StaffWorkspace.active()),false,label+' Home denies current unauthorized account');
+   eq(await h.page.locator('#staff-home-links a').count(),0,label+' no protected module link');
+  }
+  eq(h.state.calls.some(c=>c.name==='people_workspace'),false,label+' no People records');
+  eq(h.page.url().includes('PRIVATE'),false,label+' no private return hints');
+  await clean(h,label);
+ }}finally{await browser.close()}
+}
 console.log(JSON.stringify({status:'PASS',checks,runtimeSHA256:createHash('sha256').update(readFileSync(new URL('../../assets/js/staff-outreach-partners.js',import.meta.url))).digest('hex'),hostedAcceptance:false,releaseAuthorized:false}));

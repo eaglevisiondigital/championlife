@@ -148,3 +148,8 @@ or replayed by this browser correction.
 ## November 7 — Financial review return navigation (source only)
 
 Financial-only staff already admitted by Staff123 can return from Partner review to the same organization's Staff home using the existing outreach.view AND finance.read permissions. People return separately requires people.read. Denial recovery now opens the actual Staff home. Local synthetic original reproduction and current positive/negative browser checks are recorded in tools/partner-home-cycle22; hosted acceptance is not performed. Existing Staff123 required CI remains INCOMPLETE (21 PASS/1 runner shutdown, cause UNKNOWN), without retry. No SQL, grants, SDK, branding, provider or release change.
+
+
+## November 8 — Lean Forms denial recovery (source only)
+
+The Forms access-denied Dashboard link now opens existing Staff Home rather than People. Staff Home independently discovers current authorized modules; a Forms-only user can recover to their permitted organization without people.read. No org, form, Person or private hint is carried in the recovery URL. Only forms-admin.js changes public output versus frozen Staff126. Chromium/WebKit actual-page, pinned SDK and fictional transport checks cover denial, malformed/repeated org hints, revocation and account replacement. No SQL, permission, SDK, branding, deployment or release change. Original Staff CI failures remain unresolved; source success is not genuine Auth/RLS acceptance. RELEASE NO-GO.

@@ -91,6 +91,22 @@
     [
       "unchangedPublic:first.length-1,changedPublic:[runtime]",
       "unchangedPublic:first.length-2,changedPublic:[runtime,cycle22Runtime]"
+    ],
+    [
+      "runtime as cycle22Runtime}",
+      "runtime as cycle22Runtime,formsRuntime,expectedFormsRuntime}"
+    ],
+    [
+      "p===cycle22Runtime?cycle22Expected():",
+      "p===formsRuntime?expectedFormsRuntime():p===cycle22Runtime?cycle22Expected():"
+    ],
+    [
+      "unchangedPublic:first.length-2",
+      "unchangedPublic:first.length-3"
+    ],
+    [
+      "cycle22Runtime],buildInventorySHA256",
+      "cycle22Runtime,formsRuntime],buildInventorySHA256"
     ]
   ],
   "tools/staff-create-lifetime-cycle20/build.mjs": [
@@ -109,6 +125,22 @@
     [
       "unchangedPublic:first.length-2,changedPublic:[runtime,cycle21Runtime]",
       "unchangedPublic:first.length-3,changedPublic:[runtime,cycle21Runtime,cycle22Runtime]"
+    ],
+    [
+      "runtime as cycle22Runtime}",
+      "runtime as cycle22Runtime,formsRuntime,expectedFormsRuntime}"
+    ],
+    [
+      "p===cycle22Runtime?cycle22Expected():",
+      "p===formsRuntime?expectedFormsRuntime():p===cycle22Runtime?cycle22Expected():"
+    ],
+    [
+      "unchangedPublic:first.length-3",
+      "unchangedPublic:first.length-4"
+    ],
+    [
+      "cycle22Runtime],buildInventorySHA256",
+      "cycle22Runtime,formsRuntime],buildInventorySHA256"
     ]
   ],
   "tools/staff-lifetime-cycle19/build.mjs": [
@@ -127,6 +159,22 @@
     [
       "unchangedPublic:first.length-2,changedPublic:[runtime,cycle21Runtime]",
       "unchangedPublic:first.length-3,changedPublic:[runtime,cycle21Runtime,cycle22Runtime]"
+    ],
+    [
+      "runtime as cycle22Runtime}",
+      "runtime as cycle22Runtime,formsRuntime,expectedFormsRuntime}"
+    ],
+    [
+      "p===cycle22Runtime?cycle22Expected():",
+      "p===formsRuntime?expectedFormsRuntime():p===cycle22Runtime?cycle22Expected():"
+    ],
+    [
+      "unchangedPublic:first.length-3",
+      "unchangedPublic:first.length-4"
+    ],
+    [
+      "cycle22Runtime],buildInventorySHA256",
+      "cycle22Runtime,formsRuntime],buildInventorySHA256"
     ]
   ],
   "tools/staff-integration-cycle16/build.mjs": [
@@ -137,6 +185,22 @@
     [
       "hash(cycle21Current(p))",
       "hash(cycle22Current(p))"
+    ],
+    [
+      "runtime as cycle22Runtime}",
+      "runtime as cycle22Runtime,formsRuntime,expectedFormsRuntime}"
+    ],
+    [
+      "p===cycle21Runtime?cycle21Expected():",
+      "p===formsRuntime?expectedFormsRuntime():p===cycle21Runtime?cycle21Expected():"
+    ],
+    [
+      "unchangedPublic:first.length-runtimePaths.length-2",
+      "unchangedPublic:first.length-runtimePaths.length-3"
+    ],
+    [
+      "changedPublic:[...runtimePaths,cycle19Runtime,cycle21Runtime]",
+      "changedPublic:[...runtimePaths,cycle19Runtime,cycle21Runtime,formsRuntime]"
     ]
   ],
   "tools/staff-runtime-cycle14/build.mjs": [
@@ -151,6 +215,22 @@
     [
       "path===cycle21Runtime?cycle21Expected():cycle16Paths.includes(path)",
       "path===cycle22Runtime?cycle22Expected():path===cycle21Runtime?cycle21Expected():cycle16Paths.includes(path)"
+    ],
+    [
+      "runtime as cycle22Runtime}",
+      "runtime as cycle22Runtime,formsRuntime,expectedFormsRuntime}"
+    ],
+    [
+      "path===cycle22Runtime?cycle22Expected():",
+      "path===formsRuntime?expectedFormsRuntime():path===cycle22Runtime?cycle22Expected():"
+    ],
+    [
+      "unchangedPublic:first.length-2-cycle16Paths.length",
+      "unchangedPublic:first.length-3-cycle16Paths.length"
+    ],
+    [
+      "changedPublic:[runtime,...cycle16Paths,cycle21Runtime]",
+      "changedPublic:[runtime,...cycle16Paths,cycle21Runtime,formsRuntime]"
     ]
   ],
   "tools/staff-cycle9-integrity/integrity.mjs": [
@@ -163,6 +243,10 @@
     [
       "es against current local identity/client before\nold-account private review or uncertain-save controls can return. Same-account\nuncertain writes retain the original no-retry handling; no records are rolled back\nor replayed by this browser correction.\n",
       "es against current local identity/client before\nold-account private review or uncertain-save controls can return. Same-account\nuncertain writes retain the original no-retry handling; no records are rolled back\nor replayed by this browser correction.\n\n\n## November 7 \u2014 Financial review return navigation (source only)\n\nFinancial-only staff already admitted by Staff123 can return from Partner review to the same organization's Staff home using the existing outreach.view AND finance.read permissions. People return separately requires people.read. Denial recovery now opens the actual Staff home. Local synthetic original reproduction and current positive/negative browser checks are recorded in tools/partner-home-cycle22; hosted acceptance is not performed. Existing Staff123 required CI remains INCOMPLETE (21 PASS/1 runner shutdown, cause UNKNOWN), without retry. No SQL, grants, SDK, branding, provider or release change.\n"
+    ],
+    [
+      "shutdown, cause UNKNOWN), without retry. No SQL, grants, SDK, branding, provider or release change.\n",
+      "shutdown, cause UNKNOWN), without retry. No SQL, grants, SDK, branding, provider or release change.\n\n\n## November 8 \u2014 Lean Forms denial recovery (source only)\n\nThe Forms access-denied Dashboard link now opens existing Staff Home rather than People. Staff Home independently discovers current authorized modules; a Forms-only user can recover to their permitted organization without people.read. No org, form, Person or private hint is carried in the recovery URL. Only forms-admin.js changes public output versus frozen Staff126. Chromium/WebKit actual-page, pinned SDK and fictional transport checks cover denial, malformed/repeated org hints, revocation and account replacement. No SQL, permission, SDK, branding, deployment or release change. Original Staff CI failures remain unresolved; source success is not genuine Auth/RLS acceptance. RELEASE NO-GO.\n"
     ]
   ],
   "SECURITY_MODEL.md": [
@@ -175,6 +259,12 @@
     [
       "   check(await h.page.locator('[data-partner-return][href]').count(),0,label+' financial intake does not confer People navigation');",
       "   check(await h.page.locator('[data-partner-return=\"people\"]').getAttribute('href'),null,label+' financial intake does not confer People navigation');\n   check(await h.page.locator('[data-partner-return=\"home\"]').getAttribute('href'),'staff-home.html?context=church&org='+O,label+' existing financial authority permits exact home return');"
+    ]
+  ],
+  "assets/js/forms-admin.js": [
+    [
+      "href: \"staff-people.html\",",
+      "href: \"staff-home.html\","
     ]
   ]
 }
