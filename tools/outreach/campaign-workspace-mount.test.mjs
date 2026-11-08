@@ -110,4 +110,13 @@ async function rosterFixture(){
  }finally{f.close()}
 }
 
+{
+ const f=fixture();const loading=f.mount.refresh();f.listeners.forEach(fn=>fn('INITIAL_SESSION',{user:{id:userA},access_token:'a'}));await loading;
+ check(f.mount.snapshot().state==='ready','initial SDK notification does not retire verified startup');
+ f.listeners.forEach(fn=>fn('INITIAL_SESSION',{user:{id:userA},access_token:'a'}));check(f.mount.snapshot().state==='unavailable','repeated initial notification retires scope');f.mount.close();
+}
+for(const value of [null,{user:{id:userB},access_token:'b'},{user:{id:userA},access_token:'replaced'}]){
+ const f=fixture();await f.mount.refresh();f.listeners.forEach(fn=>fn('INITIAL_SESSION',value));check(f.mount.snapshot().state==='unavailable','initial notification cannot retain different or missing principal');f.mount.close();
+}
+
 console.log(JSON.stringify({passed,failed:0}));

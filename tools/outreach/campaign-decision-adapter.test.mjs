@@ -119,4 +119,12 @@ for(const stage of ['status','date','ownKeys','descriptor']){
  const changes={get status(){f.user=b;f.token='fictional-new-account';return 'completed'},nextContactOn:null};
  await assert.rejects(adapter.save(old.ticket,changes));check(f.mutations.length===0,'silent account change in getter cannot reuse old principal');adapter.close();
 }
+{
+ const {f,adapter,select}=fixture();select();const loading=adapter.list();f.authEvent('INITIAL_SESSION',{user:{id:f.user},access_token:f.token});await loading;
+ check(adapter.snapshot().state==='list','initial SDK notification preserves verified initial list');
+ f.authEvent('INITIAL_SESSION',{user:{id:f.user},access_token:f.token});check(adapter.snapshot().state==='unavailable','duplicate initial event retires adapter');adapter.close();
+}
+for(const value of [null,{user:{id:'00000000-0000-4000-8000-000000000099'},access_token:'other'},{user:{id:user},access_token:'other'}]){
+ const {f,adapter,select}=fixture();select();const old=await adapter.detail(a);f.authEvent('INITIAL_SESSION',value);check(adapter.snapshot().state==='unavailable','initial missing/replacement principal retires adapter');await assert.rejects(adapter.save(old.ticket,{status:'new',nextContactOn:null}));check(!f.mutations.length,'initial replacement cannot reuse ticket');adapter.close();
+}
 console.log(JSON.stringify({passed:count,failed:0}));
