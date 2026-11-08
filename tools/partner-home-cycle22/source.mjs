@@ -8,12 +8,14 @@ export const root=new URL('../../',import.meta.url);
 export const base='bdecc592d1a0544330934ef2fc5a254a9b54d3d3';
 export const runtime='assets/js/staff-outreach-partners.js';
 export const registrationRuntime='assets/js/outreach-registration-staff.js';
-export function expectedRegistrationRuntime(){assert.equal(hash(original(registrationRuntime)),'665236df4f5eb52f25e4bcc5560a0e8fda4feae139b4f0b17265d10964ca4f2a');const value=expectedRouter(registrationRuntime);assert.equal(hash(value),'cab69837156279bf24bd790115c24e2368f1dd87a094e79c79ff389b9a4cf81e','Exact reviewed PR134 runtime');return value}
+export function expectedRegistrationRuntime(){assert.equal(hash(original(registrationRuntime)),'665236df4f5eb52f25e4bcc5560a0e8fda4feae139b4f0b17265d10964ca4f2a');const recipe=derivations[registrationRuntime];assert.equal(hash(recipe.at(-1)[0]),'cab69837156279bf24bd790115c24e2368f1dd87a094e79c79ff389b9a4cf81e','Exact preserved PR134/135 input');const value=expectedRouter(registrationRuntime);assert.equal(hash(value),'4140e7a9c0dc8fbc0fb5c7883383090526bb5b53ec7936495c5e049d988418ed','Reviewed pre-dispatch correction');return value}
+export const dispatchRuntimes=['assets/js/champion-life-auth.js','assets/js/staff-workspace.js'];
+export function expectedDispatchRuntime(p){assert(dispatchRuntimes.includes(p));const value=expectedRouter(p);assert.equal(hash(value),{"assets/js/champion-life-auth.js": "46181c731cf1a2bda08b954cb2a4cdc483301ddf3187b017413c5ca856a23dda", "assets/js/staff-workspace.js": "3077fee526de784c6799b448100204dba42d881f91b5f44f98d75d5f089cb40f"}[p],'Exact reviewed pre-dispatch transport');return value}
 export const hash=b=>createHash('sha256').update(b).digest('hex');
 export const current=p=>readFileSync(new URL(p,root));
 const cache=new Map();
 export function original(p){if(!cache.has(p))cache.set(p,execFileSync('git',['--no-replace-objects','show',base+':'+p],{cwd:root,maxBuffer:80*1024*1024}));return Buffer.from(cache.get(p))}
-export const derivationSHA256='1e90df6126927b20ad84a80bfce9ea81fbb8bdb97cb1d26f55a57b0a2fc775fe';
+export const derivationSHA256='5c16b3f3bb9fa567e9748ee4035b1347b5eb0276dac40373efa876d60c8f2853';
 const recipeBytes=current('tools/partner-home-cycle22/derivations.json');assert.equal(hash(recipeBytes),derivationSHA256,'Exact reviewed home return and router derivations');
 const derivations=JSON.parse(recipeBytes);
 export const modified=Object.keys(derivations);
@@ -29,22 +31,26 @@ export const additions=[
   ".github/workflows/partner-home-cycle22.yml",
   "tools/partner-home-cycle22/registration-host.browser.mjs",
   "tools/partner-home-cycle22/registration-checkin-journey.browser.mjs",
-  "tools/partner-home-cycle22/registration-checkin-status.native.mjs"
+  "tools/partner-home-cycle22/registration-checkin-status.native.mjs",
+  "tools/partner-home-cycle22/registration-predispatch.browser.mjs",
+  "tools/partner-home-cycle22/dispatch-transport.test.mjs"
 ];
 export const reviewedHashes={
-  "tools/partner-home-cycle22/source.test.mjs": "589d035e2626134cda515affe23a657fdf5e6ba43c6f0390877ccd705818617c",
-  "tools/partner-home-cycle22/build.mjs": "debff032e9b7211a2ef4bdf3a68ad3c07949243e31ccda10de6c92b04d924578",
-  "tools/partner-home-cycle22/derivations.json": "1e90df6126927b20ad84a80bfce9ea81fbb8bdb97cb1d26f55a57b0a2fc775fe",
-  "tools/partner-home-cycle22/README.md": "73289b8e203e32ea05b594689fcb6b90238e100999b251cd02afefd3b70d1d2e",
+  "tools/partner-home-cycle22/source.test.mjs": "eb3ddf68914d33c33f81a9b6211c5a0c3e40781a5bad20e48b412329ee98b871",
+  "tools/partner-home-cycle22/build.mjs": "80bd1e63bbee8cab0403181e81e3adb7ee3a1995e97c3ba485284b76216cab22",
+  "tools/partner-home-cycle22/derivations.json": "5c16b3f3bb9fa567e9748ee4035b1347b5eb0276dac40373efa876d60c8f2853",
+  "tools/partner-home-cycle22/README.md": "b9c424a5cda44368e2ad6d0d0ec8f62d0ca145c3d0592a73050cb6d7d7fad466",
   "tools/partner-home-cycle22/home-return.browser.mjs": "f610b31cada708adb84693dc40fc9aa20b3833e223c0c9fb9cb59c7e45263d05",
-  ".github/workflows/partner-home-cycle22.yml": "278fb78dec6258b3c554b745eff48aae563de009fa79b2aea5aedf0aac04c925",
+  ".github/workflows/partner-home-cycle22.yml": "6a7c2b69f6b770a74aa8eb651d259f2706c6048fb803673203cdef33060c23dd",
   "tools/partner-home-cycle22/registration-host.browser.mjs": "dd2043d3457b18cd6052df67d0eed0228cd1afbcf49ffc060ca980a4b628dfdc",
   "tools/partner-home-cycle22/registration-checkin-journey.browser.mjs": "5946b1bffe3f0faf00e58695a9a6babd60196dc9740afa503954b3cbe9a4797e",
-  "tools/partner-home-cycle22/registration-checkin-status.native.mjs": "f941859a5b2a376b17fc135bcc217f7d8fead492634595d20de04d497c248dfa"
+  "tools/partner-home-cycle22/registration-checkin-status.native.mjs": "f941859a5b2a376b17fc135bcc217f7d8fead492634595d20de04d497c248dfa",
+  "tools/partner-home-cycle22/registration-predispatch.browser.mjs": "f0d83d3434431cf99b723144d4349264414e968841382a69681518eebb86c9c2",
+  "tools/partner-home-cycle22/dispatch-transport.test.mjs": "9e0948ceed4432452e3a07ef827c2f83cac472909d5fad5259afd241718a761e"
 };
 const tracked=execFileSync('git',['--no-replace-objects','ls-tree','-r','--name-only',base],{cwd:root,encoding:'utf8'}).trim().split('\n');
 export function verifyActual(read=current){
- for(const p of tracked){const s=lstatSync(new URL(p,root));assert(s.isFile()&&!s.isSymbolicLink(),(p.startsWith('netlify')||p.startsWith('supabase')?'No protected backend/config symlink; ':'No public symlink; ')+'Regular exact source '+p);assert.deepEqual(read(p),p===runtime?expectedRuntime():p===registrationRuntime?expectedRegistrationRuntime():Object.hasOwn(derivations,p)?expectedRouter(p):original(p),'Historical guard/build/dependency unchanged; Exact123 source outside home return and bounded routers: '+p)}
+ for(const p of tracked){const s=lstatSync(new URL(p,root));assert(s.isFile()&&!s.isSymbolicLink(),(p.startsWith('netlify')||p.startsWith('supabase')?'No protected backend/config symlink; ':'No public symlink; ')+'Regular exact source '+p);assert.deepEqual(read(p),p===runtime?expectedRuntime():p===registrationRuntime?expectedRegistrationRuntime():dispatchRuntimes.includes(p)?expectedDispatchRuntime(p):Object.hasOwn(derivations,p)?expectedRouter(p):original(p),'Historical guard/build/dependency unchanged; Exact123 source outside home return and bounded routers: '+p)}
  const allowed=new Set([...tracked,...additions]);
  const present=execFileSync('git',['ls-files','--cached','--others','--exclude-standard'],{cwd:root,encoding:'utf8'}).trim().split('\n').filter(Boolean);
  for(const p of present)assert(allowed.has(p),'Unlisted composition file '+p);

@@ -6,13 +6,39 @@
     return;
   }
 
+  // Local veto only: the SDK calls this transport AFTER its asynchronous token lookup.
+  // Never abort a request once dispatched; a lost response cannot undo a committed write.
+  const dispatchVetoes = new WeakMap(), nativeFetch = window.fetch.bind(window);
+  function guardedFetch(input, init) {
+    const gate = init?.signal && dispatchVetoes.get(init.signal);
+    if (gate) {
+      let permitted = false;
+      if (!gate.used) { gate.used = true; try { permitted = new Headers(init.headers).get('Authorization') === 'Bearer ' + gate.token && gate.current() === true; } catch {} }
+      if (!permitted) { gate.denied = !gate.dispatched; throw new DOMException('Staff control retired before dispatch', 'AbortError'); }
+      gate.dispatched = true;
+    }
+    return nativeFetch(input, init);
+  }
   const client = window.supabase.createClient(cfg.url, cfg.publishableKey, {
+    global: { fetch: guardedFetch },
     auth: {
       persistSession: true,
       autoRefreshToken: true,
       detectSessionInUrl: true
     }
   });
+
+  const originalRpc = client.rpc.bind(client);
+  async function dispatchGuardedRpc(name, parameters, options, current, token) {
+    if (typeof current !== 'function' || typeof token !== 'string' || !token) throw new TypeError('A current control veto is required');
+    const controller = new AbortController(), gate = { current, token, used: false };
+    dispatchVetoes.set(controller.signal, gate);
+    try {
+      const result = await originalRpc(name, parameters, options).abortSignal(controller.signal);
+      return gate.denied ? { data: null, error: { code: 'STAFF_CONTROL_RETIRED', message: 'Control retired before dispatch.' }, status: 0 } : result;
+    }
+    finally { gate.used = true; }
+  }
 
   let courseCache = null;
 
@@ -214,6 +240,7 @@
 
   window.ChampionLifeAuth = {
     client,
+    dispatchGuardedRpc,
     getSession,
     getUser,
     getGripCourse,

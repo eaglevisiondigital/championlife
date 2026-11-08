@@ -12,11 +12,14 @@ test('all added tests, workflow and recipe pinned',()=>{for(const p of Object.ke
 test('unlisted file cannot hide behind historical projection',()=>{const script=String.raw`
 import child from 'node:child_process';import {syncBuiltinESMExports}from'node:module';import assert from'node:assert/strict';const original=child.execFileSync;child.execFileSync=(file,args,options)=>file==='git'&&args[0]==='ls-files'?original(file,args,options)+'tools/partner-home-cycle22/unauthorized.mjs\n':original(file,args,options);syncBuiltinESMExports();const{verifyActual}=await import('./tools/partner-home-cycle22/source.mjs');assert.throws(()=>verifyActual(),/Unlisted composition file/);console.log('EXPECTED_REJECTION');`;assert.equal(execFileSync(process.execPath,['--input-type=module','-e',script],{cwd:root,encoding:'utf8'}).trim(),'EXPECTED_REJECTION')});
 
-test('registration port equals reviewed PR134 exactly and preserves Staff126 parent equality',()=>{
+test('registration pre-dispatch correction retains exact PR134/135 input and Staff126 parent equality',()=>{
  const read=(ref,p)=>execFileSync('git',['show',ref+':'+p],{cwd:root});
  assert.deepEqual(original(registrationRuntime),read('95723fae9d4cbc16eb80e350191495b4d37d4498',registrationRuntime));
  assert.deepEqual(original(registrationRuntime),read('0c246a96ccd9e280dd423eb91c623559b7fdb064^',registrationRuntime));
- assert.deepEqual(current(registrationRuntime),read('0c246a96ccd9e280dd423eb91c623559b7fdb064',registrationRuntime));
+ const recipes=JSON.parse(current('tools/partner-home-cycle22/derivations.json'));
+ assert.deepEqual(Buffer.from(recipes[registrationRuntime].at(-1)[0]),read('0c246a96ccd9e280dd423eb91c623559b7fdb064',registrationRuntime));
+ const priorRecipes=JSON.parse(read('773d32ef4a3d86819931fd1a76700e5d1457a6fe','tools/partner-home-cycle22/derivations.json'));
+ for(const [path,pairs]of Object.entries(priorRecipes))assert.deepEqual(recipes[path].slice(0,pairs.length),pairs,'Every original derivation remains intact: '+path);
  assert.deepEqual(current(registrationRuntime),expectedRegistrationRuntime());
  for(const text of [original(registrationRuntime),Buffer.concat([current(registrationRuntime),Buffer.from('/* unreviewed */')])])assert.throws(()=>verifyActual(alter(registrationRuntime,text)),/Exact123/);
  for(const name of ['registration-checkin-journey.browser.mjs','registration-checkin-status.native.mjs'])assert.deepEqual(current('tools/partner-home-cycle22/'+name),read('0c246a96ccd9e280dd423eb91c623559b7fdb064','tools/outreach/'+name));
