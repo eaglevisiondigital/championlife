@@ -3,11 +3,11 @@ import {createCampaignDecisionAdapter} from './campaign-decision-adapter.mjs';
 const STATUSES=['new','needs_contact','attempted','connected','in_progress','completed','declined'];
 export function mountCampaignDecisionView({root,...bindings}){
  if(typeof root?.replaceChildren!=='function')throw new TypeError('DOM root required');
- const doc=root.ownerDocument;let adapter,closed=false,filters={query:'',status:'',consent:''};
+ const doc=root.ownerDocument;let retireForm=()=>{};let adapter,closed=false,filters={query:'',status:'',consent:''};
  const el=(tag,label)=>{const node=doc.createElement(tag);if(label!==undefined)node.textContent=label;return node};
  const button=(label,handler)=>{const b=el('button',label);b.type='button';b.className='btn';b.addEventListener('click',()=>{Promise.resolve().then(handler).catch(()=>{})});return b};
  const render=s=>{
-  root.replaceChildren();if(!s||s.state==='unavailable')filters={query:'',status:'',consent:''};if(closed||!s)return;
+  retireForm();root.replaceChildren();if(!s||s.state==='unavailable')filters={query:'',status:'',consent:''};if(closed||!s)return;
   const section=el('section');section.className='panel';section.setAttribute('aria-label','Assigned decision registrations');
   const heading=el('h2','Assigned decisions and free-book requests'),notice=el('p','Decision/free-book records only. Event registrations and check-in are separate. Contact details, export and messaging are unavailable. Book use is not instrumented. Discipleship status is unavailable; follow-up status is not course completion.');
   const status=el('p');status.setAttribute('role','status');status.setAttribute('aria-live','polite');section.append(heading,notice,status);root.append(section);
@@ -37,8 +37,16 @@ export function mountCampaignDecisionView({root,...bindings}){
   for(const value of STATUSES){const option=el('option',value.replaceAll('_',' '));option.value=value;option.selected=value===record.status;select.append(option)}label.append(select);
   const dateLabel=el('label','Next review date'),date=el('input');date.type='date';date.name='nextContactOn';date.value=record.nextContactOn??'';date.setAttribute('aria-label','Next review date');dateLabel.append(date);
   const save=el('button','Save follow-up state');save.type='submit';save.className='btn';form.append(label,dateLabel,save);
-  // The exact immutable ticket is checked by the adapter, even for detached forms.
-  form.addEventListener('submit',event=>{event.preventDefault();adapter.save(s.ticket,{status:select.value,nextContactOn:date.value||null}).catch(()=>{})});section.append(form);
+  section.append(form);
+  // A removed/reinserted form or descendant never regains authority from its old ticket.
+  // Normal saving intentionally replaces the view; retirement here does not cancel an already initiated intent.
+  const Observer=doc.defaultView?.MutationObserver;let retired=false,observer;
+  const nodes=new Set([form,...form.querySelectorAll('*')]);for(let node=form.parentNode;node;node=node.parentNode)nodes.add(node);
+  retireForm=()=>{retired=true;observer?.disconnect()};
+  const invalidate=()=>{if(retired)return;retireForm();adapter.revoke()};
+  const inspect=records=>{if(records.some(record=>[...record.removedNodes].some(node=>[...nodes].some(bound=>node===bound||node.contains?.(bound)))))invalidate()};
+  if(typeof Observer==='function'&&doc.documentElement){observer=new Observer(inspect);observer.observe(doc.documentElement,{childList:true,subtree:true})}else retired=true;
+  form.addEventListener('submit',event=>{event.preventDefault();inspect(observer?.takeRecords()??[]);if(retired)return;if(!form.isConnected||!root.contains(form)){invalidate();return}if(adapter.snapshot()!==s)return;adapter.save(s.ticket,{status:select.value,nextContactOn:date.value||null}).catch(()=>{})});
  };
  adapter=createCampaignDecisionAdapter({...bindings,onSnapshot:render});
  return Object.freeze({select:(...args)=>{filters={query:'',status:'',consent:''};return adapter.select(...args)},list:(...args)=>adapter.list(...args),detail:(...args)=>adapter.detail(...args),revoke:()=>adapter.revoke(),snapshot:()=>adapter.snapshot(),close(){closed=true;adapter.close();root.replaceChildren()}});

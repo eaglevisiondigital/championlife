@@ -1,3 +1,7 @@
+## 2026-11-08 — Assigned decision desk / Staff Home integration (nonproduction source)
+
+Exact Staff126 Home/shell/Auth/session and Desk132 are composed through a bounded test-only insertion recipe. Decision-only workers discover assigned campaigns without People, event registration, finance or learner rights. Actual SDK/native-SQL browser tests cover entry, filters, refresh, dates, return/history, scope/account replacement, expiry, denials and detached mutation controls. Integration uncovered and corrected initial SDK subscription retirement and removed/reinserted form authority; existing mutations retain consent/revision/audit/UNKNOWN protections. No public route, SQL, SDK, grant or provider activation is installed. See docs/CAMPAIGN-WORKSPACE-MOUNT-20261103.md. Current source/test/CI evidence is reported in the draft; genuine hosted acceptance and release remain NO-GO.
+
 ## 2026-11-08 — Assigned decision follow-up desk (source-only)
 
 The existing isolated campaign workspace now offers current-page name, follow-up-status and consent filters, refresh, next-review dates and accurate page counts. Every filter refresh uses the unchanged assigned-record RPC with fresh authorization; pagination follows the original 50-row page, even when filters show no matches. Decision/free-book signups are explicitly separate from event registration/check-in. Contact routes remain unavailable, book activity uninstrumented and staff discipleship status unavailable. No learner answers, Person linking, export, messaging, grant or new SQL is introduced.

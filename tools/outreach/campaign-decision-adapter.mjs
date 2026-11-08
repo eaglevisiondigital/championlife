@@ -22,6 +22,7 @@ export function createCampaignDecisionAdapter({auth,workspace,eventTarget,getAll
  if(typeof projectRef!=='string'||!/^[a-z]{20}$/.test(projectRef)||projectRef==='exdocjbmylgxssanymjk')throw new TypeError('Pinned nonproduction backend required');
  const pinned=()=>{if(client!==auth.client||client.supabaseUrl!==url||client.auth.url!==url+'/auth/v1'||client.rest?.url!==url+'/rest/v1')throw failure('DENIED')};pinned();
  const principals=new WeakMap();const pending=new Set();
+ let initialNotification=true;
  let generation=0,scope=null,snapshot=null,closed=false,busy=false,subscription,expiryTimer,activePrincipal=null;
  const emit=(value)=>{snapshot=value?freeze(value):null;onSnapshot(snapshot)};
  const invalidate=(reason='Access must be verified again')=>{clearTimeout(expiryTimer);generation++;scope=null;activePrincipal=null;busy=false;for(const c of pending)c.abort();pending.clear();emit({state:'unavailable',message:reason})};
@@ -104,7 +105,12 @@ export function createCampaignDecisionAdapter({auth,workspace,eventTarget,getAll
   finally{if(g===generation)busy=false}
  };
  const listeners=['staff-protected-clear','staff-access-denied','pagehide','pageshow','popstate','storage'].map(name=>{const handler=()=>invalidate();eventTarget.addEventListener(name,handler);return[name,handler]});
- try{subscription=auth.client.auth.onAuthStateChange(()=>{if(!closed)invalidate()})?.data?.subscription;if(typeof subscription?.unsubscribe!=='function')throw new TypeError('Disposable Auth subscription required')}catch(e){listeners.forEach(([n,h])=>eventTarget.removeEventListener(n,h));throw e}
+ try{subscription=auth.client.auth.onAuthStateChange((event,session)=>{
+  const first=initialNotification;initialNotification=false;
+  // Ignore only a valid first subscription notification, never an account/token replacement.
+  if(first&&event==='INITIAL_SESSION'&&id(session?.user?.id)&&typeof session.access_token==='string'&&session.access_token&&(!activePrincipal||(activePrincipal.id===session.user.id&&activePrincipal.token===session.access_token)))return;
+  if(!closed)invalidate();
+ })?.data?.subscription;if(typeof subscription?.unsubscribe!=='function')throw new TypeError('Disposable Auth subscription required')}catch(e){listeners.forEach(([n,h])=>eventTarget.removeEventListener(n,h));throw e}
  return Object.freeze({
   select(organizationId,campaignId){invalidate();if(closed||!workspace.active()||!id(organizationId)||!id(campaignId))throw failure('DENIED');const next={organizationId,campaignId};if(!permitted(next))throw failure('DENIED');scope=next},
   list(page=0){if(!Number.isInteger(page)||page<0||page>9999)throw failure('INVALID_PAGE');return run('list',{page})},

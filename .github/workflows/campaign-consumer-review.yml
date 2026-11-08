@@ -51,4 +51,13 @@ jobs:
         run: TEST_POSTGRES_BIN=/usr/lib/postgresql/17/bin node tools/outreach/campaign-decision.browser.mjs
       - name: Test isolated campaign workspace with fictional sessions and real local SQL
         run: TEST_POSTGRES_BIN=/usr/lib/postgresql/17/bin node tools/outreach/campaign-workspace.browser.mjs
+      - name: Fetch exact reviewed Staff126 and Desk132 sources
+        run: git fetch --no-tags --depth=1 origin 95723fae9d4cbc16eb80e350191495b4d37d4498 8b9d6ae93737f87601a8486d5db8fc88ace2806b
+      - name: Verify nonproduction staff-host composition
+        run: node tools/outreach/campaign-staff-host.test.mjs
+      - name: Verify actual Staff Home and decision desk with pinned SDK
+        shell: bash
+        run: |
+          curl --fail --location 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.118.0' --output "$RUNNER_TEMP/campaign-host-sdk.js"
+          TEST_POSTGRES_BIN=/usr/lib/postgresql/17/bin SUPABASE_SDK_PATH="$RUNNER_TEMP/campaign-host-sdk.js" node tools/outreach/campaign-staff-host.browser.mjs
       - run: git diff --check

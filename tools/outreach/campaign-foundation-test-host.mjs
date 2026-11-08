@@ -88,6 +88,16 @@ export async function createCampaignFoundationTestHost(options={}) {
     const url='http://127.0.0.1:'+server.address().port;
     const rpc=async(token,args)=>{const response=await fetch(url+'/rpc',{method:'POST',headers:{Authorization:'Bearer '+token,'Content-Type':'application/json'},body:JSON.stringify(args)});const result=await response.json();if(result.error)throw Object.assign(new Error(result.error.message),{code:result.error.code});return result.data};
     const directory=async(token)=>{const response=await fetch(url+'/directory',{method:'POST',headers:{Authorization:'Bearer '+token,'Content-Type':'application/json'},body:'{}'});const result=await response.json();if(result.error)throw Object.assign(new Error(result.error.message),{code:result.error.code});return result.data};
+    // Local host-composition discovery only: exact existing read operations, no generic SQL bridge.
+    const staffDiscovery=async(token,name)=>{
+      const user=tokens.get(token);if(!user)throw deny();
+      const queries={staff_workspace_context:'select public.staff_workspace_context() v',outreach_registration_workspace:"select public.outreach_registration_workspace('campaigns',null,'{}') v",forms_workspace:"select public.forms_workspace('context',null,'{}') v",communications_workspace:"select public.communications_workspace('context',null,'{}') v"};
+      if(!Object.hasOwn(queries,name))throw deny('22023');
+      const conn=await db.connect();try{
+        await conn.query("select set_config('request.jwt.claim.sub',$1,false),set_config('request.jwt.claims',$2,false)",[user.id,JSON.stringify({sub:user.id,session_id:user.sessionId,exp:Math.floor(Date.now()/1000)+3600})]);await conn.query('set role authenticated');
+        return (await conn.query(queries[name])).rows[0].v;
+      }finally{await conn.end()}
+    };
     const expire=userId=>q("update outreach_campaign_assignments set decision_expires_at=now()-interval '1 minute' where user_id=$1 and decision_effective_at is not null",[userId]);
     const revoke=userId=>q('update outreach_campaign_assignments set active=false where user_id=$1',[userId]);
     const retire=userId=>q("update auth.sessions set not_after=now()-interval '1 minute' where user_id=$1",[userId]);
@@ -110,7 +120,7 @@ export async function createCampaignFoundationTestHost(options={}) {
       }
       return ids;
     };
-    return {url,orgId,campaignId,otherCampaignId,foreignOrgId,foreignCampaignId,users,records,requests,rpc,revoke,retire,consent,mapSource,reset,seedAssigned,...(withDirectory?{directory,expire}:{}),
+    return {url,orgId,campaignId,otherCampaignId,foreignOrgId,foreignCampaignId,users,records,requests,rpc,staffDiscovery,revoke,retire,consent,mapSource,reset,seedAssigned,...(withDirectory?{directory,expire}:{}),
       audit:async()=>(await q('select registration_id,actor_user_id,request_id,before_state,after_state from outreach_decision_audit order by recorded_at')).rows,
       reassign:(recordId,userId)=>q('update outreach_decision_followup set assigned_user_id=$2 where registration_id=$1',[recordId,userId]),
       close:async()=>{server.closeAllConnections();await new Promise(resolve=>server.close(resolve));await db.close()}};

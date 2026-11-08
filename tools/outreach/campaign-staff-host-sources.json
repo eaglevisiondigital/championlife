@@ -1,0 +1,46 @@
+{
+  "staffCommit": "95723fae9d4cbc16eb80e350191495b4d37d4498",
+  "deskCommit": "8b9d6ae93737f87601a8486d5db8fc88ace2806b",
+  "files": [
+    {
+      "path": "staff-home.html",
+      "sha256": "fe8898e9638d91bd310bdd9db831c99ed45b6a92a9e8d76a88e78d6dfa2489fb"
+    },
+    {
+      "path": "assets/js/staff-workspace.js",
+      "sha256": "76bd2f1912d18627e0c1b77ec64c0b6de6ca812fe597bdaf5d65676b4ca2bbe2"
+    },
+    {
+      "path": "assets/js/champion-life-auth.js",
+      "sha256": "f1d277ea1cb5cf608de471b0a62f6ae41c9ecdc3b675960628083ee4e1df3cb4"
+    },
+    {
+      "path": "assets/js/staff-session.js",
+      "sha256": "53b3c95aba901411a42130e3608a4b79c5e328621b92a8794fb479b9360c2c48"
+    },
+    {
+      "path": "assets/js/outreach-staff-common.js",
+      "sha256": "78ae549e7077b662dc6a275f23307fea2b6eb34b6a0c1da407ffe3ec36dad164"
+    },
+    {
+      "path": "assets/css/outreach-campaigns.css",
+      "sha256": "3b062e4113e2b8da3fdb02769b1ffdf29e8a5d4cb86784c2b8f8bd9abbfbda81"
+    },
+    {
+      "path": "assets/css/staff-portal.css",
+      "sha256": "89db633369eb31b0ca790ae7b9633fc01403c40bb52c3491c59870f9cc0fc417"
+    },
+    {
+      "path": "assets/css/staff-workspace.css",
+      "sha256": "dacb4b0cddc15e624690f7c6ad16fa2867d6b4a9997e06ad445472874b39e28b"
+    },
+    {
+      "path": "assets/images/logo-gold.png",
+      "sha256": "0a58d621918aeffc58ab72a30311054432461014b52eae5dd973da1f3cc59a69"
+    },
+    {
+      "path": "assets/images/propel-logo-header-transparent.png",
+      "sha256": "1da2643a7741846dea083b29b6c9d7fddc3bb051d008b2039e6999df860d1b8d"
+    }
+  ]
+}
