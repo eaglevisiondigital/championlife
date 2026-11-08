@@ -100,4 +100,72 @@ for(const [engine,type]of Object.entries({chromium,webkit})){
   console.log(JSON.stringify({engine,width,scenario,oldVisible,newMutations:writes.length,pageErrors:errors,route:new URL(page.url()).search,selector:await page.locator('select[name=organization]').inputValue()}));await context.close();
  }}finally{await browser.close()}
 }
+// Same actual page and SDK; fictional transport commits/loss are controlled independently.
+for(const [engine,type]of Object.entries({chromium,webkit})){
+ const browser=await type.launch(engine==='chromium'&&!process.env.CI?{channel:'chrome'}:{});
+ try{for(const width of[390,1440])for(const outcome of['confirmed','detail-lost','rejected','denied','lost','proxy','malformed','lost-account','lost-organization','lost-logout']){
+  const context=await browser.newContext({viewport:{width,height:1000}}),page=await context.newPage(),errors=[],calls=[],writes=[];
+  const other='bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb2',event='dddddddd-dddd-4ddd-8ddd-dddddddddd01';let responseHeld=false,release;
+  page.on('pageerror',e=>errors.push(e.message));
+  await context.addInitScript(()=>{const add=EventTarget.prototype.addEventListener;EventTarget.prototype.addEventListener=function(type,fn,...rest){if(type==='submit'&&this.classList?.contains('event-form'))window.__saveHandler=fn;return add.call(this,type,fn,...rest)}});
+  await context.route('**/*',async route=>{
+   const req=route.request(),u=new URL(req.url()),send=(json,status=200)=>route.fulfill({json,status,headers:{'access-control-allow-origin':'*'}});
+   if(req.url()==='https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.118.0')return route.fulfill({body:sdk,contentType:'text/javascript',headers:{'access-control-allow-origin':'*'}});
+   if(u.origin===backend){
+    if(u.pathname==='/auth/v1/user')return send({id:a,email:'fictional@example.test',email_confirmed_at:'2026-01-01',role:'authenticated',aud:'authenticated'});
+    const name=u.pathname.split('/').at(-1),p=req.postDataJSON()||{};calls.push(p);
+    if(name==='staff_workspace_context')return send({organizations:[{id:o,name:'Fictional A'},{id:other,name:'Fictional B'}],grants:[o,other].map(organization_id=>({organization_id,permission:'events.manage'}))});
+    assert.equal(name,'events_workspace');
+    if(p.p_action==='context')return send({timezone:'UTC',manage_configuration:true,departments:[],labels:[],locations:[],approval_required:true,settings_revision:1});
+    if(p.p_action==='list')return send([]);
+    if(p.p_action==='detail'){
+     if(outcome==='detail-lost')return send({message:'Unconfirmed schedule read'},502);
+     return send({series:{id:event,organization_id:o,title:'Confirmed fictional event',status:'draft',timezone:'UTC',revision:1},can_manage:true,conflicts:0,audit:[],occurrences:[]});
+    }
+    assert.equal(p.p_action,'save');writes.push(p);
+    if(outcome.startsWith('lost-')){responseHeld=true;await new Promise(r=>release=r)}
+    if(outcome.startsWith('lost'))return route.abort('failed');
+    if(outcome==='proxy')return send({message:'Gateway response unavailable'},502);
+    if(outcome==='malformed')return send(null);
+    if(outcome==='denied')return send({code:'42501',message:'Access denied'},403);
+    if(outcome==='rejected')return send({code:'P0001',message:'Stale event: reload before saving'},400);
+    return send({id:event,organization_id:p.p_org,revision:p.p_data.revision+1});
+   }
+   assert.equal(u.origin,origin,'No external request');
+   if(u.pathname==='/seed')return route.fulfill({body:'<!doctype html>',contentType:'text/html'});
+   if(u.pathname==='/assets/js/supabase-config.js')return route.fulfill({body:'window.CHAMPION_LIFE_SUPABASE='+JSON.stringify({url:backend,publishableKey:'fictional-no-authority'}),contentType:'text/javascript'});
+   const path=root+u.pathname.slice(1);assert(existsSync(path),path);return route.fulfill({body:readFileSync(path),contentType:path.endsWith('.html')?'text/html':path.endsWith('.js')?'text/javascript':path.endsWith('.css')?'text/css':'image/png'});
+  });
+  await page.goto(origin+'/seed');await page.evaluate(value=>localStorage.setItem('sb-synthetic-events-auth-token',JSON.stringify(value)),session(a));
+  await page.goto(origin+'/staff-events.html?org='+o);await page.getByRole('button',{name:'Create event',exact:true}).click();
+  await page.locator('[name=title]').fill('Private fictional draft');await page.locator('[name=local_start]').fill('2026-11-10T12:00');await page.locator('[name=local_end]').fill('2026-11-10T13:00');await page.locator('[name=internal_notes]').fill('PRIVATE SAME ACCOUNT');
+  await page.evaluate(()=>{window.__originalSave=window.__saveHandler;window.__originalForm=document.querySelector('form.event-form')});
+  await page.getByRole('button',{name:'Save',exact:true}).click();
+  if(outcome.startsWith('lost-')){
+   for(let i=0;i<200&&!responseHeld;i++)await page.waitForTimeout(10);assert(responseHeld);checks++;
+   if(outcome==='lost-organization')await page.locator('select[name=organization]').selectOption(other);
+   else await page.evaluate(({outcome,next})=>{if(outcome==='lost-logout')localStorage.removeItem('sb-synthetic-events-auth-token');else localStorage.setItem('sb-synthetic-events-auth-token',JSON.stringify(next))},{outcome,next:session('aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaa2')});
+   release();await page.waitForFunction(()=>document.querySelectorAll('[name=internal_notes]').length===0);
+   assert.equal(await page.locator('form.event-form').count(),0);checks++;
+  }else if(['lost','proxy','malformed'].includes(outcome)){
+   await page.getByText(/We cannot confirm whether your changes were saved/).waitFor();
+   assert.equal(await page.locator('[name=title]').inputValue(),'Private fictional draft');assert.equal(await page.getByRole('button',{name:'Save',exact:true}).isDisabled(),true);assert.equal(calls.filter(c=>c.p_action==='detail').length,0);checks+=3;
+   await page.evaluate(()=>{window.__originalSave({preventDefault(){}});window.__originalForm.dispatchEvent(new Event('submit',{bubbles:true,cancelable:true}))});
+   await page.getByRole('button',{name:'Close',exact:true}).click();await page.getByRole('button',{name:'Create event',exact:true}).click();
+   assert.equal(await page.getByRole('button',{name:'Save',exact:true}).isDisabled(),true);checks++;
+   await page.evaluate(()=>window.__saveHandler({preventDefault(){}}));
+  }else if(outcome==='denied'){
+   await page.getByText(/Event access is no longer available/).waitFor();assert.equal(await page.locator('[name=internal_notes]').count(),0);checks++;
+  }else if(outcome==='rejected'){
+   await page.getByText(/This record changed/).waitFor();assert.equal(await page.locator('[name=title]').inputValue(),'Private fictional draft');assert.equal(await page.getByRole('button',{name:'Save',exact:true}).isDisabled(),false);checks+=2;
+  }else{
+   await page.getByText('Save confirmed.',{exact:true}).waitFor();
+   if(outcome==='detail-lost')await page.getByText(/save was confirmed, but the schedule could not be loaded/).waitFor();else await page.getByRole('heading',{name:'Confirmed fictional event',exact:true}).waitFor();
+   assert.equal(calls.filter(c=>c.p_action==='detail')[0].p_data.id,event);checks++;
+  }
+  if(outcome!=='rejected')await page.evaluate(()=>window.__originalSave({preventDefault(){}}));
+  await page.waitForTimeout(100);assert.equal(writes.length,1);assert.equal(writes[0].p_org,o);assert.equal(writes[0].p_data.revision,0);assert.deepEqual(errors,[]);checks+=4;
+  console.log(JSON.stringify({engine,width,outcome,mutationRequests:writes.length,detailRequests:calls.filter(c=>c.p_action==='detail').length,synthetic:true,pageErrors:errors}));await context.close();
+ }}finally{await browser.close()}
+}
 console.log(JSON.stringify({checks,syntheticAuth:true,providerAcceptance:false}));

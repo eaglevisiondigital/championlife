@@ -158,3 +158,8 @@ Staff126-derived Events buttons and editor forms permanently retire on removal, 
 ## November 8 — Events organization-switch recovery (source only)
 
 An injected browser history failure left old organization event content under a new selector value. The handler now adopts a new organization only after the route update succeeds; failure retires protected content and asks for fresh access verification. Normal organization navigation, pending-request fences and already-dispatched authority cleanup are preserved. Existing tests/guards reused, no SQL or permission expansion. PR128 and129 remain separate unchanged siblings on Staff126. Historical runner/WebKit failures and genuine Auth/RLS/recovery acceptance remain unresolved; RELEASE NO-GO.
+
+
+## November 8 — Events uncertain-save recovery (source only)
+
+PR130-derived bounded Events correction: uncertain dispatched saves retain current form work and hold further same-account/organization mutations on this page, including reopened editors. No automatic retry or identity guessing. Explicit transactional rejections and validated successful responses are distinct; a failed schedule load cannot relabel a confirmed save as failed. Account/scope retirement and current control protections remain. No SQL, public baptism/Forms merge or permissions change. Durable authoritative request receipts are absent; detail/catalog can materialize rows, so no read-only reconciliation is invented. Local holds do not persist across reloads/tabs/devices. Original PR130/128/129 failures remain preserved; genuine Auth/RLS/recovery and RELEASE NO-GO remain.
