@@ -153,3 +153,8 @@ Financial-only staff already admitted by Staff123 can return from Partner review
 ## November 8 — Events permanent control retirement (source only)
 
 Staff126-derived Events buttons and editor forms permanently retire on removal, including reinsertion during awaited local-session checks. Existing scope, revisions, server permissions and already-submitted outcome cleanup remain. Private synthetic original/candidate evidence and independent review are separate from hosted acceptance. No SQL, grants, publication or provider change. Prior runner shutdown remains UNKNOWN; release NO-GO.
+
+
+## November 8 — Events organization-switch recovery (source only)
+
+An injected browser history failure left old organization event content under a new selector value. The handler now adopts a new organization only after the route update succeeds; failure retires protected content and asks for fresh access verification. Normal organization navigation, pending-request fences and already-dispatched authority cleanup are preserved. Existing tests/guards reused, no SQL or permission expansion. PR128 and129 remain separate unchanged siblings on Staff126. Historical runner/WebKit failures and genuine Auth/RLS/recovery acceptance remain unresolved; RELEASE NO-GO.
