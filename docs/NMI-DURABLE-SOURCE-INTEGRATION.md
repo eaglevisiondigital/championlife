@@ -52,6 +52,22 @@ server composition; this file is not attached to a live handler or public browse
 Revocation is checked on each review; a returned historical review result cannot
 activate a payment, and cannot replace execution-time provider/DB authorization.
 
+### Final evidence-lookup identity check
+
+The disabled reviewer now completes its final evidence lookup before its existing
+second authentication. Previously an account/session replacement during that lookup
+could leave the earlier authenticated principal eligible to receive a reviewable
+snapshot. There is no further await between the final identity check and return.
+The same two authentication calls, existing SQL, route evidence comparisons and
+expiry check remain; no permission, transport or payment capability is added.
+
+Permanent fictional Church/SowGo tests hold the final evidence lookup and replace
+the account, session, verification state or authenticated user, or reject Auth.
+Those results must deny; an unchanged current identity remains reviewable with
+all execution flags false. This response-publication correction does not make the
+historical database snapshot current, prove live provider revocation, or authorize
+execution. All existing merchant/settlement and genuine acceptance gates remain.
+
 ## Local verification and invocation
 
 ```sh

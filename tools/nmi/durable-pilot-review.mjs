@@ -44,7 +44,9 @@ export function createDurablePilotReviewer({authenticate,resolveEvidence,withRea
     reviewable=snapshot.rows.length===1&&s.checked===true&&s.status==='active'&&s.is_public===true&&s.account_enabled===true&&s.proof_enabled===true&&s.nmi_route_enabled===true&&s.recurring_allowed===false&&s.form_enabled===false&&s.control_enabled===false&&
      s.purpose===evidence.purpose&&s.gateway_id===evidence.gatewayId&&s.mid_reference===evidence.midAlias&&s.proof_mid===evidence.midAlias&&s.merchant_reference===evidence.legalMerchant&&s.proof_merchant===evidence.legalMerchant&&s.settlement_reference===evidence.settlementOwner&&s.receipt_identity===evidence.receiptOwner&&s.proof_reference===evidence.evidenceRef&&s.route_revision===evidence.revision;
    });
-   const fresh=await authenticate();const current=await resolveEvidence(scope,identity);
+   // Evidence lookup may await. Validate the current account/session after it,
+   // immediately before publishing this disabled snapshot, with no further await.
+   const current=await resolveEvidence(scope,identity);const fresh=await authenticate();
    if(!completed||fresh?.verified!==true||fresh.userId!==identity.userId||fresh.sessionId!==identity.sessionId||JSON.stringify(current)!==JSON.stringify(evidence)||Date.parse(evidence.expiresAt)<=Date.now())return result('REVOKED_OR_CHANGED_BINDING');
    return result(reviewable?'DISABLED_DURABLE_SNAPSHOT_REVIEWABLE':'DURABLE_AUTHORITY_OR_ROUTE_DENIED',reviewable);
   }catch{return result('DURABLE_REVIEW_UNAVAILABLE');}
