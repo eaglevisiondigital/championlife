@@ -420,7 +420,7 @@
       document.querySelector('.grip-complete')?.scrollIntoView({behavior:'smooth', block:'center'});
     } catch (err) {
       if (!current(stamp,id)) return;
-      setMessage('error', 'We could not submit the lesson right now. Your answers are still saved on this device. Please try again.');
+      setMessage('error', 'We could not confirm this lesson submission. Keep this page open to preserve your current answers; they may not be saved on this device.');
     } finally {
       if (submit && current(stamp,id)) {
         submit.disabled = false;
