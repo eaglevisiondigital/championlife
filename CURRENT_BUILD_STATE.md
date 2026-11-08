@@ -148,3 +148,8 @@ or replayed by this browser correction.
 ## November 7 — Financial review return navigation (source only)
 
 Financial-only staff already admitted by Staff123 can return from Partner review to the same organization's Staff home using the existing outreach.view AND finance.read permissions. People return separately requires people.read. Denial recovery now opens the actual Staff home. Local synthetic original reproduction and current positive/negative browser checks are recorded in tools/partner-home-cycle22; hosted acceptance is not performed. Existing Staff123 required CI remains INCOMPLETE (21 PASS/1 runner shutdown, cause UNKNOWN), without retry. No SQL, grants, SDK, branding, provider or release change.
+
+
+## November 8 — Events permanent control retirement (source only)
+
+Staff126-derived Events buttons and editor forms permanently retire on removal, including reinsertion during awaited local-session checks. Existing scope, revisions, server permissions and already-submitted outcome cleanup remain. Private synthetic original/candidate evidence and independent review are separate from hosted acceptance. No SQL, grants, publication or provider change. Prior runner shutdown remains UNKNOWN; release NO-GO.
