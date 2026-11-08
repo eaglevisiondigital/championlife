@@ -22,7 +22,8 @@ for(const [engine,type] of Object.entries({chromium,webkit})){
   }
   {
    const h=await ready({caps:['finance.read','outreach.view']});
-   check(await h.page.locator('[data-partner-return][href]').count(),0,label+' financial intake does not confer People navigation');
+   check(await h.page.locator('[data-partner-return="people"]').getAttribute('href'),null,label+' financial intake does not confer People navigation');
+   check(await h.page.locator('[data-partner-return="home"]').getAttribute('href'),'staff-home.html?context=church&org='+O,label+' existing financial authority permits exact home return');
    check(h.state.calls.some(x=>x.name==='people_workspace'),false,label+' financial-only context never reads People');await h.close();
   }
   for(const hint of ['org='+O+'&org='+Q,'org=unavailable','org=cccccccc-cccc-4ccc-8ccc-ccccccccccc3']){

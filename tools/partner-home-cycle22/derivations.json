@@ -1,0 +1,180 @@
+{
+  "assets/js/staff-outreach-partners.js": [
+    [
+      "   if(!can('people.read'))continue;",
+      "   const required=['outreach.view','finance.read',...(link.dataset.partnerReturn==='home'?[]:['people.read'])];\n   if(!required.every(can))continue;"
+    ],
+    [
+      "!['outreach.view','finance.read','people.read'].every(key=>latest.grants",
+      "!required.every(key=>latest.grants"
+    ],
+    [
+      "el('a','Return to Staff Home',{href:'staff-people.html'",
+      "el('a','Return to Staff Home',{href:'staff-home.html'"
+    ]
+  ],
+  "tools/staff-financial-navigation-cycle21/source.mjs": [
+    [
+      "\nimport assert from 'node:assert/strict';\n",
+      "\nimport assert from 'node:assert/strict';\nimport {checkpointReader as cycle22CheckpointReader,verifyActual as verifyCycle22,additions as cycle22Additions} from '../partner-home-cycle22/source.mjs';\n"
+    ],
+    [
+      "export const current=p=>readFileSync(new URL(p,root));",
+      "let cycle22Read;export const current=p=>(cycle22Read ||= cycle22CheckpointReader())(p);"
+    ],
+    [
+      "const recipeBytes=current('tools/staff-financial-navigation-cycle21/derivations.json');",
+      "const recipeBytes=readFileSync(new URL('tools/staff-financial-navigation-cycle21/derivations.json',root));"
+    ],
+    [
+      "export function verifyActual(read=current){",
+      "export function verifyActual(read=current){\n verifyCycle22();"
+    ],
+    [
+      ".trim().split('\\n').filter(Boolean);",
+      ".trim().split('\\n').filter(Boolean).filter(p=>!cycle22Additions.includes(p));"
+    ]
+  ],
+  "tools/staff-create-lifetime-cycle20/source.mjs": [
+    [
+      "\nimport assert from 'node:assert/strict';\n",
+      "\nimport assert from 'node:assert/strict';\nimport {additions as cycle22Additions} from '../partner-home-cycle22/source.mjs';\n"
+    ],
+    [
+      "!cycle21Additions.includes(p)",
+      "!cycle21Additions.includes(p)&&!cycle22Additions.includes(p)"
+    ]
+  ],
+  "tools/staff-lifetime-cycle19/source.mjs": [
+    [
+      "\nimport assert from 'node:assert/strict';\n",
+      "\nimport assert from 'node:assert/strict';\nimport {additions as cycle22Additions} from '../partner-home-cycle22/source.mjs';\n"
+    ],
+    [
+      "!cycle21Additions.includes(p)",
+      "!cycle21Additions.includes(p)&&!cycle22Additions.includes(p)"
+    ]
+  ],
+  "tools/staff-integration-cycle16/source.mjs": [
+    [
+      "\nimport assert from 'node:assert/strict';\n",
+      "\nimport assert from 'node:assert/strict';\nimport {additions as cycle22Additions} from '../partner-home-cycle22/source.mjs';\n"
+    ],
+    [
+      "!cycle21Additions.includes(p)",
+      "!cycle21Additions.includes(p)&&!cycle22Additions.includes(p)"
+    ]
+  ],
+  "tools/staff-runtime-cycle14/source.mjs": [
+    [
+      "\nimport assert from 'node:assert/strict';\n",
+      "\nimport assert from 'node:assert/strict';\nimport {additions as cycle22Additions} from '../partner-home-cycle22/source.mjs';\n"
+    ],
+    [
+      "!cycle21Additions.includes(path)",
+      "!cycle21Additions.includes(path)&&!cycle22Additions.includes(path)"
+    ]
+  ],
+  "tools/staff-financial-navigation-cycle21/build.mjs": [
+    [
+      "import assert from 'node:assert/strict';",
+      "import assert from 'node:assert/strict';\nimport {current as cycle22Current,expectedRuntime as cycle22Expected,runtime as cycle22Runtime} from '../partner-home-cycle22/source.mjs';"
+    ],
+    [
+      "hash(current(p)),'Actual source/build '",
+      "hash(cycle22Current(p)),'Actual source/build '"
+    ],
+    [
+      "hash(original(p))",
+      "hash(p===cycle22Runtime?cycle22Expected():original(p))"
+    ],
+    [
+      "unchangedPublic:first.length-1,changedPublic:[runtime]",
+      "unchangedPublic:first.length-2,changedPublic:[runtime,cycle22Runtime]"
+    ]
+  ],
+  "tools/staff-create-lifetime-cycle20/build.mjs": [
+    [
+      "import assert from 'node:assert/strict';",
+      "import assert from 'node:assert/strict';\nimport {current as cycle22Current,expectedRuntime as cycle22Expected,runtime as cycle22Runtime} from '../partner-home-cycle22/source.mjs';"
+    ],
+    [
+      "hash(cycle21Current(p))",
+      "hash(cycle22Current(p))"
+    ],
+    [
+      "p===cycle21Runtime?cycle21Expected():original(p)",
+      "p===cycle22Runtime?cycle22Expected():p===cycle21Runtime?cycle21Expected():original(p)"
+    ],
+    [
+      "unchangedPublic:first.length-2,changedPublic:[runtime,cycle21Runtime]",
+      "unchangedPublic:first.length-3,changedPublic:[runtime,cycle21Runtime,cycle22Runtime]"
+    ]
+  ],
+  "tools/staff-lifetime-cycle19/build.mjs": [
+    [
+      "import assert from 'node:assert/strict';",
+      "import assert from 'node:assert/strict';\nimport {current as cycle22Current,expectedRuntime as cycle22Expected,runtime as cycle22Runtime} from '../partner-home-cycle22/source.mjs';"
+    ],
+    [
+      "hash(cycle21Current(p))",
+      "hash(cycle22Current(p))"
+    ],
+    [
+      "p===cycle21Runtime?cycle21Expected():original(p)",
+      "p===cycle22Runtime?cycle22Expected():p===cycle21Runtime?cycle21Expected():original(p)"
+    ],
+    [
+      "unchangedPublic:first.length-2,changedPublic:[runtime,cycle21Runtime]",
+      "unchangedPublic:first.length-3,changedPublic:[runtime,cycle21Runtime,cycle22Runtime]"
+    ]
+  ],
+  "tools/staff-integration-cycle16/build.mjs": [
+    [
+      "import assert from 'node:assert/strict';",
+      "import assert from 'node:assert/strict';\nimport {current as cycle22Current,expectedRuntime as cycle22Expected,runtime as cycle22Runtime} from '../partner-home-cycle22/source.mjs';"
+    ],
+    [
+      "hash(cycle21Current(p))",
+      "hash(cycle22Current(p))"
+    ]
+  ],
+  "tools/staff-runtime-cycle14/build.mjs": [
+    [
+      "import assert from 'node:assert/strict';",
+      "import assert from 'node:assert/strict';\nimport {current as cycle22Current,expectedRuntime as cycle22Expected,runtime as cycle22Runtime} from '../partner-home-cycle22/source.mjs';"
+    ],
+    [
+      "hash(cycle21Current(path))",
+      "hash(cycle22Current(path))"
+    ],
+    [
+      "path===cycle21Runtime?cycle21Expected():cycle16Paths.includes(path)",
+      "path===cycle22Runtime?cycle22Expected():path===cycle21Runtime?cycle21Expected():cycle16Paths.includes(path)"
+    ]
+  ],
+  "tools/staff-cycle9-integrity/integrity.mjs": [
+    [
+      "from '../staff-financial-navigation-cycle21/source.mjs';",
+      "from '../partner-home-cycle22/source.mjs';"
+    ]
+  ],
+  "CURRENT_BUILD_STATE.md": [
+    [
+      "es against current local identity/client before\nold-account private review or uncertain-save controls can return. Same-account\nuncertain writes retain the original no-retry handling; no records are rolled back\nor replayed by this browser correction.\n",
+      "es against current local identity/client before\nold-account private review or uncertain-save controls can return. Same-account\nuncertain writes retain the original no-retry handling; no records are rolled back\nor replayed by this browser correction.\n\n\n## November 7 \u2014 Financial review return navigation (source only)\n\nFinancial-only staff already admitted by Staff123 can return from Partner review to the same organization's Staff home using the existing outreach.view AND finance.read permissions. People return separately requires people.read. Denial recovery now opens the actual Staff home. Local synthetic original reproduction and current positive/negative browser checks are recorded in tools/partner-home-cycle22; hosted acceptance is not performed. Existing Staff123 required CI remains INCOMPLETE (21 PASS/1 runner shutdown, cause UNKNOWN), without retry. No SQL, grants, SDK, branding, provider or release change.\n"
+    ]
+  ],
+  "SECURITY_MODEL.md": [
+    [
+      "guarded by the existing navigation generation, principal, campaign and DOM bindings. No SDK, database authorization, permission, storage, schema or audit change is introduced. This local correction is not provider-backed session-retirement evidence.\n",
+      "guarded by the existing navigation generation, principal, campaign and DOM bindings. No SDK, database authorization, permission, storage, schema or audit change is introduced. This local correction is not provider-backed session-retirement evidence.\n\n\n## November 7 \u2014 Financial return authorization boundary\n\nPartner home return uses current same-organization outreach.view AND finance.read. People return additionally requires people.read. Each click retains existing session, organization, generation and initiating-control checks around fresh staff context; removed controls remain retired. Denial recovery carries no record or organization hint and the destination independently authorizes. This is navigation-only; no People, financial mutation or identity authority is added. Synthetic browser evidence does not establish hosted Auth/RLS acceptance.\n"
+    ]
+  ],
+  "tools/partner-staff-cycle16/independent.browser.mjs": [
+    [
+      "   check(await h.page.locator('[data-partner-return][href]').count(),0,label+' financial intake does not confer People navigation');",
+      "   check(await h.page.locator('[data-partner-return=\"people\"]').getAttribute('href'),null,label+' financial intake does not confer People navigation');\n   check(await h.page.locator('[data-partner-return=\"home\"]').getAttribute('href'),'staff-home.html?context=church&org='+O,label+' existing financial authority permits exact home return');"
+    ]
+  ]
+}

@@ -1,6 +1,7 @@
 // Verify actual source before allowing immutable historical checkpoint projections.
 import {checkpointReader as cycle19CheckpointReader,verifyActual as verifyCycle19,additions as cycle19Additions} from '../staff-lifetime-cycle19/source.mjs';
 import assert from 'node:assert/strict';
+import {additions as cycle22Additions} from '../partner-home-cycle22/source.mjs';
 import {additions as cycle21Additions} from '../staff-financial-navigation-cycle21/source.mjs';
 import {additions as cycle20Additions} from '../staff-create-lifetime-cycle20/source.mjs';
 import {readFileSync,lstatSync,readdirSync,existsSync} from 'node:fs';
@@ -73,7 +74,7 @@ export function verifyActual(read=current){
  const allowed=new Set([...tracked,...additions]);
  for(const p of tracked){const s=lstatSync(new URL(p,root));assert(s.isFile()&&!s.isSymbolicLink(),(p.startsWith('netlify')||p.startsWith('supabase')?'No protected backend/config symlink; ':'No public symlink; ')+'Regular source '+p);assert.deepEqual(read(p),runtimePaths.includes(p)?expected(p):Object.hasOwn(transforms,p)?expectedRouter(p):original(p),'Historical guard/build/dependency unchanged outside exact reviewed derivation; Exact actual source '+p)}
  for(const p of additions){const s=lstatSync(new URL(p,root));assert(s.isFile()&&!s.isSymbolicLink(),'Regular addition '+p)}
- const present=execFileSync('git',['ls-files','--cached','--others','--exclude-standard'],{cwd:root,encoding:'utf8'}).trim().split('\n').filter(Boolean).filter(p=>!cycle19Additions.includes(p)&&!cycle20Additions.includes(p)&&!cycle21Additions.includes(p));
+ const present=execFileSync('git',['ls-files','--cached','--others','--exclude-standard'],{cwd:root,encoding:'utf8'}).trim().split('\n').filter(Boolean).filter(p=>!cycle19Additions.includes(p)&&!cycle20Additions.includes(p)&&!cycle21Additions.includes(p)&&!cycle22Additions.includes(p));
  for(const p of present)assert(allowed.has(p),'Unlisted composition file '+p);
  for(const prefix of ['assets','supabase','netlify']){function walk(p){if(!existsSync(new URL(p,root)))return;const s=lstatSync(new URL(p,root));assert(!s.isSymbolicLink(),'No protected backend/config symlink; Protected symlink '+p);if(s.isDirectory())for(const n of readdirSync(new URL(p,root)))walk(p+'/'+n);else assert(tracked.includes(p),'No backend/config addition or removal; Unlisted protected source '+p)}walk(prefix)}
  for(const n of readdirSync(root))if(n.endsWith('.html'))assert(tracked.includes(n),'Unlisted public HTML '+n);

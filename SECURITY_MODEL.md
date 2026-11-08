@@ -50,3 +50,8 @@ Later PR #72 navigation-generation, identity, permission-denial, stale-handler a
 
 ## November 3: household-search ownership correction
 Search text can itself contain private household identifiers. Clearing rendered records alone is insufficient if the next account reuses the prior search closure. This narrow successor clears that closure at existing invalidation boundaries, including a freshly verified principal change detected during focus reauthorization when an Auth callback was missed. Same-account focus preserves search. Pending RPCs and detached handlers remain guarded by the existing navigation generation, principal, campaign and DOM bindings. No SDK, database authorization, permission, storage, schema or audit change is introduced. This local correction is not provider-backed session-retirement evidence.
+
+
+## November 7 — Financial return authorization boundary
+
+Partner home return uses current same-organization outreach.view AND finance.read. People return additionally requires people.read. Each click retains existing session, organization, generation and initiating-control checks around fresh staff context; removed controls remain retired. Denial recovery carries no record or organization hint and the destination independently authorizes. This is navigation-only; no People, financial mutation or identity authority is added. Synthetic browser evidence does not establish hosted Auth/RLS acceptance.

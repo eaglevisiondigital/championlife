@@ -13,12 +13,13 @@
   const g=generation,organization=org,identity=user?.id;
   for(const link of returnLinks){
    link.removeAttribute('href');link.onclick=null;
-   if(!can('people.read'))continue;
+   const required=['outreach.view','finance.read',...(link.dataset.partnerReturn==='home'?[]:['people.read'])];
+   if(!required.every(can))continue;
    const href=link.dataset.partnerReturn==='home'?'staff-home.html?context=church&org='+encodeURIComponent(organization):'staff-people.html?org='+encodeURIComponent(organization);
    link.href=href;
    link.onclick=async event=>{event.preventDefault();if(!live()||g!==generation||org!==organization||user?.id!==identity||!currentControl(link))return;
     try{const latest=await rpc('staff_workspace_context',{},link);if(!live()||g!==generation||org!==organization||!currentControl(link))return;
-     if(!latest?.organizations?.some(o=>o.id===organization)||!['outreach.view','finance.read','people.read'].every(key=>latest.grants?.some(grant=>grant.organization_id===organization&&grant.permission===key&&!grant.department_ids))){failure(403);return;}
+     if(!latest?.organizations?.some(o=>o.id===organization)||!required.every(key=>latest.grants?.some(grant=>grant.organization_id===organization&&grant.permission===key&&!grant.department_ids))){failure(403);return;}
      retire();location.assign(href);
     }catch{/* Existing RPC denial handling clears protected state. */}
    };
@@ -45,7 +46,7 @@
    status.className='partner-access-denied__message';
    const panel=el('section',null,{class:'partner-access-denied','aria-labelledby':'partner-access-denied-title'}),brand=el('div',null,{class:'partner-access-denied__brand'});
    brand.append(el('img',null,{src:'assets/images/logo-gold.png',alt:'Champion Life'}));
-   panel.append(brand,el('p','Staff Access',{class:'partner-access-denied__eyebrow'}),el('h2','Outreach Partner Access Removed',{id:'partner-access-denied-title'}),status,el('p','If you believe you should still have access, contact an administrator.',{class:'partner-access-denied__help'}),el('a','Return to Staff Home',{href:'staff-people.html',class:'partner-access-denied__cta'}));
+   panel.append(brand,el('p','Staff Access',{class:'partner-access-denied__eyebrow'}),el('h2','Outreach Partner Access Removed',{id:'partner-access-denied-title'}),status,el('p','If you believe you should still have access, contact an administrator.',{class:'partner-access-denied__help'}),el('a','Return to Staff Home',{href:'staff-home.html',class:'partner-access-denied__cta'}));
    root.replaceChildren(panel);
   } else root.replaceChildren(status,signIn());
  }
