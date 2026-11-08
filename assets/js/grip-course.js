@@ -25,7 +25,7 @@
   const auth = window.ChampionLifeAuth || null;
   const exportClient = auth?.client, exportAuth = exportClient?.auth;
   const exportVerifier = auth?.getVerifiedUser, exportSession = auth?.getSession;
-  let exportGeneration = null;
+  let exportGeneration = null, draftWriteGeneration = 0;
 
   let pageActive = true, retired = false;
   let cloudUser = null, generation = 0, controller = new AbortController();
@@ -39,7 +39,7 @@
     privateActions.forEach(el => { if (el) el.disabled = !value; });
   }
   function invalidate() {
-    generation++; controller.abort(); controller = new AbortController();
+    generation++; draftWriteGeneration++; controller.abort(); controller = new AbortController();
     clearTimeout(remoteSaveTimer); clearTimeout(expiryTimer);
     cloudUser = null; exportGeneration = null;
     form.reset();
@@ -131,16 +131,34 @@
     saveStatus.textContent = prefix + ' · ' + time;
   }
 
-  function saveDraft() {
-    if (!live() || !pageActive || !cloudUser) return;
+  async function saveDraft() {
+    if (!live() || !pageActive || !cloudUser) return false;
+    const stamp = generation, write = ++draftWriteGeneration, owner = cloudUser;
     const payload = {
-      owner: cloudUser.id, course: courseIdentity, lesson,
-      savedAt: new Date().toISOString(),
-      values: fieldsToObject()
+      owner: owner.id, course: courseIdentity, lesson,
+      savedAt: new Date().toISOString(), values: fieldsToObject()
     };
-    try { localStorage.setItem(draftKey(cloudUser.id), JSON.stringify(payload)); } catch (_) { if(saveStatus) saveStatus.textContent = 'Device storage unavailable; keep this page open until cloud save succeeds.'; return; }
-    localSaveLabel(cloudUser ? 'Saved locally' : 'Saved on this device');
-    updateProgress();
+    const pinned = () => window.ChampionLifeAuth === auth && auth?.client === exportClient &&
+      exportClient?.auth === exportAuth && auth?.getVerifiedUser === exportVerifier && auth?.getSession === exportSession;
+    const pending = () => current(stamp, owner.id) && write === draftWriteGeneration;
+    if (saveStatus) saveStatus.textContent = 'Verifying your account before saving this draft…';
+    try {
+      // A missed Auth callback must not persist another session's edits under
+      // this view's cached owner. Newer edits/navigation retire pending writes.
+      if (!pinned() || !exportVerifier || !exportSession) throw Error('Session unavailable');
+      const user = await exportVerifier.call(auth);
+      if (!pending()) return false;
+      if (!pinned() || user?.id !== owner.id || !user.email_confirmed_at || user.is_anonymous) throw Error('Identity changed');
+      const session = await exportSession.call(auth);
+      if (!pending()) return false;
+      if (!pinned() || session?.user?.id !== owner.id || !(session.expires_at * 1000 > Date.now())) throw Error('Session changed');
+      try { localStorage.setItem(draftKey(owner.id), JSON.stringify(payload)); }
+      catch (_) { if (saveStatus) saveStatus.textContent = 'Device storage unavailable; keep this page open until cloud save succeeds.'; return true; }
+      localSaveLabel('Saved locally'); updateProgress(); return true;
+    } catch (_) {
+      if (pending()) invalidate();
+      return false;
+    }
   }
 
   function restoreDraft() {
@@ -240,10 +258,10 @@
     remoteSaveTimer = setTimeout(() => syncRemote(false), 1000);
   }
 
-  function scheduleSave() {
+  async function scheduleSave() {
     if (!live() || !pageActive || !cloudUser) return;
-    // Capture unfinished edits immediately under their current owner before any transition.
-    saveDraft(); scheduleRemoteSave();
+    clearTimeout(remoteSaveTimer);
+    if (await saveDraft()) scheduleRemoteSave();
   }
 
   async function restoreRemote() {
@@ -366,7 +384,7 @@
       return;
     }
 
-    saveDraft();
+    if (!await saveDraft() || !current(stamp,id)) return;
     const completedAt = form.querySelector('[name="completed-at"]');
     if (completedAt) completedAt.value = new Date().toISOString();
 
@@ -390,8 +408,8 @@
 
       if (!current(stamp,id)) return;
       if (!await syncRemote(true) || !current(stamp,id)) return;
+      if (!await saveDraft() || !current(stamp,id)) return;
       updateCourseProgressLocal();
-      saveDraft();
       if (card) card.classList.add('completed');
 
       const where = cloudUser ? 'Champion Life and your discipleship account' : 'Champion Life and this device';
@@ -432,13 +450,17 @@
     if (!confirm('Clear the saved answers for this lesson on this device? Cloud-saved answers will remain in your account.')) return;
     if (!live() || !pageActive || !cloudUser) return;
     clearTimeout(remoteSaveTimer);
+    const write = ++draftWriteGeneration;
+    void privateExport(() => {
+    if (write !== draftWriteGeneration) return;
     try { localStorage.removeItem(draftKey(cloudUser.id)); } catch (_) {}
     form.reset();
     if (learnerField) learnerField.value = cloudUser?.id;
     if (card) card.classList.remove('completed');
     clearMessage();
-    if (saveStatus) saveStatus.textContent = cloudUser ? 'Cloud copy still available' : 'New draft';
+    if (saveStatus) saveStatus.textContent = 'Cloud copy still available';
     updateProgress();
+    });
   });
 
   printBtn?.addEventListener('click', () => { void privateExport(() => window.print()); });
