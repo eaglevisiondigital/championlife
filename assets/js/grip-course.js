@@ -162,23 +162,26 @@
   }
 
   function restoreDraft() {
+    const restored = new Set();
     try {
       const raw = localStorage.getItem(draftKey(cloudUser.id));
-      if (!raw) return;
+      if (!raw) return restored;
       const payload = JSON.parse(raw);
-      if(payload.owner !== cloudUser.id || payload.course !== courseIdentity || payload.lesson !== lesson) return;
+      if(payload.owner !== cloudUser.id || payload.course !== courseIdentity || payload.lesson !== lesson) return restored;
       const values = payload.values || {};
       Object.entries(values).forEach(([name, value]) => {
         const el = form.elements.namedItem(name);
-        if (!el || el instanceof RadioNodeList || el.type === 'hidden') return;
+        if (!el || el instanceof RadioNodeList || el.type === 'hidden' || typeof value !== 'string') return;
         el.value = value;
+        restored.add(name);
       });
-      if (saveStatus && payload.savedAt) {
+      if (saveStatus && restored.size) {
         const d = new Date(payload.savedAt);
-        saveStatus.textContent = 'Draft restored · ' + d.toLocaleDateString() + ' ' +
-          d.toLocaleTimeString([], {hour:'numeric', minute:'2-digit'});
+        saveStatus.textContent = 'Draft restored' + (Number.isFinite(d.getTime()) ? ' · ' + d.toLocaleDateString() + ' ' +
+          d.toLocaleTimeString([], {hour:'numeric', minute:'2-digit'}) : ' on this device');
       }
     } catch (e) {}
+    return restored;
   }
 
   function updateCourseProgressLocal() {
@@ -278,20 +281,20 @@
       if (session?.user?.id !== u.id || !session.expires_at || session.expires_at * 1000 <= Date.now()) { invalidate(); return; }
       cloudUser = u;
       if (learnerField) learnerField.value = u.id;
-      restoreDraft();
+      const restored = restoreDraft();
       const profile = data.profile || {};
       const map = {'first-name':profile.first_name || '', 'last-name':profile.last_name || '', email:u.email || '', phone:profile.phone || ''};
       Object.entries(map).forEach(([name,value]) => {
         const el = form.elements.namedItem(name);
-        if (el && !el.value.trim()) el.value = value;
+        if (el && !restored.has(name)) el.value = value;
       });
       (data.answers || []).forEach(row => {
         const input = form.elements.namedItem('q' + row.question_number);
-        if (input && !input.value.trim()) input.value = row.answer || '';
+        if (input && !restored.has('q' + row.question_number)) input.value = row.answer || '';
       });
       if (data.progress?.status === 'completed') card?.classList.add('completed');
       renderCloudState(); updateProgress(); enable(true);
-      if (saveStatus) saveStatus.textContent = 'Your private worksheet is ready';
+      if (saveStatus && !restored.size) saveStatus.textContent = 'Your private worksheet is ready';
       expiryTimer = setTimeout(() => restoreRemote(), Math.min(2147483647, session.expires_at * 1000 - Date.now()));
     } catch (_) {
       if (stamp === generation) invalidate();
@@ -453,12 +456,16 @@
     const write = ++draftWriteGeneration;
     void privateExport(() => {
     if (write !== draftWriteGeneration) return;
-    try { localStorage.removeItem(draftKey(cloudUser.id)); } catch (_) {}
+    try { localStorage.removeItem(draftKey(cloudUser.id)); }
+    catch (_) {
+      if (saveStatus) saveStatus.textContent = 'Device draft could not be cleared. Your answers remain on this page; try again before leaving.';
+      return;
+    }
     form.reset();
     if (learnerField) learnerField.value = cloudUser?.id;
     if (card) card.classList.remove('completed');
     clearMessage();
-    if (saveStatus) saveStatus.textContent = 'Cloud copy still available';
+    if (saveStatus) saveStatus.textContent = 'Device draft cleared. Any cloud-saved answers remain unchanged.';
     updateProgress();
     });
   });
