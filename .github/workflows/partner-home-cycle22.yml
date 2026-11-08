@@ -3,6 +3,7 @@ on:
   pull_request:
     paths:
       - 'assets/js/staff-outreach-partners.js'
+      - 'assets/js/forms-admin.js'
       - 'tools/partner-home-cycle22/**'
       - 'tools/staff-financial-navigation-cycle21/**'
       - 'tools/staff-create-lifetime-cycle20/**'

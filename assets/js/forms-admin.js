@@ -118,7 +118,7 @@
         { class: "staff-state", role: "status" },
       ),
       el("a", "Return to Staff Dashboard", {
-        href: "staff-people.html",
+        href: "staff-home.html",
         class: "forms-button",
       }),
     );

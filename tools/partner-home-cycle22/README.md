@@ -24,3 +24,5 @@ verify the actual candidate; historical evidence stays separate.
 Staff123 required CI remains INCOMPLETE:21PASS/1runner shutdown, cause UNKNOWN.
 No rerun, weakened assertion, timeout change, hosted Auth/RLS acceptance, SQL,
 permission, identity link, messaging, payment, deployment or release approval.
+
+Lean pilot: the same current-first guard and browser suite now also verify the Forms denial Dashboard return to scope-neutral Staff Home. Only the href changes in Forms runtime. Added denial/recovery, malformed/repeated org, revoked authority and account replacement cases; the destination enforces existing permissions. Historical test prefixes and workflow steps/timeouts are unchanged. No new test framework or permission.

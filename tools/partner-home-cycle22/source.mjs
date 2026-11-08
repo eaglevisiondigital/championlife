@@ -11,7 +11,9 @@ export const hash=b=>createHash('sha256').update(b).digest('hex');
 export const current=p=>readFileSync(new URL(p,root));
 const cache=new Map();
 export function original(p){if(!cache.has(p))cache.set(p,execFileSync('git',['--no-replace-objects','show',base+':'+p],{cwd:root,maxBuffer:80*1024*1024}));return Buffer.from(cache.get(p))}
-export const derivationSHA256='8bb3723106e71839b621bc33d90a00d7c55eb850d9717c4060676bec63ce8da5';
+export const formsRuntime='assets/js/forms-admin.js';
+export function expectedFormsRuntime(){return expectedRouter(formsRuntime)}
+export const derivationSHA256='6ab0b8ff439ebfd3259746cfbcf85c65798d1613bdce01aa923581590b1cee93';
 const recipeBytes=current('tools/partner-home-cycle22/derivations.json');assert.equal(hash(recipeBytes),derivationSHA256,'Exact reviewed home return and router derivations');
 const derivations=JSON.parse(recipeBytes);
 export const modified=Object.keys(derivations);
@@ -27,12 +29,12 @@ export const additions=[
   ".github/workflows/partner-home-cycle22.yml"
 ];
 export const reviewedHashes={
-  "tools/partner-home-cycle22/source.test.mjs": "9878e9ab0b90f87a2883025ada350dbde65821d1d6e890e42859d89886563f71",
-  "tools/partner-home-cycle22/build.mjs": "4fded3ecd31cd707a2e61cf2a3f4f810b707bbed07f72b5a0e894cd3af50a4a3",
-  "tools/partner-home-cycle22/derivations.json": "8bb3723106e71839b621bc33d90a00d7c55eb850d9717c4060676bec63ce8da5",
-  "tools/partner-home-cycle22/README.md": "9dc27e04814bae2560acac696f8d3b128f05e3c0ef0e7a2a568b584b8e80f201",
-  "tools/partner-home-cycle22/home-return.browser.mjs": "f610b31cada708adb84693dc40fc9aa20b3833e223c0c9fb9cb59c7e45263d05",
-  ".github/workflows/partner-home-cycle22.yml": "5390c1fd904ecefac0e32e7fa06541bb165c4e545fb42f2b5957a20a4d3b1f51"
+  "tools/partner-home-cycle22/source.test.mjs": "1e6a4a3224d31ea2207c5ecc9e7faf6669467ddfc1eddefea0b49f496db28fb9",
+  "tools/partner-home-cycle22/build.mjs": "5bb63ca8a5e904d4c85a721d6eb16835897553c5b7c91d65ddeba895be883476",
+  "tools/partner-home-cycle22/derivations.json": "6ab0b8ff439ebfd3259746cfbcf85c65798d1613bdce01aa923581590b1cee93",
+  "tools/partner-home-cycle22/README.md": "7ebb08177da643a5407e63a8a861a458d7409c41f1db0ad4bf3b41a2b5e2af0b",
+  "tools/partner-home-cycle22/home-return.browser.mjs": "073b37ee303c4c8cd399bd2bbbcd4dacba23b4b7b8026b462bf3fbc088ff423e",
+  ".github/workflows/partner-home-cycle22.yml": "083db462aeb8f2d4c55282a3df8eced31f520225c7dee5b995291d3e1b200f11"
 };
 const tracked=execFileSync('git',['--no-replace-objects','ls-tree','-r','--name-only',base],{cwd:root,encoding:'utf8'}).trim().split('\n');
 export function verifyActual(read=current){
