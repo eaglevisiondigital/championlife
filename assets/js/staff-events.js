@@ -58,7 +58,13 @@
   for(const s of rows.slice(0,50)){const card=el('article',null,{class:'event-admin-card'});card.append(button(s.title,()=>open(s.id)),el('p',`${s.status} · ${s.visibility} · ${s.local_start.slice(0,10)}`));list.append(card);}if(!rows.length)list.append(el('p','No events yet. Create a draft to get started.'));
   const nav=el('div',null,{class:'event-toolbar'});const prev=button('Previous',()=>{page--;load();}),next=button('Next',()=>{page++;load();});prev.disabled=page===0;next.disabled=rows.length<=50;nav.append(prev,el('span',`Page ${page+1}`),next);list.append(nav);
  }catch(_){if(token===generation){retire('Event access is unavailable. Refresh to try again.');}}}
- orgSelect.addEventListener('change',()=>{if(!currentControl(orgSelect)||!currentControl(root))return;detailGeneration++;org=orgSelect.value;const route=new URL(location.href);route.searchParams.set('org',org);history.replaceState(null,'',route.pathname+route.search);page=0;load();});
+ orgSelect.addEventListener('change',()=>{
+  if(!currentControl(orgSelect)||!currentControl(root))return;
+  const nextOrg=orgSelect.value;
+  try{const route=new URL(location.href);route.searchParams.set('org',nextOrg);history.replaceState(null,'',route.pathname+route.search);}
+  catch{retire('Organization change unavailable. Reload to verify access.');return;}
+  detailGeneration++;org=nextOrg;page=0;load();
+ });
  dialog.addEventListener('cancel',event=>{event.preventDefault();detailGeneration++;dialog.replaceChildren();dialog.close();load();});
  dialog.addEventListener('close',()=>{if(!dialog.open&&dialog.childElementCount){detailGeneration++;dialog.replaceChildren();load();}});
  function shell(title){detailGeneration++;dialog.replaceChildren(el('h2',title));const close=button('Close',()=>{detailGeneration++;dialog.close();dialog.replaceChildren();load();});dialog.append(close);if(!dialog.open)dialog.showModal();return detailGeneration;}

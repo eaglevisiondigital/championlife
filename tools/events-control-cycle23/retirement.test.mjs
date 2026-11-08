@@ -48,7 +48,23 @@ test('normal close/reopen creates fresh authorized controls; old ones remain ret
 for(const target of['button','form','root'])for(const outcome of['success-after-silent-account','denial'])test(target+' retirement preserves '+outcome+' authority cleanup',async()=>{const f=await fixture();try{f.form.elements.internal_notes.value='PRIVATE OWNER A';f.holdResponse();f.emit();for(let i=0;i<20&&!f.responseHeld();i++)await tick();assert.equal(f.writes.length,1);move(target==='button'?f.save:target==='form'?f.form:f.doc.querySelector('#staff-events-app'));if(outcome==='denial')f.deny();else{f.succeed();f.setActor(ids.other)}f.releaseResponse();await f.wait();assert.equal(f.writes.length,1);assert.equal([...f.doc.querySelectorAll('[name=internal_notes]')].some(n=>n.value.includes('PRIVATE OWNER A')),false);assert.equal(f.doc.querySelectorAll('form').length,0)}finally{f.dom.window.close()}});
 test('exact Events delta and immutable existing authority/test contracts reject tampering',async()=>{
  const {verifyActual,current,expectedRouter,hash}=await import('../partner-home-cycle22/source.mjs');
- const path='assets/js/staff-events.js',bytes=current(path);assert.deepEqual(bytes,expectedRouter(path));assert.equal(hash(bytes),'d50da2229c51cb32b4f259e42ca3fcf9319280dac3d2f9445673d00d52faca6f');
+ const path='assets/js/staff-events.js',bytes=current(path);assert.deepEqual(bytes,expectedRouter(path));assert.equal(hash(bytes),'aad6843d987782e91307a3088ee8350aceb2e0229e292224173098ceb77dc3f3');
  for(const marker of ['recordRemovals(lifetimeObserver.takeRecords())','controls.every(currentControl)','rpc(action,data,[form,save])',"if(node===root||node.contains?.(root))retire",'if(error){if(denied(error)&&sameAuthority(b))retire();throw error;}',"if(!verified?.id||verified.id!==b.userId){retire();throw Error('retired');}"]){const text=bytes.toString();assert(text.includes(marker));assert.throws(()=>verifyActual(p=>p===path?Buffer.from(text.replace(marker,'/* unreviewed removal */')):current(p)),/Exact123/)}
  for(const p of ['assets/js/staff-workspace.js','assets/js/outreach-people.js','assets/js/forms-admin.js','assets/js/dream-team-manual.js','assets/js/staff-session.js','tools/site-build/public-files.json','.github/workflows/staff-runtime-cycle14.yml'])assert.throws(()=>verifyActual(q=>p===q?Buffer.alloc(0):current(q)),/Exact123/);
+});
+
+for(const scenario of['normal-switch','history-failure','held-identity','dispatched-write'])test('organization recovery '+scenario,async()=>{
+ const f=await fixture();try{
+  f.form.elements.internal_notes.value='PRIVATE ORIGINAL ORGANIZATION';
+  if(scenario==='held-identity'){f.hold();f.emit();for(let i=0;i<20&&!f.held();i++)await tick();assert(f.held());}
+  if(scenario==='dispatched-write'){f.holdResponse();f.emit();for(let i=0;i<20&&!f.responseHeld();i++)await tick();assert(f.responseHeld());assert.equal(f.writes.length,1);}
+  if(scenario!=='normal-switch')f.w.history.replaceState=()=>{throw new f.w.DOMException('Injected history failure','SecurityError')};
+  const selector=f.doc.querySelector('select[name=organization]');selector.value=ids.o2;selector.dispatchEvent(new f.w.Event('change'));await f.wait();
+  assert.equal(f.doc.querySelectorAll('form.event-form').length,0);
+  assert.equal(f.doc.querySelectorAll('[name=internal_notes]').length,0);
+  if(scenario==='held-identity')f.release();if(scenario==='dispatched-write')f.releaseResponse();await f.wait();f.captured();await f.wait();
+  assert.equal(f.writes.length,scenario==='dispatched-write'?1:0);
+  if(scenario==='normal-switch'){assert.equal(f.w.location.search,'?org='+ids.o2);assert(f.calls.some(c=>c.p_org===ids.o2&&c.p_action==='list'));}
+  else{assert.equal(f.w.location.search,'?org='+ids.o);assert.equal(selector.options.length,0);assert.match(f.doc.querySelector('#staff-events-app').textContent,/Organization change unavailable/);assert.equal(f.calls.some(c=>c.p_org===ids.o2),false);}
+ }finally{f.dom.window.close()}
 });

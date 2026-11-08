@@ -27,3 +27,5 @@ public files. No new integrity framework, SDK, public markup or layout redesign.
 The prior required CI shutdown and historical WebKit causes remain UNKNOWN;
 source acceptance never implies genuine Auth/RLS/recovery or release authority.
 RELEASE NO-GO.
+
+Organization-switch recovery: an injected browser history error previously left old organization content displayed under the new selection. The runtime now commits the route before adopting the organization; failure clears/retire the existing workspace. Existing retirement and dispatched-result authority cleanup remain. Appended tests cover normal switching, history failure, held identity and already-dispatched writes; no claim of cancelling an accepted write. No SQL or authority change.

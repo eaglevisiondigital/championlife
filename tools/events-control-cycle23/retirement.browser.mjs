@@ -60,4 +60,44 @@ for(const [engine,type]of Object.entries({chromium,webkit})){
   console.log(JSON.stringify({engine,width,scenario,newSaveRequests:writes.length,expectedNewSaveRequests:expected,heldAuthIsTestGate:scenario.startsWith('held-'),sourceSHA256:createHash('sha256').update(readFileSync(root+'assets/js/staff-events.js')).digest('hex'),pageErrors:errors}));await context.close();
  }}finally{await browser.close()}
 }
+for(const [engine,type]of Object.entries({chromium,webkit})){
+ const browser=await type.launch(engine==='chromium'&&!process.env.CI?{channel:'chrome'}:{});
+ try{for(const width of[390,1440])for(const scenario of['normal-switch','history-failure']){
+  const context=await browser.newContext({viewport:{width,height:1000}}),page=await context.newPage(),errors=[],writes=[],readScopes=[];let hold=false,release=null,held=false,holdResponse=false,responseHeld=false,releaseResponse;const other='bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb2';
+  page.on('pageerror',e=>errors.push(e.message));
+  await context.route('**/*',async route=>{
+   const req=route.request(),u=new URL(req.url()),send=(json,status=200)=>route.fulfill({json,status,headers:{'access-control-allow-origin':'*'}});
+   if(req.url()==='https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.118.0')return route.fulfill({body:sdk,contentType:'text/javascript',headers:{'access-control-allow-origin':'*'}});
+   if(u.origin===backend){
+    if(u.pathname==='/auth/v1/user'){if(hold){hold=false;held=true;await new Promise(r=>release=r)}return send({id:a,email:'fictional@example.test',email_confirmed_at:'2026-01-01',role:'authenticated',aud:'authenticated'})}
+    const name=u.pathname.split('/').at(-1),p=req.postDataJSON()||{};
+    if(name==='staff_workspace_context')return send({organizations:[{id:o,name:'Fictional Church'},{id:other,name:'Fictional Church B'}],grants:[o,other].map(organization_id=>({organization_id,permission:'events.manage'}))});
+    if(name==='events_workspace'){readScopes.push(p.p_org);
+     if(p.p_action==='context')return send({timezone:'UTC',manage_configuration:true,departments:[],labels:[],locations:[],approval_required:true,settings_revision:1});
+     if(p.p_action==='list')return send([{id:'dddddddd-dddd-4ddd-8ddd-dddddddddd01',title:p.p_org===o?'PRIVATE ORIGINAL EVENT':'NEW ORGANIZATION EVENT',status:'draft',visibility:'staff',local_start:'2026-11-10T12:00:00'}]);
+     if(p.p_action==='save'){writes.push(p);if(holdResponse){holdResponse=false;responseHeld=true;await new Promise(r=>releaseResponse=r)}return scenario.endsWith('-success')?send({id:'dddddddd-dddd-4ddd-8ddd-dddddddddd01'}):scenario.endsWith('-denial')?send({code:'42501',message:'Fictional revocation'},403):send({code:'40001',message:'stale fictional response'},409)}
+    }
+    throw Error('Unexpected backend '+req.url())
+   }
+   assert.equal(u.origin,origin,'No external request');
+   if(u.pathname==='/seed')return route.fulfill({body:'<!doctype html>',contentType:'text/html'});
+   if(u.pathname==='/assets/js/supabase-config.js')return route.fulfill({body:'window.CHAMPION_LIFE_SUPABASE='+JSON.stringify({url:backend,publishableKey:'fictional-no-authority'}),contentType:'text/javascript'});
+   const path=root+u.pathname.slice(1);assert(existsSync(path),path);return route.fulfill({body:readFileSync(path),contentType:path.endsWith('.html')?'text/html':path.endsWith('.js')?'text/javascript':path.endsWith('.css')?'text/css':'image/png'});
+  });
+
+  await page.goto(origin+'/seed');await page.evaluate(value=>localStorage.setItem('sb-synthetic-events-auth-token',JSON.stringify(value)),session(a));
+  await page.goto(origin+'/staff-events.html?org='+o);await page.getByRole('button',{name:'PRIVATE ORIGINAL EVENT',exact:true}).waitFor();
+  if(scenario==='history-failure')await page.evaluate(()=>history.replaceState=()=>{throw new DOMException('Injected history failure','SecurityError')});
+  await page.locator('select[name=organization]').selectOption(other);
+  if(scenario==='normal-switch')await page.getByRole('button',{name:'NEW ORGANIZATION EVENT',exact:true}).waitFor();
+  const oldVisible=await page.getByRole('button',{name:'PRIVATE ORIGINAL EVENT',exact:true}).count();
+  assert.equal(oldVisible,0);assert.equal(writes.length,0);assert.deepEqual(errors,[]);checks+=3;
+  assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true);checks++;
+  if(scenario==='history-failure'){
+   await page.getByText('Organization change unavailable. Reload to verify access.',{exact:true}).waitFor();
+   assert.equal(await page.locator('select[name=organization] option').count(),0);assert.equal(readScopes.includes(other),false);assert.equal(new URL(page.url()).search,'?org='+o);checks+=3;
+  }else{assert.equal(new URL(page.url()).search,'?org='+other);assert.equal(await page.locator('select[name=organization]').inputValue(),other);assert.equal(readScopes.includes(other),true);checks+=3;}
+  console.log(JSON.stringify({engine,width,scenario,oldVisible,newMutations:writes.length,pageErrors:errors,route:new URL(page.url()).search,selector:await page.locator('select[name=organization]').inputValue()}));await context.close();
+ }}finally{await browser.close()}
+}
 console.log(JSON.stringify({checks,syntheticAuth:true,providerAcceptance:false}));
