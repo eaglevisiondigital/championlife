@@ -148,3 +148,7 @@ or replayed by this browser correction.
 ## November 7 — Financial review return navigation (source only)
 
 Financial-only staff already admitted by Staff123 can return from Partner review to the same organization's Staff home using the existing outreach.view AND finance.read permissions. People return separately requires people.read. Denial recovery now opens the actual Staff home. Local synthetic original reproduction and current positive/negative browser checks are recorded in tools/partner-home-cycle22; hosted acceptance is not performed. Existing Staff123 required CI remains INCOMPLETE (21 PASS/1 runner shutdown, cause UNKNOWN), without retry. No SQL, grants, SDK, branding, provider or release change.
+
+## Source-only Staff check-in composition — 2026-11-08
+
+Dedicated successor of Staff126; only registration runtime delta from reviewed Registration134. Removed/reinserted check-in controls permanently retire; current authorized check-in/reversal and household status remain unchanged. No new backend authority, SQL, SDK, host navigation or branding. Existing source/build guards extended with exact reviewed bytes and permanent mounted-host/native regression tests. Local and exact-head CI evidence is recorded in the private `audit/staff-checkin-integration-2026-11-08/` package; historical failures remain preserved. No genuine hosted acceptance or production action. RELEASE NO-GO.
