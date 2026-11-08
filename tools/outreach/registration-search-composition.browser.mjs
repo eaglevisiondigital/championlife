@@ -1,6 +1,7 @@
 // Source-only household-search privacy regression. Every request is intercepted;
 // fictional Auth/RPC results are not genuine provider acceptance.
 import assert from 'node:assert/strict';
+import {beforeRegistrationRetirement} from './registration-control-retirement-contract.mjs';
 import {createHash} from 'node:crypto';
 import {readFileSync} from 'node:fs';
 import {execFileSync} from 'node:child_process';
@@ -13,7 +14,7 @@ const sources=['outreach-staff-common.js','outreach-registration-form.js','outre
 // Reuse PR90 4f64fa14f03098e31ee8111c8ff1810fbc260542 search regression.
 // PR72 9f78e195115f55135d763e1e5373a494e817423b contributes current check-in/roster behavior.
 const resets=[["function deny(status){", "function deny(status){search='';"], ["if(g!==generation)return;user=nextUser;", "if(g!==generation)return;if(nextUser?.id!==user?.id)search='';user=nextUser;"], ["'staff-protected-clear',()=>{generation++", "'staff-protected-clear',()=>{search='';generation++"], ["if(session?.user?.id!==user?.id){generation++", "if(session?.user?.id!==user?.id){search='';generation++"], ["'pagehide',()=>{generation++", "'pagehide',()=>{search='';generation++"], ["'popstate',()=>{campaign=", "'popstate',()=>{search='';campaign="]];
-if(!process.env.REVIEW_BASE){let normalized=sources[2];for(const [before,after] of resets){assert.equal(normalized.split(after).length-1,1,'exact accepted lifecycle reset');normalized=normalized.replace(after,before)}assert.equal(createHash('sha256').update(normalized).digest('hex'),'df48a3f8bcdbbd78f6bc40187489f68131dbe52c5a578607ad2760fdd01437e9','all other current PR72 runtime bytes preserved')}
+if(!process.env.REVIEW_BASE){let normalized=beforeRegistrationRetirement(sources[2]);for(const [before,after] of resets){assert.equal(normalized.split(after).length-1,1,'exact accepted lifecycle reset');normalized=normalized.replace(after,before)}assert.equal(createHash('sha256').update(normalized).digest('hex'),'df48a3f8bcdbbd78f6bc40187489f68131dbe52c5a578607ad2760fdd01437e9','all other current PR72 runtime bytes preserved')}
 let checks=0,scenarios=0;const ok=(value,label)=>{assert.ok(value,label);checks++};
 for(const [engine,type] of [['chromium',chromium],['webkit',webkit]]){
  const browser=await type.launch(engine==='chromium'&&!process.env.CI?{channel:'chrome'}:{});

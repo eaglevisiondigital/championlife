@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import {beforeRegistrationRetirement} from './registration-control-retirement-contract.mjs';
 import fs from 'node:fs';
 import {execFileSync} from 'node:child_process';
 import {createHash} from 'node:crypto';
@@ -18,7 +19,9 @@ for(const p of ['tools/outreach/people-followup-history.browser.mjs','tools/outr
 for(const p of ['tools/outreach/people-followup-filter.browser.mjs','tools/outreach/people-followup-filter-independent.browser.mjs','tools/outreach/people-followup-filter.native.mjs','docs/PEOPLE-FOLLOWUP-FILTER-20261106.md','.github/workflows/people-followup-filter.yml'])allow.add(p);
 // Reviewed read-only history pagination; exact test/document/workflow additions only.
 for(const p of ['tools/outreach/people-followup-history-pagination.browser.mjs','tools/outreach/people-followup-history-pagination-independent.browser.mjs','tools/outreach/people-followup-history-pagination.native.mjs','docs/PEOPLE-FOLLOWUP-HISTORY-PAGINATION-20261106.md','.github/workflows/people-followup-history-pagination.yml'])allow.add(p);
-assert.equal(sha(fs.readFileSync(root+'assets/js/outreach-registration-staff.js')),'665236df4f5eb52f25e4bcc5560a0e8fda4feae139b4f0b17265d10964ca4f2a','exact reviewed registration composition');
+// Narrow registration control lifetime correction; retain the exact prior runtime hash.
+for(const p of ['tools/outreach/registration-control-retirement-contract.mjs','tools/outreach/registration-checkin-journey.browser.mjs','docs/REGISTRATION-CHECKIN-RETIREMENT-20261108.md'])allow.add(p);
+assert.equal(sha(beforeRegistrationRetirement(fs.readFileSync(root+'assets/js/outreach-registration-staff.js','utf8'))),'665236df4f5eb52f25e4bcc5560a0e8fda4feae139b4f0b17265d10964ca4f2a','exact reviewed registration composition');
 assert.ok(changed.every(p=>allow.has(p)),'unexpected source change');
 const paths=JSON.parse(fs.readFileSync(root+'tools/site-build/public-files.json'));
 assert.deepEqual(fs.readFileSync(root+'tools/site-build/public-files.json'),old('tools/site-build/public-files.json'));

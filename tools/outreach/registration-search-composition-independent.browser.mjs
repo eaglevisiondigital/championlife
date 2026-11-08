@@ -1,5 +1,6 @@
 // Independent local intercepted-browser review. No provider/host acceptance.
 import assert from 'node:assert/strict';
+import {beforeRegistrationRetirement} from './registration-control-retirement-contract.mjs';
 import {readFileSync} from 'node:fs';
 import {execFileSync} from 'node:child_process';
 import {pathToFileURL} from 'node:url';
@@ -13,7 +14,7 @@ const accepted=execFileSync('git',['show','4f64fa14f03098e31ee8111c8ff1810fbc260
 let checks=0;const check=(a,b,label)=>{assert.deepEqual(a,b,label);checks++;console.log('PASS '+label)};
 const changes=[['function deny(status){',"search='';"],["if(g!==generation)return;user=nextUser;","if(g!==generation)return;if(nextUser?.id!==user?.id)search='';user=nextUser;"],["'staff-protected-clear',()=>{","search='';"],["if(session?.user?.id!==user?.id){","search='';"],["'pagehide',()=>{","search='';"],["'popstate',()=>{","search='';"]];
 let composed=base;for(const [site,addition] of changes){const replacement=site.includes('user=nextUser')?addition:site+addition;check(accepted.includes(replacement),true,'accepted PR90 exact reset '+site);composed=composed.replace(site,replacement)}
-check(runtime,composed,'entire runtime equals current base plus six accepted resets; roster/checkin preserved');
+check(beforeRegistrationRetirement(runtime),composed,'entire runtime equals current base plus six accepted resets; roster/checkin preserved');
 const B='bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb',origin='https://independent-search.invalid',query='Fictional A lookup +15555550009';
 for(const [engine,type] of [['chromium',chromium],['webkit',webkit]]){
  const browser=await type.launch(engine==='chromium'&&!process.env.CI?{channel:'chrome'}:{});

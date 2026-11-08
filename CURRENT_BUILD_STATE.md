@@ -1,3 +1,7 @@
+## 2026-11-08 — Registration/check-in control lifetime
+
+A removed/reinserted check-in button, attendee card or workspace root could issue a new native mutation through its retained handler. The existing registration guard now records permanent removal with MutationObserver and drains pending removal records before invocation. Same-account current controls remain usable; already-submitted writes are not claimed cancelled. Exact status transitions and audit remain server-owned; no SQL, permission, public registration form or People change. See docs/REGISTRATION-CHECKIN-RETIREMENT-20261108.md. Source/local/CI results are recorded separately; release NO-GO.
+
 ## 2026-11-03 — People follow-up creation through existing permissions
 
 Source-only PR72 successor adds the missing existing-person task creation step: title, optional due date, then existing status completion. Uses unchanged column-limited `followup_tasks` INSERT with fresh people/follow-up authority; no new SQL, assignment, People record, decision access or message. Uncertain saves retire the form and require task-list review; no automatic retry or exactly-once claim. New 276 browser + 48 native assertions, baseline 6, affected 64 navigation + 222 identity assertions and 5 DOM scenarios PASS. Coordinator verified identical 411-file builds with only People runtime changed publicly. Exact-head review/CI and hosted/release gates remain distinct. See [contract](docs/PEOPLE-FOLLOWUP-CREATE-20261103.md).
