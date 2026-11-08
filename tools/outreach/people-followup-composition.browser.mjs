@@ -1,5 +1,6 @@
 // Real browsers, actual People runtime, fictional origin-locked query transport.
 import assert from 'node:assert/strict';
+import {acceptedTaskActions} from '../staff-lifetime-cycle19/helper.mjs';
 import {createHash} from 'node:crypto';
 import {readFileSync,mkdirSync} from 'node:fs';
 import {chromium,webkit} from '../backend-tests/node_modules/playwright/index.mjs';
@@ -9,7 +10,7 @@ const sources=['outreach-staff-common.js','outreach-people.js'].map(n=>readFileS
 // Exact reviewed adaptations: page/filter arguments and the two page/filter detail returns.
 const runtime=sources[1];
 if(!process.env.BASELINE_SOURCE){
- let helper=runtime.slice(runtime.indexOf(' function addTaskActions('),runtime.indexOf(' async function detail('));
+ let helper=acceptedTaskActions(runtime.slice(runtime.indexOf(' function addTaskActions('),runtime.indexOf(' async function detail(')));
  for(const [adapted,original,count] of [
   ['personId,g,taskCursors,taskStatus){','personId,g){',1],
   ['detail(personId,taskCursors,taskStatus)','detail(personId)',2],
