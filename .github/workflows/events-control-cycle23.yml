@@ -1,0 +1,33 @@
+name: Events permanent control retirement
+on:
+  pull_request:
+    paths:
+      - 'assets/js/staff-events.js'
+      - 'tools/events-control-cycle23/**'
+      - 'tools/partner-home-cycle22/**'
+      - '.github/workflows/events-control-cycle23.yml'
+permissions:
+  contents: read
+jobs:
+  events-retirement:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm ci --ignore-scripts --prefix tools/backend-tests
+      - run: tools/backend-tests/node_modules/.bin/playwright install --with-deps chromium webkit
+      - name: Verify accepted SDK bytes
+        run: |
+          curl --fail --silent --show-error --location 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.118.0' --output "$RUNNER_TEMP/supabase-sdk.js"
+          echo "bee24fc29228ed5a370f76a2ba1ca3c399549edad2fef23453c80148856a49af  $RUNNER_TEMP/supabase-sdk.js" | sha256sum --check
+          echo "SUPABASE_SDK_PATH=$RUNNER_TEMP/supabase-sdk.js" >> "$GITHUB_ENV"
+      - run: node --test tools/partner-home-cycle22/source.test.mjs tools/events-control-cycle23/retirement.test.mjs
+      - run: node tools/events-control-cycle23/retirement.browser.mjs
+      - run: node tools/partner-home-cycle22/build.mjs
+      - run: git diff --check

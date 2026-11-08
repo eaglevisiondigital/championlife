@@ -55,3 +55,8 @@ Search text can itself contain private household identifiers. Clearing rendered 
 ## November 7 — Financial return authorization boundary
 
 Partner home return uses current same-organization outreach.view AND finance.read. People return additionally requires people.read. Each click retains existing session, organization, generation and initiating-control checks around fresh staff context; removed controls remain retired. Denial recovery carries no record or organization hint and the destination independently authorizes. This is navigation-only; no People, financial mutation or identity authority is added. Synthetic browser evidence does not establish hosted Auth/RLS acceptance.
+
+
+## November 8 — Events initiating-control lifetime
+
+Removed Events controls/forms/ancestors cannot regain authority by reinsertion. Observer records are consumed before dispatch; form/save lifetime is rechecked after awaited identity. Already-dispatched results retain current-authority cleanup before retired-response denial, and host removal clears private state. A rejected first candidate skipped cleanup after removal; permanent negative tests preserve the regression and corrected evidence. Existing server ACL/RLS, revision and consent boundaries are unchanged; local getUser is session-derived, not genuine provider verification. RELEASE NO-GO.
