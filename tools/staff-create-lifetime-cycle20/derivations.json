@@ -1,0 +1,74 @@
+{
+  "assets/js/outreach-people.js": [
+    [
+      " function addTaskEditor(personId,g){\n  const targetOrg=org,actor=user?.id,client=auth.client,clientAuth=client.auth,url=location.pathname+location.search;\n  const card=el('article'),form=el('form'),titleLabel=el('label','Task title'),title=el('input',null,{type:'text',required:'',maxlength:'180'}),dueLabel=el('label','Due date (optional)'),due=el('input',null,{type:'date'}),submit=el('button','Add follow-up task',{type:'submit',class:'staff-action'});\n  card.append(el('h4','New follow-up task'),el('p','Add an operational next step for this person. Creating a task does not send a message.'));\n  titleLabel.append(title);dueLabel.append(due);form.append(titleLabel,dueLabel,submit);card.append(form);content.append(card);let pending=false,retired=false;\n  const current=()=>{if(!retired&&(window.ChampionLifeAuth!==auth||auth.client!==client||client.auth!==clientAuth)){retired=true;title.value='';due.value='';if(g===generation&&root.contains(card))card.replaceChildren(el('p','Task editor closed because the staff connection changed. Reload to verify access.'))}return !retired&&g===generation&&org===targetOrg&&user?.id===actor&&url===location.pathname+location.search&&root.contains(form)&&(!window.StaffWorkspace||window.StaffWorkspace.active())};\n  form.onsubmit=async event=>{\n   event.preventDefault();if(pending||!current()||!form.reportValidity())return;\n   const value=title.value.trim();if(!value||Array.from(value).length>180){status.textContent='Enter a task title using 1\u2013180 characters.';title.focus();return}\n   const payload={organization_id:targetOrg,person_id:personId,title:value,due_on:due.value||null};\n   pending=true;submit.disabled=true;title.disabled=true;due.disabled=true;let submitted=false;\n   try{\n    await refreshPermissions();if(!current())return;\n    if(!can('followup.read')||!can('followup.manage')){fail(403);return}\n    const saved=await request(()=>{if(!current())throw Error();submitted=true;return client.from('followup_tasks').insert(payload).select('id').single()});\n    if(!current())return;\n    if(typeof saved?.id!=='string'||!/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(saved.id))throw Error();\n    await detail(personId);\n   }catch{\n    if(!current())return;\n    if(submitted){\n     // The existing INSERT has no idempotency key. Never replay an uncertain create.\n     form.replaceChildren(el('p','The save could not be confirmed. It may have succeeded. Refresh this person\u2019s tasks and check the list before adding another task.'),button('Refresh follow-up tasks',()=>{if(current())return detail(personId)}));\n     status.textContent='Task save needs review.';\n    }else status.textContent='Unable to verify access. Please try again.';\n   }finally{if(current()&&!submitted){pending=false;submit.disabled=false;title.disabled=false;due.disabled=false}}\n  };\n }\n",
+      " function addTaskEditor(personId,g){\n  const targetOrg=org,actor=user?.id,client=auth.client,clientAuth=client.auth,url=location.pathname+location.search;\n  const card=el('article'),form=el('form'),titleLabel=el('label','Task title'),title=el('input',null,{type:'text',required:'',maxlength:'180'}),dueLabel=el('label','Due date (optional)'),due=el('input',null,{type:'date'}),submit=el('button','Add follow-up task',{type:'submit',class:'staff-action'});\n  card.append(el('h4','New follow-up task'),el('p','Add an operational next step for this person. Creating a task does not send a message.'));\n  titleLabel.append(title);dueLabel.append(due);form.append(titleLabel,dueLabel,submit);card.append(form);content.append(card);let pending=false,retired=false;\n  const inputs=[title,due,submit],owners=[card,form];\n  for(let node=content;node;node=node.parentNode)owners.push(node);\n  let members=[titleLabel,dueLabel,...inputs];\n  const clear=()=>{title.value='';title.defaultValue='';due.value='';due.defaultValue=''};\n  const retire=()=>{if(retired)return;retired=true;observer.disconnect();clear();for(const control of inputs)control.disabled=true};\n  const removed=records=>{if(records.some(record=>Array.from(record.removedNodes).some(node=>[...owners,...members].some(owned=>node===owned||node.contains?.(owned)))))retire()};\n  const observer=new MutationObserver(removed);observer.observe(document,{childList:true,subtree:true});\n  const current=()=>{\n   removed(observer.takeRecords());\n   if(!retired&&(window.ChampionLifeAuth!==auth||auth.client!==client||client.auth!==clientAuth)){retire();if(g===generation&&root.contains(card))card.replaceChildren(el('p','Task editor closed because the staff connection changed. Reload to verify access.'))}\n   return !retired&&g===generation&&org===targetOrg&&user?.id===actor&&url===location.pathname+location.search&&root.contains(form)&&(!window.StaffWorkspace||window.StaffWorkspace.active());\n  };\n  form.onsubmit=async event=>{\n   event.preventDefault();if(pending||!current()||!form.reportValidity())return;\n   const value=title.value.trim();if(!value||Array.from(value).length>180){status.textContent='Enter a task title using 1\u2013180 characters.';title.focus();return}\n   const payload={organization_id:targetOrg,person_id:personId,title:value,due_on:due.value||null};\n   pending=true;submit.disabled=true;title.disabled=true;due.disabled=true;let submitted=false;\n   try{\n    await refreshPermissions();if(!current())return;\n    if(!can('followup.read')||!can('followup.manage')){fail(403);return}\n    const saved=await request(()=>{if(!current())throw Error();submitted=true;return client.from('followup_tasks').insert(payload).select('id').single()});\n    if(!current())return;\n    if(typeof saved?.id!=='string'||!/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(saved.id))throw Error();\n    await detail(personId);\n   }catch{\n    if(!current())return;\n    if(submitted){\n     // The existing INSERT has no idempotency key. Never replay an uncertain create.\n     clear();\n     const refresh=button('Refresh follow-up tasks',()=>{if(current())return detail(personId)});\n     members=[refresh];form.replaceChildren(el('p','The save could not be confirmed. It may have succeeded. Refresh this person\u2019s tasks and check the list before adding another task.'),refresh);\n     status.textContent='Task save needs review.';\n    }else status.textContent='Unable to verify access. Please try again.';\n   }finally{if(current()&&!submitted){pending=false;submit.disabled=false;title.disabled=false;due.disabled=false}}\n  };\n }\n"
+    ]
+  ],
+  "tools/staff-lifetime-cycle19/source.mjs": [
+    [
+      "// Actual117 source plus only the independently reviewed119 lifetime helper.",
+      "// Actual117 source plus only the independently reviewed119 lifetime helper.\nimport {checkpointReader as cycle20CheckpointReader,verifyActual as verifyCycle20,additions as cycle20Additions} from '../staff-create-lifetime-cycle20/source.mjs';"
+    ],
+    [
+      "export const current=p=>readFileSync(new URL(p,root));",
+      "let cycle20Read;export const current=p=>(cycle20Read ||= cycle20CheckpointReader())(p);"
+    ],
+    [
+      "export function verifyActual(read=current){",
+      "export function verifyActual(read=current){\n verifyCycle20();"
+    ],
+    [
+      ".trim().split('\\n').filter(Boolean);",
+      ".trim().split('\\n').filter(Boolean).filter(p=>!cycle20Additions.includes(p));"
+    ],
+    [
+      "const recipeBytes=current('tools/staff-lifetime-cycle19/derivations.json');",
+      "const recipeBytes=readFileSync(new URL('tools/staff-lifetime-cycle19/derivations.json',root));"
+    ]
+  ],
+  "tools/staff-integration-cycle16/source.mjs": [
+    [
+      "\nimport assert from 'node:assert/strict';\n",
+      "\nimport assert from 'node:assert/strict';\nimport {additions as cycle20Additions} from '../staff-create-lifetime-cycle20/source.mjs';\n"
+    ],
+    [
+      ".filter(p=>!cycle19Additions.includes(p));",
+      ".filter(p=>!cycle19Additions.includes(p)&&!cycle20Additions.includes(p));"
+    ]
+  ],
+  "tools/staff-runtime-cycle14/source.mjs": [
+    [
+      "\nimport assert from 'node:assert/strict';\n",
+      "\nimport assert from 'node:assert/strict';\nimport {additions as cycle20Additions} from '../staff-create-lifetime-cycle20/source.mjs';\n"
+    ],
+    [
+      ".filter(path=>!cycle16Additions.includes(path)&&!cycle19Additions.includes(path));",
+      ".filter(path=>!cycle16Additions.includes(path)&&!cycle19Additions.includes(path)&&!cycle20Additions.includes(path));"
+    ]
+  ],
+  "tools/staff-integration-cycle16/build.mjs": [
+    [
+      "from '../staff-lifetime-cycle19/source.mjs';",
+      "from '../staff-create-lifetime-cycle20/source.mjs';"
+    ]
+  ],
+  "tools/staff-runtime-cycle14/build.mjs": [
+    [
+      "from '../staff-lifetime-cycle19/source.mjs';",
+      "from '../staff-create-lifetime-cycle20/source.mjs';"
+    ]
+  ],
+  "tools/staff-cycle9-integrity/integrity.mjs": [
+    [
+      "from '../staff-lifetime-cycle19/source.mjs';",
+      "from '../staff-create-lifetime-cycle20/source.mjs';"
+    ]
+  ],
+  "tools/staff-lifetime-cycle19/build.mjs": [
+    [
+      "import {verifyActual,root,hash,current,original,runtime} from './source.mjs';",
+      "import {verifyActual,root,hash,original,runtime} from './source.mjs';\nimport {current} from '../staff-create-lifetime-cycle20/source.mjs';"
+    ]
+  ]
+}

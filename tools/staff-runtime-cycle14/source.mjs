@@ -2,6 +2,7 @@
 import {additions as cycle19Additions} from '../staff-lifetime-cycle19/source.mjs';
 // immutable reviewed checkpoint. No environment-selected replacement source.
 import assert from 'node:assert/strict';
+import {additions as cycle20Additions} from '../staff-create-lifetime-cycle20/source.mjs';
 import {readFileSync,lstatSync,readdirSync,existsSync} from 'node:fs';
 import {execFileSync} from 'node:child_process';
 import {createHash} from 'node:crypto';
@@ -58,7 +59,7 @@ export function verifyActual(read=current){
  for(const path of [...tracked,...added.filter(p=>existsSync(new URL(p,root)))]){const stat=lstatSync(new URL(path,root));assert(!stat.isSymbolicLink()&&stat.isFile(),'No public symlink or protected backend/config symlink '+path)}
  for(const path of tracked){if(path===runtime||Object.hasOwn(routers,path)||imported.includes(path))continue;assert(!lstatSync(new URL(path,root)).isSymbolicLink(),'No public symlink or protected backend/config symlink '+path);assert.deepEqual(read(path),original(path),'Historical guard/build/dependency unchanged; Unchanged staff110 dependency '+path)}
  const allowed=new Set([...tracked,...added]);
- const files=execFileSync('git',['ls-files','--cached','--others','--exclude-standard'],{cwd:root,encoding:'utf8'}).trim().split('\n').filter(Boolean).filter(path=>!cycle16Additions.includes(path)&&!cycle19Additions.includes(path));
+ const files=execFileSync('git',['ls-files','--cached','--others','--exclude-standard'],{cwd:root,encoding:'utf8'}).trim().split('\n').filter(Boolean).filter(path=>!cycle16Additions.includes(path)&&!cycle19Additions.includes(path)&&!cycle20Additions.includes(path));
  for(const path of files)assert(allowed.has(path),'Unlisted composition file '+path);
  for(const prefix of['supabase','netlify','assets']){function walk(path){if(!existsSync(new URL(path,root)))return;assert(!lstatSync(new URL(path,root)).isSymbolicLink());if(lstatSync(new URL(path,root)).isDirectory())for(const n of readdirSync(new URL(path,root)))walk(path+'/'+n);else assert(tracked.includes(path),'No backend/config addition or removal; Unlisted protected file '+path)}walk(prefix)}
  for(const name of readdirSync(root)){if(/\.html$/.test(name))assert(tracked.includes(name),'Unlisted public HTML '+name)}

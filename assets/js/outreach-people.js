@@ -49,7 +49,18 @@
   const card=el('article'),form=el('form'),titleLabel=el('label','Task title'),title=el('input',null,{type:'text',required:'',maxlength:'180'}),dueLabel=el('label','Due date (optional)'),due=el('input',null,{type:'date'}),submit=el('button','Add follow-up task',{type:'submit',class:'staff-action'});
   card.append(el('h4','New follow-up task'),el('p','Add an operational next step for this person. Creating a task does not send a message.'));
   titleLabel.append(title);dueLabel.append(due);form.append(titleLabel,dueLabel,submit);card.append(form);content.append(card);let pending=false,retired=false;
-  const current=()=>{if(!retired&&(window.ChampionLifeAuth!==auth||auth.client!==client||client.auth!==clientAuth)){retired=true;title.value='';due.value='';if(g===generation&&root.contains(card))card.replaceChildren(el('p','Task editor closed because the staff connection changed. Reload to verify access.'))}return !retired&&g===generation&&org===targetOrg&&user?.id===actor&&url===location.pathname+location.search&&root.contains(form)&&(!window.StaffWorkspace||window.StaffWorkspace.active())};
+  const inputs=[title,due,submit],owners=[card,form];
+  for(let node=content;node;node=node.parentNode)owners.push(node);
+  let members=[titleLabel,dueLabel,...inputs];
+  const clear=()=>{title.value='';title.defaultValue='';due.value='';due.defaultValue=''};
+  const retire=()=>{if(retired)return;retired=true;observer.disconnect();clear();for(const control of inputs)control.disabled=true};
+  const removed=records=>{if(records.some(record=>Array.from(record.removedNodes).some(node=>[...owners,...members].some(owned=>node===owned||node.contains?.(owned)))))retire()};
+  const observer=new MutationObserver(removed);observer.observe(document,{childList:true,subtree:true});
+  const current=()=>{
+   removed(observer.takeRecords());
+   if(!retired&&(window.ChampionLifeAuth!==auth||auth.client!==client||client.auth!==clientAuth)){retire();if(g===generation&&root.contains(card))card.replaceChildren(el('p','Task editor closed because the staff connection changed. Reload to verify access.'))}
+   return !retired&&g===generation&&org===targetOrg&&user?.id===actor&&url===location.pathname+location.search&&root.contains(form)&&(!window.StaffWorkspace||window.StaffWorkspace.active());
+  };
   form.onsubmit=async event=>{
    event.preventDefault();if(pending||!current()||!form.reportValidity())return;
    const value=title.value.trim();if(!value||Array.from(value).length>180){status.textContent='Enter a task title using 1–180 characters.';title.focus();return}
@@ -66,7 +77,9 @@
     if(!current())return;
     if(submitted){
      // The existing INSERT has no idempotency key. Never replay an uncertain create.
-     form.replaceChildren(el('p','The save could not be confirmed. It may have succeeded. Refresh this person’s tasks and check the list before adding another task.'),button('Refresh follow-up tasks',()=>{if(current())return detail(personId)}));
+     clear();
+     const refresh=button('Refresh follow-up tasks',()=>{if(current())return detail(personId)});
+     members=[refresh];form.replaceChildren(el('p','The save could not be confirmed. It may have succeeded. Refresh this person’s tasks and check the list before adding another task.'),refresh);
      status.textContent='Task save needs review.';
     }else status.textContent='Unable to verify access. Please try again.';
    }finally{if(current()&&!submitted){pending=false;submit.disabled=false;title.disabled=false;due.disabled=false}}

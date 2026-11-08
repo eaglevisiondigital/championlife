@@ -1,7 +1,8 @@
 import assert from 'node:assert/strict';
 import {readFileSync,readdirSync,lstatSync} from 'node:fs';
 import {buildSite} from '../site-build/build.mjs';
-import {verifyActual,root,hash,current,original,runtime} from './source.mjs';
+import {verifyActual,root,hash,original,runtime} from './source.mjs';
+import {current} from '../staff-create-lifetime-cycle20/source.mjs';
 const source=verifyActual(),files=JSON.parse(current('tools/site-build/public-files.json'));
 function inventory(dir,prefix=''){return readdirSync(dir).sort().flatMap(name=>{const p=new URL(name,dir);assert(!lstatSync(p).isSymbolicLink());return lstatSync(p).isDirectory()?inventory(new URL(name+'/',dir),prefix+name+'/'):[[prefix+name,hash(readFileSync(p))]]})}
 await buildSite({env:{}});const first=inventory(new URL('dist/',root));await buildSite({env:{}});assert.deepEqual(inventory(new URL('dist/',root)),first,'Two actual reproducible builds');assert.deepEqual(first.map(([p])=>p).sort(),files);
