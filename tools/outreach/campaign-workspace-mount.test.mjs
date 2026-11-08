@@ -46,4 +46,68 @@ for(const condition of ['unverified','expired','inactive','changed-endpoint','cl
 {
  const f=fixture();let reject;f.fx.directory=()=>new Promise((_,r)=>reject=r);const stale=f.mount.refresh().catch(()=>{});await tick();f.fx.directory=async()=>({data:data()});await f.mount.refresh();reject(Object.assign(new Error('denied'),{code:'42501'}));await stale;check(f.mount.snapshot().campaigns.length===0,'thrown late same-principal denial retires directory');f.mount.close();
 }
+
+// Actual view under the existing shared-client contract; no hosted Auth or new authority.
+const {createRequire}=await import('node:module');
+const require=createRequire(new URL('../backend-tests/package.json',import.meta.url));
+const {JSDOM}=require('jsdom');
+const {mountCampaignDecisionView}=await import('./campaign-decision-view.mjs');
+async function rosterFixture(){
+ const dom=new JSDOM('<main id="roster"></main>',{url:'https://roster.invalid'}),doc=dom.window.document,events=new EventTarget();
+ const calls=[],listeners=[];let actor=userA,token='fictional-a',deny=false,hold=false,release;
+ const rows=[{registration_id:record,name:'Fictional Alpha',status:'new',next_contact_on:'2026-11-20',consent:true},{registration_id:other,name:'Fictional Beta',status:'completed',next_contact_on:null,consent:false}].map(r=>({...r,kind:'decision-free-book-registration',revision:1,contact_allowed:false,email:'PRIVATE-EMAIL',prayer:'PRIVATE-PRAYER',answers:'PRIVATE-ANSWERS'}));
+ const auth={
+  getSession:async()=>({user:{id:actor},access_token:token,expires_at:Date.now()/1000+3600}),
+  client:{
+   supabaseUrl:'https://abcdefghijklmnopqrst.supabase.co',rest:{url:'https://abcdefghijklmnopqrst.supabase.co/rest/v1'},
+   auth:{url:'https://abcdefghijklmnopqrst.supabase.co/auth/v1',getUser:async()=>({data:{user:{id:actor,email_confirmed_at:'2026-01-01'}}}),onAuthStateChange:fn=>{listeners.push(fn);return{data:{subscription:{unsubscribe(){}}}}}},
+   rpc:async(name,p)=>{calls.push({name,...p});if(hold&&p.p_action==='list'){hold=false;await new Promise(r=>release=r)}if(deny)return{error:{code:'42501'}};if(p.p_action==='context')return{data:{organization_id:org,campaign_id:campaign,scope:'assigned',capabilities:['decisions.read']}};return{data:{organization_id:org,campaign_id:campaign,page:p.p_payload.page,registrations:rows}}}
+  }
+ };
+ const root=doc.querySelector('#roster'),view=mountCampaignDecisionView({root,auth,workspace:{active:()=>true},eventTarget:events,getAllowedCampaigns:()=>[{organizationId:org,campaignId:campaign}],projectRef:'abcdefghijklmnopqrst'});
+ const settle=async()=>{for(let i=0;i<15;i++)await tick()};view.select(org,campaign);await view.list();
+ return{dom,doc,root,view,calls,settle,rows,button:text=>[...root.querySelectorAll('button')].find(n=>n.textContent===text),deny:()=>deny=true,hold:()=>hold=true,release:()=>release(),held:()=>!!release,change:(notify=true)=>{actor=userB;token='fictional-b';if(notify)listeners.forEach(fn=>fn('SIGNED_IN'))},close(){view.close();dom.window.close()}};
+}
+{
+ const f=await rosterFixture();try{
+  check(!!f.root.querySelector('[name=rosterSearch]'),'roster offers a current-page name search');
+  check(f.root.textContent.includes('Event registrations and check-in are separate'),'roster distinguishes decision records from event attendance');
+  check(f.root.textContent.includes('Next review: 2026-11-20')&&f.root.textContent.includes('Follow-up consent: withdrawn or not given'),'existing permitted date and consent are visible');
+  check(!/PRIVATE-/.test(f.root.textContent),'no contact, prayer or learner projection');
+  const before=f.calls.length;f.root.querySelector('[name=rosterSearch]').value='alpha';f.button('Apply filters').click();await f.settle();
+  check(f.root.textContent.includes('Fictional Alpha')&&!f.root.textContent.includes('Fictional Beta'),'name filter works on authorized rows');
+  check(f.calls.slice(before).filter(c=>c.p_action==='context').length===2,'filter verifies existing authority before and after read');
+  check(JSON.stringify(f.calls.filter(c=>c.p_action==='list').at(-1).p_payload)==='{"page":0}','filter never invents server query fields');
+  check(f.root.textContent.includes('1 of 2 assigned records on this page'),'visible count is not campaign total');
+  f.button('Clear filters').click();await f.settle();f.root.querySelector('[name=rosterStatus]').value='completed';f.button('Apply filters').click();await f.settle();
+  check(!f.root.textContent.includes('Fictional Alpha')&&f.root.textContent.includes('Fictional Beta'),'follow-up status filtering works');
+  check(f.root.textContent.includes('Follow-up: completed')&&f.root.textContent.includes('Discipleship status is unavailable'),'completed follow-up never certifies course');
+  f.button('Clear filters').click();await f.settle();f.root.querySelector('[name=rosterConsent]').value='no';f.button('Apply filters').click();await f.settle();
+  check(!f.root.textContent.includes('Fictional Alpha')&&f.root.textContent.includes('Fictional Beta'),'consent filter uses exact existing boolean');
+  f.root.querySelector('[name=rosterSearch]').value='<script>';f.button('Apply filters').click();await f.settle();check(f.root.textContent.includes('No matches on this page')&&!f.root.querySelector('script'),'literal search has no markup execution or inferred identity');
+  const old=f.button('Apply filters');f.deny();old.click();await f.settle();check(!f.root.querySelector('[name=rosterSearch]')&&!f.root.textContent.includes('Fictional'),'denial clears rows and search');const after=f.calls.length;old.click();await f.settle();check(f.calls.length===after,'retained denied filters issue no requests');
+  check(f.calls.every(c=>['context','list'].includes(c.p_action)),'new roster journey is read-only');
+ }finally{f.close()}
+}
+{
+ const f=await rosterFixture();try{f.root.querySelector('[name=rosterSearch]').value='Private Alpha';const old=f.button('Apply filters');f.hold();old.click();for(let i=0;i<100&&!f.held();i++)await tick();assert(f.held());f.change();f.release();await f.settle();check(!f.root.querySelector('[name=rosterSearch]')&&!f.root.textContent.includes('Fictional Alpha'),'account change discards delayed filtered rows and private search');const count=f.calls.length;old.click();await f.settle();check(f.calls.length===count,'old account filter cannot refetch');f.view.select(org,campaign);await f.view.list();check(f.root.querySelector('[name=rosterSearch]').value==='','fresh account starts with no old filter');}finally{f.close()}
+}
+
+{
+ const f=await rosterFixture();try{
+  f.root.querySelector('[name=rosterSearch]').value='Private Alpha';f.change(false);const before=f.calls.length;
+  f.button('Apply filters').click();await f.settle();
+  check(!f.root.querySelector('[name=rosterSearch]')&&!f.root.textContent.includes('Fictional'),'silent account replacement clears old search and rows');
+  check(f.calls.length===before,'silent account replacement denied before scoped RPC');
+ }finally{f.close()}
+}
+{
+ const f=await rosterFixture();try{
+  for(let i=2;i<50;i++)f.rows.push({...f.rows[0],registration_id:`00000000-0000-4000-8000-${String(i+100).padStart(12,'0')}`});
+  await f.view.list();f.root.querySelector('[name=rosterSearch]').value='no matching person';f.button('Apply filters').click();await f.settle();
+  check(f.root.textContent.includes('0 of 50')&&!f.button('Next page').disabled,'filtered-empty full page preserves next-page access');
+  f.button('Next page').click();await f.settle();check(f.calls.filter(c=>c.p_action==='list').at(-1).p_payload.page===1,'filtered page navigation uses existing page contract');
+ }finally{f.close()}
+}
+
 console.log(JSON.stringify({passed,failed:0}));

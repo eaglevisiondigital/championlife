@@ -45,6 +45,32 @@ try{
    const stale=async()=>{await page.evaluate(()=>oldForm?.dispatchEvent(new Event('submit',{bubbles:true,cancelable:true})));await page.waitForTimeout(20)};
    check((await state()).record===null,label+'initial mount no private data');
    await choose();check((await state()).campaigns.length===1,label+'decision-only worker discovers exact campaign');check((await state()).record.rows.length===2,label+'only assigned decisions listed');check(!(await page.textContent('#staff-home-links')).includes('PRIVATE-'),label+'no contact/prayer data');
+   // Read-only desk filters reuse the exact scoped list, never event/contact/learner APIs.
+   const deskBefore=mutations(),requestStart=host.requests.length;
+   check((await page.textContent('#staff-home-links')).includes('Event registrations and check-in are separate'),label+'record type separation visible');
+   check((await page.textContent('#staff-home-links')).includes('Discipleship status is unavailable'),label+'course authority absence truthful');
+   check(!await page.locator(`[data-registration-id="${host.records.eventOnly}"]`).count(),label+'event signup is not a decision row');
+   await page.evaluate(()=>window.oldFilter=[...document.querySelectorAll('button')].find(x=>x.textContent==='Apply filters'));
+   await page.locator('[name=rosterSearch]').fill('person a');await page.getByRole('button',{name:'Apply filters',exact:true}).click();await page.getByText('1 of 2 assigned records on this page.',{exact:true}).waitFor();
+   check(await page.locator(`[data-registration-id="${host.records.a}"]`).count()===1&&!await page.locator(`[data-registration-id="${host.records.b}"]`).count(),label+'name filtering uses assigned source rows');
+   const filterReads=host.requests.slice(requestStart);check(filterReads.filter(x=>x.action==='context').length===2&&filterReads.filter(x=>x.action==='list').length===1,label+'filter rechecks native scope around list');
+   check(filterReads.find(x=>x.action==='list').payload.page===0&&Object.keys(filterReads.find(x=>x.action==='list').payload).length===1,label+'no unsupported backend search payload');
+   const retiredCount=host.requests.length;await page.evaluate(()=>oldFilter.click());await page.waitForTimeout(30);check(host.requests.length===retiredCount,label+'retired filter cannot refetch');
+   await page.locator('[name=rosterStatus]').selectOption('completed');await page.getByRole('button',{name:'Apply filters',exact:true}).click();await page.getByText('0 of 2 assigned records on this page.',{exact:true}).waitFor();check((await page.textContent('#staff-home-links')).includes('No matches on this page'),label+'empty filter not false empty campaign');
+   await page.getByRole('button',{name:'Clear filters',exact:true}).click();await page.getByText('2 of 2 assigned records on this page.',{exact:true}).waitFor();check(await page.locator('[name=rosterSearch]').inputValue()==='',label+'clear filters retains authorized page');
+   await host.consent(host.records.a,false);await page.locator('[name=rosterConsent]').selectOption('no');await page.getByRole('button',{name:'Apply filters',exact:true}).click();await page.getByText('1 of 2 assigned records on this page.',{exact:true}).waitFor();check((await page.textContent('#staff-home-links')).includes('Follow-up consent: withdrawn or not given'),label+'native withdrawn consent displayed without contact authority');
+   await host.consent(host.records.a,true);await page.getByRole('button',{name:'Refresh this page',exact:true}).click();await page.getByText('0 of 2 assigned records on this page.',{exact:true}).waitFor();check(!await page.locator('[data-registration-id]').count(),label+'refresh reflects changed consent with retained filter');
+   await page.getByRole('button',{name:'Clear filters',exact:true}).click();await page.getByText('2 of 2 assigned records on this page.',{exact:true}).waitFor();
+   check(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),label+'desk filters fit approved responsive layout');
+   if(evidence)await page.screenshot({path:path.join(evidence,engine+'-'+size+'-roster.png'),fullPage:true});
+   // Authorization loss during filter refresh removes rows, query, controls and campaign metadata.
+   await page.locator('[name=rosterSearch]').fill('Private silent search');const silentBefore=host.requests.length;await page.evaluate(()=>fx.who='other');await page.getByRole('button',{name:'Apply filters',exact:true}).click();await page.waitForFunction(()=>mount.snapshot().record?.state==='unavailable');
+   check(!await page.locator('[name=rosterSearch]').count()&&host.requests.length===silentBefore,label+'silent account replacement retires search before any RPC');await account('worker');await choose();
+   await host.revoke(host.users.worker.id);await page.getByRole('button',{name:'Apply filters',exact:true}).click();await page.waitForFunction(()=>mount.snapshot().state==='unavailable');check(!await page.locator('[name=rosterSearch]').count()&&(await state()).record===null,label+'filter denial clears protected state');await host.reset();await choose();
+   // An old account's held filtered list cannot restore names or the previous query.
+   await page.locator('[name=rosterSearch]').fill('Private Person A');hold={action:'list'};await page.getByRole('button',{name:'Apply filters',exact:true}).click();while(!release)await new Promise(r=>setTimeout(r,10));await account('other');await choose();release();release=null;await page.waitForTimeout(100);
+   check((await state()).record.rows[0].registrationId===host.records.c&&await page.locator('[name=rosterSearch]').inputValue()==='',label+'late filtered account response and query discarded');
+   check(mutations()===deskBefore,label+'entire added desk journey sends zero mutations');await account('worker');await choose();
    await assert.rejects(page.evaluate(other=>mount.select(org,other),host.otherCampaignId));check((await state()).selected.campaignId===host.campaignId,label+'foreign selector cannot navigate');
    for(const who of ['registrationOnly','peopleOnly']){await account(who);await page.evaluate(()=>mount.refresh());check((await state()).campaigns.length===0,label+who+' cannot discover decision campaigns')}
    await account('emptyWorker');await choose();check((await state()).campaigns.length===1&&(await state()).record.rows.length===0,label+'explicit decision scope with zero assigned records stays empty');

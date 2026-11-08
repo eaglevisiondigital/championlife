@@ -62,7 +62,8 @@ export function createCampaignDecisionAdapter({auth,workspace,eventTarget,getAll
   if(!scope||closed)throw failure('NO_SCOPE');
   const s=scope,g=++generation;busy=true;emit({state:'loading'});
   try{
-   const p=await verify(g,s);await context(g,s,p);
+   // A silent account/token replacement must retire the prior view, not reuse its search or intent.
+   const p=await verify(g,s,activePrincipal);await context(g,s,p);
    const data=await call(action,payload,g,s,p);const manage=await context(g,s,p);guard(g,s);
    if(data?.organization_id!==s.organizationId||data?.campaign_id!==s.campaignId)throw failure('INVALID_RESPONSE');
    if(action==='list'){
