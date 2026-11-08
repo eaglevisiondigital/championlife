@@ -1,5 +1,6 @@
 // Verify actual122-derived financial navigation before immutable historical projections.
 import assert from 'node:assert/strict';
+import {checkpointReader as cycle22CheckpointReader,verifyActual as verifyCycle22,additions as cycle22Additions} from '../partner-home-cycle22/source.mjs';
 import {readFileSync,lstatSync,readdirSync,existsSync} from 'node:fs';
 import {execFileSync} from 'node:child_process';
 import {createHash} from 'node:crypto';
@@ -8,11 +9,11 @@ export const root=new URL('../../',import.meta.url);
 export const base='0b7af2b1bed98a3944fdd714f21b9017cf0d1d0b';
 export const runtime='assets/js/staff-workspace.js';
 export const hash=b=>createHash('sha256').update(b).digest('hex');
-export const current=p=>readFileSync(new URL(p,root));
+let cycle22Read;export const current=p=>(cycle22Read ||= cycle22CheckpointReader())(p);
 const cache=new Map();
 export function original(p){if(!cache.has(p))cache.set(p,execFileSync('git',['--no-replace-objects','show',base+':'+p],{cwd:root,maxBuffer:80*1024*1024}));return Buffer.from(cache.get(p))}
 export const derivationSHA256='021c04201c7e798ba056d8235731baac9c4dc6c3b84278abbe38a7f1f4cd6932';
-const recipeBytes=current('tools/staff-financial-navigation-cycle21/derivations.json');assert.equal(hash(recipeBytes),derivationSHA256,'Exact reviewed financial navigation and router derivations');
+const recipeBytes=readFileSync(new URL('tools/staff-financial-navigation-cycle21/derivations.json',root));assert.equal(hash(recipeBytes),derivationSHA256,'Exact reviewed financial navigation and router derivations');
 const derivations=JSON.parse(recipeBytes);
 export const modified=Object.keys(derivations);
 export function expectedRouter(p){let text=original(p).toString();for(const[a,b]of derivations[p]){assert.equal(text.split(a).length,2,'Single exact router marker '+p);text=text.replace(a,b)}return Buffer.from(text)}
@@ -36,9 +37,10 @@ export const reviewedHashes={
 };
 const tracked=execFileSync('git',['--no-replace-objects','ls-tree','-r','--name-only',base],{cwd:root,encoding:'utf8'}).trim().split('\n');
 export function verifyActual(read=current){
+ verifyCycle22();
  for(const p of tracked){const s=lstatSync(new URL(p,root));assert(s.isFile()&&!s.isSymbolicLink(),(p.startsWith('netlify')||p.startsWith('supabase')?'No protected backend/config symlink; ':'No public symlink; ')+'Regular exact source '+p);assert.deepEqual(read(p),p===runtime?expectedRuntime():Object.hasOwn(derivations,p)?expectedRouter(p):original(p),'Historical guard/build/dependency unchanged; Exact122 source outside financial navigation and bounded routers: '+p)}
  const allowed=new Set([...tracked,...additions]);
- const present=execFileSync('git',['ls-files','--cached','--others','--exclude-standard'],{cwd:root,encoding:'utf8'}).trim().split('\n').filter(Boolean);
+ const present=execFileSync('git',['ls-files','--cached','--others','--exclude-standard'],{cwd:root,encoding:'utf8'}).trim().split('\n').filter(Boolean).filter(p=>!cycle22Additions.includes(p));
  for(const p of present)assert(allowed.has(p),'Unlisted composition file '+p);
  for(const p of additions){const s=lstatSync(new URL(p,root));assert(s.isFile()&&!s.isSymbolicLink(),'Regular bounded addition '+p)}
  for(const [p,digest]of Object.entries(reviewedHashes))assert.equal(hash(read(p)),digest,'Independent reviewed addition '+p);
