@@ -1,0 +1,37 @@
+name: Existing financial review navigation
+on:
+  pull_request:
+    paths:
+      - 'assets/js/staff-workspace.js'
+      - 'tools/staff-financial-navigation-cycle21/**'
+      - 'tools/staff-create-lifetime-cycle20/**'
+      - 'tools/staff-lifetime-cycle19/**'
+      - 'tools/staff-integration-cycle16/**'
+      - 'tools/staff-runtime-cycle14/**'
+      - 'tools/staff-cycle9-integrity/integrity.mjs'
+      - '.github/workflows/staff-financial-navigation-cycle21.yml'
+permissions:
+  contents: read
+jobs:
+  financial-navigation:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm ci --ignore-scripts --prefix tools/backend-tests
+      - run: tools/backend-tests/node_modules/.bin/playwright install --with-deps chromium webkit
+      - name: Verify accepted SDK bytes
+        run: |
+          curl --fail --silent --show-error --location 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.118.0' --output "$RUNNER_TEMP/supabase-sdk.js"
+          echo "bee24fc29228ed5a370f76a2ba1ca3c399549edad2fef23453c80148856a49af  $RUNNER_TEMP/supabase-sdk.js" | sha256sum --check
+          echo "SUPABASE_SDK_PATH=$RUNNER_TEMP/supabase-sdk.js" >> "$GITHUB_ENV"
+      - run: node --test tools/staff-financial-navigation-cycle21/source.test.mjs
+      - run: node tools/staff-financial-navigation-cycle21/financial-navigation.browser.mjs
+      - run: node tools/staff-financial-navigation-cycle21/build.mjs
+      - run: git diff --check
