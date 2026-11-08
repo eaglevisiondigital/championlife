@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import {current as actualCurrent,expectedRuntime,runtime as cycle19Runtime} from '../staff-lifetime-cycle19/source.mjs';
+import {current as actualCurrent,expectedRuntime,runtime as cycle19Runtime} from '../staff-create-lifetime-cycle20/source.mjs';
 import {readFileSync,readdirSync,lstatSync} from 'node:fs';
 import {buildSite} from '../site-build/build.mjs';
 import {verifyActual,root,hash,original,current,runtimePaths} from './source.mjs';

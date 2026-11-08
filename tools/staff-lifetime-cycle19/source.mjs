@@ -1,4 +1,5 @@
 // Actual117 source plus only the independently reviewed119 lifetime helper.
+import {checkpointReader as cycle20CheckpointReader,verifyActual as verifyCycle20,additions as cycle20Additions} from '../staff-create-lifetime-cycle20/source.mjs';
 import assert from 'node:assert/strict';
 import {readFileSync,lstatSync,readdirSync,existsSync} from 'node:fs';
 import {execFileSync} from 'node:child_process';
@@ -10,7 +11,7 @@ export const base='a9bfe0db67cbc50a603d07e321f4f2672433424f';
 export const people='c31cc8809eee24868fb1e654982f4efed5d8915e';
 export const runtime='assets/js/outreach-people.js';
 export const hash=b=>createHash('sha256').update(b).digest('hex');
-export const current=p=>readFileSync(new URL(p,root));
+let cycle20Read;export const current=p=>(cycle20Read ||= cycle20CheckpointReader())(p);
 const cache=new Map();
 export function original(p,commit=base){const key=commit+':'+p;if(!cache.has(key))cache.set(key,execFileSync('git',['--no-replace-objects','show',key],{cwd:root,maxBuffer:80*1024*1024}));return Buffer.from(cache.get(key))}
 export function helper(bytes){const text=bytes.toString(),start=' function addTaskActions(',end=' async function detail(';assert.equal(text.split(start).length,2);assert.equal(text.split(end).length,2);return text.slice(text.indexOf(start),text.indexOf(end))}
@@ -24,7 +25,7 @@ export function expectedRuntime(){
 }
 // Fixed recipe bytes are reviewed separately from source payloads; never self-authorize hashes.
 export const derivationSHA256='8c80cf7bf5f044276bcc03579412fc9f00a6cb6bc080d5557be943e3148ee51b';
-const recipeBytes=current('tools/staff-lifetime-cycle19/derivations.json');assert.equal(hash(recipeBytes),derivationSHA256,'Exact reviewed historical router derivations');
+const recipeBytes=readFileSync(new URL('tools/staff-lifetime-cycle19/derivations.json',root));assert.equal(hash(recipeBytes),derivationSHA256,'Exact reviewed historical router derivations');
 const derivations=JSON.parse(recipeBytes);
 export const modified=[runtime,...Object.keys(derivations)];
 export function expectedRouter(p){let text=original(p).toString();for(const[a,b]of derivations[p]){assert.equal(text.split(a).length,2,'Single exact router marker '+p);text=text.replace(a,b)}return Buffer.from(text)}
@@ -47,9 +48,10 @@ export const reviewedHashes={
 };
 const tracked=execFileSync('git',['--no-replace-objects','ls-tree','-r','--name-only',base],{cwd:root,encoding:'utf8'}).trim().split('\n');
 export function verifyActual(read=current){
+ verifyCycle20();
  for(const p of tracked){const s=lstatSync(new URL(p,root));assert(s.isFile()&&!s.isSymbolicLink(),(p.startsWith('netlify')||p.startsWith('supabase')?'No protected backend/config symlink; ':'No public symlink; ')+'Regular exact source '+p);assert.deepEqual(read(p),p===runtime?expectedRuntime():Object.hasOwn(derivations,p)?expectedRouter(p):original(p),'Historical guard/build/dependency unchanged; Exact117 source outside reviewed119 helper and bounded routers: '+p)}
  const allowed=new Set([...tracked,...additions]);
- const present=execFileSync('git',['ls-files','--cached','--others','--exclude-standard'],{cwd:root,encoding:'utf8'}).trim().split('\n').filter(Boolean);
+ const present=execFileSync('git',['ls-files','--cached','--others','--exclude-standard'],{cwd:root,encoding:'utf8'}).trim().split('\n').filter(Boolean).filter(p=>!cycle20Additions.includes(p));
  for(const p of present)assert(allowed.has(p),'Unlisted composition file '+p);
  for(const p of additions){const s=lstatSync(new URL(p,root));assert(s.isFile()&&!s.isSymbolicLink(),'Regular bounded addition '+p)}
  for(const [p,digest]of Object.entries(reviewedHashes))assert.equal(hash(read(p)),digest,'Independent reviewed addition '+p);

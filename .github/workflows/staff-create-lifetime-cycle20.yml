@@ -1,0 +1,31 @@
+name: Staff task-create control lifetime acceptance
+on:
+  pull_request:
+    paths:
+      - 'assets/js/outreach-people.js'
+      - 'tools/staff-create-lifetime-cycle20/**'
+      - 'tools/staff-lifetime-cycle19/**'
+      - 'tools/staff-integration-cycle16/**'
+      - 'tools/staff-runtime-cycle14/**'
+      - 'tools/staff-cycle9-integrity/integrity.mjs'
+      - '.github/workflows/staff-create-lifetime-cycle20.yml'
+permissions:
+  contents: read
+jobs:
+  source-and-create-retirement:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm ci --ignore-scripts --prefix tools/backend-tests
+      - run: tools/backend-tests/node_modules/.bin/playwright install --with-deps chromium webkit
+      - run: node --test tools/staff-create-lifetime-cycle20/source.test.mjs tools/staff-create-lifetime-cycle20/create-lifetime.test.mjs
+      - run: node tools/staff-create-lifetime-cycle20/create-lifetime-independent.browser.mjs
+      - run: node tools/staff-create-lifetime-cycle20/build.mjs
+      - run: git diff --check
