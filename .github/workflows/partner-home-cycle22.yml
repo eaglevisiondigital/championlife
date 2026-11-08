@@ -3,6 +3,7 @@ on:
   pull_request:
     paths:
       - 'assets/js/staff-outreach-partners.js'
+      - 'assets/js/outreach-registration-staff.js'
       - 'tools/partner-home-cycle22/**'
       - 'tools/staff-financial-navigation-cycle21/**'
       - 'tools/staff-create-lifetime-cycle20/**'
@@ -35,4 +36,50 @@ jobs:
       - run: node --test tools/partner-home-cycle22/source.test.mjs
       - run: node tools/partner-home-cycle22/home-return.browser.mjs
       - run: node tools/partner-home-cycle22/build.mjs
+      - run: git diff --check
+  registration-checkin:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        browser: [chromium, webkit]
+    env:
+      TEST_BROWSER: ${{ matrix.browser }}
+      TEST_POSTGRES_BIN: /usr/lib/postgresql/17/bin
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Install disposable local PostgreSQL 17 dependency
+        run: |
+          # Official version-specific PGDG repository; Ubuntu's default catalog lacks PG17.
+          # https://www.postgresql.org/download/linux/ubuntu/
+          sudo apt-get update
+          sudo apt-get install --yes curl ca-certificates gnupg
+          curl --fail --silent --show-error --location https://www.postgresql.org/media/keys/ACCC4CF8.asc --output "$RUNNER_TEMP/registration-pgdg.asc"
+          registration_pg_fingerprint="$(gpg --show-keys --with-colons "$RUNNER_TEMP/registration-pgdg.asc" | awk -F: '$1 == "fpr" {print $10; exit}')"
+          test "$registration_pg_fingerprint" = B97B0AFCAA1A47F044F244A07FCC7D46ACCC4CF8
+          sudo install -d /usr/share/postgresql-common/pgdg
+          sudo install -m 0644 "$RUNNER_TEMP/registration-pgdg.asc" /usr/share/postgresql-common/pgdg/apt.postgresql.org.asc
+          registration_pg_codename="$(. /etc/os-release && echo "$VERSION_CODENAME")"
+          printf 'Types: deb\nURIs: https://apt.postgresql.org/pub/repos/apt\nSuites: %s-pgdg\nArchitectures: %s\nComponents: main\nSigned-By: /usr/share/postgresql-common/pgdg/apt.postgresql.org.asc\n' "$registration_pg_codename" "$(dpkg --print-architecture)" | sudo tee /etc/apt/sources.list.d/registration-pgdg.sources
+          sudo apt-get update
+          sudo apt-get install --yes postgresql-17
+          "$TEST_POSTGRES_BIN/postgres" --version
+      - run: npm ci --ignore-scripts --prefix tools/backend-tests
+      - run: tools/backend-tests/node_modules/.bin/playwright install --with-deps ${{ matrix.browser }}
+      - name: Verify accepted SDK bytes
+        run: |
+          curl --fail --silent --show-error --location 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.118.0' --output "$RUNNER_TEMP/supabase-sdk.js"
+          echo "bee24fc29228ed5a370f76a2ba1ca3c399549edad2fef23453c80148856a49af  $RUNNER_TEMP/supabase-sdk.js" | sha256sum --check
+          echo "SUPABASE_SDK_PATH=$RUNNER_TEMP/supabase-sdk.js" >> "$GITHUB_ENV"
+      - run: node tools/partner-home-cycle22/registration-host.browser.mjs
+      - run: node tools/partner-home-cycle22/registration-checkin-journey.browser.mjs
+      - if: matrix.browser == 'chromium'
+        run: node tools/partner-home-cycle22/registration-checkin-status.native.mjs
       - run: git diff --check

@@ -7,11 +7,13 @@ import {fileURLToPath} from 'node:url';
 export const root=new URL('../../',import.meta.url);
 export const base='bdecc592d1a0544330934ef2fc5a254a9b54d3d3';
 export const runtime='assets/js/staff-outreach-partners.js';
+export const registrationRuntime='assets/js/outreach-registration-staff.js';
+export function expectedRegistrationRuntime(){assert.equal(hash(original(registrationRuntime)),'665236df4f5eb52f25e4bcc5560a0e8fda4feae139b4f0b17265d10964ca4f2a');const value=expectedRouter(registrationRuntime);assert.equal(hash(value),'cab69837156279bf24bd790115c24e2368f1dd87a094e79c79ff389b9a4cf81e','Exact reviewed PR134 runtime');return value}
 export const hash=b=>createHash('sha256').update(b).digest('hex');
 export const current=p=>readFileSync(new URL(p,root));
 const cache=new Map();
 export function original(p){if(!cache.has(p))cache.set(p,execFileSync('git',['--no-replace-objects','show',base+':'+p],{cwd:root,maxBuffer:80*1024*1024}));return Buffer.from(cache.get(p))}
-export const derivationSHA256='8bb3723106e71839b621bc33d90a00d7c55eb850d9717c4060676bec63ce8da5';
+export const derivationSHA256='1e90df6126927b20ad84a80bfce9ea81fbb8bdb97cb1d26f55a57b0a2fc775fe';
 const recipeBytes=current('tools/partner-home-cycle22/derivations.json');assert.equal(hash(recipeBytes),derivationSHA256,'Exact reviewed home return and router derivations');
 const derivations=JSON.parse(recipeBytes);
 export const modified=Object.keys(derivations);
@@ -24,19 +26,25 @@ export const additions=[
   "tools/partner-home-cycle22/derivations.json",
   "tools/partner-home-cycle22/README.md",
   "tools/partner-home-cycle22/home-return.browser.mjs",
-  ".github/workflows/partner-home-cycle22.yml"
+  ".github/workflows/partner-home-cycle22.yml",
+  "tools/partner-home-cycle22/registration-host.browser.mjs",
+  "tools/partner-home-cycle22/registration-checkin-journey.browser.mjs",
+  "tools/partner-home-cycle22/registration-checkin-status.native.mjs"
 ];
 export const reviewedHashes={
-  "tools/partner-home-cycle22/source.test.mjs": "9878e9ab0b90f87a2883025ada350dbde65821d1d6e890e42859d89886563f71",
-  "tools/partner-home-cycle22/build.mjs": "4fded3ecd31cd707a2e61cf2a3f4f810b707bbed07f72b5a0e894cd3af50a4a3",
-  "tools/partner-home-cycle22/derivations.json": "8bb3723106e71839b621bc33d90a00d7c55eb850d9717c4060676bec63ce8da5",
-  "tools/partner-home-cycle22/README.md": "9dc27e04814bae2560acac696f8d3b128f05e3c0ef0e7a2a568b584b8e80f201",
+  "tools/partner-home-cycle22/source.test.mjs": "589d035e2626134cda515affe23a657fdf5e6ba43c6f0390877ccd705818617c",
+  "tools/partner-home-cycle22/build.mjs": "debff032e9b7211a2ef4bdf3a68ad3c07949243e31ccda10de6c92b04d924578",
+  "tools/partner-home-cycle22/derivations.json": "1e90df6126927b20ad84a80bfce9ea81fbb8bdb97cb1d26f55a57b0a2fc775fe",
+  "tools/partner-home-cycle22/README.md": "73289b8e203e32ea05b594689fcb6b90238e100999b251cd02afefd3b70d1d2e",
   "tools/partner-home-cycle22/home-return.browser.mjs": "f610b31cada708adb84693dc40fc9aa20b3833e223c0c9fb9cb59c7e45263d05",
-  ".github/workflows/partner-home-cycle22.yml": "5390c1fd904ecefac0e32e7fa06541bb165c4e545fb42f2b5957a20a4d3b1f51"
+  ".github/workflows/partner-home-cycle22.yml": "278fb78dec6258b3c554b745eff48aae563de009fa79b2aea5aedf0aac04c925",
+  "tools/partner-home-cycle22/registration-host.browser.mjs": "dd2043d3457b18cd6052df67d0eed0228cd1afbcf49ffc060ca980a4b628dfdc",
+  "tools/partner-home-cycle22/registration-checkin-journey.browser.mjs": "5946b1bffe3f0faf00e58695a9a6babd60196dc9740afa503954b3cbe9a4797e",
+  "tools/partner-home-cycle22/registration-checkin-status.native.mjs": "f941859a5b2a376b17fc135bcc217f7d8fead492634595d20de04d497c248dfa"
 };
 const tracked=execFileSync('git',['--no-replace-objects','ls-tree','-r','--name-only',base],{cwd:root,encoding:'utf8'}).trim().split('\n');
 export function verifyActual(read=current){
- for(const p of tracked){const s=lstatSync(new URL(p,root));assert(s.isFile()&&!s.isSymbolicLink(),(p.startsWith('netlify')||p.startsWith('supabase')?'No protected backend/config symlink; ':'No public symlink; ')+'Regular exact source '+p);assert.deepEqual(read(p),p===runtime?expectedRuntime():Object.hasOwn(derivations,p)?expectedRouter(p):original(p),'Historical guard/build/dependency unchanged; Exact123 source outside home return and bounded routers: '+p)}
+ for(const p of tracked){const s=lstatSync(new URL(p,root));assert(s.isFile()&&!s.isSymbolicLink(),(p.startsWith('netlify')||p.startsWith('supabase')?'No protected backend/config symlink; ':'No public symlink; ')+'Regular exact source '+p);assert.deepEqual(read(p),p===runtime?expectedRuntime():p===registrationRuntime?expectedRegistrationRuntime():Object.hasOwn(derivations,p)?expectedRouter(p):original(p),'Historical guard/build/dependency unchanged; Exact123 source outside home return and bounded routers: '+p)}
  const allowed=new Set([...tracked,...additions]);
  const present=execFileSync('git',['ls-files','--cached','--others','--exclude-standard'],{cwd:root,encoding:'utf8'}).trim().split('\n').filter(Boolean);
  for(const p of present)assert(allowed.has(p),'Unlisted composition file '+p);
