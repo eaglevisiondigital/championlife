@@ -152,3 +152,21 @@ Financial-only staff already admitted by Staff123 can return from Partner review
 ## Source-only Staff check-in composition — 2026-11-08
 
 Dedicated successor of Staff126; only registration runtime delta from reviewed Registration134. Removed/reinserted check-in controls permanently retire; current authorized check-in/reversal and household status remain unchanged. No new backend authority, SQL, SDK, host navigation or branding. Existing source/build guards extended with exact reviewed bytes and permanent mounted-host/native regression tests. Local and exact-head CI evidence is recorded in the private `audit/staff-checkin-integration-2026-11-08/` package; historical failures remain preserved. No genuine hosted acceptance or production action. RELEASE NO-GO.
+
+## 2026-11-08 — Check-in actual pre-dispatch veto (source only)
+
+Successor based solely on Staff PR135 `773d32ef4a3d86819931fd1a76700e5d1457a6fe`.
+The original Chromium/WebKit reproduction issued a new check-in HTTP request after
+control removal/reinsertion while Staff session verification was held. The pinned
+SDK performs a second asynchronous token lookup; a session can also change there
+without an Auth callback. The existing client now uses its supported custom fetch
+hook and a private one-shot signal-bound veto immediately before native fetch.
+Check-in/reversal bind permanent control lifetime, campaign/view, Staff epoch/client
+and exact preflight bearer. No await follows the final veto before dispatch; no
+abort is issued after dispatch. Existing canonical SQL, grants, UI and audits are
+unchanged. No new Auth client, permissions, retry or server authority is introduced.
+
+Source/browser/native validation and independent review evidence are recorded in
+private audit/staff-checkin-predispatch-2026-11-08. Historical PR135 failures remain
+preserved; no run is retried. Genuine Auth/RLS/recovery and production approval remain
+separate. RELEASE NO-GO.

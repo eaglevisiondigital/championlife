@@ -32,3 +32,17 @@ Staff126 `95723fae9d4cbc16eb80e350191495b4d37d4498` retains its host, session, S
 The existing exact derivation chain retains every historical assertion. Six build readers additionally require the exact reviewed registration bytes. The native journey and status tests are copied byte-identically from PR134, not historical runtime or workflow merges. The mounted-host test loads actual current source and pinned SDK, using fictional transport; `REVIEW_BASE=95723fae9d4cbc16eb80e350191495b4d37d4498 REPRO=1 TEST_BROWSER=chromium` reproduces the old reinsertion mutations. Normal runs deny retired handlers while fresh check-in and reversal remain available. Chromium/WebKit exercise mobile/desktop, session expiry, account replacement, campaign denial, navigation retirement and already-submitted requests. PostgreSQL fixtures are local/disposable only.
 
 Historical Staff126 runner shutdown and earlier WebKit failures remain recorded, not reclassified. New CI is attached to the new exact candidate only. This is neither genuine Supabase Auth acceptance nor release authorization. RELEASE NO-GO.
+
+### Actual check-in pre-dispatch boundary (PR135 successor)
+
+`registration-predispatch.browser.mjs` holds both Staff session verification and
+SDK token lookup using the pinned real SDK and actual Staff source. Retired controls,
+ancestors, campaign/account replacement and access denial must produce zero new
+HTTP mutations; unchanged authorized controls produce exactly one. Existing host
+checks retain already-dispatched response semantics and native tests retain the
+canonical household/check-in/audit contract. The transport veto is local denial
+only; SQL authorization is unchanged. Missing callback or bearer fails closed.
+Token refresh during the gap denies an unsent operation; no automatic retry occurs.
+The original PR134 runtime and every historical derivation remain pinned as exact
+inputs to the new bounded correction. Three runtime files change; no public HTML,
+SQL, styles, assets, SDK pin or build allowlist changes.

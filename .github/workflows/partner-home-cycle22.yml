@@ -33,7 +33,7 @@ jobs:
           curl --fail --silent --show-error --location 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.118.0' --output "$RUNNER_TEMP/supabase-sdk.js"
           echo "bee24fc29228ed5a370f76a2ba1ca3c399549edad2fef23453c80148856a49af  $RUNNER_TEMP/supabase-sdk.js" | sha256sum --check
           echo "SUPABASE_SDK_PATH=$RUNNER_TEMP/supabase-sdk.js" >> "$GITHUB_ENV"
-      - run: node --test tools/partner-home-cycle22/source.test.mjs
+      - run: node --test tools/partner-home-cycle22/source.test.mjs tools/partner-home-cycle22/dispatch-transport.test.mjs
       - run: node tools/partner-home-cycle22/home-return.browser.mjs
       - run: node tools/partner-home-cycle22/build.mjs
       - run: git diff --check
@@ -79,6 +79,7 @@ jobs:
           echo "bee24fc29228ed5a370f76a2ba1ca3c399549edad2fef23453c80148856a49af  $RUNNER_TEMP/supabase-sdk.js" | sha256sum --check
           echo "SUPABASE_SDK_PATH=$RUNNER_TEMP/supabase-sdk.js" >> "$GITHUB_ENV"
       - run: node tools/partner-home-cycle22/registration-host.browser.mjs
+      - run: node tools/partner-home-cycle22/registration-predispatch.browser.mjs
       - run: node tools/partner-home-cycle22/registration-checkin-journey.browser.mjs
       - if: matrix.browser == 'chromium'
         run: node tools/partner-home-cycle22/registration-checkin-status.native.mjs

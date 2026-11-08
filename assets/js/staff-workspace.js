@@ -78,7 +78,14 @@
    const session=await auth.getSession();
    if(generation!==epoch||stopped)return reject();
    if(session?.user?.id!==identity){stop('Your account changed.');return reject()}
-   const result=await originalRpc(...args);
+   const guardedRegistration=args[0]==='outreach_registration_workspace'&&['checkin','reverse'].includes(args[1]?.p_action);
+   let result;
+   if(guardedRegistration){
+    const veto=args[2]?.staffDispatchCurrent;
+    if(typeof veto!=='function'||typeof auth.dispatchGuardedRpc!=='function'||typeof session.access_token!=='string'||!session.access_token)return reject();
+    const {staffDispatchCurrent,...options}=args[2];
+    result=await auth.dispatchGuardedRpc(args[0],args[1],options,()=>generation===epoch&&active&&!stopped&&window.ChampionLifeAuth===auth&&auth.client===client&&veto()===true,session.access_token);
+   }else result=await originalRpc(...args);
    if(generation!==epoch||stopped)return reject();
    if(denied(result)){stop('Access is no longer available.');return reject()}
    if(args[0]==='communications_workspace'&&args[1]?.p_action==='context'&&!result.error)result.data=communicationContext(result.data);
