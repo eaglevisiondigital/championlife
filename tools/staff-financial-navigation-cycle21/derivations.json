@@ -1,0 +1,150 @@
+{
+  "assets/js/staff-workspace.js": [
+    [
+      "  result.push(...communicationEntries(snapshot,id));\n  return result;",
+      "  result.push(...communicationEntries(snapshot,id));\n  if(orgPermission(snapshot.grants,id,'outreach.view')&&orgPermission(snapshot.grants,id,'finance.read'))result.push(['Financial Outreach Review','staff-outreach-partners.html?org='+encodeURIComponent(id)]);\n  return result;"
+    ],
+    [
+      "  for(const [label,href]of entries)nav.append(link(label,href));\n  if(context==='church'&&orgPermission(snapshot.grants,selected.id,'outreach.view')&&orgPermission(snapshot.grants,selected.id,'finance.read')){const financial=link('Financial Outreach Review','staff-outreach-partners.html?org='+encodeURIComponent(selected.id));financial.id='financial-outreach-link';nav.append(financial)}",
+      "  for(const [label,href]of entries){const item=link(label,href);if(label==='Financial Outreach Review')item.id='financial-outreach-link';nav.append(item)}"
+    ]
+  ],
+  "tools/staff-create-lifetime-cycle20/source.mjs": [
+    [
+      "\nimport assert from 'node:assert/strict';\n",
+      "\nimport assert from 'node:assert/strict';\nimport {checkpointReader as cycle21CheckpointReader,verifyActual as verifyCycle21,additions as cycle21Additions} from '../staff-financial-navigation-cycle21/source.mjs';\n"
+    ],
+    [
+      "export const current=p=>readFileSync(new URL(p,root));",
+      "let cycle21Read;export const current=p=>(cycle21Read ||= cycle21CheckpointReader())(p);"
+    ],
+    [
+      "const recipeBytes=current('tools/staff-create-lifetime-cycle20/derivations.json');",
+      "const recipeBytes=readFileSync(new URL('tools/staff-create-lifetime-cycle20/derivations.json',root));"
+    ],
+    [
+      "export function verifyActual(read=current){",
+      "export function verifyActual(read=current){\n verifyCycle21();"
+    ],
+    [
+      ".trim().split('\\n').filter(Boolean);",
+      ".trim().split('\\n').filter(Boolean).filter(p=>!cycle21Additions.includes(p));"
+    ]
+  ],
+  "tools/staff-lifetime-cycle19/source.mjs": [
+    [
+      "\nimport assert from 'node:assert/strict';\n",
+      "\nimport assert from 'node:assert/strict';\nimport {additions as cycle21Additions} from '../staff-financial-navigation-cycle21/source.mjs';\n"
+    ],
+    [
+      " const present=execFileSync('git',['ls-files','--cached','--others','--exclude-standard'],{cwd:root,encoding:'utf8'}).trim().split('\\n').filter(Boolean).filter(p=>!cycle20Additions.includes(p));",
+      " const present=execFileSync('git',['ls-files','--cached','--others','--exclude-standard'],{cwd:root,encoding:'utf8'}).trim().split('\\n').filter(Boolean).filter(p=>!cycle20Additions.includes(p)&&!cycle21Additions.includes(p));"
+    ]
+  ],
+  "tools/staff-integration-cycle16/source.mjs": [
+    [
+      "\nimport assert from 'node:assert/strict';\n",
+      "\nimport assert from 'node:assert/strict';\nimport {additions as cycle21Additions} from '../staff-financial-navigation-cycle21/source.mjs';\n"
+    ],
+    [
+      " const present=execFileSync('git',['ls-files','--cached','--others','--exclude-standard'],{cwd:root,encoding:'utf8'}).trim().split('\\n').filter(Boolean).filter(p=>!cycle19Additions.includes(p)&&!cycle20Additions.includes(p));",
+      " const present=execFileSync('git',['ls-files','--cached','--others','--exclude-standard'],{cwd:root,encoding:'utf8'}).trim().split('\\n').filter(Boolean).filter(p=>!cycle19Additions.includes(p)&&!cycle20Additions.includes(p)&&!cycle21Additions.includes(p));"
+    ]
+  ],
+  "tools/staff-runtime-cycle14/source.mjs": [
+    [
+      "\nimport assert from 'node:assert/strict';\n",
+      "\nimport assert from 'node:assert/strict';\nimport {additions as cycle21Additions} from '../staff-financial-navigation-cycle21/source.mjs';\n"
+    ],
+    [
+      " const files=execFileSync('git',['ls-files','--cached','--others','--exclude-standard'],{cwd:root,encoding:'utf8'}).trim().split('\\n').filter(Boolean).filter(path=>!cycle16Additions.includes(path)&&!cycle19Additions.includes(path)&&!cycle20Additions.includes(path));",
+      " const files=execFileSync('git',['ls-files','--cached','--others','--exclude-standard'],{cwd:root,encoding:'utf8'}).trim().split('\\n').filter(Boolean).filter(path=>!cycle16Additions.includes(path)&&!cycle19Additions.includes(path)&&!cycle20Additions.includes(path)&&!cycle21Additions.includes(path));"
+    ]
+  ],
+  "tools/staff-create-lifetime-cycle20/build.mjs": [
+    [
+      "import assert from 'node:assert/strict';",
+      "import assert from 'node:assert/strict';\nimport {current as cycle21Current,expectedRuntime as cycle21Expected,runtime as cycle21Runtime} from '../staff-financial-navigation-cycle21/source.mjs';"
+    ],
+    [
+      "hash(current(p)),'Actual source/build '",
+      "hash(cycle21Current(p)),'Actual source/build '"
+    ],
+    [
+      "hash(original(p))",
+      "hash(p===cycle21Runtime?cycle21Expected():original(p))"
+    ],
+    [
+      "unchangedPublic:first.length-1,changedPublic:[runtime]",
+      "unchangedPublic:first.length-2,changedPublic:[runtime,cycle21Runtime]"
+    ]
+  ],
+  "tools/staff-lifetime-cycle19/build.mjs": [
+    [
+      "import assert from 'node:assert/strict';",
+      "import assert from 'node:assert/strict';\nimport {current as cycle21Current,expectedRuntime as cycle21Expected,runtime as cycle21Runtime} from '../staff-financial-navigation-cycle21/source.mjs';"
+    ],
+    [
+      "hash(current(p)),'Actual source/build '",
+      "hash(cycle21Current(p)),'Actual source/build '"
+    ],
+    [
+      "hash(original(p))",
+      "hash(p===cycle21Runtime?cycle21Expected():original(p))"
+    ],
+    [
+      "unchangedPublic:first.length-1,changedPublic:[runtime]",
+      "unchangedPublic:first.length-2,changedPublic:[runtime,cycle21Runtime]"
+    ]
+  ],
+  "tools/staff-integration-cycle16/build.mjs": [
+    [
+      "import assert from 'node:assert/strict';",
+      "import assert from 'node:assert/strict';\nimport {current as cycle21Current,expectedRuntime as cycle21Expected,runtime as cycle21Runtime} from '../staff-financial-navigation-cycle21/source.mjs';"
+    ],
+    [
+      "hash(actualCurrent(p)),'Actual output '",
+      "hash(cycle21Current(p)),'Actual output '"
+    ],
+    [
+      "p===cycle19Runtime?expectedRuntime():original(p)",
+      "p===cycle21Runtime?cycle21Expected():p===cycle19Runtime?expectedRuntime():original(p)"
+    ],
+    [
+      "unchangedPublic:first.length-runtimePaths.length-1",
+      "unchangedPublic:first.length-runtimePaths.length-2"
+    ],
+    [
+      "changedPublic:[...runtimePaths,cycle19Runtime]",
+      "changedPublic:[...runtimePaths,cycle19Runtime,cycle21Runtime]"
+    ]
+  ],
+  "tools/staff-runtime-cycle14/build.mjs": [
+    [
+      "import assert from 'node:assert/strict';",
+      "import assert from 'node:assert/strict';\nimport {current as cycle21Current,expectedRuntime as cycle21Expected,runtime as cycle21Runtime} from '../staff-financial-navigation-cycle21/source.mjs';"
+    ],
+    [
+      "hash(actualCurrent(path))",
+      "hash(cycle21Current(path))"
+    ],
+    [
+      "cycle16Paths.includes(path)?cycle16Expected(path):original(path)",
+      "path===cycle21Runtime?cycle21Expected():cycle16Paths.includes(path)?cycle16Expected(path):original(path)"
+    ],
+    [
+      "unchangedPublic:first.length-1-cycle16Paths.length",
+      "unchangedPublic:first.length-2-cycle16Paths.length"
+    ],
+    [
+      "changedPublic:[runtime,...cycle16Paths]",
+      "changedPublic:[runtime,...cycle16Paths,cycle21Runtime]"
+    ]
+  ],
+  "tools/staff-cycle9-integrity/integrity.mjs": [
+    [
+      "from '../staff-create-lifetime-cycle20/source.mjs';",
+      "from '../staff-financial-navigation-cycle21/source.mjs';"
+    ]
+  ]
+}

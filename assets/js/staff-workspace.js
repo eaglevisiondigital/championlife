@@ -36,6 +36,7 @@
   if(snapshot.forms.some(o=>o.id===id))result.push(['Forms','staff-forms.html?organization='+encodeURIComponent(id)]);
   if(dreamKeys.every(key=>orgPermission(snapshot.grants,id,key)))result.push(['Dream Team & Manual Follow-up','staff-dream-team-manual.html?org='+encodeURIComponent(id)]);
   result.push(...communicationEntries(snapshot,id));
+  if(orgPermission(snapshot.grants,id,'outreach.view')&&orgPermission(snapshot.grants,id,'finance.read'))result.push(['Financial Outreach Review','staff-outreach-partners.html?org='+encodeURIComponent(id)]);
   return result;
  }
  const denied=r=>[401,403].includes(r?.status)||[401,403].includes(r?.error?.status)||['42501','PGRST301','PGRST302','PGRST303'].includes(r?.error?.code);
@@ -114,8 +115,7 @@
   else if(!specified){const url=new URL(location.href);url.searchParams.set(key,selected.id);history.replaceState(null,'',url.href)}
   nav.replaceChildren(link('Staff home','staff-home.html'));
   const entries=context==='church'?modules(snapshot,selected.id):[...(snapshot.registration.some(row=>row.id===selected.id)?[['Registration & Check-In','staff-outreach-registration.html?campaign='+encodeURIComponent(selected.id)]]:[]),...communicationEntries(snapshot,selected.id,true)];
-  for(const [label,href]of entries)nav.append(link(label,href));
-  if(context==='church'&&orgPermission(snapshot.grants,selected.id,'outreach.view')&&orgPermission(snapshot.grants,selected.id,'finance.read')){const financial=link('Financial Outreach Review','staff-outreach-partners.html?org='+encodeURIComponent(selected.id));financial.id='financial-outreach-link';nav.append(financial)}
+  for(const [label,href]of entries){const item=link(label,href);if(label==='Financial Outreach Review')item.id='financial-outreach-link';nav.append(item)}
   const mode=el('select',null,{'aria-label':'Ministry context'});
   for(const[value,label,enabled]of[['church','Church',orgs.length],['outreach','Outreach',campaigns.length]])if(enabled){mode.append(el('option',label,{value}));destinations.add(new URL('staff-home.html?context='+value,location.href).href)}mode.value=context;
   mode.onchange=()=>{if(mode.isConnected)navigate('staff-home.html?context='+encodeURIComponent(mode.value))};

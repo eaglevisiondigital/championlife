@@ -1,5 +1,6 @@
 // Verify the actual121-derived source before any immutable historical projection.
 import assert from 'node:assert/strict';
+import {checkpointReader as cycle21CheckpointReader,verifyActual as verifyCycle21,additions as cycle21Additions} from '../staff-financial-navigation-cycle21/source.mjs';
 import {readFileSync,lstatSync,readdirSync,existsSync} from 'node:fs';
 import {execFileSync} from 'node:child_process';
 import {createHash} from 'node:crypto';
@@ -8,12 +9,12 @@ export const root=new URL('../../',import.meta.url);
 export const base='4a7a04c3bb5f38c3e7571b42a3be6401d0a0bdf1';
 export const runtime='assets/js/outreach-people.js';
 export const hash=b=>createHash('sha256').update(b).digest('hex');
-export const current=p=>readFileSync(new URL(p,root));
+let cycle21Read;export const current=p=>(cycle21Read ||= cycle21CheckpointReader())(p);
 const cache=new Map();
 export function original(p){if(!cache.has(p))cache.set(p,execFileSync('git',['--no-replace-objects','show',base+':'+p],{cwd:root,maxBuffer:80*1024*1024}));return Buffer.from(cache.get(p))}
 export function helper(bytes){const text=bytes.toString(),start=' function addTaskEditor(',end=' function addTaskHistory(';assert.equal(text.split(start).length,2);assert.equal(text.split(end).length,2);return text.slice(text.indexOf(start),text.indexOf(end))}
 export const derivationSHA256='68649cfcc070f8f5f66f08de6ae93008ae3a7236e8f97426dce85049ccb77445';
-const recipeBytes=current('tools/staff-create-lifetime-cycle20/derivations.json');assert.equal(hash(recipeBytes),derivationSHA256,'Exact reviewed create lifetime and router derivations');
+const recipeBytes=readFileSync(new URL('tools/staff-create-lifetime-cycle20/derivations.json',root));assert.equal(hash(recipeBytes),derivationSHA256,'Exact reviewed create lifetime and router derivations');
 const derivations=JSON.parse(recipeBytes);
 export const modified=Object.keys(derivations);
 export function expectedRouter(p){let text=original(p).toString();for(const[a,b]of derivations[p]){assert.equal(text.split(a).length,2,'Single exact router marker '+p);text=text.replace(a,b)}return Buffer.from(text)}
@@ -34,9 +35,10 @@ export const reviewedHashes={
 };
 const tracked=execFileSync('git',['--no-replace-objects','ls-tree','-r','--name-only',base],{cwd:root,encoding:'utf8'}).trim().split('\n');
 export function verifyActual(read=current){
+ verifyCycle21();
  for(const p of tracked){const s=lstatSync(new URL(p,root));assert(s.isFile()&&!s.isSymbolicLink(),(p.startsWith('netlify')||p.startsWith('supabase')?'No protected backend/config symlink; ':'No public symlink; ')+'Regular exact source '+p);assert.deepEqual(read(p),p===runtime?expectedRuntime():Object.hasOwn(derivations,p)?expectedRouter(p):original(p),'Historical guard/build/dependency unchanged; Exact121 source outside create lifetime and bounded routers: '+p)}
  const allowed=new Set([...tracked,...additions]);
- const present=execFileSync('git',['ls-files','--cached','--others','--exclude-standard'],{cwd:root,encoding:'utf8'}).trim().split('\n').filter(Boolean);
+ const present=execFileSync('git',['ls-files','--cached','--others','--exclude-standard'],{cwd:root,encoding:'utf8'}).trim().split('\n').filter(Boolean).filter(p=>!cycle21Additions.includes(p));
  for(const p of present)assert(allowed.has(p),'Unlisted composition file '+p);
  for(const p of additions){const s=lstatSync(new URL(p,root));assert(s.isFile()&&!s.isSymbolicLink(),'Regular bounded addition '+p)}
  for(const [p,digest]of Object.entries(reviewedHashes))assert.equal(hash(read(p)),digest,'Independent reviewed addition '+p);

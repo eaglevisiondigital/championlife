@@ -1,6 +1,7 @@
 // Actual117 source plus only the independently reviewed119 lifetime helper.
 import {checkpointReader as cycle20CheckpointReader,verifyActual as verifyCycle20,additions as cycle20Additions} from '../staff-create-lifetime-cycle20/source.mjs';
 import assert from 'node:assert/strict';
+import {additions as cycle21Additions} from '../staff-financial-navigation-cycle21/source.mjs';
 import {readFileSync,lstatSync,readdirSync,existsSync} from 'node:fs';
 import {execFileSync} from 'node:child_process';
 import {createHash} from 'node:crypto';
@@ -51,7 +52,7 @@ export function verifyActual(read=current){
  verifyCycle20();
  for(const p of tracked){const s=lstatSync(new URL(p,root));assert(s.isFile()&&!s.isSymbolicLink(),(p.startsWith('netlify')||p.startsWith('supabase')?'No protected backend/config symlink; ':'No public symlink; ')+'Regular exact source '+p);assert.deepEqual(read(p),p===runtime?expectedRuntime():Object.hasOwn(derivations,p)?expectedRouter(p):original(p),'Historical guard/build/dependency unchanged; Exact117 source outside reviewed119 helper and bounded routers: '+p)}
  const allowed=new Set([...tracked,...additions]);
- const present=execFileSync('git',['ls-files','--cached','--others','--exclude-standard'],{cwd:root,encoding:'utf8'}).trim().split('\n').filter(Boolean).filter(p=>!cycle20Additions.includes(p));
+ const present=execFileSync('git',['ls-files','--cached','--others','--exclude-standard'],{cwd:root,encoding:'utf8'}).trim().split('\n').filter(Boolean).filter(p=>!cycle20Additions.includes(p)&&!cycle21Additions.includes(p));
  for(const p of present)assert(allowed.has(p),'Unlisted composition file '+p);
  for(const p of additions){const s=lstatSync(new URL(p,root));assert(s.isFile()&&!s.isSymbolicLink(),'Regular bounded addition '+p)}
  for(const [p,digest]of Object.entries(reviewedHashes))assert.equal(hash(read(p)),digest,'Independent reviewed addition '+p);
