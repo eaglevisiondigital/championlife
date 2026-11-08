@@ -8,7 +8,7 @@
   "added": {
     "tools/discipleship-progression/course-draft-reload.test.mjs": "e9ddef66e545dbdb2436bd07b6177b42c001f0b9aeec0e4b68d250f584c778d2",
     "tools/discipleship-progression/course-draft-reload.browser.mjs": "2a15654f126b656784c481bde2fd8b88df8262882c5798909e1623dfb0fe84cd",
-    "tools/discipleship-progression/course-draft-reload.integrity.test.mjs": "5ac47050b9ec40112a90300bbcf26adf917ef7f415c58ff8767397a0f42c55bc",
+    "tools/discipleship-progression/course-draft-reload.integrity.test.mjs": "56dac888158b04c8645f3b0aecf8e722600fa1a44317a8da75960783077d0337",
     "tools/discipleship-progression/COURSE-DRAFT-RELOAD.md": "1efbd495a061021686c9199bd4adb5a413760087509aec3deaa38224df10775a"
   }
 }

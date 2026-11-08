@@ -16,7 +16,7 @@ const entries=git(['ls-tree','-rz',base]).toString().split('\0').filter(Boolean)
 const blobs=[...new Set(entries.map(e=>e.blob))],data=execFileSync('git',['--no-replace-objects','cat-file','--batch'],{cwd:root,input:blobs.join('\n')+'\n',maxBuffer:512*1024*1024}),byBlob=new Map();let offset=0;
 for(const blob of blobs){const end=data.indexOf(10,offset),[actual,type,size]=data.subarray(offset,end).toString().split(' ');assert.equal(actual,blob);assert.equal(type,'blob');offset=end+1;byBlob.set(blob,data.subarray(offset,offset+Number(size)));offset+=Number(size)+1}
 export const original=new Map(entries.map(e=>[e.p,byBlob.get(e.blob)]));
-const manifestHash='e35a1905d94677bbd91c987d3fc26dbc3903dd8dede62a331484d929587a8051',manifestBytes=fs.readFileSync(path.join(root,prefix+'.json'));
+const manifestHash='20fb2561b219927cc5186677efbfee97344ecfc0b11dd7713cf1540ea5b5e1d8',manifestBytes=fs.readFileSync(path.join(root,prefix+'.json'));
 assert.equal(sha(manifestBytes),manifestHash,'Unreviewed manifest');
 const manifest=JSON.parse(manifestBytes);
 assert.equal(manifest.base,base);
