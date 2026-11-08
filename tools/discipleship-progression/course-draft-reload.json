@@ -1,0 +1,14 @@
+{
+  "base": "fd1d9740acd06b22a61ed1a8f463861c0ed0bc38",
+  "changed": {
+    "assets/js/grip-course.js": "49ce90e4771537dbcd89fd97e2b749f907446a4e9241f35001fa42692a437acf",
+    ".github/workflows/discipleship-source-review.yml": "df28f176638cd73aefcb4037b25ea61b4ddf4b1b4ddbe11d1a3b56e51d280110",
+    "CURRENT_BUILD_STATE.md": "a89c921b8f8cbf33a2206ccad85ca5cc56dd7978638b97034fb71d9c96482896"
+  },
+  "added": {
+    "tools/discipleship-progression/course-draft-reload.test.mjs": "e9ddef66e545dbdb2436bd07b6177b42c001f0b9aeec0e4b68d250f584c778d2",
+    "tools/discipleship-progression/course-draft-reload.browser.mjs": "2a15654f126b656784c481bde2fd8b88df8262882c5798909e1623dfb0fe84cd",
+    "tools/discipleship-progression/course-draft-reload.integrity.test.mjs": "5ac47050b9ec40112a90300bbcf26adf917ef7f415c58ff8767397a0f42c55bc",
+    "tools/discipleship-progression/COURSE-DRAFT-RELOAD.md": "1efbd495a061021686c9199bd4adb5a413760087509aec3deaa38224df10775a"
+  }
+}

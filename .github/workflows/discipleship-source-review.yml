@@ -48,7 +48,7 @@ jobs:
       - run: TEST_NATIVE_PG=1 TEST_POSTGRES_BIN="$(pg_config --bindir)" node tools/discipleship-progression/progression-receipt-projection.database.mjs
       - run: node tools/discipleship-progression/progression-snapshot.database.mjs
       - run: TEST_NATIVE_PG=1 TEST_POSTGRES_BIN="$(pg_config --bindir)" node tools/discipleship-progression/progression-snapshot.database.mjs
-      - run: node tools/discipleship-progression/course-draft-session.integrity.mjs contracts
+      - run: node tools/discipleship-progression/course-draft-reload.integrity.mjs contracts
       - run: TEST_POSTGRES_BIN="$(pg_config --bindir)" node tools/discipleship-progression/worksheet-source.native.mjs
       - run: TEST_POSTGRES_BIN="$(pg_config --bindir)" node tools/discipleship-progression/worksheet-transactions.native.mjs
       - run: TEST_POSTGRES_BIN="$(pg_config --bindir)" node tools/discipleship-progression/worksheet-contracts.native.mjs
@@ -131,8 +131,9 @@ jobs:
       - run: tools/backend-tests/node_modules/.bin/playwright install --with-deps chromium webkit
       - run: node tools/discipleship-progression/worksheet-export.browser.mjs
       - run: node tools/discipleship-progression/course-retirement.browser.mjs
+      - run: node tools/discipleship-progression/course-draft-reload.browser.mjs
       - run: node tools/backend-tests/general-resource-corrections.test.mjs
-      - run: node tools/discipleship-progression/course-draft-session.integrity.mjs worksheet-export
+      - run: node tools/discipleship-progression/course-draft-reload.integrity.mjs worksheet-export
       - run: git diff --check
 
   # Keep the existing check name, but never report PASS for skipped/cancelled jobs.
@@ -172,9 +173,9 @@ jobs:
       - run: tools/backend-tests/node_modules/.bin/playwright install --with-deps chromium webkit
       - run: node tools/backend-tests/grip-notes.test.mjs
       - run: node tools/discipleship-progression/notes-session.browser.mjs
-      - run: node --test tools/discipleship-progression/notes-retirement.test.mjs tools/discipleship-progression/course-draft-session.integrity.test.mjs
+      - run: node --test tools/discipleship-progression/notes-retirement.test.mjs tools/discipleship-progression/course-draft-reload.integrity.test.mjs
       - run: node tools/discipleship-progression/notes-retirement.browser.mjs
-      - run: node tools/discipleship-progression/course-draft-session.integrity.mjs notes-session
+      - run: node tools/discipleship-progression/course-draft-reload.integrity.mjs notes-session
       - run: git diff --check
 
   worksheet-retirement:
@@ -192,5 +193,5 @@ jobs:
       - run: tools/backend-tests/node_modules/.bin/playwright install --with-deps chromium webkit
       - run: node tools/discipleship-progression/worksheet-retirement.browser.mjs
       - run: node tools/discipleship-progression/worksheet-retirement-independent.browser.mjs
-      - run: node tools/discipleship-progression/course-draft-session.integrity.mjs worksheet-retirement
+      - run: node tools/discipleship-progression/course-draft-reload.integrity.mjs worksheet-retirement
       - run: git diff --check
