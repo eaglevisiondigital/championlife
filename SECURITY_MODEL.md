@@ -42,3 +42,12 @@ The theme-song script performs no analytics/API/database requests, sets no cooki
 ## Operations Administrator candidate — local only, 2026-10-22
 
 Donation-intake access requires outreach.view AND finance.read. Restrictive RLS protects linked follow-up tasks/events and financial partner relationship audit; People RPC projections and filters enforce the same boundary. Permission management requires independent staff.manage plus campaign admin; self-target changes are denied. Organization registration operations never confer admin/configuration or finance privileges. Household audit kinds extend the original check and retain actor/history. Existing registry, policies for other domains and function ACLs remain intact. Exact baseline guards reject incompatible child functions. See docs/OPERATIONS-ADMIN-SECURITY.md for release impact, withheld capabilities, account verification and revocation.
+
+
+## November 6, 2026 — Strict Query evidence in disabled NMI integration
+
+Existing exact-source loader consumes reviewed PR107 `e9e884c99899e5e4b14cc005fdd49f0d13e34d94`; only the Query parser blob changes. Historical webhook, public client and durable SQL pins remain intact. Malformed XML and nested product-total confusion remain UNKNOWN through the actual loaded executor. No duplicate runtime, financial permission, merchant configuration, payment, messaging or public output change. See docs/NMI-BOARDING-HANDOFF.md. Local/CI results are separate from provider acceptance and activation, which remain NO-GO.
+
+## 2026-11-06 — Stored proof and route identity agreement
+
+Disabled pilot review cannot classify a snapshot as reviewable unless route MID, stored proof MID and exact reviewed MID agree. Existing organization, fund, form, gateway, legal merchant, bank settlement, receipt, authority and incident checks remain. This is not authentic merchant verification or permission to transact: canSubmit/canRetry/canPostLedger/providerVerified remain false. No broader grants, native checkout, recurring charging, messages, provider access or hosted SQL are enabled.

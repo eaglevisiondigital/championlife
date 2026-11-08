@@ -1,0 +1,23 @@
+# Disabled NMI session-error privacy correction — November 4, 2026
+
+The unmounted giving client at reviewed PR #73 `14ca8303100e21fbbdcf91295961304bd14f2c80` checked current identity after successful JSON parsing, but transport/JSON errors escaped that check. Without an Auth callback, a changed account could retain the previous receipt and status control. The final successful session read also omitted an expiry check.
+
+The existing client now validates session expiry on every session read and applies the same captured identity, configuration, generation and client-boundary check before returning asynchronous failures. An identity change or expiry produces the existing `SESSION_CHANGED` result so the unchanged giving page clears its protected content. Ordinary same-account network uncertainty retains status-only recovery, with no automatic payment retry. Guest capability behavior and existing GiveHub fallbacks are preserved.
+
+Permanent intercepted Chromium/WebKit tests cover 390/1440 widths, failed transport, failed JSON, expired successful responses and expired failed responses. Each negative case retains the old status handler and verifies that it issues no further request after retirement. Baseline reproduction is available with `--error-fence-reproduction`; focused correction checks use `--error-fence-only`. The full existing browser suite remains enabled in the existing CI job.
+
+Local result: 32 assertions reproduced the original defect; 64 new assertions passed after correction; 430 total affected browser assertions passed. Two deterministic public builds contain exactly the same public bytes as the accepted parent; both NMI runtime assets remain outside the public allowlist and no hosted payment configuration is enabled. These tests use fictional intercepted transport, not real Auth or processor acceptance.
+
+No migration, provider, merchant, settlement, payment API, recurring behavior, real token or production file is changed. Actual four-MID merchant/settlement evidence, provider acceptance, custody and separate activation approval remain required. Native checkout remains disabled and GiveHub unchanged.
+
+## HTTP denial before response parsing — November 6, Cycle 9
+
+On exact PR73 baseline `82af1d85391c3192eb9ca2b43f9f8f6221e9498f`, HTTP 401/403 was checked only after reading JSON. A malformed denial body escaped as an ordinary parse error; the same signed-in account retained its previous private receipt and status button. A response body that never finished could delay retirement indefinitely. The baseline browser failure and client-only 401/403 reproductions are retained privately.
+
+The existing client now maps HTTP 401/403 to `SESSION_CHANGED` immediately after the response headers arrive, before reading any body. The unchanged giving page clears its receipt and retires captured controls through its existing generation guard. Success and non-denial errors retain their current identity/configuration checks. A malformed 200/503 response remains uncertain and permits status review only; it does not authorize another payment or establish that the previous attempt failed.
+
+The new focused `tools/nmi/public-denial.browser.mjs` exercises the actual client and page with fictional Auth, payment-field and HTTP fixtures. Its 142 Chromium/WebKit assertions cover mobile/desktop 401/403 with malformed, unfinished and valid bodies, zero body reads after denial, retained-control rejection, unchanged normal status, uncertain status and default-disabled behavior. It uses no provider or hosted requests and does not establish genuine Auth acceptance. The first corrected-source run exposed a positive-test wait race; that log is preserved, and the wait now observes the completed status render. No runtime change was made for that test correction.
+
+The two NMI browser assets remain outside the public manifest. This change adds no checkout configuration, merchant proof, settlement routing, receipt issuance, recurring authority, SQL or grant. Four-MID evidence, SowGo/Soul Fuel legal payee and settlement, GiveHub, UNKNOWN/no-retry and activation holds remain unchanged. Independent review and exact-head CI are recorded separately from these local assertions.
+
+Independent source review and 77 separately authored client VM checks passed, including five action payloads, denied bodies that never complete, and changed identity/client/configuration controls. The affected existing error-fence browser subset passed 64 assertions. Two deterministic builds produced 408 public files, each byte-identical to the starting commit; no historical source pin needed replacement. These are local results. Exact-head remote CI remains pending publication.

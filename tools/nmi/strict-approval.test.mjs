@@ -31,6 +31,29 @@ function fixture(name = 'Main') {
 }
 function set(object,key,value) { if (value === undefined) delete object[key]; else object[key] = value; }
 function disabled(result) { assert.equal(result.canSubmit,false); assert.equal(result.mode,'disabled'); }
+// The overall checklist previously reported READY_FOR_REVIEW for unmapped or
+// cross-organization routes when enabled=false; the selected pilot already denied.
+for (const name of routes) {
+ for (const mapping of ['missing-slot','wrong-owner']) test(name+' disabled global readiness rejects '+mapping, () => {
+  const {d,r,receipt}=fixture(name);
+  r.mid_slot=mapping==='missing-slot'?'MID-99':name==='Outreach'?'MID-01':'MID-02';
+  const before=JSON.stringify(d), global=evaluate(d);
+  assert.equal(global.valid,true); // A held disabled route is not an activation.
+  assert.equal(global.ready,false);
+  assert.ok(global.blockers.some(value=>value.startsWith(name+' ')));
+  assert.equal(evaluatePilot(d,name).ready,false);
+  const plan=prepareDisabledRoute(d,name,receipt,NOW); disabled(plan); assert.equal(plan.readyForReview,false);
+  const other=name==='Main'?'Youth':'Main';
+  assert.equal(evaluatePilot(d,other).ready,true); // Independent one-route scope survives.
+  assert.equal(JSON.stringify(d),before);
+ });
+ test(name+' valid disabled mapping remains globally reviewable without activation', () => {
+  const {d,receipt}=fixture(name);
+  assert.equal(evaluate(d).ready,true); assert.equal(evaluatePilot(d,name).ready,true);
+  const plan=prepareDisabledRoute(d,name,receipt,NOW); disabled(plan); assert.equal(plan.readyForReview,true);
+  assert.ok(d.checkout_routes.every(route=>route.enabled===false));
+ });
+}
 for (const name of routes) {
  for (const [i,value] of invalid.entries()) test(name+' rejects purpose '+labels[i], () => {
   const {d,r,receipt} = fixture(name); set(r,'boarded_purpose_approved',value);
