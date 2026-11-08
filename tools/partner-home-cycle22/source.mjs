@@ -37,7 +37,7 @@ export const reviewedHashes={
   "tools/partner-home-cycle22/derivations.json": "1e90df6126927b20ad84a80bfce9ea81fbb8bdb97cb1d26f55a57b0a2fc775fe",
   "tools/partner-home-cycle22/README.md": "73289b8e203e32ea05b594689fcb6b90238e100999b251cd02afefd3b70d1d2e",
   "tools/partner-home-cycle22/home-return.browser.mjs": "f610b31cada708adb84693dc40fc9aa20b3833e223c0c9fb9cb59c7e45263d05",
-  ".github/workflows/partner-home-cycle22.yml": "be796c19e42ada5d67ecbc5365f801026610595b44dc9cf32f53a5f375b9e833",
+  ".github/workflows/partner-home-cycle22.yml": "278fb78dec6258b3c554b745eff48aae563de009fa79b2aea5aedf0aac04c925",
   "tools/partner-home-cycle22/registration-host.browser.mjs": "dd2043d3457b18cd6052df67d0eed0228cd1afbcf49ffc060ca980a4b628dfdc",
   "tools/partner-home-cycle22/registration-checkin-journey.browser.mjs": "5946b1bffe3f0faf00e58695a9a6babd60196dc9740afa503954b3cbe9a4797e",
   "tools/partner-home-cycle22/registration-checkin-status.native.mjs": "f941859a5b2a376b17fc135bcc217f7d8fead492634595d20de04d497c248dfa"
