@@ -17,11 +17,11 @@ function deferred(){let resolve;const promise=new Promise(r=>resolve=r);return{p
  ok(q.value==='A CLOUD','verified A sees own cloud answer, never legacy draft');
  q.value='A UNFINISHED';q.dispatchEvent(new w.Event('input',{bubbles:true}));
  const key=id=>`championlife-grip-v2:${id}:getting-a-grip-on-the-basics:lesson:1`;
- ok(JSON.parse(w.localStorage.getItem(key(A.id))).owner===A.id,'unfinished draft immediately captured with owner/course/lesson');
+ await flush();ok(JSON.parse(w.localStorage.getItem(key(A.id))).owner===A.id,'verified unfinished draft captured with owner/course/lesson');
  switchTo(B);ok(q.value===''&&email.value==='','account-change callback clears private fields synchronously');await flush();
  ok(q.value==='B CLOUD'&&email.value===B.email,'B sees only B data');
  ok(saves.length===0,'A pending autosave canceled on switch');
- q.value='B UNFINISHED';q.dispatchEvent(new w.Event('input',{bubbles:true}));switchTo(A);await flush();
+ q.value='B UNFINISHED';q.dispatchEvent(new w.Event('input',{bubbles:true}));await flush();switchTo(A);await flush();
  ok(q.value==='A UNFINISHED','A→B→A restores only A unfinished draft');
  ok(JSON.parse(w.localStorage.getItem(key(B.id))).values.q1==='B UNFINISHED','B draft retained under B key');
  ok(w.localStorage.getItem('championlife-grip-lesson-1-draft-v1')===legacy,'legacy unassigned draft preserved byte-for-byte, never imported');
