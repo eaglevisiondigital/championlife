@@ -170,3 +170,20 @@ Source/browser/native validation and independent review evidence are recorded in
 private audit/staff-checkin-predispatch-2026-11-08. Historical PR135 failures remain
 preserved; no run is retried. Genuine Auth/RLS/recovery and production approval remain
 separate. RELEASE NO-GO.
+
+## 2026-11-08 — Household and attendee dispatch continuity (source only)
+
+Direct successor of PR136 `8691d618f29e8988c51928132aa4a622276c5e8d`.
+Actual Staff household updates and attendee additions reproduced new HTTP mutations
+after initiating controls retired during either Staff session preflight or SDK token
+lookup. Reuse the accepted dispatch veto for these two existing RPC actions, and bind
+attendee submission to its actual submit button so removal/reinsertion retires it.
+No new Auth client, token mechanism, SQL, permissions, client-key or revision policy.
+Existing check-in/reversal protection remains unchanged. Native tests verify current
+household state, revision conflicts, client-key duplicates, waivers and immutable audit.
+Private evidence: audit/staff-household-workflows-2026-11-08/.
+
+The bounded local shell investigation completed after cross-tab sign-out in Chromium
+and WebKit390; it did not reproduce the prior CI stall. Preserve UNKNOWN and original
+15-minute cancellation; no historical CI retry or timeout change. Source, new-head CI
+and genuine hosted acceptance remain separate. RELEASE NO-GO.

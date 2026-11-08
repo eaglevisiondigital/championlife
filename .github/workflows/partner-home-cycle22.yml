@@ -80,6 +80,8 @@ jobs:
           echo "SUPABASE_SDK_PATH=$RUNNER_TEMP/supabase-sdk.js" >> "$GITHUB_ENV"
       - run: node tools/partner-home-cycle22/registration-host.browser.mjs
       - run: node tools/partner-home-cycle22/registration-predispatch.browser.mjs
+      - run: node tools/partner-home-cycle22/household-predispatch.browser.mjs
+      - run: node tools/partner-home-cycle22/household-native.browser.mjs
       - run: node tools/partner-home-cycle22/registration-checkin-journey.browser.mjs
       - if: matrix.browser == 'chromium'
         run: node tools/partner-home-cycle22/registration-checkin-status.native.mjs

@@ -78,7 +78,7 @@
    const session=await auth.getSession();
    if(generation!==epoch||stopped)return reject();
    if(session?.user?.id!==identity){stop('Your account changed.');return reject()}
-   const guardedRegistration=args[0]==='outreach_registration_workspace'&&['checkin','reverse'].includes(args[1]?.p_action);
+   const guardedRegistration=args[0]==='outreach_registration_workspace'&&['checkin','reverse','update','attendee_add'].includes(args[1]?.p_action);
    let result;
    if(guardedRegistration){
     const veto=args[2]?.staffDispatchCurrent;

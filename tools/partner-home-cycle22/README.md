@@ -46,3 +46,14 @@ Token refresh during the gap denies an unsent operation; no automatic retry occu
 The original PR134 runtime and every historical derivation remain pinned as exact
 inputs to the new bounded correction. Three runtime files change; no public HTML,
 SQL, styles, assets, SDK pin or build allowlist changes.
+
+### Household editing and attendee additions
+
+`household-predispatch.browser.mjs` reuses the mounted-host/SDK fixture for both
+`update` and `attendee_add` at Staff and SDK async boundaries. It covers current
+positive actions, button/form/ancestor retirement, account/campaign replacement,
+denial and retained handlers. `household-native.browser.mjs` serves actual Staff
+modules with fictional Auth and routes registration HTTP to disposable PostgreSQL;
+it verifies authorized saves, revision conflicts, immutable signatures/audits,
+client-key duplicate/conflict behavior, child waiver coverage and denied scopes.
+The accepted transport helper and existing check-in/reversal tests remain unchanged.

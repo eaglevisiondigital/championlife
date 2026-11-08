@@ -17,8 +17,9 @@ test('registration pre-dispatch correction retains exact PR134/135 input and Sta
  assert.deepEqual(original(registrationRuntime),read('95723fae9d4cbc16eb80e350191495b4d37d4498',registrationRuntime));
  assert.deepEqual(original(registrationRuntime),read('0c246a96ccd9e280dd423eb91c623559b7fdb064^',registrationRuntime));
  const recipes=JSON.parse(current('tools/partner-home-cycle22/derivations.json'));
- assert.deepEqual(Buffer.from(recipes[registrationRuntime].at(-1)[0]),read('0c246a96ccd9e280dd423eb91c623559b7fdb064',registrationRuntime));
- const priorRecipes=JSON.parse(read('773d32ef4a3d86819931fd1a76700e5d1457a6fe','tools/partner-home-cycle22/derivations.json'));
+ assert.deepEqual(Buffer.from(recipes[registrationRuntime][1][0]),read('0c246a96ccd9e280dd423eb91c623559b7fdb064',registrationRuntime));
+ assert.deepEqual(Buffer.from(recipes[registrationRuntime].at(-1)[0]),read('8691d618f29e8988c51928132aa4a622276c5e8d',registrationRuntime));
+ const priorRecipes=JSON.parse(read('8691d618f29e8988c51928132aa4a622276c5e8d','tools/partner-home-cycle22/derivations.json'));
  for(const [path,pairs]of Object.entries(priorRecipes))assert.deepEqual(recipes[path].slice(0,pairs.length),pairs,'Every original derivation remains intact: '+path);
  assert.deepEqual(current(registrationRuntime),expectedRegistrationRuntime());
  for(const text of [original(registrationRuntime),Buffer.concat([current(registrationRuntime),Buffer.from('/* unreviewed */')])])assert.throws(()=>verifyActual(alter(registrationRuntime,text)),/Exact123/);
