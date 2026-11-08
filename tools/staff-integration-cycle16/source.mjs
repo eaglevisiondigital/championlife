@@ -1,4 +1,5 @@
 // Verify actual source before allowing immutable historical checkpoint projections.
+import {checkpointReader as cycle19CheckpointReader,verifyActual as verifyCycle19,additions as cycle19Additions} from '../staff-lifetime-cycle19/source.mjs';
 import assert from 'node:assert/strict';
 import {readFileSync,lstatSync,readdirSync,existsSync} from 'node:fs';
 import {execFileSync} from 'node:child_process';
@@ -9,7 +10,7 @@ import {compose as communicationExpected} from '../comms-host-cycle16/source.mjs
 export const root=new URL('../../',import.meta.url);
 export const base='7fde897cdbb6ae423cfdeec434a3b548fbc5aa4d';
 export const hash=b=>createHash('sha256').update(b).digest('hex');
-export const current=p=>readFileSync(new URL(p,root));
+let cycle19Read;export const current=p=>(cycle19Read ||= cycle19CheckpointReader())(p);
 const cache=new Map();
 export function original(p){if(!cache.has(p))cache.set(p,execFileSync('git',['--no-replace-objects','show',base+':'+p],{cwd:root,maxBuffer:64*1024*1024}));return Buffer.from(cache.get(p))}
 export const runtimePaths=['staff-outreach-partners.html','assets/js/staff-outreach-partners.js','assets/js/staff-session.js','assets/js/communications.js'];
@@ -66,10 +67,11 @@ export const reviewedAdditionHashes={
 };
 const tracked=execFileSync('git',['--no-replace-objects','ls-tree','-r','--name-only',base],{cwd:root,encoding:'utf8'}).trim().split('\n');
 export function verifyActual(read=current){
+ verifyCycle19();
  const allowed=new Set([...tracked,...additions]);
  for(const p of tracked){const s=lstatSync(new URL(p,root));assert(s.isFile()&&!s.isSymbolicLink(),(p.startsWith('netlify')||p.startsWith('supabase')?'No protected backend/config symlink; ':'No public symlink; ')+'Regular source '+p);assert.deepEqual(read(p),runtimePaths.includes(p)?expected(p):Object.hasOwn(transforms,p)?expectedRouter(p):original(p),'Historical guard/build/dependency unchanged outside exact reviewed derivation; Exact actual source '+p)}
  for(const p of additions){const s=lstatSync(new URL(p,root));assert(s.isFile()&&!s.isSymbolicLink(),'Regular addition '+p)}
- const present=execFileSync('git',['ls-files','--cached','--others','--exclude-standard'],{cwd:root,encoding:'utf8'}).trim().split('\n').filter(Boolean);
+ const present=execFileSync('git',['ls-files','--cached','--others','--exclude-standard'],{cwd:root,encoding:'utf8'}).trim().split('\n').filter(Boolean).filter(p=>!cycle19Additions.includes(p));
  for(const p of present)assert(allowed.has(p),'Unlisted composition file '+p);
  for(const prefix of ['assets','supabase','netlify']){function walk(p){if(!existsSync(new URL(p,root)))return;const s=lstatSync(new URL(p,root));assert(!s.isSymbolicLink(),'No protected backend/config symlink; Protected symlink '+p);if(s.isDirectory())for(const n of readdirSync(new URL(p,root)))walk(p+'/'+n);else assert(tracked.includes(p),'No backend/config addition or removal; Unlisted protected source '+p)}walk(prefix)}
  for(const n of readdirSync(root))if(n.endsWith('.html'))assert(tracked.includes(n),'Unlisted public HTML '+n);

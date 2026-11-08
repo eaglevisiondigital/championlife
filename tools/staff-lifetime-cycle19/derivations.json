@@ -1,0 +1,82 @@
+{
+  "tools/staff-integration-cycle16/source.mjs": [
+    [
+      "// Verify actual source before allowing immutable historical checkpoint projections.",
+      "// Verify actual source before allowing immutable historical checkpoint projections.\nimport {checkpointReader as cycle19CheckpointReader,verifyActual as verifyCycle19,additions as cycle19Additions} from '../staff-lifetime-cycle19/source.mjs';"
+    ],
+    [
+      "export const current=p=>readFileSync(new URL(p,root));",
+      "let cycle19Read;export const current=p=>(cycle19Read ||= cycle19CheckpointReader())(p);"
+    ],
+    [
+      "\nexport function verifyActual(read=current){\n",
+      "\nexport function verifyActual(read=current){\n verifyCycle19();\n"
+    ],
+    [
+      ".trim().split('\\n').filter(Boolean);",
+      ".trim().split('\\n').filter(Boolean).filter(p=>!cycle19Additions.includes(p));"
+    ]
+  ],
+  "tools/staff-runtime-cycle14/source.mjs": [
+    [
+      "// Actual source composition first. Only then may historical guards read their",
+      "// Actual source composition first. Only then may historical guards read their\nimport {additions as cycle19Additions} from '../staff-lifetime-cycle19/source.mjs';"
+    ],
+    [
+      ".filter(path=>!cycle16Additions.includes(path));",
+      ".filter(path=>!cycle16Additions.includes(path)&&!cycle19Additions.includes(path));"
+    ]
+  ],
+  "tools/staff-integration-cycle16/build.mjs": [
+    [
+      "import assert from 'node:assert/strict';",
+      "import assert from 'node:assert/strict';\nimport {current as actualCurrent,expectedRuntime,runtime as cycle19Runtime} from '../staff-lifetime-cycle19/source.mjs';"
+    ],
+    [
+      "hash(current(p))",
+      "hash(actualCurrent(p))"
+    ],
+    [
+      "hash(original(p))",
+      "hash(p===cycle19Runtime?expectedRuntime():original(p))"
+    ],
+    [
+      "unchangedPublic:first.length-runtimePaths.length",
+      "unchangedPublic:first.length-runtimePaths.length-1"
+    ],
+    [
+      "changedPublic:runtimePaths",
+      "changedPublic:[...runtimePaths,cycle19Runtime]"
+    ]
+  ],
+  "tools/staff-runtime-cycle14/build.mjs": [
+    [
+      "import assert from 'node:assert/strict';",
+      "import assert from 'node:assert/strict';\nimport {expectedRuntime as cycle19Expected,current as actualCurrent} from '../staff-lifetime-cycle19/source.mjs';"
+    ],
+    [
+      "hash(readFileSync(new URL(path,root)))",
+      "hash(actualCurrent(path))"
+    ],
+    [
+      "if(path!==runtime)",
+      "if(path===runtime)assert.equal(digest,hash(cycle19Expected()),'Reviewed permanent lifetime runtime output');if(path!==runtime)"
+    ]
+  ],
+  "tools/staff-cycle9-integrity/integrity.mjs": [
+    [
+      "import {current as actualCurrent} from '../staff-integration-cycle16/source.mjs';",
+      "import {current as actualCurrent} from '../staff-lifetime-cycle19/source.mjs';"
+    ]
+  ],
+  "tools/outreach/people-followup-composition.browser.mjs": [
+    [
+      "import assert from 'node:assert/strict';",
+      "import assert from 'node:assert/strict';\nimport {acceptedTaskActions} from '../staff-lifetime-cycle19/helper.mjs';"
+    ],
+    [
+      " let helper=runtime.slice(runtime.indexOf(' function addTaskActions('),runtime.indexOf(' async function detail('));",
+      " let helper=acceptedTaskActions(runtime.slice(runtime.indexOf(' function addTaskActions('),runtime.indexOf(' async function detail(')));"
+    ]
+  ]
+}

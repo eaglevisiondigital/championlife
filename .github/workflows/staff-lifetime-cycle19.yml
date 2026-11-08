@@ -1,0 +1,32 @@
+name: Staff task-control lifetime acceptance
+on:
+  pull_request:
+    paths:
+      - 'assets/js/outreach-people.js'
+      - 'tools/staff-lifetime-cycle19/**'
+      - 'tools/staff-integration-cycle16/**'
+      - 'tools/staff-runtime-cycle14/**'
+      - 'tools/staff-cycle9-integrity/integrity.mjs'
+      - 'tools/outreach/people-followup-composition.browser.mjs'
+      - '.github/workflows/staff-lifetime-cycle19.yml'
+permissions:
+  contents: read
+jobs:
+  source-and-retirement:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm ci --ignore-scripts --prefix tools/backend-tests
+      - run: tools/backend-tests/node_modules/.bin/playwright install --with-deps chromium webkit
+      - run: node --test tools/staff-lifetime-cycle19/source.test.mjs tools/staff-lifetime-cycle19/people-task-lifetime.test.mjs
+      - run: node tools/staff-lifetime-cycle19/people-task-lifetime-independent.browser.mjs
+      - run: node tools/staff-lifetime-cycle19/staff-task-request-fence-independent.browser.mjs
+      - run: node tools/staff-lifetime-cycle19/build.mjs
+      - run: git diff --check
