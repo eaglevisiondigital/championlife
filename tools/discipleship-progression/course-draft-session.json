@@ -6,11 +6,11 @@
     "tools/discipleship-progression/course-retirement.test.mjs": "be2d2f92433f94a2670a6d59e346654a4b2a59c1a51987d49886c08aab4301f7",
     "tools/discipleship-progression/course-retirement.browser.mjs": "215640ebbab562a0dfae7157b61fe5204d064304cb3d7e1d2ef46dd47cc26452",
     "tools/backend-tests/general-resource-corrections.test.mjs": "b9a2c71fdb2b636795c17e72f1a41f6a3fb12191e644a563c470bf20c75aefea",
-    "CURRENT_BUILD_STATE.md": "1ab33e670181647a82e38baed572564e1f8901b71bec418692fc2706a7416150"
+    "CURRENT_BUILD_STATE.md": "00a9e049c0d216b031b29016b5d49853907e8df5be72892cae8b72e1aef0468c"
   },
   "added": {
     "tools/discipleship-progression/course-draft-session.test.mjs": "486d6542ddd43074b9e70e0e3fba14a954aa16f625acdd16c5c09c70e576dc31",
-    "tools/discipleship-progression/course-draft-session.integrity.test.mjs": "0cadcb9ab938569bd76fe5fd7e824c475dcddb5e7262ab45f7a7e06ae1e02b80",
-    "tools/discipleship-progression/COURSE-DRAFT-SESSION.md": "d3732b2c7f580eed8148e09ff64a455509655f17ab44307bbcfd91a52aa05365"
+    "tools/discipleship-progression/course-draft-session.integrity.test.mjs": "0702149a2e2be43f632d0ceb1a4e02b6a6efe0cec34e51b051b5207c14a1d14e",
+    "tools/discipleship-progression/COURSE-DRAFT-SESSION.md": "405d99b55ecb901cbc9b7ecfaa39c83614329ff4cdaf2f3715b3eabc6706cfd3"
   }
 }

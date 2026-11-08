@@ -16,7 +16,7 @@ const entries=git(['ls-tree','-rz',base]).toString().split('\0').filter(Boolean)
 const blobs=[...new Set(entries.map(e=>e.blob))],data=execFileSync('git',['--no-replace-objects','cat-file','--batch'],{cwd:root,input:blobs.join('\n')+'\n',maxBuffer:512*1024*1024}),byBlob=new Map();let offset=0;
 for(const blob of blobs){const end=data.indexOf(10,offset),[actual,type,size]=data.subarray(offset,end).toString().split(' ');assert.equal(actual,blob);assert.equal(type,'blob');offset=end+1;byBlob.set(blob,data.subarray(offset,offset+Number(size)));offset+=Number(size)+1}
 export const original=new Map(entries.map(e=>[e.p,byBlob.get(e.blob)]));
-const manifestHash='f88610753d57748c958c20004b48b7e2b8cbe542ab7c065bf2c25df100a10e06',manifestBytes=fs.readFileSync(path.join(root,prefix+'.json'));
+const manifestHash='b7aba3877702a84fdc553e12160e473d9cf5aa72aef840620a720b6190bbc821',manifestBytes=fs.readFileSync(path.join(root,prefix+'.json'));
 assert.equal(sha(manifestBytes),manifestHash,'Unreviewed manifest');
 const manifest=JSON.parse(manifestBytes);
 assert.equal(manifest.base,base);
@@ -31,6 +31,12 @@ export function verify(overrides=new Map(),extra=[]){
  for(const p of [...files,...extra])assert.ok(original.has(p)||additions.includes(p),'Unexpected addition: '+p);
  assert.deepEqual(Object.keys(manifest.changed).sort(),['assets/js/grip-course.js','.github/workflows/discipleship-source-review.yml','tools/discipleship-progression/course-retirement.test.mjs','tools/discipleship-progression/course-retirement.browser.mjs','tools/backend-tests/general-resource-corrections.test.mjs','CURRENT_BUILD_STATE.md'].sort());
  return true;
+}
+// The historical inventory ignores dependency directories, not a symlink named
+// node_modules. Keep the directory real and link only its installed entries.
+export function linkHistoricalDependencies(source,destination){
+ fs.mkdirSync(destination);
+ for(const entry of fs.readdirSync(source))fs.symlinkSync(path.join(source,entry),path.join(destination,entry));
 }
 if(process.argv[1]&&path.resolve(process.argv[1])===fileURLToPath(import.meta.url)){
  verify();console.log('PASS actual Cycle21 source plus all frozen PR120 source; bounded additions');
@@ -51,7 +57,7 @@ if(process.argv[1]&&path.resolve(process.argv[1])===fileURLToPath(import.meta.ur
   try{
    execFileSync('git',['--no-replace-objects','clone','--quiet','--shared','--no-checkout',root,temp]);execFileSync('git',['--no-replace-objects','checkout','--quiet','--detach',base],{cwd:temp});
    assert.equal(execFileSync('git',['--no-replace-objects','rev-parse','HEAD'],{cwd:temp,encoding:'utf8'}).trim(),base);
-   fs.symlinkSync(path.join(root,'tools/backend-tests/node_modules'),path.join(temp,'tools/backend-tests/node_modules'),'dir');
+   linkHistoricalDependencies(path.join(root,'tools/backend-tests/node_modules'),path.join(temp,'tools/backend-tests/node_modules'));
    console.log('HISTORICAL ONLY: unchanged PR120 recipe at '+base+'; never current runtime acceptance');
    if(mode==='notes-session')execFileSync(process.execPath,['--test','tools/discipleship-progression/course-retirement.integrity.test.mjs'],{cwd:temp,stdio:'inherit'});
    execFileSync(process.execPath,['tools/discipleship-progression/course-retirement.integrity.mjs',mode],{cwd:temp,stdio:'inherit'});

@@ -11,3 +11,7 @@ Existing lifecycle tests retain their assertions with explicit waits for newly a
 `course-draft-session.integrity.mjs` verifies the actual candidate against immutable PR120, checks explicit changed hashes and bounded additions, and builds actual current output twice. Current tests run before separately labeled historical PR120 recipes. Existing immutable source guards and their assertions are preserved byte-for-byte and executed only against their exact source. A historical success does not accept current runtime; historical failures and CI incidents are not reclassified or retried.
 
 No accounts, grants, identity links, messages, payments, hosted SQL, provider resources, recovery, merge or deployment. Release remains NO-GO.
+
+## Historical dependency setup correction
+
+The initial PR124 automatic run exposed a test-wrapper defect: a root `node_modules` symlink is a source entry rather than a directory covered by the historical `node_modules/` ignore rule. The immutable guard correctly refused it. The wrapper now creates a real dependency directory with per-entry links to the same already-installed packages. A permanent actual-PR120-clone check first reproduces the original guard rejection, then verifies source acceptance with the unchanged guard and the corrected directory. No guard predicate, historical command, runtime, dependency version or workflow timeout changes. Original failed run evidence is retained; this correction does not classify checks that never ran as passed.
