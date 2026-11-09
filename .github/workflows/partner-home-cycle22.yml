@@ -86,6 +86,8 @@ jobs:
       - run: node tools/partner-home-cycle22/attendee-waiver-native.browser.mjs
       - run: node tools/partner-home-cycle22/walkup-predispatch.browser.mjs
       - run: node tools/partner-home-cycle22/walkup-native.browser.mjs
+      - run: node tools/partner-home-cycle22/eventday-export.browser.mjs
+      - run: node tools/partner-home-cycle22/eventday-native.browser.mjs
       - run: node tools/partner-home-cycle22/registration-checkin-journey.browser.mjs
       - if: matrix.browser == 'chromium'
         run: node tools/partner-home-cycle22/registration-checkin-status.native.mjs
