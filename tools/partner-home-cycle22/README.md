@@ -69,3 +69,22 @@ append-only corrections, audits and already-submitted outcomes. `REVIEW_BASE` pi
 original runtime bytes for negative reproduction; `REPRO=1` retains the final
 strict zero-new-mutation assertion while collecting original failures. No hosted
 activity or additional authority. All earlier tests remain intact.
+
+### Walk-up registration through final reversal
+
+The PR138 successor connects walk-up submission to the same permanent control
+lifetime and final HTTP veto. The guard wraps the original form event before the
+unchanged shared form disables submit; its callback retains existing legal
+validation, immutable request payload and request-key behavior. No SQL/Auth helper
+or public form changes. A request already dispatched is not retroactively cancelled
+or automatically retried.
+
+`walkup-predispatch.browser.mjs` exercises actual Staff, shared form and pinned SDK
+at both async boundaries, including button/form/root removal, account/campaign
+replacement, revocation and retained callbacks in Chromium/WebKit desktop/mobile.
+`walkup-native.browser.mjs` uses the existing canonical SQL with fictional Auth and
+disposable PostgreSQL: authorized adult/minor walk-up, guardian/waiver/media rules,
+request-key concurrency, atomic denial, legal history, roster, check-in, partial
+and final reversal, totals and audit. REVIEW_BASE/REPRO preserve strict original
+failure evidence. All earlier tests, historical derivations and CI limits remain.
+No hosted acceptance, provider operations, new permissions or release authority.
