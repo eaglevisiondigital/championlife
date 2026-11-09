@@ -223,3 +223,22 @@ hosted acceptance. Private evidence: audit/staff-walkup-journey-2026-11-08/.
 Historical CI failures remain preserved. Independent review and exact-head CI are
 reported separately; genuine Auth/RLS/recovery and release approval remain held.
 RELEASE NO-GO.
+
+## 2026-11-08 — Event-day roster and export continuity (source only)
+
+Direct successor of PR139 `1d5d884259d49f4bf3c6e644341a5167a0bf4b2e`.
+Existing household lookup, waiver-aware arrival/reversal, separate campaign totals,
+CSV and private roster are reused. Actual-host tests reproduced a delayed CSV
+publishing after its initiating button or ancestor retired. Pass the existing
+permanent-control lifetime callback into Export CSV and recheck immediately before
+download. A completed authorized export request/audit is preserved; this does not
+recall an already downloaded file or invent new server authority.
+
+Only the registration Staff runtime changes. SQL, export payload/projection,
+permissions, legal history, session/Auth helpers, SDK, UI and previous dispatch
+corrections remain unchanged. Existing guard recipes append exact reviewed source.
+Focused browser/native tests cover search, attending versus checked-in totals,
+waivers, partial/final reversal, scoped CSV/print, child-data denial, session loss
+and mobile/desktop navigation. Private evidence: audit/staff-eventday-2026-11-08/.
+Synthetic local acceptance is separate from exact-head CI and genuine hosted
+Auth/RLS/recovery. Historical failures preserved. RELEASE NO-GO.

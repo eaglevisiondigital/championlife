@@ -88,3 +88,20 @@ request-key concurrency, atomic denial, legal history, roster, check-in, partial
 and final reversal, totals and audit. REVIEW_BASE/REPRO preserve strict original
 failure evidence. All earlier tests, historical derivations and CI limits remain.
 No hosted acceptance, provider operations, new permissions or release authority.
+
+### Event-day lookup, attendance and private output
+
+The PR139 successor retains the existing event-day journey and adds only a final
+initiating-control lifetime check before publishing a delayed CSV. The existing
+button guard supplies the callback; no shared Auth/SQL or export projection changes.
+An authorized request already completed may retain its audit, while the retired
+UI intent must not initiate a download. Files already downloaded cannot be recalled.
+
+`eventday-export.browser.mjs` serves the actual Staff host and pinned SDK with
+fictional transport; it covers button/ancestor/root removal, replacement, account,
+campaign, expiration, denial, pagehide, current positive downloads and old handlers.
+`eventday-native.browser.mjs` uses unchanged canonical SQL in disposable PostgreSQL
+for household name/phone/email/reference lookup, unfiltered campaign totals,
+adult/minor/waiver/nonattending rules, arrival and partial/final reversal, immutable
+history, scoped CSV/private print, denied export and account/campaign/session loss.
+Both engines run mobile/desktop. No new realtime mechanism or permission exists.
