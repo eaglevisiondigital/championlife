@@ -1,0 +1,10 @@
+import assert from 'node:assert/strict';import fs from 'node:fs';import{execFileSync}from'node:child_process';import{createHash}from'node:crypto';
+const path='supabase/migrations/20261104171549_events_guarded_forward.sql',parent='1f03ad3cf1609fa3dc9525a1539b8e9dc1734815';
+const before=execFileSync('git',['--no-replace-objects','show',parent+':'+path],{encoding:'utf8'}),after=fs.readFileSync(path,'utf8');
+const omit=s=>s.split('\n').filter(l=>!l.includes('Reviewed schema owner/ACL drift')&&!l.includes('Unexpected schema privilege change beyond reviewed anon usage')&&!l.includes('Pair the exact pre/post schema fingerprints')&&!l.includes("perform set_config('championlife.events_expected_schema'")).join('\n');
+assert.equal(omit(after),omit(before),'Every non-schema guard and the complete historical installer remain byte-identical');
+assert.equal(after.split("perform set_config('championlife.events_expected_schema'").length,2,'one transaction-local exact profile binding');
+assert.ok(after.includes("else ''end,true)"),'unknown preflight fingerprint fails closed');
+assert.ok(after.includes("is distinct from current_setting('championlife.events_expected_schema',true)"),'postflight requires the paired exact fingerprint');
+for(const hash of ['949a48ac1727bd7f915469f9dcfd225e1826aaed08c8df7dd38c50ae49e99fc3','39198c5644d626e23be35b5990e087ee90298ac63c2643ff70fa1f705a07492a'])assert.ok(after.includes(hash),'historical profile preserved');
+console.log(JSON.stringify({checks:6,unchangedGuardSHA256:createHash('sha256').update(omit(after)).digest('hex'),parent}));
