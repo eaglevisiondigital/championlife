@@ -91,6 +91,7 @@ jobs:
       - run: node tools/partner-home-cycle22/attendance-recovery.browser.mjs
       - run: node tools/partner-home-cycle22/edit-recovery.browser.mjs
       - run: node tools/partner-home-cycle22/removal-recovery.browser.mjs
+      - run: node tools/partner-home-cycle22/add-recovery.browser.mjs
       - run: node tools/partner-home-cycle22/registration-checkin-journey.browser.mjs
       - if: matrix.browser == 'chromium'
         run: node tools/partner-home-cycle22/registration-checkin-status.native.mjs
