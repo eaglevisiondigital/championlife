@@ -110,3 +110,72 @@ This candidate directly extends PR73 9fae30cc246de10768a78f5158a845ef101882b3 an
 reuses its immutable NMI/ledger source pins. No wholesale draft-chain merge.
 All existing public outputs, SQL, permissions, GiveHub links and provider guards
 remain unchanged. RELEASE NO-GO.
+
+## Historical financial integration successor — local execution
+
+Run `node tools/nmi/givehub/cli.mjs history-demo /private/tmp/givehub-history-review`
+after the existing backend test dependencies are installed. The command creates
+and destroys a disposable Unix-socket PostgreSQL cluster; it accepts no database
+URL, provider credential or real export. It loads the unchanged hash-pinned
+canonical schema, imports two fictional gifts through `giving_workspace('import')`,
+and appends two partial refunds, a full refund and two corrections through the new
+owner-only `private.giving_import_history` source contract. The SAME report now
+shows canonical ledger rows, tax/non-tax net totals and zero-add replay evidence.
+The displayed fixture ends at 7,250 minor units (all tax-eligible), with the original
+10,000 contribution and 3,000 purchase unchanged. Archived statement figures remain
+original pre-refund classification totals with separately itemized refunds; the
+canonical section explicitly displays post-refund net totals. No receipt or
+statement is generated or resent. The separate SowGo fixture remains in the normal
+staging demo; no legal recipients are silently combined in this local execution.
+
+`tools/nmi/givehub/history.sql` is a source candidate, NOT an automatically discovered
+migration or a hosted installer. No public wrapper or execution grants are added.
+It is SECURITY INVOKER, owner-only, and still requires a verified canonical actor
+with finance.read, finance.gifts.read, finance.gifts.create, finance.gifts.adjust and
+finance.reconciliation.manage; refunds additionally require finance.refunds.manage.
+The local harness uses fictional auth claims under the disposable owner solely to
+exercise this unexposed contract. This does NOT prove genuine session/RLS acceptance.
+A hosted ingress and exact-target installation review remain required.
+
+The contract shares the canonical organization lock, verifies original source,
+Person, fund, currency, classification and expected remaining balance, then appends
+one canonical ledger row, immutable request receipt and audit in one transaction.
+Request replay is exact-payload bound; a different request for the same source must
+have identical content. All source identities are unique across gift/correction
+kinds. The unique index fails installation on an ambiguous pre-existing catalog.
+Historical descendants via ordinary adjustment are held to prevent balances silently
+omitting grandchildren. Existing ordinary adjustment/replacement semantics remain
+unchanged for unrelated gifts. Reconciled batches, allocated gifts, mixed adjustment
+history, overrefunds, missing original records and tax/fund/Person remapping are HELD.
+Tax corrections across classifications are not inferred: this increment preserves
+the original verified classification and recomputes its net; a reclassification
+requires separately reviewed mapping and canonical semantics.
+
+Explicit ordering is required for multiple source corrections; equal timestamps
+are held rather than guessed. Review references and archive hashes bind evidence;
+they do not establish real reviewer identity or donor ownership. Original historical
+statement/archive references are retained in immutable canonical request receipts,
+with existing receipt-history references on ledger rows. No financial permission,
+provider operation, payment leg, recurring instruction or second ledger is created.
+On uncertain real execution a future host must quarantine and inspect the exact
+request receipt under fresh authority; this package has no automatic write retry.
+
+### Private vendor evidence required before real mapping
+
+Supply privately and separately authorize: original unedited export files plus
+vendor column definitions/version/timezone/currency units; account/legal-recipient
+ownership; immutable gift/refund/correction IDs and original-ID links; explicit
+correction direction and ordering; donor and fund source IDs with independently
+reviewed canonical associations; status definitions and source control totals;
+original receipt and statement IDs, versions, archived files/hashes, classifications
+and supersession rules; independent finance review of year attribution and net versus
+pre-refund totals. Missing IDs, ambiguous timestamps, conflicting versions or
+unverified mappings remain HOLD. Do not send card/bank/vault credentials or sensitive
+exports through chat or commit them. No raw CSV adapter is supplied or claimed.
+
+Merchant acceptance is separate: four actual MID/legal-recipient/settlement evidence
+packages; Church/Youth/SowGo-SoulFuel/Events/Merch purposes and receipt/fund ownership;
+provider sandbox capability and UNKNOWN reconciliation; secure credential custody;
+recurring schedule consent, portability or re-enrollment and nonoverlap transition.
+GiveHub stays active. Real import, money movement, cancellation, recurring activation,
+receipt sending, grants and hosted installation still require separate approval.
