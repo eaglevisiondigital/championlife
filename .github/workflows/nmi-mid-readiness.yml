@@ -22,12 +22,17 @@ jobs:
           node-version: '22'
       - name: Load exact reviewed PR107 executor and preserved PR78 webhook source
         run: |
+          git fetch --no-tags --depth=1 origin 9fae30cc246de10768a78f5158a845ef101882b3
           git fetch --no-tags --depth=1 origin b59e1afcbe2978d16e27883750ce20adb7d3a23d
           git fetch --no-tags --depth=1 origin e9e884c99899e5e4b14cc005fdd49f0d13e34d94
       - name: Test four-MID default-off and merchant-isolation contract
         run: node tools/nmi/mid-readiness.mjs --selftest
       - name: Test disabled checkout route planning
         run: node --test tools/nmi/boarding-handoff.test.mjs tools/nmi/disabled-routing.test.mjs tools/nmi/strict-approval.test.mjs tools/nmi/merchant-boundary.review.test.mjs tools/nmi/fictional-lookup-review.test.mjs tools/nmi/fictional-pilot-review.test.mjs tools/nmi/disabled-executor-probe.test.mjs tools/nmi/query-structure-pin.test.mjs tools/nmi/durable-pilot-review.test.mjs tools/nmi/durable-review-session.test.mjs
+      - name: Verify offline GiveHub staging, reconciliation and idempotent replay
+        run: |
+          node --test tools/nmi/givehub/staging.test.mjs tools/nmi/givehub/integrity.test.mjs
+          node tools/nmi/givehub/cli.mjs demo "$RUNNER_TEMP/givehub-review"
       - name: Evaluate readiness without activating payments
         run: node tools/nmi/mid-readiness.mjs docs/nmi-four-mid-readiness.template.json
       - name: Ensure no conflicting diff formatting
@@ -49,6 +54,8 @@ jobs:
           git fetch --no-tags --depth=1 origin b59e1afcbe2978d16e27883750ce20adb7d3a23d
           git fetch --no-tags --depth=1 origin e9e884c99899e5e4b14cc005fdd49f0d13e34d94
       - run: npm ci --ignore-scripts --prefix tools/backend-tests
+      - name: Verify canonical historical import without provider execution
+        run: TEST_POSTGRES_BIN="$(pg_config --bindir)" node tools/nmi/givehub/canonical.native.mjs
       - name: Exercise real disposable PostgreSQL with fictional outcomes only
         run: TEST_POSTGRES_BIN="$(pg_config --bindir)" node tools/nmi/durable-pilot.native.mjs
       - name: Verify stored merchant proof matches the reviewed route without activation
@@ -69,6 +76,8 @@ jobs:
           node-version: '22'
       - run: npm ci --ignore-scripts --prefix tools/backend-tests
       - run: tools/backend-tests/node_modules/.bin/playwright install --with-deps chromium webkit
+      - name: Verify offline migration operator report at desktop and mobile widths
+        run: node tools/nmi/givehub/report.browser.mjs
       - name: Test actual unmounted giving client with intercepted fictional transport
         run: node tools/nmi/public-session.browser.mjs
       - name: Verify HTTP denial retires receipts before response-body parsing
