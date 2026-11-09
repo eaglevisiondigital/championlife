@@ -268,3 +268,6 @@ Focused actual-Staff/SDK tests cover successful removal, lost/malformed replies 
 ## 2026-11-09 — Late attendee creation recovery (source only)
 
 Successor to PR143. Existing attendee_add/client_key and canonical campaign authority remain unchanged. Exact valid returned ID confirms creation; canonical validation rejections remain distinct from UNKNOWN. UNKNOWN permanently retires the original submit and retains only current-view disabled draft fields, with fresh authorized context/detail roster inspection. Current roster does not prove request causation; no automatic retry or matching by name. Existing form and parent retirement clear captured draft fields. Confirmed creation is not reclassified if subsequent roster refresh fails. No SQL, permissions, legal signature, SDK/shared Auth, public form or deployment change. Genuine Auth/RLS/recovery and release remain gated; RELEASE NO-GO.
+
+## Connected Church Forms save recovery — 2026-11-09
+Forms129/Events131 narrowly composed into Staff144. Unconfirmed Forms save holds mutations/autosave and retains edits read-only after fresh authorized inspection; explicit discard/reopen required. No SQL/permissions/SDK changes. Local canonical persistence and browser acceptance do not prove hosted Auth/RLS. Historical failed/cancelled CI preserved. RELEASE NO-GO; GiveHub HOLD.

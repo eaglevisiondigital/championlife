@@ -32,3 +32,15 @@ test('registration pre-dispatch correction retains exact PR134/135 input and Sta
  for(const text of [original(registrationRuntime),Buffer.concat([current(registrationRuntime),Buffer.from('/* unreviewed */')])])assert.throws(()=>verifyActual(alter(registrationRuntime,text)),/Exact123/);
  for(const name of ['registration-checkin-journey.browser.mjs','registration-checkin-status.native.mjs'])assert.deepEqual(current('tools/partner-home-cycle22/'+name),read('0c246a96ccd9e280dd423eb91c623559b7fdb064','tools/outreach/'+name));
 });
+
+test('connected Church preserves every Staff144 recipe and exact reviewed Forms/Events ancestry',()=>{
+ const read=(ref,p)=>execFileSync('git',['--no-replace-objects','show',ref+':'+p],{cwd:root});
+ const recipes=JSON.parse(current('tools/partner-home-cycle22/derivations.json'));
+ const prior=JSON.parse(read('cb0d6f403571a5d11907d34548964864ff35073e','tools/partner-home-cycle22/derivations.json'));
+ for(const[p,pairs]of Object.entries(prior))assert.deepEqual(recipes[p].slice(0,pairs.length),pairs,'Preserve144 '+p);
+ assert.deepEqual(Buffer.from(recipes['assets/js/forms-admin.js'][0][1]),read('6383d832107d7a7c3b15ab277a09f57d2e1c58b6','assets/js/forms-admin.js'));
+ assert.deepEqual(current('assets/js/staff-events.js'),read('58a5cad1c4d32c2679559e3243f7298241124268','assets/js/staff-events.js'));
+ for(const marker of ['await holdSave','clearRecoveryViews();','if (saveHold &&','++epoch; ++readSequence;','not an operation receipt.']){
+ const p='assets/js/forms-admin.js',text=current(p).toString();assert(text.includes(marker));assert.throws(()=>verifyActual(alter(p,text.replace(marker,'/* removed */'))),/Exact123/);
+ }
+});

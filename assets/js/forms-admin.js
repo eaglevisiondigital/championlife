@@ -33,6 +33,9 @@
     saving = false,
     dirty = false,
     conflict = false,
+    saveHold = null,
+    retainedView = null,
+    currentView = null,
     epoch = 0,
     readSequence = 0,
     readPending = false,
@@ -58,6 +61,7 @@
     error.focus();
   }
   async function rpc(action, payload = {}) {
+    if (saveHold && !["get", "context", "list"].includes(action)) throw Error("Discard and reopen before making further changes.");
     const token = epoch, requestOrg = org, binding = window.ChampionLifeFormsContext.capture();
     if (!await window.ChampionLifeFormsContext.verify(binding)) throw Error("Account changed.");
     let r;
@@ -87,16 +91,25 @@
           : r.error.message || "Forms operation unavailable.",
       );
       e.code = r.error.code;
+      e.definitive = r.status >= 400 && r.status < 500 &&
+        ["40001", "PT409", "22023", "23505", "23514", "P0001"].includes(e.code);
       throw e;
     }
     return r.data;
   }
+  function clearRecoveryViews() {
+    if (retainedView) { retainedView.value = ""; retainedView.textContent = ""; }
+    if (currentView) currentView.textContent = "";
+    retainedView = currentView = null;
+  }
   function deny() {
+    clearRecoveryViews();
     pointerCleanup?.();
     epoch++;
     readSequence++;
     readPending = false;
     clearTimeout(saveTimer);
+    saveHold = null;
     draft = null;
     version = null;
     form = null;
@@ -118,7 +131,7 @@
         { class: "staff-state", role: "status" },
       ),
       el("a", "Return to Staff Dashboard", {
-        href: "staff-people.html",
+        href: "staff-home.html",
         class: "forms-button",
       }),
     );
@@ -438,7 +451,7 @@
     if (redraw) builder();
   }
   async function save() {
-    if (!dirty || saving || conflict || !draft) return;
+    if (!dirty || saving || conflict || saveHold || !draft) return;
     saving = true;
     clearTimeout(saveTimer);
     const sent = M.clone(draft),
@@ -455,6 +468,8 @@
         description: form.description,
       });
       if (token !== epoch) return;
+      if (!data?.version || data.version.id !== version.id || data.version.revision !== revision + 1)
+        throw Error("Unconfirmed save response.");
       version = data.version;
       dirty = JSON.stringify(draft) !== JSON.stringify(sent);
       status.textContent = dirty
@@ -463,17 +478,76 @@
       if (dirty) saveTimer = setTimeout(save, 800);
     } catch (e) {
       if (token !== epoch) return;
-      if (["40001", "PT409"].includes(e.code)) {
-        conflict = true;
+      if (!e.definitive || ["40001", "PT409"].includes(e.code)) {
+        await holdSave(e.definitive ? "conflict" : "unknown");
+      } else {
         clearTimeout(saveTimer);
+        message(e);
+        status.textContent = "Save rejected — changes retained; correct them before saving.";
       }
-      message(e);
-      status.textContent = conflict
-        ? "Conflict — reload required"
-        : "Save failed — changes retained";
     } finally {
       saving = false;
     }
+  }
+  async function holdSave(kind) {
+    clearTimeout(saveTimer);
+    pointerCleanup?.();
+    conflict = true;
+    saveHold = kind;
+    ++epoch; ++readSequence; // Permanently retire pre-outcome handlers and pending reads.
+    const token = epoch;
+    root.replaceChildren(el("p", "Verifying access before showing retained draft…", { role: "status" }));
+    try {
+      await rpc("get", { id: formId });
+      if (token !== epoch || !saveHold) return;
+      renderSaveHold();
+    } catch {
+      if (token === epoch) deny(); // No current authority proof: do not retain a private view.
+    }
+  }
+  function renderSaveHold() {
+    clearRecoveryViews();
+    heading(form.name);
+    status.textContent = saveHold === "conflict"
+      ? "Revision conflict — no changes from this save were applied."
+      : "Save outcome UNKNOWN — the draft may already have been saved. Do not retry.";
+    const panel = el("section", null, { class: "forms-card" });
+    panel.append(el("p", "Your retained edits are read-only. Inspect the current version separately, or explicitly discard these edits and reopen. A current version does not prove which interrupted request saved it."));
+    const retained = el("textarea", JSON.stringify(snapshot(), null, 2), {
+      readonly: true, rows: 12, "aria-label": "Retained draft edits (read-only)",
+    });
+    retainedView = retained;
+    retained.style.width = "100%";
+    panel.append(retained);
+    const inspection = el("pre", "", { "aria-label": "Current version inspection" });
+    currentView = inspection;
+    inspection.style.whiteSpace = "pre-wrap";
+    inspection.style.overflowWrap = "anywhere";
+    let reading = false;
+    panel.append(button("Inspect current version (read-only)", async () => {
+      if (reading || !saveHold) return;
+      reading = true;
+      const token = epoch;
+      inspection.textContent = "";
+      try {
+        const data = await rpc("get", { id: formId });
+        if (token !== epoch || !saveHold) return;
+        inspection.textContent = "Current stored version; not an operation receipt.\n" +
+          JSON.stringify({ name: data.form.name, description: data.form.description,
+            revision: data.version.revision, definition: data.version.definition }, null, 2);
+      } catch (e) { if (token === epoch) { inspection.textContent = ""; deny(); } }
+      finally { reading = false; }
+    }), button("Discard retained edits and reopen", async () => {
+      if (!saveHold || !window.confirm("Discard retained edits and reopen the current stored draft? This does not retry the interrupted save.")) return;
+      const token = epoch;
+      try {
+        await rpc("get", { id: formId });
+        if (token !== epoch || !saveHold) return;
+        ++epoch; saveHold = null; conflict = false; dirty = false;
+        await loadForm();
+      } catch { if (token === epoch) deny(); }
+    }), el("a", "Staff home", { href: "staff-home.html", class: "forms-button" }), inspection);
+    root.append(panel);
   }
   const keys = () => [
     ...draft.sections.map((s) => s.key),
@@ -723,6 +797,7 @@
   }
   function builder() {
     if (!draft) return;
+    if (saveHold) { renderSaveHold(); return; }
     heading(form.name);
     status.textContent = conflict
       ? "Conflict — reload required"
@@ -1530,6 +1605,7 @@
     return true;
   }
   async function loadForm() {
+    clearRecoveryViews();
     ++readSequence;
     const binding = readBinding();
     readPending = true;
@@ -1552,7 +1628,7 @@
         M.allFields(draft).some(f => financialTypes.has(f.type));
       if (needsCatalog && !await loadCatalog(binding)) return;
       if (!currentBinding(binding)) return;
-      history = []; future = []; dirty = false; conflict = false;
+      history = []; future = []; dirty = false; conflict = false; saveHold = null;
       preview = query.get("preview") === "true";
       builder();
     } catch (e) {
