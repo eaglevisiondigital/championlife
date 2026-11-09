@@ -15,6 +15,7 @@ jobs:
       fail-fast: false
       matrix:
         profile: ['baseline', 'forms', 'dream', 'forms,dream', 'dream,forms']
+        schema: ['fixture', 'production']
     services:
       postgres:
         image: postgres:17
@@ -38,12 +39,14 @@ jobs:
           TEST_DATABASE_URL: postgres://postgres:synthetic-only@127.0.0.1:5432/forms_core_test
           EVENTS_FORWARD_PROFILE: ${{ matrix.profile }}
           EVENTS_CATALOG_DIAGNOSTICS: '1'
+          EVENTS_SCHEMA_PROFILE: ${{ matrix.schema }}
+      - run: node tools/events-guarded-forward/schema-profile.test.mjs
       - run: node tools/events-guarded-forward/integrity.mjs
         if: matrix.profile == 'baseline'
       - uses: actions/upload-artifact@v4
         if: failure()
         with:
-          name: events-catalog-${{ matrix.profile }}
+          name: events-catalog-${{ matrix.profile }}-${{ matrix.schema }}
           path: events-catalog-diagnostics/*.json
           retention-days: 7
       - run: git diff --check

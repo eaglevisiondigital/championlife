@@ -1,10 +1,12 @@
 // Exact guarded migration against owned disposable native PostgreSQL only.
 import assert from'node:assert/strict';import fs from'node:fs';import{fixture,forms,dream,historical,sha}from'./source.mjs';import{digest,preservedCatalog,relationCatalog,eventRelations,dependencies}from'./catalog.mjs';
+assert.ok(!process.env.EVENTS_SCHEMA_PROFILE||['fixture','production'].includes(process.env.EVENTS_SCHEMA_PROFILE),'Unknown schema profile');
 const file='20261104171549_events_guarded_forward.sql',sql=fs.readFileSync(new URL('../../supabase/migrations/'+file,import.meta.url),'utf8');const f=await fixture();let count=0;
 const ok=(v,label)=>{assert.ok(v,label);count++;console.log('PASS '+label)};
 const snapshot=async db=>{await db.exec('reset role;set search_path=pg_catalog');return digest(db,preservedCatalog)};
 const profiles=[[],['forms'],['dream'],['forms','dream'],['dream','forms']],selected=process.env.EVENTS_FORWARD_PROFILE;assert.ok(!selected||profiles.some(x=>(x.join(',')||'baseline')===selected),'Unknown exact profile');const orders=selected?profiles.filter(x=>(x.join(',')||'baseline')===selected):profiles;assert.equal(sql.slice(sql.indexOf('-- Global Propel Events v1.'),sql.indexOf('\ndo $postflight$begin')),historical(),'Historical Events body byte-identical');
-try{for(const order of orders){const db=await f.nativeDatabase(),tag=order.join('→')||'baseline';try{await f.baseline(db);for(const mod of order)await db.exec(mod==='forms'?forms():dream());const original=await snapshot(db);
+try{for(const order of orders){const db=await f.nativeDatabase(),tag=order.join('→')||'baseline';try{if(process.env.EVENTS_SCHEMA_PROFILE==='production')await db.exec('grant usage on schema public to postgres');
+await f.baseline(db);for(const mod of order)await db.exec(mod==='forms'?forms():dream());const original=await snapshot(db);
 // Disposable fixture metadata only: preserve exact Linux/native evidence if any assertion fails.
 if(process.env.EVENTS_CATALOG_DIAGNOSTICS==='1'){
  const environment=(await db.query("select version(),datcollate,datctype,pg_encoding_to_char(encoding) encoding from pg_database where datname=current_database()")).rows[0];
@@ -28,6 +30,7 @@ if(!order.length){
  await rejects('create table public.event_orphan(id int);',/exists or is partial/,'partial existing Events');
  await rejects("create or replace function private.has_staff_permission(p_org uuid,p_key text,p_department uuid default null)returns boolean language sql as 'select true';",/authority definition/,'changed authority helper');
  await rejects("create or replace function private.staff_permission_keys()returns text[]language sql as $$select array['events.manage','unapproved']::text[]$$;",/registry\/constraint pair/,'unknown registry');
+ await rejects('grant create on schema public to authenticated;',/schema privilege drift|schema owner\/ACL drift/,'unexpected public CREATE privilege');
  await rejects('revoke usage on schema private from authenticated;',/schema owner\/ACL drift/,'schema privilege drift');
  await rejects('alter table auth.users drop column is_anonymous;',/verified identity shape/,'managed Auth shape mismatch');
  await rejects('set role authenticated;',/installation owner/,'wrong installation owner');
@@ -41,6 +44,7 @@ if(!order.length){
  const bad=sql.replace('do $postflight$begin','alter table public.organization_people disable row level security;\ndo $postflight$begin');await rejects('',/Existing canonical dependencies changed/,'counterfactual collateral policy mutation',bad);
  const badRegistry=sql.replace('do $postflight$begin',()=>"create or replace function private.staff_permission_keys()returns text[]language sql as $$select array['events.manage']::text[]$$;\ndo $postflight$begin");await rejects('',/Existing application catalog changed/,'counterfactual collateral registry mutation',badRegistry);
  const extra=sql.replace('do $postflight$begin','alter table storage.event_history disable row level security;\ndo $postflight$begin');await rejects('create table storage.event_history(id int);alter table storage.event_history enable row level security;',/Existing application catalog changed/,'counterfactual preexisting similarly named Storage table drift',extra);
+ const badSchema=sql.replace('do $postflight$begin','revoke usage on schema public from postgres;grant create on schema public to authenticated;\ndo $postflight$begin');await rejects('',/Unexpected schema privilege/, 'counterfactual post-install ACL drift',badSchema);
  const badCourse=sql.replace('do $postflight$begin','alter table public.lesson_progress disable row level security;\ndo $postflight$begin');await rejects('',/Existing application catalog changed/,'counterfactual learner policy mutation',badCourse);
 }
 await db.exec(sql);ok(await snapshot(db)===original,tag+' exact guarded installer preserves every existing catalog');ok((await db.query("select count(*)::int n from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname='public'and c.relname in('event_settings','event_labels','event_locations','event_series','event_occurrences','event_exceptions','event_audit')and c.relrowsecurity")).rows[0].n===7,tag+' seven RLS tables installed');
