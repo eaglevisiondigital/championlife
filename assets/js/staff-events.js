@@ -8,19 +8,37 @@
  const status=el('p','Checking event access…',{role:'status'}),orgForm=el('div',null,{class:'event-toolbar'}),orgSelect=select(orgForm,'Organization','organization',[]),list=el('div',null,{class:'event-admin-list'}),tools=el('div',null,{class:'event-toolbar'}),dialog=el('dialog',null,{'aria-label':'Event editor',class:'event-editor'});
  root.append(orgForm,status,tools,list,dialog);
  // Bind controls and responses to the original principal, tenant and navigation lifetime.
+ const removedNodes=new WeakSet();
+ // Removal permanently retires controls, even when reinserted before the observer runs.
+ function recordRemovals(records){for(const record of records)for(const node of record.removedNodes){removedNodes.add(node);for(const child of node.querySelectorAll?.('button,form,input,select,textarea')||[])removedNodes.add(child);if(node===root||node.contains?.(root))retire('Event workspace removed. Reload to verify access.');}}
+ const lifetimeObserver=new MutationObserver(recordRemovals);lifetimeObserver.observe(document,{childList:true,subtree:true});
+ function currentControl(control){recordRemovals(lifetimeObserver.takeRecords());for(let node=control;node;node=node.parentNode)if(removedNodes.has(node))return false;return control.isConnected;}
  const binding=()=>({generation,detailGeneration,org,userId:user?.id});
- const current=b=>root.isConnected&&b.generation===generation&&b.detailGeneration===detailGeneration&&b.org===org&&b.userId===user?.id;
- const sameAuthority=b=>root.isConnected&&b.org===org&&!!b.userId&&b.userId===user?.id;
- const button=(text,fn)=>{const b=binding(),node=T.button(text,()=>{if(node.isConnected&&current(b))fn();});return node;};
+ const current=b=>currentControl(root)&&b.generation===generation&&b.detailGeneration===detailGeneration&&b.org===org&&b.userId===user?.id;
+ const sameAuthority=b=>currentControl(root)&&b.org===org&&!!b.userId&&b.userId===user?.id;
+ const button=(text,fn)=>{const b=binding(),node=T.button(text,()=>{if(currentControl(node)&&current(b))fn();});return node;};
  const denied=e=>['42501','PGRST301','PGRST302'].includes(e?.code)||[401,403].includes(e?.status);
  function clear(){generation++;detailGeneration++;mutation++;busy=false;org='';context=null;user=null;organizations=[];orgSelect.replaceChildren();list.replaceChildren();tools.replaceChildren();dialog.replaceChildren();if(dialog.open)dialog.close();}
  function retire(message='Event access is no longer available. Sign in again to check access.'){clear();status.textContent=message;}
- const rpc=async(action,data={})=>{
-  const b=binding(),client=auth.client;
+ // Page-lifetime holds contain scope only, never event fields. A lost create response
+ // has no server request receipt: closing/reopening an editor must not retry it.
+ const saveHolds=new Map(),submittedForms=new WeakSet(),scope=b=>b.userId+':'+b.org;
+ const uncertain='We cannot confirm whether your changes were saved. They may already be saved. Saving is paused for this account and organization on this page. Keep your work here while authorized staff verify the outcome. Do not submit it again, even after reopening or reloading. No automatic retry will occur.';
+ const rejected=e=>['P0001','42501','40001','40P01','23502','23503','23505','23514','22007','22008','22023','22P02','PGRST301','PGRST302'].includes(e?.code);
+ function savedResult(action,data,value,b){
+  if(!value||value.organization_id!==b.org||!Number.isInteger(value.revision)||value.revision!==data.revision+1)return false;
+  if(action==='settings')return true;
+  if(action==='exception')return value.occurrence_id===data.occurrence_id;
+  return /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(value.id||'')&&(!data.id||value.id===data.id);
+ }
+ const rpc=async(action,data={},controls=[],attempt=null)=>{
+  const b=binding(),client=auth.client,active=()=>current(b)&&controls.every(currentControl);
+  if(!active())throw Error('retired');
   let verified;try{verified=await auth.getUser();}catch(error){if(current(b))retire();throw error;}
-  if(!current(b))throw Error('retired');
+  if(!active())throw Error('retired');
   if(!verified?.id||verified.id!==b.userId){retire();throw Error('retired');}
   let response;
+  if(attempt){attempt.state='unknown';saveHolds.set(scope(b),attempt);}
   try{response=await client.rpc('events_workspace',{p_org:b.org,p_action:action,p_data:data});}
   catch(error){
    // A transport failure must not leave an undetected former account on screen.
@@ -30,41 +48,66 @@
    }
    throw error;
   }
-  const {data:value,error}=response;
+  const {data:value,error}=response||{};
+  if(attempt&&error&&rejected(error)){attempt.state='rejected';saveHolds.delete(scope(b));}
   // A confirmed denial invalidates current authority in this same principal/tenant,
   // even when its originating editor has retired. Other principals/tenants are independent.
+  if(error&&sameAuthority(b)){
+   let latest;try{latest=await auth.getUser();}catch{}
+   if(sameAuthority(b)&&(!latest?.id||latest.id!==b.userId||window.ChampionLifeAuth!==auth||auth.client!==client))retire();
+  }
   if(error){if(denied(error)&&sameAuthority(b))retire();throw error;}
+  // An already-dispatched result must still retire replaced identity, even when
+  // its initiating form/control was removed. Retirement never skips authority cleanup.
   if(!current(b))throw Error('retired');
   try{verified=await auth.getUser();}catch(error){if(current(b))retire();throw error;}
   if(!current(b))throw Error('retired');
   if(!verified?.id||verified.id!==b.userId){retire();throw Error('retired');}
+  if(!active())throw Error('retired');
+  if(attempt){
+   if(!savedResult(action,data,value,b))throw Error('Unconfirmed save response');
+   attempt.state='confirmed';saveHolds.delete(scope(b));
+  }
   return value;
  };
  const msg=e=>/stale/i.test(e?.message)?'This record changed. Close and reload before saving.':denied(e)?'Your event access has changed. Refresh to check access.':'Unable to complete this action. Reload the event and try again.';
  async function boot(){clear();const token=generation;try{const requested=requestedOrganization();if(!auth)throw Error('Connection unavailable');const nextUser=await auth.getUser();if(token!==generation||!root.isConnected)return;user=nextUser;if(!user){status.replaceChildren(el('a','Sign in to the staff workspace',{href:signInRoute(requested)}));return;}const {data,error}=await auth.client.rpc('staff_workspace_context');if(error)throw error;if(token!==generation)return;organizations=data.organizations;const grants=data.grants.filter(g=>['events.view','events.manage'].includes(g.permission)),orgs=data.organizations.filter(o=>grants.some(g=>g.organization_id===o.id));if(requested&&!orgs.some(o=>o.id===requested)){retire('Requested organization is unavailable. Return to your authorized staff workspace.');return;}orgSelect.replaceChildren(...orgs.map(o=>el('option',o.name,{value:o.id})));if(!orgs.length){status.textContent='Your account has no event access.';return;}org=requested||orgSelect.value;orgSelect.value=org;page=0;await load();}catch(_){if(token===generation)retire('Event access is unavailable. Refresh to try again.');}}
- async function load(){const token=++generation,selectedOrg=org;detailGeneration++;list.replaceChildren();tools.replaceChildren();dialog.replaceChildren();if(dialog.open)dialog.close();try{const fresh=await rpc('context');if(token!==generation||org!==selectedOrg)return;context=fresh;const rows=await rpc('list',{page});if(token!==generation||org!==selectedOrg)return;status.textContent='Events · '+context.timezone;
+ async function load(saved=false){const token=++generation,selectedOrg=org;detailGeneration++;list.replaceChildren();tools.replaceChildren();dialog.replaceChildren();if(dialog.open)dialog.close();try{const fresh=await rpc('context');if(token!==generation||org!==selectedOrg)return;context=fresh;const rows=await rpc('list',{page});if(token!==generation||org!==selectedOrg)return;status.textContent=(saved?'Save confirmed. ':'')+'Events · '+context.timezone;
   if(context.manage_configuration||context.departments.some(d=>d.can_manage))tools.append(button('Create event',()=>editor()));
   if(context.manage_configuration)tools.append(button('Locations, audiences & settings',configuration));
   tools.append(el('a','Current public event information',{href:'events.html?org='+encodeURIComponent(organizations.find(o=>o.id===org)?.slug||'')}));
   for(const s of rows.slice(0,50)){const card=el('article',null,{class:'event-admin-card'});card.append(button(s.title,()=>open(s.id)),el('p',`${s.status} · ${s.visibility} · ${s.local_start.slice(0,10)}`));list.append(card);}if(!rows.length)list.append(el('p','No events yet. Create a draft to get started.'));
   const nav=el('div',null,{class:'event-toolbar'});const prev=button('Previous',()=>{page--;load();}),next=button('Next',()=>{page++;load();});prev.disabled=page===0;next.disabled=rows.length<=50;nav.append(prev,el('span',`Page ${page+1}`),next);list.append(nav);
- }catch(_){if(token===generation){retire('Event access is unavailable. Refresh to try again.');}}}
- orgSelect.addEventListener('change',()=>{detailGeneration++;org=orgSelect.value;const route=new URL(location.href);route.searchParams.set('org',org);history.replaceState(null,'',route.pathname+route.search);page=0;load();});
+ }catch(_){if(token===generation){retire(saved?'Save confirmed. The event workspace could not be loaded. Do not submit these changes again. Refresh only to check access.':'Event access is unavailable. Refresh to try again.');}}}
+ orgSelect.addEventListener('change',()=>{
+  if(!currentControl(orgSelect)||!currentControl(root))return;
+  const nextOrg=orgSelect.value;
+  try{const route=new URL(location.href);route.searchParams.set('org',nextOrg);history.replaceState(null,'',route.pathname+route.search);}
+  catch{retire('Organization change unavailable. Reload to verify access.');return;}
+  detailGeneration++;org=nextOrg;page=0;load();
+ });
  dialog.addEventListener('cancel',event=>{event.preventDefault();detailGeneration++;dialog.replaceChildren();dialog.close();load();});
  dialog.addEventListener('close',()=>{if(!dialog.open&&dialog.childElementCount){detailGeneration++;dialog.replaceChildren();load();}});
  function shell(title){detailGeneration++;dialog.replaceChildren(el('h2',title));const close=button('Close',()=>{detailGeneration++;dialog.close();dialog.replaceChildren();load();});dialog.append(close);if(!dialog.open)dialog.showModal();return detailGeneration;}
  const section=(form,title)=>{const s=el('fieldset');s.append(el('legend',title));form.append(s);return s;};
- async function mutate(action,data,feedback,done,b,form){
-  if(busy||!form.isConnected||!current(b))return;
-  const operation=++mutation;busy=true;feedback.textContent='Saving…';
+ async function mutate(action,data,feedback,done,b,form,save){
+  const live=()=>current(b)&&currentControl(form)&&currentControl(save);
+  if(busy||!live()||submittedForms.has(form))return;
+  if(saveHolds.has(scope(b))){feedback.textContent=uncertain;save.disabled=true;return;}
+  const attempt={state:'not-submitted'},operation=++mutation;busy=true;feedback.textContent='Saving…';
   for(const node of dialog.querySelectorAll('button[type=submit]'))node.disabled=true;
-  try{const value=await rpc(action,data);if(!current(b)||!form.isConnected)return;feedback.textContent='Saved';await done(value);}
-  catch(e){if(current(b)&&form.isConnected)feedback.textContent=msg(e);}
-  finally{if(operation===mutation){busy=false;for(const node of dialog.querySelectorAll('button[type=submit]'))node.disabled=false;}}
+  try{const value=await rpc(action,data,[form,save],attempt);if(!live())return;submittedForms.add(form);feedback.textContent='Save confirmed.';await done(value);}
+  catch(e){if(live())feedback.textContent=attempt.state==='unknown'?uncertain:attempt.state==='confirmed'?'Save confirmed. The next view could not be loaded. Do not submit these changes again.':msg(e);}
+  finally{if(operation===mutation){
+   busy=false;
+   if(current(b))for(const node of dialog.querySelectorAll('button[type=submit]'))node.disabled=saveHolds.has(scope(b))||submittedForms.has(node.form);
+   else if(sameAuthority(b)&&attempt.state==='rejected')for(const node of dialog.querySelectorAll('form [role=status]'))if(currentControl(node)&&node.textContent===uncertain)node.textContent='The earlier save was rejected. Close and reopen this editor to load current revisions before saving.';
+  }}
  }
  function formSubmit(form,action,build,done){
   const b=binding(),feedback=el('p','',{role:'status'}),save=el('button','Save',{type:'submit'});
-  form.append(feedback,save);form.addEventListener('submit',e=>{e.preventDefault();if(!form.isConnected||!current(b)||busy)return;mutate(action,build(new FormData(form)),feedback,done,b,form);});
+  if(saveHolds.has(scope(b))){feedback.textContent=uncertain;save.disabled=true;}
+  form.append(feedback,save);form.addEventListener('submit',e=>{e.preventDefault();if(!currentControl(form)||!currentControl(save)||!current(b)||busy)return;mutate(action,build(new FormData(form)),feedback,done,b,form,save);});
  }
  const local=(iso,zone)=>{const parts=new Intl.DateTimeFormat('sv-SE',{timeZone:zone,year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',hourCycle:'h23'}).format(new Date(iso));return parts.replace(' ','T');};
  function editor(series=null){shell(series?'Edit entire series':'Create an event draft');const s=series||{},form=el('form',null,{class:'event-form'});dialog.append(el('p','These changes apply to the entire series. Existing occurrence overrides are preserved.'),form);
@@ -82,23 +125,23 @@
   field(b,'Public contact name','contact_name','text',s.contact_name);field(b,'Contact email','contact_email','email',s.contact_email);field(b,'Show this contact publicly','contact_public','checkbox',s.contact_public);
   b=section(form,'Registration hooks');select(b,'Registration mode','registration_mode',[['none','None'],['external','External host'],['native_future','Native registration — not available yet']],s.registration_mode||'none');field(b,'Registration required','registration_required','checkbox',s.registration_required);field(b,'External HTTPS signup URL','registration_url','url',s.registration_url);field(b,'Capacity','capacity','number',s.capacity).min=0;field(b,'Opens (event local time)','registration_opens','datetime-local',s.registration_opens?local(s.registration_opens,s.timezone):'');field(b,'Closes (event local time)','registration_closes','datetime-local',s.registration_closes?local(s.registration_closes,s.timezone):'');field(b,'Cost display','cost_display','text',s.cost_display);field(b,'Payment required by host','payment_required','checkbox',s.payment_required);
   b=section(form,'Staff operations — private');field(b,'Setup minutes','setup_minutes','number',s.setup_minutes||0).min=0;field(b,'Cleanup minutes','cleanup_minutes','number',s.cleanup_minutes||0).min=0;field(b,'Internal notes','internal_notes','textarea',s.internal_notes);field(b,'Check-in will be required','checkin_required','checkbox',s.checkin_required);field(b,'Attendance tracking planned','attendance_tracking','checkbox',s.attendance_tracking);b.append(el('p','Check-in, attendance capture and native payment tools are future modules.'));
-  formSubmit(form,'save',fd=>{const data=Object.fromEntries(fd);data.id=s.id||null;data.revision=s.revision||0;for(const k of ['department_id','type_id','location_id','until_date'])data[k]=data[k]||null;for(const k of ['interval_n','ordinal','weekday','occurrence_count','capacity','setup_minutes','cleanup_minutes'])data[k]=data[k]===''?null:Number(data[k]);data.weekdays=fd.getAll('weekdays').map(Number);data.audience_ids=fd.getAll('audience_ids');for(const k of ['registration_required','payment_required','contact_public','checkin_required','attendance_tracking'])data[k]=fd.has(k);for(const k of ['registration_opens','registration_closes'])data[k]=data[k]||null;return data;},value=>open(value.id));
+  formSubmit(form,'save',fd=>{const data=Object.fromEntries(fd);data.id=s.id||null;data.revision=s.revision||0;for(const k of ['department_id','type_id','location_id','until_date'])data[k]=data[k]||null;for(const k of ['interval_n','ordinal','weekday','occurrence_count','capacity','setup_minutes','cleanup_minutes'])data[k]=data[k]===''?null:Number(data[k]);data.weekdays=fd.getAll('weekdays').map(Number);data.audience_ids=fd.getAll('audience_ids');for(const k of ['registration_required','payment_required','contact_public','checkin_required','attendance_tracking'])data[k]=fd.has(k);for(const k of ['registration_opens','registration_closes'])data[k]=data[k]||null;return data;},value=>open(value.id,{},true));
  }
- async function open(id,range={}){const token=shell('Event schedule');try{const data=await rpc('detail',{id,...range});if(token!==detailGeneration)return;dialog.append(el('h3',data.series.title),el('p',`${data.series.status} · ${data.series.timezone}`));if(data.can_manage)dialog.append(button('Edit entire series',()=>editor(data.series)));if(data.conflicts>0)dialog.append(el('p',`${data.conflicts} possible room overlaps. Check with the location coordinator before publishing.`,{class:'event-warning'}));
-  const rangeForm=el('form',null,{class:'event-filters'});field(rangeForm,'Schedule from','from','date',range.from||T.day(new Date(),data.series.timezone));field(rangeForm,'Through (up to 400 days)','to','date',range.to||T.add(T.day(new Date(),data.series.timezone),366));rangeForm.append(el('button','Load dates',{type:'submit'}));const rangeBinding=binding();rangeForm.addEventListener('submit',e=>{e.preventDefault();if(rangeForm.isConnected&&current(rangeBinding))open(id,Object.fromEntries(new FormData(rangeForm)));});dialog.append(rangeForm);
+ async function open(id,range={},saved=false){const token=shell('Event schedule');if(saved)dialog.append(el('p','Save confirmed.',{role:'status'}));try{const data=await rpc('detail',{id,...range});if(token!==detailGeneration)return;dialog.append(el('h3',data.series.title),el('p',`${data.series.status} · ${data.series.timezone}`));if(data.can_manage)dialog.append(button('Edit entire series',()=>editor(data.series)));if(data.conflicts>0)dialog.append(el('p',`${data.conflicts} possible room overlaps. Check with the location coordinator before publishing.`,{class:'event-warning'}));
+  const rangeForm=el('form',null,{class:'event-filters'});field(rangeForm,'Schedule from','from','date',range.from||T.day(new Date(),data.series.timezone));field(rangeForm,'Through (up to 400 days)','to','date',range.to||T.add(T.day(new Date(),data.series.timezone),366));rangeForm.append(el('button','Load dates',{type:'submit'}));const rangeBinding=binding();rangeForm.addEventListener('submit',e=>{e.preventDefault();if(currentControl(rangeForm)&&current(rangeBinding))open(id,Object.fromEntries(new FormData(rangeForm)));});dialog.append(rangeForm);
   const schedule=el('div');dialog.append(schedule);let visible=0;const more=button('Show more dates',render);dialog.append(more);
   function render(){for(const o of data.occurrences.slice(visible,visible+20)){const x=o.exception||{},row=el('article',null,{class:'event-admin-card'});row.append(el('p',`${x.cancelled?'Cancelled · ':''}${T.time(x.starts_at||o.starts_at,data.series.timezone)} – ${T.time(x.ends_at||o.ends_at,data.series.timezone)}`));if(!o.scheduled)row.append(el('small','Retained override from an earlier series schedule'));if(data.can_manage)row.append(button('Edit this occurrence',()=>exception(data.series,o)));schedule.append(row);}visible+=20;more.hidden=visible>=data.occurrences.length;}render();
   if(!data.occurrences.length)schedule.append(el('p','No dates in this window.'));const history=el('details');history.append(el('summary','Event history'));for(const a of data.audit)history.append(el('p',`${new Date(a.created_at).toLocaleString()} · ${a.action}`));dialog.append(history);
- }catch(e){if(token===detailGeneration)dialog.append(el('p',msg(e),{role:'status'}));}}
+ }catch(e){if(token===detailGeneration)dialog.append(el('p',saved?'The save was confirmed, but the schedule could not be loaded. Do not submit these changes again.':msg(e),{role:'status'}));}}
  function exception(s,o){shell('Edit this occurrence only');const x=o.exception||{},f=el('form',null,{class:'event-form'});dialog.append(el('p',`Only ${o.slot_date} changes. Times use ${s.timezone}.`),f);field(f,'Cancel this occurrence','cancelled','checkbox',x.cancelled);field(f,'Override start (blank restores series time)','starts_local','datetime-local',x.starts_at?local(x.starts_at,s.timezone):'');field(f,'Override end','ends_local','datetime-local',x.ends_at?local(x.ends_at,s.timezone):'');field(f,'Override location','location_override','checkbox',x.location_override);select(f,'Location','location_id',[['','Custom location'],...context.locations.filter(l=>l.active).map(l=>[l.id,l.name])],x.location_id||'');field(f,'Custom location','custom_location','text',x.custom_location);field(f,'Internal override note','note','textarea',x.note);
-  formSubmit(f,'exception',fd=>({...Object.fromEntries(fd),starts_local:fd.get('starts_local')||null,ends_local:fd.get('ends_local')||null,location_id:fd.get('location_id')||null,cancelled:fd.has('cancelled'),location_override:fd.has('location_override'),id:s.id,series_revision:s.revision,occurrence_id:o.id,revision:x.revision||0}),()=>open(s.id));
+  formSubmit(f,'exception',fd=>({...Object.fromEntries(fd),starts_local:fd.get('starts_local')||null,ends_local:fd.get('ends_local')||null,location_id:fd.get('location_id')||null,cancelled:fd.has('cancelled'),location_override:fd.has('location_override'),id:s.id,series_revision:s.revision,occurrence_id:o.id,revision:x.revision||0}),()=>open(s.id,{},true));
  }
- function configuration(){shell('Event configuration');const settings=el('form',null,{class:'event-form'});settings.append(el('h3','Organization defaults'));field(settings,'Default timezone','timezone','text',context.timezone);field(settings,'Require approval before publication','approval_required','checkbox',context.approval_required);formSubmit(settings,'settings',fd=>({timezone:fd.get('timezone'),approval_required:fd.has('approval_required'),revision:context.settings_revision}),()=>load());dialog.append(settings);
+ function configuration(){shell('Event configuration');const settings=el('form',null,{class:'event-form'});settings.append(el('h3','Organization defaults'));field(settings,'Default timezone','timezone','text',context.timezone);field(settings,'Require approval before publication','approval_required','checkbox',context.approval_required);formSubmit(settings,'settings',fd=>({timezone:fd.get('timezone'),approval_required:fd.has('approval_required'),revision:context.settings_revision}),()=>load(true));dialog.append(settings);
   dialog.append(button('Add location',()=>locationEditor()),button('Add audience or event type',()=>labelEditor()));
   for(const l of context.locations)dialog.append(button(`${l.name}${l.active?'':' (inactive)'}`,()=>locationEditor(l)));for(const l of context.labels)dialog.append(button(`${l.kind}: ${l.name}${l.active?'':' (inactive)'}`,()=>labelEditor(l)));
  }
- function locationEditor(l={}){shell('Reusable location');const f=el('form',null,{class:'event-form'});for(const[k,label]of [['name','Public display name'],['campus','Campus / location'],['room','Room / space'],['address','Public street address'],['timezone','Timezone']])field(f,label,k,'text',l[k]||(k==='timezone'?context.timezone:''));field(f,'Capacity','capacity','number',l.capacity).min=0;field(f,'Internal notes','internal_notes','textarea',l.internal_notes);field(f,'Active','active','checkbox',l.active??true);formSubmit(f,'location',fd=>({...Object.fromEntries(fd),id:l.id||null,revision:l.revision||0,capacity:fd.get('capacity')?Number(fd.get('capacity')):null,active:fd.has('active')}),()=>load());dialog.append(f);}
- function labelEditor(l={}){shell('Audience / event type');const f=el('form',null,{class:'event-form'});select(f,'Kind','kind',[['audience','Audience'],['type','Event type']],l.kind||'audience').disabled=!!l.id;field(f,'Name','name','text',l.name).required=true;field(f,'Active','active','checkbox',l.active??true);formSubmit(f,'label',fd=>({...Object.fromEntries(fd),id:l.id||null,revision:l.revision||0,active:fd.has('active')}),()=>load());dialog.append(f);}
+ function locationEditor(l={}){shell('Reusable location');const f=el('form',null,{class:'event-form'});for(const[k,label]of [['name','Public display name'],['campus','Campus / location'],['room','Room / space'],['address','Public street address'],['timezone','Timezone']])field(f,label,k,'text',l[k]||(k==='timezone'?context.timezone:''));field(f,'Capacity','capacity','number',l.capacity).min=0;field(f,'Internal notes','internal_notes','textarea',l.internal_notes);field(f,'Active','active','checkbox',l.active??true);formSubmit(f,'location',fd=>({...Object.fromEntries(fd),id:l.id||null,revision:l.revision||0,capacity:fd.get('capacity')?Number(fd.get('capacity')):null,active:fd.has('active')}),()=>load(true));dialog.append(f);}
+ function labelEditor(l={}){shell('Audience / event type');const f=el('form',null,{class:'event-form'});select(f,'Kind','kind',[['audience','Audience'],['type','Event type']],l.kind||'audience').disabled=!!l.id;field(f,'Name','name','text',l.name).required=true;field(f,'Active','active','checkbox',l.active??true);formSubmit(f,'label',fd=>({...Object.fromEntries(fd),id:l.id||null,revision:l.revision||0,active:fd.has('active')}),()=>load(true));dialog.append(f);}
  auth?.client?.auth?.onAuthStateChange(()=>{retire('Refreshing access…');setTimeout(()=>{if(root.isConnected)boot();},0);});
  document.addEventListener('staff-protected-clear',()=>retire());
  window.addEventListener('pagehide',()=>retire());
