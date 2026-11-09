@@ -82,6 +82,8 @@ jobs:
       - run: node tools/partner-home-cycle22/registration-predispatch.browser.mjs
       - run: node tools/partner-home-cycle22/household-predispatch.browser.mjs
       - run: node tools/partner-home-cycle22/household-native.browser.mjs
+      - run: node tools/partner-home-cycle22/attendee-waiver-predispatch.browser.mjs
+      - run: node tools/partner-home-cycle22/attendee-waiver-native.browser.mjs
       - run: node tools/partner-home-cycle22/registration-checkin-journey.browser.mjs
       - if: matrix.browser == 'chromium'
         run: node tools/partner-home-cycle22/registration-checkin-status.native.mjs

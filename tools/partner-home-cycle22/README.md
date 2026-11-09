@@ -57,3 +57,15 @@ modules with fictional Auth and routes registration HTTP to disposable PostgreSQ
 it verifies authorized saves, revision conflicts, immutable signatures/audits,
 client-key duplicate/conflict behavior, child waiver coverage and denied scopes.
 The accepted transport helper and existing check-in/reversal tests remain unchanged.
+
+
+PR137 successor extends the existing dispatch veto to save/remove attendee,
+signature recording and waiver correction, preserving legal payloads and SQL.
+`attendee-waiver-predispatch.browser.mjs` runs all four actual-host journeys across
+Staff-session/SDK-token gaps with fictional HTTP. `attendee-waiver-native.browser.mjs`
+uses the unchanged canonical SQL in disposable PostgreSQL and verifies revisions,
+request keys, guardian/acknowledgement rules, consent, immutable signatures,
+append-only corrections, audits and already-submitted outcomes. `REVIEW_BASE` pins
+original runtime bytes for negative reproduction; `REPRO=1` retains the final
+strict zero-new-mutation assertion while collecting original failures. No hosted
+activity or additional authority. All earlier tests remain intact.

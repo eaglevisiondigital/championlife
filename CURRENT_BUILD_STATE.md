@@ -187,3 +187,20 @@ The bounded local shell investigation completed after cross-tab sign-out in Chro
 and WebKit390; it did not reproduce the prior CI stall. Preserve UNKNOWN and original
 15-minute cancellation; no historical CI retry or timeout change. Source, new-head CI
 and genuine hosted acceptance remain separate. RELEASE NO-GO.
+
+## 2026-11-08 — Attendee and waiver dispatch continuity (source only)
+
+Direct successor of PR137 `7adeec04d466937b85fce15b998242a4075b5037`.
+Actual Staff save/remove attendee, signature recording and waiver correction each
+reproduced new HTTP and canonical database changes after controls retired during
+Staff session verification or SDK token lookup. Extend the same accepted final
+pre-dispatch veto to attendee_update, sign and waiver_correct. Bind signature form
+submission to its actual submit button, preserving permanent retirement.
+
+Payloads, request keys, attendee revisions, guardian and signer requirements,
+consent, immutable waiver/correction history and canonical audits are unchanged.
+No SQL, grants, Auth-client/helper, SDK/SRI, UI or deployment change. Existing
+household/add-attendee and check-in/reversal protections remain intact. Focused
+browser/native regression and one bounded independent security review are recorded
+in private audit/staff-attendee-waiver-2026-11-08. Genuine hosted acceptance remains
+separate; historical failures preserved. RELEASE NO-GO.
