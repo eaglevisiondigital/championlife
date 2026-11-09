@@ -8,14 +8,14 @@ export const root=new URL('../../',import.meta.url);
 export const base='bdecc592d1a0544330934ef2fc5a254a9b54d3d3';
 export const runtime='assets/js/staff-outreach-partners.js';
 export const registrationRuntime='assets/js/outreach-registration-staff.js';
-export function expectedRegistrationRuntime(){assert.equal(hash(original(registrationRuntime)),'665236df4f5eb52f25e4bcc5560a0e8fda4feae139b4f0b17265d10964ca4f2a');const recipe=derivations[registrationRuntime];assert.equal(hash(recipe[1][0]),'cab69837156279bf24bd790115c24e2368f1dd87a094e79c79ff389b9a4cf81e','Exact preserved PR134/135 input');assert.equal(hash(recipe.at(-1)[0]),'4140e7a9c0dc8fbc0fb5c7883383090526bb5b53ec7936495c5e049d988418ed','Exact preserved PR136 input');const value=expectedRouter(registrationRuntime);assert.equal(hash(value),'9b74499a568aca25f2b7fa8b14aab6d96d428c0ebd897b07996c0ef77da2dc61','Reviewed pre-dispatch correction');return value}
+export function expectedRegistrationRuntime(){assert.equal(hash(original(registrationRuntime)),'665236df4f5eb52f25e4bcc5560a0e8fda4feae139b4f0b17265d10964ca4f2a');const recipe=derivations[registrationRuntime];assert.equal(hash(recipe[1][0]),'cab69837156279bf24bd790115c24e2368f1dd87a094e79c79ff389b9a4cf81e','Exact preserved PR134/135 input');assert.equal(hash(recipe.at(-2)[0]),'4140e7a9c0dc8fbc0fb5c7883383090526bb5b53ec7936495c5e049d988418ed','Exact preserved PR136 input');assert.equal(hash(recipe.at(-1)[0]),'9b74499a568aca25f2b7fa8b14aab6d96d428c0ebd897b07996c0ef77da2dc61','Exact preserved PR137 input');const value=expectedRouter(registrationRuntime);assert.equal(hash(value),'825fab3efa353a8c887d53f15fc35ea1c701444074caf40b50cb476a60ca315b','Reviewed pre-dispatch correction');return value}
 export const dispatchRuntimes=['assets/js/champion-life-auth.js','assets/js/staff-workspace.js'];
-export function expectedDispatchRuntime(p){assert(dispatchRuntimes.includes(p));const value=expectedRouter(p);assert.equal(hash(value),{"assets/js/champion-life-auth.js": "46181c731cf1a2bda08b954cb2a4cdc483301ddf3187b017413c5ca856a23dda", "assets/js/staff-workspace.js": "961a710ca03b44a267fe8c6356c01905bc4181b45cb2ebb990876768828bc3e4"}[p],'Exact reviewed pre-dispatch transport');return value}
+export function expectedDispatchRuntime(p){assert(dispatchRuntimes.includes(p));const value=expectedRouter(p);assert.equal(hash(value),{"assets/js/champion-life-auth.js": "46181c731cf1a2bda08b954cb2a4cdc483301ddf3187b017413c5ca856a23dda", "assets/js/staff-workspace.js": "212168412089b4a85479e8d78cc11c236f276f44fab194687e18536d2ca435f0"}[p],'Exact reviewed pre-dispatch transport');return value}
 export const hash=b=>createHash('sha256').update(b).digest('hex');
 export const current=p=>readFileSync(new URL(p,root));
 const cache=new Map();
 export function original(p){if(!cache.has(p))cache.set(p,execFileSync('git',['--no-replace-objects','show',base+':'+p],{cwd:root,maxBuffer:80*1024*1024}));return Buffer.from(cache.get(p))}
-export const derivationSHA256='0fd7179de1e253a8ac323215c1a9b01c603537b6ee80f5b87ee2f9cbca60febf';
+export const derivationSHA256='f2098438ea085c33a6478f75eefe7059a8e4b479531ca2cb8c8fb115efdb3a4b';
 const recipeBytes=current('tools/partner-home-cycle22/derivations.json');assert.equal(hash(recipeBytes),derivationSHA256,'Exact reviewed home return and router derivations');
 const derivations=JSON.parse(recipeBytes);
 export const modified=Object.keys(derivations);
@@ -35,22 +35,26 @@ export const additions=[
   "tools/partner-home-cycle22/registration-predispatch.browser.mjs",
   "tools/partner-home-cycle22/dispatch-transport.test.mjs",
   "tools/partner-home-cycle22/household-predispatch.browser.mjs",
-  "tools/partner-home-cycle22/household-native.browser.mjs"
+  "tools/partner-home-cycle22/household-native.browser.mjs",
+  "tools/partner-home-cycle22/attendee-waiver-predispatch.browser.mjs",
+  "tools/partner-home-cycle22/attendee-waiver-native.browser.mjs"
 ];
 export const reviewedHashes={
-  "tools/partner-home-cycle22/source.test.mjs": "32336ceda4786791044e5c5f766557c47e6d7e923aa971c498d9921c81997360",
+  "tools/partner-home-cycle22/source.test.mjs": "e36da264a5515fba2a6aa1f696cafa2d8b2a7c2af87f18975c0f951e14a410f6",
   "tools/partner-home-cycle22/build.mjs": "80bd1e63bbee8cab0403181e81e3adb7ee3a1995e97c3ba485284b76216cab22",
-  "tools/partner-home-cycle22/derivations.json": "0fd7179de1e253a8ac323215c1a9b01c603537b6ee80f5b87ee2f9cbca60febf",
-  "tools/partner-home-cycle22/README.md": "3d43f72be348c1a426b4dfeb752d8d355f4b9e1665f1b0516ede2f27c6fb2b1e",
+  "tools/partner-home-cycle22/derivations.json": "f2098438ea085c33a6478f75eefe7059a8e4b479531ca2cb8c8fb115efdb3a4b",
+  "tools/partner-home-cycle22/README.md": "70b378af38c122bdfce4bd4eb56dc2b27df7521567695234e5b533b343c454fc",
   "tools/partner-home-cycle22/home-return.browser.mjs": "f610b31cada708adb84693dc40fc9aa20b3833e223c0c9fb9cb59c7e45263d05",
-  ".github/workflows/partner-home-cycle22.yml": "fdc2a7f8f5f8e2c13947b9d75bcfd9cebe183a9d90206c183c1d413ddd615414",
+  ".github/workflows/partner-home-cycle22.yml": "9db2b31c0f034cd89dbf428f4750abeeadeace09fe118d0274b07e87dce712c7",
   "tools/partner-home-cycle22/registration-host.browser.mjs": "dd2043d3457b18cd6052df67d0eed0228cd1afbcf49ffc060ca980a4b628dfdc",
   "tools/partner-home-cycle22/registration-checkin-journey.browser.mjs": "5946b1bffe3f0faf00e58695a9a6babd60196dc9740afa503954b3cbe9a4797e",
   "tools/partner-home-cycle22/registration-checkin-status.native.mjs": "f941859a5b2a376b17fc135bcc217f7d8fead492634595d20de04d497c248dfa",
   "tools/partner-home-cycle22/registration-predispatch.browser.mjs": "f0d83d3434431cf99b723144d4349264414e968841382a69681518eebb86c9c2",
   "tools/partner-home-cycle22/dispatch-transport.test.mjs": "9e0948ceed4432452e3a07ef827c2f83cac472909d5fad5259afd241718a761e",
   "tools/partner-home-cycle22/household-predispatch.browser.mjs": "301479b04cae00f22cfa3f0342b87948a2448d2db3d161db4187da093af468da",
-  "tools/partner-home-cycle22/household-native.browser.mjs": "bc6dd8e99dc646f1a2a97ebbe85b63dfb04a4ec0f275543eabeb0e3a2e75049d"
+  "tools/partner-home-cycle22/household-native.browser.mjs": "bc6dd8e99dc646f1a2a97ebbe85b63dfb04a4ec0f275543eabeb0e3a2e75049d",
+  "tools/partner-home-cycle22/attendee-waiver-predispatch.browser.mjs": "59eb3f4844eb6766886c73e70d9e24821e3926a7fde17e8367d63aa9f80a56ce",
+  "tools/partner-home-cycle22/attendee-waiver-native.browser.mjs": "d946046d43ff2f151b5122ef24c91305c55984d9e1ffb9dec7dbd3681524fa01"
 };
 const tracked=execFileSync('git',['--no-replace-objects','ls-tree','-r','--name-only',base],{cwd:root,encoding:'utf8'}).trim().split('\n');
 export function verifyActual(read=current){
