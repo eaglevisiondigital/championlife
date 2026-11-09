@@ -242,3 +242,10 @@ waivers, partial/final reversal, scoped CSV/print, child-data denial, session lo
 and mobile/desktop navigation. Private evidence: audit/staff-eventday-2026-11-08/.
 Synthetic local acceptance is separate from exact-head CI and genuine hosted
 Auth/RLS/recovery. Historical failures preserved. RELEASE NO-GO.
+
+
+## 2026-11-08 — Interrupted attendance recovery (source only)
+
+Direct successor to PR140 `f31a7829be6ad46047d0556bdcd46934e4c12a75`. Check-in/reversal now require exact `saved:true`; lost or malformed replies retire the old detail controls and offer a separate, freshly authorized read of current attendance. No automatic write retry. Explicit canonical validation rejections remain distinct, while permission/session denial still clears protected content. A refreshed state is explicitly not proof of which request changed attendance.
+
+Existing SQL/audit/waiver history, permissions, SDK/shared Auth and all public pages remain unchanged. The canonical attendance RPC lacks a caller-bound durable operation receipt; detail and audit cannot attribute an uncertain request, especially under another authorized operator's changes. Local fictional Auth/PG17/browser evidence is not genuine hosted Auth/RLS acceptance. RELEASE NO-GO; no hosted action, grant, deployment or sending authorized.
