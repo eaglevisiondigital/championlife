@@ -204,3 +204,22 @@ household/add-attendee and check-in/reversal protections remain intact. Focused
 browser/native regression and one bounded independent security review are recorded
 in private audit/staff-attendee-waiver-2026-11-08. Genuine hosted acceptance remains
 separate; historical failures preserved. RELEASE NO-GO.
+
+## 2026-11-08 — Complete walk-up dispatch and attendance journey (source only)
+
+Direct successor of PR138 `3d03a59f2fbd5c235d5761f6a59b9fdaaa202a72`.
+Walk-up registration reproduced NEW HTTP after initiating controls retired during
+Staff-session verification and SDK-token lookup. Bind the existing shared form's
+submit event to its actual submit control before that form disables the button,
+and pass the existing permanent-lifetime veto through the accepted Staff transport.
+No shared form, legal payload, SQL, permissions, request keys, Auth helper or SDK changes.
+All previous attendee/waiver/household/check-in dispatch protections remain intact.
+
+Focused real-host browser and disposable native PostgreSQL tests cover the adult/
+minor/guardian and media-consent workflow, canonical roster, check-in, partial/final
+reversal, exact totals and audit history, duplicate/conflicting request keys,
+expired/revoked authority and already-submitted responses. Fictional Auth is not
+hosted acceptance. Private evidence: audit/staff-walkup-journey-2026-11-08/.
+Historical CI failures remain preserved. Independent review and exact-head CI are
+reported separately; genuine Auth/RLS/recovery and release approval remain held.
+RELEASE NO-GO.
