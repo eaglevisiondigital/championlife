@@ -105,3 +105,12 @@ for household name/phone/email/reference lookup, unfiltered campaign totals,
 adult/minor/waiver/nonattending rules, arrival and partial/final reversal, immutable
 history, scoped CSV/private print, denied export and account/campaign/session loss.
 Both engines run mobile/desktop. No new realtime mechanism or permission exists.
+
+
+### Interrupted attendance recovery (PR140 successor)
+
+`attendance-recovery.browser.mjs` reuses the existing actual-Staff event-day fixture and disposable canonical PostgreSQL. It covers confirmed check-in/reversal; explicit validation and permission denial; lost responses with/without commitment; malformed success; concurrent authorized changes; account/campaign replacement; retired mutation and recovery controls; and fresh read-permission revocation. Both Chromium/WebKit at 390/1280. No mutation is automatically retried. Reconciliation calls only `context` and exact-ID `detail`; no name/date matching or request-attribution claim.
+
+`REVIEW_BASE=f31a7829be6ad46047d0556bdcd46934e4c12a75 REPRO=1` preserves strict original failure evidence. One original local candidate test fixture violated the existing capability check by retaining checkin.manage without registration.view; it was corrected to revoke both, without changing SQL or guards.
+
+Backend dependency: checkin/reverse returns saved/already flags but accepts no caller operation key and exposes no durable actor/request-bound terminal receipt. Current attendance and immutable audit history cannot establish causation for an interrupted request. This package adds no backend authority or receipts. Hosted acceptance and release remain unapproved.
