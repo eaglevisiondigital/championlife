@@ -114,3 +114,12 @@ Both engines run mobile/desktop. No new realtime mechanism or permission exists.
 `REVIEW_BASE=f31a7829be6ad46047d0556bdcd46934e4c12a75 REPRO=1` preserves strict original failure evidence. One original local candidate test fixture violated the existing capability check by retaining checkin.manage without registration.view; it was corrected to revoke both, without changing SQL or guards.
 
 Backend dependency: checkin/reverse returns saved/already flags but accepts no caller operation key and exposes no durable actor/request-bound terminal receipt. Current attendance and immutable audit history cannot establish causation for an interrupted request. This package adds no backend authority or receipts. Hosted acceptance and release remain unapproved.
+
+
+### Household/attendee edit recovery
+
+`edit-recovery.browser.mjs` reuses the actual Staff/SDK and disposable canonical PostgreSQL fixture. Both engines at390/1280 cover confirmed edits, exact revision conflicts, validation/permission denial, lost and malformed responses, fresh read-only inspection without draft overwrite, explicit discard, simultaneous revision writers, revoked management, account/campaign changes, page/DOM retirement and late reads. No new database/receipt/authority. Existing PR141 attendance recovery and all prior suites remain unchanged.
+
+`REVIEW_BASE=5e1dcbfccbc5751b2131ffb7cb4fe09e5ecee54a REPRO=1` reproduces missing conflict/UNKNOWN inspection and observes original captured-draft retention. Draft preservation is limited to the current view; navigation/focus reauthorization teardown discards it rather than persisting private data. The new inspection compares only fields already submitted by this editor, never raw record payloads. No read is presented as request-causation proof.
+
+The first new WebKit fixture advanced to the next navigation while campaign-denial Auth work was still unsettled. Preserved diagnostic evidence records the denial link absent at that boundary. The fixture now asserts the actual denied Staff state before moving on, retaining the strict empty pageerror assertion. No SDK/Auth runtime cancellation change or historical WebKit root-cause claim is made.

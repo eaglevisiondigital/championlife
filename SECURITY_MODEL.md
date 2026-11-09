@@ -55,3 +55,10 @@ Search text can itself contain private household identifiers. Clearing rendered 
 ## November 7 — Financial return authorization boundary
 
 Partner home return uses current same-organization outreach.view AND finance.read. People return additionally requires people.read. Each click retains existing session, organization, generation and initiating-control checks around fresh staff context; removed controls remain retired. Denial recovery carries no record or organization hint and the destination independently authorizes. This is navigation-only; no People, financial mutation or identity authority is added. Synthetic browser evidence does not establish hosted Auth/RLS acceptance.
+
+
+## November 9 — Registration edit recovery
+
+Household/attendee edit recovery preserves canonical campaign authority and submitted revisions. A schema-bound P0001/HTTP400 `Registration changed` or `Attendee changed` is conflict; other accepted P0001/23514 validation rejections are distinct from UNKNOWN. Missing/malformed success and uncertain transport never trigger automatic writes or an inferred receipt. No silent revision rebase.
+
+Local drafts remain in the current editor only, disabled during a pending save and read-only after conflict/UNKNOWN. Existing permanent DOM retirement also wipes captured edit fields and current-record inspection content. No localStorage/sessionStorage, URL, export or new draft cache is introduced. Recovery reads require current registration.view plus fresh registration.manage before displaying editable-field projections; scope/account/permission loss fails closed. The current record cannot prove which request caused a change. Explicit discard starts a fresh authorized record view; genuine hosted Auth/RLS remains unaccepted.
