@@ -51,9 +51,9 @@ function scenario(options={}){
  assert.match(text,/Fictional prayer request/);
  assert.doesNotMatch(text,/Huntsville|Bessemer/);
  assert.equal(t.calls.length,2);
- assert.deepEqual(t.calls[0],{name:'outreach_registration_workspace',
+ assert.deepEqual(JSON.parse(JSON.stringify(t.calls[0])),{name:'outreach_registration_workspace',
   p:{p_action:'campaigns',p_campaign:null,p_payload:{}}});
- assert.deepEqual(t.calls[1],{name:'outreach_minden_decisions',p:{p_campaign:uuid}});
+ assert.deepEqual(JSON.parse(JSON.stringify(t.calls[1])),{name:'outreach_minden_decisions',p:{p_campaign:uuid}});
  t.dom.window.close();
 }
 {const t=scenario({noCampaign:true});await sleep();
