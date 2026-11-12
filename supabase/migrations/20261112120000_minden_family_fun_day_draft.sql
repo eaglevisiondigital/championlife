@@ -44,7 +44,7 @@ begin
     'Family Fun Day details, eligibility rules and check-in instructions will be confirmed by the event team. Pre-registration does not constitute event-day check-in or guarantee any prize.',
     jsonb_build_object(
       'public_name', 'FAMILY FUN DAY',
-      'confirmation_message', 'Thank you for pre-registering your household for Minden Family Fun Day. Please follow the event team\'s final check-in instructions.',
+      'confirmation_message', 'Thank you for pre-registering your household for Minden Family Fun Day. Please follow the event team''s final check-in instructions.',
       'highlights', 'Family Fun Day · Community Outreach · Free Family Activities'
     )
   );
