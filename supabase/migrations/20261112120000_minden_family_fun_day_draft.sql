@@ -1,6 +1,7 @@
 -- Minden, Louisiana Family Fun Day: inert city-scoped campaign + decision source.
 -- SOURCE ONLY. Do not apply until independent target/RLS review, date/venue,
 -- legal waiver approval, operator custody and separate hosted authorization.
+-- Owner-confirmed Dec 19 venue/times/bicycle count; check-in 11 AM is not online opens_at.
 -- Clones the Huntsville dual-intake contract; no accounts, access grants to
 -- staff, activation, provider calls, or historical record mutation.
 begin;
@@ -31,7 +32,10 @@ begin
   ) values (
     v_org, 'minden_la_family_fun_day', 'Minden Family Fun Day Outreach',
     'minden-family-fun-day', 'Minden', 'LA', 'US', 'America/Chicago',
-    '{}'::jsonb, null, null, null, 'draft'
+    jsonb_build_object('name','Victory Park','address','Park Highway, Minden, LA 71055'),
+    '2026-12-19T12:00:00-06:00'::timestamptz,
+    '2026-12-19T14:00:00-06:00'::timestamptz,
+    '2026-12-19T11:00:00-06:00'::timestamptz, 'draft'
   ) returning id into v_campaign;
 
   insert into public.outreach_registration_settings (
@@ -41,11 +45,12 @@ begin
   ) values (
     v_campaign, 'minden-family-fun-day', false, null, null,
     true, true, true, true,
-    'Family Fun Day details, eligibility rules and check-in instructions will be confirmed by the event team. Pre-registration does not constitute event-day check-in or guarantee any prize.',
+    'On-site registration opens at 11:00 AM CST on Saturday, December 19, 2026, at Victory Park in Minden. Family Fun Day is noon–2:00 PM. 100 bicycles will be given away. Pre-registration does not guarantee a bicycle; check-in and giveaway eligibility details must be confirmed by the event team.',
     jsonb_build_object(
       'public_name', 'FAMILY FUN DAY',
-      'confirmation_message', 'Thank you for pre-registering your household for Minden Family Fun Day. Please follow the event team''s final check-in instructions.',
-      'highlights', 'Family Fun Day · Community Outreach · Free Family Activities'
+      'on_site_registration_at', '2026-12-19T11:00:00-06:00',
+      'confirmation_message', 'Thank you for pre-registering your household for Minden Family Fun Day on Saturday, December 19, at Victory Park. On-site registration opens at 11:00 AM CST; the event runs noon–2:00 PM. Pre-registration does not guarantee a bicycle.',
+      'highlights', 'Saturday, December 19 · Registration 11 AM · Family Fun Day noon–2 PM · 100 Bicycles Being Given Away'
     )
   );
 
