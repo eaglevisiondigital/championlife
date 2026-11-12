@@ -1,0 +1,65 @@
+{
+  "schema_version": 1,
+  "organization_slug": "sowgo",
+  "existing_campaign_code": "minden_la_family_fun_day",
+  "campaign": {
+    "name": "Minden Family Fun Day Outreach",
+    "public_slug": "minden-family-fun-day",
+    "city": "Minden",
+    "state_province": "LA",
+    "country": "US",
+    "timezone": "America/Chicago",
+    "event_start": null,
+    "event_end": null,
+    "venue": {
+      "name": null,
+      "address": null
+    }
+  },
+  "registration": {
+    "public_slug": "minden-family-fun-day",
+    "enabled": false,
+    "opens_at": null,
+    "closes_at": null,
+    "address_required": true,
+    "structured_address": true,
+    "emergency_phone_required": true,
+    "waiver_required": true,
+    "household_limit": null,
+    "prize_choices": [],
+    "extra_fields": [],
+    "event_profile": {
+      "public_name": "FAMILY FUN DAY",
+      "on_site_registration_at": null,
+      "confirmation_message": "Thank you for pre-registering your household for Minden Family Fun Day. Please follow the event team's final check-in instructions.",
+      "highlights": "Family Fun Day · Community Outreach · Free Family Activities"
+    }
+  },
+  "waiver": {
+    "status": "PENDING_APPROVED_LOUISIANA_TEXT",
+    "template_key": null,
+    "version": null,
+    "text": null,
+    "media_text": null,
+    "media_required": null,
+    "media_initials_required": null
+  },
+  "decisions": {
+    "source": "minden_la_outreach",
+    "path": "/minden/",
+    "book": "/king-kind-reader.html?source=minden",
+    "staff_receipt_scope": "separate legacy outreach_registrations source; requires verified city-scoped staff follow-up integration"
+  },
+  "staff": {
+    "registration_workspace": "/staff-outreach-registration.html",
+    "campaign_filter": "UUID after approved campaign install; must be assigned to authorized Minden staff; no grants in draft"
+  },
+  "release_gate": "BUILD ONLY. Do not enable public registration, apply SQL, publish, assign staff, import data or send messages without separate scope approval and genuine Auth/RLS + legal acceptance.",
+  "pending": [
+    "Event date and time",
+    "Confirmed event venue and local host",
+    "Approved Louisiana waiver/media release",
+    "Final prize and eligibility rules",
+    "Authorized Minden follow-up staff and decision reporting"
+  ]
+}
