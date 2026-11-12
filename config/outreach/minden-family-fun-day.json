@@ -9,12 +9,13 @@
     "state_province": "LA",
     "country": "US",
     "timezone": "America/Chicago",
-    "event_start": null,
-    "event_end": null,
+    "event_start": "2026-12-19T12:00:00-06:00",
+    "event_end": "2026-12-19T14:00:00-06:00",
     "venue": {
-      "name": null,
-      "address": null
-    }
+      "name": "Victory Park",
+      "address": "Park Highway, Minden, LA 71055"
+    },
+    "registration_start": "2026-12-19T11:00:00-06:00"
   },
   "registration": {
     "public_slug": "minden-family-fun-day",
@@ -30,10 +31,11 @@
     "extra_fields": [],
     "event_profile": {
       "public_name": "FAMILY FUN DAY",
-      "on_site_registration_at": null,
-      "confirmation_message": "Thank you for pre-registering your household for Minden Family Fun Day. Please follow the event team's final check-in instructions.",
-      "highlights": "Family Fun Day · Community Outreach · Free Family Activities"
-    }
+      "on_site_registration_at": "2026-12-19T11:00:00-06:00",
+      "confirmation_message": "Thank you for pre-registering your household for Minden Family Fun Day on Saturday, December 19, at Victory Park. On-site registration opens at 11:00 AM CST; the event runs noon–2:00 PM. Pre-registration does not guarantee a bicycle.",
+      "highlights": "Saturday, December 19 · Registration 11 AM · Family Fun Day noon–2 PM · 100 Bicycles Being Given Away"
+    },
+    "instructions": "On-site registration opens at 11:00 AM CST on Saturday, December 19, 2026, at Victory Park in Minden. Family Fun Day is noon–2:00 PM. 100 bicycles will be given away. Pre-registration does not guarantee a bicycle; check-in and giveaway eligibility details must be confirmed by the event team."
   },
   "waiver": {
     "status": "PENDING_APPROVED_LOUISIANA_TEXT",
@@ -56,8 +58,7 @@
   },
   "release_gate": "BUILD ONLY. Do not enable public registration, apply SQL, publish, assign staff, import data or send messages without separate scope approval and genuine Auth/RLS + legal acceptance.",
   "pending": [
-    "Event date and time",
-    "Confirmed event venue and local host",
+    "Confirm legal identity of local host and required permit/park usage approval",
     "Approved Louisiana waiver/media release",
     "Final prize and eligibility rules",
     "Authorized Minden follow-up staff and decision reporting"
