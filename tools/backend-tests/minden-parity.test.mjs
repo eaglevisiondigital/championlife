@@ -27,10 +27,24 @@ test('household page uses exact campaign, no variable user slug',()=>{
 });
 test('draft campaign cannot unintentionally take household registrations',()=>{
  assert.equal(config.registration.enabled,false);
- assert.equal(config.campaign.event_start,null);
- assert.equal(config.campaign.venue.name,null);
+ assert.equal(config.campaign.event_start,'2026-12-19T12:00:00-06:00');
+ assert.equal(config.campaign.event_end,'2026-12-19T14:00:00-06:00');
+ assert.equal(config.campaign.registration_start,'2026-12-19T11:00:00-06:00');
+ assert.equal(config.campaign.venue.name,'Victory Park');
+ assert.match(config.campaign.venue.address,/Park Highway, Minden, LA 71055/);
+ assert.equal(config.registration.event_profile.on_site_registration_at,'2026-12-19T11:00:00-06:00');
+ assert.match(config.registration.event_profile.highlights,/100 Bicycles/);
  assert.equal(config.waiver.status,'PENDING_APPROVED_LOUISIANA_TEXT');
  assert.match(migration,/'minden-family-fun-day'/);
+ assert.match(migration,/2026-12-19T12:00:00-06:00/);
+ assert.match(migration,/2026-12-19T14:00:00-06:00/);
+ assert.match(migration,/2026-12-19T11:00:00-06:00/);
+ assert.match(migration,/Victory Park/);
+ assert.match(migration,/100 bicycles/);
+ assert.match(prereg,/December 19, 2026/);
+ assert.match(prereg,/100 bicycles/);
+ assert.match(en,/December 19, 2026/);
+ assert.match(es,/19 de diciembre de 2026/);
  assert.match(migration,/'draft'/);
  assert.match(migration,/false, null, null/);
  assert.match(migration,/'minden_la_outreach'/);
@@ -55,4 +69,16 @@ test('staff campaign link is Minden-only and requires registration view',()=>{
  assert.match(staff,/context\.config\?\.slug==='minden-family-fun-day'&&can\('registration.view'\)/);
  assert.match(staff,/href:'staff-minden-decisions.html'/);
  assert.doesNotMatch(staff,/window\.location\.replace\([^)]*minden/);
+});
+
+test('Minden event is listed exactly once and no unconfirmed giveaways appear',()=>{
+ const outreach=read('outreach.html');
+ assert.equal((outreach.match(/<h3>Minden, Louisiana<\/h3>/g)||[]).length,1);
+ assert.match(outreach,/SATURDAY · DEC 19, 2026/);
+ assert.match(outreach,/100 bicycles/);
+ assert.match(outreach,/Victory Park/);
+ assert.doesNotMatch(prereg,/free tablets|inflatables|prize guaranteed/i);
+ assert.equal(config.registration.prize_choices.length,0);
+ assert.equal(config.registration.enabled,false);
+ assert.equal(config.waiver.status,'PENDING_APPROVED_LOUISIANA_TEXT');
 });
