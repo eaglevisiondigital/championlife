@@ -13,6 +13,21 @@ real submissions, messages, production merge or deployment have occurred.
   signature/guardian handling, authoritative Edge submission and confirmation.
 - /outreach.html — new Minden discovery card, should not publish until ready.
 
+## Confirmed event facts (owner, November 12, 2026)
+
+- Date: **Saturday, December 19, 2026** (America/Chicago, CST).
+- Venue: **Victory Park**, Park Highway, Minden, Louisiana 71055.
+- On-site registration/check-in opens: **11:00 AM CST**.
+- Family Fun Day: **12:00–2:00 PM CST**.
+- **100 bicycles will be given away**. No promise to any preregistered family.
+- Online preregistration opening remains controlled by the separate disabled
+  campaign setting; do **not** confuse 11 AM event-day registration with
+  an online signup opening date.
+- Owner did not supply bicycle age/sizing eligibility, allocation/drawing
+  procedure, or the legal name of the local host. These remain approval gates.
+- City recreation's official facility listing confirms Victory Park on Park
+  Highway: https://mindenrec.recdesk.com/Community/Facility/Detail?facilityId=10
+
 ## Exact isolation bindings
 
 - Campaign code: `minden_la_family_fun_day`
@@ -36,7 +51,8 @@ real submissions, messages, production merge or deployment have occurred.
 
 The source migration `20261112120000_minden_family_fun_day_draft.sql`
 prepares an **inert** Minden campaign: `status='draft'`, `enabled=false`,
-no venue or event dates, and `waiver_required=true` with no published waiver.
+the owner-confirmed Victory Park venue and December 19 event schedule, and
+`waiver_required=true` with no published waiver.
 The source Minden decision view is in
 `20261112120001_minden_decision_followup_view.sql`.
 
@@ -46,11 +62,12 @@ procedure, and separate owner approval** before they may be applied to any
 hosted target. They do not imply installation authority.
 
 Before enabling pre-registration, owner must supply and approve:
-1. Event date, local time window, on-site registration/check-in cutoff,
-   venue name/address, and local host's **legal** identity.
+1. Confirm local host's **legal** identity, approved exact check-in cutoff,
+   park/event permissions, and any additional directions or accessibility details.
+   Event date, hours and Park Highway location are already owner-confirmed.
 2. Louisiana-specific signed household waiver and media release,
    consent/privacy recipients, minors/guardian rules, prize/eligibility
-   details and approved local follow-up authority. Do not blindly reuse
+   details (including 100-bike eligibility) and approved local follow-up authority. Do not blindly reuse
    Cornerstone/Huntsville legal text.
 3. Canonical Minden campaign placement, required privileges for authorized
    Minden-only staff, expiry, roster access and check-in/export acceptance.
