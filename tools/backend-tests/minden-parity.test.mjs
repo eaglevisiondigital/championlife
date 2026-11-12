@@ -49,3 +49,10 @@ test('Minden decision desk is source and assignment scoped',()=>{
 test('all public Minden routes are mapped',()=>{
  for(const route of ['/minden ','/minden/ ','/minden/es ','/minden/es/ ','/minden/register ','/minden/register/ '])assert.ok(routes.includes(route),route);
 });
+
+test('staff campaign link is Minden-only and requires registration view',()=>{
+ const staff=read('assets/js/outreach-registration-staff.js');
+ assert.match(staff,/context\.config\?\.slug==='minden-family-fun-day'&&can\('registration.view'\)/);
+ assert.match(staff,/href:'staff-minden-decisions.html'/);
+ assert.doesNotMatch(staff,/window\.location\.replace\([^)]*minden/);
+});
