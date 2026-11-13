@@ -9,6 +9,8 @@ const time=x=>typeof x==='string'&&/^\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d(?:\.\d{3})?Z
 const key=r=>JSON.stringify([r.source_account_reference,r.recipient_organization_id,r.source_transaction_id]);
 const scope=r=>JSON.stringify([r.source_account_reference,r.recipient_organization_id]);
 const fundKey=r=>JSON.stringify([r.source_account_reference,r.recipient_organization_id,r.source_fund_id]);
+// The same approved normalized mapping contract applies to gifts and schedule inventory.
+const validFund=f=>!!f&&id(f.canonical_fund_id)&&typeof f.tax_eligible==='boolean'&&id(f.tax_classification_evidence)&&id(f.mapping_approved_by)&&time(f.mapping_approved_at)&&['contribution','event_fee','purchase'].includes(f.transaction_purpose);
 const requiredPermissions=['finance.read','finance.gifts.read','finance.reconciliation.read'];
 function authority(input,auth){
  if(!auth||auth.current!==true||!requiredPermissions.every(p=>auth.permissions?.includes(p))||!Array.isArray(auth.organizations))throw Error('FINANCIAL_ACCESS_DENIED');
@@ -37,7 +39,7 @@ export function dryRun(bundle,authorityContext,previous=null){
    if(!r.source_timezone)throw Error('MISSING_TIMEZONE');
    new Intl.DateTimeFormat('en-US',{timeZone:r.source_timezone}).format(new Date(r.received_at_utc));
    if(!['settled','pending','failed','voided','unknown','refunded','partially_refunded'].includes(r.status))throw Error('UNMAPPED_STATUS');
-   const f=funds.map.get(fundKey(r));if(!f||!id(f.canonical_fund_id)||typeof f.tax_eligible!=='boolean'||!id(f.tax_classification_evidence)||!id(f.mapping_approved_by)||!time(f.mapping_approved_at)||!['contribution','event_fee','purchase'].includes(f.transaction_purpose))throw Error('FUND_MAPPING_HELD');
+   const f=funds.map.get(fundKey(r));if(!validFund(f))throw Error('FUND_MAPPING_HELD');
    if(r.source_donor_id_or_null!==null&&!donors.map.has(scope(r)+'/'+r.source_donor_id_or_null))throw Error('DONOR_MAPPING_HELD');
    if(r.correction_kind_or_null===null&&r.amount_minor==='0')throw Error('ZERO_GIFT');
    if(r.correction_kind_or_null!==null){if(r.amount_minor!=='0')throw Error('AMBIGUOUS_CORRECTION_AMOUNT');if(!['refund','adjustment'].includes(r.correction_kind_or_null)||!id(r.original_source_transaction_id_or_null)||!money(r.correction_amount_minor_or_null)||r.correction_amount_minor_or_null==='0')throw Error('INVALID_CORRECTION');if(r.correction_kind_or_null==='adjustment'&&!['increase','decrease'].includes(r.adjustment_direction))throw Error('AMBIGUOUS_ADJUSTMENT');}
@@ -87,7 +89,7 @@ export function dryRun(bundle,authorityContext,previous=null){
   const holds=[],hold=(condition,code)=>{if(!condition)holds.push(code)};
   hold(!scheduleKeys.bad.has(scope(r)+'/'+r.source_schedule_id),'DUPLICATE_SCHEDULE');
   hold(id(r.source_schedule_id)&&id(r.source_account_reference),'INVALID_SOURCE_ID');
-  hold(funds.map.has(fundKey(r)),'FUND_MAPPING_HELD');
+  hold(validFund(funds.map.get(fundKey(r))),'FUND_MAPPING_HELD');
   hold(donors.map.has(scope(r)+'/'+r.source_donor_id),'DONOR_MAPPING_HELD');
   hold(money(r.amount_minor)&&r.amount_minor!=='0','INVALID_AMOUNT');
   hold(typeof r.currency==='string'&&/^[A-Z]{3}$/.test(r.currency),'INVALID_CURRENCY');
