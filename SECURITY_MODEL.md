@@ -1,3 +1,7 @@
+## Minden isolated target boundary — source only
+
+Target apovvmvuljfspobribjv is acceptance-only even with an ordinary CAPTCHA key. The proposed preview alias, gateway origin/hostname/action and Minden campaign are exact, with no wildcard or production fallback. Existing two target profiles remain unchanged. The public gateway JWT template is not global configuration; any future use needs target-specific deployment approval and retains CAPTCHA/HMAC/rate-limit/canonical permissions. CORS does not create staff authority.
+
 ## Minden assigned-decision isolation — source only
 
 Registration and check-in access cannot authorize ministry decisions. The Minden facade delegates current finite organization/campaign/assigned-record authority to the existing canonical foundation, then revalidates the exact locked source mapping. Missing contracts/mapping or a concurrent replacement deny access. Only an explicit minimal projection is returned; email, phone, prayer and learner answers are excluded. Root retirement, account/client changes and late responses invalidate the view. No source mapping, real grant, Person linking or messaging is created.

@@ -2,9 +2,17 @@ import {fingerprint} from '../outreach-partner-submit/gateway.mjs';
 const message='We could not complete registration. Check your information and try again.';
 export function createRegistrationHandler(config,fetcher=fetch){
  const origins=new Set(config.origins||[]),dummy=/^[123]x0+AA$/.test(config.turnstileSecret||'');
- const ready=/^https:\/\/[a-z0-9]{20}\.supabase\.co$/.test(config.url||'')&&!!config.serviceKey&&(config.pepper||'').length>=32&&!!config.turnstileSecret&&!!config.action&&(config.hostnames||[]).length>0&&origins.size>0&&[...origins].every(o=>{try{return new URL(o).origin===o&&o.startsWith('https://')}catch{return false}})&&(!dummy||(config.mode==='acceptance'&&['https://bkbmjisprwmkptywtmih.supabase.co','https://niyovbgoalulzkhbvebt.supabase.co'].includes(config.url)));
+ // The isolated Minden target is never production-capable. Its proposed preview
+ // has one exact origin/hostname and one campaign, even with an ordinary key.
+ const mindenTarget=config.url==='https://apovvmvuljfspobribjv.supabase.co';
+ const mindenReady=!mindenTarget||(config.mode==='acceptance'&&
+  config.origins?.length===1&&config.origins[0]==='https://minden-acceptance--championlifechurch.netlify.app'&&
+  config.hostnames?.length===1&&config.hostnames[0]==='minden-acceptance--championlifechurch.netlify.app'&&
+  config.action==='outreach-registration');
+ const ready=mindenReady&&/^https:\/\/[a-z0-9]{20}\.supabase\.co$/.test(config.url||'')&&!!config.serviceKey&&(config.pepper||'').length>=32&&!!config.turnstileSecret&&!!config.action&&(config.hostnames||[]).length>0&&origins.size>0&&[...origins].every(o=>{try{return new URL(o).origin===o&&o.startsWith('https://')}catch{return false}})&&(!dummy||(config.mode==='acceptance'&&(['https://bkbmjisprwmkptywtmih.supabase.co','https://niyovbgoalulzkhbvebt.supabase.co'].includes(config.url)||mindenTarget)));
  return async req=>{
   const origin=req.headers.get('origin'),headers={'Content-Type':'application/json','Cache-Control':'no-store','Vary':'Origin'},reply=(status,v)=>new Response(JSON.stringify(v),{status,headers});
+  if(mindenTarget&&!mindenReady)return reply(503,{accepted:false,message});
   if(!origins.has(origin))return reply(403,{accepted:false,message});
   Object.assign(headers,{'Access-Control-Allow-Origin':origin,'Access-Control-Allow-Methods':'POST, OPTIONS','Access-Control-Allow-Headers':'Content-Type'});
   if(req.method==='OPTIONS')return new Response(null,{status:204,headers});
@@ -17,6 +25,7 @@ export function createRegistrationHandler(config,fetcher=fetch){
    const read=async()=>{while(true){const{value,done}=await reader.read();if(done)break;size+=value.length;if(size>65536)throw Error('size');parts.push(value)}const bytes=new Uint8Array(size);let offset=0;for(const b of parts){bytes.set(b,offset);offset+=b.length}return JSON.parse(new TextDecoder('utf-8',{fatal:true}).decode(bytes))};
    const input=await Promise.race([read(),new Promise((_,reject)=>{timer=setTimeout(()=>reject(Error('timeout')),5000)})]);clearTimeout(timer);
    if(!input||Array.isArray(input)||Object.keys(input).some(k=>!['slug','payload','turnstile_token','bot_field'].includes(k))||typeof input.slug!=='string'||!/^[a-z0-9][a-z0-9-]{2,79}$/.test(input.slug)||!input.payload||Array.isArray(input.payload))throw Error('input');
+   if(mindenTarget&&input.slug!=='minden-family-fun-day')return reply(403,{accepted:false,message});
    if(input.bot_field)return reply(400,{accepted:false,message});
    if(typeof input.turnstile_token!=='string'||input.turnstile_token.length>2048||!input.turnstile_token)throw Error('challenge');
    const network=await fingerprint(req.headers,config.pepper);
