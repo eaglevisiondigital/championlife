@@ -1,4 +1,12 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Manage Giving | Champion Life Church</title><!-- dashboard-shell-v3-20260924 --><meta name="description" content="View and manage your existing GiveHub giving account without losing the Champion Life navigation."><link rel="stylesheet" href="assets/css/styles.css"><style>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><script>
+/* On phones, use first-party GiveHub login instead of a blocked cross-origin embed. */
+(function() {
+  var ua = navigator.userAgent || '';
+  var mobilePhone = /iPhone|iPod|Windows Phone/i.test(ua) ||
+    (/Android/i.test(ua) && /Mobile/i.test(ua));
+  if (mobilePhone) window.location.replace('https://www.community.givehub.com/login');
+})();
+</script><title>Manage Giving | Champion Life Church</title><!-- dashboard-shell-v3-20260924 --><meta name="description" content="View and manage your existing GiveHub giving account without losing the Champion Life navigation."><link rel="stylesheet" href="assets/css/styles.css"><style>
 
 /* Manage Giving uses its own lighter Champion Life header treatment only on this page */
 .site-header{
