@@ -12,6 +12,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
           fetch-depth: 0
       - uses: actions/setup-node@v4
         with:
@@ -19,4 +20,40 @@ jobs:
       - run: npm ci --ignore-scripts --prefix tools/backend-tests
       - run: npm test --prefix tools/backend-tests
       - run: TEST_POSTGRES_BIN="$(pg_config --bindir)" npm run test:concurrency --prefix tools/backend-tests
+      - run: git diff --check
+  minden-native-browser:
+    runs-on: ubuntu-latest
+    env:
+      TEST_POSTGRES_BIN: /usr/lib/postgresql/17/bin
+      TEST_MINDEN_BROWSER: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Install disposable local PostgreSQL 17 dependency
+        run: |
+          # Official version-specific PGDG repository; Ubuntu's default catalog lacks PG17.
+          # https://www.postgresql.org/download/linux/ubuntu/
+          sudo apt-get update
+          sudo apt-get install --yes curl ca-certificates gnupg
+          curl --fail --silent --show-error --location https://www.postgresql.org/media/keys/ACCC4CF8.asc --output "$RUNNER_TEMP/registration-pgdg.asc"
+          registration_pg_fingerprint="$(gpg --show-keys --with-colons "$RUNNER_TEMP/registration-pgdg.asc" | awk -F: '$1 == "fpr" {print $10; exit}')"
+          test "$registration_pg_fingerprint" = B97B0AFCAA1A47F044F244A07FCC7D46ACCC4CF8
+          sudo install -d /usr/share/postgresql-common/pgdg
+          sudo install -m 0644 "$RUNNER_TEMP/registration-pgdg.asc" /usr/share/postgresql-common/pgdg/apt.postgresql.org.asc
+          registration_pg_codename="$(. /etc/os-release && echo "$VERSION_CODENAME")"
+          printf 'Types: deb\nURIs: https://apt.postgresql.org/pub/repos/apt\nSuites: %s-pgdg\nArchitectures: %s\nComponents: main\nSigned-By: /usr/share/postgresql-common/pgdg/apt.postgresql.org.asc\n' "$registration_pg_codename" "$(dpkg --print-architecture)" | sudo tee /etc/apt/sources.list.d/registration-pgdg.sources
+          sudo apt-get update
+          sudo apt-get install --yes postgresql-17
+          "$TEST_POSTGRES_BIN/postgres" --version
+      - run: npm ci --ignore-scripts --prefix tools/backend-tests
+      - run: tools/backend-tests/node_modules/.bin/playwright install --with-deps chromium webkit
+      - run: npm run test:minden-native --prefix tools/backend-tests
+      - run: npm run test:minden-browser --prefix tools/backend-tests
+      - run: node tools/backend-tests/minden-reader.native.mjs
+      - run: node tools/backend-tests/site-build.test.mjs
       - run: git diff --check

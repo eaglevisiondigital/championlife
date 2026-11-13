@@ -6,7 +6,7 @@ const en=read('minden/index.html'),es=read('minden/es/index.html');
 const prereg=read('minden/register/index.html'),pub=read('assets/js/outreach-registration-public.js');
 const form=read('assets/js/outreach-registration-form.js');
 const migration=read('supabase/migrations/20261112120000_minden_family_fun_day_draft.sql');
-const decisions=read('supabase/migrations/20261112120001_minden_decision_followup_view.sql');
+const decisions=read('supabase/migrations/20261113120000_minden_decision_authority_correction.sql');
 const config=JSON.parse(read('config/outreach/minden-family-fun-day.json'));
 const routes=read('_redirects');
 test('decision pages preserve Minden-only intake and free book',()=>{
@@ -51,12 +51,13 @@ test('draft campaign cannot unintentionally take household registrations',()=>{
  assert.doesNotMatch(migration,/insert\s+into\s+public\.outreach_campaign_assignments/i);
 });
 test('Minden decision desk is source and assignment scoped',()=>{
- assert.match(decisions,/private\.outreach_registration_can\(p_campaign, 'registration.view'\)/);
- assert.match(decisions,/where source='minden_la_outreach'/);
+ assert.match(decisions,/public\.campaign_decision_foundation/);
+ assert.doesNotMatch(decisions,/private\.outreach_registration_can\(/);
+ assert.match(decisions,/source.source='minden_la_outreach'/);
  assert.match(decisions,/revoke all on function public\.outreach_minden_decisions/);
  assert.match(decisions,/to authenticated;/);
  const staff=read('assets/js/minden-decision-staff.js');
- assert.match(staff,/outreach_registration_workspace/);
+ assert.doesNotMatch(staff,/outreach_registration_workspace/);
  assert.match(staff,/outreach_minden_decisions/);
  assert.doesNotMatch(staff,/localStorage|sessionStorage|innerHTML/);
 });
@@ -64,10 +65,9 @@ test('all public Minden routes are mapped',()=>{
  for(const route of ['/minden ','/minden/ ','/minden/es ','/minden/es/ ','/minden/register ','/minden/register/ '])assert.ok(routes.includes(route),route);
 });
 
-test('staff campaign link is Minden-only and requires registration view',()=>{
+test('registration authority does not advertise decision follow-up access',()=>{
  const staff=read('assets/js/outreach-registration-staff.js');
- assert.match(staff,/context\.config\?\.slug==='minden-family-fun-day'&&can\('registration.view'\)/);
- assert.match(staff,/href:'staff-minden-decisions.html'/);
+ assert.doesNotMatch(staff,/href:'staff-minden-decisions.html'/);
  assert.doesNotMatch(staff,/window\.location\.replace\([^)]*minden/);
 });
 
@@ -82,3 +82,13 @@ test('Minden event is listed exactly once and no unconfirmed giveaways appear',(
  assert.equal(config.registration.enabled,false);
  assert.equal(config.waiver.status,'PENDING_APPROVED_LOUISIANA_TEXT');
 });
+
+test('public build includes the actual Minden visitor and assigned staff entry points only',()=>{
+ const files=JSON.parse(read('tools/site-build/public-files.json'));
+ for(const file of ['minden/index.html','minden/es/index.html','minden/register/index.html','staff-minden-decisions.html','assets/js/minden-decision-staff.js'])assert.ok(files.includes(file),file);
+ assert.equal(files.filter(x=>/^(?:config|supabase|audit|tools)\//.test(x)).length,0);
+ assert.match(pub,/'Venue: '/);
+ assert.match(form,/Bicycle eligibility and giveaway procedures must be confirmed by the event team/);
+});
+
+test('new Minden pages reuse the accepted exact SDK/SRI dependency',()=>{for(const page of [en,es,prereg,read('staff-minden-decisions.html')]){assert.match(page,/@supabase\/supabase-js@2\.118\.0/);assert.ok(page.includes('integrity="sha384-UagCvVPT5XXA0Hx+nJYUAGBFseHT9zBgpJMSebsAxl9lciTwbT+39j5VfRjdP5Tp" crossorigin="anonymous"'));assert.doesNotMatch(page,/@supabase\/supabase-js@2"/);}});
