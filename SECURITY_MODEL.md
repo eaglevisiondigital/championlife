@@ -1,3 +1,7 @@
+## Minden assigned-decision isolation — source only
+
+Registration and check-in access cannot authorize ministry decisions. The Minden facade delegates current finite organization/campaign/assigned-record authority to the existing canonical foundation, then revalidates the exact locked source mapping. Missing contracts/mapping or a concurrent replacement deny access. Only an explicit minimal projection is returned; email, phone, prayer and learner answers are excluded. Root retirement, account/client changes and late responses invalidate the view. No source mapping, real grant, Person linking or messaging is created.
+
 ## 2026-10-23 — Staff logout boundary
 
 The staff header calls the existing Supabase client's supported `auth.signOut({scope:'local'})`, then confirms the local session is absent before replacing navigation with the fixed staff login. It never clears all browser storage; SDK session cleanup and the application return hint are the only removals. A failed logout leaves protected content detached and displays a safe retry state, without claiming server retirement succeeded. Account changes and external sign-out clear the workspace. Pagehide clears protected snapshots; persisted pageshow reloads while hidden.
