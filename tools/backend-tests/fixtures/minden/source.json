@@ -1,0 +1,16 @@
+{
+  "purpose": "LOCAL TEST ONLY; not installed/imported by Minden source migration",
+  "canonical_foundation_origin_commit": "61d42470fadf3f76f078e80e6c096b8aace55c12",
+  "source": "supabase/migrations/20261103035250_campaign_assigned_decision_foundation.sql",
+  "fixture_checkout": "5a675eff43a37f3fba2425b834b084b22bb1e281",
+  "files": [
+    {
+      "path": "tools/backend-tests/fixtures/minden/platform.sql",
+      "sha256": "297d15b060e1ea9a5f0e7b040d9a885b075e97db427b44469d0e0d185e428364"
+    },
+    {
+      "path": "tools/backend-tests/fixtures/minden/campaign-foundation.sql",
+      "sha256": "c042c3fd96463c095b69d44bb390b40ea92172db841636c73e8f28833c357854"
+    }
+  ]
+}

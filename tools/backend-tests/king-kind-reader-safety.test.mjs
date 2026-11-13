@@ -20,7 +20,7 @@ assert.match(b,/id="book-license-ack"[^>]*disabled/);
 assert.match(b,/id="download-book"[^>]*disabled/);
 assert.match(b,/You may not republish, redistribute, share, forward, upload, resell/);
 assert.match(js,/licenseAck\.addEventListener\('change'/);
-assert.match(js,/if\(!pdf\|\|!downloadBlob\|\|!licenseAck\.checked\)return/);
+assert.match(js,/if\(!pdf\|\|!downloadBlob\|\|!licenseAck\.checked\|\|downloading\)return/);
 assert.match(js,/new Blob\(\[bytes\],\{type:'application\/pdf'\}\)/);
 assert.match(js,/anchor\.download='King-Kind-Pastor-Roddy-Shaffer-Personal-Use\.pdf'/);
 assert.match(js,/No puedes volver a publicarlo, redistribuirlo/);

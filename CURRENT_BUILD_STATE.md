@@ -1,3 +1,15 @@
+## 2026-11-13 — Minden reader/login accepted SDK and live-session integration
+
+The selected six Minden/login/reader entries now share accepted Supabase2.118.0/SRI. The actual PR153 reader reproduced late private fetch after account retirement; the independently reviewed5c84a42 reader lifecycle correction is reused with only Minden Spanish copy reconciliation.36actualSDK browser checks and32independent late-response checks PASS at desktop/mobile Chromium/WebKit; accepted46unit guards retained. No SQL/sharedAuth/redirect change. Genuine provider acceptance and installation remain HOLD; see docs/MINDEN-ACCEPTANCE-TARGET.md.
+
+## 2026-11-13 — Exact Minden acceptance target compatibility, source only
+
+The new apovvmvuljfspobribjv preview profile requires the exact proposed (uncreated) minden-acceptance--championlifechurch.netlify.app origin and a nonproduction build context. The gateway additionally requires acceptance mode, the single exact origin/hostname, original action and Minden campaign. The reader sign-in link now preserves the current origin rather than escaping from a preview into production, while its resolved production destination is unchanged. A single-function uninstalled JWT template documents the public CAPTCHA ingress requirement. No target settings, SQL, credentials, runtime grants or deployments changed. See docs/MINDEN-ACCEPTANCE-TARGET.md.
+
+## 2026-11-13 — Minden complete source paths, not activated
+
+The PR149 successor restores five omitted public-build paths, corrects excessive registration-to-decision access using the approved assigned-decision foundation, and adds a guarded private-book source correction. Canonical native persistence and actual local EN/ES/browser/Edge flows are verified with fictional Auth and legal text. Minden remains draft/disabled; legal, source-map, finite staff assignment, hosted Auth/RLS/Storage/Edge and release approvals remain outstanding. See docs/MINDEN-FAMILY-FUN-DAY-RELEASE.md.
+
 ## 2026-10-26 — King Kind neutral reader palette (owner approved)
 
 Owner approved the near-black/charcoal/gray palette with gold after reviewing the local visual proof. The reader stylesheet now uses near-black, charcoal and neutral gray with the existing gold accents. Only color values and the primary-button hover colors change; layout, responsive breakpoints, JavaScript, authorization and approved PDF remain unchanged. 21 existing source/security checks and contrast checks pass. Prepared for PR49; production remains unchanged. Owner reports both phone reading/download tests work; independent device-session corroboration, desktop download and final sandbox cleanup remain release gates. The loopback visual preview is a static color proof, not a new authenticated acceptance result.

@@ -15,7 +15,12 @@ export function previewConfiguration(env, production) {
       !/^sb_publishable_[A-Za-z0-9_-]+$/.test(publishableKey) ||
       publishableKey === production.publishableKey) return null;
   // Explicit nonproduction projects only; never accept an arbitrary environment URL.
-  if(!['https://bkbmjisprwmkptywtmih.supabase.co','https://niyovbgoalulzkhbvebt.supabase.co'].includes(url))return null;
+  // Proposed Minden acceptance alias only. Creating/protecting that preview is
+  // separately authorized; a target URL alone must never opt a build into it.
+  const mindenAcceptance = url === 'https://apovvmvuljfspobribjv.supabase.co' &&
+    ['deploy-preview', 'branch-deploy'].includes(env.CONTEXT) &&
+    env.DEPLOY_PRIME_URL === 'https://minden-acceptance--championlifechurch.netlify.app';
+  if(!['https://bkbmjisprwmkptywtmih.supabase.co','https://niyovbgoalulzkhbvebt.supabase.co'].includes(url) && !mindenAcceptance)return null;
   return { url, publishableKey, outreachSiteKey:'1x00000000000000000000AA' };
 }
 

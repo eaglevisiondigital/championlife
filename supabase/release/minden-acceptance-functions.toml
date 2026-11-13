@@ -1,0 +1,8 @@
+# UNINSTALLED TARGET-SPECIFIC PROPOSAL, not the repository's active config.toml.
+# Target: apovvmvuljfspobribjv only; source and deployment require separate approval.
+# Proposed origin: https://minden-acceptance--championlifechurch.netlify.app (uncreated).
+# Public guest request has no user JWT. The existing handler still requires the
+# exact origin/campaign, validated Turnstile and trusted-ingress HMAC before SQL.
+# No other function's JWT setting may be copied or changed by this proposal.
+[functions.outreach-registration-submit]
+verify_jwt = false
