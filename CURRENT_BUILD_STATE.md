@@ -1,3 +1,11 @@
+## 2026-11-01 — NMI strict-boolean correction and review PASS
+
+Preserved original fe20f735 and PR59. Route-purpose approval rejects nonbooleans globally and per pilot; receipt confirmation now distinguishes invalid inputs from boolean false. All outputs remain payment-disabled.41 preserved checks +238 new cases PASS; independent429 cases /2983 assertions /130 CLI invocations PASS. Separate draft publication authorized; no provider connection, deployment or payment activation. See docs/NMI-DISABLED-ROUTING.md.
+
+# 2026-10-31 — NMI disabled routing (local only)
+
+Local planner and boarding evidence binding prepared; 30 new tests plus 11 existing checks pass. All outputs remain disabled. See docs/NMI-DISABLED-ROUTING.md. No payment activation, deployment or push.
+
 ## 2026-10-26 — King Kind neutral reader palette (owner approved)
 
 Owner approved the near-black/charcoal/gray palette with gold after reviewing the local visual proof. The reader stylesheet now uses near-black, charcoal and neutral gray with the existing gold accents. Only color values and the primary-button hover colors change; layout, responsive breakpoints, JavaScript, authorization and approved PDF remain unchanged. 21 existing source/security checks and contrast checks pass. Prepared for PR49; production remains unchanged. Owner reports both phone reading/download tests work; independent device-session corroboration, desktop download and final sandbox cleanup remain release gates. The loopback visual preview is a static color proof, not a new authenticated acceptance result.
