@@ -1,3 +1,11 @@
+## 2026-11-13 — Bounded acceptance compatibility proposal
+
+Reuse the existing build and Edge gateway with a target-specific Minden profile. Do not make a global JWT configuration change or activate another host. The proposed alias and target remain uncreated/uninstalled dependencies; separate owner approvals control protection, deployment, secrets, identity/grant fixtures, legal text and release.
+
+## 2026-11-13 — Reuse canonical decision authority for Minden
+
+The owner-authorized complete Minden journey reuses existing registration contracts and independent assigned-decision authority. Preserve the original uninstalled PR149 migration as historical evidence; require its bounded forward correction in any separately approved installation. Do not invent local host consent, Louisiana waiver text, bicycle eligibility, campaign source authority or real staff assignments. Private-book access follows only the existing verified-email/consent resource policy and is not a Person association.
+
 ## 2026-10-23 — Bounded staff UI/logout release
 
 Reuse the existing staff authentication client and current production permission model. Show account identity explicitly to avoid confusing an existing church session with a newly requested owner login. Use current-session sign-out rather than terminating unrelated device sessions. Hide the workspace immediately, preserve unrelated browser storage and provide retry on failure. Scope shared styling to the three deployed staff pages; do not import unreleased staff modules or alter public registration behavior. Website release and real-account verification require the separate production approval; no database action is part of this candidate.

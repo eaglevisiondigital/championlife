@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex,nofollow"><meta name="referrer" content="no-referrer">
+  <title>Minden Decision Follow-up · Champion Life Staff</title>
+  <link rel="stylesheet" href="/assets/css/outreach-campaigns.css">
+  <link rel="stylesheet" href="/assets/css/outreach-registration.css">
+  <link rel="stylesheet" href="/assets/css/staff-portal.css">
+</head>
+<body class="staff-portal">
+  <a class="staff-skip" href="#staff-main">Skip to decision records</a>
+  <div class="campaign-shell">
+    <aside class="campaign-sidebar" aria-label="Minden navigation">
+      <a class="campaign-brand" href="/" aria-label="Champion Life home"><img src="/assets/images/logo-gold.png" alt="Champion Life"></a>
+      <div>
+        <p class="eyebrow">Staff workspace</p>
+        <nav aria-label="Minden">
+          <a href="/staff-people.html">People &amp; Follow-up</a>
+          <a href="/staff-outreach-registration.html">Registration &amp; Check-In</a>
+          <a href="/staff-minden-decisions.html" aria-current="page">Minden Decisions</a>
+        </nav>
+      </div>
+      <div class="staff-sidebar-footer">
+        <span>Raise. Reign. Reach.</span>
+        <a class="staff-propel-credit" href="https://kingdompropel.com/" target="_blank" rel="noopener noreferrer" aria-label="Powered by Kingdom Propel (opens in new tab)">
+          <span>Powered by</span><img src="/assets/images/propel-logo-header-transparent.png" alt="Propel by Eagle Vision" width="164" height="34">
+        </a>
+      </div>
+    </aside>
+    <div class="staff-body">
+      <header class="staff-topbar"><span>Champion Life / Minden Decision Follow-up</span>
+        <div id="staff-session" class="staff-session" hidden>
+          <span class="staff-session-identity"><span>Signed in as</span><span id="staff-session-email"></span></span>
+          <button id="staff-logout" type="button">Log Out</button>
+        </div>
+      </header>
+      <p id="staff-session-message" class="staff-session-message" role="status"></p>
+      <main id="staff-main" class="campaign-main" tabindex="-1">
+        <div id="minden-decisions-app" aria-live="polite"><p role="status">Checking Minden staff access…</p></div>
+      </main>
+      <footer class="campaign-footer">Minden, Louisiana · Champion Life / SowGo</footer>
+    </div>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.118.0" integrity="sha384-UagCvVPT5XXA0Hx+nJYUAGBFseHT9zBgpJMSebsAxl9lciTwbT+39j5VfRjdP5Tp" crossorigin="anonymous"></script>
+  <script src="/assets/js/supabase-config.js"></script>
+  <script src="/assets/js/champion-life-auth.js"></script>
+  <script src="/assets/js/staff-session.js"></script>
+  <script src="/assets/js/minden-decision-staff.js"></script>
+</body>
+</html>
