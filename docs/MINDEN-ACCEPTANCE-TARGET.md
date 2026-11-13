@@ -28,8 +28,9 @@ malformed preview configuration cannot become an accepted target write. The
 previous two acceptance profiles remain unchanged. Production build output
 keeps its original source configuration; preview environment values cannot
 replace it. Unknown preview projects and privileged browser keys still fail
-closed. No source grants, RLS, runtime registration controls or SQL changed. The only
-public source-byte change is the reader sign-in href described below.
+closed. No source grants, RLS, runtime registration controls or SQL changed. The original target-profile correction changed the reader sign-in href. The
+reviewed successor additionally pins reader/login SDK tags, restores the
+accepted reader session safeguards and updates eligibility guidance.
 
 ## Public function JWT prerequisite
 
@@ -120,20 +121,44 @@ origins. Do not authorize a production callback as a workaround. Turnstile's act
 allowlist remains unverified; local handler hostname checks are not proof of
 Cloudflare configuration.
 
-### Remaining reader/login presentation and SDK dependency
+### Reconciled reader/login SDK and session boundary
 
-The four Minden entry pages were previously pinned to Supabase 2.118.0/SRI in
-PR151. The existing `king-kind-reader.html` and `discipleship-login.html` still
-reference floating `@supabase/supabase-js@2`; this candidate does not claim an
-entire source-pinned book/login SDK journey. Their exact SDK selection and
-provider behavior must be reconciled before genuine journey acceptance. The
-reader's legacy error copy also names only Bessemer/Huntsville; it is not proof
-that Minden entitlement has been installed or verified.
+All six selected Minden, registration, decision-staff, login and reader entries
+now use the already accepted Supabase 2.118.0 URL and exact SHA384 SRI. The
+unchanged SDK bytes are retained only under test fixtures (with their MIT
+license) to exercise browser-enforced integrity and actual SDK contracts
+without contacting a provider. Shared Auth remains unchanged; no second client
+or replacement login policy is introduced.
 
-The actual existing login `sanitizeNext` accepts the fixed same-origin Minden
-decision, registration and book paths, and rejects absolute/protocol-relative
-production return hints. This is a navigation policy, not a module grant.
-No replacement identity system or permission expansion is introduced.
+The original PR153 reader still lacked the independently reviewed lifecycle
+correction from `5c84a42f25aadfbf526baf0dbf1c9bcf0b5ec89a`. Independent Chromium
+and WebKit reproduction showed that a held prior-account signed-URL response
+could dispatch a new private GET after logout/account replacement. Reuse that
+exact accepted runtime correction, changing only its Spanish eligibility copy
+to include Minden. English access guidance likewise now includes Minden; copy
+never grants entitlement. Fresh verified identity and exact-object Storage RLS
+remain authoritative. All canonical SQL, consent and decision authority stay
+unchanged.
+
+Observed session changes clear retained document/download state immediately;
+generation and exact-session fences reject late Auth, signing, fetch and
+render responses. New downloads recheck identity and Storage eligibility.
+SDK callbacks clear synchronously and defer verification outside the SDK lock.
+Expiry and the existing 900-second lease bound visible state. Unobserved remote
+revocation, already issued signed URLs and previously saved personal copies
+cannot be claimed instantly revoked or erased. Genuine managed Auth/Storage
+revocation behavior still requires separately authorized acceptance.
+
+The reader sign-in href stays relative, preserving both the protected-preview
+origin and the exact production destination. The existing public cover image
+and Church-home destination are unchanged. Tests serve the known public cover
+from local bytes; no production/private provider request is made. The actual
+login sanitizer accepts fixed same-origin routes and rejects external return
+hints. These navigation routes do not confer staff permissions.
+
+The separate historical Learning candidates and missing-media/completion gates
+are not silently imported into this source composition. This verification covers
+the selected Minden entry/login/book path, not all lesson runtime dependencies.
 
 ## Local verification
 

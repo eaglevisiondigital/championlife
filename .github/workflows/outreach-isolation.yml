@@ -55,5 +55,7 @@ jobs:
       - run: npm run test:minden-native --prefix tools/backend-tests
       - run: npm run test:minden-browser --prefix tools/backend-tests
       - run: node tools/backend-tests/minden-reader.native.mjs
+      - run: node tools/backend-tests/minden-sdk.browser.mjs
+      - run: node tools/backend-tests/minden-reader-session.browser.mjs
       - run: node tools/backend-tests/site-build.test.mjs
       - run: git diff --check

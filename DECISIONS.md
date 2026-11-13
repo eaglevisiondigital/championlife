@@ -1,3 +1,7 @@
+## 2026-11-13 — Reuse accepted reader correction, preserve installation authority
+
+Resolve the demonstrated PR153 session-lifetime gap by carrying forward only the accepted5c84a42 reader correction and its regression guards. Pin the two remaining reader/login SDK entries to existing2.118.0/SRI; do not import historical branches or Learning/identity permissions. Installation sequence remains unchanged and excludes unsafe149decision SQL; anonymous-decision exposure still requires separate exact installation approval. No hosted activation or new policy authorized.
+
 ## 2026-11-13 — Bounded acceptance compatibility proposal
 
 Reuse the existing build and Edge gateway with a target-specific Minden profile. Do not make a global JWT configuration change or activate another host. The proposed alias and target remain uncreated/uninstalled dependencies; separate owner approvals control protection, deployment, secrets, identity/grant fixtures, legal text and release.

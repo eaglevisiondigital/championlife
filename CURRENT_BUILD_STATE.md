@@ -1,3 +1,7 @@
+## 2026-11-13 — Minden reader/login accepted SDK and live-session integration
+
+The selected six Minden/login/reader entries now share accepted Supabase2.118.0/SRI. The actual PR153 reader reproduced late private fetch after account retirement; the independently reviewed5c84a42 reader lifecycle correction is reused with only Minden Spanish copy reconciliation.36actualSDK browser checks and32independent late-response checks PASS at desktop/mobile Chromium/WebKit; accepted46unit guards retained. No SQL/sharedAuth/redirect change. Genuine provider acceptance and installation remain HOLD; see docs/MINDEN-ACCEPTANCE-TARGET.md.
+
 ## 2026-11-13 — Exact Minden acceptance target compatibility, source only
 
 The new apovvmvuljfspobribjv preview profile requires the exact proposed (uncreated) minden-acceptance--championlifechurch.netlify.app origin and a nonproduction build context. The gateway additionally requires acceptance mode, the single exact origin/hostname, original action and Minden campaign. The reader sign-in link now preserves the current origin rather than escaping from a preview into production, while its resolved production destination is unchanged. A single-function uninstalled JWT template documents the public CAPTCHA ingress requirement. No target settings, SQL, credentials, runtime grants or deployments changed. See docs/MINDEN-ACCEPTANCE-TARGET.md.

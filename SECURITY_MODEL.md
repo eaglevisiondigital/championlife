@@ -1,3 +1,7 @@
+## Minden reader live-session composition — source only
+
+Reuses independently reviewed5c84a42 lifecycle source: verified same-session identity before private signing/fetch/download; immediate observed retirement; generation fencing, cancellation, detached rendering and bounded expiry. Auth callbacks never await SDK calls under the Auth lock. Existing Storage policy and approved book hash remain authoritative; no new grants or identity inference. SDK2.118.0/SRI is shared by selected Minden/login/reader entries. No guarantee of instant remote revocation of existing signed URLs or saved copies. Hosted acceptance remains separate.
+
 ## Minden isolated target boundary — source only
 
 Target apovvmvuljfspobribjv is acceptance-only even with an ordinary CAPTCHA key. The proposed preview alias, gateway origin/hostname/action and Minden campaign are exact, with no wildcard or production fallback. Existing two target profiles remain unchanged. The public gateway JWT template is not global configuration; any future use needs target-specific deployment approval and retains CAPTCHA/HMAC/rate-limit/canonical permissions. CORS does not create staff authority.
