@@ -21,6 +21,17 @@ for(const[engine,type]of Object.entries({chromium,webkit})){
  assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true);checks++;
  assert.deepEqual(requests,['https://giving-review.invalid/']);checks++;assert.deepEqual(errors,[]);checks++;
  if(process.env.EVIDENCE_DIR){mkdirSync(process.env.EVIDENCE_DIR,{recursive:true});await page.screenshot({path:join(process.env.EVIDENCE_DIR,`report-${engine}-${width}.png`),fullPage:true})}
+ const heldBundle=fixture();heldBundle.recurring[0].ends_at_or_null='2024-01-01T18:00:00Z';heldBundle.recurring[0].currency='BAD-CURRENCY';
+ await page.setContent(html(dryRun(heldBundle,authority)));
+ assert.equal(await page.getByRole('heading',{name:'Dry-run reconciliation: HOLD',exact:true}).count(),1);checks++;
+ const schedule=page.getByRole('row').filter({has:page.getByRole('cell',{name:'Schedule0',exact:true})});
+ assert.equal(await schedule.count(),1);checks++;
+ assert.match(await schedule.textContent(),/INVALID_CURRENCY/);checks++;
+ assert.match(await schedule.textContent(),/END_BEFORE_START/);checks++;
+ assert.equal(await schedule.getByRole('cell',{name:'2024-01-01T18:00:00Z',exact:true}).count(),1);checks++;
+ assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true);checks++;
+ assert.deepEqual(requests,['https://giving-review.invalid/']);checks++;
+ assert.deepEqual(errors,[]);checks++;
  console.log('PASS '+engine+'/'+width+' operator report; no network or executable controls');await context.close();
  }}finally{await browser.close()}
 }

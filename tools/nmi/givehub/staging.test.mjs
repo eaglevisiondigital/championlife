@@ -43,3 +43,27 @@ test('future observation or unmapped recurrence cannot be marked valid',()=>{for
 
 test('reconciliation scope alone cannot reveal gift mappings',()=>{assert.throws(()=>dryRun(fixture(),{...authority,permissions:['finance.read','finance.reconciliation.read']}),/FINANCIAL_ACCESS_DENIED/)});
 test('conflicting principal and correction amounts are held',()=>{const b=fixture();b.transactions[3].amount_minor='2000';assert(run(b).exceptions.some(e=>e.code==='AMBIGUOUS_CORRECTION_AMOUNT'))});
+
+test('recurring readiness shows actionable held evidence without changing schedules',()=>{
+ const cases=[
+  ['INVALID_CURRENCY',r=>r.currency='NOT-MONEY'],
+  ['INVALID_SOURCE_TIMEZONE',r=>r.source_timezone='not/a/timezone'],
+  ['INVALID_START_DATE',r=>r.starts_at='not-a-date'],
+  ['INVALID_END_DATE',r=>r.ends_at_or_null='2026-02-30T18:00:00Z'],
+  ['INVALID_LAST_CHARGE_DATE',r=>r.last_charge_at_or_null='yesterday'],
+  ['END_BEFORE_START',r=>r.ends_at_or_null='2024-01-01T18:00:00Z'],
+  ['NEXT_BEFORE_START',r=>r.next_charge_at_or_null='2020-01-01T18:00:00Z'],
+  ['NEXT_AFTER_END',r=>r.ends_at_or_null='2026-11-30T18:00:00Z'],
+  ['LAST_BEFORE_START',r=>r.last_charge_at_or_null='2024-12-31T18:00:00Z'],
+  ['LAST_AFTER_OBSERVATION',r=>r.last_charge_at_or_null='2026-11-10T18:00:00Z'],
+  ['NEXT_NOT_AFTER_LAST',r=>r.next_charge_at_or_null=r.last_charge_at_or_null],
+  ['INVALID_OBSERVATION_OR_VERIFICATION',r=>r.next_date_verified_at_or_null='2099-01-01T00:00:00Z']
+ ];
+ for(const[reason,change]of cases){const b=fixture();change(b.recurring[0]);const original=structuredClone(b.recurring),r=run(b);assert.equal(r.localReconciliation,'HOLD',reason);assert.equal(r.recurring[0].inventoryValid,false,reason);assert(r.recurring[0].holdReasons.includes(reason),reason);assert.equal(r.recurring[1].inventoryValid,true,'unrelated recipient unchanged');assert.deepEqual(b.recurring,original);assert.equal(r.recurring[0].canActivate,false);assert.equal(r.canCharge,false);assert(html(r).includes(reason));}
+});
+test('valid recurring source facts remain visible with exact timestamps and no activation',()=>{
+ const b=fixture();b.recurring[0].ends_at_or_null='2027-01-01T18:00:00Z';b.recurring[0].next_date_verified_at_or_null='2026-11-09T12:00:00.000Z';const r=run(b),s=r.recurring[0];assert.equal(r.localReconciliation,'PASS');assert.equal(s.inventoryValid,true);assert.deepEqual(s.holdReasons,[]);assert.equal(s.sourceTimezone,'America/Chicago');assert.equal(s.startsAt,b.recurring[0].starts_at);assert.equal(s.endsAt,b.recurring[0].ends_at_or_null);assert.equal(s.lastCharge,b.recurring[0].last_charge_at_or_null);assert.equal(s.nextDateVerifiedAt,b.recurring[0].next_date_verified_at_or_null);assert.equal(s.canActivate,false);assert.equal(s.portability,'UNVERIFIED');
+});
+test('held recurring text remains escaped and unauthorized reports stay denied',()=>{
+ const b=fixture();b.recurring[0].source_timezone='<img src=x onerror=alert(1)>';const output=html(run(b));assert(!output.includes('<img'));assert(output.includes('&lt;img'));assert(output.includes('INVALID_SOURCE_TIMEZONE'));assert.throws(()=>dryRun(b,{...authority,current:false}),/FINANCIAL_ACCESS_DENIED/);assert.throws(()=>dryRun(b,{...authority,organizations:[organizations[1]]}),/FINANCIAL_SCOPE_DENIED/);
+});

@@ -179,3 +179,33 @@ provider sandbox capability and UNKNOWN reconciliation; secure credential custod
 recurring schedule consent, portability or re-enrollment and nonoverlap transition.
 GiveHub stays active. Real import, money movement, cancellation, recurring activation,
 receipt sending, grants and hosted installation still require separate approval.
+
+## Recurring inventory exception review — November 13, 2026
+
+The existing offline report now shows each schedule's source timezone, start/end,
+last charge, next-charge verification timestamp and specific hold reasons. Malformed
+currency/timezone/date facts and contradictory schedule bounds no longer produce
+an inventory PASS. The original source values remain visible and unchanged so the
+finance custodian can resolve the exception against the provider's actual history.
+No date is invented, corrected or used to initiate a charge.
+
+`inventoryValid` means only that the supplied normalized fictional inventory is
+internally consistent. A three-letter currency code is syntax validation, not
+merchant support or currency acceptance. Real export semantics, authorization,
+vault portability and recurring consent remain unverified. Even a valid schedule
+retains `hold_in_GiveHub`, `canActivate=false` and `portability=UNVERIFIED`.
+
+Run the existing synthetic CLI and inspect “Recurring inventory — leave in
+GiveHub.” Held rows expose precise codes such as `INVALID_CURRENCY`,
+`INVALID_START_DATE`, `END_BEFORE_START`, `NEXT_AFTER_END` and
+`NEXT_NOT_AFTER_LAST`. Refresh the authorized source evidence rather than changing
+records to force PASS. Existing finance role/org checks, merchant routing,
+canonical ledger, immutable receipts and historical correction contract are
+unchanged. No real input authorization, hosted import or provider execution is
+added.
+
+Targeted regression: existing staging tests plus malformed/contradictory schedule
+cases, valid exact timestamp preservation, role denial and escaped report output;
+existing Chromium/WebKit report tests verify mobile/desktop hold details and no
+network/mutation controls. No SQL change; prior native ledger/history evidence is
+reused rather than rerun locally. Exact-head CI remains a separate acceptance gate.
