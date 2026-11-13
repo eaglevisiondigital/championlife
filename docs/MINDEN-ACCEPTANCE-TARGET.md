@@ -120,6 +120,21 @@ origins. Do not authorize a production callback as a workaround. Turnstile's act
 allowlist remains unverified; local handler hostname checks are not proof of
 Cloudflare configuration.
 
+### Remaining reader/login presentation and SDK dependency
+
+The four Minden entry pages were previously pinned to Supabase 2.118.0/SRI in
+PR151. The existing `king-kind-reader.html` and `discipleship-login.html` still
+reference floating `@supabase/supabase-js@2`; this candidate does not claim an
+entire source-pinned book/login SDK journey. Their exact SDK selection and
+provider behavior must be reconciled before genuine journey acceptance. The
+reader's legacy error copy also names only Bessemer/Huntsville; it is not proof
+that Minden entitlement has been installed or verified.
+
+The actual existing login `sanitizeNext` accepts the fixed same-origin Minden
+decision, registration and book paths, and rejects absolute/protocol-relative
+production return hints. This is a navigation policy, not a module grant.
+No replacement identity system or permission expansion is introduced.
+
 ## Local verification
 
 The new focused tests exercise exact target/origin/context selection, actual

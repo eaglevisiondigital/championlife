@@ -48,3 +48,15 @@ for(const currentOrigin of [origin,'https://championlifefwb.com']){
  finally{dom.window.close()}
 }
 console.log('PASS actual reader HTML stays on proposed preview and preserves the exact production login destination');
+// Source-derived existing login sanitizer, not a replacement Auth or route policy.
+const loginSource=await readFile(new URL('../../discipleship-login.html',import.meta.url),'utf8');
+const sanitizer=loginSource.match(/function sanitizeNext\(value\) \{[\s\S]*?\n  \}\n  const params/);
+assert.ok(sanitizer,'existing login route sanitizer present');
+const sourceFunction=sanitizer[0].replace(/\n  const params$/,'');
+const sanitize=vm.runInNewContext('('+sourceFunction+')',{URL,location:{origin}});
+assert.equal(sanitize('/staff-minden-decisions.html'),'/staff-minden-decisions.html');
+assert.equal(sanitize('/staff-outreach-registration.html'),'/staff-outreach-registration.html');
+assert.equal(sanitize('/king-kind-reader.html'),'/king-kind-reader.html');
+assert.equal(sanitize('https://championlifefwb.com/staff-minden-decisions.html'),'/my-discipleship.html');
+assert.equal(sanitize('//championlifefwb.com/staff-minden-decisions.html'),'/my-discipleship.html');
+console.log('PASS actual login sanitizer accepts bounded Minden/registration/book destinations and rejects production-origin return hints');
