@@ -83,7 +83,29 @@ export function dryRun(bundle,authorityContext,previous=null){
   return{reference:s.source_statement_reference,recipient:s.recipient_organization_id,year:s.tax_year,sourceVersion:s.version,doNotResend:true,status:match?'PASS':'HOLD',computed:{contribution,noncontribution,refund},original:structuredClone(s)};
  });
  const scheduleKeys=unique(bundle.recurring,r=>scope(r)+'/'+r.source_schedule_id);
- const recurring=bundle.recurring.map(r=>({source_schedule_id:r.source_schedule_id,recipient:r.recipient_organization_id,fund:r.source_fund_id,amount_minor:r.amount_minor,currency:r.currency,status:r.status,nextCharge:r.next_charge_at_or_null,frequency:r.frequency,interval:r.interval,observedAt:r.inventory_observed_at,inventoryValid:!scheduleKeys.bad.has(scope(r)+'/'+r.source_schedule_id)&&id(r.source_schedule_id)&&funds.map.has(fundKey(r))&&donors.map.has(scope(r)+'/'+r.source_donor_id)&&money(r.amount_minor)&&r.amount_minor!=='0'&&['weekly','monthly','quarterly','yearly'].includes(r.frequency)&&Number.isInteger(r.interval)&&r.interval>0&&['active','paused','cancelled','failed','unknown'].includes(r.status)&&time(r.inventory_observed_at)&&time(r.next_charge_at_or_null)&&time(r.next_date_verified_at_or_null)&&Date.parse(r.next_date_verified_at_or_null)<=Date.parse(r.inventory_observed_at)&&Date.parse(r.inventory_observed_at)<=Date.parse(bundle.reviewed_at),transition:'hold_in_GiveHub',canActivate:false,portability:'UNVERIFIED'}));
+ const recurring=bundle.recurring.map(r=>{
+  const holds=[],hold=(condition,code)=>{if(!condition)holds.push(code)};
+  hold(!scheduleKeys.bad.has(scope(r)+'/'+r.source_schedule_id),'DUPLICATE_SCHEDULE');
+  hold(id(r.source_schedule_id)&&id(r.source_account_reference),'INVALID_SOURCE_ID');
+  hold(funds.map.has(fundKey(r)),'FUND_MAPPING_HELD');
+  hold(donors.map.has(scope(r)+'/'+r.source_donor_id),'DONOR_MAPPING_HELD');
+  hold(money(r.amount_minor)&&r.amount_minor!=='0','INVALID_AMOUNT');
+  hold(typeof r.currency==='string'&&/^[A-Z]{3}$/.test(r.currency),'INVALID_CURRENCY');
+  let timezoneValid=false;try{if(typeof r.source_timezone==='string'&&r.source_timezone){new Intl.DateTimeFormat('en-US',{timeZone:r.source_timezone});timezoneValid=true}}catch{}
+  hold(timezoneValid,'INVALID_SOURCE_TIMEZONE');
+  hold(['weekly','monthly','quarterly','yearly'].includes(r.frequency)&&Number.isInteger(r.interval)&&r.interval>0,'UNMAPPED_RECURRENCE');
+  hold(['active','paused','cancelled','failed','unknown'].includes(r.status),'UNMAPPED_STATUS');
+  const start=time(r.starts_at),end=r.ends_at_or_null===null||time(r.ends_at_or_null),last=r.last_charge_at_or_null===null||time(r.last_charge_at_or_null),next=time(r.next_charge_at_or_null),observed=time(r.inventory_observed_at),verified=time(r.next_date_verified_at_or_null),reviewed=time(bundle.reviewed_at);
+  hold(start,'INVALID_START_DATE');hold(end,'INVALID_END_DATE');hold(last,'INVALID_LAST_CHARGE_DATE');hold(next,'NEXT_CHARGE_UNVERIFIED');
+  hold(observed&&verified&&reviewed&&Date.parse(r.next_date_verified_at_or_null)<=Date.parse(r.inventory_observed_at)&&Date.parse(r.inventory_observed_at)<=Date.parse(bundle.reviewed_at),'INVALID_OBSERVATION_OR_VERIFICATION');
+  if(start&&end&&r.ends_at_or_null!==null)hold(Date.parse(r.ends_at_or_null)>=Date.parse(r.starts_at),'END_BEFORE_START');
+  if(start&&next)hold(Date.parse(r.next_charge_at_or_null)>=Date.parse(r.starts_at),'NEXT_BEFORE_START');
+  if(end&&next&&r.ends_at_or_null!==null)hold(Date.parse(r.next_charge_at_or_null)<=Date.parse(r.ends_at_or_null),'NEXT_AFTER_END');
+  if(start&&last&&r.last_charge_at_or_null!==null)hold(Date.parse(r.last_charge_at_or_null)>=Date.parse(r.starts_at),'LAST_BEFORE_START');
+  if(observed&&last&&r.last_charge_at_or_null!==null)hold(Date.parse(r.last_charge_at_or_null)<=Date.parse(r.inventory_observed_at),'LAST_AFTER_OBSERVATION');
+  if(last&&next&&r.last_charge_at_or_null!==null)hold(Date.parse(r.next_charge_at_or_null)>Date.parse(r.last_charge_at_or_null),'NEXT_NOT_AFTER_LAST');
+  return{source_schedule_id:r.source_schedule_id,recipient:r.recipient_organization_id,fund:r.source_fund_id,amount_minor:r.amount_minor,currency:r.currency,status:r.status,nextCharge:r.next_charge_at_or_null,frequency:r.frequency,interval:r.interval,sourceTimezone:r.source_timezone,startsAt:r.starts_at,endsAt:r.ends_at_or_null,lastCharge:r.last_charge_at_or_null,nextDateVerifiedAt:r.next_date_verified_at_or_null,observedAt:r.inventory_observed_at,inventoryValid:holds.length===0,holdReasons:holds,transition:'hold_in_GiveHub',canActivate:false,portability:'UNVERIFIED'};
+ });
  const sourceControlReviews=[];
  const totals=Array.isArray(bundle.control_totals)?bundle.control_totals:[];
  const controlKey=c=>JSON.stringify([c.recipient,c.fund,String(c.year),c.currency,c.status]);
