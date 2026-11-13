@@ -209,3 +209,11 @@ cases, valid exact timestamp preservation, role denial and escaped report output
 existing Chromium/WebKit report tests verify mobile/desktop hold details and no
 network/mutation controls. No SQL change; prior native ledger/history evidence is
 reused rather than rerun locally. Exact-head CI remains a separate acceptance gate.
+
+
+Recurring inventory now applies the existing historical-gift fund mapping checks
+also to funds that have no historical transactions. Missing canonical fund,
+reviewer/time, tax evidence/classification or purpose yields `FUND_MAPPING_HELD`.
+A matching source-fund label alone cannot produce local reconciliation PASS.
+This validates the supplied normalized evidence shape only; it does not establish
+real merchant settlement, real approval or permission to activate a schedule.

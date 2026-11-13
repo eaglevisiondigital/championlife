@@ -67,3 +67,14 @@ test('valid recurring source facts remain visible with exact timestamps and no a
 test('held recurring text remains escaped and unauthorized reports stay denied',()=>{
  const b=fixture();b.recurring[0].source_timezone='<img src=x onerror=alert(1)>';const output=html(run(b));assert(!output.includes('<img'));assert(output.includes('&lt;img'));assert(output.includes('INVALID_SOURCE_TIMEZONE'));assert.throws(()=>dryRun(b,{...authority,current:false}),/FINANCIAL_ACCESS_DENIED/);assert.throws(()=>dryRun(b,{...authority,organizations:[organizations[1]]}),/FINANCIAL_SCOPE_DENIED/);
 });
+
+
+test('recurring-only funds require the same reviewed mapping contract as historical gifts',()=>{
+ const cases=[['missing canonical fund',f=>f.canonical_fund_id=null],['missing approval actor',f=>f.mapping_approved_by=null],['missing approval time',f=>f.mapping_approved_at=null],['invalid approval date',f=>f.mapping_approved_at='2026-02-30T12:00:00Z'],['missing tax evidence',f=>f.tax_classification_evidence=null],['unverified tax classification',f=>f.tax_eligible=null],['unmapped purpose',f=>f.transaction_purpose='unknown']];
+ for(const[label,change]of cases){const b=fixture(),fund={...b.funds[0],source_fund_id:'RecurringOnly'};change(fund);b.funds.push(fund);b.recurring[0].source_fund_id='RecurringOnly';const before=structuredClone(b),r=run(b);assert.equal(r.localReconciliation,'HOLD',label);assert.equal(r.recurring[0].inventoryValid,false,label);assert.deepEqual(r.recurring[0].holdReasons,['FUND_MAPPING_HELD'],label);assert.equal(r.recurring[1].inventoryValid,true,'unrelated recipient inventory preserved');assert.equal(r.counts.distinct,5,'historical gifts unaffected');assert.deepEqual(r.groups,run().groups,'historical reconciled totals unchanged');assert.equal(r.canCharge,false);assert.equal(r.recurring[0].canActivate,false);assert(html(r).includes('FUND_MAPPING_HELD'));assert.deepEqual(b,before,'no input repair or mutation');}
+});
+test('reviewed recurring-only mappings remain scoped and never activate a schedule',()=>{
+ const b=fixture(),fund={...b.funds[0],source_fund_id:'RecurringOnly'};b.funds.push(fund);b.recurring[0].source_fund_id='RecurringOnly';let r=run(b);assert.equal(r.localReconciliation,'PASS');assert.equal(r.recurring[0].inventoryValid,true);assert.equal(r.recurring[0].canActivate,false);assert.equal(r.recurring[0].transition,'hold_in_GiveHub');
+ for(const field of['source_account_reference','recipient_organization_id']){const wrong=structuredClone(b);wrong.funds.at(-1)[field]=field==='source_account_reference'?'AnotherAccount':organizations[1];r=run(wrong);assert.equal(r.recurring[0].inventoryValid,false);assert(r.recurring[0].holdReasons.includes('FUND_MAPPING_HELD'));}
+ b.funds.push({...fund});r=run(b);assert.equal(r.recurring[0].inventoryValid,false);assert(r.recurring[0].holdReasons.includes('FUND_MAPPING_HELD'));
+});
