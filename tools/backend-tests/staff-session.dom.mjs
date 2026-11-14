@@ -31,7 +31,7 @@ for(const page of ['staff-people.html','staff-outreach-registration.html','staff
     else{
      d.querySelector('#staff-logout').click();d.querySelector('#staff-logout').click();ok(signoutCalls===1,'double-click cannot duplicate signout');ok(!main.textContent,'protected content cleared before network response');mount.textContent='Late protected response';ok(!main.textContent,'late response remains detached');finishSignout();await tick();await tick();
      if(mode==='failure'||mode==='session-remains'){ok(!redirects.length,'failed signout cannot claim completion');ok(!d.querySelector('#staff-logout').disabled,'failure supports retry');ok(d.querySelector('#staff-session-message').textContent.includes('could not be completed'),'safe error visible');ok(!d.body.textContent.includes('private backend'),'no backend detail leakage')}
-     else{ok(redirects[0]==='discipleship-login.html?next=%2Fstaff-people.html','fixed staff login destination');ok(!w.sessionStorage.getItem('championlife-auth-next'),'only app return hint removed')}
+     else{ok(redirects[0]==='discipleship-login.html?next='+encodeURIComponent(d.body.hasAttribute('data-staff-workspace')?'/staff-home.html':'/staff-people.html'),'fixed staff login destination');ok(!w.sessionStorage.getItem('championlife-auth-next'),'only app return hint removed')}
     }
    }
    ok(w.localStorage.getItem('unrelated-setting')==='preserve'&&w.sessionStorage.getItem('unrelated-draft')==='preserve','unrelated browser information preserved');

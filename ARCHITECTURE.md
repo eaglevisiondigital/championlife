@@ -1,3 +1,7 @@
+## 2026-10-31 — Incremental staff shell composition
+
+The first local shell composes existing staff-workspace and campaign-registration authorization responses instead of importing historical shared-platform SQL. One existing Auth client and logout component serve staff home, People and registration. Context navigation reloads an allowlisted existing destination and reauthorizes it. Unreleased NMI, advanced decisions and provider modules are not loaded. Exact source overlaps and future composition boundaries are documented in [UNIFIED-STAFF-SHELL.md](docs/UNIFIED-STAFF-SHELL.md).
+
 ## 2026-10-23 — Reusable staff presentation and session header
 
 `staff-portal.css` is opt-in through `body.staff-portal`; it does not restyle public pages. `staff-session.js` adds the same email/logout header to People, Registration/Check-In and Partner Review, using the existing ChampionLifeAuth client. It owns no authorization, RPC or data model. Existing modules retain their permission checks and async generation guards. Protected module mounts are detached before sign-out and before bfcache snapshots, so late responses cannot repopulate the visible workspace. See `docs/STAFF-PORTAL-POLISH.md`.

@@ -1,3 +1,7 @@
+## 2026-10-31 — Unified shell first slice uses installed contracts
+
+Owner authorized local implementation, not another planning-only report or a historical PR-chain merge. Reconciled Issue #58/PR #60 and implemented the smallest staff shell against current-main RPCs. No Gate 0 migration is required for this slice; broader NMI/Outreach catalogs and modules remain separate release units. Exact SDK bytes are reused for the three shell entry points without changing the blocked PR #57 migration. Independent review, applicable isolated acceptance and an exact website release authorization remain required. No real staff is activated.
+
 ## 2026-10-23 — Bounded staff UI/logout release
 
 Reuse the existing staff authentication client and current production permission model. Show account identity explicitly to avoid confusing an existing church session with a newly requested owner login. Use current-session sign-out rather than terminating unrelated device sessions. Hide the workspace immediately, preserve unrelated browser storage and provide retry on failure. Scope shared styling to the three deployed staff pages; do not import unreleased staff modules or alter public registration behavior. Website release and real-account verification require the separate production approval; no database action is part of this candidate.
