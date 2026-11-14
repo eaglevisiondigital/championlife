@@ -1,0 +1,5 @@
+# Project-scoped Codex subagent orchestration. No background process is started by this file.
+# Agents share a filesystem; write assignments require isolated git worktrees.
+[agents]
+enabled = true
+max_concurrent_threads_per_session = 3
