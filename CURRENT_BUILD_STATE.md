@@ -113,3 +113,15 @@ The original defect was reproduced in actual local Chromium/WebKit pages at
 activation, ordinary link navigation and existing partner interception. All
 provider/network interactions are blocked in these fixtures. Source review and
 CI remain separate from production approval.
+
+
+## 2026-11-03 — Dream Track original-step return (source only)
+
+The existing course gate now keeps supported step 1–7 destinations through access
+code entry and retry, canonicalizing clean paths to existing .html pages. Invalid
+external, encoded, unavailable or suffixed destinations fall back to the overview.
+The edge guard, cookie policy, access-code policy, course content and artwork are
+unchanged. No identity, membership, staff permission or completion is inferred.
+Local actual-handler Chromium/WebKit acceptance passed 398 assertions after the
+original 28 wrong destinations were reproduced; hosted acceptance and release
+authorization remain separate. See docs/DREAM-TRACK-RETURN-20261103.md.

@@ -42,3 +42,15 @@ Use the owner's final exact PNG, lossless delivery derivative and original M4A. 
 ## Operations Administrator preparation — 2026-10-22
 
 Owner authorized local correction/testing only. Reuse the existing 29-key production vocabulary and authentication workflow. Separate two organization assignments; no campaign-admin row for operations. Require finance.read for financial commitments and their linked histories; no automatic finance grants to retain former access. Require independent permission authorizer and prohibit self-target access changes. Reconcile existing People/Household compatibility locally and extend rather than narrow audit vocabulary. No PR #34/#35 wholesale adoption, hosted application, invitation, user or production grant. Activation dates/identity and external provider role verification remain owner/release gates.
+
+
+## 2026-11-03 — Dream Track original-step return (source only)
+
+The existing course gate now keeps supported step 1–7 destinations through access
+code entry and retry, canonicalizing clean paths to existing .html pages. Invalid
+external, encoded, unavailable or suffixed destinations fall back to the overview.
+The edge guard, cookie policy, access-code policy, course content and artwork are
+unchanged. No identity, membership, staff permission or completion is inferred.
+Local actual-handler Chromium/WebKit acceptance passed 398 assertions after the
+original 28 wrong destinations were reproduced; hosted acceptance and release
+authorization remain separate. See docs/DREAM-TRACK-RETURN-20261103.md.
