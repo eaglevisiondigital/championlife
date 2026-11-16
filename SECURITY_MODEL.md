@@ -1,3 +1,7 @@
+## 2026-11-16 — DreamTrack release HOLD
+
+Local synthetic tests cover95% watch / 16-of-20 mastery enforcement, direct-write denial, account/org boundaries, immutable attempts, missed-only retries, invitation token/email/expiry/cancel/replay and final-meeting badge reversal. Current production Auth/client/login, operational boundaries and historical migrations are unchanged. No hosted DreamTrack or real-account evidence exists for this recovered candidate; origin/callback/current staff-session integration and independent security/recovery signoff remain pending. The failed empty recovery branch was deleted; no production write/grant/email or deployment. Do not weaken retired-installer guards or falsify migration history. See [exact blocker and gates](docs/DREAM-TRACK-RECOVERY-2026-11-16.md).
+
 ## 2026-10-23 — Staff logout boundary
 
 The staff header calls the existing Supabase client's supported `auth.signOut({scope:'local'})`, then confirms the local session is absent before replacing navigation with the fixed staff login. It never clears all browser storage; SDK session cleanup and the application return hint are the only removals. A failed logout leaves protected content detached and displays a safe retry state, without claiming server retirement succeeded. Account changes and external sign-out clear the workspace. Pagehide clears protected snapshots; persisted pageshow reloads while hidden.

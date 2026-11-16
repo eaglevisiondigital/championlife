@@ -1,3 +1,7 @@
+## 2026-11-16 — Stop recovery release at exact hosted-baseline blocker
+
+Owner requested DreamTrack recovery/release after genuine isolated acceptance and independent checks. Recover only approved 5e6ecc3 onto current live 8a779d4; preserve unrelated modules and PR #2. Local tests do not satisfy release gates. After parent-history replay produced retired-installer `Campaign baseline mismatch`, stop hosted execution, delete the new empty branch and reuse the existing independently reviewed 27-persistent-migration baseline. Do not fabricate production UUIDs, revive staff provisioners or repair historical ledgers. Keep the exact approved question bank; its documented out-of-order review starts require Chat clarification before any strictly chronological reordering. No production action. See [recovery status](docs/DREAM-TRACK-RECOVERY-2026-11-16.md).
+
 ## 2026-10-23 — Bounded staff UI/logout release
 
 Reuse the existing staff authentication client and current production permission model. Show account identity explicitly to avoid confusing an existing church session with a newly requested owner login. Use current-session sign-out rather than terminating unrelated device sessions. Hide the workspace immediately, preserve unrelated browser storage and provide retry on failure. Scope shared styling to the three deployed staff pages; do not import unreleased staff modules or alter public registration behavior. Website release and real-account verification require the separate production approval; no database action is part of this candidate.

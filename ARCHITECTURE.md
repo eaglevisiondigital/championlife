@@ -1,3 +1,7 @@
+## 2026-11-16 — Isolated DreamTrack recovery candidate
+
+Approved existing course/enrollment/Auth architecture is recovered from 5e6ecc3 onto live 8a779d4, with additive My Discipleship integration and current login/operational contracts retained. It is local and unreleased. An uninstalled SQL payload is tested against the repository chain; no historical migration is added or rewritten. Raw parent-history branching cannot reproduce current production because retired staff installers require production reference IDs. Use the independently reviewed 27-persistent-migration current-schema baseline on an approved empty destination. See [recovery status](docs/DREAM-TRACK-RECOVERY-2026-11-16.md).
+
 ## 2026-10-23 — Reusable staff presentation and session header
 
 `staff-portal.css` is opt-in through `body.staff-portal`; it does not restyle public pages. `staff-session.js` adds the same email/logout header to People, Registration/Check-In and Partner Review, using the existing ChampionLifeAuth client. It owns no authorization, RPC or data model. Existing modules retain their permission checks and async generation guards. Protected module mounts are detached before sign-out and before bfcache snapshots, so late responses cannot repopulate the visible workspace. See `docs/STAFF-PORTAL-POLISH.md`.
