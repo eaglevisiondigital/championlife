@@ -1,6 +1,6 @@
 # Minden volunteer application — Issue #159
 
-Status: initial schema installed DISABLED in production; new Edge Function deployed fail-closed. Public form/site NOT released. A narrow owner-list alias correction is under local verification. Genuine hosted submission, provider delivery, owner review and final activation remain required.
+Status: initial schema installed DISABLED in production; new Edge Function deployed fail-closed. Public form/site NOT released. The narrow owner-list alias correction is installed as a separate forward migration; genuine account and delivery acceptance remain pending. Genuine hosted submission, provider delivery, owner review and final activation remain required.
 
 ## Approved contract
 
@@ -46,7 +46,7 @@ Sending-only keys cannot retrieve Resend emails. P0 owner uses the restricted ap
 ## Staged release and recovery
 
 1. Pin source, migration SHA256 and dependency fingerprints. Pass local native PostgreSQL, concurrency, gateway, DOM, independent review, full existing regression and CI. No historical migration replay or PR #6/#35/#149 wholesale merge.
-2. Install only the guarded initial migration, disabled, followed by the separately guarded owner-list alias correction `20261117190634_outreach_volunteer_review_list_fix.sql`. Deploy only the new Edge Function, preserving the other three functions. Secure key must be configured by owner; leave mode off until this stage is verified.
+2. Install only the guarded initial migration, disabled, followed by the separately guarded owner-list alias correction `20261117191223_outreach_volunteer_review_list_fix.sql`. Deploy only the new Edge Function, preserving the other three functions. Secure key must be configured by owner; leave mode off until this stage is verified.
 3. Publish the unlinked form and owner review page from verified Git source. Keep public Minden CTAs unchanged during genuine acceptance; new form initially noindex. Set dedicated mode live, verify current owner access, temporarily enable intake for the authorized labeled test and verify genuine submission+provider delivery+review. Test record is not a real volunteer/seat request and is cancelled with an audit note afterward.
 4. Only after all gates pass, publish the Minden CTA activation on both sites and remove temporary noindex. Verify canonical URLs, both published Git SHAs and actual Netlify deploy IDs and deployed bytes.
 5. Rollback is feature-disable/fix-forward: owner Pause public intake, dedicated mode off, then a forward source change removing Minden CTAs. Preserve received applications/outbox/audit and all migration history. Do not restore an older production deploy or drop tables. No paid acceptance resource created.
@@ -55,6 +55,8 @@ Public build is explicit allowlist `dist/`; private SQL/docs/tests/audit never p
 
 ## Validation status
 
-Passed locally:52 native database/security/concurrency checks;29 gateway/email unit checks;17 field-parity/public DOM checks;11 staff DOM/security checks; complete preexisting regression suite. Independently: blocked-settings revocation race denies42501 without changing settings/audit; P1 actual-P0 integration and capacity races pass. Mobile 390 px rendering has no horizontal overflow and original logo/visible passenger field; local security config fails closed. These are local tests, not genuine provider delivery proof.
+Passed locally:56 native database/security/concurrency checks;29 gateway/email unit checks;17 field-parity/public DOM checks;11 staff DOM/security checks; complete preexisting regression suite. Independently: blocked-settings revocation race denies42501 without changing settings/audit; P1 actual-P0 integration and capacity races pass. Mobile 390 px rendering has no horizontal overflow and original logo/visible passenger field; local security config fails closed. These are local tests, not genuine provider delivery proof.
 
-Required remaining: final CI, hosted migration/function guard postflight, real captcha and genuine owned-mailbox receipt/provider delivery, existing owner browser review, pause/re-enable recovery, both live Minden links and deploy receipts. No release claims until recorded.
+Passed hosted: original31-migration history fingerprint preserved; old function/RLS fingerprints unchanged; new tables RLS with no raw browser grants; intake disabled/zero applications; endpoint503 and untrusted-origin403.
+
+Required remaining: final source CI, real captcha and genuine owned-mailbox receipt/provider delivery, existing owner browser review, pause/re-enable recovery, both live Minden links and deploy receipts. No release claims until recorded.

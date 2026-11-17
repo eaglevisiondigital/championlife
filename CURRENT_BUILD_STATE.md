@@ -1,3 +1,7 @@
+# Issue #159 forward correction installed — November 17, 2026
+
+Production now has33migrations: historical31 unchanged plus volunteer intake20261117190320 and forward owner-list correction20261117191223. Both SQL payloads verified in native tests and CI; original applied bytes unchanged. New Edge Function version1 remains fail-closed; intake disabled and0applications. Old functions/RLS fingerprints,140DreamTrack questions and existing Auth/People/grants/attendee counts preserved. Actual public API role denial checks pass. Public website/CTAs remain unmerged; secure compatible Resend key and genuine delivery/account/browser/recovery acceptance are still required.
+
 # Issue #159 disabled backend stage — November 17, 2026
 
 Initial migration installed at provider version20261117190320 with intake disabled and zero applications. New Edge Function version1 is deployed and fails closed without its dedicated mail configuration/mode. Existing production function and RLS fingerprints, Auth/People/staff counts and140DreamTrack questions match preflight. SQL-connected independent UI validation found an owner-list alias error before public activation; a separate forward-only correction is tested locally, with original applied SQL bytes preserved.56native tests now include actual valid owner list and delivery authorization. P0public routes/CTAs remain unmerged pending correction, credential setup and genuine acceptance.
