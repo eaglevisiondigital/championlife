@@ -1,6 +1,9 @@
-# Issue #159 P1 reconciled review candidate — November 17, 2026
+# Issue #159 P0 LIVE; P1 reconciled draft — November 17, 2026
 
-P1 Team/Travel backend and staff UI are reconciled onto verified P0 sourceb0bb0d2, retaining all P0 tests and the426-file public artifact. Lifecycle/native/browser fixtures now default to the actual installed P0 initial+forward SQL sequence; the structural fixture remains only for prerequisite recovery tests.64backend,23DOM,9recovery,10native race and7independent P0 checks pass on this integration. P1 SQL remains outside migrations and UNINSTALLED; UI has no public manifest/nav entry. No additional staff or identity access is activated. P0 genuine human security-check/submission acceptance is ongoing separately.
+P0 is live at https://championlifefwb.com/minden-serve. ChampionLife production source `90657158d2c0d115d98b17c7be664f455b4b2cd0` is published in Netlify deploy `6afcb9ab44be6323ed723cd6`; SOWGO source `d068b3b90d79e9b355937a9702c18dcad24508d3` is published in deploy `6afcb9b79ca65025ad6035b0`. Both Minden links use the canonical form. Genuine owner-submitted confirmation reached Gmail with matching provider Message-ID and DKIM/SPF pass. The labelled test application is cancelled and auditable. Duplicate/pause/recovery and owner review gates passed; intake is enabled, revision4. Original31 migration/function/RLS fingerprints, Auth/People/grants/attendee counts and140DreamTrack questions are preserved. Private final receipts remain in the outer audit workspace, outside the public build.
+
+Draft PR162 reconciles the P1 backend, staff and read-only participant UI onto that released ChampionLife source, retaining all P0 tests and the426-file public artifact. Fixtures default to the actual installed P0 initial+forward SQL; the structural fixture remains only for prerequisite recovery tests.64backend,23staff DOM,43participant DOM,9recovery,10native races and7independent P0 checks pass; separately recorded local browser evidence covers40staff and48participant checks. P1 SQL remains outside migrations and UNINSTALLED; its UI has no public manifest/nav entry. Genuine hosted/account acceptance, exact named staff accounts/duties and P1 release authority remain open. No additional staff or identity access is activated.
+
 
 # Issue #159 unlinked website stage — November 17, 2026
 
