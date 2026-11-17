@@ -5,7 +5,7 @@ const f=await fixture(true),{db,q,as,call,member,leg,vehicle,qualify,campaign,ow
 const ok=(v,m)=>{assert.ok(v,m);n++;console.log('PASS '+m)};
 async function client(actor=owner){const c=await db.connect();await c.query("select set_config('request.jwt.claim.sub',$1,false)",[actor]);await c.query('set role authenticated');return c;}
 async function op(c,a,p){return(await c.query('select public.outreach_team_workspace($1,$2,$3) v',[a,campaign,p])).rows[0].v;}
-async function race(ops){const clients=await Promise.all(ops.map(()=>client()));try{return await Promise.allSettled(ops.map((fn,i)=>fn(clients[i])))}finally{for(const c of clients)await c.end();}}
+async function race(ops){const clients=await Promise.all(ops.map((_,i)=>client(i%2?travel:owner)));try{const subjects=await Promise.all(clients.map(c=>c.query("select current_setting('request.jwt.claim.sub') v")));ok(new Set(subjects.map(r=>r.rows[0].v)).size===2,'independent race sessions use two distinct currently authorized synthetic staff identities');return await Promise.allSettled(ops.map((fn,i)=>fn(clients[i])))}finally{for(const c of clients)await c.end();}}
 try{
  await as(owner);const l=await leg(),v=await vehicle('Synthetic final-seat van',3,2),driver=await member('Synthetic Driver'),first=await member('Synthetic First');await qualify(driver,v);
  await call('assignment_save',{member_id:driver.id,vehicle_id:v,leg_id:l,seat_role:'driver'});await call('assignment_save',{member_id:first.id,vehicle_id:v,leg_id:l,seat_role:'passenger'});

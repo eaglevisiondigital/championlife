@@ -25,6 +25,12 @@ do $$declare r record;begin
     to_regprocedure('public.outreach_team_workspace(text,uuid,jsonb)') is not null then
   raise exception 'Team/travel already present or partial schema';
  end if;
+ if (select md5(pg_get_constraintdef(oid)) from pg_constraint
+     where conrelid='public.outreach_campaign_assignments'::regclass
+     and conname='outreach_campaign_assignments_capabilities_check')
+    is distinct from '337390843d9bcdf5cb01f95cb5891adb' then
+  raise exception 'Team/travel campaign assignment contract drift';
+ end if;
 end $$;
 
 -- Extend the current registration vocabulary, preserving its implication rules.

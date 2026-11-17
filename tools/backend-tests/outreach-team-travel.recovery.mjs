@@ -9,6 +9,11 @@ try{
  const definition=(await db.query("select pg_get_functiondef('private.staff_assignment_active(uuid,uuid)'::regprocedure) v")).rows[0].v;
  await db.exec("create or replace function private.staff_assignment_active(p_org uuid,p_user uuid) returns boolean language sql stable security definer set search_path='' as $$select true$$");
  await assert.rejects(()=>db.exec(candidate),/security helper drift/);await db.exec('rollback');ok(!(await db.query("select to_regclass('public.outreach_team_members') v")).rows[0].v,'weakened staff helper stops before creating Team tables');await db.exec(definition);
+ const constraint=(await db.query("select pg_get_constraintdef(oid) v from pg_constraint where conrelid='outreach_campaign_assignments'::regclass and conname='outreach_campaign_assignments_capabilities_check'")).rows[0].v;
+ await db.exec('alter table public.outreach_campaign_assignments drop constraint outreach_campaign_assignments_capabilities_check;alter table public.outreach_campaign_assignments add constraint outreach_campaign_assignments_capabilities_check check(true)');
+ await assert.rejects(()=>db.exec(candidate),/campaign assignment contract drift/);await db.exec('rollback');
+ ok(!(await db.query("select to_regclass('public.outreach_team_members') v")).rows[0].v,'changed campaign capability constraint stops before replacement or Team table creation');
+ await db.exec('alter table public.outreach_campaign_assignments drop constraint outreach_campaign_assignments_capabilities_check;alter table public.outreach_campaign_assignments add constraint outreach_campaign_assignments_capabilities_check '+constraint);
  await db.exec('create table public.outreach_team_vehicles(synthetic int)');await assert.rejects(()=>db.exec(candidate),/partial schema/);await db.exec('rollback');await db.exec('drop table public.outreach_team_vehicles');ok(true,'partial historical installation is refused');
  await db.exec(candidate);ok((await db.query("select count(*)::int n from pg_class where relname like 'outreach_team_%' and relkind='r'")).rows[0].n===6,'fresh candidate installs six bounded tables');
  const rls=(await db.query("select bool_and(relrowsecurity) v from pg_class where relname like 'outreach_team_%' and relkind='r'")).rows[0].v;ok(rls,'every new table enables RLS');
