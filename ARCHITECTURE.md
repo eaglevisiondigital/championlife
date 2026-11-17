@@ -1,3 +1,7 @@
+# Issue159 volunteer intake addition
+
+Volunteer applications are separate canonical campaign-bound snapshots, not Family Fun Day attendee registrations or automatic People/Auth identities. A new Edge Function persists application+private frozen mail outbox before Resend. One shared SOWGO form URL; existing staff session and organization-wide owner authority; explicit public build allowlist. Starts disabled; no old shared function replacements. Details: docs/MINDEN-VOLUNTEER-V1.md.
+
 ## 2026-11-17 — Hosted acceptance completed; existing architecture retained
 
 The unchanged player/course/Auth architecture passed genuine account playback and normal grading/progression for lessons4–7 on a fresh exact-baseline project. First3 continuation and95-percent watched ranges were explicitly synthetic, following preserved actual playback evidence. Final meeting/badge and invitation flows passed through the actual UI; private data stayed in the isolated target, which was deleted. Only six existing course self-write policies differ from the production baseline. Concurrent main72e411d adds Prayer Confessions files/page/manifest only; forward-merge them without changing DreamTrack runtime or unrelated modules. Release preparation proceeds under the existing conditional owner authorization after exact-head checks.

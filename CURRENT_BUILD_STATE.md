@@ -1,3 +1,15 @@
+# Issue #159 forward correction installed — November 17, 2026
+
+Production now has33migrations: historical31 unchanged plus volunteer intake20261117190320 and forward owner-list correction20261117191223. Both SQL payloads verified in native tests and CI; original applied bytes unchanged. New Edge Function version1 remains fail-closed; intake disabled and0applications. Old functions/RLS fingerprints,140DreamTrack questions and existing Auth/People/grants/attendee counts preserved. Actual public API role denial checks pass. Public website/CTAs remain unmerged; secure compatible Resend key and genuine delivery/account/browser/recovery acceptance are still required.
+
+# Issue #159 disabled backend stage — November 17, 2026
+
+Initial migration installed at provider version20261117190320 with intake disabled and zero applications. New Edge Function version1 is deployed and fails closed without its dedicated mail configuration/mode. Existing production function and RLS fingerprints, Auth/People/staff counts and140DreamTrack questions match preflight. SQL-connected independent UI validation found an owner-list alias error before public activation; a separate forward-only correction is tested locally, with original applied SQL bytes preserved.60native tests now include actual valid owner list and delivery authorization. P0public routes/CTAs remain unmerged pending correction, credential setup and genuine acceptance.
+
+# Issue159 Minden P0 checkpoint — November17,2026
+
+Additive exact-contract volunteer intake, original SOWGO logo, durable confirmation outbox and existing-owner review implemented locally.52native database/security/concurrency +29gateway +17field-parity +11staff DOM tests pass; full prior regression passes. Production remains main5ced10a with31migrations and DreamTrack preserved. Secure dedicated sending-key handoff and real hosted acceptance/CI are pending. Public Minden link activation is held. See docs/MINDEN-VOLUNTEER-V1.md. P1 Team/Travel is a separate uninstalled candidate; no new staff access.
+
 ## 2026-11-17 — DreamTrack acceptance passed; production release preparation
 
 Fresh owner-approved project gzrdzhwsasjulvfiugod received the exact27 persistent baseline payloads and guarded course SQL. Baseline catalog parity with production passed. Genuine email-code sign-in/enrollment and native embedded playback of lessons4–7 recorded78.0134s,59.2001s,66.8335s,87.9101s before labeled95-percent fixtures. Actual grading, missed-only retry, mastery-only denial and progression passed;85 immutable attempts belong to lessons4–7. Prior lessons1–3 evidence remains preserved; their new rows are explicitly synthetic continuation fixtures, with no copied attempt history. All140 questions match. Staff meeting mark/reverse/re-mark, badge withholding before meeting, learner badge/reload, genuine invitation delivery/verified-recipient idempotency and revoked-access report clearing passed. Logout left zero sessions and zero active fixture grants. The disposable project was deleted and independently absent from a fresh list before the5:56PM Central deadline. No full-video viewing or real meeting is claimed.
