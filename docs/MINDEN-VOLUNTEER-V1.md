@@ -1,6 +1,6 @@
 # Minden volunteer application — Issue #159
 
-Status: implemented and locally tested; NOT production-applied or released. Genuine hosted submission, provider delivery, owner review and final activation remain required.
+Status: initial schema installed DISABLED in production; new Edge Function deployed fail-closed. Public form/site NOT released. A narrow owner-list alias correction is under local verification. Genuine hosted submission, provider delivery, owner review and final activation remain required.
 
 ## Approved contract
 
@@ -23,7 +23,7 @@ All seven approved notices remain exact in the form and field-parity tests. No a
 
 ## Canonical storage and authority
 
-Additive migration `20261117182207_outreach_volunteer_applications_v1.sql` installs a single canonical SowGo campaign `minden_la_2026` plus separate volunteer settings/applications and private mail/rate records. Event date is a date; unknown campaign timestamps stay NULL. Volunteer intake starts disabled. No attendee registration settings, attendees, bike/prize workflow or waiver is enabled.
+Additive migration `20261117190320_outreach_volunteer_applications_v1.sql` installs a single canonical SowGo campaign `minden_la_2026` plus separate volunteer settings/applications and private mail/rate records. Event date is a date; unknown campaign timestamps stay NULL. Volunteer intake starts disabled. No attendee registration settings, attendees, bike/prize workflow or waiver is enabled.
 
 Applications are immutable submitted snapshots, status initially pending, with a separate private review note/revision/audit. Email and phone never create or merge People, households, portal links, Auth, membership, financial partners or staff grants. Free-text companions remain unverified text.
 
@@ -46,7 +46,7 @@ Sending-only keys cannot retrieve Resend emails. P0 owner uses the restricted ap
 ## Staged release and recovery
 
 1. Pin source, migration SHA256 and dependency fingerprints. Pass local native PostgreSQL, concurrency, gateway, DOM, independent review, full existing regression and CI. No historical migration replay or PR #6/#35/#149 wholesale merge.
-2. Install only this guarded forward migration, disabled. Deploy only the new Edge Function, preserving the other three functions. Secure key must be configured by owner; leave mode off until this stage is verified.
+2. Install only the guarded initial migration, disabled, followed by the separately guarded owner-list alias correction `20261117190634_outreach_volunteer_review_list_fix.sql`. Deploy only the new Edge Function, preserving the other three functions. Secure key must be configured by owner; leave mode off until this stage is verified.
 3. Publish the unlinked form and owner review page from verified Git source. Keep public Minden CTAs unchanged during genuine acceptance; new form initially noindex. Set dedicated mode live, verify current owner access, temporarily enable intake for the authorized labeled test and verify genuine submission+provider delivery+review. Test record is not a real volunteer/seat request and is cancelled with an audit note afterward.
 4. Only after all gates pass, publish the Minden CTA activation on both sites and remove temporary noindex. Verify canonical URLs, both published Git SHAs and actual Netlify deploy IDs and deployed bytes.
 5. Rollback is feature-disable/fix-forward: owner Pause public intake, dedicated mode off, then a forward source change removing Minden CTAs. Preserve received applications/outbox/audit and all migration history. Do not restore an older production deploy or drop tables. No paid acceptance resource created.
