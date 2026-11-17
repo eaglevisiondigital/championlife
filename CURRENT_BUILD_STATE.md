@@ -1,3 +1,7 @@
+# Issue #159 public activation candidate — November 17, 2026
+
+Required genuine signup/delivery and existing-owner review gates passed. One labelled acceptance record is cancelled and remains auditable; one provider message delivered to the owned inbox with matching Message-ID and DKIM/SPF pass. Live duplicate/pause checks passed; old31 history/functions/RLS and Giving/DreamTrack/Auth/People remain preserved. Current source connects the Minden-only public CTA to the verified canonical URL and removes form noindex; compact security-widget geometry supports small phones. Public activation waits exact-source CI/deploy, owner intake restore and final URL/byte checks. P1 remains separate, uninstalled and without additional staff grants.
+
 # Issue #159 unlinked website stage — November 17, 2026
 
 Verified source9c9b3a8038db1c84710ecb30aabed648818da748 is published in Netlify deploy6afca94eee48caf607a88ab9. The Minden form is unlinked/noindex and intake remains disabled. The existing verified owner session opened the actual volunteer workspace with0applications. That genuine check exposed a stale loading error after an Auth event; current source pins error handling to request generation, with a regression reproducing the old failure and14staff DOM checks passing. No SQL or permission change in this correction. A compatible server-side Resend key, genuine persisted application/delivery/review and final CTA activation remain pending.
