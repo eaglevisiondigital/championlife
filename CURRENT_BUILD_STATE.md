@@ -1,3 +1,7 @@
+# Issue #159 unlinked website stage — November 17, 2026
+
+Verified source9c9b3a8038db1c84710ecb30aabed648818da748 is published in Netlify deploy6afca94eee48caf607a88ab9. The Minden form is unlinked/noindex and intake remains disabled. The existing verified owner session opened the actual volunteer workspace with0applications. That genuine check exposed a stale loading error after an Auth event; current source pins error handling to request generation, with a regression reproducing the old failure and14staff DOM checks passing. No SQL or permission change in this correction. A compatible server-side Resend key, genuine persisted application/delivery/review and final CTA activation remain pending.
+
 # Issue #159 forward correction installed — November 17, 2026
 
 Production now has33migrations: historical31 unchanged plus volunteer intake20261117190320 and forward owner-list correction20261117191223. Both SQL payloads verified in native tests and CI; original applied bytes unchanged. New Edge Function version1 remains fail-closed; intake disabled and0applications. Old functions/RLS fingerprints,140DreamTrack questions and existing Auth/People/grants/attendee counts preserved. Actual public API role denial checks pass. Public website/CTAs remain unmerged; secure compatible Resend key and genuine delivery/account/browser/recovery acceptance are still required.
