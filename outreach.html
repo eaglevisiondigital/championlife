@@ -41,6 +41,27 @@
 .outreach-fundraising-meta span:last-child{text-align:right}
 .outreach-event.featured .outreach-fundraising-meta{color:#aeb0b6}
 
+.outreach-salvation-ribbon{
+  position:relative;display:block;margin:18px -8px 16px;padding:10px 14px;
+  background:linear-gradient(105deg,#c99c3d,#f6db80 37%,#d4a944 74%,#ab7e23);
+  color:#16120a;text-align:center;font-size:clamp(14px,1.4vw,19px);
+  font-weight:900;font-style:italic;line-height:1.25;letter-spacing:-.01em;
+  clip-path:polygon(0 0,100% 0,96.5% 50%,100% 100%,0 100%,3.5% 50%);
+  filter:drop-shadow(0 3px 3px rgba(0,0,0,.12))
+}
+.outreach-funding-complete{
+  display:flex;align-items:center;justify-content:center;gap:10px;
+  min-height:44px;padding:10px 14px;border-radius:999px;
+  font-size:14px;font-weight:900;background:#d3ad4f;color:#111
+}
+.outreach-event.featured .outreach-funding-complete{
+  color:#eee;background:#202227;border:1px solid #8c763e
+}
+.outreach-funding-complete::before{
+  content:"✓";display:inline-grid;place-items:center;width:22px;height:22px;
+  border:2px solid currentColor;border-radius:50%;font-size:15px
+}
+
 /* Thermometer-style outreach goal */
 .outreach-thermometer{position:relative;display:flex;align-items:center;width:100%;padding-left:2px;margin:2px 0 8px}
 .outreach-thermometer-bulb{position:relative;z-index:2;flex:0 0 34px;width:34px;height:34px;border-radius:50%;background:#d3ad4f;box-shadow:inset 0 0 0 5px rgba(255,255,255,.28),0 3px 10px rgba(0,0,0,.12)}
@@ -230,15 +251,16 @@ body.outreach-modal-open{overflow:hidden}
             <h3>St. Lucia</h3>
             <div class="outreach-country">International Outreach</div>
             <p>Help us finish strong as we prepare to carry the Gospel to St. Lucia.</p>
+            <div class="outreach-salvation-ribbon" aria-label="Approximately 500 salvations">Approx. 500 Salvations</div>
             <div class="outreach-event-fundraising">
-              <div class="outreach-fundraising-meta"><span>Fund Outreach Goal</span><span>$8,400 of $10,000</span></div>
-              <div class="outreach-thermometer" aria-label="St. Lucia outreach is 84 percent funded">
+              <div class="outreach-fundraising-meta"><span>Fund Outreach Goal</span><span>$10,000 of $10,000</span></div>
+              <div class="outreach-thermometer" aria-label="St. Lucia outreach is 100 percent funded">
                 <span class="outreach-thermometer-bulb" aria-hidden="true"></span>
-                <span class="outreach-thermometer-tube" aria-hidden="true"><span class="outreach-thermometer-fill" style="width:84%"></span></span>
+                <span class="outreach-thermometer-tube" aria-hidden="true"><span class="outreach-thermometer-fill" style="width:100%"></span></span>
               </div>
-              <div class="outreach-goal-detail"><span><strong>84% funded</strong></span><span>$1,600 remaining</span></div>
+              <div class="outreach-goal-detail"><span><strong>100% Funded (Paid in Full)</strong></span><span>$0 remaining</span></div>
               <div class="outreach-event-actions">
-                <span class="outreach-coming-soon closed">Signup - Closed</span>
+                <span class="outreach-funding-complete">Fully Funded</span>
                 <a class="btn outline" href="outreach-giving.html">Give to This Outreach</a>
               </div>
             </div>
@@ -249,11 +271,13 @@ body.outreach-modal-open{overflow:hidden}
             <h3>Bessemer, Alabama</h3>
             <div class="outreach-country">United States</div>
             <p>Team sign-up is available now.</p>
+            <div class="outreach-salvation-ribbon" aria-label="Approximately 150 to 200 salvations">Approx. 150–200 Salvations</div>
             <div class="outreach-event-fundraising">
-              <div class="outreach-fundraising-meta"><span>Fund Outreach Goal</span><span>Goal Coming Soon</span></div>
-              <div class="outreach-thermometer empty" aria-label="Fund outreach goal coming soon"><span class="outreach-thermometer-bulb" aria-hidden="true"></span><span class="outreach-thermometer-tube" aria-hidden="true"></span></div>
+              <div class="outreach-fundraising-meta"><span>Fund Outreach Goal</span><span>$7,000 of $7,000</span></div>
+              <div class="outreach-thermometer" aria-label="Bessemer outreach is 100 percent funded"><span class="outreach-thermometer-bulb" aria-hidden="true"></span><span class="outreach-thermometer-tube" aria-hidden="true"><span class="outreach-thermometer-fill" style="width:100%"></span></span></div>
+              <div class="outreach-goal-detail"><span><strong>100% Funded (Paid in Full)</strong></span><span>$0 remaining</span></div>
               <div class="outreach-event-actions">
-                <button class="btn gold" type="button" data-jotform-url="https://form.jotform.com/262035501051138" data-jotform-title="OUTREACH Team Sign Up - BESSEMER AL">Team Sign Up</button>
+                <span class="outreach-funding-complete">Fully Funded</span>
                 <a class="btn outline" href="outreach-giving.html">Give to This Outreach</a>
               </div>
             </div>
@@ -264,11 +288,13 @@ body.outreach-modal-open{overflow:hidden}
             <h3>Huntsville, Alabama</h3>
             <div class="outreach-country">United States</div>
             <p>Team sign-up is available now.</p>
+            <div class="outreach-salvation-ribbon" aria-label="Approximately 200 to 250 salvations">Approx. 200–250 Salvations</div>
             <div class="outreach-event-fundraising">
-              <div class="outreach-fundraising-meta"><span>Fund Outreach Goal</span><span>Goal Coming Soon</span></div>
-              <div class="outreach-thermometer empty" aria-label="Fund outreach goal coming soon"><span class="outreach-thermometer-bulb" aria-hidden="true"></span><span class="outreach-thermometer-tube" aria-hidden="true"></span></div>
+              <div class="outreach-fundraising-meta"><span>Fund Outreach Goal</span><span>$7,000 of $7,000</span></div>
+              <div class="outreach-thermometer" aria-label="Huntsville outreach is 100 percent funded"><span class="outreach-thermometer-bulb" aria-hidden="true"></span><span class="outreach-thermometer-tube" aria-hidden="true"><span class="outreach-thermometer-fill" style="width:100%"></span></span></div>
+              <div class="outreach-goal-detail"><span><strong>100% Funded (Paid in Full)</strong></span><span>$0 remaining</span></div>
               <div class="outreach-event-actions">
-                <button class="btn gold" type="button" data-jotform-url="https://form.jotform.com/241095919780163" data-jotform-title="OUTREACH Team Sign Up - HUNTSVILLE AL">Team Sign Up</button>
+                <span class="outreach-funding-complete">Fully Funded</span>
                 <a class="btn outline" href="outreach-giving.html">Give to This Outreach</a>
               </div>
             </div>
