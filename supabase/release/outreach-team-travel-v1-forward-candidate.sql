@@ -129,7 +129,11 @@ create function private.outreach_team_can(c uuid,cap text) returns boolean langu
  select cap in('team.view','team.manage','team.export','travel.view','travel.manage','travel.export')
  and private.outreach_verified(auth.uid()) and exists(select 1 from public.outreach_campaigns x where x.id=c and
  private.staff_assignment_active(x.organization_id,auth.uid()) and
- (private.has_staff_permission(x.organization_id,'staff.manage') or exists(
+ exists(select 1 from public.organization_staff_directory d where d.organization_id=x.organization_id and d.user_id=auth.uid() and d.active
+  and d.effective_at<=clock_timestamp() and (d.expires_at is null or d.expires_at>clock_timestamp())) and
+ ((private.has_staff_permission(x.organization_id,'staff.manage') and exists(
+   select 1 from public.organization_staff_permissions g where g.organization_id=x.organization_id and g.user_id=auth.uid() and g.permission='staff.manage'
+   and g.department_ids is null and g.revoked_at is null and g.effective_at<=clock_timestamp() and (g.expires_at is null or g.expires_at>clock_timestamp()))) or exists(
   select 1 from public.outreach_campaign_assignments a where a.campaign_id=c and a.user_id=auth.uid() and a.active
   and a.effective_at<=clock_timestamp() and (a.expires_at is null or a.expires_at>clock_timestamp())
   and 'view'=any(a.capabilities) and cap=any(a.capabilities))))
@@ -252,6 +256,7 @@ begin
    select * into g from public.outreach_team_members where campaign_id=c and id=(p->>'guardian_member_id')::uuid;
    if m.age is null or m.age>=18 or g.id is null or g.age<18 or g.age is null or g.id=m.id then raise exception 'Reviewed minor and adult guardian required';end if;
    if not(private.has_staff_permission(org,'households.read') and private.person_permission(org,m.person_id,'people.read') and private.person_permission(org,g.person_id,'people.read')) then raise exception 'Canonical guardian review denied' using errcode='42501';end if;
+   if exists(select 1 from public.outreach_team_vehicle_assignments where campaign_id=c and member_id=m.id and state<>'cancelled') then raise exception 'Release travel assignments before guardian correction';end if;
    if not exists(select 1 from public.households h join public.household_members x1 on x1.household_id=h.id and x1.person_id=m.person_id and x1.active join public.household_members x2 on x2.household_id=h.id and x2.person_id=g.person_id and x2.active where h.organization_id=org and h.id=(p->>'household_id')::uuid and h.status='active') then raise exception 'Active canonical Household membership required';end if;
    update public.outreach_team_members set guardian_member_id=g.id,guardian_reviewed_by=auth.uid(),guardian_reviewed_at=now(),guardian_reason=reason,household_id=(p->>'household_id')::uuid where id=m.id;
    perform private.outreach_team_record(c,'guardian.reviewed',m.id,jsonb_build_object('from',m.guardian_member_id,'to',g.id,'household_id',p->>'household_id','reason',reason));
@@ -317,6 +322,10 @@ begin
     if not l.itinerary_confirmed or not private.outreach_team_ready(c,x.member_id) then raise exception 'Reviewed participant and confirmed itinerary required';end if;
     if not exists(select 1 from public.outreach_team_vehicle_assignments d join public.outreach_team_driver_reviews r on r.campaign_id=d.campaign_id and r.member_id=d.member_id and r.vehicle_id=d.vehicle_id and r.qualified where d.campaign_id=c and d.leg_id=x.leg_id and d.vehicle_id=x.vehicle_id and d.seat_role='driver' and d.state<>'cancelled' and private.outreach_team_ready(c,d.member_id)) then raise exception 'Qualified responsible driver required';end if;
     update public.outreach_team_vehicle_assignments set state='confirmed',confirmed_at=now(),confirmed_by=auth.uid(),revision=revision+1 where id=x.id;
+    -- The tentative update is invisible outside this transaction. Reject and
+    -- roll it back unless the same complete gate used for own-trip disclosure
+    -- is valid now, including the minor's current guardian in this vehicle/leg.
+    if not private.outreach_team_confirmation_valid(c,x.id) then raise exception 'Current travel arrangement requires review before confirmation';end if;
     target:=x.id;
    else
     if x.seat_role='driver' and exists(select 1 from public.outreach_team_vehicle_assignments q where q.campaign_id=c and q.leg_id=x.leg_id and q.vehicle_id=x.vehicle_id and q.id<>x.id and q.state='confirmed') then raise exception 'Unconfirm passenger itinerary before removing responsible driver';end if;
