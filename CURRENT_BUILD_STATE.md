@@ -1,3 +1,7 @@
+# Issue #159 unlinked website stage — November 17, 2026
+
+Verified source9c9b3a8038db1c84710ecb30aabed648818da748 is published in Netlify deploy6afca94eee48caf607a88ab9. The Minden form is unlinked/noindex and intake remains disabled. The existing verified owner session opened the actual volunteer workspace with0applications. That genuine check exposed a stale loading error after an Auth event; current source pins error handling to request generation, with a regression reproducing the old failure and14staff DOM checks passing. No SQL or permission change in this correction. A compatible server-side Resend key, genuine persisted application/delivery/review and final CTA activation remain pending.
+
 ## 2026-11-17 — Issue159 P1 usable staff UI (local candidate, unpublished)
 
 Extends backend checkpoint2ac2fd6 with an unpublished Team/Travel staff screen: explicit P0 application→canonical Person review; availability/age/guardian review; individual decisions/attendance/history; vehicles/legs/capacity; separate driver qualification; seat reservation/reassignment/cancellation/confirmation; scoped CSV and print. Reuses current Auth/logout shell. Unknown values stay unconfirmed, prospective names stay text, and denied/late responses clear protected content. No public manifest entry, staff grant, message or hosted P1 change.

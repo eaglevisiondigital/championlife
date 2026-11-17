@@ -1,6 +1,6 @@
 # Minden volunteer application — Issue #159
 
-Status: initial schema installed DISABLED in production; new Edge Function deployed fail-closed. Public form/site NOT released. The narrow owner-list alias correction is installed as a separate forward migration; genuine account and delivery acceptance remain pending. Genuine hosted submission, provider delivery, owner review and final activation remain required.
+Status: initial schema installed DISABLED in production; new Edge Function deployed fail-closed. The form and owner workspace were staged unlinked/noindex in deploy6afca94eee48caf607a88ab9 (source9c9b3a8038db1c84710ecb30aabed648818da748); public signup is NOT activated. The narrow owner-list alias correction is installed as a separate forward migration; genuine account and delivery acceptance remain pending. Genuine hosted submission, provider delivery, owner review and final activation remain required.
 
 ## Approved contract
 
@@ -55,7 +55,7 @@ Public build is explicit allowlist `dist/`; private SQL/docs/tests/audit never p
 
 ## Validation status
 
-Passed locally:60 native database/security/concurrency checks;29 gateway/email unit checks;17 field-parity/public DOM checks;11 staff DOM/security checks; complete preexisting regression suite. Independently: blocked-settings revocation race denies42501 without changing settings/audit; P1 actual-P0 integration and capacity races pass. Mobile 390 px rendering has no horizontal overflow and original logo/visible passenger field; local security config fails closed. These are local tests, not genuine provider delivery proof.
+Passed locally:60 native database/security/concurrency checks;29 gateway/email unit checks;17 field-parity/public DOM checks;14 staff DOM/security checks; complete preexisting regression suite. Independently: blocked-settings revocation race denies42501 without changing settings/audit; P1 actual-P0 integration and capacity races pass. Mobile 390 px rendering has no horizontal overflow and original logo/visible passenger field; local security config fails closed. These are local tests, not genuine provider delivery proof.
 
 Passed hosted: original31-migration history fingerprint preserved; old function/RLS fingerprints unchanged; new tables RLS with no raw browser grants; intake disabled/zero applications; endpoint503 and untrusted-origin403.
 
