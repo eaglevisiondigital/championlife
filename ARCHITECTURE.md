@@ -1,3 +1,7 @@
+## 2026-11-17 — Preserve the player after controlled debugger comparison
+
+The unchanged constructor plays the approved lesson 3–7 videos on a local page when the agent debugger is disconnected. Reattaching before new iframe creation reproduces the shared stall; disconnecting resolves it without runtime changes. Native browser controls are the acceptance path for media initialization. This is an observed tooling interaction, not proof of an internal browser implementation cause. Preserve the course, Auth and invitation architecture. Any new acceptance backend requires its fresh quoted-cost approval; its website can run locally with an explicit isolated public configuration and no production fallback.
+
 ## 2026-11-17 — DreamTrack recovery compatibility hold
 
 Existing course/Auth/staff architecture remains retained; no alternative player architecture was merged. A documented existing-iframe initialization experiment failed to resolve the owner-confirmed black Holy Spirit player and was removed. Prior real-account and independent database/security checks are preserved, with synthetic threshold fixtures distinguished from actual playback. The disposable acceptance project/preview were deleted before the approved deadline. Production remains unchanged; investigate the iframe request and initialization cause before any replacement acceptance target or release. See [current report](docs/DREAM-TRACK-RECOVERY-2026-11-16.md).

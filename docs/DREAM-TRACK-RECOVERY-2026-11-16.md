@@ -1,6 +1,18 @@
-# DreamTrack v1 recovery — release held at playback acceptance
+# DreamTrack v1 recovery — account acceptance and release pending
 
-## Current result — November 17, 2026
+## Updated diagnosis — November 17, 2026
+
+The black player reproduced on a nonbillable loopback-only diagnostic page using the **unchanged retained constructor**, side by side for previously working lesson 3 (`FQLZ4IU87_U`) and Holy Spirit (`3a58NYEvaE4`). Both frame documents remained pending/about:blank while the agent debugger was attached, with repeated cross-origin postMessage warnings and no YouTube player error. Disconnecting that debugger using Chrome's own Cancel control allowed both players to initialize immediately, without a page reload or source change. A second controlled attachment/initialization/disconnection repeated the result: initialization at 13:37:36.573Z, then both ready at 13:38:29.687Z and 13:38:29.712Z after disconnection.
+
+Chrome's sanitized HAR shows both actual iframe GET responses were HTTP 200, with server request durations below 600ms and the expected loopback-origin Referer. The long apparent pending interval therefore does not establish a YouTube server or DNS outage. Cross-origin ResourceTiming's masked status zero was not treated as an HTTP response code. The exact internal debugger mechanism is not established. Browser policy blocked extension-settings inspection, and the owner did not know the installed extensions; no alternate inspection, extension disabling or security weakening was attempted. The successful comparison retained the same Chrome profile and extensions.
+
+With the debugger disconnected, approved lessons 3–7 all initialized within two seconds on the local page. Actual observed playing samples reached 57.9856 seconds for lesson 3, 151.7747 for Holy Spirit, 20.0771 for Healing, 18.6860 for Abundant Life and 56.1813 for Church Government. No player errors were recorded. This establishes local playback compatibility; it is **not authenticated course watch credit or a claim of 95% full-video viewing**. No shared runtime change is warranted or applied.
+
+The next acceptance target is prepared, not provisioned. All 27 independently reviewed persistent payload hashes match the sealed manifest, and a local 415-file public artifact is prepared with 414 byte-identical files and only the public Supabase configuration replaced by a disabled placeholder. It has no production fallback. A fresh quote for the existing authorized organization is US$10/month, with Micro compute US$0.01344/hour, partial hours billed as full hours, applicable usage/tax additional, and no paid add-ons. Separate owner approval of this new cost is pending. Cleanup is planned after acceptance or by November 17 at 5:56 PM Central. No new billable project, production migration, grant, Auth change, merge or deployment has occurred.
+
+Preserved passing evidence below is unchanged. Remaining release gates are genuine account playback and watch credit for lessons 4–7, remaining grading/progression, final meeting and badge browser acceptance, then fresh security/recovery and production contract checks. Native controls with the agent debugger disconnected will be used for iframe initialization. Private credential-free diagnostic events, sanitized network summary and prepared artifact bindings are in the outer audit workspace under `audit/dream-track-video-diagnostic-2026-11-17/`; they are not public assets.
+
+## Previous checkpoint — November 17, 2026
 
 Production was not activated. The Holy Spirit lesson (4, existing YouTube ID `3a58NYEvaE4`) remained a black iframe with an `about:blank` child document, no usable Play control and zero server watch session/credit. The owner independently confirmed the black player. Foreground reloads and the official existing-iframe initialization alternative did not resolve it. YouTube's public oEmbed metadata returned HTTP 200 and the expected Champion Life title; metadata availability does not establish playable embedding. No specific vendor/network root cause was established, and no player error code is being inferred.
 
