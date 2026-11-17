@@ -55,7 +55,7 @@ Public build is explicit allowlist `dist/`; private SQL/docs/tests/audit never p
 
 ## Validation status
 
-Passed locally:56 native database/security/concurrency checks;29 gateway/email unit checks;17 field-parity/public DOM checks;11 staff DOM/security checks; complete preexisting regression suite. Independently: blocked-settings revocation race denies42501 without changing settings/audit; P1 actual-P0 integration and capacity races pass. Mobile 390 px rendering has no horizontal overflow and original logo/visible passenger field; local security config fails closed. These are local tests, not genuine provider delivery proof.
+Passed locally:60 native database/security/concurrency checks;29 gateway/email unit checks;17 field-parity/public DOM checks;11 staff DOM/security checks; complete preexisting regression suite. Independently: blocked-settings revocation race denies42501 without changing settings/audit; P1 actual-P0 integration and capacity races pass. Mobile 390 px rendering has no horizontal overflow and original logo/visible passenger field; local security config fails closed. These are local tests, not genuine provider delivery proof.
 
 Passed hosted: original31-migration history fingerprint preserved; old function/RLS fingerprints unchanged; new tables RLS with no raw browser grants; intake disabled/zero applications; endpoint503 and untrusted-origin403.
 

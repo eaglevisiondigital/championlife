@@ -4,7 +4,7 @@ Production now has33migrations: historical31 unchanged plus volunteer intake2026
 
 # Issue #159 disabled backend stage — November 17, 2026
 
-Initial migration installed at provider version20261117190320 with intake disabled and zero applications. New Edge Function version1 is deployed and fails closed without its dedicated mail configuration/mode. Existing production function and RLS fingerprints, Auth/People/staff counts and140DreamTrack questions match preflight. SQL-connected independent UI validation found an owner-list alias error before public activation; a separate forward-only correction is tested locally, with original applied SQL bytes preserved.56native tests now include actual valid owner list and delivery authorization. P0public routes/CTAs remain unmerged pending correction, credential setup and genuine acceptance.
+Initial migration installed at provider version20261117190320 with intake disabled and zero applications. New Edge Function version1 is deployed and fails closed without its dedicated mail configuration/mode. Existing production function and RLS fingerprints, Auth/People/staff counts and140DreamTrack questions match preflight. SQL-connected independent UI validation found an owner-list alias error before public activation; a separate forward-only correction is tested locally, with original applied SQL bytes preserved.60native tests now include actual valid owner list and delivery authorization. P0public routes/CTAs remain unmerged pending correction, credential setup and genuine acceptance.
 
 # Issue159 Minden P0 checkpoint — November17,2026
 
