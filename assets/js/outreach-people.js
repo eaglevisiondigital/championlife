@@ -2,8 +2,8 @@
  'use strict';
  const root=document.getElementById('outreach-people'),auth=window.ChampionLifeAuth,{el}=window.OutreachUI;
  let generation=0,user,org,grants=[],content,status,page=0;
- const financialLink=document.getElementById('financial-outreach-link'),dreamLink=document.getElementById('dream-track-staff-link');
- const updateNavigation=()=>{if(financialLink)financialLink.hidden=!(can('outreach.view')&&can('finance.read'));if(dreamLink)dreamLink.hidden=!can('courses.manage')};
+ const financialLink=document.getElementById('financial-outreach-link'),dreamLink=document.getElementById('dream-track-staff-link'),volunteerLink=document.getElementById('volunteer-staff-link');
+ const updateNavigation=()=>{if(financialLink)financialLink.hidden=!(can('outreach.view')&&can('finance.read'));if(dreamLink)dreamLink.hidden=!can('courses.manage');if(volunteerLink)volunteerLink.hidden=!can('staff.manage')};
  const can=k=>grants.some(g=>g.organization_id===org&&g.permission===k&&!g.department_ids);
  const login=()=>el('a','Sign in to your workspace',{href:'discipleship-login.html?next=%2Fstaff-people.html'});
  function fail(code){

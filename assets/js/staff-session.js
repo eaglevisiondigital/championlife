@@ -15,6 +15,8 @@
   main.replaceChildren();
   const financial=document.getElementById('financial-outreach-link');
   if(financial)financial.hidden=true;
+  const volunteer=document.getElementById('volunteer-staff-link');
+  if(volunteer)volunteer.hidden=true;
   const dream=document.getElementById('dream-track-staff-link');
   if(dream)dream.hidden=true;
  }

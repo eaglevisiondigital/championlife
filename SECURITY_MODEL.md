@@ -1,3 +1,7 @@
+# Issue159 volunteer isolation
+
+Verified current org-wide staff.manage gates interim volunteer review; no additional account grants. RPC-only tables, fixed empty search paths, strict server inputs, current permission recheck after locks, immutable snapshots and audit, HMAC network limits and Turnstile hostname/action. Sending-only domain-restricted credential stays server-side; durable lease+provider idempotency prevents unsafe retries. P1 canonical identity/age/guardian and seat reviews remain separate. Production installation/public activation are pending required evidence.
+
 ## 2026-11-17 — Fresh acceptance/security gates passed; target deleted
 
 All140 hosted questions match the approved fixture. Eight new RPC-only tables have RLS and zero raw browser grants; concrete Data API probes return401/42501 and private/app_private profiles406/PGRST106. The invitation adapter validates its fixed origin, real Auth identity and current manager RPC; live anonymous/wrong-origin probes return401/403. Actual staff revocation denied the next request and cleared the report. Logout left zero sessions and zero active temporary grants. Meeting mark/reverse/re-mark maintained one completion record and three immutable audit events; no badge existed at online-only completion. Real invitation delivery and verified-email claim/reload maintained one enrollment and one acceptance audit. All fixtures and the temporary project were deleted after credential-free evidence export, before the owner's deadline.

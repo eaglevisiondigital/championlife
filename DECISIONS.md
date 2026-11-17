@@ -1,3 +1,7 @@
+# Issue159 approved screenshot and P0 boundary
+
+Owner confirmed screenshot mapping is complete: only first+last name and added email required; other questions optional; passenger field always visible; no hidden source questions or waiver/signature. Owner authorized existing verified Platform Owner only for P0, with no grants. Other staff await exact emails/duties. P0 public launch may use safe interim owner review while P1 Team/Travel progresses separately. Correct SaturdayDec19 date replaces contradictory old travel dates; actual travel times await outreach team confirmation.
+
 ## 2026-11-17 — Execute conditional release after verified acceptance
 
 The owner separately approved the fresh acceptance quote, exact last baseline migration on the new target, and scoped temporary manager/continuation/watch/meeting fixtures. Genuine account/media/grading/invitation/staff/badge gates now pass with fixtures clearly distinguished from actual viewing and meetings. Temporary grants were revoked, logout verified and the target deleted before the approved deadline. The existing conditional release authorization can now be exercised after exact-head integration checks. Preserve concurrent Prayer Confessions main72e411d changes through a forward merge; do not replace production with the older tree, replay history, mergePR2 or change Auth/Giving policy. No new product package is authorized.
