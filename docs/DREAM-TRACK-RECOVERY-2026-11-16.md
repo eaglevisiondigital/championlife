@@ -1,3 +1,7 @@
+## 2026-11-16 — Genuine sign-in and player compatibility check
+
+Genuine delivered-email OTP sign-in reached the protected isolated DreamTrack dashboard. Incorrect/correct access code, direct lesson lock, authenticated autosave/reload, 15/20 first grade with mastered fields retained and five remediation windows, and disabled premature staff meeting were observed. The embedded player remained blank; the recovered lesson pages suppressed HTTP referrers. The seven lesson pages now use YouTube’s recommended strict-origin-when-cross-origin policy; invitation/access pages retain no-referrer. This sends only the site origin across sites, not paths or query tokens. Live player recheck and remaining course/invitation/staff gates are still pending; production unchanged.
+
 # DreamTrack v1 recovery — release held
 
 ## Acceptance setup resumed under owner approval
