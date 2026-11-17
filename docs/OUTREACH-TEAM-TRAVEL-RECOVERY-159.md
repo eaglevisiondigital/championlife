@@ -2,6 +2,8 @@
 
 Status: **backend, staff and read-only participant UI review candidate; UNINSTALLED and unpublished; no P1 release approval**. Draft PR162 is reconciled onto released P0 source `90657158d2c0d115d98b17c7be664f455b4b2cd0`; the original extraction began at `5ced10a0467199f8f0735884452c5bfd676af0e6`. P0 is already live and remains separate. This P1 package does not change the released public pages/runtime, public artifact manifest, deployment configuration, Giving, DreamTrack, Auth, attendee registration or production data. No account, grant, provider message or external resource is created by P1.
 
+The separate [status-notification preparation](OUTREACH-TEAM-NOTIFICATIONS.md) adds only proposed plaintext copy and a pure held/non-sendable review builder. It has no delivery activation, recipient resolution, durable outbox, runtime import or permission expansion. Existing P0 acknowledgement delivery remains unchanged; status-message policy and any future sending remain unapproved.
+
 ## Source and dependency map
 
 | Source | Recovered contract | Excluded dependencies |
