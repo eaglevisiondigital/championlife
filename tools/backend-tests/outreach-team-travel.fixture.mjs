@@ -3,13 +3,14 @@ import{readFileSync}from'node:fs';import{randomUUID as uuid}from'node:crypto';
 import{PGlite}from'@electric-sql/pglite';import{localPostgres}from'./local-postgres.mjs';import{migrationOrder}from'./migration-order.mjs';
 const root=new URL('../../',import.meta.url),read=p=>readFileSync(new URL(p,root),'utf8');
 export const candidate=read('supabase/release/outreach-team-travel-v1-forward-candidate.sql');
+export const actualP0=()=>process.env.MINDEN_P0_MIGRATION?readFileSync(new URL(process.env.MINDEN_P0_MIGRATION,root),'utf8'):[read('supabase/migrations/20261117190320_outreach_volunteer_applications_v1.sql'),read('supabase/migrations/20261117191223_outreach_volunteer_review_list_fix.sql')].join('\n');
 export async function fixture(native=false){
  const db=native?await localPostgres():new PGlite(),q=(s,p=[])=>db.query(s,p);
  try{
   await db.exec(read('tools/backend-tests/fixtures/supabase-test-bootstrap.sql'));await db.exec(read('supabase/bootstrap/automatic-rls.sql'));
   for(const f of migrationOrder)await db.exec(read('supabase/migrations/'+f));
   await db.exec(read('supabase/release/dream-track-v1-forward-candidate.sql'));
-  await db.exec(process.env.MINDEN_P0_MIGRATION?readFileSync(new URL(process.env.MINDEN_P0_MIGRATION,root),'utf8'):read('tools/backend-tests/fixtures/outreach-volunteer-p0-contract.sql'));
+  await db.exec(actualP0());
   await db.exec(candidate);
   const org=(await q("select id from organizations where slug='sowgo'")).rows[0].id,campaign=uuid(),otherCampaign=uuid(),owner=uuid(),viewer=uuid(),travel=uuid(),outsider=uuid(),unverified=uuid(),learner=uuid();
   const as=async(u,role='authenticated',client=db)=>{await client.exec('reset role');await client.query("select set_config('request.jwt.claim.sub',$1,false)",[u||'']);await client.exec('set role '+role)};

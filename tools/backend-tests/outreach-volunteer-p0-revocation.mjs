@@ -1,7 +1,6 @@
 // Independent P0 review against its ACTUAL migration, using three native local
 // PostgreSQL sessions. No real account, provider call or hosted resource.
 import assert from'node:assert/strict';import{randomUUID as uuid}from'node:crypto';import{fixture}from'./outreach-team-travel.fixture.mjs';
-if(!process.env.MINDEN_P0_MIGRATION)throw Error('Set MINDEN_P0_MIGRATION to the actual P0 migration');
 const f=await fixture(true),{db,q,as,owner,org}=f;let n=0;
 const ok=(v,m)=>{assert.ok(v,m);n++;console.log('PASS '+m)};
 try{

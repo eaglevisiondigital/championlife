@@ -1,3 +1,7 @@
+# Issue #159 P1 reconciled review candidate — November 17, 2026
+
+P1 Team/Travel backend and staff UI are reconciled onto verified P0 sourceb0bb0d2, retaining all P0 tests and the426-file public artifact. Lifecycle/native/browser fixtures now default to the actual installed P0 initial+forward SQL sequence; the structural fixture remains only for prerequisite recovery tests.64backend,23DOM,9recovery,10native race and7independent P0 checks pass on this integration. P1 SQL remains outside migrations and UNINSTALLED; UI has no public manifest/nav entry. No additional staff or identity access is activated. P0 genuine human security-check/submission acceptance is ongoing separately.
+
 # Issue #159 unlinked website stage — November 17, 2026
 
 Verified source9c9b3a8038db1c84710ecb30aabed648818da748 is published in Netlify deploy6afca94eee48caf607a88ab9. The Minden form is unlinked/noindex and intake remains disabled. The existing verified owner session opened the actual volunteer workspace with0applications. That genuine check exposed a stale loading error after an Auth event; current source pins error handling to request generation, with a regression reproducing the old failure and14staff DOM checks passing. No SQL or permission change in this correction. A compatible server-side Resend key, genuine persisted application/delivery/review and final CTA activation remain pending.

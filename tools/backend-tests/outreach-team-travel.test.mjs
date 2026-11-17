@@ -68,5 +68,5 @@ try{
  await db.exec('reset role');await q('update outreach_campaign_assignments set active=false where user_id=$1',[travel]);await as(travel);await denied(()=>call('roster'),'current campaign revocation rejects unchanged JWT subject');
  await db.exec('reset role');await q("update organization_staff_permissions set revoked_at=now() where user_id=$1 and permission='staff.manage'",[owner]);await as(owner);await denied(()=>call('members'),'current owner permission revocation honored');
  await db.exec('reset role');await reject(()=>db.exec(candidate),'duplicate recovery refuses reapplication',/already present/);await db.exec('rollback');
- console.log(n+' Team/travel checks passed ('+(process.env.TEST_NATIVE_PG==='1'?'native PostgreSQL':'PGlite')+'); '+(process.env.MINDEN_P0_MIGRATION?'actual P0 migration':'synthetic P0 contract fixture'));
+ console.log(n+' Team/travel checks passed ('+(process.env.TEST_NATIVE_PG==='1'?'native PostgreSQL':'PGlite')+'); '+'actual P0 migration sequence');
 }finally{await db.close()}

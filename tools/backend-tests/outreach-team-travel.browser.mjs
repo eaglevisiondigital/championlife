@@ -1,7 +1,6 @@
 // Real Chromium/WebKit UI + real disposable PostgreSQL RPCs. Authentication is
 // an explicitly synthetic local adapter; no hosted Auth, messages or network.
 import{chromium,webkit}from'playwright';import{readFile,mkdir}from'node:fs/promises';import{readFileSync}from'node:fs';import{fileURLToPath}from'node:url';import path from'node:path';import{randomUUID as uuid}from'node:crypto';import assert from'node:assert/strict';import{fixture}from'./outreach-team-travel.fixture.mjs';
-if(!process.env.MINDEN_P0_MIGRATION)throw Error('Actual P0 migration path is required for API-connected browser acceptance');
 const f=await fixture(true),{db,q,as,owner,org}=f,root=path.resolve(fileURLToPath(new URL('../../',import.meta.url))),origin='https://team.local.test',evidence=process.env.EVIDENCE_DIR;let checks=0,caseNumber=0;
 const ok=(v,m)=>{assert.ok(v,m);checks++;console.log('PASS '+m)};if(evidence)await mkdir(evidence,{recursive:true});
 const campaign=(await q("select id from outreach_campaigns where code='minden_la_2026'")).rows[0].id;
