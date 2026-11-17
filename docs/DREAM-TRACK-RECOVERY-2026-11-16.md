@@ -1,4 +1,27 @@
-# DreamTrack v1 recovery — account acceptance and release pending
+# DreamTrack v1 recovery — acceptance passed; release preparation
+
+## Completed acceptance — November 17, 2026
+
+Fresh project `gzrdzhwsasjulvfiugod` was created only after the owner approved the new quoted cost. The exact27 persistent payloads, excluding retired installers, matched all captured production application definitions/ACLs before the course addition. The same guarded forward SQL was installed: SHA256 `8786e9e2435100516fa6eafee59d53c538808754c482a12d49fc44be5098ac5b`, installed MD5 `0daa61da79aa40df2078a97e4798e315`. All140 hosted questions and seven approved IDs/durations match. After installation, only the six intended course self-write policies differ among existing definitions. Eight new tables have RLS and zero raw browser grants.
+
+Genuine delivered-email sign-in and normal access-code enrollment succeeded on a local public artifact with one explicit isolated public configuration overlay. Native controls, with the agent debugger disconnected, captured actual authenticated watch credit before any lesson4–7 boundary fixture:
+
+| Lesson | Genuine recorded seconds |
+|---|---:|
+| Holy Spirit | 78.0134 |
+| Healing | 59.2001 |
+| Abundant Life | 66.8335 |
+| Church Government | 87.9101 |
+
+Each lesson rendered20 approved fields. Holy Spirit graded15/20, then corrected one of five missed-only fields to16, creating25 immutable attempt rows;16 mastered with low watch credit remained locked. Normal save/grading at labeled exact95-percent fixtures advanced through all remaining lessons. First3 rows were separately approved synthetic continuation fixtures using preserved prior genuine acceptance; their immutable history was not copied or fabricated. The new target contains85 real attempt rows from lessons4–7. **These fixtures are not claims of full-video viewing.**
+
+Online completion displayed final meeting required and had no badge. Actual staff UI mark/reverse/re-mark produced one completion row, three immutable audit events and active/inactive/active badge states. The learner dashboard showed the badge and seven passed cards after reload. **These are synthetic meeting acceptance actions, not real in-person meetings.** A fresh invitation was accepted by the provider, genuinely delivered to the approved owned mailbox, and automatically claimed by its verified recipient on My Discipleship. Reload kept one enrollment, one acceptance audit and one completion record. No Person was associated or merged. Prior token rotation/old-link rejection/provider-failure/cancellation evidence remains preserved.
+
+Live anonymous raw-table probes returned401/42501; private and app_private schema profiles returned406/PGRST106. The isolated adapter returned401 for anonymous requests and403 for wrong origins. Revoking the two explicit temporary grants denied the next actual staff request and removed the report. Normal logout left zero sessions and zero active fixture grants. The CLI's omitted-field TOTP/throttle changes were corrected before any account was created; confirmation, eight-digit codes and the one-minute throttle remained enabled afterward. No production Auth/SMTP change occurred.
+
+After credential-free evidence export and hashing, the disposable project was deleted and independently absent from a fresh project list before November17 at5:56PM Central. The loopback server was stopped. No replacement Netlify site or paid add-on was created. Private evidence is under `audit/dream-track-acceptance-2026-11-17/` in the outer workspace; prior evidence remains unchanged. A final provider bill was not obtained.
+
+The exact production preflight passed again inside a read-only transaction ending in rollback. Existing independent full-baseline recovery/concurrency and regression evidence remains valid because no DreamTrack runtime or SQL changed. Concurrent main`72e411d` introduced only five Prayer Confessions PDFs, its library page and manifest/documentation updates. These are preserved through a forward merge and a420-file public build; integrated exact-head CI remains the final release check. The owner's existing conditional release authorization is active. No DreamTrack production migration, merge or deploy is claimed by this acceptance checkpoint.
 
 ## Updated diagnosis — November 17, 2026
 

@@ -1,3 +1,7 @@
+## 2026-11-17 — Execute conditional release after verified acceptance
+
+The owner separately approved the fresh acceptance quote, exact last baseline migration on the new target, and scoped temporary manager/continuation/watch/meeting fixtures. Genuine account/media/grading/invitation/staff/badge gates now pass with fixtures clearly distinguished from actual viewing and meetings. Temporary grants were revoked, logout verified and the target deleted before the approved deadline. The existing conditional release authorization can now be exercised after exact-head integration checks. Preserve concurrent Prayer Confessions main72e411d changes through a forward merge; do not replace production with the older tree, replay history, mergePR2 or change Auth/Giving policy. No new product package is authorized.
+
 ## 2026-11-17 — Use the observed tooling correction; retain conditional release gates
 
 Repeated local comparisons support disconnecting the agent's own debugger and using native controls for media acceptance. They do not support changing the approved shared player runtime or videos. Preserve the previous passing evidence and complete the remaining account/progression/final meeting checks on a separately approved empty backend. The new US$10/month quote has been requested for explicit approval; no resource creation is authorized by the deleted project's earlier cost approval. Existing conditional production release authorization remains active only after every required gate passes.
