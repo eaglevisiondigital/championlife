@@ -1,5 +1,5 @@
 // Explicit JWT validation + guarded manager RPC. No service credentials reach clients.
-export function createHandler({url,anonKey,serviceKey,fetcher=fetch,allowedOrigin='https://deploy-preview-2--championlifechurch.netlify.app'}) {
+export function createHandler({url,anonKey,serviceKey,fetcher=fetch,allowedOrigin='https://championlifefwb.com'}) {
  return async request=>{
   const origin=request.headers.get('origin'),headers={'Content-Type':'application/json','Cache-Control':'no-store','Access-Control-Allow-Origin':allowedOrigin,'Access-Control-Allow-Headers':'authorization, apikey, content-type, x-client-info','Access-Control-Allow-Methods':'POST, OPTIONS','Vary':'Origin'};
   const reply=(data,status=200)=>new Response(JSON.stringify(data),{status,headers});

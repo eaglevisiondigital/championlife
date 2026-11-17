@@ -2,6 +2,22 @@
 -- Dream Track extends existing course identities, enrollments, answers and progress.
 -- Answer keys/configuration are RPC-only; public HTML contains no grading keys.
 begin;
+-- Refuse unknown or already-installed course policy baselines before any change.
+do $dream_preflight$declare actual jsonb;begin
+ if exists(select 1 from public.courses where slug='dream-track')
+ or exists(select 1 from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname='public' and c.relname in ('course_settings','course_lessons','course_questions','course_attempts','course_completions','course_invites','course_audit','course_claim_limits'))
+ then raise exception 'DreamTrack already present or partial schema found; stop for reconciliation';end if;
+ if to_regprocedure('private.has_staff_permission(uuid,text,uuid)') is null
+ or to_regprocedure('private.staff_assignment_active(uuid,uuid)') is null
+ then raise exception 'Current verified staff authorization helpers required';end if;
+ if (select md5(prosrc) from pg_proc where oid='private.has_staff_permission(uuid,text,uuid)'::regprocedure) is distinct from '347f5af5a57c5335d8e0f7c8f7513085'
+ or (select md5(prosrc) from pg_proc where oid='private.staff_assignment_active(uuid,uuid)'::regprocedure) is distinct from 'bbb9b29dee3d8bfb7d107e55e7d20e03'
+ then raise exception 'Staff authorization helper drift; stop for reconciliation';end if;
+ select jsonb_agg(jsonb_build_object('tablename',tablename,'policyname',policyname,'permissive',permissive,'roles',roles,'cmd',cmd,'qual',qual,'with_check',with_check) order by tablename,policyname) into actual
+ from pg_policies where schemaname='public' and tablename in ('course_enrollments','lesson_answers','lesson_progress');
+ if actual is distinct from $expected_policies$[{"tablename":"course_enrollments","policyname":"enrollments_insert_own","permissive":"PERMISSIVE","roles":["authenticated"],"cmd":"INSERT","qual":null,"with_check":"(( SELECT auth.uid() AS uid) = user_id)"},{"tablename":"course_enrollments","policyname":"enrollments_select_own","permissive":"PERMISSIVE","roles":["authenticated"],"cmd":"SELECT","qual":"(( SELECT auth.uid() AS uid) = user_id)","with_check":null},{"tablename":"course_enrollments","policyname":"enrollments_update_own","permissive":"PERMISSIVE","roles":["authenticated"],"cmd":"UPDATE","qual":"(( SELECT auth.uid() AS uid) = user_id)","with_check":"(( SELECT auth.uid() AS uid) = user_id)"},{"tablename":"lesson_answers","policyname":"answers_insert_own","permissive":"PERMISSIVE","roles":["authenticated"],"cmd":"INSERT","qual":null,"with_check":"(( SELECT auth.uid() AS uid) = user_id)"},{"tablename":"lesson_answers","policyname":"answers_select_own","permissive":"PERMISSIVE","roles":["authenticated"],"cmd":"SELECT","qual":"(( SELECT auth.uid() AS uid) = user_id)","with_check":null},{"tablename":"lesson_answers","policyname":"answers_update_own","permissive":"PERMISSIVE","roles":["authenticated"],"cmd":"UPDATE","qual":"(( SELECT auth.uid() AS uid) = user_id)","with_check":"(( SELECT auth.uid() AS uid) = user_id)"},{"tablename":"lesson_progress","policyname":"progress_insert_own","permissive":"PERMISSIVE","roles":["authenticated"],"cmd":"INSERT","qual":null,"with_check":"(( SELECT auth.uid() AS uid) = user_id)"},{"tablename":"lesson_progress","policyname":"progress_select_own","permissive":"PERMISSIVE","roles":["authenticated"],"cmd":"SELECT","qual":"(( SELECT auth.uid() AS uid) = user_id)","with_check":null},{"tablename":"lesson_progress","policyname":"progress_update_own","permissive":"PERMISSIVE","roles":["authenticated"],"cmd":"UPDATE","qual":"(( SELECT auth.uid() AS uid) = user_id)","with_check":"(( SELECT auth.uid() AS uid) = user_id)"}]$expected_policies$::jsonb
+ then raise exception 'Course RLS baseline drift; stop for reconciliation';end if;
+end $dream_preflight$;
 insert into public.courses(slug,title,description,total_lessons) values('dream-track','Dream Track','WATCH + PASS TO ADVANCE',7);
 create table public.course_settings(
  course_id bigint primary key references public.courses(id), organization_id uuid not null references public.organizations(id),
@@ -177,7 +193,7 @@ declare uid uuid:=auth.uid(); cid bigint; eid bigint; l integer; q record; ans t
 end $$;
 create function private.dream_track_admin(p_org uuid,p_action text,p_data jsonb) returns jsonb language plpgsql security definer set search_path='' as $$
 declare cid bigint; eid bigint; uid uuid; cfg public.course_settings; inv public.course_invites; c public.course_completions; raw text; salt text; email text; pid uuid; result jsonb;begin
- if not private.has_staff_permission(p_org,'courses.manage') then raise exception 'Organization-wide courses.manage required';end if;
+ if not private.has_staff_permission(p_org,'courses.manage') then raise exception 'Organization-wide courses.manage required' using errcode='42501';end if;
  select * into cfg from public.course_settings where organization_id=p_org and course_id=(select id from public.courses where slug='dream-track');cid:=cfg.course_id;
  if cid is null then raise exception 'Course unavailable in this organization';end if;
  if p_data is null or jsonb_typeof(p_data)<>'object' or octet_length(p_data::text)>16000 then raise exception 'Invalid request';end if;

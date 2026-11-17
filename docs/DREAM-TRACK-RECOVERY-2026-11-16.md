@@ -1,5 +1,23 @@
 # DreamTrack v1 recovery — release held
 
+## Acceptance setup resumed under owner approval
+
+The owner approved the current US$10/month compute quote (US$0.01344/hour, usage/tax additional), one empty project with no paid add-ons, and deletion after acceptance or within 24 hours. New isolated project `ugbxizchszdxpqpxzerp` contains the 27 exact persistent baseline SQL payloads plus the guarded DreamTrack recovery migration. Original files and production history were preserved; the connector assigned new acceptance-only ledger versions, with original filenames/hashes retained in private evidence.
+
+Before DreamTrack, a fresh read-only comparison against actual production matched every captured application catalog field other than server version: 53 RLS tables, 76 function definitions/owners/ACLs, 64 policies, columns, constraints, indexes, triggers, schemas and automatic-RLS event trigger. The new project's broader public default grants were tightened only while empty and verified against the sealed baseline; managed Auth/Storage were not recreated. Private/app_private Data API profiles both return 406/PGRST106.
+
+The guarded recovery SQL checks the absent course/partial tables, exact existing course policies and current staff-helper fingerprints before any change. Its question bank and progression rules are unchanged. The staff page now uses the current staff shell/session logout; permission-filtered course navigation is additive to People. Revoked RPC or invitation delivery access clears private staff content. The adapter defaults to the exact canonical production origin, while the isolated deployed entrypoint supplies only its protected acceptance origin. No production grants or Auth settings were changed; a current production metadata check found one effective existing course manager.
+
+Local validation now includes the integrated existing suite plus all 67 Dream backend checks, 18 learner DOM/Auth checks, 16 staff integration/security assertions, enhanced invitation-adapter origin/identity tests, and native PostgreSQL replay of all 27 persistent migrations with 16 rollback assertions and independent-session meeting/claim races. The original sandbox shared-memory failure is retained; the authorized disposable local rerun passed and removed its cluster.
+
+Hosted rollback checks passed after DreamTrack installation. Postflight: seven lessons, 140 active questions, eight new RLS tables, zero raw browser grants, and zero test Auth users/grants/attempts/invites before genuine login. The security advisor adds only the eight intentional RPC-only no-policy notices; the existing public registration-config definer notices are unchanged.
+
+The static acceptance preview is on separate Netlify project `59f8c5db-099c-4764-bdae-c882c2ebadcd`, protected by team login for all deployments. Anonymous HTTPS returns 401. The first static deploy is `6afbcec01b5ab15a0b4848c1`; no Netlify functions or edge functions are deployed there. Its separately reviewed build overlay permits only the new project and never falls back to production. The isolated `dream-track-invite` function is ACTIVE version 1 with explicit Auth validation and manager RPC checks. Production is still unchanged.
+
+Genuine sign-in was requested for the owner-supplied mailbox. Provider acceptance was observed, not assumed inbox delivery. The owner is completing sign-in directly in the preview; no code or credential is requested in chat. Genuine account/video/grade/save/invitation/staff acceptance and production release remain in progress.
+
+The historical initial HOLD findings and original source recovery record below are retained as a chronological audit; the raw-parent baseline blocker has been resolved by the separately approved empty project.
+
 Approved source: `5e6ecc3bf00de2b5284ff3fc9486e4381599918c`. Recovery branch: `codex/dream-track-recovery-20261116`, based on the verified production source `8a779d4f94f4114afb06c040c46737724c615eef`. The historical behavior contract is [DREAM-TRACK-V1.md](DREAM-TRACK-V1.md). PR #2 was not merged.
 
 ## Implemented locally

@@ -1,3 +1,7 @@
+## 2026-11-16 — Current-baseline DreamTrack reconciliation
+
+The recovered existing course/Auth model is reconciled to the actual production catalog using an isolated empty project and the accepted 27 persistent SQL payloads. New acceptance-ledger timestamps are mapped to unchanged original filenames/hashes; production history is untouched. The course migration atomically refuses unknown policy/helper baselines or a partial/existing DreamTrack. Staff UI reuses the current session/logout boundary and adds organization-wide course-authorized navigation. The invitation adapter uses a fixed canonical production origin, with an exact isolated-origin entrypoint only for acceptance. No platform/identity/merchant redesign. See [acceptance status](docs/DREAM-TRACK-RECOVERY-2026-11-16.md).
+
 ## 2026-11-16 — Isolated DreamTrack recovery candidate
 
 Approved existing course/enrollment/Auth architecture is recovered from 5e6ecc3 onto live 8a779d4, with additive My Discipleship integration and current login/operational contracts retained. It is local and unreleased. An uninstalled SQL payload is tested against the repository chain; no historical migration is added or rewritten. Raw parent-history branching cannot reproduce current production because retired staff installers require production reference IDs. Use the independently reviewed 27-persistent-migration current-schema baseline on an approved empty destination. See [recovery status](docs/DREAM-TRACK-RECOVERY-2026-11-16.md).

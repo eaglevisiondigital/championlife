@@ -1,10 +1,14 @@
 import{createHandler}from'../../supabase/functions/dream-track-invite/handler.mjs';import assert from'node:assert/strict';
-const origin='https://deploy-preview-2--championlifechurch.netlify.app';let calls=[],providerOK=true,permitted=true;
-const fetcher=async(url,opts)=>{calls.push({url,opts});if(url.endsWith('/auth/v1/user'))return{ok:true};if(url.endsWith('/dream_track_admin'))return{ok:permitted,json:async()=>({id:'invite',recipient_email:'synthetic@example.test',delivery_id:'nonce'})};if(url.includes('/otp?'))return{ok:providerOK};return{ok:true}};
+const origin='https://championlifefwb.com';let calls=[],providerOK=true,permitted=true,identityOK=true;
+const fetcher=async(url,opts)=>{calls.push({url,opts});if(url.endsWith('/auth/v1/user'))return{ok:identityOK};if(url.endsWith('/dream_track_admin'))return{ok:permitted,json:async()=>({id:'invite',recipient_email:'synthetic@example.test',delivery_id:'nonce'})};if(url.includes('/otp?'))return{ok:providerOK};return{ok:true}};
 const handler=createHandler({url:'https://acceptance.example',anonKey:'public',serviceKey:'server-only-test',fetcher});
 const req=(o=origin,token='a'.repeat(64))=>new Request('https://function.example',{method:'POST',headers:{origin:o,Authorization:'Bearer user-session'},body:JSON.stringify({organization_id:'org',invite_id:'invite',token})});
 assert.equal((await handler(req('https://evil.example'))).status,403);assert.equal(calls.length,0);
 assert.equal((await handler(req(origin,'bad'))).status,400);assert.equal(calls.length,0);
+assert.equal((await handler(req('https://deploy-preview-2--championlifechurch.netlify.app'))).status,403);assert.equal(calls.length,0);
+assert.equal((await handler(new Request('https://function.example',{method:'POST',headers:{origin},body:'{}'}))).status,401);assert.equal(calls.length,0);
+assert.equal((await handler(new Request('https://function.example',{method:'GET',headers:{origin}}))).status,405);assert.equal(calls.length,0);
+identityOK=false;assert.equal((await handler(req())).status,401);assert(calls.every(c=>c.url.endsWith('/auth/v1/user')));identityOK=true;calls=[];
 permitted=false;assert.equal((await handler(req())).status,403);assert(!calls.some(c=>c.url.includes('/otp')));
 permitted=true;calls=[];let r=await handler(req());assert.equal(r.status,200);assert.equal((await r.json()).send_status,'provider_accepted');const email=calls.find(c=>c.url.includes('/otp'));assert.deepEqual(JSON.parse(email.opts.body),{email:'synthetic@example.test',create_user:true});assert(email.url.includes(encodeURIComponent(origin+'/discipleship-login.html')));assert(!JSON.stringify(email).includes('server-only-test'));
 assert(JSON.parse(calls.find(c=>c.url.endsWith('/course_invite_delivery')).opts.body).p_sent);

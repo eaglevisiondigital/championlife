@@ -15,6 +15,8 @@
   main.replaceChildren();
   const financial=document.getElementById('financial-outreach-link');
   if(financial)financial.hidden=true;
+  const dream=document.getElementById('dream-track-staff-link');
+  if(dream)dream.hidden=true;
  }
  function clearReturnHint(){try{sessionStorage.removeItem('championlife-auth-next')}catch{}}
  function leave(){
