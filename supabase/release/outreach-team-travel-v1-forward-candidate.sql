@@ -125,15 +125,31 @@ create table public.outreach_team_history(
 create index outreach_team_history_campaign_idx on public.outreach_team_history(campaign_id,id);
 create trigger outreach_team_history_immutable before update or delete on public.outreach_team_history for each row execute function private.outreach_immutable();
 
+-- P1-only live-date supplements. Retain the production helper's complete gate,
+-- then check the matching grant/department/person-affiliation against wall time.
+create function private.outreach_team_permission_now(p_org uuid,p_key text,p_department uuid default null) returns boolean language sql volatile security definer set search_path='' as $$
+ select private.has_staff_permission(p_org,p_key,p_department)
+ and exists(select 1 from public.organization_staff_directory d where d.organization_id=p_org and d.user_id=auth.uid() and d.active
+  and d.effective_at<=clock_timestamp() and (d.expires_at is null or d.expires_at>clock_timestamp()))
+ and exists(select 1 from public.organization_staff_permissions g where g.organization_id=p_org and g.user_id=auth.uid() and g.permission=p_key
+  and g.revoked_at is null and g.effective_at<=clock_timestamp() and (g.expires_at is null or g.expires_at>clock_timestamp())
+  and (g.department_ids is null or (p_department is not null and p_department=any(g.department_ids)
+   and exists(select 1 from public.organization_departments d where d.organization_id=p_org and d.id=p_department and d.active))))
+$$;
+create function private.outreach_team_person_permission_now(p_org uuid,p_person uuid,p_key text) returns boolean language sql volatile security definer set search_path='' as $$
+ select private.person_permission(p_org,p_person,p_key) and
+ (private.outreach_team_permission_now(p_org,p_key) or exists(
+  select 1 from public.person_department_affiliations a where a.organization_id=p_org and a.person_id=p_person and a.active
+  and a.effective_at<=clock_timestamp() and (a.expires_at is null or a.expires_at>clock_timestamp())
+  and private.outreach_team_permission_now(p_org,p_key,a.department_id)))
+$$;
 create function private.outreach_team_can(c uuid,cap text) returns boolean language sql volatile security definer set search_path='' as $$
  select cap in('team.view','team.manage','team.export','travel.view','travel.manage','travel.export')
  and private.outreach_verified(auth.uid()) and exists(select 1 from public.outreach_campaigns x where x.id=c and
  private.staff_assignment_active(x.organization_id,auth.uid()) and
  exists(select 1 from public.organization_staff_directory d where d.organization_id=x.organization_id and d.user_id=auth.uid() and d.active
   and d.effective_at<=clock_timestamp() and (d.expires_at is null or d.expires_at>clock_timestamp())) and
- ((private.has_staff_permission(x.organization_id,'staff.manage') and exists(
-   select 1 from public.organization_staff_permissions g where g.organization_id=x.organization_id and g.user_id=auth.uid() and g.permission='staff.manage'
-   and g.department_ids is null and g.revoked_at is null and g.effective_at<=clock_timestamp() and (g.expires_at is null or g.expires_at>clock_timestamp()))) or exists(
+ (private.outreach_team_permission_now(x.organization_id,'staff.manage') or exists(
   select 1 from public.outreach_campaign_assignments a where a.campaign_id=c and a.user_id=auth.uid() and a.active
   and a.effective_at<=clock_timestamp() and (a.expires_at is null or a.expires_at>clock_timestamp())
   and 'view'=any(a.capabilities) and cap=any(a.capabilities))))
@@ -177,18 +193,18 @@ begin
   when a='csv' then 'travel.export' when a in('enroll','review_age','availability_review','guardian_review','guardian_options','status','attendance') then 'team.manage' else 'travel.manage' end;
  if not private.outreach_team_can(c,cap) and not(a='context' and private.outreach_team_can(c,'travel.view')) then raise exception 'Team/travel access denied' using errcode='42501';end if;
  if a='context' then return jsonb_build_object('campaign_id',c,'organization_id',org,'name',(select name from public.outreach_campaigns where id=c),
-  'application_review_allowed',private.has_staff_permission(org,'staff.manage') and exists(select 1 from public.outreach_campaigns e join public.organizations o on o.id=e.organization_id where e.id=c and e.code='minden_la_2026' and o.slug='sowgo'),
+  'application_review_allowed',private.outreach_team_permission_now(org,'staff.manage') and exists(select 1 from public.outreach_campaigns e join public.organizations o on o.id=e.organization_id where e.id=c and e.code='minden_la_2026' and o.slug='sowgo'),
   'capabilities',to_jsonb(array(select k from unnest(array['team.view','team.manage','team.export','travel.view','travel.manage','travel.export']) k where private.outreach_team_can(c,k))),
   'summary',(select coalesce(jsonb_object_agg(status,n),'{}') from(select status,count(*) n from public.outreach_team_members where campaign_id=c group by status)s));
  elsif a='guardian_options' then
   select * into m from public.outreach_team_members where campaign_id=c and id=(p->>'member_id')::uuid;
-  if m.id is null or not(private.has_staff_permission(org,'households.read') and private.person_permission(org,m.person_id,'people.read')) then raise exception 'Canonical household review denied' using errcode='42501';end if;
+  if m.id is null or not(private.outreach_team_permission_now(org,'households.read') and private.outreach_team_person_permission_now(org,m.person_id,'people.read')) then raise exception 'Canonical household review denied' using errcode='42501';end if;
   return coalesce((select jsonb_agg(jsonb_build_object('guardian_member_id',g1.id,'household_id',h.id,'household_name',h.name,'first_name',z.first_name,'last_name',z.last_name))
    from public.outreach_team_members g1 join public.organization_people z on z.id=g1.person_id and z.organization_id=org
    join public.household_members x1 on x1.person_id=m.person_id and x1.organization_id=org and x1.active
    join public.household_members x2 on x2.household_id=x1.household_id and x2.person_id=g1.person_id and x2.active
    join public.households h on h.id=x1.household_id and h.organization_id=org and h.status='active'
-   where g1.campaign_id=c and g1.age>=18 and g1.status='approved' and private.person_permission(org,g1.person_id,'people.read')),'[]');
+   where g1.campaign_id=c and g1.age>=18 and g1.status='approved' and private.outreach_team_person_permission_now(org,g1.person_id,'people.read')),'[]');
  elsif a='travelers' then
   return coalesce((select jsonb_agg(jsonb_build_object('id',t.id,'first_name',z.first_name,'last_name',z.last_name,'status',t.status,'travel_ready',private.outreach_team_ready(c,t.id),'adult_reviewed',t.age>=18) order by z.last_name,z.first_name,t.id)
    from public.outreach_team_members t join public.organization_people z on z.id=t.person_id and z.organization_id=t.organization_id where t.campaign_id=c),'[]');
@@ -232,7 +248,7 @@ begin
  reason:=btrim(coalesce(p->>'reason',''));
  if a in('enroll','review_age','availability_review','guardian_review','status','attendance','driver_review','assignment_cancel','assignment_reassign') and length(reason) not between 10 and 500 then raise exception 'Explicit review reason required';end if;
  if a='enroll' then
-  if not(private.person_permission(org,(p->>'person_id')::uuid,'people.read') and private.person_permission(org,(p->>'person_id')::uuid,'people.update')) then raise exception 'Reviewed canonical Person required' using errcode='42501';end if;
+  if not(private.outreach_team_person_permission_now(org,(p->>'person_id')::uuid,'people.read') and private.outreach_team_person_permission_now(org,(p->>'person_id')::uuid,'people.update')) then raise exception 'Reviewed canonical Person required' using errcode='42501';end if;
   if not exists(select 1 from public.outreach_volunteer_applications s where s.id=(p->>'application_id')::uuid and s.campaign_id=c and s.organization_id=org and s.status not in('cancelled','not_selected')) then raise exception 'Active application in this event required';end if;
   insert into public.outreach_team_members(campaign_id,organization_id,application_id,person_id,identity_reviewed_by,identity_reason)
    values(c,org,(p->>'application_id')::uuid,(p->>'person_id')::uuid,auth.uid(),reason) returning id into target;
@@ -242,7 +258,7 @@ begin
   if m.revision is distinct from (p->>'revision')::int then raise exception 'Participant changed; reload' using errcode='40001';end if;
   target:=m.id;
   if a='review_age' then
-   if not(private.person_permission(org,m.person_id,'people.read') and private.person_permission(org,m.person_id,'people.update')) then raise exception 'Canonical age review permission required' using errcode='42501';end if;
+   if not(private.outreach_team_person_permission_now(org,m.person_id,'people.read') and private.outreach_team_person_permission_now(org,m.person_id,'people.update')) then raise exception 'Canonical age review permission required' using errcode='42501';end if;
    if exists(select 1 from public.outreach_team_vehicle_assignments where campaign_id=c and member_id=m.id and state<>'cancelled') then raise exception 'Release travel assignments before age correction';end if;
    if p->>'age' is null then raise exception 'Explicit verified age required';end if;
    update public.outreach_team_members set age=(p->>'age')::int,age_reviewed_by=auth.uid(),age_reviewed_at=now(),age_reason=reason where id=m.id;
@@ -255,7 +271,7 @@ begin
   elsif a='guardian_review' then
    select * into g from public.outreach_team_members where campaign_id=c and id=(p->>'guardian_member_id')::uuid;
    if m.age is null or m.age>=18 or g.id is null or g.age<18 or g.age is null or g.id=m.id then raise exception 'Reviewed minor and adult guardian required';end if;
-   if not(private.has_staff_permission(org,'households.read') and private.person_permission(org,m.person_id,'people.read') and private.person_permission(org,g.person_id,'people.read')) then raise exception 'Canonical guardian review denied' using errcode='42501';end if;
+   if not(private.outreach_team_permission_now(org,'households.read') and private.outreach_team_person_permission_now(org,m.person_id,'people.read') and private.outreach_team_person_permission_now(org,g.person_id,'people.read')) then raise exception 'Canonical guardian review denied' using errcode='42501';end if;
    if exists(select 1 from public.outreach_team_vehicle_assignments where campaign_id=c and member_id=m.id and state<>'cancelled') then raise exception 'Release travel assignments before guardian correction';end if;
    if not exists(select 1 from public.households h join public.household_members x1 on x1.household_id=h.id and x1.person_id=m.person_id and x1.active join public.household_members x2 on x2.household_id=h.id and x2.person_id=g.person_id and x2.active where h.organization_id=org and h.id=(p->>'household_id')::uuid and h.status='active') then raise exception 'Active canonical Household membership required';end if;
    update public.outreach_team_members set guardian_member_id=g.id,guardian_reviewed_by=auth.uid(),guardian_reviewed_at=now(),guardian_reason=reason,household_id=(p->>'household_id')::uuid where id=m.id;
@@ -373,7 +389,7 @@ create function private.outreach_team_own(c uuid) returns jsonb language plpgsql
 end $$;
 create function public.outreach_team_own(p_campaign uuid default null) returns jsonb language sql security invoker set search_path='' as $$select private.outreach_team_own(p_campaign)$$;
 create function public.outreach_team_workspace(p_action text,p_campaign uuid,p_payload jsonb default '{}') returns jsonb language sql security invoker set search_path='' as $$select private.outreach_team_workspace(p_action,p_campaign,p_payload)$$;
-revoke all on function private.outreach_team_can(uuid,text),private.outreach_team_lock(uuid,text),private.outreach_team_ready(uuid,uuid),private.outreach_team_confirmation_valid(uuid,uuid),private.outreach_team_record(uuid,text,uuid,jsonb),private.outreach_team_workspace(text,uuid,jsonb),public.outreach_team_workspace(text,uuid,jsonb) from public,anon,authenticated;
+revoke all on function private.outreach_team_permission_now(uuid,text,uuid),private.outreach_team_person_permission_now(uuid,uuid,text),private.outreach_team_can(uuid,text),private.outreach_team_lock(uuid,text),private.outreach_team_ready(uuid,uuid),private.outreach_team_confirmation_valid(uuid,uuid),private.outreach_team_record(uuid,text,uuid,jsonb),private.outreach_team_workspace(text,uuid,jsonb),public.outreach_team_workspace(text,uuid,jsonb) from public,anon,authenticated;
 grant execute on function private.outreach_team_workspace(text,uuid,jsonb),public.outreach_team_workspace(text,uuid,jsonb) to authenticated;
 revoke all on function private.outreach_team_own(uuid),public.outreach_team_own(uuid) from public,anon,authenticated;
 grant execute on function private.outreach_team_own(uuid),public.outreach_team_own(uuid) to authenticated;

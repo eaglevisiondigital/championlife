@@ -23,11 +23,12 @@
     "test:volunteer": "node outreach-volunteer-gateway.test.mjs && node outreach-volunteer.dom.mjs && node outreach-volunteer-staff.dom.mjs",
     "test:volunteer-native": "node outreach-volunteer.test.mjs",
     "test:team-travel": "node outreach-team-travel.recovery.mjs && node outreach-team-travel.test.mjs && node outreach-team-travel.dom.mjs && node outreach-team-portal.dom.mjs && node outreach-team-travel.guardian.mjs && node outreach-team-travel.stop.test.mjs",
-    "test:team-travel:native": "TEST_NATIVE_PG=1 node outreach-team-travel.test.mjs && node outreach-team-travel.concurrent.mjs && TEST_NATIVE_PG=1 node outreach-team-travel.guardian.mjs && node outreach-team-travel.expiry.mjs",
+    "test:team-travel:native": "TEST_NATIVE_PG=1 node outreach-team-travel.test.mjs && node outreach-team-travel.concurrent.mjs && TEST_NATIVE_PG=1 node outreach-team-travel.guardian.mjs && node outreach-team-travel.expiry.mjs && node outreach-team-travel.dependencies.mjs",
     "test:volunteer-p0:revocation": "node outreach-volunteer-p0-revocation.mjs",
     "test:team-travel:browser": "node outreach-team-travel.browser.mjs",
     "test:team-notifications": "node outreach-team-notifications.test.mjs",
     "test:team-travel:guardian": "node outreach-team-travel.guardian.mjs",
-    "test:team-travel:expiry": "node outreach-team-travel.expiry.mjs"
+    "test:team-travel:expiry": "node outreach-team-travel.expiry.mjs",
+    "test:team-travel:dependencies": "node outreach-team-travel.dependencies.mjs"
   }
 }
