@@ -411,5 +411,12 @@
   "terms.html",
   "watch-join-us-approved.png",
   "watch.html",
-  "youth.html"
+  "youth.html",
+  "assets/css/dream-track.css",
+  "assets/js/dream-track-common.js",
+  "assets/js/dream-track-dashboard.js",
+  "assets/js/dream-track.js",
+  "assets/js/staff-dream-track.js",
+  "dream-track-invite.html",
+  "staff-dream-track.html"
 ]

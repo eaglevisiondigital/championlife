@@ -1,3 +1,23 @@
+## 2026-11-17 — Hosted acceptance completed; existing architecture retained
+
+The unchanged player/course/Auth architecture passed genuine account playback and normal grading/progression for lessons4–7 on a fresh exact-baseline project. First3 continuation and95-percent watched ranges were explicitly synthetic, following preserved actual playback evidence. Final meeting/badge and invitation flows passed through the actual UI; private data stayed in the isolated target, which was deleted. Only six existing course self-write policies differ from the production baseline. Concurrent main72e411d adds Prayer Confessions files/page/manifest only; forward-merge them without changing DreamTrack runtime or unrelated modules. Release preparation proceeds under the existing conditional owner authorization after exact-head checks.
+
+## 2026-11-17 — Preserve the player after controlled debugger comparison
+
+The unchanged constructor plays the approved lesson 3–7 videos on a local page when the agent debugger is disconnected. Reattaching before new iframe creation reproduces the shared stall; disconnecting resolves it without runtime changes. Native browser controls are the acceptance path for media initialization. This is an observed tooling interaction, not proof of an internal browser implementation cause. Preserve the course, Auth and invitation architecture. Any new acceptance backend requires its fresh quoted-cost approval; its website can run locally with an explicit isolated public configuration and no production fallback.
+
+## 2026-11-17 — DreamTrack recovery compatibility hold
+
+Existing course/Auth/staff architecture remains retained; no alternative player architecture was merged. A documented existing-iframe initialization experiment failed to resolve the owner-confirmed black Holy Spirit player and was removed. Prior real-account and independent database/security checks are preserved, with synthetic threshold fixtures distinguished from actual playback. The disposable acceptance project/preview were deleted before the approved deadline. Production remains unchanged; investigate the iframe request and initialization cause before any replacement acceptance target or release. See [current report](docs/DREAM-TRACK-RECOVERY-2026-11-16.md).
+
+## 2026-11-16 — Current-baseline DreamTrack reconciliation
+
+The recovered existing course/Auth model is reconciled to the actual production catalog using an isolated empty project and the accepted 27 persistent SQL payloads. New acceptance-ledger timestamps are mapped to unchanged original filenames/hashes; production history is untouched. The course migration atomically refuses unknown policy/helper baselines or a partial/existing DreamTrack. Staff UI reuses the current session/logout boundary and adds organization-wide course-authorized navigation. The invitation adapter uses a fixed canonical production origin, with an exact isolated-origin entrypoint only for acceptance. No platform/identity/merchant redesign. See [acceptance status](docs/DREAM-TRACK-RECOVERY-2026-11-16.md).
+
+## 2026-11-16 — Isolated DreamTrack recovery candidate
+
+Approved existing course/enrollment/Auth architecture is recovered from 5e6ecc3 onto live 8a779d4, with additive My Discipleship integration and current login/operational contracts retained. It is local and unreleased. An uninstalled SQL payload is tested against the repository chain; no historical migration is added or rewritten. Raw parent-history branching cannot reproduce current production because retired staff installers require production reference IDs. Use the independently reviewed 27-persistent-migration current-schema baseline on an approved empty destination. See [recovery status](docs/DREAM-TRACK-RECOVERY-2026-11-16.md).
+
 ## 2026-10-23 — Reusable staff presentation and session header
 
 `staff-portal.css` is opt-in through `body.staff-portal`; it does not restyle public pages. `staff-session.js` adds the same email/logout header to People, Registration/Check-In and Partner Review, using the existing ChampionLifeAuth client. It owns no authorization, RPC or data model. Existing modules retain their permission checks and async generation guards. Protected module mounts are detached before sign-out and before bfcache snapshots, so late responses cannot repopulate the visible workspace. See `docs/STAFF-PORTAL-POLISH.md`.
