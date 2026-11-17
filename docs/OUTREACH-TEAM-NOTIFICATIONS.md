@@ -56,6 +56,52 @@ const draft = prepareTeamNoticeDraft({
 
 These are local pure-module checks. They do not establish message-copy approval, recipient verification, consent/suppression rules, provider delivery, hosted acceptance or activation. No new database or native concurrency test is needed because this package changes no persistence or operational mutation.
 
+## Proposed Resend delivery and outcome integration — unimplemented
+
+This section prepares a technical review for a future authorized delivery package. **Only the catalog and pure held-review builder exist today.** There is no persistent P1 intent/outbox, delivery worker, provider idempotency integration, receipt ingestion or staff outcome report. The119 preparation checks prove none of those delivery capabilities. No setting, provider call, credential change, recipient selection or status-message activation is introduced here.
+
+### Separate immutable intent and durable duplicate protection
+
+A future P1 implementation should adapt P0's frozen-payload, deterministic-key, row-lock/lease and guarded-result pattern into a **separate private P1 outbox**. It must not insert status notices into the existing application-received outbox or change its payload, key, worker or contract. P0 currently holds attempts after its23-hour retry boundary for provider review; this is useful recovery precedent, not an approved P1 retry/timing policy.
+
+An approved intent would bind an immutable intent UUID and logical business event to organization, campaign, participant, notice kind, authoritative source change/revision, explicitly approved recipient identity/contact/channel, sender/reply-to, template version, policy version, exact rendered provider payload and its digest. Recipient verification and authorization evidence must be recorded without embedding secrets or private review content. A changed recipient or payload cannot reuse that intent's provider key. Template or policy version changes must not silently manufacture another send for the same business event; any replacement/resend needs separately approved intent semantics.
+
+Two database constraints are needed: one durable uniqueness rule for the approved logical intent, and one for its provider key. Producers racing on the same event must resolve to the same recorded intent. A dedupe record/tombstone must survive beyond the provider window and any permitted retry/replay period; privacy/retention rules and the exact logical-event key remain decisions before schema implementation. Deleting an outbox row must not silently reopen permission to deliver its old intent. The current `review_key` is a preparation fingerprint only and cannot supply this persistence or delivery guarantee.
+
+Resend documents retry deduplication for the same key and payload within24 hours, and retains keys for24 hours. A future stable key such as `outreach-team-v1/<intent_uuid>` would therefore be bound to one frozen request; local durable uniqueness is still needed after that provider window expires. A worker must never rotate the key or issue a new intent merely because a timeout occurred or24 hours elapsed. [Resend engineering details](https://resend.com/blog/engineering-idempotency-keys), [Resend idempotency release](https://resend.com/changelog/idempotency-keys).
+
+### Claim, authorization and ambiguous results
+
+Future preparation/authorization/claim operations must use authoritative database state and current permission checks, not the booleans supplied to this pure helper. They must recheck approved actor authority, recipient binding/verification, consent/suppression rules and current canonical links at each approved boundary and immediately before a provider attempt. Member/source precedence, availability/age/guardian review, assignment and leg revisions, driver qualification, same-vehicle guardian and complete current-confirmation validity must still support the selected copy. Expired/revoked staff, changed recipients, stale/invalidated trips or missing policy must leave work held or superseded, without sending an obsolete approval or travel confirmation. Existing Team permissions and P0's sending domain/key imply no status-message authority.
+
+Intent creation and claim should be atomic database operations with unique constraints, bounded leases and compare-and-set result recording. A stale worker cannot overwrite a newer lease/result. Commit the claim before networking; do not hold the campaign capacity lock across a provider call. Record attempt start and stable payload/key before the request so a crash cannot erase knowledge that sending may have begun.
+
+There is no transaction spanning PostgreSQL and Resend. Timeout/disconnect, process death after provider acceptance, failed local result persistence, or an uncertain response must enter reconciliation hold. A changed-payload/key conflict is an integrity failure requiring review. No failure path may label an ambiguous attempt definitely unsent or create a fresh key to bypass deduplication. Any permitted retry must retain the same intent/key/payload and satisfy approved freshness, lease and provider-window rules. Once the dedupe window is uncertain/expired, reconcile with authorized provider evidence before any separately approved next action. A provider POST already in flight cannot be atomically revoked or recalled; record this boundary, stop subsequent attempts when authority/state changes, and never promise exactly-once delivery or unsending.
+
+### Accepted, delivered and negative outcomes
+
+Future reporting should keep local work state separate from provider outcomes:
+
+| Evidence | Permitted meaning |
+| --- | --- |
+| Held/authorized/leased local intent | Preparation or attempt state only; no provider acceptance claim. |
+| Valid successful send response bound to this intent's provider email ID | Provider accepted the request; delivery remains unproven. |
+| Verified `email.delivered` receipt | Delivered to the recipient's mail server; not proof that the person read it. |
+| Verified delayed, failed, bounced, complained or suppressed receipt | Preserve that specific outcome and its time; no generic success label or automatic fresh send. |
+| Ambiguous response or conflicting/unmatched evidence | Reconciliation required; no inferred delivery or retry authority. |
+
+Resend distinguishes successful API requests (`email.sent`) from recipient-mail-server delivery, and supplies separate failure/delay/bounce/complaint/suppression events. Opening/click tracking must not become attendance, identity verification or travel confirmation evidence. [Resend event meanings](https://resend.com/docs/webhooks/event-types).
+
+A future webhook endpoint must verify the signature and timestamp against the raw request body with the correct environment's signing secret **before** parsing/trusting an outcome; Resend's SDK supports this verification. Then dedupe receipt IDs durably and bind account/environment/provider email ID to the recorded intent. Preserve received/provider times and append-only redacted evidence; out-of-order, duplicate or conflicting events cannot erase a negative outcome or turn an unrelated email into this intent's success. Receipt data must never grant access, change a person's team/travel status or trigger an unapproved message. [Resend webhook verification](https://resend.com/docs/webhooks/verify-webhooks-requests).
+
+Authorized reconciliation could retrieve the specific recorded provider email ID using `GET /emails/:email_id` and retain only necessary receipt fields and a redacted evidence reference. GET can report `last_event`; it does not replace durable local intent history. The existing P0 sending-only credential cannot retrieve emails: that requires separately authorized provider read access, which this package neither requests nor configures. An authorized dashboard receipt may support manual reconciliation, with the same intent binding and audit requirements. Unknown provider IDs or unavailable evidence remain held. [Retrieve sent email](https://resend.com/docs/api-reference/emails/retrieve-email), [Resend key permission scopes](https://resend.com/docs/api-reference/api-keys/create-api-key).
+
+### Scoped reporting, inactive default and future proof
+
+A future report should expose event-scoped counts and authorized per-intent state/timestamps, notice/version, attempt count and redacted outcome/reconciliation reason. Separate report authority is still undecided. Do not expose raw provider responses, bodies, recipient lists, keys/tokens, webhook secrets, private reviews, passenger manifests or another person's IDs. Enforce current organization/campaign permissions on every read/export and clear late responses after revocation as existing P1 views do. Provider-dashboard access is independent authority.
+
+Any future worker/channel must default inactive and fail closed when approval, current authority, approved recipient binding, immutable payload, configuration or receipt verification is missing. No trigger, schedule or enabled setting is prepared now. Before release, meaningful independent-connection tests must cover duplicate producers/workers and stale leases; replay beyond24 hours; accepted-response/persistence crashes and timeouts; expiry/revocation or recipient/itinerary drift after claim; invalid/replayed/out-of-order/wrong-email receipts and unavailable GET evidence; scoped redacted reporting; and unchanged P0 receipt behavior. Real provider delivery/outcome acceptance needs separate explicit authorization and approved test recipients. These tests and the delivery implementation remain unimplemented; exact copy, recipient/consent, transition/timing, sender, duties and retention decisions below remain open.
+
 ## Decisions required before delivery implementation
 
 1. Which of the nine proposed notice types, if any, are approved? Approve exact copy and status-authority rules, including precedence between intake review and Team decisions. The existing P0 receipt remains independently authorized.

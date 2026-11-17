@@ -1,3 +1,7 @@
+# P1 notification delivery/outcome design — documentation only, November17,2026
+
+[The inert notification contract](docs/OUTREACH-TEAM-NOTIFICATIONS.md) now records a concrete proposed separate P1 immutable-intent/outbox, durable uniqueness beyond Resend's24-hour dedupe window, accepted-versus-delivered/negative receipts, ambiguous-attempt reconciliation hold, verified webhook/authorized GET evidence, current permission/state rechecks and redacted scoped reporting. No delivery code/schema/provider integration, recipient policy, activation or hosted change exists. The119 checks cover pure held preparation only; real delivery/recovery tests and approved message/recipient/duty/timing policy remain open. P0 is unchanged.
+
 # P1 scoped permission dependency expiry — local follow-up, November17,2026
 
 The follow-up to core fixc9d3b10 closes the same lock-wait date gap for People/Household dependencies. New P1-only permission/person wrappers first retain the unchanged production helpers, then require current directory/grant dates and matching active department/Person-affiliation dates. All P1 Person and Household review dependencies use them; no new client execute grants. This preserves global versus department scope, verified/active/canonical-link/revocation checks and conservative legacy eligibility, while expiry can deny within the waiting request. Source SQL hash is nowf6dd9b5bd0f316d105147f6de7a42a5fa694b55e48a0411b7867b72f8e3f90f2.
