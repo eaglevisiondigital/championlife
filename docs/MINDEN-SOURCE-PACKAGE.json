@@ -1,0 +1,33 @@
+{
+  "schema_version": 2,
+  "production_base": "c7e67f7d7fda2a834e423fc02bde755f3563837b",
+  "canonical_campaign": "d26b8337-d215-42d3-ac3b-c771f7f07db7",
+  "release_authorized": false,
+  "hosted_acceptance": false,
+  "attendee_enabled": false,
+  "decision_enabled": false,
+  "notifications_enabled": false,
+  "public_file_count": 443,
+  "files": {
+    "supabase/release/minden-decision-foundation-v2.sql": "9ce3c8a14f8a03ac50a4dcf077e4d575628d625d353ac6145f67b3f5aaec11b7",
+    "supabase/release/minden-decision-intake-v2.sql": "4a5540b3bd62b3ea2395726825d6c200b1032e19d80d13bee5bc385405da1607",
+    "supabase/release/minden-king-kind-entitlement-v2.sql": "43a79fc6c1b2b334c1f3ec6a0a35878e370c0bea80a956b0e4b8d7586f6cd873",
+    "supabase/release/minden-family-intake-disabled-v2.sql": "7d9c73a683b3e96613425d0fc19c44ac63e01bcc8622a3cf5c4f32c318c6f626",
+    "supabase/release/minden-decision-recovery-v2.sql": "816c0d0d67cc2fc8bb2668997d0dfc47f27d52f8123bb34ca18d3e92b1b4cf06",
+    "supabase/release/minden-v2-production-preflight.sql": "dfb8abaa749c124c1f4b0084de3f1123db7e22f8fd6e9ddb91ee0cc2aea5d1ac",
+    "supabase/release/minden-v2-forward-candidate.sql": "3090288b251a96de8ae424e587447cf94edb8f77229c225cb982a0c2c739b41e",
+    "supabase/functions/minden-decision-submit/gateway.mjs": "1b1522318284d7d2f4146e1f809e43f506b73f6fbd1b3cd2611dd7a3a531ac38",
+    "supabase/functions/minden-decision-submit/index.ts": "8515b8751ea13acf67e4f8c8e5be3d8b10c66bb3953688bdfd9e97a1e4e025a5",
+    "assets/css/minden-decision.css": "280ebf2384f90604c860a44dca39da7b9c661ee5cf1caf16fee599a38cc7a667",
+    "assets/js/king-kind-reader.js": "d1f4cdf8fd00444f4ba90a05e844d2bb879551afe3cbe6d4c4d55da3ca8f2809",
+    "king-kind-reader.html": "ef3180a0fc7ea2c8234b9ab824c919552b5ecc5eb5527af439d7fbee419373f1",
+    "assets/js/minden-decision-public.js": "674e4babd29e1bcc859b71fa5397a6715226afea0bb0aea0f74a81abe714a92b",
+    "assets/js/minden-decision-config.js": "0bff09dd44e616df6c93ff85228c5c61a2a38f1b26f0edc8c7aa9957520be717",
+    "assets/js/minden-decision-staff.js": "9afee2c5618d1a18a8025cdf93eb5eb8f69fb9af89015aae706b6683cadae187",
+    "staff-minden-decisions.html": "96f8ff52faf0a850e98a403089d3375f967147628c2e525865dfb1717c8de0ae",
+    "minden/index.html": "ef4f026f41822f053e44d1bdc61c1c881cb6864330f7a3855d315776f481d8c0",
+    "minden/es/index.html": "f61af468946410d25edfeeec20c186b9d024bac2adbd33803f87be463a26c585",
+    "minden/register/index.html": "3ab5c151a0a3db6e775c8ad51c4866fe9ac1eb21785883d0c6b17dbe8f288228",
+    "tools/site-build/public-files.json": "5cda5c501bdaa3318fcd08c046df10db29187f64934a79136cc01f2ca6f4a4ea"
+  }
+}

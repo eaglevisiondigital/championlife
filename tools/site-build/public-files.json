@@ -433,5 +433,13 @@
   "assets/js/outreach-team-portal.js",
   "staff-outreach-team-travel.html",
   "assets/css/outreach-team-travel.css",
-  "assets/js/outreach-team-travel.js"
+  "assets/js/outreach-team-travel.js",
+  "assets/js/minden-decision-config.js",
+  "assets/js/minden-decision-public.js",
+  "assets/js/minden-decision-staff.js",
+  "minden/index.html",
+  "minden/es/index.html",
+  "minden/register/index.html",
+  "staff-minden-decisions.html",
+  "assets/css/minden-decision.css"
 ]
