@@ -12,7 +12,7 @@ for(const mode of ['manage','read-only','revoked','signed-out','wrong-org','cour
  w.ChampionLifeAuth={client,getUser:async()=>mode==='signed-out'?null:{id:'user-a'},getSession:async()=>({user:{id:'user-a'}})};
  w.eval(read('assets/js/outreach-staff-common.js'));w.eval(read('assets/js/outreach-people.js'));await tick();await tick();
  assert.equal(w.document.querySelector('#dream-track-staff-link').hidden,mode!=='course-manager','DreamTrack navigation follows current organization-wide course authority');
- const button=[...w.document.querySelectorAll('button')].find(b=>b.textContent==='Save task status');
+ const button=[...w.document.querySelectorAll('button')].find(b=>b.textContent==='Save Task Status');
  if(['signed-out','wrong-org'].includes(mode)){assert(!w.document.body.textContent.includes('synthetic@example.test'));assert(!button)}
  else {assert(w.document.body.textContent.includes('Synthetic follow-up'));if(mode==='read-only')assert(!button);else{
   if(mode==='revoked')permissions=[];button.click();await tick();await tick();

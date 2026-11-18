@@ -1,3 +1,11 @@
+# Issue159 capitalization follow-up — November 18, 2026
+
+Owner-only core Team/Travel is released on main `f9ae106dce1a026bb3f7134ac5af0f593d29f3cb` / Netlify `6afdaded620f2a58165009ee`. Production now has37 append-only migrations, including the exact reviewed core/disabled-notice payloads and guarded core stop/restore. Root's genuine owner login, bounded recovery and approved synthetic cleanup evidence are recorded privately. Notification activation, additional staff and PR149 remain HOLD. This supersedes earlier no-production-release statements below for the core owner release only.
+
+The owner's separate capitalization follow-up changes short headings, buttons, labels and enum display text across Minden signup, Outreach review/travel/participant pages, registration forms and shared staff navigation. Complete sentences/legal copy, form words/keys/requiredness, API/status values, canonical Auth/session code, SQL, notification sources and public manifest remain unchanged. The three local state-label formatters are presentation-only; tests verify original option and submitted values. [Exact inventory and preservation boundaries](docs/OUTREACH-UI-CAPITALIZATION.md).
+
+This copy candidate is locally verified and **not yet deployed**. Root owns exact-head CI, PR review/publication and final browser checks. No provider, production, grant, message, Auth setting or account action was performed by this follow-up. Lower entries preserve the earlier engineering/acceptance checkpoints.
+
 # Issue159 integrated engineering candidate — November 18, 2026
 
 The callback compatibility/preflight and default-disabled P1 notification delivery implementation are complete in source under Issue159 comment6976832205. The exact additive Auth proposal preserves Site URL, the Discipleship callback, SMTP/templates and all retained settings; it is unapplied. Pinned upstream Auth accepts same-SiteURL-origin redirects, so the previously recorded missing explicit entry alone does not prove rejection. A fresh production UI read timed out; the guarded proposal uses the recorded baseline and refuses drift. Effective deployed-provider callback acceptance is still unverified.

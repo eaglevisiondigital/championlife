@@ -1,3 +1,9 @@
+# Issue159 short UI capitalization — November 18, 2026
+
+The owner requested title capitalization for short headings, buttons and labels, including Outreach Access Unavailable, Sign In, Outreach Operations, Staff Portal, Sign In to Continue and Follow-Up. Implement this as a separate presentation-only follow-up from released main `f9ae106d` / Netlify `6afdaded620f2a58165009ee`; retain full-sentence case and legal/approved question wording. The short “Any Additional Information?” label changes case only under the latest explicit direction. Use display-only state labels without changing enum keys, option values, API payloads or decisions.
+
+Core owner release and the37-entry production recovery lineage are complete under separate root authority; notification activation, named staff and PR149 remain held. This capitalization candidate is locally verified only, with publication and genuine browser confirmation still owned by root. Preserve canonical login/shared Auth/session/generator files, SQL, notifications, deployment configuration and manifest. [Exact inventory and validation boundaries](docs/OUTREACH-UI-CAPITALIZATION.md). Historical decisions below are superseded only where they describe the core owner release as still held.
+
 # Issue159 November18 implementation decision — disabled source only
 
 Execute comment6976832205 as source/local-test authority only. Implement an additive P1-only durable delivery system while leaving all nine message drafts unapproved and every activation gate denied by default. No automatic trigger, operator, policy approval, provider credential, message, production write or billable resource follows from this engineering work. Supported adult-own-email, explicit per-intent consent, no automatic retry after start and manual evidence retention are implementation capabilities, not silently adopted business policy. Unsupported recipient/guardian/purge rules need separately reviewed code.

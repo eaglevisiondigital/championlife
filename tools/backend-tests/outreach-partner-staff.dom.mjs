@@ -9,7 +9,7 @@ if(p.p_action==='list')return{data:[{id:'intake',first_name:'<script>bad</script
 if(p.p_action==='detail')return{data:{id:'intake',revision,status:linked?'linked':'new',raw_submission:{'first-name':'Synthetic',email:'test@example.test'},source_site:'sowgo',source_path:'/outreach-partner.html',person_id:linked?'person':null,followup_task_id:task?'task':null,history:[]}};
 if(p.p_action==='create_contact')return{status:400,data:null,error:{code:'P0001',message:'Possible existing contact; search and review before linking'}};
 if(p.p_action==='link')linked=true;if(p.p_action==='followup')task=true;revision++;return{data:{saved:true}}}}};
-w.eval(read('outreach-staff-common.js'));w.eval(read('staff-outreach-partners.js'));const tick=()=>new Promise(r=>setTimeout(r,10)),click=async t=>{const b=[...w.document.querySelectorAll('button')].find(b=>b.textContent===t);assert(b,'button '+t);b.click();await tick()};await tick();assert(!w.document.querySelector('.partner-workspace').classList.contains('is-denied'));assert(w.document.querySelector('.partner-workspace-intro'));assert(!w.document.querySelector('script'));assert(w.document.body.textContent.includes('<script>bad</script>'));await click('Review intake');await click('Create contact after review');assert.equal(calls.filter(x=>x.p?.p_action==='create_contact').length,1);assert.equal(linked,false);assert(w.document.body.textContent.includes('Possible existing contact found.'));assert(w.document.body.textContent.includes('Review the matching person and link this intake to the correct existing contact instead of creating a duplicate.'));assert(!w.document.body.textContent.includes('Unable to load Outreach Partner Intakes.'));assert(w.document.querySelector('.partner-workspace-notice[role="alert"]'));assert([...w.document.querySelectorAll('button')].some(b=>b.textContent==='Search People'));await click('Search People');await click('Link reviewed contact');assert(linked);await click('Create follow-up task');assert(task);assert(calls.some(x=>x.p?.p_action==='link'&&x.p.p_data.person_id==='person'));assert(w.document.querySelector('a[href="staff-people.html?person=person&org=org"]'));user=null;callback('SIGNED_OUT',null);await tick();assert(!w.document.body.textContent.includes('test@example.test'));assert(w.document.body.textContent.includes('Sign in'));assert(!w.document.querySelector('.partner-workspace').classList.contains('is-denied'));dom.window.close();console.log('PASS possible-match guidance, no duplicate creation, reviewed linking, unchanged authorized shell and sign-out clearing');
+w.eval(read('outreach-staff-common.js'));w.eval(read('staff-outreach-partners.js'));const tick=()=>new Promise(r=>setTimeout(r,10)),click=async t=>{const b=[...w.document.querySelectorAll('button')].find(b=>b.textContent===t);assert(b,'button '+t);b.click();await tick()};await tick();assert(!w.document.querySelector('.partner-workspace').classList.contains('is-denied'));assert(w.document.querySelector('.partner-workspace-intro'));assert(!w.document.querySelector('script'));assert(w.document.body.textContent.includes('<script>bad</script>'));await click('Review Intake');await click('Create Contact After Review');assert.equal(calls.filter(x=>x.p?.p_action==='create_contact').length,1);assert.equal(linked,false);assert(w.document.body.textContent.includes('Possible existing contact found.'));assert(w.document.body.textContent.includes('Review the matching person and link this intake to the correct existing contact instead of creating a duplicate.'));assert(!w.document.body.textContent.includes('Unable to load Outreach Partner Intakes.'));assert(w.document.querySelector('.partner-workspace-notice[role="alert"]'));assert([...w.document.querySelectorAll('button')].some(b=>b.textContent==='Search People'));await click('Search People');await click('Link Reviewed Contact');assert(linked);await click('Create Follow-Up Task');assert(task);assert(calls.some(x=>x.p?.p_action==='link'&&x.p.p_data.person_id==='person'));assert(w.document.querySelector('a[href="staff-people.html?person=person&org=org"]'));user=null;callback('SIGNED_OUT',null);await tick();assert(!w.document.body.textContent.includes('test@example.test'));assert(w.document.body.textContent.includes('Sign In'));assert(!w.document.querySelector('.partner-workspace').classList.contains('is-denied'));dom.window.close();console.log('PASS possible-match guidance, no duplicate creation, reviewed linking, unchanged authorized shell and sign-out clearing');
 
 // Exercise real navigation with Supabase-shaped HTTP responses, not permission changes.
 async function denialHarness({initial, noGrant=false}={}) {
@@ -47,14 +47,14 @@ for(const code of [401,403]) {
   const h=await denialHarness({initial:{list:()=>({status:code,data:null,error:{message:'PRIVATE raw response'}})}});
   h.assertDenied(code);assert.deepEqual(h.calls,['context','list']);h.dom.window.close();scenarios++;
  }
- const h=await denialHarness();h.responses.set('detail',()=>h.deny(code));await h.click('Review intake');h.assertDenied(code);h.dom.window.close();scenarios++;
- const back=await denialHarness();await back.click('Review intake');assert(back.root.textContent.includes('Private test address'));
- const oldDetail=back.button('Mark reviewed');back.responses.set('list',()=>back.deny(code));await back.click('Back to intakes');back.assertDenied(code);
+ const h=await denialHarness();h.responses.set('detail',()=>h.deny(code));await h.click('Review Intake');h.assertDenied(code);h.dom.window.close();scenarios++;
+ const back=await denialHarness();await back.click('Review Intake');assert(back.root.textContent.includes('Private test address'));
+ const oldDetail=back.button('Mark Reviewed');back.responses.set('list',()=>back.deny(code));await back.click('Back to Intakes');back.assertDenied(code);
  const count=back.calls.length;oldDetail.click();await tick();assert.equal(back.calls.length,count,'detached protected actions cannot reuse revoked state');back.assertDenied(code);back.dom.window.close();scenarios++;
 }
 // No session uses the existing sign-in route without sending an intake request.
 {
- const h=await denialHarness();await h.click('Review intake');h.expire();const count=h.calls.length;await h.click('Back to intakes');h.assertDenied(401);assert.equal(h.calls.length,count);h.dom.window.close();scenarios++;
+ const h=await denialHarness();await h.click('Review Intake');h.expire();const count=h.calls.length;await h.click('Back to Intakes');h.assertDenied(401);assert.equal(h.calls.length,count);h.dom.window.close();scenarios++;
 }
 // A context refreshed after revocation has no usable grants: same access-removed UX.
 {
@@ -62,23 +62,23 @@ for(const code of [401,403]) {
 }
 // Revocation during another pending request cannot repopulate cleared detail/state.
 {
- const h=await denialHarness();await h.click('Review intake');let finish;
- h.responses.set('review',()=>new Promise(resolve=>finish=resolve));h.button('Mark reviewed').click();await tick();
- h.responses.set('list',()=>h.deny(403));await h.click('Back to intakes');h.assertDenied(403);
+ const h=await denialHarness();await h.click('Review Intake');let finish;
+ h.responses.set('review',()=>new Promise(resolve=>finish=resolve));h.button('Mark Reviewed').click();await tick();
+ h.responses.set('list',()=>h.deny(403));await h.click('Back to Intakes');h.assertDenied(403);
  const count=h.calls.length;finish({status:200,data:{saved:true}});await tick();assert.equal(h.calls.length,count,'late action cannot trigger a detail reload');h.assertDenied(403);h.dom.window.close();scenarios++;
 }
 // A late denied response from an obsolete view must not replace a newer authorized view.
 {
- const h=await denialHarness();await h.click('Review intake');let finish;
- h.responses.set('review',()=>new Promise(resolve=>finish=resolve));h.button('Mark reviewed').click();await tick();await h.click('Back to intakes');
+ const h=await denialHarness();await h.click('Review Intake');let finish;
+ h.responses.set('review',()=>new Promise(resolve=>finish=resolve));h.button('Mark Reviewed').click();await tick();await h.click('Back to Intakes');
  finish(h.deny(403));await tick();assert(h.root.textContent.includes('Protected Applicant'));assert(!h.root.textContent.includes('no longer available'));h.dom.window.close();scenarios++;
 }
 // Non-auth failures also stop loading without displaying raw backend response details.
 {
- const h=await denialHarness();h.responses.set('detail',()=>h.deny(500));await h.click('Review intake');assert(h.root.textContent.includes('Unable to load Outreach Partner Intakes. Please try again.'));assert(!h.root.textContent.includes('PRIVATE'));assert(!h.root.textContent.includes('Loading'));h.dom.window.close();scenarios++;
+ const h=await denialHarness();h.responses.set('detail',()=>h.deny(500));await h.click('Review Intake');assert(h.root.textContent.includes('Unable to load Outreach Partner Intakes. Please try again.'));assert(!h.root.textContent.includes('PRIVATE'));assert(!h.root.textContent.includes('Loading'));h.dom.window.close();scenarios++;
 }
 // The possible-match signature is mapped only for create_contact, never another action.
 {
- const h=await denialHarness();h.responses.set('detail',()=>({status:400,data:null,error:{code:'P0001',message:'Possible existing contact; search and review before linking'}}));await h.click('Review intake');assert(h.root.textContent.includes('Unable to load Outreach Partner Intakes. Please try again.'));assert(!h.root.textContent.includes('Possible existing contact found.'));assert(!h.root.textContent.includes('P0001'));h.dom.window.close();scenarios++;
+ const h=await denialHarness();h.responses.set('detail',()=>({status:400,data:null,error:{code:'P0001',message:'Possible existing contact; search and review before linking'}}));await h.click('Review Intake');assert(h.root.textContent.includes('Unable to load Outreach Partner Intakes. Please try again.'));assert(!h.root.textContent.includes('Possible existing contact found.'));assert(!h.root.textContent.includes('P0001'));h.dom.window.close();scenarios++;
 }
 console.log(`PASS ${scenarios} staff denial scenarios: initial/reload list, detail, revoked Back, stale controls/requests, expired session, missing grants and safe errors`);
