@@ -11,15 +11,15 @@ async function harness({query='?campaign='+campaign,rows=[record()],signedIn=tru
  const click=async text=>{const b=[...d.querySelectorAll('button')].find(b=>b.textContent===text);assert.ok(b,'button '+text);b.click();await tick();};
  return{w,d,dom,calls,signouts,click,get userReads(){return userReads},get reloads(){return reloads},change:async(nextRows,nextError=null)=>{currentRows=nextRows;currentError=nextError;w.dispatchEvent(new w.Event('focus'));await tick()},auth:async(next,event='SIGNED_IN')=>{user=next;callback(event,next?{user:next}:null);await tick()},finish:value=>finish(value)};
 }
-for(const query of['','?campaign=','?campaign=not-a-uuid','?campaign='+campaign+'&campaign='+other]){const h=await harness({query});try{ok(h.d.body.textContent.includes('Open your event link'),'missing/invalid/ambiguous link requests authorized event link');ok(h.calls.length===0&&h.userReads===0,'missing/invalid event never guesses an ID or calls own history');}finally{h.dom.window.close()}}
+for(const query of['','?campaign=','?campaign=not-a-uuid','?campaign='+campaign+'&campaign='+other]){const h=await harness({query});try{ok(h.d.body.textContent.includes('Open Your Event Link'),'missing/invalid/ambiguous link requests authorized event link');ok(h.calls.length===0&&h.userReads===0,'missing/invalid event never guesses an ID or calls own history');}finally{h.dom.window.close()}}
 {
- const h=await harness({signedIn:false});try{ok(h.d.body.textContent.includes('Sign in to view your outreach information'),'signed-out reader receives sign-in prompt');ok(h.calls.length===0,'signed-out reader does not call participant RPC');const url=new URL(h.d.querySelector('main a').href);ok(url.searchParams.get('next')==='/outreach-team.html?campaign='+campaign,'sign-in return preserves only validated event link');}finally{h.dom.window.close()}
+ const h=await harness({signedIn:false});try{ok(h.d.body.textContent.includes('Sign In to View Your Outreach Information'),'signed-out reader receives sign-in prompt');ok(h.calls.length===0,'signed-out reader does not call participant RPC');const url=new URL(h.d.querySelector('main a').href);ok(url.searchParams.get('next')==='/outreach-team.html?campaign='+campaign,'sign-in return preserves only validated event link');}finally{h.dom.window.close()}
 }
 {
  const h=await harness();try{
   ok(h.calls.length===1&&h.calls[0].name==='outreach_team_own'&&h.calls[0].p.p_campaign===campaign,'read-only view calls only event-scoped existing own RPC');
-  ok(h.d.body.textContent.includes('Approved to serve')&&h.d.body.textContent.includes('Checked in:')&&h.d.body.textContent.includes('Attended:'),'own serving decision and attendance history render');
-  ok(h.d.body.textContent.includes('Confirmed itinerary')&&h.d.body.textContent.includes('Synthetic confirmed van')&&h.d.body.textContent.includes('Synthetic meeting point'),'currently valid confirmed itinerary renders');
+  ok(h.d.body.textContent.includes('Approved to Serve')&&h.d.body.textContent.includes('Checked In:')&&h.d.body.textContent.includes('Attended:'),'own serving decision and attendance history render');
+  ok(h.d.body.textContent.includes('Confirmed Itinerary')&&h.d.body.textContent.includes('Synthetic confirmed van')&&h.d.body.textContent.includes('Synthetic meeting point'),'currently valid confirmed itinerary renders');
   ok(!h.d.documentElement.outerHTML.includes(other)&&!h.d.documentElement.outerHTML.includes('55555555-5555-4555-8555-555555555555'),'member/other-person IDs are never rendered');
   ok(!h.d.body.textContent.includes('PRIVATE REVIEW')&&!h.d.body.textContent.includes('OTHER PASSENGER'),'private review/manifest data is ignored');
   ok(!h.d.querySelector('form,input,select,textarea'),'participant presentation provides no signup, claiming or write controls');
@@ -29,7 +29,7 @@ for(const query of['','?campaign=','?campaign=not-a-uuid','?campaign='+campaign+
 }
 for(const variant of['assigned','invalid-confirmation','not-ready','cancelled-source','invalid-time']){
  const r=record();if(variant==='assigned')r.travel[0].state='assigned';if(variant==='invalid-confirmation')r.travel[0].itinerary_confirmed=false;if(variant==='not-ready')r.travel_ready=false;if(variant==='cancelled-source')r.source_application_status='cancelled';if(variant==='invalid-time')r.travel[0].departure_at='PRIVATE INVALID TIME';
- const h=await harness({rows:[r]});try{ok(!h.d.body.textContent.includes('Synthetic confirmed van')&&!h.d.body.textContent.includes('Synthetic meeting point')&&!h.d.body.textContent.includes('Synthetic destination'),'unconfirmed/ineligible travel details are withheld: '+variant);ok(!h.d.body.textContent.includes('Confirmed itinerary')&&!h.d.body.textContent.includes('PRIVATE INVALID TIME'),'no fabricated itinerary confirmation: '+variant);}finally{h.dom.window.close()}
+ const h=await harness({rows:[r]});try{ok(!h.d.body.textContent.includes('Synthetic confirmed van')&&!h.d.body.textContent.includes('Synthetic meeting point')&&!h.d.body.textContent.includes('Synthetic destination'),'unconfirmed/ineligible travel details are withheld: '+variant);ok(!h.d.body.textContent.includes('Confirmed Itinerary')&&!h.d.body.textContent.includes('PRIVATE INVALID TIME'),'no fabricated itinerary confirmation: '+variant);}finally{h.dom.window.close()}
 }
 {
  const r=record();r.campaign_id=other;const h=await harness({rows:[r]});try{ok(h.d.body.textContent.includes('could not be confirmed')&&!h.d.body.textContent.includes('Synthetic confirmed van'),'cross-event/malformed RPC response fails closed');}finally{h.dom.window.close()}
@@ -38,13 +38,13 @@ for(const variant of['assigned','invalid-confirmation','not-ready','cancelled-so
  const r=record();r.campaign='<img src=x onerror=alert(1)>';r.travel[0].vehicle='<script>alert(1)</script>';const h=await harness({rows:[r]});try{ok(h.d.body.textContent.includes('<img src=x onerror=alert(1)>')&&!h.d.querySelector('[onerror]')&&!h.d.querySelector('main script'),'own text fields never become executable HTML');}finally{h.dom.window.close()}
 }
 {
- const h=await harness({hold:true});try{await h.auth(null,'SIGNED_OUT');h.finish({data:[record()]});await tick();ok(h.d.body.textContent.includes('Sign in to view')&&!h.d.body.textContent.includes('Synthetic confirmed van'),'late own response cannot restore a signed-out view');}finally{h.dom.window.close()}
+ const h=await harness({hold:true});try{await h.auth(null,'SIGNED_OUT');h.finish({data:[record()]});await tick();ok(h.d.body.textContent.includes('Sign In to View')&&!h.d.body.textContent.includes('Synthetic confirmed van'),'late own response cannot restore a signed-out view');}finally{h.dom.window.close()}
 }
 {
  const h=await harness({hold:true});try{await h.auth({id:'new-synthetic-user',email:'new@example.test'});h.finish({data:[{...record(),campaign:'OLD ACCOUNT PRIVATE EVENT'}]});await tick();ok(h.d.getElementById('trip-account-email').textContent==='new@example.test'&&!h.d.body.textContent.includes('OLD ACCOUNT PRIVATE EVENT'),'account switch clears and rejects old-account response');}finally{h.dom.window.close()}
 }
 {
- const h=await harness();try{await h.click('Log Out');ok(h.signouts.length===1&&h.signouts[0].scope==='local','logout uses only the existing current-session API');ok(h.d.body.textContent.includes('Sign in to view')&&!h.d.body.textContent.includes('Synthetic confirmed van'),'logout removes protected participant information');ok(h.w.localStorage.getItem('unrelated-setting')==='preserve'&&h.w.sessionStorage.getItem('unrelated-draft')==='preserve','logout preserves unrelated browser state');}finally{h.dom.window.close()}
+ const h=await harness();try{await h.click('Log Out');ok(h.signouts.length===1&&h.signouts[0].scope==='local','logout uses only the existing current-session API');ok(h.d.body.textContent.includes('Sign In to View')&&!h.d.body.textContent.includes('Synthetic confirmed van'),'logout removes protected participant information');ok(h.w.localStorage.getItem('unrelated-setting')==='preserve'&&h.w.sessionStorage.getItem('unrelated-draft')==='preserve','logout preserves unrelated browser state');}finally{h.dom.window.close()}
 }
 {
  const h=await harness({logoutFailure:true});try{await h.click('Log Out');h.w.dispatchEvent(new h.w.Event('focus'));await h.auth({id:'synthetic-own-user',email:'own@example.test'},'TOKEN_REFRESHED');ok(h.d.body.textContent.includes('Your outreach details are hidden')&&!h.d.body.textContent.includes('Synthetic confirmed van'),'failed logout remains locked despite focus/auth refresh');ok(!h.d.body.textContent.includes('Private provider error'),'failed logout suppresses provider diagnostics');}finally{h.dom.window.close()}

@@ -30,7 +30,7 @@ for(const[engine,options]of[[chromium,{channel:'chrome'}],[webkit,{}]]){
   ok(await page.locator('.outreach-brand img').evaluate(i=>i.complete&&i.naturalWidth===1240),'original SOWGO logo loads '+tag);
   ok(!/discipleship|getting a grip/i.test(await page.locator('body').innerText()),'no unrelated course branding '+tag);
   ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),'no initial horizontal overflow '+tag);
-  await page.getByRole('link',{name:'Skip to sign in',exact:true}).focus();ok(await page.locator('.auth-skip').evaluate(e=>e.getBoundingClientRect().top>=0),'visible focused skip link '+tag);
+  await page.getByRole('link',{name:'Skip to Sign In',exact:true}).focus();ok(await page.locator('.auth-skip').evaluate(e=>e.getBoundingClientRect().top>=0),'visible focused skip link '+tag);
   await page.getByRole('textbox',{name:'Email Address',exact:true}).focus();ok(await page.locator('#loginEmail').evaluate(e=>getComputedStyle(e).outlineStyle==='solid'),'keyboard input focus is visible '+tag);
   ok(await page.locator('#sendCodeBtn').evaluate(e=>e.getBoundingClientRect().height>=44),'sign-in touch target is at least44px '+tag);
   await page.locator('#loginEmail').blur();await shot('email');

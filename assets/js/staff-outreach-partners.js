@@ -3,7 +3,7 @@
  const root=document.getElementById('outreach-intakes'),workspace=document.querySelector('.partner-workspace'),auth=window.ChampionLifeAuth,{el}=window.OutreachUI;
  let user,org,context,generation=0,offset=0,status,content;
  const can=key=>context?.grants.some(g=>g.organization_id===org&&g.permission===key&&!g.department_ids);
- const signIn=()=>el('a','Sign in to your workspace',{href:'discipleship-login.html?next=%2Fstaff-outreach-partners.html'});
+ const signIn=()=>el('a','Sign In to Your Workspace',{href:'discipleship-login.html?next=%2Fstaff-outreach-partners.html'});
  function failure(code,reason){
   if(code!==401&&code!==403){
    status.className=reason==='possible_contact_match'?'partner-workspace-notice':'';
@@ -38,22 +38,22 @@
  function button(label,action){const g=generation,b=el('button',label,{type:'button'});b.onclick=async()=>{if(g!==generation)return;b.disabled=true;try{await action()}catch{/* rpc displays errors for the active request, including navigation to a new generation. */}finally{b.disabled=false}};return b;}
  function field(label){const l=el('label',label),i=el('input',null,{type:'search',maxlength:'100'});l.append(i);return {l,i};}
  async function list(){const g=++generation;content.replaceChildren();status.className='';status.setAttribute('role','status');status.textContent='Loading…';const rows=await intake('list',{offset});if(g!==generation)return;status.textContent=rows.length?'':'No outreach partner intakes.';
- for(const r of rows){const card=el('article');card.append(el('h2',r.first_name+' '+r.last_name),el('p',r.email+' · '+r.phone),el('p',`${r.source_site} · ${new Date(r.submitted_at).toLocaleString()} · ${r.status}`),el('p',`Intended commitment: $${r.commitment_amount} · ${r.commitment_frequency}`),el('p','Follow-up: '+(r.followup_status||'Not created or not accessible')),button('Review intake',()=>detail(r.id)));content.append(card);}
+ for(const r of rows){const card=el('article');card.append(el('h2',r.first_name+' '+r.last_name),el('p',r.email+' · '+r.phone),el('p',`${r.source_site} · ${new Date(r.submitted_at).toLocaleString()} · ${r.status}`),el('p',`Intended commitment: $${r.commitment_amount} · ${r.commitment_frequency}`),el('p','Follow-Up: '+(r.followup_status||'Not created or not accessible')),button('Review Intake',()=>detail(r.id)));content.append(card);}
  content.append(button('Previous',()=>{offset=Math.max(0,offset-50);return list()}),button('Next',()=>{offset+=50;return list()}));}
- async function detail(id){const g=++generation;content.replaceChildren();status.className='';status.setAttribute('role','status');status.textContent='Loading…';const r=await intake('detail',{id});if(g!==generation)return;status.textContent='';content.append(button('Back to intakes',list),el('h2','Partner intake · '+r.status));
+ async function detail(id){const g=++generation;content.replaceChildren();status.className='';status.setAttribute('role','status');status.textContent='Loading…';const r=await intake('detail',{id});if(g!==generation)return;status.textContent='';content.append(button('Back to Intakes',list),el('h2','Partner Intake · '+r.status));
  const labels={'first-name':'First Name','last-name':'Last Name',email:'Email Address','address-line-1':'Street Address','address-line-2':'Street Address Line 2',city:'City','state-province':'State / Province','postal-code':'Postal / ZIP Code',phone:'Phone Number','commitment-amount':'Commitment Amount','commitment-frequency':'Commitment Frequency'};
  for(const[k,label]of Object.entries(labels))content.append(el('p',label+': '+(r.raw_submission[k]||'—')));
  content.append(el('p',`Source: ${r.source_site} · ${r.source_path}`),el('p','This commitment is not payment authorization, verified account ownership or marketing consent.'));
  const act=async(action,data={})=>{await intake(action,{id,revision:r.revision,...data});await detail(id)};
- if(can('outreach.manage'))content.append(button('Mark reviewed',()=>act('review')));
- if(r.person_id){if(can('people.read'))content.append(el('a','Open Person / follow-up tasks',{href:'staff-people.html?person='+encodeURIComponent(r.person_id)+'&org='+encodeURIComponent(org)}));if(can('outreach.manage')&&can('followup.manage')&&can('followup.read')&&can('people.read')&&!r.followup_task_id)content.append(button('Create follow-up task',()=>act('followup')));}
+ if(can('outreach.manage'))content.append(button('Mark Reviewed',()=>act('review')));
+ if(r.person_id){if(can('people.read'))content.append(el('a','Open Person / Follow-Up Tasks',{href:'staff-people.html?person='+encodeURIComponent(r.person_id)+'&org='+encodeURIComponent(org)}));if(can('outreach.manage')&&can('followup.manage')&&can('followup.read')&&can('people.read')&&!r.followup_task_id)content.append(button('Create Follow-Up Task',()=>act('followup')));}
  else if(can('outreach.manage')&&can('people.read')&&can('people.update')){
-  content.append(el('h3','Review contact identity'),el('p','Search and verify the contact before linking. Linking establishes a SowGo partner relationship only.'));
-  const find=field('Search existing contacts'),results=el('div');find.i.value=r.raw_submission.email;
-  content.append(find.l,button('Search People',async()=>{const g=generation,rows=await rpc('people_workspace',{p_org:org,p_action:'list',p_payload:{search:find.i.value,offset:0}});if(g!==generation)return;results.replaceChildren();for(const p of rows)results.append(el('p',`${p.first_name} ${p.last_name} · ${p.email||''} · ${p.phone||''}`),button('Link reviewed contact',async()=>{if(confirm('Confirm you reviewed this identity and want to establish the SowGo partner relationship?'))await act('link',{person_id:p.id})}));if(!rows.length)results.append(el('p','No matching contacts.'));}),results);
-  if(can('people.create'))content.append(button('Create contact after review',async()=>{if(confirm('Confirm you checked for an existing contact. Create a new SowGo contact and partner relationship?'))await act('create_contact')}));
+  content.append(el('h3','Review Contact Identity'),el('p','Search and verify the contact before linking. Linking establishes a SowGo partner relationship only.'));
+  const find=field('Search Existing Contacts'),results=el('div');find.i.value=r.raw_submission.email;
+  content.append(find.l,button('Search People',async()=>{const g=generation,rows=await rpc('people_workspace',{p_org:org,p_action:'list',p_payload:{search:find.i.value,offset:0}});if(g!==generation)return;results.replaceChildren();for(const p of rows)results.append(el('p',`${p.first_name} ${p.last_name} · ${p.email||''} · ${p.phone||''}`),button('Link Reviewed Contact',async()=>{if(confirm('Confirm you reviewed this identity and want to establish the SowGo partner relationship?'))await act('link',{person_id:p.id})}));if(!rows.length)results.append(el('p','No matching contacts.'));}),results);
+  if(can('people.create'))content.append(button('Create Contact After Review',async()=>{if(confirm('Confirm you checked for an existing contact. Create a new SowGo contact and partner relationship?'))await act('create_contact')}));
  }
- content.append(el('h3','Review history'));for(const h of r.history)content.append(el('p',`${h.action} · ${new Date(h.occurred_at).toLocaleString()}`));
+ content.append(el('h3','Review History'));for(const h of r.history)content.append(el('p',`${h.action} · ${new Date(h.occurred_at).toLocaleString()}`));
  }
  async function boot(){const g=++generation;workspace?.classList.remove('is-denied');root.replaceChildren();content?.replaceChildren();content=null;context=null;org=null;offset=0;const nextUser=await auth?.getUser();if(g!==generation)return;user=nextUser;if(!user){root.append(signIn());return;}
  status=el('p',null,{role:'status'});content=el('div');root.append(status);

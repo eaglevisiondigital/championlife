@@ -5,7 +5,7 @@
  const financialLink=document.getElementById('financial-outreach-link'),dreamLink=document.getElementById('dream-track-staff-link'),volunteerLink=document.getElementById('volunteer-staff-link');
  const updateNavigation=()=>{if(financialLink)financialLink.hidden=!(can('outreach.view')&&can('finance.read'));if(dreamLink)dreamLink.hidden=!can('courses.manage');if(volunteerLink)volunteerLink.hidden=!can('staff.manage')};
  const can=k=>grants.some(g=>g.organization_id===org&&g.permission===k&&!g.department_ids);
- const login=()=>el('a','Sign in to your workspace',{href:'discipleship-login.html?next=%2Fstaff-people.html'});
+ const login=()=>el('a','Sign In to Your Workspace',{href:'discipleship-login.html?next=%2Fstaff-people.html'});
  function fail(code){
   generation++;grants=[];org=null;content?.replaceChildren();content=null;
   updateNavigation();root.replaceChildren(el('p',code===401?'Your session has expired. Sign in to continue.':'Your access is no longer available. Contact an administrator if you believe you should still have access.',{role:'alert'}));
@@ -23,22 +23,22 @@
  async function list(search=''){
   const g=++generation;content.replaceChildren();status.textContent='Loading…';await refreshPermissions();if(g!==generation)return;
   const rows=await people('list',{search,page});if(g!==generation)return;status.textContent=rows.length?'':'No matching contacts.\nTry a different name or check the selected organization.';status.className=rows.length?'staff-status':'staff-status staff-empty';
-  const filter=el('div',null,{class:'staff-search'}),label=el('label','Search contacts'),input=el('input',null,{type:'search',maxlength:'100',placeholder:'Search by name, email or phone'});input.value=search;label.append(input);filter.append(label,button('Search',()=>{page=0;return list(input.value)}));content.append(filter);
-  for(const p of rows.slice(0,25)){const card=el('article',null,{class:'staff-person-card'});card.append(el('h2',p.first_name+' '+p.last_name),el('p',(p.email||'')+' · '+(p.phone||'')),el('p',(p.relationships||[]).join(', ')),button('Review Person & follow-up',()=>detail(p.id)));content.append(card)}
+  const filter=el('div',null,{class:'staff-search'}),label=el('label','Search Contacts'),input=el('input',null,{type:'search',maxlength:'100',placeholder:'Search by Name, Email or Phone'});input.value=search;label.append(input);filter.append(label,button('Search',()=>{page=0;return list(input.value)}));content.append(filter);
+  for(const p of rows.slice(0,25)){const card=el('article',null,{class:'staff-person-card'});card.append(el('h2',p.first_name+' '+p.last_name),el('p',(p.email||'')+' · '+(p.phone||'')),el('p',(p.relationships||[]).join(', ')),button('Review Person & Follow-Up',()=>detail(p.id)));content.append(card)}
   if(page>0)content.append(button('Previous',()=>{page--;return list(search)}));if(rows.length>25)content.append(button('Next',()=>{page++;return list(search)}));
  }
  async function detail(id){
   const g=++generation;content.replaceChildren();status.textContent='Loading…';await refreshPermissions();if(g!==generation)return;
   const data=await people('detail',{person_id:id});if(g!==generation)return;status.textContent='';const p=data.person;
-  content.append(button('Back to People',()=>list()),el('h2',p.first_name+' '+p.last_name),el('p',p.email||''),el('p',p.phone||''),el('h3','Organization relationships'));
+  content.append(button('Back to People',()=>list()),el('h2',p.first_name+' '+p.last_name),el('p',p.email||''),el('p',p.phone||''),el('h3','Organization Relationships'));
   for(const r of data.relationships||[])content.append(el('p',r.relationship+(r.active?'':' (inactive)')));
   if(!can('followup.read'))return;
   const tasks=await request(()=>auth.client.from('followup_tasks').select('id,title,status,due_on,revision').eq('organization_id',org).eq('person_id',id).order('created_at',{ascending:false}).limit(100));if(g!==generation)return;
   // RLS-filtered empty data is not proof of continuing authority.
   await refreshPermissions();if(g!==generation)return;if(!can('followup.read')){fail(403);return}
-  content.append(el('h3','Follow-up tasks'));if(!tasks.length)content.append(el('p','No follow-up tasks.'));
-  for(const task of tasks){const card=el('article');card.append(el('h4',task.title),el('p',task.status+' · '+(task.due_on||'No due date')));
-   if(can('followup.manage')){const label=el('label','Status'),select=el('select');for(const value of ['open','completed','canceled']){const option=el('option',value,{value});option.selected=task.status===value;select.append(option)}label.append(select);card.append(label,button('Save task status',async()=>{
+  content.append(el('h3','Follow-Up Tasks'));if(!tasks.length)content.append(el('p','No follow-up tasks.'));
+  for(const task of tasks){const card=el('article');card.append(el('h4',task.title),el('p',task.status+' · '+(task.due_on||'No Due Date')));
+   if(can('followup.manage')){const label=el('label','Status'),select=el('select');for(const value of ['open','completed','canceled']){const option=el('option',value,{value});option.selected=task.status===value;select.append(option)}label.append(select);card.append(label,button('Save Task Status',async()=>{
     await refreshPermissions();if(g!==generation)return;if(!can('followup.manage')){fail(403);return}
     const saved=await request(()=>auth.client.from('followup_tasks').update({status:select.value}).eq('organization_id',org).eq('person_id',id).eq('id',task.id).eq('revision',task.revision).select('id').maybeSingle());
     if(g!==generation)return;if(!saved){await refreshPermissions();status.textContent='Task changed or access was removed. Refresh before retrying.';content.replaceChildren();return}await detail(id);
