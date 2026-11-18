@@ -1,0 +1,18 @@
+--- a/tools/site-build/public-files.json
++++ b/tools/site-build/public-files.json
+@@ -424,5 +424,14 @@
+   "assets/js/minden-volunteer.js",
+   "assets/images/sowgo-logo.png",
+   "staff-outreach-volunteers.html",
+-  "assets/js/staff-outreach-volunteers.js"
++  "assets/js/staff-outreach-volunteers.js",
++  "outreach-login.html",
++  "assets/css/outreach-login.css",
++  "assets/js/outreach-staff-session.js",
++  "outreach-team.html",
++  "assets/css/outreach-team-portal.css",
++  "assets/js/outreach-team-portal.js",
++  "staff-outreach-team-travel.html",
++  "assets/css/outreach-team-travel.css",
++  "assets/js/outreach-team-travel.js"
+ ]

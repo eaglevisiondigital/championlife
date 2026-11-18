@@ -1,0 +1,13 @@
+{
+  "checked_on": "2026-11-18",
+  "provider": "Supabase Auth",
+  "upstream_commit": "26adce254d2119a59e72454364a079d88b43a00f",
+  "deployed_provider_version": "UNVERIFIED; no production Auth request/version probe performed",
+  "source_url": "https://github.com/supabase/auth/blob/26adce254d2119a59e72454364a079d88b43a00f/internal/utilities/request.go",
+  "source_sha256": "f80b83d93fccbbef4faebe0401239cd1883c761d0740a3c172557d302d50ae82",
+  "upstream_tests_url": "https://github.com/supabase/auth/blob/26adce254d2119a59e72454364a079d88b43a00f/internal/utilities/request_test.go",
+  "tests_sha256": "ab233606ff9702794533d1a1dbb5d7df7ce491e40d538b72999d0ffc0b83ece6",
+  "docs_url": "https://supabase.com/docs/guides/auth/redirect-urls",
+  "changelog_url": "https://supabase.com/changelog.md",
+  "fixture_scope": "Regular absolute HTTPS/HTTP URLs and literal no-wildcard allowlist entries only; same SiteURL scheme/hostname/port is accepted before matching a fragment-stripped full URL. Query remains part of literal matching. Not a general Go URL parser/glob/loopback/IP implementation or a hosted acceptance test."
+}

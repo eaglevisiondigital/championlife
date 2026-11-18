@@ -8,10 +8,10 @@
     "playwright": "1.62.1"
   },
   "scripts": {
-    "test": "node login.dom.mjs && node staff-session.dom.mjs && node people-staff.test.mjs && node outreach-gateway.test.mjs && node outreach-cleanup.test.mjs && node outreach-cron.test.mjs && node gateway-http.test.mjs && node outreach-workflow.test.mjs && node outreach-partner-staff.dom.mjs && node outreach-partner.dom.mjs && node site-build.test.mjs && node outreach-people.dom.mjs && node huntsville-registration.test.mjs && node huntsville-registration.dom.mjs && node huntsville-form-hotfix.test.mjs && node outreach-registration.dom.mjs && node outreach-registration-gateway.test.mjs && node outreach-registration.test.mjs && node huntsville-minimal-safety.test.mjs && node theme-song.test.mjs && node operations-admin.test.mjs && node operations-member-scope.test.mjs && node operations-member-scope.dom.mjs && node king-kind-reader-safety.test.mjs && npm run test:dream-track && npm run test:volunteer",
+    "test": "node login.dom.mjs && npm run test:outreach-login && node staff-session.dom.mjs && node people-staff.test.mjs && node outreach-gateway.test.mjs && node outreach-cleanup.test.mjs && node outreach-cron.test.mjs && node gateway-http.test.mjs && node outreach-workflow.test.mjs && node outreach-partner-staff.dom.mjs && node outreach-partner.dom.mjs && node site-build.test.mjs && node outreach-people.dom.mjs && node huntsville-registration.test.mjs && node huntsville-registration.dom.mjs && node huntsville-form-hotfix.test.mjs && node outreach-registration.dom.mjs && node outreach-registration-gateway.test.mjs && node outreach-registration.test.mjs && node huntsville-minimal-safety.test.mjs && node theme-song.test.mjs && node operations-admin.test.mjs && node operations-member-scope.test.mjs && node operations-member-scope.dom.mjs && node king-kind-reader-safety.test.mjs && npm run test:dream-track && npm run test:volunteer && npm run test:team-travel && npm run test:team-notifications && npm run test:team-delivery",
     "test:dream-track": "node dream-track.test.mjs && node dream-track-recovery.test.mjs && node dream-track.dom.mjs && node dream-track-staff.dom.mjs && node dream-track-invite.test.mjs",
     "test:dream-track:concurrency": "node dream-track.concurrent.mjs",
-    "test:login": "node login.dom.mjs",
+    "test:login": "node login.dom.mjs && npm run test:outreach-login",
     "test:concurrency": "node outreach-concurrency.test.mjs",
     "test:huntsville-native": "TEST_NATIVE_PG=1 node outreach-registration.test.mjs && TEST_NATIVE_PG=1 node huntsville-registration.test.mjs && node huntsville-minimal-concurrency.test.mjs",
     "test:huntsville-safety": "node huntsville-minimal-safety.test.mjs",
@@ -21,6 +21,24 @@
     "test:operations-member-native": "TEST_NATIVE_PG=1 node operations-member-scope.test.mjs",
     "test:staff-session-browser": "node staff-session.browser.mjs",
     "test:volunteer": "node outreach-volunteer-gateway.test.mjs && node outreach-volunteer.dom.mjs && node outreach-volunteer-staff.dom.mjs",
-    "test:volunteer-native": "node outreach-volunteer.test.mjs"
+    "test:volunteer-native": "node outreach-volunteer.test.mjs",
+    "test:team-travel": "node outreach-team-travel.recovery.mjs && node outreach-team-travel.test.mjs && node outreach-team-travel.dom.mjs && node outreach-team-portal.dom.mjs && node outreach-team-travel.guardian.mjs && node outreach-team-travel.stop.test.mjs && node outreach-team-person-create.dom.mjs && node outreach-team-household.dom.mjs",
+    "test:team-travel:native": "TEST_NATIVE_PG=1 node outreach-team-travel.test.mjs && node outreach-team-travel.concurrent.mjs && TEST_NATIVE_PG=1 node outreach-team-travel.guardian.mjs && node outreach-team-travel.expiry.mjs && node outreach-team-travel.dependencies.mjs",
+    "test:volunteer-p0:revocation": "node outreach-volunteer-p0-revocation.mjs",
+    "test:team-travel:browser": "node outreach-team-travel.browser.mjs",
+    "test:team-notifications": "node outreach-team-notifications.test.mjs",
+    "test:team-travel:guardian": "node outreach-team-travel.guardian.mjs",
+    "test:team-travel:expiry": "node outreach-team-travel.expiry.mjs",
+    "test:team-travel:dependencies": "node outreach-team-travel.dependencies.mjs",
+    "test:outreach-login": "node ../outreach-login/generate.mjs && node outreach-login.dom.mjs && node outreach-staff-session.dom.mjs && node outreach-login.test.mjs && node outreach-login-signup.dom.mjs && node outreach-callback-config.test.mjs && npm run test:outreach-auth-email",
+    "test:outreach-login:browser": "node outreach-login.browser.mjs",
+    "test:outreach-auth-email": "node outreach-auth-email.test.mjs",
+    "test:outreach-login:signup": "node outreach-login-signup.dom.mjs",
+    "test:outreach-login:signup:browser": "node outreach-login-signup.browser.mjs",
+    "test:team-person-create": "node outreach-team-person-create.dom.mjs",
+    "test:team-household": "node outreach-team-household.dom.mjs",
+    "test:outreach-callback": "node outreach-callback-config.test.mjs",
+    "test:team-delivery": "node outreach-team-notice-http.test.mjs && node outreach-team-notice.test.mjs",
+    "test:team-delivery:native": "TEST_NATIVE_PG=1 node outreach-team-notice.test.mjs && node outreach-team-notice.concurrent.mjs"
   }
 }

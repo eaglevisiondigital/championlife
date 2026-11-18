@@ -1,0 +1,31 @@
+// Proposed plain-text copy for review ONLY. No delivery configuration or trigger.
+const proposal=(kind,subject,...paragraphs)=>Object.freeze({kind,version:1,approval:'unapproved_proposal',format:'text/plain',subject,paragraphs:Object.freeze(paragraphs)});
+export const TEAM_NOTICE_PROPOSALS=Object.freeze({
+ team_under_review:proposal('team_under_review','SOWGO: {{event_name}} — application under review',
+  'Your volunteer application for {{event_name}} is under review.',
+  'This update does not confirm team selection, a vehicle seat or a travel itinerary.'),
+ team_approved:proposal('team_approved','SOWGO: {{event_name}} — volunteer application approved',
+  'The outreach team has approved your volunteer application for {{event_name}}.',
+  'A vehicle seat and confirmed travel itinerary are separate. This approval does not confirm either.'),
+ team_waitlisted:proposal('team_waitlisted','SOWGO: {{event_name}} — volunteer application waitlisted',
+  'Your volunteer application for {{event_name}} is waitlisted.',
+  'This update does not confirm a place on the team, a vehicle seat or a travel itinerary.'),
+ team_declined:proposal('team_declined','SOWGO: {{event_name}} — volunteer application decision',
+  'The outreach team has not selected your volunteer application for {{event_name}}.',
+  'This update does not confirm attendance or travel.'),
+ team_cancelled:proposal('team_cancelled','SOWGO: {{event_name}} — volunteer participation cancelled',
+  'Your volunteer participation record for {{event_name}} is marked cancelled.',
+  'This update does not confirm attendance or travel.'),
+ vehicle_seat_reserved:proposal('vehicle_seat_reserved','SOWGO: {{event_name}} — seat reserved, itinerary unconfirmed',
+  'A vehicle seat has been reserved for your {{leg_label}} travel arrangement for {{event_name}}.',
+  'Your itinerary is not confirmed. Departure and meeting details remain subject to outreach team confirmation.'),
+ vehicle_seat_cancelled:proposal('vehicle_seat_cancelled','SOWGO: {{event_name}} — vehicle seat reservation cancelled',
+  'Your vehicle seat reservation for {{leg_label}} at {{event_name}} is marked cancelled.',
+  'This update does not confirm another seat or a replacement itinerary.'),
+ itinerary_confirmed:proposal('itinerary_confirmed','SOWGO: {{event_name}} — itinerary confirmed',
+  'The outreach team has confirmed your {{leg_label}} itinerary for {{event_name}}.',
+  'This confirmation applies only to this travel leg. Other travel arrangements require their own confirmation.'),
+ itinerary_needs_review:proposal('itinerary_needs_review','SOWGO: {{event_name}} — travel confirmation needs review',
+  'Your {{leg_label}} travel arrangement for {{event_name}} is not currently confirmed.',
+  'Earlier itinerary details should not be treated as current confirmation. The outreach team must review and confirm the arrangement.')
+});
