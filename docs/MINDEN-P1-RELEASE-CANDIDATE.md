@@ -1,63 +1,62 @@
-# Issue159 P1 release candidate — November 17, 2026
+# Issue159 P1 release evidence — November 18, 2026
 
-**NO-GO for production.** The reviewed Team/Travel implementation and independent corrections pass technical checks. Genuine hosted owner/multi-staff/participant acceptance remains incomplete. No production P1 SQL, interface, staff permission or status message is activated. P0 is still live and unchanged.
+**Core isolated Team/Travel acceptance PASS. Production release NO-GO/HOLD.** The latest owner instruction prohibits production changes and additional staff grants. A read-only production preflight found the required Outreach Auth callback missing. No production P1 SQL/interface, named staff access or status messaging is activated. P0 remains live.
 
-## Exact inputs and preservation
+## Exact candidate and preservation
 
-This continues draft PR162 from reviewed head `1b99a3eb7ae3d38ed8e9890fe63f30739f6aa3cb` on production source `90657158d2c0d115d98b17c7be664f455b4b2cd0`. Narrow PR6/35 recovery remains separate from PR149 attendee/bicycle work, which stays held. Existing P0, DreamTrack, Giving, People, registration and Auth source and the production migration history are unchanged.
+Draft PR162 continues reviewed checkpoint71b6da2f501f645d810d10555bb173755dae5389. Last runtime change is c5bda7925e7dddeb23a42f3379794811136c8227, including separate Person and Household adapters. P1 runtime SHA256:2cef780927fb398e6852971cfa91d306c60986551aac6825174556672d9c9625. Use the final exact PR head and private CI receipt; older CI at71b6da2 does not cover the new runtime.
 
-| Reviewable input | SHA256 | State |
+| Input | SHA256 | Verified state |
 |---|---|---|
-| `supabase/release/outreach-team-travel-v1-forward-candidate.sql` | `f6dd9b5bd0f316d105147f6de7a42a5fa694b55e48a0411b7867b72f8e3f90f2` | Verified on disposable acceptance only; UNINSTALLED in production |
-| `supabase/release/outreach-team-travel-v1-stop.sql` | `f8ef973ac80cbd47680fefcbc118454d1f01422a3495bc715b47948ebab2a1b0` | Tested local incident access stop; UNAPPLIED hosted |
-| `docs/releases/minden-p1-publication.patch` | `e3bf2aca38d409856f19f04c6e21e760eb1f462baa93c169a97f02af952c5b8d` | UNAPPLIED publication change |
+| supabase/release/outreach-team-travel-v1-forward-candidate.sql | f6dd9b5bd0f316d105147f6de7a42a5fa694b55e48a0411b7867b72f8e3f90f2 | Installed/verified on disposable acceptance only; production absent |
+| supabase/release/outreach-team-travel-v1-stop.sql | f8ef973ac80cbd47680fefcbc118454d1f01422a3495bc715b47948ebab2a1b0 | Native PASS; exact body exercised hosted inside independently pinned guards; production unapplied |
+| docs/releases/minden-p1-publication.patch | e3bf2aca38d409856f19f04c6e21e760eb1f462baa93c169a97f02af952c5b8d | Unapplied; tested435-file build/426-file reversal |
 
-The actual published artifact remains426 files. The publication patch now adds nine P1 HTML/JS/CSS files, including the dedicated Outreach login and P1-only session presentation. It applies and builds435 files in a disposable copy, preserving all426 existing public files byte-for-byte; reversing it restores the426-file manifest/build. It changes no P0 page/runtime or shared navigation. The staff workspace provides unified owner application review and explicit reviewed Person linking; other scoped staff need an authorized event link. The participant page likewise requires an explicit event link and the existing verified own-Person relationship. No account claiming or staff bootstrap interface is added.
+All426 currently public files and the actual manifest remain byte-identical to production90657158d2c0d115d98b17c7be664f455b4b2cd0. Publication would add nine P1 files. Shared Auth/login/session, People, P0, Giving, DreamTrack and registration sources are unchanged. Selected PR6/35 recovery is narrow; PR149 attendee/bicycle activation remains held.
 
-## Branded sign-in acceptance correction
+Production Netlify deploys remain current/ready: Champion Life 6afcb9ab44be6323ed723cd6 at the source above; SOWGO 6afcb9b79ca65025ad6035b0 at d068b3b90d79e9b355937a9702c18dcad24508d3. No P1 deploy ID exists. Public Minden application/SOWGO/DreamTrack return200; SOWGO event data retains the canonical Minden link. Production33 migrations, original31/function/RLS fingerprints, Auth 68/People 1/grants 72,140 DreamTrack questions, P0 enabled/revision4 and absent P1 are preserved.
 
-The dedicated unpublished Outreach login uses the original SOWGO logo, separate callback/return-storage context and a P1-only staff logout presentation, preserving all canonical originals. Independent review reproduced a legitimate first-confirmation `signup` callback falsely rejected by the inherited canonical flow. One generated predicate correction accepts a single SDK implicit `signup` type while rejecting duplicate/mixed types. Direct TokenHash types/APIs, SDK initialization/session/error checks and all server authorization are unchanged.165baseline,94session,32preservation,109signup DOM and224focused Chrome/WebKit checks pass; the earlier165baseline did not cover first-confirmation signup. Full final regressions pass. Original-logo code/link email templates and exact local callbacks are configured only on replacement; sender credential save and genuine delivery remain pending. [Explicit Auth delta and limits](OUTREACH-LOGIN.md).
+## Genuine hosted acceptance
 
-## Independent corrections
+The owner-approved empty project used the27 reviewed persistent baseline, exact DreamTrack/P0 contracts and unchanged P1 SQL. Hosted/native P1 catalog matched11 functions/6 tables including definitions/owners/ACLs/RLS/columns/constraints/indexes. Acceptance-only P0 ledger overlays and empty-project provisioning were independently reviewed; production history/customer data were untouched.
 
-The candidate now pins the existing campaign-capability constraint before replacing it. Missing/changed constraints fail before DDL, while repeat/partial installs retain their explicit refusal.
+Both approved accounts genuinely confirmed email and obtained provider sessions before the exact temporary fixture. Branded Resend SMTP delivered original-SOWGO-logo email; inspected Gmail headers reported SPF/DKIM pass. DMARC was not present, not a recorded failure. A genuine signup link reached the correct callback, scrubbed credentials and denied ungranted access. Owner code sign-in also worked. No Auth confirmation fields, JWTs or results were fabricated.
 
-Independent review reproduced a guardian defect: a guardian change could leave a minor's seat marked confirmed but currently invalid, and reconfirmation could falsely report success. Guardian corrections now require releasing active dependent travel. Confirmation validates the complete existing itinerary/driver/guardian gate after a tentative update; refusal rolls back state, revision, timestamps and audit.
-
-P1-only permission helpers retain every existing verified/staff/person-link/organization/department/revocation check and supplement directory, grant and Person-affiliation dates with the wall clock. Expiry during a campaign-lock wait denies the original request. Shared production helpers are unchanged. Future-effective authority can remain conservatively denied until a new transaction under the retained legacy gates; this does not expand access.
-
-## Tested
-
-| Check | Result and scope |
+| Genuine check | Result |
 |---|---|
-| Full existing regression suite and explicit public build | PASS;426 public files |
-| Native lifecycle/security |64 PASS; synthetic local PostgreSQL |
-| Two distinct staff identities, final seat/reassignment/revocation |14 PASS; independent native sessions with synthetic claims |
-| Guardian/full confirmation |14 PASS in native PostgreSQL and PGlite |
-| Owner grant and staff-directory expiry while blocked |10 PASS; observed lock wait and database-clock expiry |
-| People/Household/dept/Person-affiliation dependency expiry |39 PASS; positive scope and outside-scope cases; no denied write/audit advance |
-| Installation recovery guards |10 PASS |
-| Reversible P1 access stop |7 PASS; records/audit, staff grants and P0 preserved |
-| Independent actual-P0 list/detail/blocked-settings revocation |7 PASS |
-| Staff Chrome/WebKit390px/1440px |40 PASS against actual disposable native RPCs; explicitly synthetic Auth |
-| Participant DOM and prior browser evidence |43 DOM and48 browser PASS retained; unchanged source, synthetic Auth/RPC |
-| Notification preparation |119 PASS; pure held drafts only |
-| Actual hosted anonymous HTTP isolation |10 PASS; public key only, no genuine signed-in session |
-| Hosted versus final native P1 catalog |Exact match:11 function definitions/owners/ACLs and6 tables with columns, constraints, indexes, RLS and ACLs |
+| Canonical identity | Six protected owner UI Person creates, six private anchors/audits and separately verified application links; no auto-merge, account grant or companion parsing |
+| Decisions/readiness | Under review/waitlist/decline/approve; approval, age and availability are separate gates |
+| Guardian | Household/adult/child facts alone left travel blocked; separate guardian review required. Wrong-vehicle reassignment, occupied guardian removal and active-travel eligibility corrections refused |
+| Drivers/vehicles | Driver-inclusive capacity; self-reported experience did not qualify a driver; explicit vehicle-specific review; occupied vehicle edits refused |
+| Multi-staff final seat | Parallel genuine owner/travel-only requests: one reservation and one capacity denial, no overbooking |
+| Atomic reassignment | Full target preserved original; successful replacement retained cancelled original and required fresh confirmation |
+| Own itinerary/history | Unknown/edited/unconfirmed details withheld; confirmed self itinerary without other participants; synthetic check-in/attendance/reversal reflected |
+| Manifest/CSV/print | Vehicle-filtered manifest view passed; actual campaign CSV downloaded five rows with formula-leading name escaped; actual Van A Chrome print preview cancelled without physical printing. No genuine single-vehicle CSV download is claimed |
+| Mobile | Actual genuine staff/own 390px views without document overflow; prior Chrome/WebKit evidence retained |
+| Revocation | Event grant, owner P1 permission and own-link revoked separately; existing sessions cleared views. Travel-only account denied shared People access |
+| Hosted recovery | Four entry ACLs stopped/restored; P0 review retained. Same sessions recovered with row/audit/staff/Auth-count preservation and no installer replay |
 
-The disposable hosted project uses the hash-verified27 persistent production baseline, excluding retired temporary installers, plus the exact DreamTrack/P0 contracts. Its original application function and RLS fingerprints match production. New-project default grants were tightened before replay and the missing automatic-RLS prerequisite was provisioned only there. Acceptance-specific P0 ledger guards pin the actual provider count/hash/name while retaining exact helper/function/RLS checks. Independently reviewed overlays and raw nonsecret receipts stay in the outer private audit workspace; no production history or original source payload was rewritten.
+All People, ages, qualifications, guardianship, locations, travel and attendance facts were explicitly synthetic. The own-Person relationship was an approved privileged synthetic precondition; this does not claim genuine acceptance of the shared portal-admin link-creation RPC. Actual application-to-Person UI creation/link review was tested separately.
 
-**No genuine authenticated P1 journey is claimed.** The first disposable project was deleted before the owner completed its confirmation link, making that link unusable. The owner separately approved the fresh replacement quote and full reviewed baseline. The replacement remains active within its approved24-hour window; branded email, SMTP and callback preparation must finish before any new sign-in message. The narrow Outreach-only first-confirmation callback correction is integrated and tested. The final full regression suite passes. Replacement catalog parity and all10anonymous HTTP denials pass; genuine signed-in acceptance has not started. No account was marked verified manually and no JWT or staff result was fabricated. Additional scoped test permissions remain approval-gated. These are release gates, not substitutes for green local tests.
+An initial artificial20-second lock caused both HTTP seat actions to time out safely; preserved as stress evidence, not a successful race. A separate normal parallel genuine race passed. Actual print preview included an extra blank page; scoped privacy/content passed, with that cosmetic limitation retained.
 
-## Notifications and remaining actions
+## Preserved checks and independent review
 
-[Notification preparation](OUTREACH-TEAM-NOTIFICATIONS.md) contains nine proposed status-specific plaintext messages, strict held-draft validation and the proposed Resend idempotency/outcome integration. There is no active recipient, sender, channel, queue, worker or provider call. The119 checks do not prove real delivery. Persistent status delivery/outcome integration is not implemented; approved transition/copy/recipient/consent/suppression/timing policy is required before that separate activation work. Existing live P0 confirmations are unchanged.
+Full regressions and426-file build pass on integrated runtime. New81 Person/84 Household controlled DOM/security checks pass; prior23 Team DOM,43 participant DOM/48 browser,40 SQL-connected staff Chrome/WebKit,109 signup DOM/224 focused browser and original login/session checks remain preserved. Native evidence retains64 lifecycle/security,14 concurrency,14 guardian,10 expiry,39 dependency,10 install recovery,7 access-stop and7 actual-P0 revocation passes. Ten actual hosted anonymous HTTP denials pass; nine inert notification drafts pass119 checks.
 
-Before production release:
+Independent source/current-catalog review found no blocker in bounded Team/Travel scope. Hosted recovery used exact source/owner/ACL/table/policy/non-P1 and ledger guards with27 native mechanics/13 migration-lineage checks. Provider recovery entries appended 33/34 without changing original 32 acceptance entries. The stop affects four P1 RPC entry ACLs, not shared canonical APIs or already-running transactions. Shared authorization/time semantics remain unchanged.
 
-1. Complete genuine email-confirmed owner sign-in and the separately approved second-account fixture. Perform actual hosted identity review, statuses/readiness, driver/leg/vehicle/guardian, final-seat race, reassignment, CSV/print, own-history/confirmed-itinerary, revocation, mobile and access-stop acceptance. Never substitute synthetic claims or edited Auth confirmation fields.
-2. Verify exact named staff login emails, duties, organization/event scope and dates before any real assignment or grant. Named accounts remain inactive; do not infer identity or duties. Preserve the registration-only scope of its existing grant API.
-3. Retest the final exact source/catalog and obtain explicit P1 schema/publication/access release authority. Apply the publication patch only after its gates pass, then run exact-head CI and verify the resulting artifact. No candidate filename or green draft CI authorizes deployment.
-4. Keep status messaging disabled pending its policy and delivery implementation. Keep PR149 attendee/bicycle registration held. Unknown itinerary details and unverified people remain unconfirmed.
+Health was clear. Intended RPC-only RLS/no-policy information, existing public registration-config warnings and the empty target's unused password-protection advisory were recorded without broadening permissions or unrelated settings.
 
-Private receipts record the final source SHA/CI run, project cleanup and genuine-gate status. No new production deploy ID exists for P1.
+## Cleanup and remaining release actions
+
+Read-only production Auth preflight at2026-11-18T10:47:42Z found Site URL https://championlifefwb.com and exactly one allowed redirect: https://championlifefwb.com/discipleship-login.html. The dedicated https://championlifefwb.com/outreach-login.html callback is absent. This is a concrete production secure-link compatibility blocker; isolated callback success does not prove production compatibility. Save was disabled and nothing was changed. Preserve the existing DreamTrack callback, SMTP and templates; do not copy the isolated global SOWGO email configuration into production. Any exact additional Outreach callback rules and production email presentation require reviewed scope and explicit authority before release.
+
+Temporary grants/directory windows/own-link were revoked; real local sign-out passed. Two obsolete owner sessions from earlier attempts remained until project deletion, so global-session-revocation is not claimed. The disposable project was independently absent by 2026-11-18T10:37:45Z, before November 18, 9:02 PM Central. The owner separately confirmed deletion of only the temporary SMTP key; provider removal/absence and live P0 key presence were verified. Local server and completed acceptance tabs closed. Nonsecret receipts/screenshots/delivery metadata/hashes/failed probes remain private outside the repository.
+
+Production remains held. Before release:
+
+1. Resolve and explicitly authorize the exact missing production Outreach callback rules while preserving existing Auth/DreamTrack configuration. Obtain exact P1 schema/publication release authority, fresh compatibility preflight and final exact-head CI; apply only the reviewed package, then verify production source/deploy/URLs and genuine callback behavior.
+2. Verify exact named staff login emails, duties, organization/event scope and dates before grants. No Roddy/Kelsey/Danielle account was created or granted.
+3. Keep status messaging disabled. [Notification preparation](OUTREACH-TEAM-NOTIFICATIONS.md) has nine held drafts and an integration design. Durable outbox, sending worker and provider outcome reporting are unimplemented. Approved transitions/copy/recipient/consent/suppression/timing and a reviewed delivery implementation remain outstanding. No P1 status email was sent.
+4. Preserve PR149 attendee/bicycle hold and distinctions between received applications, approved volunteers and confirmed assignments. Real unverified details remain unconfirmed.
