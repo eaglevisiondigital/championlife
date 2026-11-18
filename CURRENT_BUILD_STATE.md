@@ -1,3 +1,7 @@
+## 2026-11-18 — Final Outreach workflow-label capitalization
+
+PR165 capitalization is live at ad1c76c55074d3f994e76d66129aa46281d747da / Netlify6afdc78f704bd695fe982349 after exact-head CI44338343400 PASS. Final visual review identified the workflow arrow row as six short labels rather than a sentence. This candidate changes only those labels to title case and awaits its own CI/publication. Owner-only core remains GO with37 migrations and completed recovery/cleanup; notifications, additional staff and PR149 remain held. No Auth, SQL, messaging or progression changes.
+
 # Issue159 capitalization follow-up — November 18, 2026
 
 Owner-only core Team/Travel is released on main `f9ae106dce1a026bb3f7134ac5af0f593d29f3cb` / Netlify `6afdaded620f2a58165009ee`. Production now has37 append-only migrations, including the exact reviewed core/disabled-notice payloads and guarded core stop/restore. Root's genuine owner login, bounded recovery and approved synthetic cleanup evidence are recorded privately. Notification activation, additional staff and PR149 remain HOLD. This supersedes earlier no-production-release statements below for the core owner release only.
