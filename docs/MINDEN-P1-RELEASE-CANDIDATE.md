@@ -10,9 +10,9 @@ This continues draft PR162 from reviewed head `1b99a3eb7ae3d38ed8e9890fe63f30739
 |---|---|---|
 | `supabase/release/outreach-team-travel-v1-forward-candidate.sql` | `f6dd9b5bd0f316d105147f6de7a42a5fa694b55e48a0411b7867b72f8e3f90f2` | Verified on disposable acceptance only; UNINSTALLED in production |
 | `supabase/release/outreach-team-travel-v1-stop.sql` | `f8ef973ac80cbd47680fefcbc118454d1f01422a3495bc715b47948ebab2a1b0` | Tested local incident access stop; UNAPPLIED hosted |
-| `docs/releases/minden-p1-publication.patch` | `62b1708667c5af40b66af154404adc0cb431fdc6b223d3dd51381770e1c82a7d` | UNAPPLIED publication change |
+| `docs/releases/minden-p1-publication.patch` | `e3bf2aca38d409856f19f04c6e21e760eb1f462baa93c169a97f02af952c5b8d` | UNAPPLIED publication change |
 
-The actual published artifact remains426 files. The publication patch adds only the six reviewed P1 HTML/JS/CSS files. It applies and builds432 files in a disposable copy; reversing it restores the426-file manifest/build. It changes no P0 page/runtime or shared navigation. The staff workspace provides unified owner application review and explicit reviewed Person linking; other scoped staff need an authorized event link. The participant page likewise requires an explicit event link and the existing verified own-Person relationship. No account claiming or staff bootstrap interface is added.
+The actual published artifact remains426 files. The publication patch now adds nine P1 HTML/JS/CSS files, including the dedicated Outreach login and P1-only session presentation. It applies and builds435 files in a disposable copy, preserving all426 existing public files byte-for-byte; reversing it restores the426-file manifest/build. It changes no P0 page/runtime or shared navigation. The staff workspace provides unified owner application review and explicit reviewed Person linking; other scoped staff need an authorized event link. The participant page likewise requires an explicit event link and the existing verified own-Person relationship. No account claiming or staff bootstrap interface is added.
 
 ## Independent corrections
 
@@ -43,7 +43,7 @@ P1-only permission helpers retain every existing verified/staff/person-link/orga
 
 The disposable hosted project uses the hash-verified27 persistent production baseline, excluding retired temporary installers, plus the exact DreamTrack/P0 contracts. Its original application function and RLS fingerprints match production. New-project default grants were tightened before replay and the missing automatic-RLS prerequisite was provisioned only there. Acceptance-specific P0 ledger guards pin the actual provider count/hash/name while retaining exact helper/function/RLS checks. Independently reviewed overlays and raw nonsecret receipts stay in the outer private audit workspace; no production history or original source payload was rewritten.
 
-**No genuine authenticated P1 journey is claimed.** The owner received the new-project confirmation email, but server verification/session acceptance had not completed at this checkpoint. No account was marked verified manually and no JWT or staff result was fabricated. Additional scoped test permissions remain approval-gated. These are release gates, not substitutes for green local tests.
+**No genuine authenticated P1 journey is claimed.** The first disposable project was deleted before the owner completed its confirmation link, making that link unusable. The owner separately approved the fresh replacement quote and full reviewed baseline. The replacement remains active within its approved24-hour window; branded email, SMTP and callback preparation must finish before any new sign-in message. A narrow first-confirmation callback correction is under review. No account was marked verified manually and no JWT or staff result was fabricated. Additional scoped test permissions remain approval-gated. These are release gates, not substitutes for green local tests.
 
 ## Notifications and remaining actions
 

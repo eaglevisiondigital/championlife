@@ -30,7 +30,8 @@
     "test:team-travel:guardian": "node outreach-team-travel.guardian.mjs",
     "test:team-travel:expiry": "node outreach-team-travel.expiry.mjs",
     "test:team-travel:dependencies": "node outreach-team-travel.dependencies.mjs",
-    "test:outreach-login": "node ../outreach-login/generate.mjs && node outreach-login.dom.mjs && node outreach-staff-session.dom.mjs && node outreach-login.test.mjs",
-    "test:outreach-login:browser": "node outreach-login.browser.mjs"
+    "test:outreach-login": "node ../outreach-login/generate.mjs && node outreach-login.dom.mjs && node outreach-staff-session.dom.mjs && node outreach-login.test.mjs && npm run test:outreach-auth-email",
+    "test:outreach-login:browser": "node outreach-login.browser.mjs",
+    "test:outreach-auth-email": "node outreach-auth-email.test.mjs"
   }
 }

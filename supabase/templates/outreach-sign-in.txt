@@ -1,0 +1,16 @@
+SOWGO OUTREACH · CHAMPION LIFE CHURCH
+
+Sign in to SOWGO Outreach
+
+Use this code on the sign-in page, or use the secure link below. On your first visit, this also confirms your email address.
+
+Your sign-in code: {{ .Token }}
+Secure sign-in link: {{ .ConfirmationURL }}
+
+Keep your code and sign-in link private. We will never ask you to send them by email or chat.
+
+If you did not request this sign-in, you can ignore this email. Signing in does not confirm volunteer selection or a vehicle assignment.
+
+SOWGO Outreach · Champion Life Church
+https://sowgo.org/
+https://championlifefwb.com/

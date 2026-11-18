@@ -1,3 +1,7 @@
+# Issue159 replacement acceptance and branding decision — November 17, 2026
+
+Continue the authorized P1 task after the owner's fresh replacement-project cost approval and explicit full27 baseline approval. The old test project's early deletion broke the pending confirmation; keep the replacement available while sign-in is pending until its24-hour limit, rather than cleaning up at an interim NO-GO. Finish SOWGO-branded sender/template/login before resending. A demonstrated first-signup callback defect merits a narrow P1-only correction, preserving existing production login and all release gates. Do not interpret these approvals as production P1 release, named staff activation or status-message activation.
+
 # Issue159 approved screenshot and P0 boundary
 
 Owner confirmed screenshot mapping is complete: only first+last name and added email required; other questions optional; passenger field always visible; no hidden source questions or waiver/signature. Owner authorized existing verified Platform Owner only for P0, with no grants. Other staff await exact emails/duties. P0 public launch may use safe interim owner review while P1 Team/Travel progresses separately. Correct SaturdayDec19 date replaces contradictory old travel dates; actual travel times await outreach team confirmation.
