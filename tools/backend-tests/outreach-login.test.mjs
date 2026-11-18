@@ -51,5 +51,8 @@ const manifest=JSON.parse(await read('tools/site-build/public-files.json'));
   ok(w.sessionStorage.getItem('championlife-auth-next')==='/my-discipleship.html'&&!w.sessionStorage.getItem(context.storage),'P1 logout clears only its independent return hint');
  }finally{w.close()}
 }
-for(const file of['outreach-login.html','assets/css/outreach-login.css','assets/js/outreach-staff-session.js','outreach-team.html','staff-outreach-team-travel.html','assets/js/outreach-team-portal.js','assets/js/outreach-team-travel.js'])ok(!manifest.includes(file),'candidate remains outside actual publication manifest: '+file);
+const approvedP1=['outreach-login.html','assets/css/outreach-login.css','assets/js/outreach-staff-session.js','outreach-team.html','assets/css/outreach-team-portal.css','assets/js/outreach-team-portal.js','staff-outreach-team-travel.html','assets/css/outreach-team-travel.css','assets/js/outreach-team-travel.js'];
+ok(manifest.length===435,'owner-only P1 publication contains 435 explicit public files');
+ok(JSON.stringify(manifest.slice(-approvedP1.length))===JSON.stringify(approvedP1),'only the nine reviewed P1 files are appended in fixed order');
+for(const file of approvedP1)ok(manifest.filter(v=>v===file).length===1,'exactly one reviewed P1 public entry: '+file);
 console.log(n+' Outreach login preservation/branding/context checks passed (synthetic Auth only)');
