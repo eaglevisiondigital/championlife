@@ -6,7 +6,7 @@
  const account=document.getElementById('trip-account'),email=document.getElementById('trip-account-email'),logout=document.getElementById('trip-logout');
  const values=new URLSearchParams(location.search).getAll('campaign'),uuid=/^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$/i;
  const campaign=values.length===1&&uuid.test(values[0])?values[0].toLowerCase():null;
- const next='/outreach-team.html'+(campaign?'?campaign='+campaign:''),login='discipleship-login.html?next='+encodeURIComponent(next);
+ const next='/outreach-team.html'+(campaign?'?campaign='+campaign:''),login='outreach-login.html?next='+encodeURIComponent(next);
  let generation=0,currentUser=null,locked=false,signingOut=false,hiddenPage=false;
  const el=(tag,text,attrs={})=>{const n=document.createElement(tag);if(text!=null)n.textContent=String(text);for(const[k,v]of Object.entries(attrs))n.setAttribute(k,String(v));return n;};
  const decision={applied:'Team selection pending',under_review:'Under review',approved:'Approved to serve',waitlisted:'Waitlisted',declined:'Not selected',cancelled:'Cancelled'};

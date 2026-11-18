@@ -1,3 +1,7 @@
+# Issue159 unpublished Outreach sign-in context
+
+The Outreach sign-in candidate presents original SOWGO/Champion Life branding while generating its complete inline Auth from the canonical login with only callback, fallback and return-storage substitutions. A P1-only generated staff-session clone preserves shared logout/clearing behavior while returning to the explicit event through the Outreach login; existing shared source and unrelated staff screens remain unchanged. No new identity, backend or grant boundary is introduced. The source, context matrix, generation guards and genuine-acceptance limits are in [the Outreach login contract](docs/OUTREACH-LOGIN.md). All new runtime files remain outside the actual public manifest.
+
 # Issue159 volunteer intake addition
 
 Volunteer applications are separate canonical campaign-bound snapshots, not Family Fun Day attendee registrations or automatic People/Auth identities. A new Edge Function persists application+private frozen mail outbox before Resend. One shared SOWGO form URL; existing staff session and organization-wide owner authority; explicit public build allowlist. Starts disabled; no old shared function replacements. Details: docs/MINDEN-VOLUNTEER-V1.md.

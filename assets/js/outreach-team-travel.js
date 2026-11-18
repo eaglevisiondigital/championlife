@@ -9,7 +9,7 @@
  const reason=f=>field(f,'Review reason (at least 10 characters)','reason','text','',true,{minlength:10,maxlength:500});
  const message=t=>{let n=root.querySelector('[data-message]');if(!n){n=el('p','',{class:'team-error',role:'alert','data-message':''});root.prepend(n)}n.textContent=t;};
  function clear(){epoch++;context=null;members=[];roster=null;applications=null;root.replaceChildren();}
- function denied(){clear();root.append(el('h1','Outreach access unavailable'),el('p','Sign in with your authorized staff account, or ask the owner to review your current event access.'),el('a','Sign in',{href:'discipleship-login.html?next='+encodeURIComponent(location.pathname+location.search)}));}
+ function denied(){clear();root.append(el('h1','Outreach access unavailable'),el('p','Sign in with your authorized staff account, or ask the owner to review your current event access.'),el('a','Sign in',{href:'outreach-login.html?next='+encodeURIComponent(location.pathname+location.search)}));}
  function showError(e){if(e.stale||e.denied)return;message(e.code==='40001'?'This record changed. Refresh and review the current information.':e.code==='23505'?'This participant already has a seat for that travel leg, or the driver seat is occupied. Refresh before changing the assignment.':e.message||'Unable to complete this action. Refresh and try again.');}
  async function request(rpc,args,stamp=epoch){
   if(!auth?.client)throw Error('Workspace unavailable.');
