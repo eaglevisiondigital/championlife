@@ -1,3 +1,7 @@
+# Issue159 manual Person-create adapter — local P1 only
+
+Unpublished P1 application review can now create an explicitly reviewed missing canonical contact through the existing organization_people INSERT surface after possible-match search. It supplies only organization/name/email/phone; existing server defaults, anchor/audit triggers, column grants and RLS remain authoritative. Current staff_workspace_context global People read/create gates presentation and each write/result boundary. The new contact stays unlinked until the existing separate verified Person confirmation succeeds. No shared People UI, identity directory, SQL, Auth, grant or public-manifest change. [Detailed review/failure contract](docs/OUTREACH-TEAM-PERSON-CREATE.md).
+
 # Issue159 branded acceptance Auth — November 17, 2026
 
 The new Outreach page derives from the unchanged canonical Auth flow, with explicit context substitutions and a separately reviewed first-signup callback adaptation. Email templates use only provider-generated Token/ConfirmationURL, the original SOWGO logo and existing owned-domain links; sign-in does not confer review/travel authority. Configure custom SMTP and exact local callbacks only on the fresh disposable target. Do not change shared production Auth to obtain acceptance. The proposed public manifest adds nine files to426; it remains unapplied and reverses to426.

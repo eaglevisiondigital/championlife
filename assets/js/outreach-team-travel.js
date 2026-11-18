@@ -1,4 +1,4 @@
-/* Local P1 candidate. Uses existing Auth/session shell and scoped RPCs only. */
+/* Local P1 candidate. Existing Auth, scoped RPCs and protected People insert only. */
 (() => {
  'use strict';
  const root=document.getElementById('outreach-team-travel'),auth=window.ChampionLifeAuth;
@@ -54,13 +54,66 @@
   }
  }
  async function reviewApplication(id,linked){
-  const a=await p0('detail',{id});header();const p=panel(name(a)+' · '+a.reference);
+  const stamp=++epoch,actor=user?.id,org=context.organization_id;
+  const a=await request('outreach_volunteer_workspace',{p_action:'detail',p_data:{id}},stamp);header();const p=panel(name(a)+' · '+a.reference);
   for(const[label,value]of[['Source status',a.status],['Email',a.email],['Phone',a.phone||'Not supplied'],['Attendance answer',a.attendance??'Not answered'],['RV / big rig experience (self-report)',a.rv_experience??'Not answered'],['Ride preference',a.travel_choice==='ride_with_team'?'Ride with team':a.travel_choice==='drive_self'?'Drive self':'Not answered'],['Prospective passenger names — unverified',a.passenger_names||'None supplied'],['Additional information',a.additional_information||'None supplied']])p.append(el('p',label+': '+value));
   p.append(el('p','Application receipt does not approve this person or confirm travel.',{class:'team-warning'}));
   if(linked){p.append(el('p','This application already has an individually reviewed Team record.'),button('Back to team',()=>load('team')));return;}
-  const searchPanel=panel('Find the verified canonical Person');searchPanel.append(el('p','Search is a possible match only. Verify identity independently before linking. If the correct Person is missing, review/create the record in People & Follow-up, then return.'),el('a','Open People & Follow-up',{href:'staff-people.html'}));
-  const results=el('div');let search;
-  const f=form(searchPanel,async()=>{const people=await request('people_workspace',{p_org:context.organization_id,p_action:'list',p_payload:{search:search.value.trim()}});results.replaceChildren();if(!people.length)results.append(el('p','No matching canonical People found.'));for(const candidate of people)results.append(button(name(candidate)+' · '+(candidate.email||'No email on record'),()=>linkReview(a,candidate),{class:'team-result'}));},'Search People');search=field(f,'Name or contact search','search');f.finish();searchPanel.append(results);
+  const searchPanel=panel('Find the verified canonical Person');searchPanel.append(el('p','Search for possible matches by name, email or phone. Verify identity independently before linking. If a separate Person is needed, authorized People staff can create a reviewed contact here after checking the matches.'));
+  const results=el('div');let search,searchVersion=0,reviewedSearch=null,createPanel=null;
+  const active=()=>{if(stamp!==epoch||!searchPanel.isConnected||context?.organization_id!==org||user?.id!==actor)throw Object.assign(Error('Review changed'),{stale:true})};
+  const resetSearch=()=>{searchVersion++;reviewedSearch=null;results.replaceChildren();createPanel?.remove();createPanel=null;root.querySelector('[data-link-review]')?.remove()};
+  const f=form(searchPanel,async()=>{
+   active();resetSearch();const version=searchVersion,query=search.value.trim();
+   const activeSearch=()=>{active();if(version!==searchVersion||query!==search.value.trim())throw Object.assign(Error('Search changed'),{stale:true})};
+   if(!query||query.length>100)throw Error('Enter a name, email or phone search of up to 100 characters.');
+   let people;try{people=await request('people_workspace',{p_org:org,p_action:'list',p_payload:{search:query}},stamp)}catch(e){if(e.stale||e.denied)throw e;throw Error('Possible matches could not be loaded. Search again before creating a Person.');}
+   active();if(version!==searchVersion||query!==search.value.trim())return;if(!Array.isArray(people))throw Error('Possible matches could not be loaded. Search again before creating a Person.');
+   results.append(el('p',people.length?'Review these possible matches. A shared name or email does not establish identity.':'No matching canonical People found. Review the search before creating a separate Person.'));
+   for(const candidate of people)results.append(button(name(candidate)+' · '+(candidate.email||'No email on record'),()=>{active();linkReview(a,candidate)},{class:'team-result'}));
+   if(people.length>=26){results.append(el('p','More matches may exist. Refine the search before creating a separate Person.'));return;}
+   const allowed=await personCreateAccess(stamp,actor,org,searchPanel);active();if(version!==searchVersion||query!==search.value.trim())return;
+   if(!allowed){results.append(el('p','Creating a Person is unavailable for your current organization access. Select an independently verified match or ask an authorized People reviewer.'));return;}
+   reviewedSearch=query;
+   results.append(button('Create a new Person after match review',async()=>{
+    active();if(reviewedSearch!==query||version!==searchVersion||query!==search.value.trim())throw Object.assign(Error('Search changed'),{stale:true});
+    if(!await personCreateAccess(stamp,actor,org,searchPanel)){denied();return;}activeSearch();if(reviewedSearch!==query)return;
+    createPanel?.remove();createPanel=panel('Create a separate canonical Person');createPanel.setAttribute('data-person-create','');
+    createPanel.append(el('p','Enter independently reviewed contact details. This saves a Person only. It does not link this application, create an account or approve participation.',{class:'team-warning'}));
+    let first,last,email,phone,checked;const cf=form(createPanel,async()=>{
+     active();if(!cf.isConnected||reviewedSearch!==query||version!==searchVersion||query!==search.value.trim())throw Object.assign(Error('Search changed'),{stale:true});
+     if(!checked.checked)throw Error('Review the possible matches before creating a separate Person.');
+     const bounded=(input,max,label,required=false)=>{const value=input.value.trim();if((required&&!value)||value.length>max||/[\u0000-\u001f\u007f]/.test(value))throw Error('Enter a valid '+label+' of up to '+max+' characters.');return value||null};
+     const payload={organization_id:org,first_name:bounded(first,100,'first name',true),last_name:bounded(last,100,'last name',true),email:bounded(email,320,'email'),phone:bounded(phone,40,'phone')};
+     if(payload.email&&!email.checkValidity())throw Error('Enter a valid email address or leave it blank.');
+     if(!await personCreateAccess(stamp,actor,org,searchPanel)){denied();return;}active();if(!cf.isConnected||reviewedSearch!==query||version!==searchVersion)return;
+     // A request may commit even if its response is lost. Require a fresh match
+     // search after every attempt; never retry an ambiguous insert automatically.
+     reviewedSearch=null;createPanel.remove();createPanel=null;results.replaceChildren(el('p','Saving the reviewed Person…',{role:'status'}));
+     const unknown=()=>{results.replaceChildren(el('p','Person creation could not be confirmed. Search People again before creating or linking anything.',{role:'status'}));};
+     let response;
+     try{response=await auth.client.from('organization_people').insert(payload).select('id,organization_id,first_name,last_name,email,phone').single()}
+     catch{activeSearch();unknown();return;}
+     activeSearch();const error=response?.error;
+     if(error||!response?.data){if(error?.code==='42501'||[401,403].includes(response?.status)){denied();return;}unknown();return;}
+     const person=response.data;
+     if(person.organization_id!==org||!/^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$/i.test(person.id)||typeof person.first_name!=='string'||typeof person.last_name!=='string'){unknown();return;}
+     try{if(!await personCreateAccess(stamp,actor,org,searchPanel)){denied();return;}}catch(e){if(!e.stale&&!e.denied){activeSearch();unknown();}throw e;}activeSearch();
+     results.replaceChildren(el('p','Person saved. This application is still unlinked. Verify identity separately before linking.',{role:'status'}),el('p',name(person)+' · '+(person.email||'No email on record')),button('Review created Person for linking',()=>{active();linkReview(a,person)}));
+    },'Create canonical Person');
+    first=field(cf,'Reviewed first name','first_name','text','',true,{maxlength:100,autocomplete:'off'});last=field(cf,'Reviewed last name','last_name','text','',true,{maxlength:100,autocomplete:'off'});email=field(cf,'Reviewed email (optional)','email','email','',false,{maxlength:320,autocomplete:'off'});phone=field(cf,'Reviewed phone (optional)','phone','tel','',false,{maxlength:40,autocomplete:'off'});
+    checked=field(cf,'I reviewed possible matches and confirmed a separate Person is needed','matches_reviewed','checkbox','',true);checked.value='reviewed';cf.finish();
+   }));
+  },'Search People');search=field(f,'Name or contact search','search','text','',true,{maxlength:100});search.addEventListener('input',resetSearch);f.finish();searchPanel.append(results);
+ }
+ async function personCreateAccess(stamp,actor,org,node){
+  const active=()=>{if(stamp!==epoch||!node.isConnected||context?.organization_id!==org||user?.id!==actor)throw Object.assign(Error('Review changed'),{stale:true})};active();
+  let current;try{current=await auth.getUser()}catch{active();throw Error('Current People access could not be checked. Refresh before continuing.');}active();
+  if(!actor||current?.id!==actor){denied();throw Object.assign(Error('Access denied'),{denied:true});}
+  let response;try{response=await auth.client.rpc('staff_workspace_context',{})}catch{active();throw Error('Current People access could not be checked. Refresh before continuing.');}active();
+  if(response?.error||[401,403].includes(response?.status)){if(response?.error?.code==='42501'||[401,403].includes(response?.status)){denied();throw Object.assign(Error('Access denied'),{denied:true})}throw Error('Current People access could not be checked. Refresh before continuing.');}
+  const data=response?.data;
+  return Array.isArray(data?.organizations)&&data.organizations.some(o=>o.id===org)&&Array.isArray(data?.grants)&&['people.read','people.create'].every(key=>data.grants.some(g=>g.organization_id===org&&g.permission===key&&g.department_ids==null));
  }
  function linkReview(a,person){const old=root.querySelector('[data-link-review]');if(old)old.remove();const p=panel('Confirm verified identity');p.setAttribute('data-link-review','');p.append(el('p','Application: '+name(a)+' · '+a.email),el('p','Canonical Person: '+name(person)+' · '+(person.email||'No email on record')),el('p','Shared name/email alone is not verification. Linking creates a pending individual Team record and grants no account or membership access.',{class:'team-warning'}));let confirm,why;const f=form(p,async()=>{if(!confirm.checked)throw Error('Verify the Person independently before linking.');await rpc('enroll',{application_id:a.id,person_id:person.id,reason:why.value});await load('team');},'Link verified Person');confirm=field(f,'I independently verified this is the correct Person','verified','checkbox','',true);confirm.value='verified';why=reason(f);f.finish();}
  async function reviewMember(m){
