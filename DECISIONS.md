@@ -1,3 +1,7 @@
+# Issue159 engineering go-ahead and redirect evidence — November18,2026
+
+Issue159 comment6976832205 authorizes implementation/testing of the callback and disabled-delivery blockers only, without production/provider writes, activation, accounts/grants or billable resources. Prepare only the exact Outreach redirect addition, retain Site URL/course callback/SMTP/templates, and guard rollback against later drift. Current primary Auth source shows SiteURL-origin acceptance before explicit patterns, correcting the earlier inference that the absent bare entry proves failure. Preserve the tested generated event query; no wildcard or runtime alteration is justified. Pinned policy fixtures do not establish the deployed Auth version or genuine production compatibility. Kelsea is the correct future-planning spelling; named staff still require verified emails/duties and explicit scopes. [Callback proposal and authority boundary](docs/OUTREACH-AUTH-CALLBACK-CONFIG.md).
+
 # Issue159 acceptance result and release hold — November 18, 2026
 
 Read-only production preflight found the dedicated Outreach callback absent from the sole existing discipleship-login.html allowlist. Treat this as an unresolved release compatibility blocker. Under the latest no-production-change instruction, report it and prepare exact reviewed callback configuration for future explicit authority; preserve existing DreamTrack/Auth SMTP/templates and make no global branding substitution.

@@ -1,3 +1,7 @@
+# November18 callback-policy follow-up
+
+The exact additive configuration/rollback and executable preflight are now prepared. Primary provider source corrects the earlier missing-entry inference: the current SiteURL-origin policy permits the actual `?next=` callback before explicit pattern matching. No Auth runtime, generator, equivalent suite or canonical original was changed. [Current evidence, proposed diff and deployed-provider limits](OUTREACH-AUTH-CALLBACK-CONFIG.md). The prior implementation/acceptance checkpoints below remain historical; subsequent genuine isolated acceptance is recorded in the release candidate, while production/configuration/message activation remains held.
+
 # Outreach sign-in — unpublished local candidate
 
 This UI checkpoint starts at reviewed head `8715b0c0783b2b0458e4b66fc560959e14665be8`. `outreach-login.html` presents SOWGO and Champion Life Outreach with the original SOWGO logo. It has no course branding, published navigation entry or public-manifest entry. Only the unpublished P1 staff/participant entry and logout/account-switch destinations use it. No backend, Auth provider configuration, SMTP/template, account, grant, email, credential or hosted change occurs here. The parent separately owns replacement-project setup and branded Auth email work.

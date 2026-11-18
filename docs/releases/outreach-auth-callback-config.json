@@ -1,0 +1,19 @@
+{
+  "status": "PROPOSAL_ONLY",
+  "projectRef": "exdocjbmylgxssanymjk",
+  "endpoint": "/v1/projects/exdocjbmylgxssanymjk/config/auth",
+  "preconditions": {
+    "site_url": "https://championlifefwb.com",
+    "uri_allow_list": "https://championlifefwb.com/discipleship-login.html"
+  },
+  "patch": {
+    "uri_allow_list": "https://championlifefwb.com/discipleship-login.html,https://championlifefwb.com/outreach-login.html"
+  },
+  "rollbackPatch": {
+    "uri_allow_list": "https://championlifefwb.com/discipleship-login.html"
+  },
+  "changedFields": [
+    "uri_allow_list"
+  ],
+  "providerWritePerformed": false
+}

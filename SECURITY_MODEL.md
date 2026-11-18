@@ -1,3 +1,7 @@
+# Issue159 callback policy clarification — November18,2026
+
+Current upstream Auth validates same-SiteURL scheme/hostname/port before explicit allowlist matching. The saved missing Outreach entry therefore does not itself prove production rejection; prior wording below is superseded. Exact add/remove-only configuration guards pin production target/SiteURL/original redirect, reject wildcard/duplicate/list replacement and any supplied unrelated-setting drift, and redact CLI failure output. They never call the provider or expose credentials. Guarded rollback refuses later drift and is not session/issued-link revocation; shared canonical callback/Auth/SMTP/templates remain untouched. Deployed-provider behavior still needs separately authorized validation. [Evidence and precise limits](docs/OUTREACH-AUTH-CALLBACK-CONFIG.md).
+
 # Issue159 genuine acceptance and cleanup — November 18, 2026
 
 Production release blocker from read-only preflight: the sole Auth redirect is the existing discipleship-login.html URL; the new outreach-login.html callback is not allowed. Do not infer production secure-link compatibility from isolated acceptance or replace global production SMTP/templates with the test branding. Preserve existing Auth/DreamTrack and require explicit reviewed authority for exact additional callbacks before release. No production setting was changed.
