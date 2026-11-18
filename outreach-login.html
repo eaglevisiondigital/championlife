@@ -134,7 +134,7 @@
       if(hasSdkLink && (params.has('code') || params.has('access_token') || params.has('refresh_token') ||
           !fragment.get('access_token') || !fragment.get('refresh_token') ||
           fragment.getAll('access_token').length!==1 || fragment.getAll('refresh_token').length!==1 ||
-          (fragment.has('type') && !['magiclink','email'].includes(fragment.get('type')))))
+          (params.has('type') || (fragment.has('type') && (fragment.getAll('type').length!==1 || !['magiclink','email','signup'].includes(fragment.get('type')))))))
         throw new Error(invalidLink);
       // initialize() shares the SDK's existing initialization promise. getSession()
       // alone can hide a URL initialization error behind a null/older session.

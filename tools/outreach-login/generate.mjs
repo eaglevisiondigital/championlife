@@ -1,5 +1,5 @@
-// No Auth implementation fork: the inline script and equivalent DOM suite are
-// mechanically derived from reviewed canonical source with bounded substitutions.
+// Mechanically derived canonical Auth: bounded context substitutions plus one
+// explicit SDK implicit-callback type-policy delta. Canonical files stay intact.
 import {readFile,writeFile} from 'node:fs/promises';
 import {fileURLToPath} from 'node:url';
 import path from 'node:path';
@@ -17,7 +17,13 @@ export function inline(html){const matches=[...html.matchAll(/<script>\n([\s\S]*
 export function adaptScript(source){
  let result=replaceExact(source,"const fallback = '/my-discipleship.html';",`const fallback = '${context.fallback}';`,1);
  result=replaceExact(result,"new URL('/discipleship-login.html', location.origin)",`new URL('${context.callback}', location.origin)`,1);
- return replaceExact(result,'championlife-auth-next',context.storage,3);
+ result=replaceExact(result,'championlife-auth-next',context.storage,3);
+ // A first-confirmation ConfirmationURL legitimately returns type=signup.
+ // Only the SDK implicit fragment accepts it; direct TokenHash types stay intact.
+ // Reject duplicate fragment types and query/fragment type mixing before restore.
+ return replaceExact(result,
+  "(fragment.has('type') && !['magiclink','email'].includes(fragment.get('type')))",
+  "(params.has('type') || (fragment.has('type') && (fragment.getAll('type').length!==1 || !['magiclink','email','signup'].includes(fragment.get('type')))))",1);
 }
 export function adaptSuite(source){
  let result=replaceExact(source,'discipleship-login.html','outreach-login.html',5);
@@ -46,10 +52,10 @@ export async function verifyGenerated({write=false}={}){
  const staff=adaptStaffSession(await readFile(path.join(root,'assets/js/staff-session.js'),'utf8')),staffPath=path.join(root,'assets/js/outreach-staff-session.js');
  const staffSuite=adaptStaffSuite(await readFile(path.join(root,'tools/backend-tests/staff-session.dom.mjs'),'utf8')),staffSuitePath=path.join(root,'tools/backend-tests/outreach-staff-session.dom.mjs');
  if(write){inline(target);await writeFile(targetPath,target.replace(/<script>\n[\s\S]*?<\/script>/,()=>'<script>\n'+script+'</script>'));await writeFile(suitePath,suite);await writeFile(staffPath,staff);await writeFile(staffSuitePath,staffSuite)}
- else{assert.equal(inline(target),script,'Outreach inline Auth may differ only in the reviewed context');assert.equal(await readFile(suitePath,'utf8'),suite,'Outreach security matrix must remain equivalent to canonical login tests')}
+ else{assert.equal(inline(target),script,'Outreach inline Auth may differ only in reviewed context and implicit-callback type policy');assert.equal(await readFile(suitePath,'utf8'),suite,'Outreach security matrix must remain equivalent to canonical login tests')}
  if(!write){assert.equal(await readFile(staffPath,'utf8'),staff,'P1 staff session must retain canonical clearing behavior');assert.equal(await readFile(staffSuitePath,'utf8'),staffSuite,'P1 staff session security matrix must remain equivalent')}
 }
 if(process.argv[1]&&path.resolve(process.argv[1])===fileURLToPath(import.meta.url)){
  await verifyGenerated({write:process.argv.includes('--write')});
- console.log('Outreach login '+(process.argv.includes('--write')?'generated':'verified')+' from canonical source; callback/fallback/storage context only');
+ console.log('Outreach login '+(process.argv.includes('--write')?'generated':'verified')+' from canonical source; callback/fallback/storage context plus explicit implicit-callback type policy');
 }

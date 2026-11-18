@@ -8,7 +8,7 @@ import {JSDOM} from 'jsdom';
 import {root,context,preservedHashes,verifyGenerated} from '../outreach-login/generate.mjs';
 const read=p=>readFile(path.join(root,p),'utf8');let n=0;
 const ok=(v,m)=>{assert.ok(v,m);n++;console.log('PASS '+m)},tick=()=>new Promise(r=>setImmediate(r));
-await verifyGenerated();ok(true,'inline Auth and full equivalent security suite have only reviewed generated substitutions');
+await verifyGenerated();ok(true,'inline Auth has only reviewed contexts and one implicit-callback type-policy delta; equivalent baseline suite stays intact');
 for(const[file,hash]of Object.entries(preservedHashes))ok(createHash('sha256').update(await readFile(path.join(root,file))).digest('hex')===hash,'preserved exact canonical bytes: '+file);
 const html=await read('outreach-login.html'),dom=new JSDOM(html,{url:'https://outreach.local.test/outreach-login.html',runScripts:'outside-only'}),w=dom.window,d=w.document;
 try{
