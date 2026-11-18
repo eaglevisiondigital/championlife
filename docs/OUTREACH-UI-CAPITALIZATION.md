@@ -499,3 +499,7 @@ The P0 review, P1 Team/Travel and registration staff scripts apply the local dis
 ## Validation
 
 Existing DOM tests retain their cases and update exact visible-copy expectations. P0 and P1 tests explicitly verify title-case option labels alongside original enum values and submitted status payloads. Private preservation verification compares the complete JavaScript AST after reversing the bounded display-sink edits, checks HTML structure/attributes and exact embedded runtime bytes, and pins canonical Auth/session/generator/manifest files. Focused test results are recorded in the task handoff; hosted/browser acceptance and publication belong to the release owner.
+
+## Final visual follow-up
+
+The workflow row is a series of short labels, so it uses the same title capitalization: “Application Received → Individual Approval → Vehicle Assignment → Confirmed Itinerary → Check-In → Attended.” Only case changes; progression, state values and behavior are unchanged. This adds one presentation string to the original inventory.
