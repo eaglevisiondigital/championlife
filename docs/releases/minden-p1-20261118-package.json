@@ -1,0 +1,44 @@
+{
+  "status": "review-only; unapplied; delivery and lookup disabled",
+  "reviewed_start": "d526c259e5d19a1f56b99e3e4eb7473330f0e4ae",
+  "production_base": "90657158d2c0d115d98b17c7be664f455b4b2cd0",
+  "production_project": "exdocjbmylgxssanymjk",
+  "public_files_actual": 426,
+  "public_files_proposed": 435,
+  "new_production_deploy": null,
+  "callback_change": "append exact https://championlifefwb.com/outreach-login.html; preserve all retained configuration",
+  "future_functions": {
+    "outreach-team-notices-worker": {
+      "verify_jwt": false,
+      "application_verification": "mandatory dedicated invocation secret; delivery and reconciliation default off"
+    },
+    "outreach-team-notices-webhook": {
+      "verify_jwt": false,
+      "application_verification": "mandatory raw-body Svix signature and timestamp"
+    }
+  },
+  "approvals": {
+    "message_copy": false,
+    "recipient_policy": false,
+    "notice_operator_grants": false,
+    "provider_test": false,
+    "production_release": false
+  },
+  "files": {
+    "supabase/release/outreach-team-travel-v1-forward-candidate.sql": "f6dd9b5bd0f316d105147f6de7a42a5fa694b55e48a0411b7867b72f8e3f90f2",
+    "supabase/release/outreach-team-travel-v1-stop.sql": "f8ef973ac80cbd47680fefcbc118454d1f01422a3495bc715b47948ebab2a1b0",
+    "supabase/release/outreach-team-notices-v1-forward-candidate.sql": "1d61e804a4275e853a38a53f37c01dc8e554062035a6b74673c4c78e1c2a8faf",
+    "supabase/release/outreach-team-notices-v1-stop.sql": "f3e68d59f89cf701c4c0b451f87ad5d2be869e55128df070df7e1657bb14df27",
+    "supabase/functions/outreach-team-notices-worker/index.ts": "b50cf26e15bce435ef6804e2a70ed2bdd2b831fe91e8bb0bd0d0aa642e1b7b98",
+    "supabase/functions/outreach-team-notices-worker/worker.mjs": "25b877df0de2fb832cae3ea71ec361fe3fc670a4ca41d0dc74c97e637ef7f73e",
+    "supabase/functions/outreach-team-notices-worker/json.mjs": "a5c234d6bc083c93dfc248d5ebeda0103cb58d3f03beaad716465e996b201e69",
+    "supabase/functions/outreach-team-notices-webhook/index.ts": "b09c042686d7dad1213e4756b2a1f22bfef9104223147dab58c58436415a2093",
+    "supabase/functions/outreach-team-notices-webhook/webhook.mjs": "beb406ebb06efc9c1d02d50e0f3c63fa0daf424c5154243422d73c6e428504e2",
+    "docs/releases/outreach-auth-callback-config.json": "5eaa6cfbc24b13cda16208435385d381206e5af7c3f8517a3c888e8e46983b26",
+    "tools/outreach-login/callback-config.mjs": "d056c831855f1690195f91b155fbc129ec27989bac53f6b6ea91ea8c8b49b9ea",
+    "tools/outreach-login/provider-policy-provenance.json": "736040009aa6d1311f2697bf8844069959015533ec56e6d3b1c1bda870620656",
+    "docs/releases/minden-p1-publication.patch": "e3bf2aca38d409856f19f04c6e21e760eb1f462baa93c169a97f02af952c5b8d",
+    "tools/outreach-team-notifications/catalog.mjs": "f0260dde391094a88da96630169b20450f82b2169a020d42a346add3af404625",
+    "tools/outreach-team-notifications/drafts.mjs": "bb673db7b63d400da3c23ef09dff6d0e6b0252a918dd2b36cdcf21679ddc629b"
+  }
+}

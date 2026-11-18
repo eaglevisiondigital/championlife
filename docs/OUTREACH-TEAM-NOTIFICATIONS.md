@@ -1,3 +1,7 @@
+# November18 status: drafts remain inert; separate delivery candidate exists
+
+The nine templates and pure preparation helper below remain unchanged, unapproved and non-sendable. Issue159 separately authorized the additive default-disabled delivery implementation described in [OUTREACH-TEAM-NOTICE-DELIVERY.md](OUTREACH-TEAM-NOTICE-DELIVERY.md). It does not import/approve these drafts or infer recipient/consent/sender policy. No status message is authorized or sent. The historical preparation-only architecture below describes this helper package, not the subsequently implemented separate delivery system.
+
 # P1 status notification preparation — review only
 
 Status: **INERT LOCAL PREPARATION. NO SEND AUTHORITY OR ACTIVATION.** Based on reviewed PR162 head `1b99a3eb7ae3d38ed8e9890fe63f30739f6aa3cb`, reconciled onto live P0 source `90657158d2c0d115d98b17c7be664f455b4b2cd0`. This package changes no application/Edge runtime, database schema/function, staff/participant UI, provider configuration, public artifact or P0 confirmation behavior. No provider call, account, grant, message or hosted action occurs.

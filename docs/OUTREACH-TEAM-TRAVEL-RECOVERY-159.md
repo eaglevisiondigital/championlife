@@ -106,7 +106,7 @@ Additional focused regressions are available with `npm run test:team-travel:guar
 `npm run test:team-travel:dependencies --prefix tools/backend-tests` adds39 native scoped dependency/expiry checks, including positive/negative department scope and private-helper execution denial. It is included in the native aggregate. Preserve the parent's separately added access-stop regression when integrating package scripts.
 
 - The P1 staff interface and print flow are implemented/tested locally and excluded from the public artifact. P1 hosted SQL, genuine Auth/account acceptance, public participant/staff publication and release remain incomplete. Existing P0 owner review and its release authority remain separate.
-- Roddy, Kelsey and Danielle remain pending exact verified login emails, duties, event scopes, dates and explicit provisioning authority. No guessed account or broad grant is permitted.
+- Roddy, Kelsea and Danielle remain pending exact verified login emails, duties, event scopes, dates and explicit provisioning authority. No guessed account or broad grant is permitted.
 - No departure/return/meeting times, lodging arrangements or additional status emails are invented. Lodging/communications remain outside this extraction.
 - An authorized operator must verify each canonical Person, availability, age and any guardian authority before official travel. Do not treat explicit local synthetic reviews as operational verification.
 - Before release, review the candidate independently, integrate into the approved staff/portal shell, complete genuine isolated acceptance with negative/revocation tests, verify current hosted helper/catalog parity, and obtain exact source/schema/access release approval. Do not install this file merely because local tests pass.

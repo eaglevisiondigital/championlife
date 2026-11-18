@@ -1,3 +1,13 @@
+# November18 integrated callback and disabled-delivery candidate
+
+Resumes reviewed d526c259e5d19a1f56b99e3e4eb7473330f0e4ae. The final PR head and exact-head CI receipt identify the candidate; no P1 deploy ID exists. The new notice SQL is source-only SHA256 `1d61e804a4275e853a38a53f37c01dc8e554062035a6b74673c4c78e1c2a8faf`. Core P1 SQL, publication patch and all426 current public files remain unchanged.
+
+**Engineering candidate reviewable; production release/notice activation NO-GO/HOLD.** Pure exact callback preflight/rollback is implemented without provider writes. Upstream same-SiteURL-origin acceptance corrects the earlier missing-entry rejection inference; no production callback failure is proven by that snapshot. Fresh UI read timed out; deployed-provider behavior remains unverified. No runtime or wildcard change was needed.
+
+Additive private intent/outbox, explicit deny-by-default policy/operator gates, stable keys/frozen payloads, single-attempt lease/CAS worker, ambiguous HOLD/reconciliation, signed receipts/dedupe/conflict adoption/suppression and event-scoped redacted reporting are implemented and disabled. Nine drafts remain unchanged/unapproved; no status message or real provider call occurred.91 HTTP/cryptographic,46 lifecycle/security/stop,24 native concurrency/recovery and42 independent native adversarial checks pass. Existing genuine core acceptance and cleanup remain preserved. Final source/CI/catalog/hash evidence is in the private November18 delivery receipt.
+
+See [delivery contract and limits](OUTREACH-TEAM-NOTICE-DELIVERY.md) and [exact composition, recovery and owner decisions](MINDEN-P1-DEPLOYMENT-PLAN.md). The single next owner action is review the package and return that policy decision sheet. Historical entries below retain previous core acceptance and are superseded on the two blockers; no lower unimplemented/rejection statement describes current source.
+
 # November18 engineering follow-up — source only
 
 Issue159 comment6976832205 authorizes preparation/testing without production changes. The callback package now pins current primary Auth behavior: SiteURL-origin acceptance precedes explicit entries, so the saved missing Outreach entry alone is not proof of rejected callbacks. Preserve the generated next query. [Exact one-entry addition, guarded rollback, offline checks and limits](OUTREACH-AUTH-CALLBACK-CONFIG.md) supersede the older compatibility inference below. Nothing has been applied or deployed; fresh effective-provider/configuration acceptance and exact release authority remain open. The parent owns the separately implemented disabled notification package and integration evidence; historical unimplemented status below describes the earlier checkpoint.
@@ -61,6 +71,6 @@ Temporary grants/directory windows/own-link were revoked; real local sign-out pa
 Production remains held. Before release:
 
 1. Resolve and explicitly authorize the exact missing production Outreach callback rules while preserving existing Auth/DreamTrack configuration. Obtain exact P1 schema/publication release authority, fresh compatibility preflight and final exact-head CI; apply only the reviewed package, then verify production source/deploy/URLs and genuine callback behavior.
-2. Verify exact named staff login emails, duties, organization/event scope and dates before grants. No Roddy/Kelsey/Danielle account was created or granted.
+2. Verify exact named staff login emails, duties, organization/event scope and dates before grants. No Roddy/Kelsea/Danielle account was created or granted.
 3. Keep status messaging disabled. [Notification preparation](OUTREACH-TEAM-NOTIFICATIONS.md) has nine held drafts and an integration design. Durable outbox, sending worker and provider outcome reporting are unimplemented. Approved transitions/copy/recipient/consent/suppression/timing and a reviewed delivery implementation remain outstanding. No P1 status email was sent.
 4. Preserve PR149 attendee/bicycle hold and distinctions between received applications, approved volunteers and confirmed assignments. Real unverified details remain unconfirmed.
