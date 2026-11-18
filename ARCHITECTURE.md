@@ -1,3 +1,7 @@
+# Issue159 factual Household setup — local P1 only
+
+The minor-review screen now fills the missing canonical Household UI path through existing protected Household and membership insert APIs. It requires exact global People/Household scopes and explicit possible-match/Household/Person/relationship review; it is additive and never updates archive or existing membership state. No parallel identity/Household directory, automatic companions, account linking or SQL change is introduced. Legal authority remains the separate existing guardian_review transaction, with its reason and current-validity gates. The Person850 source flow remains unchanged. [Contract and partial-transaction limits](docs/OUTREACH-TEAM-HOUSEHOLD-SETUP.md).
+
 # Issue159 manual Person-create adapter — local P1 only
 
 Unpublished P1 application review can now create an explicitly reviewed missing canonical contact through the existing organization_people INSERT surface after possible-match search. It supplies only organization/name/email/phone; existing server defaults, anchor/audit triggers, column grants and RLS remain authoritative. Current staff_workspace_context global People read/create gates presentation and each write/result boundary. The new contact stays unlinked until the existing separate verified Person confirmation succeeds. No shared People UI, identity directory, SQL, Auth, grant or public-manifest change. [Detailed review/failure contract](docs/OUTREACH-TEAM-PERSON-CREATE.md).

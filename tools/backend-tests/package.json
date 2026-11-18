@@ -22,7 +22,7 @@
     "test:staff-session-browser": "node staff-session.browser.mjs",
     "test:volunteer": "node outreach-volunteer-gateway.test.mjs && node outreach-volunteer.dom.mjs && node outreach-volunteer-staff.dom.mjs",
     "test:volunteer-native": "node outreach-volunteer.test.mjs",
-    "test:team-travel": "node outreach-team-travel.recovery.mjs && node outreach-team-travel.test.mjs && node outreach-team-travel.dom.mjs && node outreach-team-portal.dom.mjs && node outreach-team-travel.guardian.mjs && node outreach-team-travel.stop.test.mjs && node outreach-team-person-create.dom.mjs",
+    "test:team-travel": "node outreach-team-travel.recovery.mjs && node outreach-team-travel.test.mjs && node outreach-team-travel.dom.mjs && node outreach-team-portal.dom.mjs && node outreach-team-travel.guardian.mjs && node outreach-team-travel.stop.test.mjs && node outreach-team-person-create.dom.mjs && node outreach-team-household.dom.mjs",
     "test:team-travel:native": "TEST_NATIVE_PG=1 node outreach-team-travel.test.mjs && node outreach-team-travel.concurrent.mjs && TEST_NATIVE_PG=1 node outreach-team-travel.guardian.mjs && node outreach-team-travel.expiry.mjs && node outreach-team-travel.dependencies.mjs",
     "test:volunteer-p0:revocation": "node outreach-volunteer-p0-revocation.mjs",
     "test:team-travel:browser": "node outreach-team-travel.browser.mjs",
@@ -35,6 +35,7 @@
     "test:outreach-auth-email": "node outreach-auth-email.test.mjs",
     "test:outreach-login:signup": "node outreach-login-signup.dom.mjs",
     "test:outreach-login:signup:browser": "node outreach-login-signup.browser.mjs",
-    "test:team-person-create": "node outreach-team-person-create.dom.mjs"
+    "test:team-person-create": "node outreach-team-person-create.dom.mjs",
+    "test:team-household": "node outreach-team-household.dom.mjs"
   }
 }
