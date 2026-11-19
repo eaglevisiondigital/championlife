@@ -14,7 +14,7 @@ check(b.window.document.querySelector('meta[property="og:image:width"]').content
 check(b.window.document.querySelector('meta[name="twitter:card"]').content==='summary_large_image','Twitter card');
 check(b.window.document.querySelector('audio').getAttribute('autoplay')===null,'no autoplay');
 check(b.window.document.querySelector('[data-download]').href.endsWith('.m4a'),'honest original format');
-for(const l of b.window.document.querySelectorAll('[data-give]'))check(l.getAttribute('href')==='/outreach-giving.html','unchanged giving route');
+for(const l of b.window.document.querySelectorAll('[data-give]'))check(l.getAttribute('href')==='https://sowgo.org/sow/','outreach sowing uses the verified SowGo page');
 for(const selector of ['[data-play]','[data-seek]','[data-mute]','[data-volume]','[data-download]','[data-share]','[data-give]']){
  check(b.window.document.querySelectorAll(selector).length===1,'one accessible control '+selector);
  check(b.window.document.querySelector('.theme-song-artwork '+selector).getAttribute('aria-label'),'artwork control labeled '+selector);
@@ -24,7 +24,7 @@ check(read('outreach-giving.html').toString().includes('https://www.community.gi
 
 check(hash(read('assets/audio/gospel-in-the-streets.m4a'))==='b844032d80a66f41743df01b22c2a7ab4f07d5dcd571467e34c4bbf2e2249c60','original audio exact bytes');
 check(b.window.document.querySelector('.fuel-name').textContent==='SOUL FUEL','campaign name preserved');
-check(b.window.document.querySelector('[data-give]').getAttribute('aria-label')==='Give to Outreach','giving action wording preserved');
+check(b.window.document.querySelector('[data-give]').getAttribute('aria-label')==='Sow Into Outreach','outreach sowing label');
 for (const doc of [a,b]) {
  check(!doc.window.document.querySelector('[data-counter],[data-total],.song-art-total'),'no counter display');
  check(!/Plays unavailable|qualified plays/.test(doc.window.document.body.textContent),'no counter placeholder');

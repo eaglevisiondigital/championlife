@@ -1,0 +1,11 @@
+# Outreach partnership and sowing — November 19
+
+The owner requests focused changes to Champion Life /outreach and its related outreach pathways. Use SowGo branding and preserve the current production source, including PR168 accepted-only continuation and SowGo PR9 /sow/ release.
+
+Stage1: publish /partner/ on ACTIVE sowgosite with the approved shared form, fixed SowGo presentation, production public Turnstile key and path-scoped CSP; source/previews must not fall back to production intake. Preserve one existing outreach-partner-submit backend. Verify primary-domain branding, challenge/persistence, duplicate/error behavior, automatic and backup continuation before changing partnership CTAs.
+
+The partner-only site policy unions the exact canonical SowGo origin/hostname with existing environment values only on the canonical production project. No global environment replacement, other intake function, SQL, raw table grant, financial destination, Auth/staff grant or secret change. Preserve siteverify/action/hostname checks, bounded network identity, idempotency and organization ownership. The unchanged shared browser form remains available as a reusable asset. Live read-only source/CORS evidence and later deployment receipts are private.
+
+Stage2: Champion Life Outreach shows the byte-exact approved light horizontal logo in the existing hero, linked to SowGo. Outreach partnership CTAs use https://sowgo.org/partner/; sowing CTAs/theme-song overlay and giving outreach card use https://sowgo.org/sow/. The global handler respects new links and normal navigation; dynamic legacy entries are updated without opening the old modal. Legacy clean/slash/.html partner and outreach-giving routes use302s after the destination is verified. Existing files/shared dependencies remain; other registrations and ordinary giving/dashboard flows are preserved. No Minden attendee/decision launch, status-message activation or LIVE deployment follows.
+
+Local full regression and focused routing/site-policy/continuation checks pass. Publication, provider settings, genuine submission and screenshots are separate gates, not inferred from synthetic tests. Recovery is a forward source revert and verified redeploy; do not restore historical deploys or overwrite unrelated work. Never change payment processor settings or submit donor/payment data for this test.

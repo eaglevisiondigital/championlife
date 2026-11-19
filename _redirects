@@ -1,3 +1,11 @@
+# Verified SowGo outreach destinations; preserve legacy bookmarks.
+/outreach-partner https://sowgo.org/partner/ 302!
+/outreach-partner/ https://sowgo.org/partner/ 302!
+/outreach-partner.html https://sowgo.org/partner/ 302!
+/outreach-giving https://sowgo.org/sow/ 302!
+/outreach-giving/ https://sowgo.org/sow/ 302!
+/outreach-giving.html https://sowgo.org/sow/ 302!
+
 /dream-track-access /dream-track-access.html 200
 /dream-track-access/ /dream-track-access.html 200
 /dream-track /dream-track.html 200
