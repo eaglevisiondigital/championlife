@@ -129,13 +129,21 @@ const io=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecti
   setInterval(updateFloatingShortcut, 60000);
 })();
 
-// Shared outreach intake; giving destinations remain unchanged.
+// Outreach partnership and sowing use the verified SowGo destinations.
 (() => {
  if(document.documentElement.dataset.outreachPartnerReady==='true')return;
- document.documentElement.dataset.outreachPartnerReady='true';let loading;
- function open(){if(window.OutreachPartner){window.OutreachPartner.open();return;}if(!loading)loading=new Promise((resolve,reject)=>{const css=document.createElement('link');css.rel='stylesheet';css.href='/assets/css/outreach-partner.css';document.head.append(css);const js=document.createElement('script');js.src='/assets/js/outreach-partner.js';js.onload=resolve;js.onerror=reject;document.head.append(js)});loading.then(()=>window.OutreachPartner.open()).catch(()=>{location.href='/outreach-partner.html?brand=champion-life'});}
- document.addEventListener('click',e=>{const link=e.target.closest('a,button');if(!link)return;const href=String(link.getAttribute('href')||''),label=(link.textContent||'').trim().toLowerCase();if(/^\/outreach-partner(?:\.html)?\?brand=champion-life$/.test(href)||href.includes('form.jotform.com/ChampionLife/outreach-partnership')||/become (an? )?(outreach )?partner/.test(label)||/sign up.*donate now/.test(label)||link.matches('[data-outreach-partner-open]')){e.preventDefault();open();}});
- document.querySelectorAll('a').forEach(link=>{const text=(link.textContent||'').trim().toLowerCase(),onOutreach=/\/outreach(?:\.html)?$/.test(location.pathname.toLowerCase());if(/support outreach|give to outreach|outreach giving|donate to outreach/.test(text)||(onOutreach&&/^donate$/.test(text))){link.setAttribute('href','/outreach-giving.html');link.removeAttribute('target')}});
+ document.documentElement.dataset.outreachPartnerReady='true';
+ const partnerUrl='https://sowgo.org/partner/',sowUrl='https://sowgo.org/sow/';
+ const onOutreach=/\/outreach(?:\.html)?\/?$/.test(location.pathname.toLowerCase());
+ function destination(link){
+  const href=String(link.getAttribute('href')||''),label=(link.textContent||'').trim().toLowerCase();
+  let path='';try{const u=new URL(href,location.href);if(u.origin===location.origin||u.origin==='https://championlifefwb.com')path=u.pathname}catch{}
+  if(/^\/outreach-partner(?:\.html)?\/?$/.test(path)||href.includes('form.jotform.com/ChampionLife/outreach-partnership')||/become (an? )?(outreach )?partner/.test(label)||/sign up.*donate now/.test(label)||link.matches('[data-outreach-partner-open]'))return partnerUrl;
+  if(/^\/outreach-giving(?:\.html)?\/?$/.test(path)||/support outreach|give to outreach|outreach giving|donate to outreach/.test(label)||(onOutreach&&/^donate$/.test(label)))return sowUrl;
+  return null;
+ }
+ document.querySelectorAll('a').forEach(link=>{const to=destination(link);if(to){link.setAttribute('href',to);link.removeAttribute('target');if(to===sowUrl&&!link.querySelector('img,svg')&&/support outreach|give to outreach|outreach giving|donate to outreach|^donate$/.test((link.textContent||'').trim().toLowerCase()))link.textContent='Sow Into Outreach';}});
+ document.addEventListener('click',e=>{const link=e.target.closest('a,button');if(!link)return;const href=String(link.getAttribute('href')||'');if(href===partnerUrl||href===sowUrl)return;const to=destination(link);if(!to)return;if(link.tagName==='A'){link.setAttribute('href',to);link.removeAttribute('target');}else{e.preventDefault();location.assign(to);}});
 })();
 
 // Champion Life Daily Supplements global navigation

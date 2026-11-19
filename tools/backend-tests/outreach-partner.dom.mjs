@@ -20,9 +20,9 @@ console.log('PASS shared outreach fields, brands, logo, guest submit, double cli
 // Exercise the real global click interceptor, including Netlify pretty URLs.
 const launchDom=new JSDOM('<a href="/outreach-partner?brand=champion-life">Become a Partner</a><a href="/outreach-partner.html?brand=champion-life">Get Connected</a>',{url:'https://preview.example/outreach',runScripts:'outside-only'});
 const lw=launchDom.window;lw.IntersectionObserver=class{observe(){}};let opens=0;lw.OutreachPartner={open(){opens++}};lw.eval(read('assets/js/site.js'));
-for(const link of lw.document.querySelectorAll('a[href*="outreach-partner"]')){const click=new lw.MouseEvent('click',{bubbles:true,cancelable:true});link.dispatchEvent(click);assert(click.defaultPrevented,'partner entry opens modal without navigating');}
-assert.equal(opens,2);launchDom.window.close();
-console.log('PASS real global partner entry interception including pretty URLs');
+for(const link of lw.document.querySelectorAll('a')){assert.equal(link.href,'https://sowgo.org/partner/');const click=new lw.MouseEvent('click',{bubbles:true,cancelable:true});link.dispatchEvent(click);assert(!click.defaultPrevented,'verified SowGo partner entry uses normal navigation');}
+assert.equal(opens,0);launchDom.window.close();
+console.log('PASS real global partner entry routes to SowGo without opening the old modal');
 
 // Run the unchanged runtime in a controlled global context so its actual delayed
 // navigation is observable without submitting to any hosted service.
