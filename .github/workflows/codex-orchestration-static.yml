@@ -1,0 +1,24 @@
+name: Master Codex subagent configuration (source-only)
+on:
+  pull_request:
+    paths:
+      - 'AGENTS.md'
+      - '.codex/**'
+      - 'docs/MASTER-CODEX-OPERATIONS.md'
+      - 'tools/agent-orchestration/**'
+      - '.github/workflows/codex-orchestration-static.yml'
+permissions:
+  contents: read
+jobs:
+  validate-agent-config:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Validate TOML, specialist roster, and safe concurrency cap
+        run: python tools/agent-orchestration/validate.py
+      - name: Confirm no whitespace or patch errors
+        run: git diff --check
