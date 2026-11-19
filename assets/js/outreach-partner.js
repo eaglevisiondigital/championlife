@@ -19,9 +19,10 @@
  }
  function mount(host,requestedBrand='champion-life'){
   const brand=requestedBrand==='sowgo'?'sowgo':'champion-life',sow=brand==='sowgo';
+  const sowingUrl=sow?'https://sowgo.org/sow/':'/outreach-giving.html';
   host.innerHTML=template;host.classList.add('outreach-brand-'+brand);
   const form=host.querySelector('form'),submit=form.querySelector('[type=submit]'),status=form.querySelector('[role=status]');
-  if(sow){const logo=host.querySelector('.outreach-brand-logo');logo.src='/assets/images/sowgo-logo-light.png';logo.alt='SowGo';host.querySelector('.eyebrow').textContent='SowGo Outreach';form.querySelector('.outreach-change-note').lastChild.textContent=' Your selection here simply tells SowGo the partnership level you intend to begin with. Your actual giving is managed securely through the giving page.';}
+  if(sow){const logo=host.querySelector('.outreach-brand-logo');logo.src='/assets/images/sowgo-logo-light.png';logo.alt='SowGo';host.querySelector('.eyebrow').textContent='SowGo Outreach';host.querySelector('.outreach-partner-head p').textContent='Thank you for helping us take the Gospel to cities and nations. Complete your partnership information below, then we’ll take you directly to the secure SowGo sowing page.';form.querySelector('.outreach-change-note').lastChild.textContent=' Your selection here simply tells SowGo the partnership level you intend to begin with. Your actual sowing is managed securely through the SowGo sowing page.';}
   const label=sow?'Submit & Continue to Sow':'Submit & Continue to Give';submit.textContent=label;
   for(const[name,max]of Object.entries(limits)){const input=form.elements.namedItem(name);if(input.tagName==='INPUT'&&input.type!=='number')input.maxLength=max;}
   form.elements.namedItem('commitment-amount').max='9999999999.99';
@@ -47,9 +48,9 @@
     const response=await fetch(cfg.url+'/functions/v1/outreach-partner-submit',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({payload:{...payload,request_key:requestKey,bot_field:form.elements.namedItem('bot-field').value},turnstile_token:challengeToken})});
     challengeToken='';if(widget!==undefined)window.turnstile.reset(widget);
     const data=await response.json();if(!response.ok||data?.accepted!==true)throw Error(response.status===429?'Please wait a few minutes before submitting again.':'We could not save your information. Check the fields, complete verification, and try again.');
-    status.textContent='Thank you! Your commitment is saved. Continue to the secure outreach giving page.';
-    const link=document.createElement('a');link.href='/outreach-giving.html';link.textContent=sow?'Continue to Sow':'Continue to Give';status.append(document.createElement('br'),link);
-    setTimeout(()=>location.assign('/outreach-giving.html'),500);
+    status.textContent=sow?'Thank you! Your commitment is saved. Continue to the secure SowGo sowing page.':'Thank you! Your commitment is saved. Continue to the secure outreach giving page.';
+    const link=document.createElement('a');link.href=sowingUrl;link.textContent=sow?'Continue to Sow':'Continue to Give';status.append(document.createElement('br'),link);
+    setTimeout(()=>location.assign(sowingUrl),500);
    }catch(error){challengeToken='';if(widget!==undefined)window.turnstile?.reset(widget);status.className='outreach-form-status is-error';status.textContent=error.message;busy=false;submit.disabled=false;submit.textContent=label;}
   });
   return form;
