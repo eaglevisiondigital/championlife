@@ -1,4 +1,5 @@
 import {JSDOM} from 'jsdom';import {readFileSync} from 'node:fs';import {webcrypto,createHash} from 'node:crypto';import assert from 'node:assert/strict';
+import {runInNewContext} from 'node:vm';
 const read=p=>readFileSync(new URL('../../'+p,import.meta.url),'utf8'),code=read('assets/js/outreach-partner.js');
 const expected=['first-name','last-name','email','address-line-1','address-line-2','city','state-province','postal-code','phone','commitment-amount','commitment-frequency'];
 for(const brand of ['champion-life','sowgo','forged']){
@@ -6,7 +7,7 @@ for(const brand of ['champion-life','sowgo','forged']){
  w.fetch=async(url,args)=>{requests.push({url,p:JSON.parse(args.body).payload});return{ok:!fail,json:async()=>fail?{}:{accepted:true}}};let challenge;w.turnstile={render(_host,opts){challenge=opts;opts.callback('fresh-test-token');return 1},reset(){}};w.eval(code);
  const form=w.document.querySelector('form');assert.equal(form.hasAttribute('data-netlify'),false);assert.deepEqual([...form.querySelectorAll('[required]')].map(n=>n.name),expected.filter(k=>k!=='address-line-2'));assert.equal(form.elements.namedItem('email').maxLength,254);assert.equal(form.elements.namedItem('commitment-amount').min,'1');assert.equal(form.elements.namedItem('commitment-amount').step,'0.01');assert.deepEqual([...form.querySelector('select').options].slice(1).map(o=>o.value),['Weekly','Bi-weekly','Monthly']);assert.equal(form.querySelector('[type=submit]').textContent,brand==='sowgo'?'Submit & Continue to Sow':'Submit & Continue to Give');assert.equal(w.document.querySelector('img').getAttribute('src'),brand==='sowgo'?'/assets/images/sowgo-logo-light.png':'/assets/images/logo-gold.png');
  const values=['Synthetic','Partner','test@example.test','1 Example','', 'Test','FL','32548','5555551234','25.75','Monthly'];expected.forEach((k,i)=>form.elements.namedItem(k).value=values[i]);form.reportValidity=()=>true;
- const fire=()=>form.dispatchEvent(new w.Event('submit',{bubbles:true,cancelable:true}));const tick=()=>new Promise(r=>setTimeout(r,30));fire();fire();await tick();assert.equal(requests.length,1,'double click suppressed');assert.equal(requests[0].url,'https://isolated.example/functions/v1/outreach-partner-submit');assert.equal(form.querySelector('[type=submit]').disabled,false,'failure can retry');fail=false;challenge.callback('fresh-retry-token');fire();await tick();assert.equal(requests[0].p.request_key,requests[1].p.request_key,'network retry key retained');assert.equal(requests[1].p.brand,brand==='sowgo'?'sowgo':'champion-life');assert.equal(requests[1].p.source_path,'/outreach-partner.html');assert.equal(form.querySelector('[role=status] a').getAttribute('href'),'/outreach-giving.html');assert(!w.sessionStorage.getItem('outreach-partner-replay:'+requests[1].p.brand).includes('test@example.test'));
+ const fire=()=>form.dispatchEvent(new w.Event('submit',{bubbles:true,cancelable:true}));const tick=()=>new Promise(r=>setTimeout(r,30));fire();fire();await tick();assert.equal(requests.length,1,'double click suppressed');assert.equal(requests[0].url,'https://isolated.example/functions/v1/outreach-partner-submit');assert.equal(form.querySelector('[type=submit]').disabled,false,'failure can retry');fail=false;challenge.callback('fresh-retry-token');fire();await tick();assert.equal(requests[0].p.request_key,requests[1].p.request_key,'network retry key retained');assert.equal(requests[1].p.brand,brand==='sowgo'?'sowgo':'champion-life');assert.equal(requests[1].p.source_path,'/outreach-partner.html');assert.equal(form.querySelector('[role=status] a').getAttribute('href'),brand==='sowgo'?'https://sowgo.org/sow/':'/outreach-giving.html');assert(!w.sessionStorage.getItem('outreach-partner-replay:'+requests[1].p.brand).includes('test@example.test'));
  // Remount simulates back/refresh with retained sessionStorage; exact input reuses server key.
  w.OutreachPartner.mount(w.document.querySelector('main'),brand);const fresh=w.document.querySelector('form');expected.forEach((k,i)=>fresh.elements.namedItem(k).value=values[i]);fresh.reportValidity=()=>true;fresh.dispatchEvent(new w.Event('submit',{cancelable:true}));await tick();assert.equal(requests[2].p.request_key,requests[1].p.request_key);dom.window.close();
 }
@@ -22,3 +23,41 @@ const lw=launchDom.window;lw.IntersectionObserver=class{observe(){}};let opens=0
 for(const link of lw.document.querySelectorAll('a[href*="outreach-partner"]')){const click=new lw.MouseEvent('click',{bubbles:true,cancelable:true});link.dispatchEvent(click);assert(click.defaultPrevented,'partner entry opens modal without navigating');}
 assert.equal(opens,2);launchDom.window.close();
 console.log('PASS real global partner entry interception including pretty URLs');
+
+// Run the unchanged runtime in a controlled global context so its actual delayed
+// navigation is observable without submitting to any hosted service.
+let continuationCases=0;
+for(const brand of ['champion-life','sowgo','forged']){
+ for(const result of ['accepted','http-error','not-accepted','network-error']){
+  const dom=new JSDOM('<main id="outreach-partner-root"></main>',{url:'https://preview.example/outreach-partner.html?brand='+brand}),w=dom.window;
+  const timers=[],navigation=[],requests=[];
+  w.CHAMPION_LIFE_SUPABASE={url:'https://isolated.example',publishableKey:'synthetic-public',outreachSiteKey:'synthetic-site-key'};
+  w.turnstile={render(_host,opts){opts.callback('synthetic-token');return 1},reset(){}};
+  const location={pathname:'/outreach-partner.html',search:'?brand='+brand,assign:url=>navigation.push(url)};
+  const fetch=async(url,args)=>{requests.push({url,args});if(result==='network-error')throw Error('Synthetic network failure');return {ok:result!=='http-error',status:result==='http-error'?400:200,json:async()=>({accepted:result==='accepted'||result==='http-error'})};};
+  runInNewContext(code,{window:w,document:w.document,location,crypto:webcrypto,TextEncoder,URLSearchParams,sessionStorage:w.sessionStorage,fetch,setTimeout:(fn,delay)=>timers.push({fn,delay})});
+  const form=w.document.querySelector('form'),status=form.querySelector('[role=status]');
+  const values=['Synthetic','Partner','test@example.test','1 Example','','Test','FL','32548','5555551234','25.75','Monthly'];
+  expected.forEach((key,index)=>form.elements.namedItem(key).value=values[index]);form.reportValidity=()=>true;
+  form.dispatchEvent(new w.Event('submit',{cancelable:true}));
+  await new Promise(resolve=>setTimeout(resolve,30));
+  assert.equal(requests.length,1,brand+' '+result+' uses exactly one synthetic submission');
+  assert.equal(navigation.length,0,'navigation must wait for accepted response and its delay');
+  const destination=brand==='sowgo'?'https://sowgo.org/sow/':'/outreach-giving.html';
+  if(result==='accepted'){
+   assert.equal(status.querySelector('a').getAttribute('href'),destination);
+   assert.equal(timers.length,1);assert.equal(timers[0].delay,500);
+   timers[0].fn();assert.deepEqual(navigation,[destination]);
+   assert(status.textContent.includes(brand==='sowgo'?'secure SowGo sowing page':'secure outreach giving page'));
+  }else{
+   assert.equal(status.querySelector('a'),null,'rejection/failure never exposes a success continuation');
+   assert.equal(timers.length,0,'rejection/failure never schedules navigation');
+   assert.equal(form.querySelector('[type=submit]').disabled,false);
+   assert(status.classList.contains('is-error'));
+  }
+  const explanation=w.document.querySelector('.outreach-partner-head p').textContent;
+  assert(explanation.includes(brand==='sowgo'?'secure SowGo sowing page':'secure outreach giving page'));
+  dom.window.close();continuationCases++;
+ }
+}
+console.log(`PASS ${continuationCases} synthetic partner continuation cases: brand-specific href and delayed navigation, no continuation on rejected/failed submissions`);
