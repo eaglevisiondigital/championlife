@@ -27,8 +27,11 @@ export function inFallbackWindow(now=Date.now()){
 }
 export function discoveryReceipt(data,now=Date.now()){
  if(!data||typeof data.live!=='boolean'||data.error||data.live&&videoId(data.videoId)!==data.videoId)throw Error('Invalid discovery response');
- if(data.live)return {state:'live',checkedAt:now,provider:'youtube',identity:data.videoId,videoId:data.videoId,url:'https://www.youtube.com/watch?v='+data.videoId,provenance:'existing-public-discovery'};
+ const candidate=data.candidateVideoId;
+ if(candidate!=null&&(videoId(candidate)!==candidate||data.live))throw Error('Untrusted YouTube candidate');
+ if(data.live)return {state:'live',checkedAt:now,provider:'youtube',identity:data.videoId,videoId:data.videoId,url:'https://www.youtube.com/watch?v='+data.videoId,provenance:'youtube-verified-live'};
  if(data.videoId!==null)throw Error('Unexpected inactive video');
+ if(candidate)return {state:'candidate',checkedAt:now,provider:'youtube',identity:candidate,videoId:candidate,url:'https://www.youtube.com/watch?v='+candidate,provenance:'youtube-unverified-candidate'};
  return {state:'scheduled',checkedAt:now,provider:'youtube',identity:null,videoId:null};
 }
 export const archiveBooklets=Object.freeze([
