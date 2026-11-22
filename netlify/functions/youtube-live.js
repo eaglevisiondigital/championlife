@@ -2,6 +2,9 @@
 // Public Champion Life channel lookup. Never assert LIVE from an unverified
 // YouTube page or an unrelated recommended video. No API keys or user data.
 const CHANNEL_ID = 'UCG7j8eiL-qW8nzr2Sg7o2oA';
+// Explicitly supplied by Champion Life for this service. Never carry this
+// recovery selection into a later gathering or label it verified LIVE.
+const SERVICE_VIDEO = Object.freeze({id:'RMSPr30f6W8',startsAt:Date.parse('2026-11-22T16:30:00Z'),expiresAt:Date.parse('2026-11-22T19:00:00Z')});
 const ROUTES = [
   'https://www.youtube.com/@ChampionLifeFWB/live',
   'https://www.youtube.com/channel/' + CHANNEL_ID + '/live'
@@ -62,40 +65,58 @@ function details(html) {
 async function youtubeFetch(url,redirect) {
   return fetch(url,{redirect,headers:BROWSER,signal:AbortSignal.timeout(2400)});
 }
-async function checkCandidate(id) {
+function diagnostic(response,body,route) {
+  return {route,status:response.status,bytes:body.length,playerAssignments:(body.match(/(?:\bytInitialPlayerResponse|window\["ytInitialPlayerResponse"\])\s*=\s*\{/g)||[]).length,pageTitle:((/<title[^>]*>([^<]*)<\/title>/i.exec(body)||[])[1]||'').slice(0,160)};
+}
+async function checkCandidate(id,checks=[],route='redirect-video') {
   try {
     const response=await youtubeFetch('https://www.youtube.com/watch?v='+id,'follow');
-    if(!response.ok)return {id,live:false};
     const body=(await response.text()).slice(0,2000000);
+    checks.push(diagnostic(response,body,route));
+    if(!response.ok)return {id,live:false};
     const d=details(body);
     if(d&&d.id!==id)return null;
     if(d&&d.channel!==CHANNEL_ID)return null;
     return {id,live:!!d?.live};
-  } catch{return {id,live:false};}
+  } catch(error){checks.push({route,error:error?.name||'Error'});return {id,live:false};}
 }
 exports.handler=async function() {
-  let uncertain=false;
+  let uncertain=false,unverifiedCandidate=null;
+  const now=Date.now(),checks=[];
+  const selected=now>=SERVICE_VIDEO.startsAt&&now<SERVICE_VIDEO.expiresAt?SERVICE_VIDEO:null;
+  // Run the known service URL alongside discovery, within the existing timeout
+  // budget. A successful channel discovery still wins without a manual pin.
+  const selectedCheck=selected?checkCandidate(selected.id,checks,'selected-service-video'):null;
   for (const route of ROUTES) {
     try {
       const response=await youtubeFetch(route,'manual');
       if(response.status>=300&&response.status<400) {
         const id=redirectVideoId(response.headers.get('location')||'',route);
         if(!id)continue;
-        const candidate=await checkCandidate(id);
+        checks.push({route:route.includes('@')?'handle-live':'channel-live',status:response.status,redirectVideoId:id});
+        const candidate=await checkCandidate(id,checks);
         if(!candidate){uncertain=true;continue;}
         if(candidate.live)return {statusCode:200,headers:HEADERS,body:JSON.stringify({live:true,videoId:id,source:'youtube-live-route-verified'})};
-        return {statusCode:200,headers:HEADERS,body:JSON.stringify({live:false,videoId:null,candidateVideoId:id,source:'youtube-live-route-unverified'})};
+        unverifiedCandidate={live:false,videoId:null,candidateVideoId:id,source:'youtube-live-route-unverified'};
+        continue;
       }
-      if(!response.ok){uncertain=true;continue;}
       const body=(await response.text()).slice(0,2000000);
+      checks.push(diagnostic(response,body,route.includes('@')?'handle-live':'channel-live'));
+      if(!response.ok){uncertain=true;continue;}
       const parsed=details(body);
       if(parsed?.channel===CHANNEL_ID&&parsed.live)
         return {statusCode:200,headers:HEADERS,body:JSON.stringify({live:true,videoId:parsed.id,source:'youtube-live-page-verified'})};
-      if(parsed?.channel===CHANNEL_ID)
-        return {statusCode:200,headers:HEADERS,body:JSON.stringify({live:false,videoId:null,candidateVideoId:parsed.id,source:'youtube-live-page-unverified'})};
+      if(parsed?.channel===CHANNEL_ID){
+        unverifiedCandidate={live:false,videoId:null,candidateVideoId:parsed.id,source:'youtube-live-page-unverified'};
+        continue;
+      }
       // An ordinary channel page or a bot/consent page proves neither live nor offline.
       uncertain=true;
-    } catch {uncertain=true;}
+    } catch(error) {checks.push({route:route.includes('@')?'handle-live':'channel-live',error:error?.name||'Error'});uncertain=true;}
   }
-  return {statusCode:200,headers:HEADERS,body:JSON.stringify({live:false,videoId:null,error:uncertain?'provider-not-verified':'channel-not-live-confirmed'})};
+  const verifiedSelection=await selectedCheck;
+  if(verifiedSelection?.live)return {statusCode:200,headers:HEADERS,body:JSON.stringify({live:true,videoId:selected.id,source:'youtube-service-video-verified'})};
+  if(selected&&verifiedSelection)return {statusCode:200,headers:HEADERS,body:JSON.stringify({live:false,videoId:null,candidateVideoId:selected.id,source:'church-selected-service-video',expiresAt:selected.expiresAt,checks})};
+  if(unverifiedCandidate)return {statusCode:200,headers:HEADERS,body:JSON.stringify(unverifiedCandidate)};
+  return {statusCode:200,headers:HEADERS,body:JSON.stringify({live:false,videoId:null,error:uncertain?'provider-not-verified':'channel-not-live-confirmed',checks})};
 };

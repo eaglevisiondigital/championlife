@@ -34,6 +34,9 @@ test('bounded existing discovery data never becomes arbitrary embed authority',(
  assert.equal(candidate.identity,'abcdefghijk');
  assert.equal(candidate.url,'https://www.youtube.com/watch?v=abcdefghijk');
  assert.equal(candidate.provenance,'youtube-unverified-candidate');
+ const service={live:false,videoId:null,candidateVideoId:'RMSPr30f6W8',source:'church-selected-service-video',expiresAt:at('2026-11-22T19:00:00Z')};
+ assert.equal(discoveryReceipt(service,at('2026-11-22T17:30:00Z')).provenance,'church-selected-broadcast');
+ assert.throws(()=>discoveryReceipt(service,at('2026-11-22T19:00:00Z')),/Expired/);
  for(const malformed of [
   {live:true,videoId:'abcdefghijk',candidateVideoId:'abcdefghijk'},
   {live:false,videoId:null,candidateVideoId:'https://evil.example'},

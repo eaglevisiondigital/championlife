@@ -12,8 +12,9 @@ const overlay='var ytInitialData = '+JSON.stringify({playerOverlays:{playerOverl
 function response(status,location,body=''){
  return {status,ok:status>=200&&status<300,headers:{get:k=>k==='location'?location:null},text:async()=>body};
 }
-async function call(fetch){
- const scope={exports:{},URL,fetch,AbortSignal:{timeout:()=>({})}};
+async function call(fetch,now=Date.parse('2026-11-29T17:00:00Z')){
+ class TestDate extends Date{static now(){return now;}}
+ const scope={exports:{},URL,fetch,Date:TestDate,AbortSignal:{timeout:()=>({})}};
  vm.runInNewContext(source,scope,{timeout:1000});
  const result=await scope.exports.handler();
  assert.equal(result.statusCode,200);
@@ -60,3 +61,15 @@ for(const [name,fetch,expected]of cases){
  console.log('PASS youtube-live '+name);count++;
 }
 console.log('PASS '+count+' explicit public YouTube live-detection negative/positive tests');
+const unavailable=async()=>response(200,null,'<title>YouTube</title><p>No canonical player</p>');
+const service=await call(unavailable,Date.parse('2026-11-22T17:30:00Z'));
+assert.equal(service.live,false);assert.equal(service.candidateVideoId,'RMSPr30f6W8');assert.equal(service.source,'church-selected-service-video');assert.equal(service.error,undefined);
+assert.equal(service.expiresAt,Date.parse('2026-11-22T19:00:00Z'));
+for(const now of ['2026-11-22T16:29:59Z','2026-11-22T19:00:00Z','2026-11-29T17:30:00Z'])assert.equal((await call(unavailable,Date.parse(now))).candidateVideoId,undefined,'service selection must expire');
+const verified=await call(async url=>url.includes('RMSPr30f6W8')?response(200,null,playerBody({videoId:'RMSPr30f6W8',channelId:channel,isLive:true})):unavailable(),Date.parse('2026-11-22T17:30:00Z'));
+assert.equal(verified.live,true);assert.equal(verified.videoId,'RMSPr30f6W8');
+const staleChannel=await call(async url=>url.includes('RMSPr30f6W8')?response(200,null,playerBody({videoId:'RMSPr30f6W8',channelId:channel,isLive:true})):response(200,null,waitingBody),Date.parse('2026-11-22T17:30:00Z'));
+assert.equal(staleChannel.live,true);assert.equal(staleChannel.videoId,'RMSPr30f6W8');
+const wrongSelection=await call(async url=>url.includes('RMSPr30f6W8')?response(200,null,wrongBody):unavailable(),Date.parse('2026-11-22T17:30:00Z'));
+assert.equal(wrongSelection.candidateVideoId,undefined);
+console.log('PASS bounded service recovery, expiry, exact verification, and wrong-identity rejection');

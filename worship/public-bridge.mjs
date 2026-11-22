@@ -31,7 +31,11 @@ export function discoveryReceipt(data,now=Date.now()){
  if(candidate!=null&&(videoId(candidate)!==candidate||data.live))throw Error('Untrusted YouTube candidate');
  if(data.live)return {state:'live',checkedAt:now,provider:'youtube',identity:data.videoId,videoId:data.videoId,url:'https://www.youtube.com/watch?v='+data.videoId,provenance:'youtube-verified-live'};
  if(data.videoId!==null)throw Error('Unexpected inactive video');
- if(candidate)return {state:'candidate',checkedAt:now,provider:'youtube',identity:candidate,videoId:candidate,url:'https://www.youtube.com/watch?v='+candidate,provenance:'youtube-unverified-candidate'};
+ if(candidate){
+  const selected=data.source==='church-selected-service-video';
+  if(selected&&(!Number.isFinite(data.expiresAt)||now>=data.expiresAt))throw Error('Expired service video');
+  return {state:'candidate',checkedAt:now,provider:'youtube',identity:candidate,videoId:candidate,url:'https://www.youtube.com/watch?v='+candidate,provenance:selected?'church-selected-broadcast':'youtube-unverified-candidate',...(selected?{expiresAt:data.expiresAt}:{})};
+ }
  return {state:'scheduled',checkedAt:now,provider:'youtube',identity:null,videoId:null};
 }
 export const archiveBooklets=Object.freeze([
