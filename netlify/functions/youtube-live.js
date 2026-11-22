@@ -24,14 +24,38 @@ function redirectVideoId(location,base) {
 }
 function details(html) {
   if(typeof html!=='string')return null;
-  const start=html.indexOf('"videoDetails":{');
-  if(start<0)return null;
-  const section=html.slice(start,start+24000);
-  const id=/"videoDetails":\{"videoId":"([A-Za-z0-9_-]{11})"/.exec(section)?.[1];
-  const channel=/"channelId":"(UC[A-Za-z0-9_-]{22})"/.exec(section)?.[1];
-  if(!id||!channel)return null;
-  return {id,channel,live:/"isLive":true(?:[,}])/.test(section)};
+  // Only the exact videoDetails JSON object owns its isLive field. Scanning a
+  // nearby slice for isLive:true can be tricked by recommendations/other data.
+  const pattern=/"videoDetails"\s*:\s*\{/g;
+  let match,inspected=0,found=null;
+  while((match=pattern.exec(html))!==null) {
+    if(++inspected>8)return null; // ambiguous/unbounded document: fail closed
+    const opening=match.index+match[0].length-1;
+    const limit=Math.min(html.length,opening+131072);
+    let depth=0,inString=false,escaped=false,end=-1;
+    for(let i=opening;i<limit;i++){
+      const c=html[i];
+      if(inString){
+        if(escaped)escaped=false;
+        else if(c==='\\')escaped=true;
+        else if(c==='"')inString=false;
+      }else if(c==='"')inString=true;
+      else if(c==='{')depth++;
+      else if(c==='}'&&--depth===0){end=i+1;break;}
+    }
+    if(end<0)return null;
+    let value;
+    try{value=JSON.parse(html.slice(opening,end));}catch{return null;}
+    if(!value||Array.isArray(value)||typeof value!=='object'||
+      !ID.test(value.videoId||'')||
+      !/^UC[A-Za-z0-9_-]{22}$/.test(value.channelId||''))return null;
+    const current={id:value.videoId,channel:value.channelId,live:value.isLive===true};
+    if(found&&(found.id!==current.id||found.channel!==current.channel||found.live!==current.live))return null;
+    found=current;
+  }
+  return found;
 }
+
 async function youtubeFetch(url,redirect) {
   return fetch(url,{redirect,headers:BROWSER,signal:AbortSignal.timeout(2400)});
 }
