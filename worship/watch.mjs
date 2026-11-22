@@ -131,6 +131,7 @@ function paint(){
  if(provider==='facebook')state='unavailable';
  if(candidate)state='candidate-broadcast';
  else if(uncertain)state='channel-fallback';
+ else if(r?.state==='candidate')state=schedule.state==='pre-live'?'pre-live':'scheduled';
  if(key&&key===blockedKey)state='unavailable';
  const min=provider==='youtube'?356:220,narrow=$('player-shell').clientWidth<min;
  if(narrow&&mountedKey){stopPlayback();if(mediaActive&&state!=='unavailable')state='selected';}
