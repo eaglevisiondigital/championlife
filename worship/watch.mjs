@@ -8,7 +8,7 @@ let fallback=false,bookletSelection=null,bookletKey=null;
 const mediaActive=false,mediaRequested=false,mediaSelection=null,invalidMedia=false,invalidService=false,requestedService=null;
 let admitted={},receipts={},session=null,resource=null,resourceRevision=null,provider='youtube',viewerMode='watch-only',mountedKey=null,blockedKey=null,mediaGeneration=0,apiPromise=null;
 let youtube=$('worship-player'),facebook=$('facebook-player'),boundaryTimer,pollTimer,expiryTimer,request=0,contextKey=null,active=true,blockedMessage='';
-let youtubeAPI=null;
+let youtubeAPI=null,facebookMount=null,facebookSDKPromise=null,facebookPlayer=null;
 const youtubeFrameTemplate=youtube.cloneNode(false);
 // Exact public Champion Life Facebook service video supplied by DT.
 // This is a selected video, never represented as a verified LIVE receipt.
@@ -31,7 +31,44 @@ function viewportGeometry(){
 }
 
 const localMode=null;
-function frameFor(p){return p==='youtube'?youtube:facebook;}
+function frameFor(p){return p==='youtube'?youtube:(facebookMount||facebook);}
+function loadFacebookSDK(){
+ if(window.FB?.XFBML?.parse)return Promise.resolve(window.FB);
+ if(facebookSDKPromise)return facebookSDKPromise;
+ facebookSDKPromise=new Promise((resolve,reject)=>{
+  if(!document.getElementById('fb-root')){const root=document.createElement('div');root.id='fb-root';document.body.prepend(root);}
+  const existing=document.getElementById('facebook-jssdk');
+  if(existing){existing.addEventListener('load',()=>window.FB?.XFBML?.parse?resolve(window.FB):reject(Error('Facebook SDK did not initialize')), {once:true});existing.addEventListener('error',()=>reject(Error('Facebook SDK failed to load')),{once:true});return;}
+  const script=document.createElement('script');script.id='facebook-jssdk';script.async=true;script.defer=true;script.crossOrigin='anonymous';
+  script.src='https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v27.0';
+  script.onload=()=>window.FB?.XFBML?.parse?resolve(window.FB):reject(Error('Facebook SDK did not expose XFBML'));
+  script.onerror=()=>reject(Error('Facebook SDK failed to load'));document.head.append(script);
+ });
+ return facebookSDKPromise;
+}
+function mountFacebookSDK(r,key,g){
+ const shell=$('player-shell'),mount=document.createElement('div');mount.id='champion-facebook-video';mount.className='fb-video';
+ mount.dataset.href=r.url;mount.dataset.width=String(Math.max(220,Math.min(500,shell.clientWidth)));
+ mount.dataset.allowfullscreen='true';mount.dataset.autoplay='false';mount.dataset.showText='false';mount.dataset.lazy='false';
+ mount.setAttribute('aria-label','Champion Life Facebook live video');
+ const fallback=document.createElement('div');fallback.className='fb-xfbml-parse-ignore';const quote=document.createElement('blockquote');quote.setAttribute('cite',r.url);
+ const link=document.createElement('a');link.href=r.url;link.target='_blank';link.rel='noopener noreferrer';link.textContent='Open the Champion Life broadcast on Facebook';quote.append(link);fallback.append(quote);mount.append(fallback);
+ facebookMount=mount;shell.append(mount);mount.hidden=false;
+ void loadFacebookSDK().then(FB=>{
+  if(!active||provider!=='facebook'||mountedKey!==key||g!==mediaGeneration||facebookMount!==mount)return;
+  FB.Event.subscribe('xfbml.ready',msg=>{
+   if(msg?.type!=='video'||msg.id!==mount.id)return;
+   facebookPlayer=msg.instance;
+   try{facebookPlayer.subscribe('startedPlaying',()=>{if(active&&provider==='facebook'&&mountedKey===key)$('broadcast-state').textContent='PLAYING';});}catch{}
+   try{facebookPlayer.subscribe('error',()=>{if(active&&provider==='facebook'&&mountedKey===key)$('facebook-recovery-status').textContent='Facebook reported a player error. Use the player controls to retry.';});}catch{}
+  });
+  FB.XFBML.parse(shell);
+ }).catch(()=>{
+  if(!active||provider!=='facebook'||mountedKey!==key||g!==mediaGeneration)return;
+  mount.textContent='Facebook’s player could not initialize. Refresh the page and try again.';
+  const link=document.createElement('a');link.href=r.url;link.target='_blank';link.rel='noopener noreferrer';link.textContent='Open the original Facebook video';mount.append(link);
+ });
+}
 function retireConversation(){const chat=$('conversation-frame');if(chat.getAttribute('src')&&chat.getAttribute('src')!=='about:blank')chat.src='about:blank';chat.dataset.target='';chat.hidden=true;$('conversation-scroll').hidden=true;}
 function releaseYouTube({player,frame}){
  const current=frame===youtube,parent=frame.parentNode,next=frame.nextSibling,blank=current?youtubeFrameTemplate.cloneNode(false):null;
@@ -45,7 +82,7 @@ function releaseYouTube({player,frame}){
   youtube=blank;
  }
 }
-function stopPlayback(){retireConversation();mediaGeneration++;const retired=youtubeAPI;youtubeAPI=null;if(retired)releaseYouTube(retired);for(const f of [youtube,facebook]){if(f.getAttribute('src')&&f.getAttribute('src')!=='about:blank')f.src='about:blank';f.hidden=true;}$('facebook-mobile-handoff').hidden=true;mountedKey=null;}
+function stopPlayback(){retireConversation();mediaGeneration++;const retired=youtubeAPI;youtubeAPI=null;if(retired)releaseYouTube(retired);for(const f of [youtube,facebook]){if(f.getAttribute('src')&&f.getAttribute('src')!=='about:blank')f.src='about:blank';f.hidden=true;}if(facebookMount){facebookMount.remove();facebookMount=null;}facebookPlayer=null;$('facebook-mobile-handoff').hidden=true;mountedKey=null;}
 function playerError(p,key,g,code=null){
  if(!active||provider!==p||mountedKey!==key||g!==mediaGeneration)return;
  blockedKey=key;selectedPlayback[p]='unavailable';
@@ -65,8 +102,10 @@ function connectYouTube(frame,key,g){
 function mountMedia(r){
  const p=provider,key=p+':'+r.identity;if(key===mountedKey)return;
  if(p==='facebook')$('facebook-recovery-status').textContent='';
- stopPlayback();const g=mediaGeneration,old=frameFor(provider),frame=old.cloneNode(false);old.replaceWith(frame);if(provider==='youtube')youtube=frame;else facebook=frame;
- mountedKey=key;admitted[provider]=Object.freeze({...r});frame.title=provider==='youtube'?'YouTube Broadcast Player':'Facebook Broadcast Player';frame.addEventListener('error',()=>playerError(p,key,g));if(p==='facebook'&&!desktopChatEnvironment()){frame.removeAttribute('src');frame.hidden=true;$('facebook-mobile-link').href=r.url;$('facebook-mobile-handoff').hidden=false;return;}frame.src=provider==='youtube'?(r.channelFallback?`https://www.youtube.com/embed/live_stream?channel=${encodeURIComponent(config.channelId)}&playsinline=1&rel=0`:`https://www.youtube.com/embed/${r.videoId}?playsinline=1&rel=0&enablejsapi=1&origin=${encodeURIComponent(location.origin)}`):'https://www.facebook.com/plugins/video.php?href='+encodeURIComponent(r.url)+'&show_text=false&width='+Math.max(220,Math.min(500,$('player-shell').clientWidth));
+ stopPlayback();const g=mediaGeneration;mountedKey=key;admitted[provider]=Object.freeze({...r});
+ if(p==='facebook'&&!desktopChatEnvironment()){facebook.hidden=true;mountFacebookSDK(r,key,g);return;}
+ const old=frameFor(provider),frame=old.cloneNode(false);old.replaceWith(frame);if(provider==='youtube')youtube=frame;else facebook=frame;
+ frame.title=provider==='youtube'?'YouTube Broadcast Player':'Facebook Broadcast Player';frame.addEventListener('error',()=>playerError(p,key,g));frame.src=provider==='youtube'?(r.channelFallback?`https://www.youtube.com/embed/live_stream?channel=${encodeURIComponent(config.channelId)}&playsinline=1&rel=0`:`https://www.youtube.com/embed/${r.videoId}?playsinline=1&rel=0&enablejsapi=1&origin=${encodeURIComponent(location.origin)}`):'https://www.facebook.com/plugins/video.php?href='+encodeURIComponent(r.url)+'&show_text=false&width='+Math.max(220,Math.min(500,$('player-shell').clientWidth));
  if(provider==='youtube'&&!r.channelFallback)connectYouTube(frame,key,g);
 }
 for(const p of ['youtube','facebook'])$('provider-'+p).onclick=()=>{if(provider===p)return;stopPlayback();provider=p;for(const n of ['youtube','facebook'])$('provider-'+n).setAttribute('aria-pressed',String(n===p));paint();};
@@ -150,7 +189,7 @@ function paint(){
  else if(selected&&['selected','playing','paused','video-ended'].includes(state)&&!narrow)mountMedia(selected);
  else if(!mediaActive&&r?.identity&&['live','completed'].includes(state)&&!narrow)mountMedia(r);
  else if(mountedKey)stopPlayback();
- const mobileFacebook=provider==='facebook'&&!desktopChatEnvironment(),show=!!mountedKey&&mountedKey.startsWith(provider+':')&&!narrow&&!mobileFacebook;frameFor(provider).hidden=!show;$('waiting-design').hidden=show;$('facebook-mobile-handoff').hidden=!mobileFacebook;
+ const mobileFacebook=provider==='facebook'&&!desktopChatEnvironment(),show=!!mountedKey&&mountedKey.startsWith(provider+':')&&!narrow;frameFor(provider).hidden=!show;$('waiting-design').hidden=show;$('facebook-mobile-handoff').hidden=true;
  applyContext();conversations(now);viewportGeometry();
  boundaryTimer=setTimeout(paint,Math.max(1,Math.min(2147483647,Math.min(schedule.nextBoundary,r?.state==='live'&&r.checkedAt+90000>now?r.checkedAt+90000:Infinity)-now)));
 }
