@@ -1,3 +1,5 @@
+"$schema" = "https://open-api.netlify.com/netlify.schema.json"
+
 [build]
   command = "node tools/site-build/build.mjs"
   publish = "dist"
@@ -12,3 +14,20 @@
 [[edge_functions]]
   function = "dream-track-protect"
   path = "/dream-track*"
+
+[[headers]]
+  for = "/watch.html"
+  [headers.values]
+    Cache-Control = "no-store"
+    Content-Security-Policy = "default-src 'none'; script-src 'self' https://www.youtube.com 'sha256-2B7IcJY8go43Gz1AwXRH3ZlkE0Wgin7RwSF4ib81JIk='; style-src 'self' 'unsafe-inline'; img-src 'self' data:; frame-src about: https://www.youtube.com https://www.facebook.com https://champion-life-sermon-booklets.netlify.app; connect-src 'self'; font-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors 'self'"
+
+[[headers]]
+  for = "/watch"
+  [headers.values]
+    Cache-Control = "no-store"
+    Content-Security-Policy = "default-src 'none'; script-src 'self' https://www.youtube.com 'sha256-2B7IcJY8go43Gz1AwXRH3ZlkE0Wgin7RwSF4ib81JIk='; style-src 'self' 'unsafe-inline'; img-src 'self' data:; frame-src about: https://www.youtube.com https://www.facebook.com https://champion-life-sermon-booklets.netlify.app; connect-src 'self'; font-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors 'self'"
+
+[[headers]]
+  for = "/worship/*"
+  [headers.values]
+    Cache-Control = "no-cache"
