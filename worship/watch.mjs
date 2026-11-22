@@ -1,5 +1,5 @@
 import {resourceURL,worshipKind,videoId} from './core.mjs';
-import {publicConfig,publicSchedule as scheduled,serviceKind,inFallbackWindow,discoveryReceipt,bookletFor} from './public-bridge.mjs';
+import {publicConfig,publicSchedule as scheduled,serviceKind,inFallbackWindow,discoveryReceipt,bookletFor,archiveBooklets} from './public-bridge.mjs';
 import {mountBible} from './bible.mjs';
 import {mountSchedule} from './config.mjs';
 import {conversationPlan,desktopChatEnvironment,playerWidthLimit} from './engagement.mjs';
@@ -166,10 +166,24 @@ window.addEventListener('pageshow',e=>{if(e.persisted)location.reload();});
 mountSchedule($('gatherings'),config);cloud(null);mountBible($('bible'));paint();void refresh();
 
 function renderBooklet(kind){
- const root=$('published-booklet-host'),booklet=bookletFor(kind,bookletSelection),key=booklet?.url||'prayer';if(key===bookletKey)return;bookletKey=key;root.replaceChildren();if(!booklet)return;
- const label=document.createElement('label');label.textContent='Published booklet archive';const select=document.createElement('select');select.id='booklet-selection';select.setAttribute('aria-label','Published Booklet Service');for(const [v,t]of [['sunday-worship','Sunday'],['wednesday-worship','Wednesday']]){const o=document.createElement('option');o.value=v;o.textContent=t;select.append(o);}select.value=booklet.kind;select.onchange=()=>{bookletSelection=select.value;renderBooklet(serviceKind(Date.now(),location.search));};label.append(select);
- const heading=document.createElement('h4');heading.textContent=booklet.title;const notice=document.createElement('p');notice.textContent='Published '+booklet.date+' · Archived '+(booklet.kind==='sunday-worship'?'Sunday':'Wednesday')+' booklet. A newer service booklet is not yet verified here.';
- const link=document.createElement('a');link.href=booklet.url;link.target='_blank';link.rel='noopener noreferrer';link.textContent='Open This Published Booklet (New Tab) ↗';
- const frame=document.createElement('iframe');frame.className='publisher-live-frame';frame.title=booklet.title+' — '+booklet.date;frame.loading='lazy';frame.referrerPolicy='no-referrer';frame.setAttribute('sandbox','allow-scripts');frame.src=booklet.url;
+ const root=$('published-booklet-host'),booklet=bookletFor(kind,bookletSelection),key=booklet?.url||'prayer';
+ if(key===bookletKey)return;
+ bookletKey=key;root.replaceChildren();if(!booklet)return;
+ const label=document.createElement('label');label.textContent='Choose sermon booklet';
+ const select=document.createElement('select');select.id='booklet-selection';select.setAttribute('aria-label','Published Sermon Booklet');
+ for(const b of archiveBooklets){
+  const option=document.createElement('option');option.value=b.id;
+  option.textContent=(b.current?'Current — ':'Archive — ')+b.title+' · '+b.date;
+  select.append(option);
+ }
+ select.value=booklet.id;
+ select.onchange=()=>{bookletSelection=select.value;bookletKey=null;renderBooklet(serviceKind(Date.now(),location.search));};
+ label.append(select);
+ const heading=document.createElement('h4');heading.textContent=booklet.title;
+ const notice=document.createElement('p');notice.textContent='Published '+booklet.date+' · '+(booklet.current?'Sunday worship sermon booklet.':'Archived sermon booklet.');
+ const link=document.createElement('a');link.href=booklet.url;link.target='_blank';link.rel='noopener noreferrer';
+ link.textContent=booklet.current?'Open Current Sermon Booklet (New Tab) ↗':'Open Archived Sermon Booklet (New Tab) ↗';
+ const frame=document.createElement('iframe');frame.className='publisher-live-frame';frame.title=booklet.title+' — '+booklet.date;
+ frame.loading='lazy';frame.referrerPolicy='no-referrer';frame.setAttribute('sandbox','allow-scripts');frame.src=booklet.url;
  root.append(label,heading,notice,link,frame);
 }
