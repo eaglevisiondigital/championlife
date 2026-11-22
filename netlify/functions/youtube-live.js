@@ -25,7 +25,7 @@ function redirectVideoId(location,base) {
     return ID.test(id||'')?id:null;
   } catch {return null;}
 }
-function details(html) {
+function details(html,check) {
   if(typeof html!=='string')return null;
   // The canonical player response owns the broadcast identity and live state.
   // ytInitialData also contains UI objects named videoDetails (for example
@@ -51,6 +51,12 @@ function details(html) {
     if(end<0)return null;
     let player;
     try{player=JSON.parse(html.slice(opening,end));}catch{return null;}
+    if(check){
+      const status=player?.playabilityStatus;
+      check.playerStatus=typeof status?.status==='string'?status.status.slice(0,40):null;
+      check.playerReason=typeof status?.reason==='string'?status.reason.slice(0,160):null;
+      check.hasVideoDetails=!!player?.videoDetails;
+    }
     const value=player?.videoDetails;
     if(!value||Array.isArray(value)||typeof value!=='object'||
       !ID.test(value.videoId||'')||
@@ -72,9 +78,9 @@ async function checkCandidate(id,checks=[],route='redirect-video') {
   try {
     const response=await youtubeFetch('https://www.youtube.com/watch?v='+id,'follow');
     const body=(await response.text()).slice(0,2000000);
-    checks.push(diagnostic(response,body,route));
+    const check=diagnostic(response,body,route);checks.push(check);
     if(!response.ok)return {id,live:false};
-    const d=details(body);
+    const d=details(body,check);
     if(d&&d.id!==id)return null;
     if(d&&d.channel!==CHANNEL_ID)return null;
     return {id,live:!!d?.live};
@@ -101,9 +107,9 @@ exports.handler=async function() {
         continue;
       }
       const body=(await response.text()).slice(0,2000000);
-      checks.push(diagnostic(response,body,route.includes('@')?'handle-live':'channel-live'));
+      const check=diagnostic(response,body,route.includes('@')?'handle-live':'channel-live');checks.push(check);
       if(!response.ok){uncertain=true;continue;}
-      const parsed=details(body);
+      const parsed=details(body,check);
       if(parsed?.channel===CHANNEL_ID&&parsed.live)
         return {statusCode:200,headers:HEADERS,body:JSON.stringify({live:true,videoId:parsed.id,source:'youtube-live-page-verified'})};
       if(parsed?.channel===CHANNEL_ID){
