@@ -35,9 +35,11 @@ export function discoveryReceipt(data,now=Date.now()){
  return {state:'scheduled',checkedAt:now,provider:'youtube',identity:null,videoId:null};
 }
 export const archiveBooklets=Object.freeze([
- Object.freeze({kind:'sunday-worship',date:'2026-11-15',title:'Light Be — Part One',url:'https://champion-life-sermon-booklets.netlify.app/booklets/light-be-part-one/'}),
- Object.freeze({kind:'wednesday-worship',date:'2026-11-18',title:'Rich, Refreshed, Blessed — Part Two',url:'https://champion-life-sermon-booklets.netlify.app/booklets/wednesday-2026-11-18-service-notes/'})]);
+ Object.freeze({id:'sunday-2026-11-22',kind:'sunday-worship',date:'2026-11-22',title:'Light Be — Part Two',url:'/booklets/light-be-part-two/index.html',current:true}),
+ Object.freeze({id:'sunday-2026-11-15',kind:'sunday-worship',date:'2026-11-15',title:'Light Be — Part One',url:'https://champion-life-sermon-booklets.netlify.app/booklets/light-be-part-one/',current:false}),
+ Object.freeze({id:'wednesday-2026-11-18',kind:'wednesday-worship',date:'2026-11-18',title:'Rich, Refreshed, Blessed — Part Two',url:'https://champion-life-sermon-booklets.netlify.app/booklets/wednesday-2026-11-18-service-notes/',current:false})
+]);
 export function bookletFor(kind,selection){
  if(!['sunday-worship','wednesday-worship'].includes(kind))return null;
- return archiveBooklets.find(b=>b.kind===(selection||kind))||null;
+ return selection ? archiveBooklets.find(b=>b.id===selection)||null : archiveBooklets.find(b=>b.kind===kind)||null;
 }
