@@ -10,7 +10,7 @@ export const champion = Object.freeze({
     {key:'wednesday-worship',name:'Wednesday Worship Service',days:[3],hour:19,minute:30}]
 });
 export const worshipKind=kind=>['sunday-worship','wednesday-worship'].includes(kind);
-export const youtubeChannelURL=config=>/^UC[\w-]{22}$/.test(config?.channelId||'')?'https://www.youtube.com/channel/'+config.channelId+'/streams':'https://www.youtube.com/';
+export const youtubeChannelURL=config=>/^UC[\w-]{22}$/.test(config?.channelId||'')?'https://www.youtube.com/channel/'+config.channelId+'/live':'https://www.youtube.com/';
 export function facebookVideo(value,config=champion){
  try{const u=new URL(value),p=u.pathname.split('/');return u.protocol==='https:'&&!u.username&&!u.password&&!u.port&&!u.search&&!u.hash&&u.hostname==='www.facebook.com'&&p[1]===config.facebookPage&&p[2]==='videos'&&/^[0-9]{5,24}$/.test(p[3]||'')&&(p.length===4||p.length===5&&p[4]==='')?u.href:null;}catch{return null;}
 }
