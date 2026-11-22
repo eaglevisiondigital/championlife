@@ -45,7 +45,7 @@ function releaseYouTube({player,frame}){
   youtube=blank;
  }
 }
-function stopPlayback(){retireConversation();mediaGeneration++;const retired=youtubeAPI;youtubeAPI=null;if(retired)releaseYouTube(retired);for(const f of [youtube,facebook]){if(f.getAttribute('src')&&f.getAttribute('src')!=='about:blank')f.src='about:blank';f.hidden=true;}mountedKey=null;}
+function stopPlayback(){retireConversation();mediaGeneration++;const retired=youtubeAPI;youtubeAPI=null;if(retired)releaseYouTube(retired);for(const f of [youtube,facebook]){if(f.getAttribute('src')&&f.getAttribute('src')!=='about:blank')f.src='about:blank';f.hidden=true;}$('facebook-mobile-handoff').hidden=true;mountedKey=null;}
 function playerError(p,key,g,code=null){
  if(!active||provider!==p||mountedKey!==key||g!==mediaGeneration)return;
  blockedKey=key;selectedPlayback[p]='unavailable';
@@ -66,7 +66,7 @@ function mountMedia(r){
  const p=provider,key=p+':'+r.identity;if(key===mountedKey)return;
  if(p==='facebook')$('facebook-recovery-status').textContent='';
  stopPlayback();const g=mediaGeneration,old=frameFor(provider),frame=old.cloneNode(false);old.replaceWith(frame);if(provider==='youtube')youtube=frame;else facebook=frame;
- mountedKey=key;admitted[provider]=Object.freeze({...r});frame.title=provider==='youtube'?'YouTube Broadcast Player':'Facebook Broadcast Player';frame.addEventListener('error',()=>playerError(p,key,g));frame.src=provider==='youtube'?(r.channelFallback?`https://www.youtube.com/embed/live_stream?channel=${encodeURIComponent(config.channelId)}&playsinline=1&rel=0`:`https://www.youtube.com/embed/${r.videoId}?playsinline=1&rel=0&enablejsapi=1&origin=${encodeURIComponent(location.origin)}`):'https://www.facebook.com/plugins/video.php?href='+encodeURIComponent(r.url)+'&show_text=false&width='+Math.max(220,Math.min(500,$('player-shell').clientWidth));
+ mountedKey=key;admitted[provider]=Object.freeze({...r});frame.title=provider==='youtube'?'YouTube Broadcast Player':'Facebook Broadcast Player';frame.addEventListener('error',()=>playerError(p,key,g));if(p==='facebook'&&!desktopChatEnvironment()){frame.removeAttribute('src');frame.hidden=true;$('facebook-mobile-link').href=r.url;$('facebook-mobile-handoff').hidden=false;return;}frame.src=provider==='youtube'?(r.channelFallback?`https://www.youtube.com/embed/live_stream?channel=${encodeURIComponent(config.channelId)}&playsinline=1&rel=0`:`https://www.youtube.com/embed/${r.videoId}?playsinline=1&rel=0&enablejsapi=1&origin=${encodeURIComponent(location.origin)}`):'https://www.facebook.com/plugins/video.php?href='+encodeURIComponent(r.url)+'&show_text=false&width='+Math.max(220,Math.min(500,$('player-shell').clientWidth));
  if(provider==='youtube'&&!r.channelFallback)connectYouTube(frame,key,g);
 }
 for(const p of ['youtube','facebook'])$('provider-'+p).onclick=()=>{if(provider===p)return;stopPlayback();provider=p;for(const n of ['youtube','facebook'])$('provider-'+n).setAttribute('aria-pressed',String(n===p));paint();};
@@ -150,7 +150,7 @@ function paint(){
  else if(selected&&['selected','playing','paused','video-ended'].includes(state)&&!narrow)mountMedia(selected);
  else if(!mediaActive&&r?.identity&&['live','completed'].includes(state)&&!narrow)mountMedia(r);
  else if(mountedKey)stopPlayback();
- const show=!!mountedKey&&mountedKey.startsWith(provider+':')&&!narrow;frameFor(provider).hidden=!show;$('waiting-design').hidden=show;
+ const mobileFacebook=provider==='facebook'&&!desktopChatEnvironment(),show=!!mountedKey&&mountedKey.startsWith(provider+':')&&!narrow&&!mobileFacebook;frameFor(provider).hidden=!show;$('waiting-design').hidden=show;$('facebook-mobile-handoff').hidden=!mobileFacebook;
  applyContext();conversations(now);viewportGeometry();
  boundaryTimer=setTimeout(paint,Math.max(1,Math.min(2147483647,Math.min(schedule.nextBoundary,r?.state==='live'&&r.checkedAt+90000>now?r.checkedAt+90000:Infinity)-now)));
 }
