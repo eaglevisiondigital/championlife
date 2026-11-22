@@ -12,7 +12,14 @@ const original=p=>execFileSync('git',['show',baseline+':'+p],{cwd:root,maxBuffer
 const manifest=JSON.parse(readFileSync(join(root,'tools/site-build/public-files.json')));
 const previous=JSON.parse(original('tools/site-build/public-files.json'));
 for(const p of previous){assert(manifest.includes(p),'Preserve '+p);if(p!=='watch.html')assert.deepEqual(readFileSync(join(root,p)),original(p),p);}
-for(const p of ['netlify/functions/youtube-live.js','netlify/functions/dream-track-auth.mjs','netlify/edge-functions/dream-track-protect.js','_redirects'])assert.deepEqual(readFileSync(join(root,p)),original(p),p);
+// This separate Sunday reliability correction is intentionally restricted to the
+// YouTube detector; DreamTrack, edge protection, and redirects stay byte-identical.
+for(const p of ['netlify/functions/dream-track-auth.mjs','netlify/edge-functions/dream-track-protect.js','_redirects'])assert.deepEqual(readFileSync(join(root,p)),original(p),p);
+const youtubeDetector=readFileSync(join(root,'netlify/functions/youtube-live.js'),'utf8');
+assert.match(youtubeDetector,/candidateVideoId/);
+assert.match(youtubeDetector,/youtube-live-route-verified/);
+assert.match(youtubeDetector,/provider-not-verified/);
+assert.match(youtubeDetector,/UCG7j8eiL-qW8nzr2Sg7o2oA/);
 const added=manifest.filter(p=>!previous.includes(p));assert.equal(added.length,75);assert(added.every(p=>p.startsWith('worship/')));
 const html=readFileSync(join(root,'watch.html'),'utf8');
 assert(!/LOCAL DESIGN PREVIEW|account-notes|publisher\/live-panel|installation\.js|champion-life-auth\.js/.test(html));
