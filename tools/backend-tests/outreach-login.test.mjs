@@ -52,7 +52,8 @@ const manifest=JSON.parse(await read('tools/site-build/public-files.json'));
  }finally{w.close()}
 }
 const approvedP1=['outreach-login.html','assets/css/outreach-login.css','assets/js/outreach-staff-session.js','outreach-team.html','assets/css/outreach-team-portal.css','assets/js/outreach-team-portal.js','staff-outreach-team-travel.html','assets/css/outreach-team-travel.css','assets/js/outreach-team-travel.js'];
-ok(manifest.length===435,'owner-only P1 publication contains 435 explicit public files');
+ok(manifest.length===510,'approved P1 publication plus 75 reviewed Watch files contains 510 explicit public files');
+ok(manifest.filter(file=>file.startsWith('worship/')).length===75,'exactly 75 reviewed Watch-only public assets are present');
 ok(JSON.stringify(manifest.slice(-approvedP1.length))===JSON.stringify(approvedP1),'only the nine reviewed P1 files are appended in fixed order');
 for(const file of approvedP1)ok(manifest.filter(v=>v===file).length===1,'exactly one reviewed P1 public entry: '+file);
 console.log(n+' Outreach login preservation/branding/context checks passed (synthetic Auth only)');
