@@ -20,7 +20,9 @@ test('prayer cannot inherit Sunday or manually selected worship booklet',()=>{
  assert.equal(prayer,'sunday-prayer');assert.equal(bookletFor(prayer,'sunday-worship'),null);
  assert.equal(bookletFor(serviceKind(at('2026-11-24T12:30:00Z')),'wednesday-worship'),null);
  assert.equal(bookletFor(serviceKind(at('2026-11-22T16:30:00Z'),'?gathering=prayer'),'sunday-worship'),null);
- assert.equal(bookletFor('sunday-worship').date,'2026-11-15');assert.equal(bookletFor('wednesday-worship').date,'2026-11-18');
+ assert.equal(bookletFor('sunday-worship').date,'2026-11-22');assert.equal(bookletFor('sunday-worship').title,'Light Be — Part Two');assert.equal(bookletFor('wednesday-worship').date,'2026-11-18');
+ assert.equal(bookletFor('sunday-worship','sunday-2026-11-15').date,'2026-11-15');
+ assert.equal(bookletFor('sunday-worship','wednesday-2026-11-18').date,'2026-11-18');
  assert.equal(bookletFor('sunday-worship','invalid'),null);
 });
 test('bounded existing discovery data never becomes arbitrary embed authority',()=>{
