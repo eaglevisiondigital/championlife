@@ -289,41 +289,56 @@
     }
   }
 
+
+  // A provider scraper returning "not live" during a scheduled service is not
+  // proof the stream is offline. Attempt the channel player and retain direct
+  // provider links, while labeling that live status is unconfirmed.
+  function inScheduledServiceWindow(){
+    const p = chicagoParts();
+    const mins = Number(p.hour) * 60 + Number(p.minute);
+    return (p.weekday === 'Sun' && mins >= 10*60+30 && mins <= 13*60) ||
+      (p.weekday === 'Wed' && mins >= 18*60+30 && mins <= 21*60);
+  }
+
+  function setUnverifiedServiceState(){
+    // If a real video was already detected, keep it playing through an
+    // intermittent status-check failure. Do not replace it with a new iframe.
+    if (lastLiveVideoId && playerShell.classList.contains('is-live')) {
+      statusText.textContent = 'Broadcast Playing · Live Status Unconfirmed';
+      return;
+    }
+    if (lastState === 'service-fallback') return;
+    lastState = 'service-fallback';
+    lastLiveVideoId = null;
+    player.src = LIVE_EMBED;
+    chat.src = 'about:blank';
+    playerShell.classList.add('is-live');
+    status.classList.remove('is-live');
+    statusText.textContent = 'Service Time · Live Status Unconfirmed';
+    layout.classList.remove('has-chat');
+    mobileChat.classList.add('is-live');
+    mobileChatLink.href = CHANNEL_STREAMS;
+  }
+
   async function checkLive(){
     try {
       const response = await fetch(LIVE_STATUS_ENDPOINT + '?t=' + Date.now(), {cache:'no-store'});
       if (!response.ok) throw new Error('live status unavailable');
       const data = await response.json();
+      if (data.error) throw new Error('live provider status unavailable');
       if (data.live && data.videoId) {
         setLiveState(data.videoId);
-      } else {
-        if (isStartingSoon()) setStartingSoonState();
-        else setOfflineState();
-      }
-    } catch (err) {
-      // Safe fallback: preserve the approved scheduled graphics. During the usual
-      // service window, load YouTube's channel-based live player even if status
-      // detection is temporarily unavailable.
-      const p = chicagoParts();
-      const mins = Number(p.hour) * 60 + Number(p.minute);
-      const inServiceWindow =
-        (p.weekday === 'Sun' && mins >= 10*60+30 && mins <= 13*60) ||
-        (p.weekday === 'Wed' && mins >= 18*60+30 && mins <= 21*60);
-
-      if (inServiceWindow) {
-        lastState = 'live-fallback';
-        player.src = LIVE_EMBED;
-        playerShell.classList.add('is-live');
-        status.classList.add('is-live');
-        statusText.textContent = 'Live Broadcast';
-        layout.classList.remove('has-chat');
-        mobileChat.classList.add('is-live');
-        mobileChatLink.href = CHANNEL_STREAMS;
+      } else if (inScheduledServiceWindow()) {
+        setUnverifiedServiceState();
       } else if (isStartingSoon()) {
         setStartingSoonState();
       } else {
         setOfflineState();
       }
+    } catch (err) {
+      if (inScheduledServiceWindow()) setUnverifiedServiceState();
+      else if (isStartingSoon()) setStartingSoonState();
+      else setOfflineState();
     }
   }
 
