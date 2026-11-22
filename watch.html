@@ -59,6 +59,40 @@
 
 /* Hide legacy duplicate sermon-notes card from older cached site.js builds. */
 .watch-sermon-card{display:none!important}
+
+/* Sunday service fallback: this adapts the existing verified Watch engine;
+   it does not enable unreleased account-backed LIVE services. */
+.watch-sunday-layout{display:grid;grid-template-columns:minmax(0,1.62fr) minmax(310px,1fr);gap:22px;align-items:start}
+.watch-stream-column,.watch-resources-column{min-width:0}
+.watch-sunday-layout .watch-live-layout.has-chat{grid-template-columns:minmax(0,1fr)}
+.watch-sunday-layout .watch-chat-panel{min-height:0}
+.watch-sunday-layout .watch-live-chat{min-height:280px}
+.watch-sunday-layout .watch-sermon-inline{margin-top:0}
+.watch-provider-links{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+.watch-provider-links a{display:inline-flex;align-items:center;justify-content:center;text-align:center;padding:11px 15px;border-radius:999px;border:1px solid rgba(0,0,0,.25);background:#fff;color:#191919;font-size:14px;font-weight:750;text-decoration:none}
+.watch-provider-links a:focus-visible,.watch-scratch-copy:focus-visible{outline:3px solid #986c11;outline-offset:3px}
+.watch-service-times{margin:12px 0 0;color:#5d5952;line-height:1.55;font-size:14px}
+.watch-resource-panel{margin-top:16px;padding:20px;border-radius:20px;background:#fff;border:1px solid rgba(0,0,0,.1)}
+.watch-resource-panel h2{font-size:clamp(21px,2.4vw,27px);color:#161616;margin:0 0 8px}
+.watch-resource-panel p{color:#555;line-height:1.55;margin:0 0 12px;font-size:14px}
+.watch-scratchpad{box-sizing:border-box;display:block;width:100%;min-height:180px;resize:vertical;padding:14px;border:1px solid #777;border-radius:12px;color:#111;background:#fff;font:inherit;line-height:1.6}
+.watch-scratch-copy{display:inline-block;margin-top:12px;padding:10px 16px;border:0;border-radius:999px;background:#171717;color:#fff;font:inherit;font-weight:800;cursor:pointer}
+.watch-copy-feedback{display:block;margin-top:8px;min-height:1.5em;color:#544c3c;font-size:13px}
+.watch-resource-panel .watch-bible-link{display:inline-block;padding:11px 14px;border:1px solid #b58b37;border-radius:999px;color:#111;font-weight:800;text-decoration:none}
+@media(max-width:980px){
+  .watch-sunday-layout{display:block}
+  .watch-stream-column{display:contents}
+  .watch-sunday-layout .watch-live-layout{display:contents}
+  .watch-sunday-layout .watch-player-shell{position:sticky;top:0;z-index:30;box-shadow:0 12px 30px rgba(0,0,0,.25)}
+  .watch-resources-column{margin-top:18px}
+  .watch-sunday-layout .watch-sermon-inline{margin-top:0}
+  .watch-provider-links{margin:15px 0 0}
+}
+@media(max-width:700px){
+  .watch-resource-panel{padding:17px;border-radius:16px}
+  .watch-provider-links a{flex:1 1 140px}
+  .watch-sunday-layout .watch-player-shell{border-radius:0 0 12px 12px}
+}
 </style>
 </head><body><header class="site-header"><div class="container nav"><a class="brand" href="index.html"><img src="assets/images/logo-gold.png" alt="Champion Life Church"></a><button class="menu-btn" aria-label="Open menu">☰</button><nav class="nav-links"><a href="index.html">Home</a><a href="about.html">About</a><a href="watch.html">Watch</a><a href="ministries.html">Ministries</a><a href="outreach.html">Outreach</a><a href="events.html">Events</a><a href="next-steps.html">Next Steps</a><a href="give.html">Give</a></nav></div></header><main><section class="page-hero"><div class="container"><span class="eyebrow">Watch</span><h1>Faith comes by hearing.</h1><p class="lead">Join Champion Life live or explore messages designed to build faith and help you live victoriously.</p></div></section>
 <section class="section watch-live-section">
@@ -68,7 +102,7 @@
       <span id="watchStatusText">Champion Life Online</span>
     </div>
 
-    <div class="watch-live-layout" id="watchLiveLayout">
+    <div class="watch-sunday-layout" aria-label="Live broadcast and service resources"><div class="watch-stream-column"><div class="watch-live-layout" id="watchLiveLayout">
       <div class="watch-player-shell" id="watchPlayerShell">
         <img
           id="watchPlaceholder"
@@ -107,6 +141,13 @@
       </a>
     </div>
 
+        <div class="watch-provider-links" aria-label="Original broadcast providers">
+      <a href="https://www.youtube.com/@ChampionLifeFWB/streams" target="_blank" rel="noopener noreferrer">Watch on YouTube ↗</a>
+      <a href="https://www.facebook.com/ChampionLifeFWB" target="_blank" rel="noopener noreferrer">Watch on Facebook ↗</a>
+    </div>
+    <p class="watch-service-times">Sunday Worship: 10:30 AM Central · Wednesday Worship: 6:30 PM Central. When an embedded player or conversation is unavailable, use the original provider link above.</p>
+  </div>
+  <div class="watch-resources-column" id="watchResources">
     <section class="watch-sermon-inline" id="watchSermonNotes">
       <div class="watch-sermon-inline-head">
         <div class="watch-sermon-inline-copy">
@@ -126,6 +167,23 @@
         <iframe class="watch-sermon-frame" id="watchSermonFrame" data-src="https://www.inrevival.com/sermon" src="about:blank" title="Champion Life sermon notes" referrerpolicy="strict-origin-when-cross-origin" allow="clipboard-read; clipboard-write"></iframe>
       </div>
     </section>
+
+    
+    <section class="watch-resource-panel" aria-labelledby="watchNotesTitle">
+      <h2 id="watchNotesTitle">My Temporary Notes</h2>
+      <p>Write your own thoughts while watching. Notes stay only in this open page; copy them before leaving or refreshing. They are not saved to a Champion Life account.</p>
+      <label for="watchScratchpad" class="eyebrow">Your notes</label>
+      <textarea id="watchScratchpad" class="watch-scratchpad" aria-label="My temporary service notes" placeholder="Write the Scripture, insights and next steps you want to remember…" spellcheck="true"></textarea>
+      <button id="watchCopyNotes" type="button" class="watch-scratch-copy">Copy My Notes</button>
+      <span id="watchCopyFeedback" class="watch-copy-feedback" role="status" aria-live="polite"></span>
+    </section>
+    <section class="watch-resource-panel" aria-labelledby="watchBibleTitle">
+      <h2 id="watchBibleTitle">Bible / Scripture Reader</h2>
+      <p>Keep Scripture nearby while you worship. Open the public-domain World English Bible in another tab; your broadcast can continue playing on this page.</p>
+      <a class="watch-bible-link" href="https://ebible.org/engwebp/" target="_blank" rel="noopener noreferrer">Open World English Bible ↗</a>
+    </section>
+  </div>
+</div>
 
     <div class="watch-give-card">
       <div>
@@ -312,6 +370,28 @@
       wrap.classList.remove('is-open');
       toggle.setAttribute('aria-expanded','false');
       toggle.textContent='Open Sermon Notes';
+    }
+  });
+})();
+</script>
+
+<script>
+/* Temporary notes never persist to a server or local browser storage. */
+(function(){
+  const button=document.getElementById('watchCopyNotes');
+  const notes=document.getElementById('watchScratchpad');
+  const feedback=document.getElementById('watchCopyFeedback');
+  if(!button||!notes||!feedback)return;
+  button.addEventListener('click',async function(){
+    if(!notes.value){feedback.textContent='Write a note first.';return;}
+    try {
+      if(!navigator.clipboard||!navigator.clipboard.writeText)throw new Error('clipboard unavailable');
+      await navigator.clipboard.writeText(notes.value);
+      feedback.textContent='Notes copied. Paste them somewhere safe before leaving this page.';
+    } catch(error) {
+      notes.focus();
+      notes.select();
+      feedback.textContent='Select Copy from your device menu, then paste your notes somewhere safe.';
     }
   });
 })();
