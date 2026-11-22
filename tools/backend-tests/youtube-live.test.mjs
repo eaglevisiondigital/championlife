@@ -28,6 +28,19 @@ const cases=[
  ['network error never silently means offline',async()=>{throw Error('provider unreachable')},{live:false,videoId:null,error:'provider-not-verified'}],
  ['alternate channel identity route works',async url=>url.includes('@ChampionLifeFWB')?response(302,'https://www.youtube.com/@ChampionLifeFWB'):url.includes('/watch?v=')?response(200,null,liveBody):response(302,'https://www.youtube.com/live/'+video),{live:true,videoId:video}]
 ];
+
+cases.push(
+ ['neighboring live:true after inactive videoDetails cannot promote',async()=>response(200,null,waitingBody+'{"recommendation":{"isLive":true}}'),{live:false,videoId:null,candidateVideoId:video}],
+ ['neighboring live:true before inactive videoDetails cannot promote',async()=>response(200,null,'{"suggestion":{"isLive":true}}'+waitingBody),{live:false,videoId:null,candidateVideoId:video}],
+ ['nested live:true does not override inactive target',async()=>response(200,null,JSON.stringify({videoDetails:{videoId:video,channelId:channel,isLive:false,recommendation:{isLive:true}}})),{live:false,videoId:null,candidateVideoId:video}],
+ ['escaped metadata text does not override inactive target',async()=>response(200,null,JSON.stringify({videoDetails:{videoId:video,channelId:channel,isLive:false,title:'{"isLive":true}'}})),{live:false,videoId:null,candidateVideoId:video}],
+ ['inactive target plus second contradictory videoDetails fails closed',async()=>response(200,null,waitingBody+liveBody),{live:false,videoId:null,error:'provider-not-verified'}],
+ ['duplicate identical videoDetails remains verifiable',async()=>response(200,null,liveBody+liveBody),{live:true,videoId:video}],
+ ['whitespace within videoDetails JSON remains verifiable',async()=>response(200,null,'"videoDetails" : '+JSON.stringify({videoId:video,channelId:channel,isLive:true})),{live:true,videoId:video}],
+ ['external neighboring approved channel never repairs wrong videoDetails channel',async()=>response(200,null,wrongBody+JSON.stringify({channelId:channel,isLive:true})),{live:false,videoId:null,error:'provider-not-verified'}],
+ ['redirecting nonlive target with neighboring live signal yields candidate only',async url=>url.includes('/watch?v=')?response(200,null,waitingBody+'{"neighbor":{"isLive":true}}'):response(302,'https://www.youtube.com/watch?v='+video),{live:false,videoId:null,candidateVideoId:video}]
+);
+
 let count=0;
 for(const [name,fetch,expected]of cases){
  const actual=await call(fetch);
