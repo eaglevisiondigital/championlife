@@ -10,6 +10,9 @@ let admitted={},receipts={},session=null,resource=null,resourceRevision=null,pro
 let youtube=$('worship-player'),facebook=$('facebook-player'),boundaryTimer,pollTimer,expiryTimer,request=0,contextKey=null,active=true,blockedMessage='';
 let youtubeAPI=null;
 const youtubeFrameTemplate=youtube.cloneNode(false);
+// Exact public Champion Life Facebook service video supplied by DT.
+// This is a selected video, never represented as a verified LIVE receipt.
+const facebookServiceVideo=Object.freeze({provider:'facebook',identity:'https://www.facebook.com/ChampionLifeFWB/videos/1689594815838186/',url:'https://www.facebook.com/ChampionLifeFWB/videos/1689594815838186/',title:'Champion Life Sunday Service',provenance:'church-selected-service-video'});
 const selectedPlayback={};
 const guestDrafts=new Map(),dismissed=new Set();
 function viewportGeometry(){
@@ -72,7 +75,7 @@ $('reload-facebook').onclick=()=>{
  const current=admitted.facebook;
  if(!active||provider!=='facebook'||!current||mountedKey!=='facebook:'+current.identity)return;
  stopPlayback();mountMedia(current);paint();
- $('facebook-recovery-status').textContent='The Facebook player was reloaded. Playback is not confirmed. Your notes and Bible remain here.';
+ $('facebook-recovery-status').textContent='The Facebook player was reloaded. Facebook controls playback and sign-in. Your notes and Bible remain here.';
 };
 function cloud(){}
 function applyContext(){
@@ -121,15 +124,15 @@ for(const [id,mode]of [['watch-only','watch-only'],['watch-participate','partici
 function paint(){
  if(!active)return;viewportGeometry();clearTimeout(boundaryTimer);const now=Date.now(),schedule=scheduled(config,now),r=receipts[provider];let state=schedule.state;
  if(r&&now-r.checkedAt<90000)state=['live','completed'].includes(r.state)?r.state:(schedule.state==='pre-live'?'pre-live':r.state);else if(r)state=schedule.state==='pre-live'?'pre-live':'unavailable';
- const selected=null;
+ const selected=provider==='facebook'?facebookServiceVideo:null;
  const inWindow=provider==='youtube'&&inFallbackWindow(now);
  const candidate=inWindow&&r?.state==='candidate'&&now-r.checkedAt>=0&&now-r.checkedAt<90000&&!!r?.identity&&(!r.expiresAt||now<r.expiresAt);
  const churchSelected=candidate&&r.provenance==='church-selected-broadcast';
  const uncertain=inWindow&&(fallback||!r||['scheduled','unavailable'].includes(r.state));
- const key=candidate?'youtube:'+r.identity:r?.identity?provider+':'+r.identity:null;
+ const key=candidate?'youtube:'+r.identity:selected?'facebook:'+selected.identity:r?.identity?provider+':'+r.identity:null;
  if(mediaActive)state=!selected?'unavailable':mountedKey===key?({ended:'video-ended',playing:'playing',paused:'paused'})[selectedPlayback[provider]]||'selected':'selected';
  if(mediaRequested&&!mediaActive)state='unavailable';
- if(provider==='facebook')state='unavailable';
+ if(provider==='facebook')state='selected';
  if(candidate)state='candidate-broadcast';
  else if(uncertain)state='channel-fallback';
  else if(r?.state==='candidate')state=schedule.state==='pre-live'?'pre-live':'scheduled';
@@ -139,7 +142,7 @@ function paint(){
  $('broadcast-state').textContent=({live:'LIVE','channel-fallback':'CHECK YOUTUBE','candidate-broadcast':churchSelected?'TODAY’S BROADCAST':'CHECK BROADCAST',completed:'COMPLETED','video-ended':'VIDEO ENDED','pre-live':'STARTING SHORTLY',scheduled:'SCHEDULED',unavailable:'BROADCAST UNAVAILABLE',selected:'SELECTED BROADCAST',playing:'PLAYING',paused:'PAUSED'})[state];$('broadcast-state').dataset.state=state;
  $('gathering-name').textContent=session?.title||(mediaActive?mediaSelection.title:null)||schedule.gathering?.name||'Gather With Us';
  $('broadcast-message').textContent=narrow?'Open the broadcast on its platform for a player that fits this screen.':state==='live'?'Join us in worship and the Word.':state==='completed'?'This gathering has ended. The recording may be available.':state==='pre-live'?'We’re preparing to gather. Video starts when the broadcast is verified.':state==='unavailable'?'We can’t confirm this platform’s broadcast right now. You can open its page below.':schedule.gathering?new Intl.DateTimeFormat('en-US',{timeZone:config.timezone,weekday:'long',hour:'numeric',minute:'2-digit',timeZoneName:'short'}).format(schedule.gathering.startsAt):'We look forward to gathering with you.';
- if(provider==='facebook')$('broadcast-message').textContent='Open Champion Life’s original Facebook page below to find the current broadcast. Facebook controls availability and may request its own sign-in. The video is not embedded here because playback could not be confirmed on iPhone.';
+ if(provider==='facebook')$('broadcast-message').textContent='Champion Life’s selected Facebook service video is embedded below. Facebook controls playback availability and may request its own sign-in.';
  if(state==='channel-fallback')$('broadcast-message').textContent='We cannot verify the broadcast automatically. Open Champion Life Live directly on YouTube below; an old channel-based embed is not a reliable fallback.';
  if(state==='candidate-broadcast')$('broadcast-message').textContent=churchSelected?'Champion Life selected this video for today’s service. Press play to watch. The YouTube player shows whether it is live or a recording.':'A possible current broadcast was found on Champion Life YouTube. Live status is not verified. Press play or open the original video to confirm.';
  $('waiting-label').textContent=state==='pre-live'?'WE’LL BEGIN SHORTLY':'YOU BELONG HERE';$('waiting-title').textContent=state==='pre-live'?(schedule.gathering?.name||'Let’s Gather.'):'Let’s Gather.';$('waiting-detail').textContent=state==='pre-live'?'Prepare your heart. We’re gathering soon.':'Worship. The Word. A life of faith.';
