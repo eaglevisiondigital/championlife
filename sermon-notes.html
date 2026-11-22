@@ -36,6 +36,17 @@ padding:16px 20px;background:#111;color:#fff;border-bottom:1px solid rgba(255,25
   .sermon-toolbar{display:grid;grid-template-columns:1fr;width:100%}
   .sermon-toolbar .btn{width:100%}
 }
+
+.sermon-archive-section{padding:0 0 70px;background:#f4f0e8}
+.sermon-archive-heading{margin:0 0 18px;color:#111;font-size:clamp(26px,4vw,38px);line-height:1.1}
+.sermon-archive-intro{color:#5d5b56;font-size:16px;line-height:1.6;margin-bottom:20px}
+.sermon-archive-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px}
+.sermon-archive-card{display:flex;flex-direction:column;gap:12px;padding:24px;border-radius:18px;background:#fff;border:1px solid rgba(0,0,0,.1);box-shadow:0 8px 24px rgba(0,0,0,.06)}
+.sermon-archive-card small{color:#765715;font-weight:800;letter-spacing:.12em;text-transform:uppercase}
+.sermon-archive-card h3{color:#111;font-size:22px;line-height:1.2;margin:0}
+.sermon-archive-card p{color:#605d56;margin:0;line-height:1.5}
+.sermon-archive-card a{display:inline-flex;margin-top:auto;align-self:flex-start;color:#111;font-weight:800;text-decoration:underline;text-underline-offset:4px}
+.sermon-archive-card a:focus-visible{outline:3px solid #765715;outline-offset:4px}
 </style>
 
 </head>
@@ -74,6 +85,27 @@ padding:16px 20px;background:#111;color:#fff;border-bottom:1px solid rgba(255,25
         If the notes do not display correctly on your device,
         <a href="https://www.inrevival.com/sermon" target="_blank" rel="noopener">open the sermon notes directly</a>.
       </p>
+    </div>
+  </section>
+
+  <section class="sermon-archive-section" aria-labelledby="sermonArchiveHeading">
+    <div class="container">
+      <h2 class="sermon-archive-heading" id="sermonArchiveHeading">Previous Sermon Booklets</h2>
+      <p class="sermon-archive-intro">Revisit recent interactive messages without losing the notes from previous services.</p>
+      <div class="sermon-archive-grid">
+        <article class="sermon-archive-card">
+          <small>Wednesday, November 18, 2026</small>
+          <h3>Rich, Refreshed, Blessed — Part Two</h3>
+          <p>Wednesday evening’s interactive sermon booklet, preserved as its own archived resource.</p>
+          <a href="https://champion-life-sermon-booklets.netlify.app/booklets/wednesday-2026-11-18-service-notes/" target="_blank" rel="noopener noreferrer">Open Wednesday’s Archived Booklet</a>
+        </article>
+        <article class="sermon-archive-card">
+          <small>Previous Message</small>
+          <h3>Light Be — Part One</h3>
+          <p>Return to the earlier installment in this message series.</p>
+          <a href="https://champion-life-sermon-booklets.netlify.app/booklets/light-be-part-one/" target="_blank" rel="noopener noreferrer">Open Light Be — Part One</a>
+        </article>
+      </div>
     </div>
   </section>
 </main>
