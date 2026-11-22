@@ -27,5 +27,15 @@ test('bounded existing discovery data never becomes arbitrary embed authority',(
  const r=discoveryReceipt({live:true,videoId:'abcdefghijk'},123);
  assert.equal(r.checkedAt,123);assert.equal(r.identity,'abcdefghijk');assert.equal(r.url,'https://www.youtube.com/watch?v=abcdefghijk');
  assert.equal(discoveryReceipt({live:false,videoId:null}).identity,null);
+ const candidate=discoveryReceipt({live:false,videoId:null,candidateVideoId:'abcdefghijk'},123);
+ assert.equal(candidate.state,'candidate');
+ assert.equal(candidate.identity,'abcdefghijk');
+ assert.equal(candidate.url,'https://www.youtube.com/watch?v=abcdefghijk');
+ assert.equal(candidate.provenance,'youtube-unverified-candidate');
+ for(const malformed of [
+  {live:true,videoId:'abcdefghijk',candidateVideoId:'abcdefghijk'},
+  {live:false,videoId:null,candidateVideoId:'https://evil.example'},
+  {live:false,videoId:'abcdefghijk',candidateVideoId:'abcdefghijk'}
+ ])assert.throws(()=>discoveryReceipt(malformed),/Untrusted|Unexpected/);
  for(const d of [null,{}, {live:true,videoId:'https://evil.example'}, {live:'true',videoId:'abcdefghijk'},{live:false,videoId:'abcdefghijk'},{live:false,videoId:null,error:'status-check-failed'}])assert.throws(()=>discoveryReceipt(d));
 });

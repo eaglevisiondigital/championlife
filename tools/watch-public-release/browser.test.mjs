@@ -111,6 +111,7 @@ try{
     {name:'transport-service',clock:'2026-11-22T16:35:00Z',response:'transport',expected:'channel-fallback'},
     {name:'http-service',clock:'2026-11-22T16:35:00Z',response:'http',expected:'channel-fallback'},
     {name:'invalid-video',clock:'2026-11-22T16:35:00Z',response:{live:true,videoId:'https://evil.invalid/'},expected:'channel-fallback'},
+     {name:'unverified-candidate-service',clock:'2026-11-22T16:35:00Z',response:{live:false,videoId:null,candidateVideoId:video},expected:'candidate-broadcast'},
     {name:'error-outside-window',clock:'2026-11-21T20:00:00Z',response:'transport',expected:'unavailable'},
     {name:'sunday-prayer',clock:'2026-11-22T13:00:00Z',response:{live:true,videoId:video},expected:'live',prayer:true},
     {name:'weekday-prayer',clock:'2026-11-24T12:10:00Z',response:{live:true,videoId:video},expected:'live',prayer:true},
@@ -121,8 +122,13 @@ try{
     try{
      await page.waitForFunction(s=>document.querySelector('#broadcast-state').dataset.state===s,scenario.expected);
      if(scenario.expected==='channel-fallback'){
-      ok(await page.locator('#worship-player').getAttribute('src').then(s=>s.includes('/embed/live_stream?channel=UCG7j8eiL-qW8nzr2Sg7o2oA')),'scheduled outage uses original channel fallback');
-      ok((await page.locator('#broadcast-message').textContent()).includes('LIVE status is not confirmed'),'fallback does not claim verified LIVE');
+      ok(await page.locator('#worship-player').isHidden(),'unverified status never mounts deprecated channel embed');
+      ok((await page.locator('#broadcast-message').textContent()).includes('cannot verify'),'fallback does not claim verified LIVE');
+      ok((await page.locator('#open-broadcast').getAttribute('href')).endsWith('/live'),'direct channel live route remains available');
+     }
+     if(scenario.expected==='candidate-broadcast'){
+      ok((await page.locator('#worship-player').getAttribute('src')).includes('/embed/'+video),'candidate uses exact video ID rather than channel embed');
+      ok((await page.locator('#broadcast-message').textContent()).includes('not verified'),'candidate does not claim verified LIVE');
      }
      if(['scheduled','pre-live','unavailable'].includes(scenario.expected))ok(await page.locator('#worship-player').isHidden(),'offline/unavailable has no misleading player');
      if(scenario.prayer){ok(await page.locator('#pastor').isHidden(),'prayer hides sermon panel');ok(await page.locator('#published-booklet-host iframe').count()===0,'prayer removes stale booklet iframe');}
@@ -141,10 +147,10 @@ try{
      ok(state.pending.length===1,'exactly one bounded deferred request');
      const old=state.pending.shift();state.response={live:false,videoId:null};
      await page.evaluate(()=>window.dispatchEvent(new Event('focus')));
-     await page.waitForFunction(()=>document.querySelector('#broadcast-state').dataset.state==='scheduled');
+     await page.waitForFunction(()=>document.querySelector('#broadcast-state').dataset.state==='channel-fallback');
      await old.route.fulfill({contentType:'application/json',body:JSON.stringify({live:true,videoId:'Zyx987ABC_1'})});old.resolve();
      await page.evaluate(()=>new Promise(resolve=>setTimeout(resolve,0)));
-     ok(await page.locator('#broadcast-state').getAttribute('data-state')==='scheduled','late superseded live response ignored');
+     ok(await page.locator('#broadcast-state').getAttribute('data-state')==='channel-fallback','late superseded live response ignored');
      ok(await page.locator('#worship-player').isHidden(),'late superseded response cannot restore old player');
      results.push({case:current,trace,synthetic:true});
     }finally{for(const pending of state.pending){await pending.route.abort().catch(()=>{});pending.resolve();}await context.close();}
@@ -170,11 +176,10 @@ try{
     const {context,page,trace}=await fixture(browser,viewports[0],'2026-11-22T16:35:00Z','transport');
     try{
      await page.waitForFunction(()=>document.querySelector('#broadcast-state').dataset.state==='channel-fallback');
-     await page.locator('#worship-player').evaluate(e=>e.dispatchEvent(new Event('error')));
      const count=trace.players;
      await page.evaluate(()=>{window.dispatchEvent(new Event('resize'));window.dispatchEvent(new Event('resize'));});
-     ok(await page.locator('#worship-player').isHidden(),'failed channel player removed');
-     ok(trace.players===count,'failed channel fallback never automatically remounted');
+     ok(await page.locator('#worship-player').isHidden(),'uncertain service has no deprecated channel player');
+     ok(trace.players===count,'uncertain service never mounts deprecated channel player');
      ok(await page.locator('#open-broadcast').isVisible(),'original provider handoff survives embed failure');
      results.push({case:current,trace,synthetic:true});
     }finally{await context.close();}
