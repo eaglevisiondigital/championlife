@@ -24,14 +24,16 @@ function redirectVideoId(location,base) {
 }
 function details(html) {
   if(typeof html!=='string')return null;
-  // Only the exact videoDetails JSON object owns its isLive field. Scanning a
-  // nearby slice for isLive:true can be tricked by recommendations/other data.
-  const pattern=/"videoDetails"\s*:\s*\{/g;
+  // The canonical player response owns the broadcast identity and live state.
+  // ytInitialData also contains UI objects named videoDetails (for example
+  // playerOverlayVideoDetailsRenderer); those are not broadcast records.
+  // Never infer LIVE from recommendations, overlays, or nearby live flags.
+  const pattern=/(?:\bytInitialPlayerResponse|window\["ytInitialPlayerResponse"\])\s*=\s*\{/g;
   let match,inspected=0,found=null;
   while((match=pattern.exec(html))!==null) {
     if(++inspected>8)return null; // ambiguous/unbounded document: fail closed
     const opening=match.index+match[0].length-1;
-    const limit=Math.min(html.length,opening+131072);
+    const limit=Math.min(html.length,opening+1048576);
     let depth=0,inString=false,escaped=false,end=-1;
     for(let i=opening;i<limit;i++){
       const c=html[i];
@@ -44,8 +46,9 @@ function details(html) {
       else if(c==='}'&&--depth===0){end=i+1;break;}
     }
     if(end<0)return null;
-    let value;
-    try{value=JSON.parse(html.slice(opening,end));}catch{return null;}
+    let player;
+    try{player=JSON.parse(html.slice(opening,end));}catch{return null;}
+    const value=player?.videoDetails;
     if(!value||Array.isArray(value)||typeof value!=='object'||
       !ID.test(value.videoId||'')||
       !/^UC[A-Za-z0-9_-]{22}$/.test(value.channelId||''))return null;
