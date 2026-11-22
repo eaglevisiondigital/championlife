@@ -1,5 +1,3 @@
-"$schema" = "https://open-api.netlify.com/netlify.schema.json"
-
 [build]
   command = "node tools/site-build/build.mjs"
   publish = "dist"
