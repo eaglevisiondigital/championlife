@@ -1,5 +1,9 @@
 ## 2026-11-19 — SowGo partner-domain and Outreach routing candidate
 
+## Sunday LIVE candidate — November 22, 2026
+
+Watch candidate adds no Auth, staff, Publisher or database authority. It scopes CSP to Watch, uses opaque sandboxed published-booklet frames, retires stale players, and preserves original provider handoffs. All existing production functions/edge protection remain unchanged. See docs/WATCH-SUNDAY-RELEASE-20261122.md.
+
 Owner authorizes publishing a SowGo-domain partner page first, verifying it, then switching Champion Life Outreach partnership/sowing links and legacy redirects. Current baseline is PR168/main d6a97b1; SowGo PR9/main544c06b sowing release is preserved. This isolated candidate adds the exact approved light logo to the Outreach hero and updates outreach-only CTAs, theme-song overlay and giving outreach card to SowGo. The global handler respects normal SowGo navigation and no longer opens the old modal or rewrites sowing back to the church route. Ordinary giving/account links, photos, schedules, Minden signup and all other public systems remain unchanged.
 
 The existing partner function's6 source matches production. A small additive site policy retains OUTREACH_ALLOWED_ORIGINS/OUTREACH_TURNSTILE_HOSTNAMES and adds only https://sowgo.org/sowgo.org on canonical exdoc project; no other intake function or SQL/ownership/secret/action changes. Current live preflight rejects SowGo while accepting Champion Life; provider/config and genuine challenge verification are pending. No CORS wildcard or preview production origin is introduced. Shared partner JS/CSS remain byte-identical and are reused on SowGo with explicit brand initialization; accepted-only continuation from PR168 is preserved.

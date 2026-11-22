@@ -4,6 +4,84 @@ import { fileURLToPath } from 'node:url';
 import vm from 'node:vm';
 
 const repository = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
+// Explicit reviewed Watch modules and public-domain Scripture; no general JSON/module publication.
+const watchPublicAssets = new Set([
+  "worship/bible.mjs",
+  "worship/config.mjs",
+  "worship/core.mjs",
+  "worship/engagement.mjs",
+  "worship/public-bridge.mjs",
+  "worship/scripture/1CH.json",
+  "worship/scripture/1CO.json",
+  "worship/scripture/1JO.json",
+  "worship/scripture/1KI.json",
+  "worship/scripture/1PE.json",
+  "worship/scripture/1SA.json",
+  "worship/scripture/1TH.json",
+  "worship/scripture/1TI.json",
+  "worship/scripture/2CH.json",
+  "worship/scripture/2CO.json",
+  "worship/scripture/2JO.json",
+  "worship/scripture/2KI.json",
+  "worship/scripture/2PE.json",
+  "worship/scripture/2SA.json",
+  "worship/scripture/2TH.json",
+  "worship/scripture/2TI.json",
+  "worship/scripture/3JO.json",
+  "worship/scripture/ACT.json",
+  "worship/scripture/AMO.json",
+  "worship/scripture/COL.json",
+  "worship/scripture/DAN.json",
+  "worship/scripture/DEU.json",
+  "worship/scripture/ECC.json",
+  "worship/scripture/EPH.json",
+  "worship/scripture/EST.json",
+  "worship/scripture/EXO.json",
+  "worship/scripture/EZE.json",
+  "worship/scripture/EZR.json",
+  "worship/scripture/GAL.json",
+  "worship/scripture/GEN.json",
+  "worship/scripture/HAB.json",
+  "worship/scripture/HAG.json",
+  "worship/scripture/HEB.json",
+  "worship/scripture/HOS.json",
+  "worship/scripture/ISA.json",
+  "worship/scripture/JAM.json",
+  "worship/scripture/JDG.json",
+  "worship/scripture/JER.json",
+  "worship/scripture/JOB.json",
+  "worship/scripture/JOE.json",
+  "worship/scripture/JOH.json",
+  "worship/scripture/JON.json",
+  "worship/scripture/JOS.json",
+  "worship/scripture/JUD.json",
+  "worship/scripture/LAM.json",
+  "worship/scripture/LEV.json",
+  "worship/scripture/LUK.json",
+  "worship/scripture/MAL.json",
+  "worship/scripture/MAR.json",
+  "worship/scripture/MAT.json",
+  "worship/scripture/MIC.json",
+  "worship/scripture/NAH.json",
+  "worship/scripture/NEH.json",
+  "worship/scripture/NUM.json",
+  "worship/scripture/OBA.json",
+  "worship/scripture/PHI.json",
+  "worship/scripture/PHM.json",
+  "worship/scripture/PRO.json",
+  "worship/scripture/PROVENANCE.json",
+  "worship/scripture/PSA.json",
+  "worship/scripture/REV.json",
+  "worship/scripture/ROM.json",
+  "worship/scripture/RUT.json",
+  "worship/scripture/SOL.json",
+  "worship/scripture/TIT.json",
+  "worship/scripture/ZEC.json",
+  "worship/scripture/ZEP.json",
+  "worship/scripture/index.json",
+  "worship/watch.mjs"
+]);
+
 const configPath = 'assets/js/supabase-config.js';
 
 export function previewConfiguration(env, production) {
@@ -43,7 +121,7 @@ export async function buildSite({ root = repository, env = process.env } = {}) {
   for (const file of files) {
     if (typeof file !== 'string' || file.includes('\\') || file.split('/').some(p => !p || p.startsWith('.')) ||
         /^(?:audit|docs|tools|supabase|netlify|HANDOFFS)\//i.test(file) ||
-        !(/\.(?:html|css|js|png|jpe?g|webp|svg|gif|ico|pdf|woff2?|mp[34]|m4a|webm)$/i.test(file) || /^assets\/images\/food-outreach-hero-chunks\/0[0-8]\.txt$/.test(file) || file === '_redirects')) {
+        !(/\.(?:html|css|js|png|jpe?g|webp|svg|gif|ico|pdf|woff2?|mp[34]|m4a|webm)$/i.test(file) || /^assets\/images\/food-outreach-hero-chunks\/0[0-8]\.txt$/.test(file) || file === '_redirects' || watchPublicAssets.has(file))) {
       throw new Error('Non-public file in public manifest.');
     }
     let target = root;

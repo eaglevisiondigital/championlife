@@ -1,0 +1,123 @@
+.worship{--gold:#d3ad4f;background:#f4f2ed;color:#171717}.worship *{box-sizing:border-box}.worship [hidden]{display:none!important}.worship button,.worship a{touch-action:manipulation}.worship button{font:inherit;cursor:pointer}.worship button:focus-visible,.worship a:focus-visible,.worship textarea:focus-visible{outline:3px solid #987216;outline-offset:3px}.worship-header{min-height:86px;display:flex;align-items:center;justify-content:space-between;gap:20px;padding:16px 4vw;background:#101010;color:white}.worship-header img{width:176px;height:48px;object-fit:contain}.worship-header nav{display:flex;align-items:center;gap:24px;font-size:13px}.worship-header a{text-decoration:none}.worship-give{background:var(--gold);color:#111;padding:12px 24px;border-radius:6px}.intro,.worship-workspace,.gatherings{max-width:1520px;margin:auto}.intro{padding:58px 4vw 32px}.intro h1{font-size:clamp(2.3rem,4vw,4.1rem);letter-spacing:-.045em;line-height:1.05;margin:14px 0 20px}.intro h1 em{font-family:Georgia,serif;font-weight:400;color:#877033}.intro>p{color:#666}.local-banner{font-size:10px;letter-spacing:.12em}.worship-workspace{grid-template-columns:minmax(0,1.3fr) minmax(360px,1fr);gap:26px;padding:0 4vw 50px}.worship .grip-video-panel{top:22px;background:#111;border-color:#292929}.worship .grip-video-shell>img{position:absolute;width:100%;height:100%;object-fit:cover}.worship .grip-video-meta{padding:22px 24px 0}.worship .grip-video-meta h2{font-size:25px}.worship .grip-video-meta p{font-size:13px}.worship #broadcast-state{font-size:10px;letter-spacing:.15em;color:#e5c367}.worship #broadcast-state[data-state=live]{color:#ffb0b7}.worship .grip-video-tools{padding:22px 24px 12px}.pip-help{color:#b7b7b7;font-size:11px;padding:0 24px 18px;line-height:1.5}.worship-notebook{max-height:calc(100dvh - 44px);display:flex;flex-direction:column;position:sticky;top:22px}.notebook-head{padding:25px 26px 0}.notebook-head>.eyebrow{font-size:10px;color:#766025}.notebook-head h2{font-size:24px;margin:8px 0 22px;letter-spacing:-.03em}.notebook-head [role=tablist]{display:flex;border-bottom:1px solid #e4ded2;gap:20px}.notebook-head [role=tab]{border:0;background:transparent;font-size:12px;padding:0 0 15px;color:#666;min-height:44px}.notebook-head [aria-selected=true]{color:#161616;border-bottom:3px solid #a7893f;font-weight:700}.notebook-scroll{overflow-y:auto;min-height:0;overscroll-behavior:contain;padding:28px 26px}.worship .grip-notes-block{padding:0}.worship .grip-notes-block h3{font-size:21px;line-height:1.3;margin:10px 0}.worship .grip-notes-block p,.account-notes p,#pastor-content p{font-size:13px;line-height:1.7;color:#666}.worship label{display:block;font-size:13px;margin:14px 0 8px}.worship textarea{font-size:16px!important;min-height:220px;background:#fcfbf8;line-height:1.7;width:100%;border:1px solid #cfc8ba;border-radius:10px;padding:14px;resize:vertical}.worship .grip-notes-block button,.account-notes button,#resource-prompt button{border:1px solid #c8b989;background:#f7f4ec;border-radius:6px;padding:10px 12px;font-size:12px;min-height:44px}.account-notes{border-top:1px solid #e3ded4;margin-top:28px;padding-top:18px}.account-notes a{font-size:13px;color:#725c22}.account-notes fieldset{border:0;padding:0;margin:0}.notebook-footer{display:flex;justify-content:space-between;padding:18px 26px;background:#f9f7f2;border-top:1px solid #e8e1d4;font-size:11px;gap:12px}#resource-prompt{padding:14px;background:#f8f1dc;border:1px solid #d3bd7a;border-radius:8px;margin-bottom:20px;font-size:13px}#resource-prompt button{margin:8px 5px 0 0}#pastor-content h3{font-size:26px;line-height:1.15}#pastor-content blockquote{margin:20px 0;border-left:3px solid #b89743;padding:8px 0 8px 18px;font-family:Georgia,serif;font-size:19px}#pastor-content h4{margin-top:24px}#pastor-content input{width:100%;font-size:16px;padding:12px;border:1px solid #cfc8ba;border-radius:6px}#pastor-content a{display:block;margin:18px 0;color:#725c22}.gatherings{padding:44px 4vw 70px;border-top:1px solid #ded8cc}.gatherings h2{font-size:38px;margin:8px 0}.gatherings>div>p{font-size:13px;color:#666}.schedule-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:26px}.schedule-grid article{border-top:1px solid #cfc4ad;padding:20px 0}.schedule-grid span{font-size:10px;letter-spacing:.1em;color:#766025}.schedule-grid h3{font-size:16px;margin:12px 0 6px}.schedule-grid p{font-size:28px;margin:0}.worship-footer{background:#111;color:#ddd;display:flex;justify-content:space-between;padding:28px 4vw;font-size:12px}.worship-footer span{color:#d3ad4f}.staff-live{display:grid;grid-template-columns:240px 1fr;min-height:100dvh}.staff-live aside{position:sticky;top:0;height:100dvh;background:#111;color:#fff;display:flex;flex-direction:column;padding:25px}.staff-live aside img{max-width:165px}.staff-live aside nav{display:grid;gap:16px;margin-top:35px}.staff-propel-credit{margin-top:auto;display:grid;gap:8px;font-size:10px}.staff-editor{padding:40px;max-width:1000px}.staff-editor input,.staff-editor select{width:100%;padding:12px;font:inherit}.staff-editor button{min-height:44px;padding:10px 16px;margin:8px 8px 8px 0}.staff-editor textarea{min-height:160px}.staff-editor pre{white-space:pre-wrap;overflow-wrap:anywhere}
+@media(max-width:980px){.worship-workspace{display:block;padding:0 4vw 30px}.worship .grip-video-panel{position:sticky;top:0;z-index:30;border-radius:12px;margin-bottom:20px}.worship .pip-help{display:none}.worship .grip-video-meta{display:block;padding:8px 12px 0}.worship .grip-video-meta h2{display:none}.worship .grip-video-meta p{font-size:11px;margin:0;line-height:1.4}.worship #broadcast-state{margin:0 0 4px;font-size:10px}.worship .grip-video-tools{display:flex;flex-wrap:wrap;padding:10px;gap:7px}.worship .grip-video-tools .btn{flex:1 1 42%;padding:8px;font-size:11px;min-height:44px}.worship-notebook{position:static;max-height:none;overflow:visible}.notebook-scroll{overflow:visible;padding:24px}.worship-header{min-height:72px;padding:12px 4vw}.worship-header img{width:130px;height:40px}.worship-header nav{gap:12px;font-size:11px}.worship-header nav a:first-child{display:none}.intro{padding:32px 4vw 25px}.intro h1{font-size:34px}.schedule-grid{grid-template-columns:repeat(2,1fr)}.worship-notebook{border-radius:12px}.staff-live{grid-template-columns:1fr}.staff-live aside{position:static;height:auto;gap:18px}.staff-live aside nav{margin:0;display:flex}.staff-editor{padding:24px}.staff-propel-credit{margin-top:15px}.notebook-head{padding:22px 22px 0}}
+@media(min-width:981px) and (max-height:520px) and (orientation:landscape){.worship-workspace{display:grid;grid-template-columns:1.2fr 1fr;gap:16px}.worship .grip-video-panel{top:0}.worship-notebook{max-height:90dvh;position:sticky;top:0}.notebook-scroll{overflow-y:auto}.intro{padding-top:18px}.intro h1{font-size:28px}}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
+
+#waiting-design{position:absolute;inset:0;background:#111;overflow:hidden}#waiting-image{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.48}.waiting-copy{position:absolute;inset:0;background:linear-gradient(90deg,rgba(0,0,0,.65),transparent);padding:7%;display:flex;flex-direction:column;justify-content:center;gap:12px;color:#fff}.waiting-copy>span{font-size:clamp(10px,1.05vw,14px);letter-spacing:.12em}.waiting-copy>strong{font-size:clamp(26px,3vw,46px);line-height:1.05;max-width:75%;letter-spacing:-.04em}.waiting-copy>span:first-child{color:#e8c972}.intro>.eyebrow,.grip-notes-block>.eyebrow{color:#786329}
+
+.booklet-frame{width:100%;height:65dvh;border:1px solid #d2c8b2;margin-top:12px}#pastor-content summary{padding:12px;background:#f7f4ec;cursor:pointer;font-size:13px}
+
+.worship .grip-video-tools .btn.outline{color:#fff;border-color:#787878}
+
+
+
+/* Owner-approved platform credit: public footer; admin sidebar on desktop. */
+.platform-footer{background:#111;color:#ccc;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:18px;padding:24px 4vw;font-size:12px;border-top:1px solid #303030}
+.platform-credit{display:inline-grid;gap:5px;align-content:center;justify-items:start;min-height:44px;min-width:44px;padding:6px 8px;color:#ccc;font:11px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;text-decoration:none}
+.platform-credit img{display:block;width:136px;height:auto;max-width:100%;object-fit:contain}
+.platform-credit span{color:#ccc}
+.platform-credit:focus-visible{outline:3px solid #e5c572;outline-offset:3px;border-radius:3px}
+.mobile-platform-footer{display:none}
+@media(max-width:980px){.staff-live aside .staff-propel-credit{display:none}.mobile-platform-footer{display:flex;justify-content:flex-start}.platform-footer{gap:12px}.platform-credit img{width:128px}}
+@media(max-width:380px){.worship-header{flex-wrap:wrap;gap:10px}.worship-header nav{flex-wrap:wrap;gap:10px}.worship-footer>div{display:grid;gap:5px}}
+/* Approved service-aware stack. Branding rules above remain unchanged. */
+.left-workspace{display:flex;flex-direction:column;max-height:calc(100dvh - 44px);overflow:hidden;align-self:start}
+.video-stage{flex:none;background:#111;min-width:0}.provider-picker{display:flex;align-items:center;gap:8px;padding:10px 12px;border-bottom:1px solid #333}.provider-picker button{min-height:44px;border:1px solid #625a48;border-radius:6px;background:#1b1b1b;color:#eee;padding:8px 14px;font-size:12px}.provider-picker button[aria-pressed=true]{background:#d3ad4f;color:#111;border-color:#d3ad4f;font-weight:700}.provider-picker #broadcast-state{margin-left:auto;font-size:9px;letter-spacing:.09em}.video-support{min-height:0;overflow-y:auto;overscroll-behavior:contain;color:#ddd}.video-details{margin:12px 22px;padding:14px 0;border-top:1px solid #403b31;font-size:12px;line-height:1.7}.video-details summary{cursor:pointer;min-height:44px;padding:10px 0;color:#e6cb84}.video-details a,.support-links a{color:#e6cb84}.video-details button{min-height:44px;padding:10px;background:#222;color:#eee;border:1px solid #776c50;border-radius:6px}.support-links{display:flex;flex-wrap:wrap;gap:8px 18px;padding:8px 22px;font-size:12px}.support-links a{display:inline-flex;min-height:44px;align-items:center}.video-details .support-links{padding:0}#conversation-frame{width:100%;height:320px;border:0;background:white}.notebook-head h2{margin-bottom:20px}.workspace-section{padding-bottom:28px;margin-bottom:28px;border-bottom:1px solid #e1d9ca}.workspace-section:last-child{border-bottom:0;margin-bottom:0}.workspace-section h3{font-size:25px;line-height:1.2;margin:8px 0 18px;letter-spacing:-.025em}.workspace-section h4{font-size:17px}.workspace-section .eyebrow{font-size:10px;color:#796123}.workspace-section p{font-size:13px;line-height:1.7}.worship .account-notes{padding-top:16px;margin-top:20px}.worship .account-notes h4{margin:0}.notebook-scroll{scrollbar-gutter:stable;scroll-padding-top:16px}.bible-controls{display:flex;flex-wrap:wrap;align-items:end;gap:10px}.bible-controls label{flex:1 1 150px;min-width:0;margin-top:0}.bible-controls label:nth-child(2){flex:0 1 80px}.bible-controls select,.bible-controls input{width:100%;max-width:100%;min-width:0;min-height:44px;border:1px solid #cfc8ba;border-radius:6px;padding:8px;font-size:16px;background:#fff;color:#161616}.worship #bible button{min-height:44px;padding:10px 12px;background:#f7f4ec;border:1px solid #c8b989;border-radius:6px;font-size:12px}.bible-controls button{margin-bottom:8px}.bible-navigation{display:flex;flex-wrap:wrap;gap:10px;margin:14px 0}.reader-edition,.scripture-credit{font-size:11px;color:#6c6144}#bible-passage{max-height:420px;overflow-y:auto;overscroll-behavior:contain;padding:16px;background:#fcfaf6;border:1px solid #e2dbce;border-radius:8px;font:17px/1.8 Georgia,serif}#bible-passage p{font:inherit;margin:0 0 12px}#bible-passage sup{color:#7b6530;font:11px/1 system-ui,sans-serif}#bible-passage h4{margin:0 0 14px}.worship .grip-video-shell:fullscreen{width:100vw;height:100vh;aspect-ratio:auto;background:#000}.worship #facebook-player{position:absolute;inset:0;width:100%;height:100%;border:0}
+@media(max-width:980px){.worship-workspace{padding:0 0 30px}.worship .left-workspace{display:contents;max-height:none;overflow:visible}.video-stage{position:sticky;top:0;z-index:30;border:1px solid #292929}.video-support{overflow:visible;background:#111;padding-bottom:16px;border-radius:0 0 12px 12px}.worship-notebook{margin:24px 4vw 0}.provider-picker{padding:6px 10px}.provider-picker button{padding:6px 12px}.provider-picker #broadcast-state{font-size:8px}.worship .video-support .grip-video-meta{padding:12px 18px}.worship .video-support .grip-video-meta h2{display:block;font-size:20px;margin:0 0 6px}.worship .video-support .pip-help{display:block;margin:10px 0 0}.worship .video-support .grip-video-tools{padding:10px 18px}.notebook-scroll{scrollbar-gutter:auto}.workspace-section h3{font-size:23px}#conversation-frame{display:none}}
+
+.worship .publisher-live-frame{display:block;width:100%;height:960px;min-height:700px;border:0;border-radius:10px;background:#080808}
+
+
+@media(min-width:981px){.worship-workspace{position:sticky;top:22px;z-index:1;padding-bottom:22px}}
+
+@media(min-width:981px){.gatherings{position:relative;z-index:2;background:#f4f2ed}}
+
+/* Native broadcast conversations stay immediately below the selected video. */
+.native-conversation{padding:18px 22px 20px;border-bottom:1px solid #403b31}.native-conversation h3{font-size:16px;margin:0 0 12px;color:#e6cb84}.native-conversation p{font-size:12px;line-height:1.65;color:#ccc}.native-conversation-link{display:inline-flex;align-items:center;min-height:44px;padding:10px 14px;border:1px solid #bda764;border-radius:7px;color:#f0d890;font-size:12px;text-decoration:none}.native-conversation #conversation-frame{display:block;width:100%;height:320px;border:0;border-radius:6px;background:#fff}.native-conversation #conversation-frame[hidden]{display:none}
+
+/* Provider conversation and persistent mobile video: source-only successor. */
+html:has(.worship){scroll-behavior:auto}
+.worship #player-shell{width:min(100%,var(--watch-player-width,100%));margin-inline:auto}
+.conversation-scroll{max-height:clamp(180px,34dvh,360px);overflow-y:auto;overscroll-behavior:contain;scrollbar-gutter:stable;border-radius:6px}
+.conversation-scroll:focus-visible{outline:3px solid #d3ad4f;outline-offset:3px}
+.native-conversation .conversation-scroll #conversation-frame{height:320px}
+.viewport-help{padding:12px 18px;margin:0;color:#e6cb84;font-size:12px;line-height:1.6}
+.worship-workspace[data-short-viewport=true] .left-workspace{max-height:none;overflow:visible}
+.worship-workspace[data-short-viewport=true] .video-support{overflow:visible}
+#tv-guidance{scroll-margin-top:16px}
+@media(max-width:980px){
+ html:has(.worship){scroll-padding-top:calc(var(--watch-sticky-height,0px) + 16px)}
+ .video-stage{top:var(--watch-viewport-offset,0px);padding-top:env(safe-area-inset-top,0px)}
+ .provider-picker{gap:6px;padding:6px 8px}
+ .provider-picker button{padding:6px 8px}
+ .provider-picker #broadcast-state{flex:1 1 55px;min-width:0;overflow-wrap:anywhere;line-height:1.3;text-align:right}
+ .worship #personal :is(textarea,input,button),.worship #bible :is(select,input,button){scroll-margin-top:16px}
+ .conversation-scroll{max-height:320px}
+}
+
+.worship #player-shell:fullscreen{width:100vw;height:100vh;aspect-ratio:auto;margin:0}
+
+/* Optional provider conversation; the selected video and note workspace stay mounted. */
+.viewing-mode-picker{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px}
+.viewing-mode-picker button{min-height:44px;border:1px solid #766d55;border-radius:6px;background:#1b1b1b;color:#eee;padding:10px 12px;font-size:12px}
+.viewing-mode-picker button[aria-pressed=true]{background:#d3ad4f;color:#111;border-color:#d3ad4f;font-weight:700}
+#viewing-mode-help{margin:0 0 12px}
+#conversation-panel{padding-top:10px}
+
+/* LIVE-only reading and action scale; shared church/Giving styles stay unchanged. */
+.worship .grip-video-tools{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;align-items:stretch}
+.worship .grip-video-tools .btn{width:100%;min-width:0;min-height:48px;padding:12px 14px;font-size:14px;font-weight:650;line-height:1.35;white-space:normal;overflow-wrap:break-word;transition:border-color .18s ease,box-shadow .18s ease}
+.worship .grip-video-tools .btn:is(:hover,:focus-visible,:active){transform:none}
+.worship .grip-video-tools .btn.outline,.worship .grip-video-tools .btn.outline:visited{background:#16191e;color:#f8f5eb;border-color:#87806c}
+.worship .grip-video-tools .btn.outline:is(:hover,:focus-visible,:active),.worship .grip-video-tools button.btn:is(:hover,:focus-visible,:active){background:#29251a;color:#ffe3a1;border-color:#d3ad4f}
+.worship .grip-video-tools .btn.gold,.worship .grip-video-tools .btn.gold:visited{background:#d3ad4f;color:#111;border-color:#d3ad4f}
+.worship .grip-video-tools .btn.gold:is(:hover,:focus-visible,:active){background:#e7c979;color:#111;border-color:#e7c979}
+.worship .provider-picker button,.worship .viewing-mode-picker button{min-height:46px;font-size:14px;font-weight:650;line-height:1.3}
+.worship .provider-picker button[aria-pressed=true],.worship .viewing-mode-picker button[aria-pressed=true]{font-weight:650}
+.worship .provider-picker #broadcast-state{font-size:10px;line-height:1.35;letter-spacing:.06em}
+.worship .grip-video-meta p,.worship .video-support .grip-video-meta p,.worship .workspace-section p,.worship .grip-notes-block p,.worship .account-notes p{font-size:15px;line-height:1.65}
+.worship .native-conversation p,.worship .native-conversation-link,.worship .video-details,.worship .support-links,.worship .pip-help{font-size:14px;line-height:1.6}
+.worship .native-conversation-link{font-weight:600}
+.worship .video-details summary{font-size:15px;font-weight:600}
+.worship label,.worship .account-notes a{font-size:14px}
+.worship .worship-header nav{font-size:14px}
+.worship .worship-header nav a{display:inline-flex;align-items:center;min-height:44px}
+.worship .notebook-footer{font-size:13px;line-height:1.5}
+.worship .gatherings>div>p{font-size:14px}
+.worship .grip-notes-block button,.worship .account-notes button,.worship #bible button{min-height:46px;font-size:14px;font-weight:600;line-height:1.35}
+.worship button:disabled{cursor:not-allowed;opacity:.55}
+@media(max-width:980px){
+ .worship .grip-video-tools .btn{min-height:50px;padding:12px;font-size:15px}
+ .worship .provider-picker button,.worship .viewing-mode-picker button{min-height:48px}
+ .worship .support-links,.worship .video-details,.worship .native-conversation-link{font-size:15px}
+ .worship .worship-header nav{font-size:13px}
+ .worship .worship-header nav a:first-child{display:none}
+}
+
+@media(max-width:520px){.worship .grip-video-tools #open-broadcast,.worship .grip-video-tools .btn.gold{grid-column:1/-1}}
+
+/* A rotated phone has two usable workspaces, without remounting either one. */
+@media(max-width:980px){
+ .worship-workspace[data-compact-split=true]{display:grid;grid-template-columns:minmax(358px,1fr) minmax(0,1fr);gap:12px;padding:0 8px 24px;align-items:start}
+ .worship .worship-workspace[data-compact-split=true] .left-workspace{display:flex;position:sticky;top:var(--watch-viewport-offset,0px);height:var(--watch-viewport-height,100dvh);max-height:var(--watch-viewport-height,100dvh);overflow:hidden;margin:0;border-radius:10px}
+ .worship-workspace[data-compact-split=true] .video-stage{position:relative;top:auto;z-index:auto;padding-top:0;border:0}
+ .worship-workspace[data-compact-split=true] .video-support{min-height:0;overflow-y:auto;overscroll-behavior:contain}
+ .worship-workspace[data-compact-split=true] .worship-notebook{position:sticky;top:var(--watch-viewport-offset,0px);height:var(--watch-viewport-height,100dvh);max-height:var(--watch-viewport-height,100dvh);min-width:0;margin:0;overflow:hidden}
+ .worship-workspace[data-compact-split=true] .notebook-head{flex:none;padding:12px 16px 0}
+ .worship-workspace[data-compact-split=true] .notebook-head h2{font-size:20px;line-height:1.2;margin:6px 0 12px}
+ .worship-workspace[data-compact-split=true] .notebook-scroll{flex:1;min-height:0;overflow-y:auto;padding:16px;overscroll-behavior:contain}
+ .worship-workspace[data-compact-split=true] .notebook-footer{flex:none;flex-wrap:wrap;padding:10px 16px;gap:6px 12px;font-size:12px}
+ .worship-workspace[data-compact-split=true][data-short-viewport=true] .left-workspace{overflow-y:auto}
+ .worship-workspace[data-compact-split=true][data-short-viewport=true] .video-support{flex:none;overflow:visible}
+ .worship-workspace[data-compact-split=true][data-short-viewport=true] .notebook-head{padding:8px 12px 0}
+ .worship-workspace[data-compact-split=true][data-short-viewport=true] .notebook-head>.eyebrow{display:none}
+ .worship-workspace[data-compact-split=true][data-short-viewport=true] .notebook-head h2{font-size:16px;margin:0 0 8px}
+ .worship-workspace[data-compact-split=true][data-short-viewport=true] .notebook-footer{padding:6px 12px}
+ html:has(.worship-workspace[data-compact-split=true]){scroll-padding-top:16px}
+}
+
+/* Preserve the existing public navigation destinations in the shared LIVE header. */
+.worship-header nav{flex-wrap:wrap;justify-content:flex-end;gap:8px 16px}
+@media(max-width:980px){.worship-header{align-items:flex-start}.worship .worship-header nav{gap:2px 10px}.worship .worship-header nav a:first-child{display:inline-flex}.worship-header nav{max-width:65%}.worship-header .worship-give{padding:8px 14px}}
+#published-booklet-host select{display:block;max-width:100%;min-height:44px;font:inherit;padding:8px;margin-block:8px}
+#published-booklet-host>a{display:inline-block;min-height:44px;padding-block:10px;color:#725c22}
