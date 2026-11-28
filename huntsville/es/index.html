@@ -471,7 +471,7 @@
 
             <button class="btn bes-btn-crimson bes-form-submit" id="huntsvilleDecisionSubmit" type="submit">Registrarme y recibir mis recursos</button>
             <div class="bes-form-msg" id="huntsvilleDecisionFormMsg" role="status" aria-live="polite"></div>
-            <p class="bes-form-fineprint">El correo electrónico que ingreses también se usará para tu cuenta gratuita de discipulado de Champion Life.</p>
+            <p class="bes-form-fineprint">El registro documenta tu conexión con el ministerio. No crea una cuenta.</p>
           </form>
         </div>
 
@@ -480,12 +480,12 @@
           <span class="eyebrow">¡Registro completado!</span>
           <h3>Tus próximos pasos están listos.</h3>
           <p>Gracias por compartir tu decisión. Comienza a crecer desde ahora con los siguientes recursos.</p>
-          <p class="bes-account-note" id="huntsvilleDecisionAccountNote">También te enviaremos un correo seguro de acceso a Champion Life para que puedas continuar tu progreso de discipulado desde diferentes dispositivos.</p>
+          <p class="bes-account-note">Tu registro está completo. Puedes abrir los recursos de abajo. El acceso a una cuenta es un paso separado.</p>
 
           <div class="bes-resource-grid">
             <div class="bes-resource">
               <div class="bes-resource-icon">01</div>
-              <div><b>Getting a Grip on the Basics</b><small>Puedes comenzar la primera lección ahora. Inicia sesión desde el correo que te enviemos para guardar tu progreso. Actualmente, el curso está en inglés; estamos preparando la versión en español.</small></div>
+              <div><b>Getting a Grip on the Basics</b><small>Puedes comenzar la primera lección ahora. Actualmente, el curso está en inglés; estamos preparando la versión en español.</small></div>
               <a href="/getting-a-grip-1.html">Comenzar curso</a>
             </div>
             <div class="bes-resource">
@@ -582,7 +582,6 @@
   const card=document.getElementById('huntsvilleDecisionFormCard');
   const submit=document.getElementById('huntsvilleDecisionSubmit');
   const msg=document.getElementById('huntsvilleDecisionFormMsg');
-  const accountNote=document.getElementById('huntsvilleDecisionAccountNote');
   const auth=window.ChampionLifeAuth;
 
   function showMessage(type,text){
@@ -616,25 +615,6 @@
         .insert(payload);
       if(registrationError) throw registrationError;
 
-      let signInSent=true;
-      try{
-        const {error:authError}=await auth.client.auth.signInWithOtp({
-          email,
-          options:{
-            shouldCreateUser:true,
-            emailRedirectTo:location.origin+'/discipleship-login.html'
-          }
-        });
-        if(authError) signInSent=false;
-      }catch(_e){signInSent=false}
-
-      localStorage.setItem('championlife-huntsville-registered','yes');
-      localStorage.setItem('championlife-huntsville-email',email);
-      if(accountNote){
-        accountNote.textContent=signInSent
-          ? 'También te enviamos un correo seguro de acceso a Champion Life a '+email+'. Úsalo para activar tu cuenta y guardar tu progreso de discipulado en distintos dispositivos.'
-          : 'Tu registro está completo. Puedes comenzar el curso ahora. Si no recibes el correo de acceso, usa el botón Mi discipulado para solicitar uno.';
-      }
       card.classList.add('registered');
       card.scrollIntoView({behavior:'smooth',block:'center'});
     }catch(err){

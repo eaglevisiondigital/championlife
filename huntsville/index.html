@@ -468,7 +468,7 @@
 
             <button class="btn bes-btn-crimson bes-form-submit" id="huntsvilleDecisionSubmit" type="submit">Register &amp; Get My Resources</button>
             <div class="bes-form-msg" id="huntsvilleDecisionFormMsg" role="status" aria-live="polite"></div>
-            <p class="bes-form-fineprint">The email address you enter will also become the email used for your free Champion Life discipleship account.</p>
+            <p class="bes-form-fineprint">Registration records your connection with the ministry. It does not create an account.</p>
           </form>
         </div>
 
@@ -477,12 +477,12 @@
           <span class="eyebrow">You’re registered</span>
           <h3>Your next steps are ready.</h3>
           <p>Thank you for letting us know about your decision. Start growing right now with the resources below.</p>
-          <p class="bes-account-note" id="huntsvilleDecisionAccountNote">We’re also sending a secure Champion Life sign-in email so your discipleship progress can follow you across devices.</p>
+          <p class="bes-account-note">Your registration is complete. You can open the resources below. Account access is a separate step.</p>
 
           <div class="bes-resource-grid">
             <div class="bes-resource">
               <div class="bes-resource-icon">01</div>
-              <div><b>Getting a Grip on the Basics</b><small>Start Lesson 1 now. Sign in from the email we send you to save progress across devices.</small></div>
+              <div><b>Getting a Grip on the Basics</b><small>Start Lesson 1 now.</small></div>
               <a href="/getting-a-grip-1.html">Start Course</a>
             </div>
             <div class="bes-resource">
@@ -579,7 +579,6 @@
   const card=document.getElementById('huntsvilleDecisionFormCard');
   const submit=document.getElementById('huntsvilleDecisionSubmit');
   const msg=document.getElementById('huntsvilleDecisionFormMsg');
-  const accountNote=document.getElementById('huntsvilleDecisionAccountNote');
   const auth=window.ChampionLifeAuth;
 
   function showMessage(type,text){
@@ -613,25 +612,6 @@
         .insert(payload);
       if(registrationError) throw registrationError;
 
-      let signInSent=true;
-      try{
-        const {error:authError}=await auth.client.auth.signInWithOtp({
-          email,
-          options:{
-            shouldCreateUser:true,
-            emailRedirectTo:location.origin+'/discipleship-login.html'
-          }
-        });
-        if(authError) signInSent=false;
-      }catch(_e){signInSent=false}
-
-      localStorage.setItem('championlife-huntsville-registered','yes');
-      localStorage.setItem('championlife-huntsville-email',email);
-      if(accountNote){
-        accountNote.textContent=signInSent
-          ? 'We also sent a secure Champion Life sign-in email to '+email+'. Use it to activate cloud progress so your discipleship follows you across devices.'
-          : 'Your registration is complete. You can start the course now. If you do not receive a sign-in email, use the My Discipleship button to request one.';
-      }
       card.classList.add('registered');
       card.scrollIntoView({behavior:'smooth',block:'center'});
     }catch(err){
